@@ -49,7 +49,7 @@ class OrangeData:
     def getData(self):
         return self.data
     
-    def printStatistics(self):
+    def printStatistics(self): 
         data=self.data
         # report on number of classes and attributes
         print "Classes:", len(data.domain.classVar.values) 

@@ -1,12 +1,12 @@
-#Thu Sep 02 19:33:13 CEST 2010
+#Fri Oct 15 14:23:55 CEST 2010
 eclipse.preferences.version=1
-encoding//src/extract_judgments.py=utf-8
-encoding//src/extract_judgments08-onefile.py=utf-8
-encoding//src/extract_judgments08.py=utf-8
-encoding//src/extract_judgments2.py=utf-8
-encoding//src/extract_phrasal.py=utf-8
-encoding//src/extract_scores.py=utf-8
-encoding//src/get-human-judgements-per-system.py=utf-8
-encoding//src/handleClassifier.py=utf-8
-encoding//src/produceJudgmentFeatures.py=utf-8
-encoding//src/sort_judgments.py=utf-8
+encoding//src/support/extract_judgments.py=utf-8
+encoding//src/support/extract_judgments08-onefile.py=utf-8
+encoding//src/support/extract_judgments08.py=utf-8
+encoding//src/support/extract_judgments2.py=utf-8
+encoding//src/support/extract_phrasal.py=utf-8
+encoding//src/support/extract_scores.py=utf-8
+encoding//src/support/get-human-judgements-per-system.py=utf-8
+encoding//src/support/handleClassifier.py=utf-8
+encoding//src/support/produceJudgmentFeatures.py=utf-8
+encoding//src/support/sort_judgments.py=utf-8
