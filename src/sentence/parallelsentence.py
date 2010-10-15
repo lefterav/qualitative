@@ -10,7 +10,7 @@ class ParallelSentence(object):
     '''
     
 
-    def __init__(self, source, translations, reference = ""):
+    def __init__(self, source, translations, reference, features):
         '''
         Constructor
         @param source The source text of the parallel sentence
@@ -20,7 +20,14 @@ class ParallelSentence(object):
         self.src = source
         self.tgt = translations
         self.ref = reference
-        
+        self.features = features
+    
+    def get_features(self):
+        return self.features
+    
+    def get_feature(self, name):
+        return self.features[name]
+    
     def get_source(self):
         return self.src
     

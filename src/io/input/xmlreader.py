@@ -32,10 +32,23 @@ class XmlReader(object):
             src = srcXML[0].childNodes[0].nodeValue.strip()
             tgt = map( lambda x: x.nodevalue.strip() , srcXML[0].childNodes )
             #ref = refXML[0].childNodes[0].nodeValue.strip()
-            curJudgedSentence = ParallelSentence(src, tgt)
+            features = self.__read_features__(self.xmlObject, xmlEntry) 
+            curJudgedSentence = ParallelSentence(src, tgt, "", features)
         
             newssentences.append(curJudgedSentence)
         return newssentences
+    
+    
+    def __read_features__(self, xmlObject, xmlEntry):
+        features = {}
+        attributeKeys = xmlObject.getXMLAttributes()
+        for attributeKey in attributeKeys:
+            if attributeKey in xmlEntry.attributes.keys():
+                features[attributeKey] = xmlEntry.attributes[attributeKey].value                     
+                
+            
+        return features
+        
     
     
     
