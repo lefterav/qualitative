@@ -4,7 +4,9 @@ Created on 15 Οκτ 2010
 @author: elav01
 '''
 
+filename="";
 
 
 if __name__ == '__main__':
-    pass
+    
+    

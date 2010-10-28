@@ -17,11 +17,21 @@ class XmlReader(object):
 
     def __init__(self, inputFilename):
         '''
-        Constructor
+        Constructor. Creates an XML object that handles the XML
         '''
         self.xmlObject = parse(inputFilename)
+    
+    def getAttributes(self):
+        '''
+        @return a list of the names of the attributes contained in the XML file
+        '''
+        return self.xmlObject.getXMLAttributes()
+        
         
     def getSentences(self):
+        '''
+        @return: a list of ParallelSentence objects
+        '''
         judgedCorpus = self.xmlObject.getElementsByTagName('jcml')
         sentenceList = judgedCorpus[0].getElementsByTagName('judgedsentence')
         newssentences = [] 
@@ -32,7 +42,11 @@ class XmlReader(object):
             src = srcXML[0].childNodes[0].nodeValue.strip()
             tgt = map( lambda x: x.nodevalue.strip() , srcXML[0].childNodes )
             #ref = refXML[0].childNodes[0].nodeValue.strip()
+            
+            #Extract the XML features and attach them to the ParallelSentenceObject
             features = self.__read_features__(self.xmlObject, xmlEntry) 
+            
+            #create a new Parallesentence with the given content
             curJudgedSentence = ParallelSentence(src, tgt, "", features)
         
             newssentences.append(curJudgedSentence)
@@ -45,8 +59,6 @@ class XmlReader(object):
         for attributeKey in attributeKeys:
             if attributeKey in xmlEntry.attributes.keys():
                 features[attributeKey] = xmlEntry.attributes[attributeKey].value                     
-                
-            
         return features
         
     
