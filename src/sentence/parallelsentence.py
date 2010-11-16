@@ -1,3 +1,7 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+
 '''
 Created on 15 Οκτ 2010
 
@@ -10,7 +14,7 @@ class ParallelSentence(object):
     '''
     
 
-    def __init__(self, source, translations, reference, features):
+    def __init__(self, source, translations, reference, attributes):
         '''
         Constructor
         @param source The source text of the parallel sentence
@@ -20,10 +24,13 @@ class ParallelSentence(object):
         self.src = source
         self.tgt = translations
         self.ref = reference
-        self.features = features
+        self.attributes = attributes
     
-    def get_features(self):
-        return self.features
+    def get_attributes (self):
+        return self.attributes
+    
+    def get_attribute_names (self):
+        return self.attributes.keys()
     
     def get_feature(self, name):
         return self.features[name]
@@ -36,5 +43,28 @@ class ParallelSentence(object):
     
     def get_reference(self):
         return self.ref
+    
+    def propagate_attributes(self):
+        '''
+            Silent function that gathers all the features of the nested sentences 
+            to the parallel sentence object, by prefixing their names accordingly
+        '''
+        self.attributes.extend( self.__prefix__(self.src.get_attributes, "src") )
+        prefixeditems = {}
+        for tgtitem in self.tgt: 
+             prefixeditems = self.__prefix__(self.tgtitem.get_attributes(), self.tgtitem.get_attributes()["system"] )
+        self.attributes.extend( self.__prefix__(prefixeditems, "tgt") )
+        for refitem in self.ref:
+            self.attributes.extend( self.__prefix__(self.refitem.get_attributes, "ref") )
+        
+        
+        
+    def __prefix__(self, listitems, prefix):
+        newlistitems = {}
+        for item in listitems:
+            item_key = prefix + "_" + item.key()
+            newlistitems[item_key] = item.value
+        return newlistitems  
+            
 
         

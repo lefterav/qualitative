@@ -1,17 +1,30 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 '''
 Created on 28 Οκτ 2010
 
 @author: elav01
 '''
 
-class Sentence(object):
+class SimpleSentence(object):
     '''
     classdocs
     '''
 
 
-    def __init__(selfparams):
+    def __init__(self, string="", attributes=[]):
         '''
-        Constructor
+        Initializes a sentence object, which wraps both a sentence and its attributes
         '''
+        
+        self.string = string
+        self.attributes = attributes
+        
+    def get_string(self):
+        return self.string
+    
+    def get_attributes(self):
+        return self.attributes
+        
         

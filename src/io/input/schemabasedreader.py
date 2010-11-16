@@ -45,9 +45,10 @@ SCHEMA = StringIO('''\
 
 FILENAME = "../data/evaluations_all.jcml"
 
-class ParallelData(object):
+class SchemaData(object):
     '''
-    classdocs
+    Imports and directly objectifies the XML input data, based on a Schema description 
+    Development suspended as it was not possible to have optional arguments
     '''
 
 

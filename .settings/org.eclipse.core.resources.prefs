@@ -1,5 +1,11 @@
-#Fri Oct 15 14:23:55 CEST 2010
+#Thu Nov 11 18:07:47 CET 2010
 eclipse.preferences.version=1
+encoding//src/io/input/orangereader.py=utf-8
+encoding//src/io/input/schemabasedreader.py=utf-8
+encoding//src/io/input/xmlreader.py=utf-8
+encoding//src/sentence/dataset.py=utf-8
+encoding//src/sentence/parallelsentence.py=utf-8
+encoding//src/sentence/sentence.py=utf-8
 encoding//src/support/extract_judgments.py=utf-8
 encoding//src/support/extract_judgments08-onefile.py=utf-8
 encoding//src/support/extract_judgments08.py=utf-8
@@ -10,3 +16,4 @@ encoding//src/support/get-human-judgements-per-system.py=utf-8
 encoding//src/support/handleClassifier.py=utf-8
 encoding//src/support/produceJudgmentFeatures.py=utf-8
 encoding//src/support/sort_judgments.py=utf-8
+encoding//src/tara.py=utf-8
