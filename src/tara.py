@@ -12,6 +12,8 @@ from io.input.xmlreader import XmlReader
 from io.input.orangereader import OrangeData
 from classifier.bayes import Bayes
 from classifier.tree import TreeLearner
+from classifier.svm import SVM
+
 
 if __name__ == '__main__':
     
@@ -22,6 +24,8 @@ if __name__ == '__main__':
     #Load data from external file
     pdr = XmlReader(filename) 
     dataset =  pdr.get_dataset()
+    
+    desired_attributes=['langsrc', 'langtgt', 'testset']
     
     #convert data in orange format
     orangedata = OrangeData( dataset, class_name, desired_attributes )
@@ -38,7 +42,7 @@ if __name__ == '__main__':
     #train data
     bayes = Bayes( training_data )
     tree = TreeLearner( training_data )
-    svm = training_data.get_SVM()
+    svm = SVM ( training_data )
     
     bayes.name = "bayes"
     tree.name = "tree"

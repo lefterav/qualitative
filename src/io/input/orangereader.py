@@ -44,6 +44,10 @@ class OrangeData:
     
     def get_data(self):
         return self.data
+
+    
+            
+    
     
     def print_statistics(self): 
         data=self.data
@@ -131,13 +135,16 @@ class OrangeData:
             attributeKeys = dataset.get_attribute_names()
         else :
             desiredAttributes.append(className)
+            desiredAttributes.append("id")
             attributeKeys = desiredAttributes
         
         for attributeKey in attributeKeys :
             dataString = dataString + attributeKey +"\t"
             typeLine = typeLine + "d\t"
-            if className == attributeKey:
-                classLine = classLine + "class"
+            if attributeKey == className:
+                classLine = classLine + "c"
+            if attributeKey == "id":
+                classLine = classLine + "m"
             classLine = classLine + "\t"
         
         #add the class description in the end for all the three lines
@@ -171,11 +178,6 @@ class OrangeData:
         
         return [trainingSet, testSet] 
     
-    def get_bayes_classifier(self):
-        return orange.BayesLearner(self.data)
-    
-    def get_tree_learner(self):
-        return orngTree.TreeLearner(self.data, sameMajorityPruning=1, mForPruning=2)
      
     
     def cross_validation(self):
