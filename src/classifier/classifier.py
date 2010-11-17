@@ -1,17 +1,15 @@
 '''
-Created on 15 Οκτ 2010
 
 @author: elav01
 '''
+    
 
-class TaraClassifier(object):
+
+class OrangeClassifier(object):
     '''
     classdocs
     '''
 
-
-    def __init__(selfparams):
-        '''
-        Constructor
-        '''
+    def __call__(self, data):
+        return self.classifier.__call__(data)
         

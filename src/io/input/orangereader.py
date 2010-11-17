@@ -8,42 +8,44 @@ Created on 11 Νοε 2010
 @author: elav01
 '''
 
-import sys
 import codecs
 import os
 import orange, orngTest, orngStat, orngTree  
 from tempfile import mktemp
+import sentence 
 
 class OrangeData:
     '''
         Handles the conversion of the generic data objects to a format handled by Orange library
     '''
     
-    def __init__ (self, dataSet, className="", desiredAttributes=[]):
+    def __init__ (self, dataSet, class_name, desiredAttributes=[]):
+
         
         if isinstance ( dataSet , orange.ExampleTable ):
             self.data = dataSet
-        else:
+        elif isinstance ( dataSet , sentence.dataset.DataSet ):
+            
             
             #get the data in Orange file format
-            fileData = self.__getOrangeFormat__(dataSet, className, desiredAttributes)
+            fileData = self.__getOrangeFormat__(dataSet, class_name, desiredAttributes)
             
             #write the data in a temporary file
+            #not secure but we trust our hard disk
             tmpFileName = self.__writeTempFile__(fileData)
             
             #load the data
             self.data = orange.ExampleTable(tmpFileName)
-            
+            print tmpFileName
             #get rid of the temp file
             os.unlink(tmpFileName)
-
         return None
     
     
-    def getData(self):
+    def get_data(self):
         return self.data
     
-    def printStatistics(self): 
+    def print_statistics(self): 
         data=self.data
         # report on number of classes and attributes
         print "Classes:", len(data.domain.classVar.values) 
@@ -156,7 +158,7 @@ class OrangeData:
             dataString = dataString + "\n"
         return dataString
     
-    def splitData(self, percentage):
+    def split_data(self, percentage):
         size =  len (self.data)
         testSize = round (size * percentage) 
         
@@ -169,14 +171,14 @@ class OrangeData:
         
         return [trainingSet, testSet] 
     
-    def getBayesClassifier(self):
+    def get_bayes_classifier(self):
         return orange.BayesLearner(self.data)
     
-    def getTreeLearner(self):
+    def get_tree_learner(self):
         return orngTree.TreeLearner(self.data, sameMajorityPruning=1, mForPruning=2)
      
     
-    def crossValidation(self):
+    def cross_validation(self):
         
         data = self.data
         # set up the learners
@@ -222,7 +224,7 @@ class OrangeData:
     
         return None
     
-    def getSVM(self):
+    def get_SVM(self):
         l=orange.SVMLearner() 
         l.svm_type=orange.SVMLearner.Nu_SVC 
         l.nu=0.3 
@@ -231,52 +233,20 @@ class OrangeData:
     
     
     
-def accuracy(test_data, classifiers):
-    correct = [0.0]*len(classifiers)
-    for ex in test_data:
-        for i in range(len(classifiers)):
-            if classifiers[i](ex) == ex.getclass():
-                correct[i] += 1
-    for i in range(len(correct)):
-        correct[i] = correct[i] / len(test_data)
-    return correct
+    def get_accuracy(self, classifiers):
+        correct = [0.0]*len(classifiers)
+        for ex in self.data:
+            for i in range(len(classifiers)):
+                if classifiers[i](ex) == ex.getclass():
+                    correct[i] += 1
+        for i in range(len(correct)):
+            correct[i] = correct[i] / len(self.data)
+        return correct
     
     
     
     
             
-if __name__ == "__main__":
-    if len(sys.argv) < 3 :
-        print 'USAGE: %s JUDGMENTS_INPUT.pcml.xml JUDGMENTS_OUTPUΤ.pcml.xml ' % sys.argv[0]
-    else:
-        
-        inputXML = JudgedSet(sys.argv[1],sys.argv[2])
-        newData = OrangeData (inputXML, 'rank', ['src-toolong','src-long', 'langsrc', 'langtgt', 'testset'])
-        
-        newData.crossValidation()
-        
-        [trainingPart, testPart] = newData.splitData(0.1)
-        trainingData = OrangeData(trainingPart)
-        testData = OrangeData(testPart)
-        
-        
-        bayes = trainingData.getBayesClassifier()
-        tree = trainingData.getTreeLearner()
-        svm = trainingData.getSVM()
-        
-        bayes.name = "bayes"
-        tree.name = "tree"
-        svm.name = "SVM"
-        classifiers = [bayes, tree, svm]
-        
-        # compute accuracies
-        acc = accuracy(testData.getData(), classifiers)
-        print "Classification accuracies:"
-        for i in range(len(classifiers)):
-            print classifiers[i].name, acc[i]
-        
-        #newData.printStatistics()
-        #print "Training Data"
-        #trainingData.printStatistics()        
+
         
         

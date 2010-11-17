@@ -12,7 +12,6 @@ class DataSet(object):
     classdocs
     '''
 
-
     def __init__(self, parallelsentence_list, attributes_list):
         '''
         Constructor
@@ -33,10 +32,13 @@ class DataSet(object):
     def propagate_attributes(self):
 
         propagated_parallelsentences = []
+        propagated_attribute_names = set()
         for psentence in self.parallelsentences:
-            propagated_parallelsentences.append( psentence.propagate )
-            propagated_attribute_names = 
+            psentence.propagate_attributes()
+            propagated_parallelsentences.append(psentence)
+            propagated_attribute_names.add( psentence.get_attributes() )
         self.parallelsentences = propagated_parallelsentences
+        self.attribute_names = list( propagated_attribute_names )
     
     
         

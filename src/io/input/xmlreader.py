@@ -28,11 +28,11 @@ class XmlReader(object):
         self.xmlObject = parse(inputFilename)
     
     
-    def getDataSet(self):
-        return DataSet(self.getParallelSentences(), self.getAttributes())
+    def get_dataset(self):
+        return DataSet(self.get_parallelsentences(), self.get_attributes())
     
     
-    def getAttributes(self):
+    def get_attributes(self):
         '''
         @return a list of the names of the attributes contained in the XML file
         '''
@@ -46,7 +46,7 @@ class XmlReader(object):
         return list(attributesKeySet)
         
         
-    def getParallelSentences(self):
+    def get_parallelsentences(self):
         '''
         @return: a list of ParallelSentence objects
         '''
