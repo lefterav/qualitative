@@ -6,7 +6,7 @@
 '''
 Created on Sep 1, 2010
 
-@author: elav01
+@author: Eleftherios Avramidis
 
 TODO: 
 - find a way to save orange Data in XML format

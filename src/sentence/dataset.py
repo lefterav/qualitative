@@ -4,7 +4,7 @@
 '''
 Created on 11 Νοε 2010
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 class DataSet(object):

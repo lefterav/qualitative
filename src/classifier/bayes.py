@@ -2,7 +2,7 @@
 
 '''
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 from orange import BayesLearner 

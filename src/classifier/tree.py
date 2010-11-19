@@ -1,6 +1,6 @@
 '''
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 import orngTree 

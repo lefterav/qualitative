@@ -1,7 +1,7 @@
 '''
 Created on 15 Οκτ 2010
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 class FeatureGenerator(object):
