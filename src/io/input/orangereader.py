@@ -3,7 +3,6 @@
 
 
 '''
-Created on 11 Νοε 2010
 
 @author: elav01
 '''
@@ -46,6 +45,19 @@ class OrangeData:
         return self.data
 
     
+    def get_dataset(self):
+        data = self.data
+        
+        for item in data:
+            for att in item.domain.attributes:
+                print att.name, item[att]
+                
+            metas = item.getmetas()
+            for key in metas: 
+                print metas[key].value, metas[key].variable.name
+            print
+            
+        
             
     
     
@@ -131,19 +143,17 @@ class OrangeData:
         dataString = "" #text contained in the file to be written
         typeLine = "" #line for the type of the arguments
         classLine = "" #line for the definition of the class 
-        if not desiredAttributes :
-            attributeKeys = dataset.get_attribute_names()
-        else :
-            desiredAttributes.append(className)
-            desiredAttributes.append("id")
-            attributeKeys = desiredAttributes
+        attributeKeys = dataset.get_attribute_names()
+        
+        if not desiredAttributes:
+            desiredAttributes =  attributeKeys
         
         for attributeKey in attributeKeys :
             dataString = dataString + attributeKey +"\t"
             typeLine = typeLine + "d\t"
             if attributeKey == className:
                 classLine = classLine + "c"
-            if attributeKey == "id":
+            elif attributeKey not in desiredAttributes:
                 classLine = classLine + "m"
             classLine = classLine + "\t"
         

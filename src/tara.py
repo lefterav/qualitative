@@ -35,6 +35,8 @@ if __name__ == '__main__':
     training_data = OrangeData(training_part, class_name)
     test_data = OrangeData(test_part, class_name)
     
+    print "DATASET------"
+    test_data.get_dataset()
     
     orangedata.cross_validation()
     orangedata.print_statistics()
@@ -54,3 +56,6 @@ if __name__ == '__main__':
     print "Classification accuracies:"
     for i in range(len(classifiers)):
         print classifiers[i].name, "\t", acc[i]
+        
+        
+    
