@@ -3,7 +3,7 @@
 '''
 
 from xml.dom import minidom
-
+import codecs
 
 class XmlWriter(object):
     '''
@@ -15,14 +15,65 @@ class XmlWriter(object):
         '''
         Constructor
         '''
-        xml_doc = minidom.Document( )
-        xml_doc.createElement("jcml")
+        self.object_xml = None
+        self.convert_to_xml( parallelsentences )
         
-        for parallelsentence in parallelsentences:
-            xml_psentence = minidom.Node()
+        
+    def convert_to_xml(self, parallelsentences):
+        '''
+        Creates an XML for the document an populates that with the (parallel) sentences of the given object.
+        Resulting XML object gets stored as a variable.
+        @param parallelsentences: a list of ParallelSentence objects 
+        '''
+        doc_xml = minidom.Document( )
+        jcml = doc_xml.createElement("jcml")
+        
+        for ps in parallelsentences:
             
+            parallelsentence_xml = doc_xml.createElement("judgedsentence")
+            
+            #add attributes of parallel sentence
+            for attribute_key in ps.get_attributes().keys():
+                parallelsentence_xml.setAttribute( attribute_key , ps.get_attribute( attribute_key ) )
+            
+            #add source as a child of parallel sentence
+            src_xml = self.__create_xml_sentence__(doc_xml, ps.get_source(), "src")
+            parallelsentence_xml.appendChild( src_xml )
+
+            #add translations
+            for tgt in ps.get_translations():
+                tgt_xml = self.__create_xml_sentence__(doc_xml, tgt, "tgt")
+                parallelsentence_xml.appendChild( tgt_xml )
+
+            #add reference as a child of parallel sentence
+            ref_xml = self.__create_xml_sentence__(doc_xml, ps.get_reference(), "ref")
+            parallelsentence_xml.appendChild( ref_xml )
+
+            #append the newly populated parallel sentence to the document
+            jcml.appendChild(parallelsentence_xml)
+            
+        doc_xml.appendChild(jcml)
+        self.object_xml = doc_xml
         
         
+    def write_to_file(self, filename):
+        file_object = codecs.open(filename, 'w', 'utf-8')
+        file_object.write(self.object_xml.toprettyxml())
+        file_object.close()  
+           
         
         
+    def __create_xml_sentence__(self, doc_xml, obj, tag):
+        '''
+        Helper function that fetches the text and the attributes of a sentence
+        and wraps them up into a minidom XML object
+        '''
+        
+        sentence_xml = doc_xml.createElement(tag)
+
+        for attribute_key in ps.get_attributes().keys():
+            sentence_xml.setAttribute( attribute_key , obj.get_attribute( attribute_key ) )            
+        sentence_xml.appendChild( doc_xml.createTextNode( obj.get_string() ) )
+        
+        return sentence_xml
         
