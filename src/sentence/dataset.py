@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 '''
-Created on 11 Νοε 2010
 
 @author: Eleftherios Avramidis
 '''

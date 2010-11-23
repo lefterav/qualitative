@@ -54,7 +54,7 @@ class ParallelSentence(object):
         i=0
         for tgtitem in self.tgt:
             i += 1
-            prefixeditems = self.__prefix__( tgtitem.get_attributes(), "tgt" + str(i) )
+            prefixeditems = self.__prefix__( tgtitem.get_attributes(), "tgt-" + str(i) )
             #prefixeditems = self.__prefix__( tgtitem.get_attributes(), tgtitem.get_attributes()["system"] )
             new_attributes.update( prefixeditems )
 
@@ -62,6 +62,8 @@ class ParallelSentence(object):
             new_attributes.update( self.__prefix__( refitem.get_attributes, "ref" ) )
         return new_attributes
 
+    def recover_attributes(self):
+        pass
     
         
         

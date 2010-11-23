@@ -11,6 +11,7 @@ import codecs
 import os
 import orange, orngTest, orngStat, orngTree  
 from tempfile import mktemp
+from sentence.dataset import DataSet
 from sentence.parallelsentence import ParallelSentence
 import sentence 
 
@@ -37,7 +38,7 @@ class OrangeData:
             #load the data
             self.data = orange.ExampleTable(tmpFileName)
             #get rid of the temp file
-            os.unlink(tmpFileName)
+            #os.unlink(tmpFileName)
         return None
     
     
@@ -61,18 +62,41 @@ class OrangeData:
 
             metas = item.getmetas()
             
+            src = ""
+            tgt = []
+            ref = ""
+            
             #then get metas
             for key in metas: 
                 attribute_name = metas[key].variable.name
                 
+                if attribute_name == 'src':
+                    src = metas[key].value
+                elif attribute_name == 'ref':
+                    try:
+                        ref = metas[key].value
+                    except KeyError:
+                        pass
+                elif (attribute_name.startswith('tgt') and attribute_name.find('_') == -1):
+                    tag, index = attribute_name.split( "-")
+                    #assume they appear the right order
+                    #tgt[int(index)] = metas[key].value
+                    tgt.append( metas[key].value )
+                    
+                else:
                 #if not attribute_names = src|ref|tgt
-                sentence_attributes [attribute_name] =  metas[key].value
-                attribute_names.add(attribute_name)
+                    sentence_attributes [attribute_name] =  metas[key].value
+                    attribute_names.add(attribute_name)
             
+            #create a new sentence and add it to the list
+            #print "Creating a sentence"
+            #print src
+            #print "Target", tgt
+            #print ref
+            new_parallelsentence = ParallelSentence( src, tgt, ref, sentence_attributes )
+            new_data.append(new_parallelsentence)
             
-            #new_parallelsentence = ParallelSentence( metas["src"].value )
-            #new_data.append(new_parallelsentence)
-        
+        return DataSet( new_data, attribute_names ) 
 
     def print_statistics(self): 
         data=self.data
@@ -190,7 +214,7 @@ class OrangeData:
             i+=1
             line_2 += "string\t"
             line_3 += "m\t"
-            line_1 += "tgt" + str(i) + "\t"
+            line_1 += "tgt-" + str(i) + "\t"
         #ref 
         line_2 += "string\t"
         line_3 += "m\t"
