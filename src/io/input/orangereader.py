@@ -20,13 +20,12 @@ class OrangeData:
     '''
     
     def __init__ (self, dataSet, class_name, desired_attributes=[]):
-
         
         if isinstance ( dataSet , orange.ExampleTable ):
             self.data = dataSet
+            
         elif isinstance ( dataSet , sentence.dataset.DataSet ):
-            
-            
+                       
             #get the data in Orange file format
             fileData = self.__getOrangeFormat__(dataSet, class_name, desired_attributes)
             
@@ -38,15 +37,13 @@ class OrangeData:
             #load the data
             self.data = orange.ExampleTable(tmpFileName)
             #get rid of the temp file
-            #os.unlink(tmpFileName)
+            os.unlink(tmpFileName)
         return None
     
     
     def get_data(self):
         return self.data
 
-    
-    
     
     def get_dataset(self):
         data = self.data
@@ -72,13 +69,11 @@ class OrangeData:
                 sentence_attributes [attribute_name] =  metas[key].value
                 attribute_names.add(attribute_name)
             
-            print attribute_names
+            
             #new_parallelsentence = ParallelSentence( metas["src"].value )
             #new_data.append(new_parallelsentence)
         
-            
-    
-    
+
     def print_statistics(self): 
         data=self.data
         # report on number of classes and attributes
@@ -158,15 +153,13 @@ class OrangeData:
     
     def __getOrangeFormat__(self, dataset, class_name, desired_attributes=[]):
         #first construct the lines for the declaration
-        line_1 = "" #text contained in the file to be written
+        line_1 = "" #line for the name of the arguments
         line_2 = "" #line for the type of the arguments
         line_3 = "" #line for the definition of the class 
-        attribute_names = dataset.get_attribute_names()
+        attribute_names = dataset.get_all_attribute_names()
         
-        #the keys for the string attributes
-        key_src = "src"
-        key_tgt = "tgt"
-        key_ref = "ref"
+        print attribute_names
+
         
         #if no desired attribute define, get all of them
         if not desired_attributes:
@@ -189,13 +182,18 @@ class OrangeData:
         
         #src
         line_2 += "string\t"
+        line_3 += "m\t"
         line_1 += "src\t"
         #target
+        i=0
         for tgt in dataset.get_parallelsentences()[0].get_translations():
+            i+=1
             line_2 += "string\t"
-            line_1 += "tgt-" + tgt.get_attribute("system") + "\t"
+            line_3 += "m\t"
+            line_1 += "tgt" + str(i) + "\t"
         #ref 
         line_2 += "string\t"
+        line_3 += "m\t"
         line_1 += "ref\t"
         
         #break the line in the end
@@ -206,9 +204,12 @@ class OrangeData:
         
         
         for psentence in dataset.get_parallelsentences():
+            nested_attributes = psentence.get_nested_attributes()
+            nested_attribute_names = nested_attributes.keys()
+            
             for attribute_name in attribute_names:
-                if attribute_name in psentence.get_attribute_names():
-                    output = output + str(psentence.get_attributes()[attribute_name])
+                if attribute_name in nested_attribute_names:
+                    output = output + str( nested_attributes[attribute_name] )
                 #even if attribute value exists or not, we have to tab    
                 output += "\t"
             output += psentence.get_source().get_string() + "\t"
@@ -217,6 +218,8 @@ class OrangeData:
             output += psentence.get_reference() + "\t"
             output +=  "\n"
         return output
+    
+
     
     def split_data(self, percentage):
         size =  len (self.data)

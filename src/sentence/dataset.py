@@ -29,7 +29,20 @@ class DataSet(object):
     def get_attribute_names(self):
         return self.attribute_names
     
-    def propagate_attributes(self):
+    def get_all_attribute_names(self):
+        all_attribute_names = self.attribute_names
+        all_attribute_names.extend( self.get_nested_attribute_names() )
+        return list(set(all_attribute_names))
+    
+    def get_nested_attribute_names(self):
+        nested_attribute_names = set()
+        for parallelsentence in self.parallelsentences:
+            nested_attribute_names.update ( parallelsentence.get_nested_attributes().keys() )
+        return list(nested_attribute_names)
+            
+    
+    '''
+     def get_nested_attributes(self):
 
         propagated_parallelsentences = []
         propagated_attribute_names = set()
@@ -39,7 +52,7 @@ class DataSet(object):
             propagated_attribute_names.add( psentence.get_attributes() )
         self.parallelsentences = propagated_parallelsentences
         self.attribute_names = list( propagated_attribute_names )
-    
+    '''
     
         
         

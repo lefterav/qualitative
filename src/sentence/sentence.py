@@ -18,7 +18,7 @@ class SimpleSentence(object):
         Initializes a sentence object, which wraps both a sentence and its attributes
         '''
         
-        self.string = string
+        self.string = string.replace("\t", "  ")
         self.attributes = attributes
         
     def get_string(self):

@@ -44,26 +44,32 @@ class ParallelSentence(object):
     def get_reference(self):
         return self.ref
     
-    def propagate_attributes(self):
+    def get_nested_attributes(self):
         '''
-            Silent function that gathers all the features of the nested sentences 
+            function that gathers all the features of the nested sentences 
             to the parallel sentence object, by prefixing their names accordingly
         '''
-        self.attributes.extend( self.__prefix__(self.src.get_attributes, "src") )
-        prefixeditems = {}
-        for tgtitem in self.tgt: 
-             prefixeditems = self.__prefix__(self.tgtitem.get_attributes(), self.tgtitem.get_attributes()["system"] )
-        self.attributes.extend( self.__prefix__(prefixeditems, "tgt") )
+        new_attributes = self.attributes
+        new_attributes.update( self.__prefix__(self.src.get_attributes(), "src") )
+        i=0
+        for tgtitem in self.tgt:
+            i += 1
+            prefixeditems = self.__prefix__( tgtitem.get_attributes(), "tgt" + str(i) )
+            #prefixeditems = self.__prefix__( tgtitem.get_attributes(), tgtitem.get_attributes()["system"] )
+            new_attributes.update( prefixeditems )
+
         for refitem in self.ref:
-            self.attributes.extend( self.__prefix__(self.refitem.get_attributes, "ref") )
-        
+            new_attributes.update( self.__prefix__( refitem.get_attributes, "ref" ) )
+        return new_attributes
+
+    
         
         
     def __prefix__(self, listitems, prefix):
         newlistitems = {}
-        for item in listitems:
-            item_key = prefix + "_" + item.key()
-            newlistitems[item_key] = item.value
+        for item_key in listitems.keys():
+            new_item_key = prefix + "_" + item_key 
+            newlistitems[new_item_key] = listitems[item_key]
         return newlistitems  
             
 
