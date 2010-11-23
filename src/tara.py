@@ -3,8 +3,6 @@
 
 
 '''
-Created on 15 Οκτ 2010
-
 @author: Eleftherios Avramidis
 '''
 

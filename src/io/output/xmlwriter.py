@@ -11,13 +11,16 @@ class XmlWriter(object):
     '''
 
 
-    def __init__(self, parallelsentences):
+    def __init__(self, data):
         '''
         Constructor
         '''
-        self.object_xml = None
-        self.convert_to_xml( parallelsentences )
-        
+        if isinstance ( data , minidom.Document ):
+            self.object_xml = data
+        else:
+            self.object_xml = None
+            self.convert_to_xml( data )
+            
         
     def convert_to_xml(self, parallelsentences):
         '''
@@ -66,14 +69,14 @@ class XmlWriter(object):
     def __create_xml_sentence__(self, doc_xml, obj, tag):
         '''
         Helper function that fetches the text and the attributes of a sentence
-        and wraps them up into a minidom XML object
+        and wraps them up into a minidom XML sentenceect
         '''
         
         sentence_xml = doc_xml.createElement(tag)
 
-        for attribute_key in ps.get_attributes().keys():
-            sentence_xml.setAttribute( attribute_key , obj.get_attribute( attribute_key ) )            
-        sentence_xml.appendChild( doc_xml.createTextNode( obj.get_string() ) )
+        for attribute_key in sentence.get_attributes().keys():
+            sentence_xml.setAttribute( attribute_key , sentence.get_attribute( attribute_key ) )            
+        sentence_xml.appendChild( doc_xml.createTextNode( sentence.get_string() ) )
         
         return sentence_xml
         
