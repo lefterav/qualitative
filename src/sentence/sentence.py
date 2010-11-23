@@ -26,5 +26,8 @@ class SimpleSentence(object):
     
     def get_attributes(self):
         return self.attributes
+
+    def get_attribute(self, key):
+        return self.attributes[key]
         
         

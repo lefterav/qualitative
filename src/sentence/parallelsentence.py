@@ -32,8 +32,8 @@ class ParallelSentence(object):
     def get_attribute_names (self):
         return self.attributes.keys()
     
-    def get_feature(self, name):
-        return self.features[name]
+    def get_attribute(self, name):
+        return self.attributes[name]
     
     def get_source(self):
         return self.src

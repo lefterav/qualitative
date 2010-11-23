@@ -11,6 +11,7 @@ import codecs
 import os
 import orange, orngTest, orngStat, orngTree  
 from tempfile import mktemp
+from sentence.parallelsentence import ParallelSentence
 import sentence 
 
 class OrangeData:
@@ -18,7 +19,7 @@ class OrangeData:
         Handles the conversion of the generic data objects to a format handled by Orange library
     '''
     
-    def __init__ (self, dataSet, class_name, desiredAttributes=[]):
+    def __init__ (self, dataSet, class_name, desired_attributes=[]):
 
         
         if isinstance ( dataSet , orange.ExampleTable ):
@@ -27,17 +28,17 @@ class OrangeData:
             
             
             #get the data in Orange file format
-            fileData = self.__getOrangeFormat__(dataSet, class_name, desiredAttributes)
+            fileData = self.__getOrangeFormat__(dataSet, class_name, desired_attributes)
             
             #write the data in a temporary file
             #not secure but we trust our hard disk
             tmpFileName = self.__writeTempFile__(fileData)
-            
+            print tmpFileName
+
             #load the data
             self.data = orange.ExampleTable(tmpFileName)
-            print tmpFileName
             #get rid of the temp file
-            os.unlink(tmpFileName)
+            #os.unlink(tmpFileName)
         return None
     
     
@@ -45,18 +46,35 @@ class OrangeData:
         return self.data
 
     
+    
+    
     def get_dataset(self):
         data = self.data
+        attribute_names = set() #set containing the attribute names
+        new_data = [] #list containing the data, one parallelsentence per entry
+        
         
         for item in data:
-            for att in item.domain.attributes:
-                print att.name, item[att]
-                
-            metas = item.getmetas()
-            for key in metas: 
-                print metas[key].value, metas[key].variable.name
-            print
+            sentence_attributes = {}
             
+            #first get normal features
+            for att in item.domain.attributes:
+                sentence_attributes [att.name] = item[att]
+                attribute_names.add( att.name )
+
+            metas = item.getmetas()
+            
+            #then get metas
+            for key in metas: 
+                attribute_name = metas[key].variable.name
+                
+                #if not attribute_names = src|ref|tgt
+                sentence_attributes [attribute_name] =  metas[key].value
+                attribute_names.add(attribute_name)
+            
+            print attribute_names
+            #new_parallelsentence = ParallelSentence( metas["src"].value )
+            #new_data.append(new_parallelsentence)
         
             
     
@@ -138,42 +156,67 @@ class OrangeData:
         return tmpFileName
         
     
-    def __getOrangeFormat__(self, dataset, className, desiredAttributes=[]):
+    def __getOrangeFormat__(self, dataset, class_name, desired_attributes=[]):
         #first construct the lines for the declaration
-        dataString = "" #text contained in the file to be written
-        typeLine = "" #line for the type of the arguments
-        classLine = "" #line for the definition of the class 
-        attributeKeys = dataset.get_attribute_names()
+        line_1 = "" #text contained in the file to be written
+        line_2 = "" #line for the type of the arguments
+        line_3 = "" #line for the definition of the class 
+        attribute_names = dataset.get_attribute_names()
         
-        if not desiredAttributes:
-            desiredAttributes =  attributeKeys
+        #the keys for the string attributes
+        key_src = "src"
+        key_tgt = "tgt"
+        key_ref = "ref"
         
-        for attributeKey in attributeKeys :
-            dataString = dataString + attributeKey +"\t"
-            typeLine = typeLine + "d\t"
-            if attributeKey == className:
-                classLine = classLine + "c"
-            elif attributeKey not in desiredAttributes:
-                classLine = classLine + "m"
-            classLine = classLine + "\t"
+        #if no desired attribute define, get all of them
+        if not desired_attributes:
+            desired_attributes =  attribute_names
         
-        #add the class description in the end for all the three lines
+        #prepare heading
+        for attribute_name in attribute_names :
+            #line 1 holds just the names
+            line_1 += attribute_name +"\t"
+            
+            #line 2 holds the class type
+            line_2 += "d\t"
+            
+            #line 3 defines the class and the metadata
+            if attribute_name == class_name:
+                line_3 = line_3 + "c"
+            elif attribute_name not in desired_attributes:
+                line_3 = line_3 + "m"
+            line_3 = line_3 + "\t"
         
-        dataString = dataString + "\n"
-        typeLine = typeLine + "\n"
-        classLine = classLine + "\n"
-        dataString = dataString + typeLine + classLine
+        #src
+        line_2 += "string\t"
+        line_1 += "src\t"
+        #target
+        for tgt in dataset.get_parallelsentences()[0].get_translations():
+            line_2 += "string\t"
+            line_1 += "tgt-" + tgt.get_attribute("system") + "\t"
+        #ref 
+        line_2 += "string\t"
+        line_1 += "ref\t"
         
-                
+        #break the line in the end
+        line_1 = line_1 + "\n"
+        line_2 = line_2 + "\n"
+        line_3 = line_3 + "\n"
+        output = line_1 + line_2 + line_3
+        
+        
         for psentence in dataset.get_parallelsentences():
-            for attributeKey in attributeKeys:
-                if attributeKey in psentence.get_attribute_names():
-                    dataString = dataString + str(psentence.get_attributes()[attributeKey])
+            for attribute_name in attribute_names:
+                if attribute_name in psentence.get_attribute_names():
+                    output = output + str(psentence.get_attributes()[attribute_name])
                 #even if attribute value exists or not, we have to tab    
-                dataString = dataString + "\t"
-            #remove the last tab and replace it with a line break
-            dataString = dataString + "\n"
-        return dataString
+                output += "\t"
+            output += psentence.get_source().get_string() + "\t"
+            for tgt in psentence.get_translations():
+                output += tgt.get_string() + "\t"
+            output += psentence.get_reference() + "\t"
+            output +=  "\n"
+        return output
     
     def split_data(self, percentage):
         size =  len (self.data)
