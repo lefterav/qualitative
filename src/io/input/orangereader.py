@@ -13,6 +13,7 @@ import orange, orngTest, orngStat, orngTree
 from tempfile import mktemp
 from sentence.dataset import DataSet
 from sentence.parallelsentence import ParallelSentence
+from sentence.sentence import SimpleSentence
 import sentence 
 
 class OrangeData:
@@ -33,10 +34,10 @@ class OrangeData:
             #write the data in a temporary file
             #not secure but we trust our hard disk
             tmpFileName = self.__writeTempFile__(fileData)
-            print tmpFileName
 
             #load the data
             self.data = orange.ExampleTable(tmpFileName)
+            print "Loaded ", len(self.data) , " sentences from file " , tmpFileName
             #get rid of the temp file
             #os.unlink(tmpFileName)
         return None
@@ -71,17 +72,17 @@ class OrangeData:
                 attribute_name = metas[key].variable.name
                 
                 if attribute_name == 'src':
-                    src = metas[key].value
+                    src = SimpleSentence( metas[key].value )
                 elif attribute_name == 'ref':
                     try:
-                        ref = metas[key].value
+                        ref = SimpleSentence ( metas[key].value )
                     except KeyError:
                         pass
                 elif (attribute_name.startswith('tgt') and attribute_name.find('_') == -1):
                     tag, index = attribute_name.split( "-")
                     #assume they appear the right order
                     #tgt[int(index)] = metas[key].value
-                    tgt.append( metas[key].value )
+                    tgt.append( SimpleSentence ( metas[key].value ) )
                     
                 else:
                 #if not attribute_names = src|ref|tgt
@@ -94,6 +95,7 @@ class OrangeData:
             #print "Target", tgt
             #print ref
             new_parallelsentence = ParallelSentence( src, tgt, ref, sentence_attributes )
+            new_parallelsentence.recover_attributes()
             new_data.append(new_parallelsentence)
             
         return DataSet( new_data, attribute_names ) 
@@ -248,6 +250,8 @@ class OrangeData:
     def split_data(self, percentage):
         size =  len (self.data)
         testSize = round (size * percentage) 
+        
+        print "Splitting data"
         
         indices = orange.MakeRandomIndices2(p0=testSize)
         indices.stratified = indices.Stratified 

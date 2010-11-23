@@ -34,7 +34,9 @@ if __name__ == '__main__':
     test_data = OrangeData(test_part, class_name)
     
     print "DATASET------"
-    test_data.get_dataset()
+    orig_test_data = test_data.get_dataset()
+    
+    
     
     orangedata.cross_validation()
     orangedata.print_statistics()

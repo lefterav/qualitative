@@ -13,7 +13,7 @@ class SimpleSentence(object):
     '''
 
 
-    def __init__(self, string="", attributes=[]):
+    def __init__(self, string="", attributes={}):
         '''
         Initializes a sentence object, which wraps both a sentence and its attributes
         '''
@@ -26,6 +26,9 @@ class SimpleSentence(object):
     
     def get_attributes(self):
         return self.attributes
+
+    def add_attribute(self, key, value):
+        self.attributes[key] = value
 
     def get_attribute(self, key):
         return self.attributes[key]

@@ -63,6 +63,38 @@ class ParallelSentence(object):
         return new_attributes
 
     def recover_attributes(self):
+        '''
+            Moves the attributes back to the nested sentences
+            
+        '''
+
+        for attribute_name in self.attributes.keys():
+            attribute_value = self.attributes[attribute_name]
+            if ( attribute_name.find('_') >0 ) :
+                [tag, new_attribute_name] = attribute_name.split('_')
+                if tag == 'src':                
+                    self.src.add_attribute(new_attribute_name, attribute_value)
+                    del self.attributes[attribute_name]
+                elif tag == 'ref':
+                    self.ref.add_attribute(new_attribute_name, attribute_value)
+                    del self.attributes[attribute_name]
+                elif tag.startswith('tgt'):
+                    [tgttag, id] = tag.split('-')
+                    if ( int(id)>=0 ):
+                        self.tgt[int(id)-1].add_attribute(new_attribute_name, attribute_value)
+                        del self.attributes[attribute_name]
+            
+                
+                
+                
+                
+            
+            
+            
+            
+            
+            
+            
         pass
     
         
