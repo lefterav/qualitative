@@ -23,16 +23,16 @@ CSV_MAPPING_SCORE = { 1 : 16,
                              5 : 20  }
 
 
-''' 
+""" 
 Utility function to check whether to lists intersect 
-'''
+"""
 def intersect(a, b):
      return ( list (set(a) & set(b)) )
 
 
-'''
+"""
 Get the actual sentence text, given its sentence ID
-''' 
+""" 
 def extract_sentence(path, system, direction, sentence_index):
     result = ''
     if system != '_ref':

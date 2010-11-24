@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 
-'''
+"""
 
 @author: Eleftherios Avramidis
-'''
+"""
 
 import codecs
 import os
@@ -17,9 +17,9 @@ from sentence.sentence import SimpleSentence
 import sentence 
 
 class OrangeData:
-    '''
+    """
         Handles the conversion of the generic data objects to a format handled by Orange library
-    '''
+    """
     
     def __init__ (self, dataSet, class_name, desired_attributes=[]):
         
@@ -53,23 +53,27 @@ class OrangeData:
         new_data = [] #list containing the data, one parallelsentence per entry
         
         
+        
         for item in data:
             sentence_attributes = {}
             
+
+            sentence_attributes[ unicode(item.domain.classVar.name) ] = unicode(item.getclass().value)
+            
             #first get normal features
             for att in item.domain.attributes:
-                sentence_attributes [att.name] = item[att]
-                attribute_names.add( att.name )
+                sentence_attributes [ unicode(att.name) ] = unicode( item[att].value )
+                attribute_names.add( unicode(att.name) )
 
             metas = item.getmetas()
             
             src = ""
-            tgt = []
+            tgt = [ SimpleSentence() , SimpleSentence() ] #TODO: this will break if more than two SimpleSentences()
             ref = ""
             
             #then get metas
             for key in metas: 
-                attribute_name = metas[key].variable.name
+                attribute_name = unicode ( metas[key].variable.name )
                 
                 if attribute_name == 'src':
                     src = SimpleSentence( metas[key].value )
@@ -81,12 +85,12 @@ class OrangeData:
                 elif (attribute_name.startswith('tgt') and attribute_name.find('_') == -1):
                     tag, index = attribute_name.split( "-")
                     #assume they appear the right order
-                    #tgt[int(index)] = metas[key].value
-                    tgt.append( SimpleSentence ( metas[key].value ) )
+                    tgt[int(index)-1] = SimpleSentence( metas[key].value )
+                    #tgt.append( SimpleSentence ( metas[key].value ) )
                     
                 else:
                 #if not attribute_names = src|ref|tgt
-                    sentence_attributes [attribute_name] =  metas[key].value
+                    sentence_attributes [attribute_name] =  unicode ( metas[key].value )
                     attribute_names.add(attribute_name)
             
             #create a new sentence and add it to the list

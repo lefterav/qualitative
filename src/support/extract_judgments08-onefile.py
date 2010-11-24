@@ -3,21 +3,21 @@
 ##cd ~/taraxu_data/wmt08-humaneval-data; python extract_judgments08-onefile.py judgments_wmt08_final_sorted.csv  .
 
 
-'''
+"""
 This scripts extracts the data from the wmt08 evaluation, focusing on the pairs of Lucy and other scripts 
 
-'''
+"""
 
 import sys
 import codecs
 import xml.dom.minidom
 
 
-'''
+"""
 Global Settings: 
 This sections contains general settings for fixed mappings etc. in order to be used
 for this type of input file. 
-'''
+"""
 
 #Language mapping, needed for browsing the correct test/source/ref file
 LANGUAGES = {
@@ -49,9 +49,9 @@ CSV_MAPPING_SCORE =[ -1000 , 6, 9, 12, 15, 18 ]
 #different than how it is done with full sentences
 TYPES = ['RANK']
 
-''' 
+""" 
 Utility function to check whether two lists intersect 
-'''
+"""
 def intersect(a, b):
     return ( list (set(a) & set(b)) )
  
@@ -166,9 +166,9 @@ def write_rankings(source, rankings, file_gt, file_lt, file_eq, index):
     return None
 
 
-'''
+"""
     Manages a dictionary, which sorts the ranking scores per sentence key
-'''
+"""
 def sort_new_judgment( dic, key, rank ):
     if key in dic:
         #add to the existing list of ranking scores
@@ -213,11 +213,11 @@ def create_evaluation(judgments, path):
     avg_rank = 0
     
     
-    '''
+    """
         This loop works a bit ugly, in order to overcome the fact that a sentence may have many contradictory judgments: 
         Since the input is sorted by task, pair, sentence id, we gather rankings for as long these remain the same in the loop, 
         and when they change, we call the function that calculates the average rank and prints it to the file
-    '''
+    """
     for line in judgments:
         entry_id = entry_id+1
    

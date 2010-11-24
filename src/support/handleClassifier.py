@@ -3,7 +3,7 @@
 
 
 
-'''
+"""
 Created on Sep 1, 2010
 
 @author: Eleftherios Avramidis
@@ -14,7 +14,7 @@ TODO:
 - language model
 
 
-'''
+"""
 
 import sys, codecs, os, orange, orngTest, orngStat, orngTree,  xml.dom.minidom
 

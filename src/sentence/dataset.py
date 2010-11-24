@@ -1,20 +1,20 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-'''
+"""
 
 @author: Eleftherios Avramidis
-'''
+"""
 
 class DataSet(object):
-    '''
+    """
     classdocs
-    '''
+    """
 
     def __init__(self, parallelsentence_list, attributes_list):
-        '''
+        """
         Constructor
-        '''
+        """
         
         self.attribute_names = []
         self.attribute_names = attributes_list 
@@ -40,7 +40,7 @@ class DataSet(object):
         return list(nested_attribute_names)
             
     
-    '''
+    """
      def get_nested_attributes(self):
 
         propagated_parallelsentences = []
@@ -51,7 +51,7 @@ class DataSet(object):
             propagated_attribute_names.add( psentence.get_attributes() )
         self.parallelsentences = propagated_parallelsentences
         self.attribute_names = list( propagated_attribute_names )
-    '''
+    """
     
         
         

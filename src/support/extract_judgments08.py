@@ -7,11 +7,11 @@ import sys
 import codecs
 
 
-'''
+"""
 Global Settings: 
 This sections contains general settings for fixed mappings etc. in order to be used
 for this type of input file. 
-'''
+"""
 
 #Language mapping, needed for browsing the correct test/source/ref file
 LANGUAGES = {
@@ -43,9 +43,9 @@ CSV_MAPPING_SCORE =[ -1000 , 6, 9, 12, 15, 18 ]
 #different than how it is done with full sentences
 TYPES = ['RANK']
 
-''' 
+""" 
 Utility function to check whether two lists intersect 
-'''
+"""
 def intersect(a, b):
     return ( list (set(a) & set(b)) )
  
@@ -114,9 +114,9 @@ def write_rankings(source, rankings, file_gt, file_lt, file_eq, index):
     return None
 
 
-'''
+"""
     Manages a dictionary, which sorts the ranking scores per sentence key
-'''
+"""
 def sort_new_judgment( dic, key, rank ):
     if key in dic:
         #add to the existing list of ranking scores

@@ -1,20 +1,20 @@
-'''
+"""
 @author: Eleftherios Avramidis
-'''
+"""
 
 from xml.dom import minidom
 import codecs
 
 class XmlWriter(object):
-    '''
+    """
     classdocs
-    '''
+    """
 
 
     def __init__(self, data):
-        '''
+        """
         Constructor
-        '''
+        """
         if isinstance ( data , minidom.Document ):
             self.object_xml = data
         else:
@@ -23,11 +23,11 @@ class XmlWriter(object):
             
         
     def convert_to_xml(self, parallelsentences):
-        '''
+        """
         Creates an XML for the document an populates that with the (parallel) sentences of the given object.
         Resulting XML object gets stored as a variable.
         @param parallelsentences: a list of ParallelSentence objects 
-        '''
+        """
         doc_xml = minidom.Document( )
         jcml = doc_xml.createElement("jcml")
         
@@ -67,10 +67,10 @@ class XmlWriter(object):
         
         
     def __create_xml_sentence__(self, doc_xml, obj, tag):
-        '''
+        """
         Helper function that fetches the text and the attributes of a sentence
         and wraps them up into a minidom XML sentenceect
-        '''
+        """
         
         sentence_xml = doc_xml.createElement(tag)
 

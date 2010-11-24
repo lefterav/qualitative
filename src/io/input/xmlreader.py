@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 
-'''
+"""
 Created on 15 Οκτ 2010
 
 @author: Eleftherios Avramidis
-'''
+"""
 
 import codecs
 import xml.dom.minidom
@@ -17,14 +17,14 @@ from sentence.dataset import DataSet
  
 
 class XmlReader(object):
-    '''
+    """
     classdocs
-    '''
+    """
 
     def __init__(self, inputFilename):
-        '''
+        """
         Constructor. Creates an XML object that handles the XML
-        '''
+        """
         self.xmlObject = parse(inputFilename)
     
     
@@ -33,9 +33,9 @@ class XmlReader(object):
     
     
     def get_attributes(self):
-        '''
+        """
         @return a list of the names of the attributes contained in the XML file
-        '''
+        """
         judgedCorpus = self.xmlObject.getElementsByTagName('jcml')
         sentenceList = judgedCorpus[0].getElementsByTagName('judgedsentence')
         attributesKeySet = set()
@@ -47,9 +47,9 @@ class XmlReader(object):
         
         
     def get_parallelsentences(self):
-        '''
+        """
         @return: a list of ParallelSentence objects
-        '''
+        """
         judgedCorpus = self.xmlObject.getElementsByTagName('jcml')
         sentenceList = judgedCorpus[0].getElementsByTagName('judgedsentence')
         newssentences = [] 
@@ -81,9 +81,9 @@ class XmlReader(object):
     
     
     def __read_attributes__(self, xmlEntry):
-        '''
+        """
         @return: a dictionary of the attributes of the current sentence (name:value)
-        '''
+        """
         attributes = {}
         attributeKeys = xmlEntry.attributes.keys()
         for attributeKey in attributeKeys:

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-'''
+"""
     This script reads the XML-formatted data from pairwise system comparisons and
     adds various features based on various linguistic characteristics of each parallel sentence.  
-'''
+"""
 
 
 import sys
@@ -48,15 +48,15 @@ class JudgedSentence:
         
     
 
-'''
+"""
     Models the behaviour of a corpus containing judged translations and features
-'''
+"""
 class JudgedSet :
-    '''
+    """
         Initialiaze the set, but parsing the XML input given in the parameters
         @param inputFilename: The filename of a text file formatted in JCML/XML
         @param outputFilename: The filename of the text where the outcome will be stored 
-    '''
+    """
     def __init__(self, inputFilename, outputFilename):
         self.xmlObject = parse(inputFilename)
         self.outputFilename = outputFilename
@@ -66,10 +66,10 @@ class JudgedSet :
         file_object = codecs.open(self.outputFilename, 'w', 'utf-8')
         file_object.write(self.xmlObject.toprettyxml())
         file_object.close()  
-    '''
+    """
         Adds a set of features into the XML object. Features may vary
         
-    '''
+    """
     def addFeatures(self):
         judgedCorpus = self.xmlObject.getElementsByTagName('jcml')
         sentenceList = judgedCorpus[0].getElementsByTagName('judgedsentence')
@@ -80,9 +80,9 @@ class JudgedSet :
         return None
 
 
-    '''
+    """
         Returns a list of all the attributes of the judgedsentences
-    '''
+    """
     def getXMLAttributes(self):
         judgedCorpus = self.xmlObject.getElementsByTagName('jcml')
         sentenceList = judgedCorpus[0].getElementsByTagName('judgedsentence')
@@ -95,9 +95,9 @@ class JudgedSet :
     
     
     
-    '''
+    """
         Gets a list of attribute names which have string values and makes sure they are converted to integers 
-    '''
+    """
     def enumNominalFeatures(self,givenNominalAttributeList):
         judgedCorpus = self.xmlObject.getElementsByTagName('jcml')
         sentenceList = judgedCorpus[0].getElementsByTagName('judgedsentence')
@@ -137,10 +137,10 @@ class JudgedSet :
         return None
 
         
-    '''
+    """
         Returns the modified object for further process
         @return: a minidom XML object containing the modified data
-    '''        
+    """        
     def getOutput(self):
         return self.xmlObject
             
@@ -150,10 +150,10 @@ class JudgedSet :
 
 
 
-'''
+"""
     Main routine fired upon commandline execution of the program. Processes the parameters
     and calls the core functions
-'''
+"""
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         print 'USAGE: %s JUDGMENTS_INPUT.pcml.xml JUDGMENTS_OUTPUΤ.pcml.xml ' % sys.argv[0]
