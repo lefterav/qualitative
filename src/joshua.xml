@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sentence id="0">
+<sentence id="0"><!-- pointing to the source sentence, tokenized -->
 	<hypothesis score-lm="-127.759" score-pt0="-6.353" score-pt1="-11.577" score-pt2="-5.325" word-penalty="-3.909" score="-135.267">
 		<flatstring>>w rozporządzeniu ( WE ) nr 1172 / 95 wprowadza się następujące zmiany :</flatstring>
 		<tree score-lm="-127.759" score-pt0="-6.353" score-pt1="-11.577" score-pt2="-5.325" word-penalty="-3.909" score="-135.267">
