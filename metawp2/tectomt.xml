@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<tmt_document xmlns="http://ufal.mff.cuni.cz/pdt/pml/">
+ <head>
+  <schema href="tmt_schema.xml" />
+ </head>
+ <meta />
+ <bundles>
+   <LM id="eval-3-s4">
+   <english_source_sentence>So what is the problem ? </english_source_sentence>
+   <czech_source_sentence>V čem je tedy problém ? </czech_source_sentence>
+   <czech_target_sentence>Tak co je problém?</czech_target_sentence>
+   <trees>
+    <SEnglishP id="SEnglishP-eval-3-s4n1">
+     <phrase>TOP</phrase>
+     <children>
+      <nonterminal id="SEnglishP-eval-3-s4n2">
+       <is_head>1</is_head>
+       <head_selection_rule>theonly</head_selection_rule>
+       <is_collins_head>1</is_collins_head>
+       <phrase>SBARQ</phrase>
+       <children>
+        <terminal id="SEnglishP-eval-3-s4t1">
+         <form>So</form>
+         <lemma>so</lemma>
+         <tag>RB</tag>
+        </terminal>
+        <nonterminal id="SEnglishP-eval-3-s4n3">
+         <phrase>WHNP</phrase>
+         <children>
+          <terminal id="SEnglishP-eval-3-s4t2">
+           <is_head>1</is_head>
+           <head_selection_rule>theonly</head_selection_rule>
+           <is_collins_head>1</is_collins_head>
+           <form>what</form>
+           <lemma>what</lemma>
+           <tag>WP</tag>
+          </terminal>
+         </children>
+        </nonterminal>
+        <nonterminal id="SEnglishP-eval-3-s4n4">
+         <is_head>1</is_head>
+         <head_selection_rule>SinSBAR</head_selection_rule>
+         <is_collins_head>1</is_collins_head>
+         <phrase>SQ</phrase>
+         <children>
+          <nonterminal id="SEnglishP-eval-3-s4n5">
+           <is_head>1</is_head>
+           <head_selection_rule>theonly</head_selection_rule>
+           <is_collins_head>1</is_collins_head>
+           <phrase>VP</phrase>
+           <children>
+            <terminal id="SEnglishP-eval-3-s4t3">
+             <is_head>1</is_head>
+             <head_selection_rule>righmostV</head_selection_rule>
+             <is_collins_head>1</is_collins_head>
+             <form>is</form>
+             <lemma>be</lemma>
+             <tag>VBZ</tag>
+            </terminal>
+            <nonterminal id="SEnglishP-eval-3-s4n6">
+             <phrase>NPB</phrase>
+             <children>
+              <terminal id="SEnglishP-eval-3-s4t4">
+               <form>the</form>
+               <lemma>the</lemma>
+               <tag>DT</tag>
+              </terminal>
+              <terminal id="SEnglishP-eval-3-s4t5">
+               <is_head>1</is_head>
+               <head_selection_rule>rightmostN</head_selection_rule>
+               <is_collins_head>1</is_collins_head>
+               <form>problem</form>
+               <lemma>problem</lemma>
+               <tag>NN</tag>
+              </terminal>
+              <terminal id="SEnglishP-eval-3-s4t6">
+               <form>?</form>
+               <lemma>?</lemma>
+               <tag>.</tag>
+              </terminal>
+             </children>
+            </nonterminal>
+           </children>
+          </nonterminal>
+         </children>
+        </nonterminal>
+       </children>
+      </nonterminal>
+     </children>
+    </SEnglishP>
+    <SEnglishM id="SEnglishM-eval-3-s4">
+     <children>
+      <LM id="SEnglishM-eval-3-s4w1">
+       <form>So</form>
+       <lemma>so</lemma>
+       <tag>RB</tag>
+      </LM>
+      <LM id="SEnglishM-eval-3-s4w2">
+       <form>what</form>
+       <lemma>what</lemma>
+       <tag>WP</tag>
+      </LM>
+      <LM id="SEnglishM-eval-3-s4w3">
+       <form>is</form>
+       <lemma>be</lemma>
+       <tag>VBZ</tag>
+      </LM>
+      <LM id="SEnglishM-eval-3-s4w4">
+       <form>the</form>
+       <lemma>the</lemma>
+       <tag>DT</tag>
+      </LM>
+      <LM id="SEnglishM-eval-3-s4w5">
+       <form>problem</form>
+       <lemma>problem</lemma>
+       <tag>NN</tag>
+      </LM>
+      <LM id="SEnglishM-eval-3-s4w6">
+       <form>?</form>
+       <lemma>?</lemma>
+       <tag>.</tag>
+      </LM>
+     </children>
+    </SEnglishM>
+    <SEnglishA id="SEnglishA-eval-3-s4">
+     <ptree.rf>SEnglishP-eval-3-s4n1</ptree.rf>
+     <ord>0</ord>
+     <children>
+      <LM id="SEnglishA-eval-3-s4t3">
+       <m>
+        <form>is</form>
+        <lemma>be</lemma>
+        <tag>VBZ</tag>
+       </m>
+       <is_member>0</is_member>
+       <ord>3</ord>
+       <children>
+        <LM id="SEnglishA-eval-3-s4t5">
+         <m>
+          <form>problem</form>
+          <lemma>problem</lemma>
+          <tag>NN</tag>
+         </m>
+         <is_member>0</is_member>
+         <ord>5</ord>
+         <children>
+          <LM id="SEnglishA-eval-3-s4t4">
+           <m>
+            <form>the</form>
+            <lemma>the</lemma>
+            <tag>DT</tag>
+           </m>
+           <is_member>0</is_member>
+           <ord>4</ord>
+           <p>
+            <terminal.rf>SEnglishP-eval-3-s4t4</terminal.rf>
+           </p>
+           <is_aux_to_parent>1</is_aux_to_parent>
+          </LM>
+          <LM id="SEnglishA-eval-3-s4t6">
+           <m>
+            <form>?</form>
+            <lemma>?</lemma>
+            <tag>.</tag>
+           </m>
+           <is_member>0</is_member>
+           <ord>6</ord>
+           <p>
+            <terminal.rf>SEnglishP-eval-3-s4t6</terminal.rf>
+           </p>
+           <is_aux_to_parent>1</is_aux_to_parent>
+          </LM>
+         </children>
+         <p>
+          <terminal.rf>SEnglishP-eval-3-s4t5</terminal.rf>
+          <nonterminals.rf>
+           <LM>SEnglishP-eval-3-s4n6</LM>
+          </nonterminals.rf>
+         </p>
+        </LM>
+        <LM id="SEnglishA-eval-3-s4t1">
+         <m>
+          <form>So</form>
+          <lemma>so</lemma>
+          <tag>RB</tag>
+         </m>
+         <is_member>0</is_member>
+         <ord>1</ord>
+         <p>
+          <terminal.rf>SEnglishP-eval-3-s4t1</terminal.rf>
+         </p>
+        </LM>
+        <LM id="SEnglishA-eval-3-s4t2">
+         <m>
+          <form>what</form>
+          <lemma>what</lemma>
+          <tag>WP</tag>
+         </m>
+         <is_member>0</is_member>
+         <ord>2</ord>
+         <p>
+          <terminal.rf>SEnglishP-eval-3-s4t2</terminal.rf>
+          <nonterminals.rf>
+           <LM>SEnglishP-eval-3-s4n3</LM>
+          </nonterminals.rf>
+         </p>
+        </LM>
+       </children>
+       <p>
+        <terminal.rf>SEnglishP-eval-3-s4t3</terminal.rf>
+        <nonterminals.rf>
+         <LM>SEnglishP-eval-3-s4n5</LM>
+         <LM>SEnglishP-eval-3-s4n4</LM>
+         <LM>SEnglishP-eval-3-s4n2</LM>
+         <LM>SEnglishP-eval-3-s4n1</LM>
+        </nonterminals.rf>
+       </p>
+      </LM>
+     </children>
+    </SEnglishA>
+    <SEnglishT id="SEnglishT-eval-3-s4">
+     <atree.rf>SEnglishA-eval-3-s4</atree.rf>
+     <nodetype>root</nodetype>
+     <deepord>0</deepord>
+     <children>
+      <LM id="SEnglishT-eval-3-s4t3">
+       <a>
+        <lex.rf>SEnglishA-eval-3-s4t3</lex.rf>
+       </a>
+       <nodetype>complex</nodetype>
+       <t_lemma>be</t_lemma>
+       <functor>PRED</functor>
+       <sentmod>inter</sentmod>
+       <gram>
+        <sempos>v</sempos>
+        <verbmod>ind</verbmod>
+        <deontmod>decl</deontmod>
+        <tense>sim</tense>
+        <resultative>res0</resultative>
+        <dispmod>disp0</dispmod>
+        <iterativeness>it0</iterativeness>
+        <negation>neg0</negation>
+       </gram>
+       <voice>active</voice>
+       <is_clause_head>1</is_clause_head>
+       <is_relclause_head>1</is_relclause_head>
+       <deepord>3</deepord>
+       <children>
+        <LM id="SEnglishT-eval-3-s4t5">
+         <a>
+          <lex.rf>SEnglishA-eval-3-s4t5</lex.rf>
+          <aux.rf>
+           <LM>SEnglishA-eval-3-s4t6</LM>
+           <LM>SEnglishA-eval-3-s4t4</LM>
+          </aux.rf>
+         </a>
+         <nodetype>complex</nodetype>
+         <t_lemma>problem</t_lemma>
+         <functor>PAT</functor>
+         <gram>
+          <sempos>n.denot</sempos>
+          <number>sg</number>
+         </gram>
+         <deepord>4</deepord>
+         <formeme>n:obj</formeme>
+        </LM>
+        <LM id="SEnglishT-eval-3-s4t1">
+         <a>
+          <lex.rf>SEnglishA-eval-3-s4t1</lex.rf>
+         </a>
+         <nodetype>complex</nodetype>
+         <t_lemma>so</t_lemma>
+         <functor>MANN</functor>
+         <gram>
+          <sempos>adv.denot.grad.neg</sempos>
+          <degcmp>pos</degcmp>
+          <negation>neg0</negation>
+         </gram>
+         <deepord>1</deepord>
+         <formeme>adv:</formeme>
+        </LM>
+        <LM id="SEnglishT-eval-3-s4t2">
+         <a>
+          <lex.rf>SEnglishA-eval-3-s4t2</lex.rf>
+         </a>
+         <nodetype>complex</nodetype>
+         <t_lemma>what</t_lemma>
+         <functor>ACT</functor>
+         <gram>
+          <sempos>n.pron.indef</sempos>
+          <number>sg</number>
+         </gram>
+         <deepord>2</deepord>
+         <formeme>n:subj</formeme>
+        </LM>
+       </children>
+       <formeme>v:rc</formeme>
+      </LM>
+     </children>
+    </SEnglishT>
+    <TCzechT id="TCzechT-eval-3-s4">
+     <nodetype>root</nodetype>
+     <deepord>0</deepord>
+     <children>
+      <LM id="TCzechT-eval-3-s4t3">
+       <a>
+        <lex.rf>TCzechA-eval-3-s4t3</lex.rf>
+       </a>
+       <nodetype>complex</nodetype>
+       <t_lemma>být</t_lemma>
+       <functor>PRED</functor>
+       <sentmod>inter</sentmod>
+       <gram>
+        <sempos>v</sempos>
+        <verbmod>ind</verbmod>
+        <deontmod>decl</deontmod>
+        <tense>sim</tense>
+        <aspect>proc</aspect>
+        <resultative>res0</resultative>
+        <dispmod>disp0</dispmod>
+        <iterativeness>it0</iterativeness>
+        <negation>neg0</negation>
+       </gram>
+       <voice>active</voice>
+       <is_optimizable>1</is_optimizable>
+       <is_clause_head>1</is_clause_head>
+       <is_relclause_head>1</is_relclause_head>
+       <deepord>3</deepord>
+       <formeme>v:rc</formeme>
+       <source>
+        <head.rf>SEnglishT-eval-3-s4t3</head.rf>
+       </source>
+       <clause_number>1</clause_number>
+       <mlayer_pos>V</mlayer_pos>
+       <children>
+        <LM id="TCzechT-eval-3-s4t5">
+         <a>
+          <lex.rf>TCzechA-eval-3-s4t5</lex.rf>
+         </a>
+         <nodetype>complex</nodetype>
+         <t_lemma>problém</t_lemma>
+         <functor>PAT</functor>
+         <gram>
+          <sempos>n.denot</sempos>
+          <gender>inan</gender>
+          <number>sg</number>
+         </gram>
+         <is_optimizable>1</is_optimizable>
+         <deepord>4</deepord>
+         <formeme>n:4</formeme>
+         <source>
+          <head.rf>SEnglishT-eval-3-s4t5</head.rf>
+         </source>
+         <clause_number>1</clause_number>
+         <mlayer_pos>N</mlayer_pos>
+        </LM>
+        <LM id="TCzechT-eval-3-s4t1">
+         <a>
+          <lex.rf>TCzechA-eval-3-s4t1</lex.rf>
+         </a>
+         <nodetype>complex</nodetype>
+         <t_lemma>tak</t_lemma>
+         <functor>MANN</functor>
+         <gram>
+          <sempos>adv.denot.grad.neg</sempos>
+          <degcmp>pos</degcmp>
+          <negation>neg0</negation>
+         </gram>
+         <is_optimizable>1</is_optimizable>
+         <deepord>1</deepord>
+         <formeme>adv:</formeme>
+         <source>
+          <head.rf>SEnglishT-eval-3-s4t1</head.rf>
+         </source>
+         <clause_number>1</clause_number>
+         <mlayer_pos>D</mlayer_pos>
+        </LM>
+        <LM id="TCzechT-eval-3-s4t2">
+         <a>
+          <lex.rf>TCzechA-eval-3-s4t2</lex.rf>
+         </a>
+         <nodetype>complex</nodetype>
+         <t_lemma>co</t_lemma>
+         <functor>ACT</functor>
+         <gram>
+          <sempos>n.pron.indef</sempos>
+          <gender>neut</gender>
+          <number>sg</number>
+         </gram>
+         <is_optimizable>1</is_optimizable>
+         <deepord>2</deepord>
+         <formeme>n:1</formeme>
+         <source>
+          <head.rf>SEnglishT-eval-3-s4t2</head.rf>
+         </source>
+         <clause_number>1</clause_number>
+         <mlayer_pos>P</mlayer_pos>
+        </LM>
+       </children>
+      </LM>
+     </children>
+    </TCzechT>
+    <TCzechA id="TCzechA-eval-3-s4">
+     <ord>0</ord>
+     <children>
+      <LM id="TCzechA-eval-3-s4t3">
+       <m>
+        <form>je</form>
+        <lemma>být</lemma>
+       </m>
+       <ord>3</ord>
+       <children>
+        <LM id="TCzechA-eval-3-s4t5">
+         <m>
+          <form>problém</form>
+          <lemma>problém</lemma>
+         </m>
+         <ord>4</ord>
+         <morphcat>
+          <pos>N</pos>
+          <subpos>.</subpos>
+          <gender>I</gender>
+          <number>S</number>
+          <case>4</case>
+          <possgender>.</possgender>
+          <possnumber>.</possnumber>
+          <person>.</person>
+          <tense>.</tense>
+          <grade>.</grade>
+          <negation>A</negation>
+          <voice>.</voice>
+          <reserve1>.</reserve1>
+          <reserve2>.</reserve2>
+         </morphcat>
+         <clause_number>1</clause_number>
+        </LM>
+        <LM id="TCzechA-eval-3-s4t1">
+         <m>
+          <form>Tak</form>
+          <lemma>tak</lemma>
+         </m>
+         <ord>1</ord>
+         <morphcat>
+          <pos>D</pos>
+          <subpos>.</subpos>
+          <gender>.</gender>
+          <number>.</number>
+          <case>.</case>
+          <possgender>.</possgender>
+          <possnumber>.</possnumber>
+          <person>.</person>
+          <tense>.</tense>
+          <grade>1</grade>
+          <negation>A</negation>
+          <voice>.</voice>
+          <reserve1>.</reserve1>
+          <reserve2>.</reserve2>
+         </morphcat>
+         <clause_number>1</clause_number>
+        </LM>
+        <LM id="TCzechA-eval-3-s4t2">
+         <m>
+          <form>co</form>
+          <lemma>co</lemma>
+         </m>
+         <ord>2</ord>
+         <morphcat>
+          <pos>P</pos>
+          <subpos>.</subpos>
+          <gender>N</gender>
+          <number>S</number>
+          <case>1</case>
+          <possgender>.</possgender>
+          <possnumber>.</possnumber>
+          <person>.</person>
+          <tense>.</tense>
+          <grade>.</grade>
+          <negation>.</negation>
+          <voice>.</voice>
+          <reserve1>.</reserve1>
+          <reserve2>.</reserve2>
+         </morphcat>
+         <clause_number>1</clause_number>
+        </LM>
+       </children>
+       <morphcat>
+        <pos>V</pos>
+        <subpos>B</subpos>
+        <gender>N</gender>
+        <number>S</number>
+        <case>.</case>
+        <possgender>.</possgender>
+        <possnumber>.</possnumber>
+        <person>3</person>
+        <tense>P</tense>
+        <grade>.</grade>
+        <negation>A</negation>
+        <voice>A</voice>
+        <reserve1>.</reserve1>
+        <reserve2>.</reserve2>
+       </morphcat>
+       <clause_number>1</clause_number>
+      </LM>
+      <LM id="TCzechA-eval-3-s4_fullstop">
+       <m>
+        <form>?</form>
+        <lemma>?</lemma>
+       </m>
+       <afun>AuxK</afun>
+       <ord>5</ord>
+       <morphcat>
+        <pos>Z</pos>
+       </morphcat>
+      </LM>
+     </children>
+    </TCzechA>
+   </trees>
+  </LM>
+</bundles>
+</tmt_document>

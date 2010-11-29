@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <joshua-output>
-	<sentence id="0"><!-- pointing to the tokenized source sentence  -->
+	<sentence id="0">
+    <source>die Verordnung ( EG ) Nr. 1172 / 95 wird wie folgt geändert :</source>
 		<hypothesis rank="1" score-lm="-127.759" score-pt0="-6.353" score-pt1="-11.577" score-pt2="-5.325" word-penalty="-3.909" scoring="-135.267">
 			<flatstring>w rozporządzeniu ( WE ) nr 1172 / 95 wprowadza się następujące zmiany :</flatstring>
 			<tree>
