@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<source>
+  Unsere Charta der Grundrechte ist die erste in diesem Jahrtausend
+</source>
+<system id="lucy">
+	<flatstring>
+		﻿Our charter of the basic rights is the first in this millennium.
+	</flatstring>
+	<analysis>
+		<node cat="S">
+			<node can="$" cat="$" alo="$" />
+			<node can="sein" cat="CLS" alo="ist">
+				<node can="Charta" cat="NP" alo="Charta">
+					<node can="unser" cat="DETP" alo="unsere">
+						<node can="unser" cat="DET" alo="Unsere" />
+					</node>
+					<node can="Charta" cat="NO" alo="Charta">
+						<node can="Charta" cat="NST" alo="Charta" />
+					</node>
+					<node can="Grundrecht" cat="NP" alo="Grundrechte">
+						<node can="der" cat="DETP" alo="der">
+							<node can="der" cat="DET" alo="der" />
+						</node>
+						<node can="Grundrecht" cat="NO" alo="Grundrechte">
+							<node can="Grundrecht" cat="NST" alo="Grundrechte" />
+						</node>
+					</node>
+				</node>
+				<node can="sein" cat="PRED" alo="ist">
+					<node can="sein" cat="VB" alo="ist">
+						<node can="sein" cat="VST" alo="ist" />
+					</node>
+				</node>
+				<node cat="NP">
+					<node can="der" cat="DETP" alo="die">
+						<node can="der" cat="DET" alo="die" />
+					</node>
+					<node can="erst" cat="NUMP" alo="erste">
+						<node can="erst" cat="NUMB" alo="erste">
+							<node can="erst" cat="AST" alo="erste" />
+						</node>
+					</node>
+				</node>
+				<node can="IN" cat="PP">
+					<node can="IN" cat="PREPP" alo="in">
+						<node can="IN" cat="PREP" alo="in" />
+					</node>
+					<node can="Jahrtausend" cat="NO" alo="Jahrtausend">
+						<node can="dieser" cat="DETP" alo="diesem">
+							<node can="dieser" cat="DET" alo="diesem" />
+						</node>
+						<node can="Jahrtausend" cat="NO" alo="Jahrtausend">
+							<node can="Jahrtausend" cat="NST" alo="Jahrtausend"/>
+						</node>
+					</node>
+				</node>
+			</node>
+			<node can="$" cat="$" alo="$">
+				<node can="." cat="PNCT" alo="." />
+			</node>
+		</node>
+	</analysis>
+	<transfer>
+		<node cat="S">
+			<node can="$" cat="$" />
+			<node can="sein" cat="CLS"  tl-can="be">
+				<node can="Charta" cat="NP"  tl-can="charter">
+					<node can="unser" cat="DETP" tl-can="our" tl-cat="DET">
+						<node can="unser" cat="DET" sl-can="unser" sl-cat="DET" tl-can="our" tl-cat="DET" />
+					</node>
+					<node can="Charta" cat="NO" tl-can="charter">
+						<node can="Charta" cat="NST" />
+					</node>
+					<node can="Grundrecht" cat="PP">
+						<node can="der" cat="DETP" tl-can="of">
+							<!-- TBD -->
+						</node>
+					</node>
+				</node>
+			</node>
+		</node>	
+	</transfer>
+	<generation>
+		<!-- see analysis but with target language terminals -->
+	</generation>
+</system>
