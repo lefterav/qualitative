@@ -8,6 +8,7 @@
 """
 
 from copy import deepcopy
+from sentence import SimpleSentence
 
 class ParallelSentence(object):
     """
@@ -15,7 +16,7 @@ class ParallelSentence(object):
     """
     
 
-    def __init__(self, source, translations, reference, attributes):
+    def __init__(self, source, translations, reference, attributes=[]):
         """
         Constructor
         @type source SimpleSentence
@@ -64,8 +65,7 @@ class ParallelSentence(object):
             #prefixeditems = self.__prefix__( tgtitem.get_attributes(), tgtitem.get_attributes()["system"] )
             new_attributes.update( prefixeditems )
 
-        for refitem in self.ref:
-            new_attributes.update( self.__prefix__( refitem.get_attributes, "ref" ) )
+            new_attributes.update( self.__prefix__( self.ref.get_attributes(), "ref" ) )
         return new_attributes
 
 

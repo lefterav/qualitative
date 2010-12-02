@@ -8,6 +8,7 @@
 
 from io.input.xmlreader import XmlReader
 from io.input.orangereader import OrangeData
+from io.output.xmlwriter import XmlWriter
 from classifier.bayes import Bayes
 from classifier.tree import TreeLearner
 from classifier.svm import SVM
@@ -32,14 +33,6 @@ if __name__ == '__main__':
     orig_dataset = orangedata.get_dataset()
     
     i=0
-    for ps1 in orig_dataset.get_parallelsentences()[0:10]:
-        ps2 = dataset.get_parallelsentences()[i]
-        print ps1.get_source().get_string() , "\n",  ps2.get_source().get_string()
-        print ps1.get_attributes() , "\n", ps2.get_attributes()
-        print ps1.get_translations()[0].get_string() , "\n",  ps2.get_translations()[0].get_string()
-        print ps1.get_translations()[0].get_attributes() , "\n",  ps2.get_translations()[0].get_attributes()
-        print ps1.get_translations()[1].get_string() , "\n",  ps2.get_translations()[1].get_string()
-        print ps1.get_translations()[1].get_attributes() , "\n",  ps2.get_translations()[1].get_attributes()
     
     
     #split data the orange way (stratified)
@@ -50,10 +43,16 @@ if __name__ == '__main__':
     print "DATASET------"
     orig_test_data = test_data.get_dataset()
     
+    xmlwriter = XmlWriter(dataset)
+    xmlwriter.write_to_file("/home/elav01/workspace/TaraXUscripts/data/test.xml")
+    
+    
     
     
     orangedata.cross_validation()
     orangedata.print_statistics()
+    
+    
     
     #train data
     bayes = Bayes( training_data )

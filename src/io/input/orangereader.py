@@ -67,9 +67,9 @@ class OrangeData:
 
             metas = item.getmetas()
             
-            src = ""
+            src = SimpleSentence()
             tgt = [ SimpleSentence() , SimpleSentence() ] #TODO: this will break if more than two SimpleSentences()
-            ref = ""
+            ref = SimpleSentence()
             
             #then get metas
             for key in metas: 
@@ -245,7 +245,7 @@ class OrangeData:
             output += psentence.get_source().get_string() + "\t"
             for tgt in psentence.get_translations():
                 output += tgt.get_string() + "\t"
-            output += psentence.get_reference() + "\t"
+            output += psentence.get_reference().get_string() + "\t"
             output +=  "\n"
         return output
     

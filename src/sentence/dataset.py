@@ -53,5 +53,23 @@ class DataSet(object):
         self.attribute_names = list( propagated_attribute_names )
     """
     
+    def compare(self, other_dataset, start=0, to=None ):
+        """
+        Compares this dataset to another, by displaying parallel sentences in pairs
+        """
+        if not to:
+            to = len(self.parallelsentences)-1
+        for ps1 in self.parallelsentences[start:to]:
+            for ps2 in other_dataset.get_parallelsentences():
+                if ps2.get_attributes()["id"] == ps1.get_attributes()["id"] and ps2.get_attributes()["testset"] == ps1.get_attributes()["testset"] and ps2.get_attributes()["langsrc"] == ps1.get_attributes()["langsrc"]:
+                    print ps1.get_source().get_string() , "\n",  ps2.get_source().get_string()
+                    print ps1.get_attributes() , "\n", ps2.get_attributes()
+                    print ps1.get_translations()[0].get_string() , "\n",  ps2.get_translations()[0].get_string()
+                    print ps1.get_translations()[0].get_attributes() , "\n",  ps2.get_translations()[0].get_attributes()
+                    print ps1.get_translations()[1].get_string() , "\n",  ps2.get_translations()[1].get_string()
+                    print ps1.get_translations()[1].get_attributes() , "\n",  ps2.get_translations()[1].get_attributes()
+            
+        
+    
         
         

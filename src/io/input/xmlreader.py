@@ -63,7 +63,7 @@ class XmlReader(object):
             #Create a list of SimpleSentence objects out of the object
             tgt = map( lambda x: SimpleSentence ( x.childNodes[0].nodeValue.strip(), self.__read_attributes__(x) )  , tgtXML ) 
             
-            ref = ""
+            ref = SimpleSentence()
             try:    
                 ref = SimpleSentence ( refXML[0].childNodes[0].nodeValue.strip() ,  self.__read_attributes__(refXML[0]))
             except LookupError:

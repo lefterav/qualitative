@@ -19,7 +19,7 @@ class XmlWriter(object):
             self.object_xml = data
         else:
             self.object_xml = None
-            self.convert_to_xml( data )
+            self.convert_to_xml( data.get_parallelsentences() )
             
         
     def convert_to_xml(self, parallelsentences):
@@ -66,7 +66,7 @@ class XmlWriter(object):
            
         
         
-    def __create_xml_sentence__(self, doc_xml, obj, tag):
+    def __create_xml_sentence__(self, doc_xml, sentence, tag):
         """
         Helper function that fetches the text and the attributes of a sentence
         and wraps them up into a minidom XML sentenceect
