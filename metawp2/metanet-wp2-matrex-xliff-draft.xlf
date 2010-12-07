@@ -1,97 +1,95 @@
-<xliff version='1.2' xmlns='urn:oasis:names:tc:xliff:document:1.2'>
-<file original='wmt2008-test' source-language='cs' target-language='en' datatype='plaintext'>
-<header>
-<system-descriptions>
-  <system type='Matrex'>
-    <weight type='weight-d' index='1'>0.12336</weight>
-    <weight type='weight-d' index='2'>0.0661664</weight>
-    <weight type='weight-d' index='3'>0.0458371</weight>
-    <weight type='weight-d' index='4'>0.0279445</weight>
-    <weight type='weight-d' index='5'>0.0854644</weight>
-    <weight type='weight-d' index='6'>-0.00279021</weight>
-    <weight type='weight-d' index='7'>0.0693307</weight>
-    <weight type='weight-l' index='8'>0.126938</weight>
-    <weight type='weight-t' index='9'>0.0630748</weight>
-    <weight type='weight-t' index='10'>0.0499615</weight>
-    <weight type='weight-t' index='11'>0.0267172</weight>
-    <weight type='weight-t' index='12'>0.0722866</weight>
-    <weight type='weight-t' index='13'>-0.0307676</weight> 
-    <weight type='weight-w' index='14'>-0.209361</weight>
-</system>
-</system-descriptions>
-</header>
-<body>
-  <trans-unit id='1'>
-    <source xml:lang='cs'>Inflace v Evropě poskočila kvůli potravinám</source>
-    <target xml:lang='en'>Food : where European inflation slipped up</target>
-    <alt-trans system='Matrex' rank="1">
-      <source xml:lang='cs'>Inflace v Evropě poskočila kvůli potravinám</source>
-      <target xml:lang='en'>Inflation in Europe poskočila for foodstuffs</target>
-      <scores>
-        <score type='total'>-119.038</score>
-        <score type='weight-d' index='1'>0.000</score>
-        <score type='weight-d' index='2'>-6.000</score>
-        <score type='weight-d' index='3'>-100.000</score>
-        <score type='weight-d' index='4'>-1.704</score>
-        <score type='weight-d' index='5'>0.000</score>
-        <score type='weight-d' index='6'>0.000</score>
-        <score type='weight-d' index='7'>-0.853</score>
-        <score type='weight-l' index='8'>0.000</score>
-        <score type='weight-t' index='9'>0.000</score>
-        <score type='weight-t' index='10'>140.316</score>
-        <score type='weight-t' index='11'>-14.186</score>
-        <score type='weight-t' index='12'>-16.620</score>
-        <score type='weight-t' index='13'>-3.275</score>
-        <score type='weight-w' index='14'>-5.003</score>
-      </scores>
-      <derivation>
-        <phrase from='0' to='0'>
-          <score type="pC">-0.170961</score>
-          <score type="c">-1.28064</score>
-          <token>
-            <string>inflation</string>
-            <annotation type="dummy">none</annotation>
-          </token>
-        </phrase>
-        <phrase from='1' to='2'>
-          <score type="pC">-0.198899</score>
-          <score type="c">-1.0897</score>
-          <token oov='false'>
-            <string>in</string>
-            <annotation type="dummy">none</annotation>
-          </token>
-          <token oov='false'>
-            <string>europe</string>
-            <annotation type="dummy">none</annotation>
-          </token>
-        </phrase>
-        <phrase from='3' to='3'>
-          <score type="pC">0</score>
-          <score type="c">0.209361</score>
-          <token oov='true'>
-            <string>poskočila</string>
-            <annotation type="dummy">none</annotation>
-          </token>
-        </phrase>
-        <phrase from='4' to='4'>
-          <score type="pC">-1.2002</score>
-          <score type="c">-1.67292</score>
-          <token oov='false'>
-            <string>for</string>
-            <annotation type="dummy">none</annotation>
-          </token>
-        </phrase>
-        <phrase from='5' to='5'>
-          <score type="pC">-0.727323</score>
-          <score type="c">-1.7325</score>
-          <token oov='false'>
-            <string>foodstuffsin</string>
-            <annotation type="dummy">none</annotation>
-          </token>
-        </phrase>
-      </derivation>
-      </alt-trans>
-    </trans-unit>
-  </body>
-</file>
+<xliff version='1.2' xmlns='urn:oasis:names:tc:xliff:document:1.2' xmlns:add='http://metanet/xml/namespace'>
+	<file original='wmt2008-test' source-language='cs' target-language='en' datatype='plaintext'>
+		<add:system-descriptions>
+		  <system type='Matrex'>
+		    <weight type='weight-d' index='1'>0.12336</weight>
+		    <weight type='weight-d' index='2'>0.0661664</weight>
+		    <weight type='weight-d' index='3'>0.0458371</weight>
+		    <weight type='weight-d' index='4'>0.0279445</weight>
+		    <weight type='weight-d' index='5'>0.0854644</weight>
+		    <weight type='weight-d' index='6'>-0.00279021</weight>
+		    <weight type='weight-d' index='7'>0.0693307</weight>
+		    <weight type='weight-l' index='8'>0.126938</weight>
+		    <weight type='weight-t' index='9'>0.0630748</weight>
+		    <weight type='weight-t' index='10'>0.0499615</weight>
+		    <weight type='weight-t' index='11'>0.0267172</weight>
+		    <weight type='weight-t' index='12'>0.0722866</weight>
+		    <weight type='weight-t' index='13'>-0.0307676</weight> 
+		    <weight type='weight-w' index='14'>-0.209361</weight>
+		  </system>
+		</add:system-descriptions>
+		<body>
+		  <trans-unit id='1'>
+		    <source xml:lang='cs'>Inflace v Evropě poskočila kvůli potravinám</source>
+		    <target xml:lang='en'>Food : where European inflation slipped up</target>
+		    <alt-trans system='Matrex' rank="1">
+		      <source xml:lang='cs'>Inflace v Evropě poskočila kvůli potravinám</source>
+		      <target xml:lang='en'>Inflation in Europe poskočila for foodstuffs</target>
+		      <add:scores>
+		        <score type='total'>-119.038</score>
+		        <score type='weight-d' index='1'>0.000</score>
+		        <score type='weight-d' index='2'>-6.000</score>
+		        <score type='weight-d' index='3'>-100.000</score>
+		        <score type='weight-d' index='4'>-1.704</score>
+		        <score type='weight-d' index='5'>0.000</score>
+		        <score type='weight-d' index='6'>0.000</score>
+		        <score type='weight-d' index='7'>-0.853</score>
+		        <score type='weight-l' index='8'>0.000</score>
+		        <score type='weight-t' index='9'>0.000</score>
+		        <score type='weight-t' index='10'>140.316</score>
+		        <score type='weight-t' index='11'>-14.186</score>
+		        <score type='weight-t' index='12'>-16.620</score>
+		        <score type='weight-t' index='13'>-3.275</score>
+		        <score type='weight-w' index='14'>-5.003</score>
+		      </add:scores>
+			  <add:derivation>
+			    <phrase from='0' to='0'>
+		          <score type="pC">-0.170961</score>
+		          <score type="c">-1.28064</score>
+		          <token>
+		            <string>inflation</string>
+		            <annotation type="dummy">none</annotation>
+		          </token>
+		        </phrase>
+		        <phrase from='1' to='2'>
+		          <score type="pC">-0.198899</score>
+		          <score type="c">-1.0897</score>
+		          <token oov='false'>
+		            <string>in</string>
+		            <annotation type="dummy">none</annotation>
+		          </token>
+		          <token oov='false'>
+		            <string>europe</string>
+		            <annotation type="dummy">none</annotation>
+		          </token>
+		        </phrase>
+		        <phrase from='3' to='3'>
+		          <score type="pC">0</score>
+		          <score type="c">0.209361</score>
+		          <token oov='true'>
+		            <string>poskočila</string>
+		            <annotation type="dummy">none</annotation>
+		          </token>
+		        </phrase>
+		        <phrase from='4' to='4'>
+		          <score type="pC">-1.2002</score>
+		          <score type="c">-1.67292</score>
+		          <token oov='false'>
+		            <string>for</string>
+		            <annotation type="dummy">none</annotation>
+		          </token>
+		        </phrase>
+		        <phrase from='5' to='5'>
+		          <score type="pC">-0.727323</score>
+		          <score type="c">-1.7325</score>
+		          <token oov='false'>
+		            <string>foodstuffsin</string>
+		            <annotation type="dummy">none</annotation>
+		          </token>
+		        </phrase>
+			  </add:derivation>
+		   	</alt-trans>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>
