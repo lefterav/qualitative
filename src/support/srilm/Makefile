@@ -1,6 +1,6 @@
-SRILM_LIBS=/fs/clip2/Programs/SRI-LM/Linux/current/lib/i686/
-SRILM_INC=/fs/clip2/Programs/SRI-LM/Linux/current/include
-PYTHON_INC=/usr/local/stow/Python-2.4/include/python2.4
+SRILM_LIBS=/home/elav01/taraxu_tools/srilm/lib/i686-m64
+SRILM_INC=/home/elav01/taraxu_tools/srilm/include
+PYTHON_INC=/usr/local/python2.5/include/python2.5
 PERL_INC=/usr/lib/perl5/5.8.0/i386-linux-thread-multi/CORE
 
 python: clean _srilm.so
