@@ -42,14 +42,26 @@ class ParallelSentence(object):
     def get_attribute(self, name):
         return self.attributes[name]
     
+    def add_attributes (self, attributes):
+        self.attributes.update( attributes )
+    
     def get_source(self):
         return self.src
+    
+    def set_source(self,src):
+        self.src = src
     
     def get_translations(self):
         return self.tgt
     
+    def set_translations(self, tgt):
+        self.tgt = tgt
+    
     def get_reference(self):
         return self.ref
+    
+    def set_reference(self,ref):
+        self.ref = ref
     
     def get_nested_attributes(self):
         """

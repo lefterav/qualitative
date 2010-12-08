@@ -1,5 +1,4 @@
 """
-Created on 15 Οκτ 2010
 
 @author: Eleftherios Avramidis
 """
@@ -12,8 +11,11 @@ class LengthFeatureGenerator(FeatureGenerator):
     """
 
 
-    def __init__(self):
-        """
-        Constructor
-        """
+    def get_features_sentence(self, simplesentence, parallelsentence):
+        length = len( simplesentence.get_source().get_string() )
+        attributes = {}
+        attributes["length"] = length
+        return attributes
+        
+        
         

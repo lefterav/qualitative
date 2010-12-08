@@ -49,5 +49,8 @@ class SimpleSentence(object):
 
     def get_attribute(self, key):
         return self.attributes[key]
+    
+    def add_attributes(self, attributes):
+        self.attributes.update( attributes )
         
         
