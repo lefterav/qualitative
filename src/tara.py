@@ -48,7 +48,7 @@ if __name__ == '__main__':
     
     from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
     fg = LengthFeatureGenerator()
-    fdataset = fg.get_features( orig_dataset )
+    fdataset = fg.add_features( orig_dataset )
     xmlwriter = XmlWriter(fdataset)
     xmlwriter.write_to_file("/home/elav01/workspace/TaraXUscripts/data/test-length.xml")
     

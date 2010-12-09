@@ -12,7 +12,7 @@ class LengthFeatureGenerator(FeatureGenerator):
 
 
     def get_features_sentence(self, simplesentence, parallelsentence):
-        length = len( simplesentence.get_source().get_string() )
+        length = len( simplesentence.get_string() )
         attributes = {}
         attributes["length"] = length
         return attributes

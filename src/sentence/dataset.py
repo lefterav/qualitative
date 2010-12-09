@@ -11,16 +11,17 @@ class DataSet(object):
     classdocs
     """
 
-    def __init__(self, parallelsentence_list, attributes_list):
+    def __init__(self, parallelsentence_list, attributes_list=[]):
         """
         Constructor
         """
         
-        self.attribute_names = []
-        self.attribute_names = attributes_list 
-        self.parallelsentences = parallelsentence_list    
+        self.parallelsentences = parallelsentence_list            
+        if attributes_list:
+            self.attribute_names = attributes_list
+        else:
+            self.attribute_names = self.__retrieve_attribute_names__()
         
-        #TODO: propagate up the attribute names of the nested sentences
         
     def get_parallelsentences(self):
         return self.parallelsentences
@@ -38,6 +39,13 @@ class DataSet(object):
         for parallelsentence in self.parallelsentences:
             nested_attribute_names.update ( parallelsentence.get_nested_attributes().keys() )
         return list(nested_attribute_names)
+    
+    def __retrieve_attribute_names__(self):
+        attribute_names = set()
+        for parallelsentence in self.parallelsentences:
+            attribute_names.update( parallelsentence.get_attribute_names() )
+        return attribute_names
+            
             
     
     """

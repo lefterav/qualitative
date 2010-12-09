@@ -2,8 +2,9 @@
 
 @author: Eleftherios Avramidis
 """
-
+from copy import deepcopy
 from sentence.parallelsentence import ParallelSentence
+from sentence.dataset import DataSet
 
 class FeatureGenerator(object):
     """
@@ -23,6 +24,7 @@ class FeatureGenerator(object):
         
         """
         tgt=[]
+        newset = []
         
         for parallelsentence in dataset.get_parallelsentences():
             
@@ -33,14 +35,25 @@ class FeatureGenerator(object):
             
             ps = ParallelSentence( src, tgt, ref, parallelsentence.get_attributes() )            
             ps = self.add_features_parallelsentence ( parallelsentence )
+            newset.append(ps)
                     
-        return ps
+        return DataSet( newset )
     
     def add_features_sentence(self, simplesentence, parallelsentence):
-        simplesentence.add_attributes( self.get_features_sentence() )
+        ss = deepcopy( simplesentence )
+        ss.add_attributes( self.get_features_sentence( simplesentence, parallelsentence ) )
+        return ss
         
     def add_features_parallelsentence(self, parallelsentence):
-        parallelsentence.add_attributes ( self.get_features_parallelsentence() )
+        ps = deepcopy( parallelsentence )
+        ps.add_attributes ( self.get_features_parallelsentence( parallelsentence ) )
+        return ps
     
+    def get_features_sentence(self, ss, ps):
+        emptydict = {}
+        return emptydict
     
+    def get_features_parallelsentence(self, ps):
+        emptydict = {}
+        return emptydict
     
