@@ -1,0 +1,95 @@
+<xliff version='1.2' xmlns='urn:oasis:names:tc:xliff:document:1.2' xmlns:add='http://metanet/xml/namespace'>
+	<file original='wmt2008-test' source-language='cs' target-language='en' datatype='plaintext'>
+		<header>
+			<tool tool-id="tectomt" tool-version="" />
+		</header>
+		<body>
+			<trans-unit id='4'>
+				<source>So what is the problem ?</source>
+				<target>V čem je tedy problém ?</target>
+				<alt-trans tool-id="lucy" add:rank='1'>
+					<source>So what is the problem ?</source>
+					<target>V čem je tedy problém ? </target>
+					<add:derivation type="tectomt_src_m">
+						<!-- consider replacing annotation type=alo with xpointers to the source -->
+						<!-- can't see the difference between token and phrase here either -->
+						<phrase id='SEnglishM-s1' />
+						<phrase	id='SEnglishM-s1w1'>
+							<annotation type="form">So</annotation>
+							<annotation type="lemma">so</annotation>
+							<annotation type="tag">RB</annotation>
+							<annotation type="no_space_after">0</annotation>
+						</phrase>
+						<phrase	id='SEnglishM-s1w2'>
+							<annotation type="form">what</annotation>
+							<annotation type="lemma">what</annotation>
+							<annotation type="tag">WP</annotation>
+							<annotation type="no_space_after">0</annotation>
+						</phrase>											
+						<phrase id='SEnglishM-s1w3'>
+							<annotation type="form">is</annotation>
+							<annotation type="lemma">be</annotation>
+							<annotation type="tag">VBZ</annotation>
+							<annotation type="no_space_after">0</annotation>
+						</phrase>
+						<phrase id='SEnglishM-s1w4'>
+							<annotation type="form">the</annotation>
+							<annotation type="lemma">the</annotation>
+							<annotation type="tag">DT</annotation>
+							<annotation type="no_space_after">0</annotation>
+						</phrase>
+						<phrase id='SEnglishM-s1w5'>
+							<annotation type="form">problem</annotation>
+							<annotation type="lemma">problem</annotation>
+							<annotation type="tag">NN</annotation>
+							<annotation type="no_space_after">1</annotation>
+						</phrase>
+						<phrase id='SEnglishM-s1w6'>
+							<annotation type="form">?</annotation>
+							<annotation type="lemma">?</annotation>
+							<annotation type="tag">.</annotation>
+							<annotation type="no_space_after">1</annotation>
+						</phrase>
+					</add:derivation>
+					<add:derivation type="tectomt_src_a">
+						<phrase id='SEnglishA-s1-root'>
+							<annotation type="ord">0</annotation>
+						</phrase>
+						<phrase id='SEnglishA-s1-n3'>
+							<annotation type="m_form">is</annotation>
+							<annotation type="m_lemma">be</annotation>
+							<annotation type="m_tag">VBZ</annotation>
+							<annotation type="m_rf" ref-id='SEnglishM-s1w3' />
+							<annotation type="afun">Pred</annotation>
+							<annotation type="is_member">0</annotation>
+							<annotation type="ord">3</annotation>
+							<annotation type="parent" ref-id='SEnglishA-s1-root' />
+						</phrase>
+						<phrase id='SEnglishA-s1-n1'>
+							<annotation type="m_form">So</annotation>
+							<annotation type="m_lemma">so</annotation>
+							<annotation type="m_tag">RB</annotation>
+							<annotation type="m_rf" ref-id='SEnglishM-s1w1' />
+							<annotation type="afun">Pref</annotation>
+							<annotation type="is_member">0</annotation>
+							<annotation type="ord">3</annotation>
+							<annotation type="parent" ref-id='SEnglishA-s1-root' />
+						</phrase>
+						<phrase	id=''>
+							<!-- more nested phrases here -->
+						</phrase>												
+					</add:derivation>
+					<add:derivation type="tectomt_src_t">
+						<!-- see analysis but with target language terminals -->
+					</add:derivation>
+					<add:derivation type="tectomt_tgt_t">
+						<!-- see analysis but with target language terminals -->
+					</add:derivation>
+					<add:derivation type="tectomt_tgt_a">
+						<!-- see analysis but with target language terminals -->
+					</add:derivation>
+				</alt-trans>
+			</trans-unit>
+		</body>
+  	</file>
+</xliff>

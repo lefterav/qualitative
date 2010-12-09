@@ -1,0 +1,150 @@
+<xliff version='1.2' xmlns='urn:oasis:names:tc:xliff:document:1.2' xmlns:add='http://metanet/xml/namespace'>
+	<file original='wmt2008-test' source-language='cs' target-language='en' datatype='plaintext'>
+		<header>
+			<tool tool-id="lucy" tool-version="1.5" />
+		</header>
+		<body>
+			<trans-unit id='3'>
+				<source>Unsere Charta der Grundrechte ist die erste in diesem Jahrtausend</source>
+				<target>Our declaration of rights is the first of this millennium.</target>
+				<alt-trans tool-id="lucy" add:rank='1'>
+					<source>Unsere Charta der Grundrechte ist die erste in diesem Jahrtausend</source>
+					<target>﻿Our charter of the basic rights is the first in this millennium.</target>
+					<add:derivation type="lucy_analysis">
+						<!-- consider replacing annotation type=alo with xpointers to the source -->
+						<!-- can't see the difference between token and phrase here -->
+						<phrase id='1'>
+							<annotation type="cat">S</annotation>
+						</phrase>
+						<phrase	id='2'>
+							<annotation type="can">$</annotation>
+							<annotation type="cat">$</annotation>
+							<annotation type="alo">$</annotation>
+							<annotation type="parent" parent-id='1' />
+						</phrase>
+						<phrase	id='3'>
+							<annotation type="can">sein</annotation>
+							<annotation type="cat">CLS</annotation>
+							<annotation type="alo">ist</annotation>
+							<annotation type="parent" parent-id='1' />
+						</phrase>												
+						<phrase id='4'>
+							<annotation type="can">Charta</annotation>
+							<annotation type="cat">NP</annotation>
+							<annotation type="alo">Charta</annotation>
+							<annotation type="parent" parent-id='3' />
+						</phrase>
+						<phrase id='5'>
+							<annotation type="can">unser</annotation>
+							<annotation type="cat">DETP</annotation>
+							<annotation type="alo">unsere</annotation>
+							<annotation type="parent" parent-id='4' />
+						</phrase>
+						<phrase id='6'>
+							<annotation type="can">unser</annotation>
+							<annotation type="cat">DET</annotation>
+							<annotation type="alo">Unsere</annotation>
+							<annotation type="parent" parent-id='5' />
+						</phrase>
+						<phrase id='7'>
+							<annotation type="can">Charta</annotation>
+							<annotation type="cat">NO</annotation>
+							<annotation type="alo">Charta</annotation>
+							<annotation type="parent" parent-id='4' />
+						</phrase>
+						<phrase id='8'>
+							<annotation type="can">Charta</annotation>
+							<annotation type="cat">NST</annotation>
+							<annotation type="alo">Charta</annotation>
+							<annotation type="parent" parent-id='7' />
+						</phrase>
+						<phrase id='9'>
+							<annotation type="can">Grundrecht</annotation>
+							<annotation type="cat">NP</annotation>
+							<annotation type="alo">Grundrechte</annotation>
+							<annotation type="parent" parent-id='4' />
+						</phrase>
+						<phrase id='10'>
+							<annotation type="can">der</annotation>
+							<annotation type="cat">DETP</annotation>
+							<annotation type="alo">der</annotation>
+							<annotation type="parent" parent-id='9' />
+						</phrase>
+						<phrase id='11'>
+							<annotation type="can">der</annotation>
+							<annotation type="cat">DET</annotation>
+							<annotation type="alo">der</annotation>
+							<annotation type="parent" parent-id='10' />
+						</phrase>
+						<phrase id='12'>
+							<annotation type="can">Grundrecht</annotation>
+							<annotation type="cat">NO</annotation>
+							<annotation type="alo">Grundrechte</annotation>
+							<annotation type="parent" parent-id='9' />
+						</phrase>
+						<phrase id='9'>
+							<annotation type="can">Grundrecht</annotation>
+							<annotation type="cat">NST</annotation>
+							<annotation type="alo">Grundrechte</annotation>
+							<annotation type="parent" parent-id='12' />
+						</phrase>
+						<phrase>
+							<!--More hierarchical phrases here -->
+						</phrase>
+					</add:derivation>
+					<add:derivation type="lucy_transfer">
+						
+						<phrase id='1'>
+							<annotation type="cat">S</annotation>
+						</phrase>
+						<phrase	id='2'>
+							<annotation type="can">$</annotation>
+							<annotation type="cat">$</annotation>
+							<annotation type="alo">$</annotation>
+							<annotation type="parent" parent-id='1' />
+						</phrase>
+						<phrase	id='3'>
+							<annotation type="can">sein</annotation>
+							<annotation type="cat">CLS</annotation>
+							<annotation type="tl-can">be</annotation>
+							<annotation type="parent" parent-id='1' />
+						</phrase>												
+						<phrase id='4'>
+							<annotation type="can">Charta</annotation>
+							<annotation type="cat">NP</annotation>
+							<annotation type="tl-can">charter</annotation>
+							<annotation type="parent" parent-id='3' />
+						</phrase>
+						<phrase id='5'>
+							<annotation type="can">unser</annotation>
+							<annotation type="cat">DETP</annotation>
+							<annotation type="tl-can">our</annotation>
+							<annotation type="tl-cat">DET</annotation>
+							<annotation type="parent" parent-id='4' />
+						</phrase>
+						<phrase id='6'>
+							<annotation type="can">unser</annotation>
+							<annotation type="cat">DET</annotation>
+							<annotation type="sl-can">unser</annotation>
+							<annotation type="sl-cat">DET</annotation>
+							<annotation type="tl-can">our</annotation>
+							<annotation type="parent" parent-id='5' />
+						</phrase>
+						<phrase id='7'>
+							<annotation type="can">Charta</annotation>
+							<annotation type="cat">NO</annotation>
+							<annotation type="tl-can">charter</annotation>
+							<annotation type="parent" parent-id='4' />
+						</phrase>
+						<phrase>
+							<!-- TBD -->
+						</phrase>
+					</add:derivation>
+					<add:derivation type="lucy_generation">
+						<!-- see analysis but with target language terminals -->
+					</add:derivation>
+				</alt-trans>
+			</trans-unit>
+		</body>
+  	</file>
+</xliff>

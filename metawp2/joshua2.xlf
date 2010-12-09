@@ -1,0 +1,72 @@
+<xliff version='1.2' xmlns='urn:oasis:names:tc:xliff:document:1.2' xmlns:add='http://metanet/xml/namespace'>
+	<file original='wmt2008-test' source-language='cs' target-language='en' datatype='plaintext'>
+		<header>
+			<tool tool-id="joshua" tool-version="revision:1776">
+				<add:weights>
+					<weight type='lm'>1.0</weight>
+					<weight type='pt0'>1.066893</weight>
+					<weight type='pt1'>0.752247</weight>
+					<weight type='pt2'>0.589793</weight>
+					<weight type='wordpenalty'>-2.844814</weight>
+				</add:weights>
+			</tool>
+		</header>
+		<body>
+			<trans-unit id='2'>
+				<source>die Verordnung ( EG ) Nr. 1172 / 95 wird wie folgt geändert :</source>
+				<target>w rozporządzeniu ( WE ) nr 1172 / 95 wprowadza się następujące zmiany :</target>
+				<alt-trans tool-id="joshua" add:rank='1'>
+					<source>die Verordnung ( EG ) Nr. 1172 / 95 wird wie folgt geändert :</source>
+					<target>w rozporządzeniu ( WE ) nr 1172 / 95 wprowadza się następujące zmiany :</target>
+					<add:scores>
+						<score type='total'>-135.267</score>
+						<score type='lm'>-127.759</score>
+						<score type='pt0'>-6.353</score>
+						<score type='pt1'>-11.577</score>
+						<score type='pt2'>-3.909</score>
+						<score type='wordpenalty'>-3.909</score>				
+					</add:scores>
+					<add:derivation type="hiero_decoding">
+						<phrase	id='1'>
+							<annotation type="class">ROOT</annotation>
+							<annotation type="alignment" xlink:href="#xpointer(string-range(ancestor::alt-trans/source,'',0,15))" />
+						</phrase>						
+						<phrase id='2'>
+							<annotation type="class">S</annotation>
+							<annotation type="alignment" xlink:href="#xpointer(string-range(ancestor::alt-trans/source,'',0,14))" />
+							<annotation type="parent" parent-id="1" />
+						</phrase>
+						<phrase id='3'>
+							<annotation type="class">S</annotation>
+							<annotation type="alignment" xlink:href="#xpointer(string-range(ancestor::alt-trans/source,'',0,12))" />
+							<annotation type="parent" parent-id="2" />
+						</phrase>
+						<phrase id='4'>
+							<annotation type="class">S</annotation>
+							<annotation type="alignment" xlink:href="#xpointer(string-range(ancestor::alt-trans/source,'',0,7))" />
+							<annotation type="parent" parent-id="3" />
+						</phrase>
+						<phrase id='5'>
+							<string>w rozporządzeniu ( WE ) nr 1172</string>
+							<annotation type='class'>X</annotation>
+							<annotation type='alignment' xlink:href="#xpointer(string-range(ancestor::alt-trans/source,'',0,7))" />
+							<annotation type='parent' parent-id='4' />
+						</phrase>
+						<phrase id='6'>
+							<string>/ 95 wprowadza się następujące</string>
+							<annotation type='class'>X</annotation>
+							<annotation type='alignment' xlink:href="#xpointer(string-range(ancestor::alt-trans/source,'',7,12))" />
+							<annotation type='parent' parent-id='3' />
+						</phrase>
+						<phrase id='7'>					
+							<string>zmiany :</string>
+							<annotation type='class'>X</annotation>
+							<annotation type='alignment' xlink:href="#xpointer(string-range(ancestor::alt-trans/source/source,'',12,14))" />
+							<annotation type='parent' parent-id='2' />
+						</phrase>
+					</add:derivation>
+				</alt-trans>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
