@@ -1,5 +1,5 @@
 <xliff version='1.2' xmlns='urn:oasis:names:tc:xliff:document:1.2' xmlns:add='http://metanet/xml/namespace'>
-	<file original='wmt2008-test' source-language='cs' target-language='en' datatype='plaintext'>
+	<file original='wmt2008-test' source-language='de' target-language='pl' datatype='plaintext'>
 	<header>
 		<tool tool-id="Joshua" tool-version="revision:1776">
 			<add:weights>

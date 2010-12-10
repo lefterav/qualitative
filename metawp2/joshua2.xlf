@@ -1,5 +1,5 @@
 <xliff version='1.2' xmlns='urn:oasis:names:tc:xliff:document:1.2' xmlns:add='http://metanet/xml/namespace'>
-	<file original='wmt2008-test' source-language='cs' target-language='en' datatype='plaintext'>
+	<file original='wmt2008-test' source-language='de' target-language='pl' datatype='plaintext'>
 		<header>
 			<tool tool-id="joshua" tool-version="revision:1776">
 				<add:weights>
@@ -34,35 +34,35 @@
 						<phrase id='2'>
 							<annotation type="class">S</annotation>
 							<annotation type="alignment" xlink:href="#xpointer(string-range(ancestor::alt-trans/source,'',0,14))" />
-							<annotation type="parent" parent-id="1" />
+							<annotation type="parent" ref-id="1" />
 						</phrase>
 						<phrase id='3'>
 							<annotation type="class">S</annotation>
 							<annotation type="alignment" xlink:href="#xpointer(string-range(ancestor::alt-trans/source,'',0,12))" />
-							<annotation type="parent" parent-id="2" />
+							<annotation type="parent" ref-id="2" />
 						</phrase>
 						<phrase id='4'>
 							<annotation type="class">S</annotation>
 							<annotation type="alignment" xlink:href="#xpointer(string-range(ancestor::alt-trans/source,'',0,7))" />
-							<annotation type="parent" parent-id="3" />
+							<annotation type="parent" ref-id="3" />
 						</phrase>
 						<phrase id='5'>
 							<string>w rozporządzeniu ( WE ) nr 1172</string>
 							<annotation type='class'>X</annotation>
 							<annotation type='alignment' xlink:href="#xpointer(string-range(ancestor::alt-trans/source,'',0,7))" />
-							<annotation type='parent' parent-id='4' />
+							<annotation type='parent' ref-id='4' />
 						</phrase>
 						<phrase id='6'>
 							<string>/ 95 wprowadza się następujące</string>
 							<annotation type='class'>X</annotation>
 							<annotation type='alignment' xlink:href="#xpointer(string-range(ancestor::alt-trans/source,'',7,12))" />
-							<annotation type='parent' parent-id='3' />
+							<annotation type='parent' ref-id='3' />
 						</phrase>
 						<phrase id='7'>					
 							<string>zmiany :</string>
 							<annotation type='class'>X</annotation>
 							<annotation type='alignment' xlink:href="#xpointer(string-range(ancestor::alt-trans/source/source,'',12,14))" />
-							<annotation type='parent' parent-id='2' />
+							<annotation type='parent' ref-id='2' />
 						</phrase>
 					</add:derivation>
 				</alt-trans>
