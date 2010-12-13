@@ -12,11 +12,12 @@ from io.output.xmlwriter import XmlWriter
 from classifier.bayes import Bayes
 from classifier.tree import TreeLearner
 from classifier.svm import SVM
+import os
 
 
 if __name__ == '__main__':
     
-    filename = "/home/elav01/workspace/TaraXUscripts/data/evaluations_feat.jcml"
+    filename = os.getenv("HOME") + "/workspace/TaraXUscripts/data/evaluations_feat.jcml"
     class_name = "rank"
     desired_attributes = []
     
@@ -44,13 +45,13 @@ if __name__ == '__main__':
     orig_test_data = test_data.get_dataset()
     
     xmlwriter = XmlWriter(dataset)
-    xmlwriter.write_to_file("/home/elav01/workspace/TaraXUscripts/data/test.xml")
+    xmlwriter.write_to_file(os.getenv("HOME") + "/workspace/TaraXUscripts/data/test.xml")
     
     from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
     fg = LengthFeatureGenerator()
     fdataset = fg.add_features( orig_dataset )
     xmlwriter = XmlWriter(fdataset)
-    xmlwriter.write_to_file("/home/elav01/workspace/TaraXUscripts/data/test-length.xml")
+    xmlwriter.write_to_file(os.getenv("HOME") + "/workspace/TaraXUscripts/data/test-length.xml")
     
     orangedata.cross_validation()
     orangedata.print_statistics()

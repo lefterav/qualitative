@@ -1,4 +1,4 @@
-#Thu Nov 11 18:07:47 CET 2010
+#Sat Dec 11 18:27:29 CET 2010
 eclipse.preferences.version=1
 encoding//src/io/input/orangereader.py=utf-8
 encoding//src/io/input/schemabasedreader.py=utf-8
@@ -16,4 +16,6 @@ encoding//src/support/get-human-judgements-per-system.py=utf-8
 encoding//src/support/handleClassifier.py=utf-8
 encoding//src/support/produceJudgmentFeatures.py=utf-8
 encoding//src/support/sort_judgments.py=utf-8
+encoding//src/tara-noorange.py=utf-8
+encoding//src/tara-sax.py=utf-8
 encoding//src/tara.py=utf-8

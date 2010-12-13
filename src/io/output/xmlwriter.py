@@ -31,6 +31,9 @@ class XmlWriter(object):
         doc_xml = minidom.Document( )
         jcml = doc_xml.createElement("jcml")
         
+        i=0
+        
+        
         for ps in parallelsentences:
             
             parallelsentence_xml = doc_xml.createElement("judgedsentence")
@@ -54,6 +57,9 @@ class XmlWriter(object):
 
             #append the newly populated parallel sentence to the document
             jcml.appendChild(parallelsentence_xml)
+            
+            print ">", i
+            i +=1
             
         doc_xml.appendChild(jcml)
         self.object_xml = doc_xml

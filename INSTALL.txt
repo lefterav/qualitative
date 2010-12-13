@@ -1,0 +1,20 @@
+Orange library:
+
+
+Ubuntu/Debian
+=============
+
+sudo apt-get install python-dev g++ build-essential python-pip 
+sudo pip install --upgrade pip  
+sudo pip install orange
+
+There is also a debian package called orangesvn but works only with python 2.5
+
+
+Other platforms
+===============
+
+Use the standard way to install pip at your operating system or get pip from here: 
+http://pypi.python.org/pypi/pip
+
+run pip install orange

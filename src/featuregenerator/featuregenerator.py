@@ -25,23 +25,36 @@ class FeatureGenerator(object):
         """
         tgt=[]
         newset = []
+        i = 0
         
         for parallelsentence in dataset.get_parallelsentences():
             
             src = self.add_features_sentence ( parallelsentence.get_source(), parallelsentence )
+                        
             for tgt_item in parallelsentence.get_translations():
                 tgt.append( self.add_features_sentence ( tgt_item, parallelsentence ) )
             ref = self.add_features_sentence ( parallelsentence.get_reference(), parallelsentence )
             
-            ps = ParallelSentence( src, tgt, ref, parallelsentence.get_attributes() )            
-            ps = self.add_features_parallelsentence ( parallelsentence )
-            newset.append(ps)
-                    
-        return DataSet( newset )
+            ps = ParallelSentence( src, tgt, ref, parallelsentence.get_attributes() )
+                                   
+            ps0 = self.add_features_parallelsentence ( ps )
+            
+            newset.append(ps0)
+            i +=1
+            print i
+    
+        
+        d = DataSet( newset )
+        
+        print ".",
+
+        
+        return d
     
     def add_features_sentence(self, simplesentence, parallelsentence):
         ss = deepcopy( simplesentence )
-        ss.add_attributes( self.get_features_sentence( simplesentence, parallelsentence ) )
+        newfeatures = self.get_features_sentence( ss, parallelsentence )
+        ss.add_attributes( newfeatures )
         return ss
         
     def add_features_parallelsentence(self, parallelsentence):

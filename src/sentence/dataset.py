@@ -19,18 +19,22 @@ class DataSet(object):
         self.parallelsentences = parallelsentence_list            
         if attributes_list:
             self.attribute_names = attributes_list
+            self.attribute_names_found = True
         else:
-            self.attribute_names = self.__retrieve_attribute_names__()
-        
+            self.attribute_names_found = False
+            self.attribute_names = []
+                    
         
     def get_parallelsentences(self):
         return self.parallelsentences
     
     def get_attribute_names(self):
+        if not self.attribute_names_found: 
+            self.attribute_names = self.__retrieve_attribute_names__()
         return self.attribute_names
     
     def get_all_attribute_names(self):
-        all_attribute_names = self.attribute_names
+        all_attribute_names =  self.get_attribute_names()
         all_attribute_names.extend( self.get_nested_attribute_names() )
         return list(set(all_attribute_names))
     
