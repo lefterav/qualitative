@@ -1,146 +1,128 @@
 <xliff version='1.2' xmlns='urn:oasis:names:tc:xliff:document:1.2' xmlns:add='http://metanet/xml/namespace'>
 	<file original='wmt2008-test' source-language='de' target-language='en' datatype='plaintext'>
 		<header>
-			<tool tool-id="lucy" tool-version="1.5" />
+			<tool tool-id="t1" tool-name='Lucy' tool-version="1.5"  />
 		</header>
 		<body>
-			<trans-unit id='3'>
+			<trans-unit id='s3'>
 				<source>Unsere Charta der Grundrechte ist die erste in diesem Jahrtausend</source>
 				<target>Our declaration of rights is the first of this millennium.</target>
-				<alt-trans tool-id="lucy" add:rank='1'>
+				<alt-trans tool-id="t1">
 					<source>Unsere Charta der Grundrechte ist die erste in diesem Jahrtausend</source>
 					<target>﻿Our charter of the basic rights is the first in this millennium.</target>
-					<add:derivation type="lucy_analysis">
+					<add:derivation type="lucyanalysis" id='s3_t1_d0'>
 						<!-- consider replacing annotation type=alo with xpointers to the source -->
-						<!-- can't see the difference between token and phrase here -->
-						<phrase id='1'>
-							<annotation type="cat">S</annotation>
-						</phrase>
-						<phrase	id='2'>
-							<annotation type="can">$</annotation>
-							<annotation type="cat">$</annotation>
-							<annotation type="alo">$</annotation>
-							<annotation type="parent" ref-id='1' />
-						</phrase>
-						<phrase	id='3'>
-							<annotation type="can">sein</annotation>
-							<annotation type="cat">CLS</annotation>
-							<annotation type="alo">ist</annotation>
-							<annotation type="parent" ref-id='1' />
-						</phrase>												
-						<phrase id='4'>
-							<annotation type="can">Charta</annotation>
-							<annotation type="cat">NP</annotation>
-							<annotation type="alo">Charta</annotation>
-							<annotation type="parent" ref-id='3' />
-						</phrase>
-						<phrase id='5'>
-							<annotation type="can">unser</annotation>
-							<annotation type="cat">DETP</annotation>
-							<annotation type="alo">unsere</annotation>
-							<annotation type="parent" ref-id='4' />
-						</phrase>
-						<phrase id='6'>
-							<annotation type="can">unser</annotation>
-							<annotation type="cat">DET</annotation>
-							<annotation type="alo">Unsere</annotation>
-							<annotation type="parent" ref-id='5' />
-						</phrase>
-						<phrase id='7'>
-							<annotation type="can">Charta</annotation>
-							<annotation type="cat">NO</annotation>
-							<annotation type="alo">Charta</annotation>
-							<annotation type="parent" ref-id='4' />
-						</phrase>
-						<phrase id='8'>
-							<annotation type="can">Charta</annotation>
-							<annotation type="cat">NST</annotation>
-							<annotation type="alo">Charta</annotation>
-							<annotation type="parent" ref-id='7' />
-						</phrase>
-						<phrase id='9'>
-							<annotation type="can">Grundrecht</annotation>
-							<annotation type="cat">NP</annotation>
-							<annotation type="alo">Grundrechte</annotation>
-							<annotation type="parent" ref-id='4' />
-						</phrase>
-						<phrase id='10'>
-							<annotation type="can">der</annotation>
-							<annotation type="cat">DETP</annotation>
-							<annotation type="alo">der</annotation>
-							<annotation type="parent" ref-id='9' />
-						</phrase>
-						<phrase id='11'>
-							<annotation type="can">der</annotation>
-							<annotation type="cat">DET</annotation>
-							<annotation type="alo">der</annotation>
-							<annotation type="parent" ref-id='10' />
-						</phrase>
-						<phrase id='12'>
-							<annotation type="can">Grundrecht</annotation>
-							<annotation type="cat">NO</annotation>
-							<annotation type="alo">Grundrechte</annotation>
-							<annotation type="parent" ref-id='9' />
-						</phrase>
-						<phrase id='9'>
-							<annotation type="can">Grundrecht</annotation>
-							<annotation type="cat">NST</annotation>
-							<annotation type="alo">Grundrechte</annotation>
-							<annotation type="parent" ref-id='12' />
-						</phrase>
-						<phrase>
-							<!--More hierarchical phrases here -->
-						</phrase>
+						<token id='s3_t1_d0_k1' children='s3_t1_d0_k2,s3_t1_d0_k3,'>
+							<annotation type="cat"  value='S' />
+						</token>
+						<token	id='s3_t1_d0_k2'>
+							<annotation type="can" value='$'/>
+							<annotation type="cat" value='$'/>
+							<annotation type="alo" value='$'/>
+						</token>
+						<token	id='s3_t1_d0_k3' children='s3_t1_d0_k4'>
+							<annotation type="can" value='sein'/>
+							<annotation type="cat"  value='CLS' />
+							<annotation type="alo" value='ist'/>
+						</token>												
+						<token id='s3_t1_d0_k4' children='s3_t1_d0_k5,s3_t1_d0_k7,s3_t1_d0_k9'>
+							<annotation type="can" value='Charta'/>
+							<annotation type="cat"  value='NP' />
+							<annotation type="alo" value='Charta'/>
+						</token>
+						<token id='s3_t1_d0_k5' children='s3_t1_d0_k5'>
+							<annotation type="can" value='unser'/>
+							<annotation type="cat"  value='DETP' />
+							<annotation type="alo" value='unsere'/>
+						</token>
+						<token id='s3_t1_d0_k6'>
+							<annotation type="can" value='unser'/>
+							<annotation type="cat"  value='DET' />
+							<annotation type="alo" value='Unsere'/>
+						</token>
+						<token id='s3_t1_d0_k7' children='s3_t1_d0_k8'>
+							<annotation type="can" value='Charta'/>
+							<annotation type="cat"  value='NO' />
+							<annotation type="alo" value='Charta'/>
+						</token>
+						<token id='s3_t1_d0_k8'>
+							<annotation type="can" value='Charta'/>
+							<annotation type="cat"  value='NST' />
+							<annotation type="alo" value='Charta'/>
+						</token>
+						<token id='s3_t1_d0_k9' children='s3_t1_d0_k10,s3_t1_d0_k12'>
+							<annotation type="can" value='Grundrecht'/>
+							<annotation type="cat"  value='NP' />
+							<annotation type="alo" value='Grundrechte'/>
+						</token>
+						<token id='s3_t1_d0_k10' children='s3_t1_d0_k11'>
+							<annotation type="can" value='der'/>
+							<annotation type="cat"  value='DETP' />
+							<annotation type="alo" value='der'/>
+						</token>
+						<token id='s3_t1_d0_k11'>
+							<annotation type="can" value='der'/>
+							<annotation type="cat"  value='DET' />
+							<annotation type="alo" value='der'/>
+						</token>
+						<token id='s3_t1_d0_k12' children='s3_t1_d0_k13'>
+							<annotation type="can" value='Grundrecht'/>
+							<annotation type="cat"  value='NO' />
+							<annotation type="alo" value='Grundrechte'/>
+						</token>
+						<token id='s3_t1_d0_k13'>
+							<annotation type="can" value='Grundrecht'/>
+							<annotation type="cat"  value='NST' />
+							<annotation type="alo" value='Grundrechte'/>
+						</token>
+						<token>
+							<!--More hierarchical tokens here -->
+						</token>
 					</add:derivation>
-					<add:derivation type="lucy_transfer">
+					<add:derivation type="lucy_transfer" id='s3_t1_d1'>
 						
-						<phrase id='1'>
-							<annotation type="cat">S</annotation>
-						</phrase>
-						<phrase	id='2'>
-							<annotation type="can">$</annotation>
-							<annotation type="cat">$</annotation>
-							<annotation type="alo">$</annotation>
-							<annotation type="parent" ref-id='1' />
-						</phrase>
-						<phrase	id='3'>
-							<annotation type="can">sein</annotation>
-							<annotation type="cat">CLS</annotation>
-							<annotation type="tl-can">be</annotation>
-							<annotation type="parent" ref-id='1' />
-						</phrase>												
-						<phrase id='4'>
-							<annotation type="can">Charta</annotation>
-							<annotation type="cat">NP</annotation>
-							<annotation type="tl-can">charter</annotation>
-							<annotation type="parent" ref-id='3' />
-						</phrase>
-						<phrase id='5'>
-							<annotation type="can">unser</annotation>
-							<annotation type="cat">DETP</annotation>
-							<annotation type="tl-can">our</annotation>
-							<annotation type="tl-cat">DET</annotation>
+						<token id='s3_t1_d1_k1' children='s3_t1_d1_k2,s3_t1_d1_k3'>
+							<annotation type="cat" value='S' />
+						</token>
+						<token id='s3_t1_d1_k2'>
+							<annotation type="can" value='$'/>
+							<annotation type="cat" value='$'/>
+							<annotation type="alo" value='$'/>
+						</token>
+						<token id='s3_t1_d1_k3' children='s3_t1_d1_k4'>
+							<annotation type="can" value='sein'/>
+							<annotation type="cat" value='CLS' />
+							<annotation type="tl-can" value='be'/>
+						</token>												
+						<token id='s3_t1_d1_k4' children='s3_t1_d1_k5,s3_t1_d1_k7'>
+							<annotation type="can" value='Charta'/>
+							<annotation type="cat" value='NP' />
+							<annotation type="tl-can" value='charter'/>
+						</token>
+						<token id='s3_t1_d1_k5' children='s3_t1_d1_k6'>
+							<annotation type="can" value='unser'/>
+							<annotation type="cat" value='DETP' />
+							<annotation type="tl-can" value='our'/>
+							<annotation type="tl-cat" value='DET'/>
 							<annotation type="parent" ref-id='4' />
-						</phrase>
-						<phrase id='6'>
-							<annotation type="can">unser</annotation>
-							<annotation type="cat">DET</annotation>
-							<annotation type="sl-can">unser</annotation>
-							<annotation type="sl-cat">DET</annotation>
-							<annotation type="tl-can">our</annotation>
-							<annotation type="parent" ref-id='5' />
-						</phrase>
-						<phrase id='7'>
-							<annotation type="can">Charta</annotation>
-							<annotation type="cat">NO</annotation>
-							<annotation type="tl-can">charter</annotation>
-							<annotation type="parent" ref-id='4' />
-						</phrase>
-						<phrase>
+						</token>
+						<token id='s3_t1_d1_k6'>
+							<annotation type="can" value='unser'/>
+							<annotation type="cat" value='DET' />
+							<annotation type="sl-can" value='unser'/>
+							<annotation type="sl-cat" value='DET'/>
+							<annotation type="tl-can" value='our'/>
+						</token>
+						<token id='s3_t1_d1_k7'>
+							<annotation type="can" value='Charta'/>
+							<annotation type="cat"  value='NO' />
+							<annotation type="tl-can" value='charter'/>
+						</token>
+						<token>
 							<!-- TBD -->
-						</phrase>
+						</token>
 					</add:derivation>
-					<add:derivation type="lucy_generation">
+					<add:derivation type="lucy_generation" id='s3_t1_d2'>
 						<!-- see analysis but with target language terminals -->
 					</add:derivation>
 				</alt-trans>
