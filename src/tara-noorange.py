@@ -15,7 +15,34 @@ from classifier.svm import SVM
 from os import getenv
 
 if __name__ == '__main__':
+    self.test_length_fg_with_serialized_parsing()
     
+
+
+def test_length_fg_with_serialized_parsing():
+    from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
+    from io.input.saxreader import SaxReader
+    from xml.sax import make_parser
+    import codecs
+    
+    
+
+    lfg = LengthFeatureGenerator()
+    saxreader = SaxReader( [lfg] )
+    myparser = make_parser( saxreader )
+    myparser.parse( file_object )
+    
+    dir = getenv("HOME") + "/workspace/TaraXUscripts/data"
+    filename = dir + "/evaluations_feat.jcml"
+    file_object = codecs.open(tmpFileName, 'r', 'utf-8')
+
+    
+    
+    
+    
+    
+    
+def test_length_fg_with_full_parsing():
     dir = getenv("HOME") + "/workspace/TaraXUscripts/data"
     filename = dir + "/evaluations_feat.jcml"
     class_name = "rank"

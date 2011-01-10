@@ -5,8 +5,10 @@
 @author: Eleftherios Avramidis
 """
 
-from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
+from sentence.sentence import SimpleSentence
+from sentence.parallelsentence import ParallelSentence
+
 
 import cgi
 
@@ -15,9 +17,9 @@ if __name__ == '__main__':
 
 
 
-class Xmlhandler(ContentHandler):
+class SaxReader(ContentHandler):
     
-    def __init__(self):
+    def __init__(self, feature_generators=[]):
         
         #flags that show the current focus of the parsing
         self.is_parallelsentence = False 
@@ -31,6 +33,9 @@ class Xmlhandler(ContentHandler):
         self.ref=None
         
         self.ss_text=""
+        
+        self.feature_generators = feature_generators
+        
     
     def startElement(self, name, attrs):
         """
@@ -42,11 +47,11 @@ class Xmlhandler(ContentHandler):
         """
         if name == 'judgedsentence':
             for att_name in attrs.getNames():
-                self.ps_attributes[att] = attrs.getValue(att_name)
+                self.ps_attributes[att_name] = attrs.getValue(att_name)
                 self.is_parallelsentence = True
         elif name in ['src', 'tgt', 'ref']:
             for att_name in attrs.getNames():
-                self.ss_attributes[att] = attrs.getValue(att_name)
+                self.ss_attributes[att_name] = attrs.getValue(att_name)
                 self.is_simplesentence = True
                 
     def characters(self, ch):
@@ -79,8 +84,9 @@ class Xmlhandler(ContentHandler):
             self.ref = SimpleSentence (self.ss_text, self.ss_attributes )
             self.ss_text = ""
         if name == "judgedsentence":
-            parallelsentence = Parallelsentence ( self.src, self.tgt, self.ref , self.ps_attributes)
+            parallelsentence = ParallelSentence ( self.src, self.tgt, self.ref , self.ps_attributes)
             
-        
-    
-    
+        for fg in self.feature_generators:
+            annotated_parallelsentence = fg.add_features_parallelsentence(parallelsentence)
+            print annotated_parallelsentence
+            #saxwriter.print( annotated_parallelsentence )
