@@ -1,0 +1,340 @@
+#!/usr/bin/env loon
+
+home.baseDir=/usr13/jhclark/moses-test
+home.pathDir=/usr12/jhclark/paths
+
+[NOTES]
+
+[MACHINES]
+localhost: HomeCommandLine
+
+
+[VERTICES]
+Inputs.wmt10-dev: ON localhost machine-translation/descriptors/data/WMT10-dev.py
+   fLang=es
+   nLang=en
+
+Inputs.wmt10-monolingual: ON localhost machine-translation/descriptors/data/WMT10-mono.py
+   lang=en
+
+Inputs.wmt10-parallel: ON localhost machine-translation/descriptors/data/WMT10-parallel.py
+   fLang=es
+   nLang=en
+
+2-Preprocess.10-tokenize-f: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   targetLanguageSuffix=es
+   numSplitPieces=1
+
+   FROM 2-Preprocess.100-make-small-parallel-corpus
+     inputCorpus < fCorpusOut
+
+2-Preprocess.100-make-small-mono-corpus: ON localhost machine-translation/descriptors/monocorpus/Head.py
+   numLines=20000
+
+   FROM Inputs.wmt10-monolingual
+     corpus < news
+
+2-Preprocess.100-make-small-parallel-corpus: ON localhost machine-translation/descriptors/parallelcorpus/ParallelHead.py
+   nLines=10000
+
+   FROM Inputs.wmt10-parallel
+     fCorpusIn < fNewsCom
+     eCorpusIn < nNewsCom
+
+2-Preprocess.110-tokenize-mono: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   targetLanguageSuffix=en
+   numSplitPieces=1
+
+   FROM 2-Preprocess.100-make-small-mono-corpus
+     inputCorpus < corpus
+
+2-Preprocess.20-tokenize-e: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   targetLanguageSuffix=en
+   numSplitPieces=1
+
+   FROM 2-Preprocess.100-make-small-parallel-corpus
+     inputCorpus < eCorpusOut
+
+2-Preprocess.200-strip-tune-sgml: ON localhost machine-translation/descriptors/parallelcorpus/ParallelStripSGML.py
+
+   FROM Inputs.wmt10-dev
+     fSgml < fNewsSrc2008Sgml
+     eSgml < nNewsRef2008Sgml
+
+2-Preprocess.200-tokenize-tune-f: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   targetLanguageSuffix=es
+   numSplitPieces=1
+
+   FROM 2-Preprocess.200-strip-tune-sgml
+     inputCorpus < fPlaintext
+
+2-Preprocess.210-tokenize-tune-e: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   targetLanguageSuffix=en
+   numSplitPieces=1
+
+   FROM 2-Preprocess.200-strip-tune-sgml
+     inputCorpus < ePlaintext
+
+2-Preprocess.300-strip-test-sgml: ON localhost machine-translation/descriptors/parallelcorpus/ParallelStripSGML.py
+
+   FROM Inputs.wmt10-dev
+     fSgml < fNewsSrc2009Sgml
+     eSgml < nNewsRef2009Sgml
+
+2-Preprocess.310-tokenize-test-f: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   targetLanguageSuffix=es
+   numSplitPieces=1
+
+   FROM 2-Preprocess.300-strip-test-sgml
+     inputCorpus < fPlaintext
+
+2-Preprocess.320-tokenize-test-e: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   targetLanguageSuffix=en
+   numSplitPieces=1
+
+   FROM 2-Preprocess.300-strip-test-sgml
+     inputCorpus < ePlaintext
+
+3-TrainLM.10-build-lm-srilm: ON localhost machine-translation/descriptors/lm/BuildLanguageModel.py
+   order=3
+   smoothingType=kndiscount
+   interpolate=true
+
+   FROM 2-Preprocess.110-tokenize-mono
+     corpusIn < tokenizedCorpus
+
+4-WordAlign.0-mgiza-prep: ON localhost machine-translation/descriptors/wordalign/GizaPrep.py
+
+   FROM 2-Preprocess.20-tokenize-e
+     tgtCorpusIn < tokenizedCorpus
+
+   FROM 2-Preprocess.10-tokenize-f
+     srcCorpusIn < tokenizedCorpus
+
+4-WordAlign.10-make-word-classes-f: ON localhost machine-translation/descriptors/wordalign/GizaMkcls.py
+   numClasses=50
+   numOptimizationRuns=2
+
+   FROM 2-Preprocess.10-tokenize-f
+     corpusIn < tokenizedCorpus
+
+4-WordAlign.15-make-word-classes-e: ON localhost machine-translation/descriptors/wordalign/GizaMkcls.py
+
+   FROM 4-WordAlign.10-make-word-classes-f
+     numOptimizationRuns <- numOptimizationRuns
+     numClasses <- numClasses
+
+   FROM 2-Preprocess.20-tokenize-e
+     corpusIn < tokenizedCorpus
+
+4-WordAlign.20-align-fe: ON localhost machine-translation/descriptors/wordalign/MgizaAll.py
+   model1iterations=5
+   hmmiterations=5
+   model3iterations=3
+   model4iterations=3
+   p0=0.999
+   ncpus=2
+   outputModelsForForceAlign=false
+
+   FROM 4-WordAlign.10-make-word-classes-f
+     srcClasses < classesOut
+
+   FROM 4-WordAlign.15-make-word-classes-e
+     tgtClasses < classesOut
+
+   FROM 4-WordAlign.0-mgiza-prep
+     tgtVcb < tgtVcb
+     srcVcb < srcVcb
+     tgtSrcCooc < tgtSrcCooc
+     tgtSrcSnt < tgtSrcSnt
+     srcTgtCooc < srcTgtCooc
+     srcTgtSnt < srcTgtSnt
+
+4-WordAlign.25-align-ef: ON localhost machine-translation/descriptors/wordalign/MgizaAll.py
+   model1iterations=5
+   hmmiterations=5
+   model3iterations=3
+   model4iterations=3
+   p0=0.999
+   ncpus=2
+   outputModelsForForceAlign=false
+
+   FROM 4-WordAlign.10-make-word-classes-f
+     tgtClasses < classesOut
+
+   FROM 4-WordAlign.0-mgiza-prep
+     tgtVcb < srcVcb
+     srcVcb < tgtVcb
+     tgtSrcSnt < srcTgtSnt
+     srcTgtSnt < tgtSrcSnt
+     tgtSrcCooc < srcTgtCooc
+     srcTgtCooc < tgtSrcCooc
+
+   FROM 4-WordAlign.15-make-word-classes-e
+     srcClasses < classesOut
+
+4-WordAlign.30-symmetrize: ON localhost machine-translation/descriptors/wordalign/SymmetrizeWordAlignments.py
+   heuristic=grow-diag-final-and
+
+   FROM 4-WordAlign.20-align-fe
+     src2tgtA3final < srcTgtAlignments
+
+   FROM 4-WordAlign.25-align-ef
+     tgt2srcA3final < srcTgtAlignments
+
+5-TrainModels.10-extract-phrases: ON localhost machine-translation/descriptors/moses/PhraseExtractLocal.py
+   maxPhraseLength=7
+
+   FROM 2-Preprocess.10-tokenize-f
+     fCorpus < tokenizedCorpus
+
+   FROM 4-WordAlign.30-symmetrize
+     symmetrizedAlignment < symmetrizedAlignment
+
+   FROM 2-Preprocess.20-tokenize-e
+     eCorpus < tokenizedCorpus
+
+5-TrainModels.20-learn-lexicon: ON localhost machine-translation/descriptors/moses/CreateLexicalTranslationTable.py
+
+   FROM 2-Preprocess.20-tokenize-e
+     eCorpus < tokenizedCorpus
+
+   FROM 4-WordAlign.30-symmetrize
+     symmetrizedAlignment < symmetrizedAlignment
+
+   FROM 2-Preprocess.10-tokenize-f
+     fCorpus < tokenizedCorpus
+
+5-TrainModels.30-score-phrases: ON localhost machine-translation/descriptors/moses/PhraseScore.py
+
+   FROM 5-TrainModels.20-learn-lexicon
+     lexF2E < lexF2E
+     lexE2F < lexE2F
+
+   FROM 5-TrainModels.10-extract-phrases
+     phraseInstancesInverse < phraseInstancesInverse
+     phraseInstances < phraseInstances
+
+5-TrainModels.40-score-reordering-model: ON localhost machine-translation/descriptors/moses/LearnLexicalizedReorderingModel.py
+   roModelType=msd-bidirectional-fe
+
+   FROM 5-TrainModels.10-extract-phrases
+     phraseInstanceOrientations < phraseInstanceOrientations
+
+6-Tune.10-tune-moses: ON localhost machine-translation/descriptors/moses/MosesMert.py
+   numLMs=1
+   lmOrder=4
+   lmLibrary=srilm
+   ttableLimit=40
+   distortionLimit=5
+   nBestSize=300
+
+   FROM 5-TrainModels.30-score-phrases
+     ptFile < scoredPhraseTable
+
+   FROM 5-TrainModels.40-score-reordering-model
+     roFile < scoredReorderingTable
+     roModelType <- roModelType
+
+   FROM 3-TrainLM.10-build-lm-srilm
+     lmFile < arpaLM
+
+   FROM 2-Preprocess.200-tokenize-tune-f
+     fCorpus < tokenizedCorpus
+
+   FROM 2-Preprocess.210-tokenize-tune-e
+     refs < tokenizedCorpus
+
+6-Tune.20-extract-topbest: ON localhost machine-translation/descriptors/joshua/ExtractTopBestJoshua.py
+
+   FROM 6-Tune.10-tune-moses
+     nbestIn < finalNbest
+
+6-Tune.30-Score: ON localhost machine-translation/descriptors/metrics/MultiMetric.py
+
+   FROM 6-Tune.20-extract-topbest
+     hyps < topbestOut
+
+   FROM 2-Preprocess.210-tokenize-tune-e
+     refs < tokenizedCorpus
+
+7-Test.10-decode-moses: ON localhost machine-translation/descriptors/moses/Moses.py
+   numLMs=1
+
+   FROM 5-TrainModels.30-score-phrases
+     ptFile < scoredPhraseTable
+
+   FROM 3-TrainLM.10-build-lm-srilm
+     lmFile < arpaLM
+
+   FROM 6-Tune.10-tune-moses
+     optimizedConfigFile < finalConfigFile
+     lmOrder <- lmOrder
+     lmLibrary <- lmLibrary
+     ttableLimit <- ttableLimit
+     distortionLimit <- distortionLimit
+     nBestSize <- nBestSize
+
+   FROM 5-TrainModels.40-score-reordering-model
+     roFile < scoredReorderingTable
+     roModelType <- roModelType
+
+   FROM 2-Preprocess.310-tokenize-test-f
+     fSentsIn < tokenizedCorpus
+
+7-Test.20-extract-topbest: ON localhost machine-translation/descriptors/joshua/ExtractTopBestJoshua.py
+
+   FROM 7-Test.10-decode-moses
+     nbestIn < eNBestOut
+
+7-Test.30-Score: ON localhost machine-translation/descriptors/metrics/MultiMetric.py
+
+   FROM 2-Preprocess.320-tokenize-test-e
+     refs < tokenizedCorpus
+
+   FROM 7-Test.20-extract-topbest
+     hyps < topbestOut
+
+
+[INSPECTORS]
+Meteor X-Ray (English): machine-translation/descriptors/visualization/VisualizeSystems.py
+   lang=en
+
+[SELECTIONS]
+all: 7-Test.10-decode-moses
+   FROM default SELECT default
+
+# The following entries contain position data for the visual interface. You should never need to modify this. 
+[GUI]
+Inputs.wmt10-dev: 474 506
+Inputs.wmt10-monolingual: -31 511
+Inputs.wmt10-parallel: -361 507
+2-Preprocess.10-tokenize-f: -364 353
+2-Preprocess.100-make-small-mono-corpus: -31 412
+2-Preprocess.100-make-small-parallel-corpus: -325 424
+2-Preprocess.110-tokenize-mono: -33 355
+2-Preprocess.20-tokenize-e: -241 398
+2-Preprocess.200-strip-tune-sgml: 285 424
+2-Preprocess.200-tokenize-tune-f: 213 384
+2-Preprocess.210-tokenize-tune-e: 295 366
+2-Preprocess.300-strip-test-sgml: 541 423
+2-Preprocess.310-tokenize-test-f: 490 351
+2-Preprocess.320-tokenize-test-e: 566 340
+3-TrainLM.10-build-lm-srilm: 70 248
+4-WordAlign.0-mgiza-prep: -362 219
+4-WordAlign.10-make-word-classes-f: -273 197
+4-WordAlign.15-make-word-classes-e: -201 168
+4-WordAlign.20-align-fe: -354 99
+4-WordAlign.25-align-ef: -175 107
+4-WordAlign.30-symmetrize: -238 46
+5-TrainModels.10-extract-phrases: 66 125
+5-TrainModels.20-learn-lexicon: 65 49
+5-TrainModels.30-score-phrases: 165 103
+5-TrainModels.40-score-reordering-model: 168 177
+6-Tune.10-tune-moses: 290 273
+6-Tune.20-extract-topbest: 368 257
+6-Tune.30-Score: 425 239
+7-Test.10-decode-moses: 446 139
+7-Test.20-extract-topbest: 492 102
+7-Test.30-Score: 541 77
+

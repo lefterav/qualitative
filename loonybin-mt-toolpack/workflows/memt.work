@@ -1,0 +1,20 @@
+WORKDIR /usr13/jhclark/memt-test
+TOOLDIR tool-packs
+HOMEPATHDIR  /usr12/jhclark/paths
+MACHINES 1
+localhost	HomeCommandLine
+VERTICES 5
+1	100-align-dev	machine-translation/descriptors/memt/MemtAlign.py	125	242	numSystems=3	LOONYBIN_MACHINE_CONFIG=localhost
+2	200-tune	machine-translation/descriptors/memt/MemtTune.py	220	182	align.transitive=false	beam_size=500	length_normalize=false	phrase.type= 	legacy.continue_recent=false	legacy.extend_aligned=false	horizon.stay_weights= 	horizon.stay_threshold=0.8	horizon.radius=5	horizon.method=length	score.verbatim0.individual=2	score.verbatim0.collective=2	score.verbatim0.mask=self exact boundary	score.verbatim1.individual=3	score.verbatim1.collective=3	score.verbatim1.mask=unknown exact snowball_stem wn_stem wn_synonymy paraphrase artificial self transitive boundary	output.nbest=300	output.caps=true	output.scores=true	output.alignment=false	LOONYBIN_MACHINE_CONFIG=localhost
+3	400-decode	machine-translation/descriptors/memt/Memt.py	344	101	align.transitive=PARAM_VIA_EDGE	beam_size=PARAM_VIA_EDGE	length_normalize=PARAM_VIA_EDGE	phrase.type=PARAM_VIA_EDGE	legacy.continue_recent=PARAM_VIA_EDGE	legacy.extend_aligned=PARAM_VIA_EDGE	horizon.stay_weights=PARAM_VIA_EDGE	horizon.stay_threshold=PARAM_VIA_EDGE	horizon.radius=PARAM_VIA_EDGE	horizon.method=PARAM_VIA_EDGE	score.verbatim0.individual=PARAM_VIA_EDGE	score.verbatim0.collective=PARAM_VIA_EDGE	score.verbatim0.mask=PARAM_VIA_EDGE	score.verbatim1.individual=PARAM_VIA_EDGE	score.verbatim1.collective=PARAM_VIA_EDGE	score.verbatim1.mask=PARAM_VIA_EDGE	output.nbest=PARAM_VIA_EDGE	output.caps=PARAM_VIA_EDGE	output.scores=PARAM_VIA_EDGE	output.alignment=PARAM_VIA_EDGE	LOONYBIN_MACHINE_CONFIG=localhost
+4	300-align-test	machine-translation/descriptors/memt/MemtAlign.py	200	67	numSystems=PARAM_VIA_EDGE	LOONYBIN_MACHINE_CONFIG=localhost
+5	FS-inputs	mfs	28	149	fileDir=/usr13/jhclark/memt-test/INPUTS	fileNames=cu-bojar.dev google.dev lm.en.5gram.srilm uedin.dev cu-bojar.eval google.eval ref.dev uedin.eval	LOONYBIN_MACHINE_CONFIG=localhost
+EDGES 8
+20	default	1	2	alignedTopbestHypotheses	devMatchedFile
+16	default	1	4	param:numSystems	param:numSystems
+18	default	5	2	ref.dev	devRefFile	lm.en.5gram.srilm	lmFile
+17	default	5	1	cu-bojar.dev	topbestSystem1	google.dev	topbestSystem2	uedin.dev	topbestSystem3
+23	default	2	3	tunedWeights	tunedWeights	param:phrase.type	param:phrase.type	param:horizon.radius	param:horizon.radius	param:legacy.continue_recent	param:legacy.continue_recent	param:score.verbatim0.collective	param:score.verbatim0.collective	param:output.scores	param:output.scores	param:legacy.extend_aligned	param:legacy.extend_aligned	param:horizon.stay_threshold	param:horizon.stay_threshold	param:output.alignment	param:output.alignment	param:score.verbatim0.individual	param:score.verbatim0.individual	param:score.verbatim1.collective	param:score.verbatim1.collective	param:horizon.method	param:horizon.method	param:output.nbest	param:output.nbest	param:beam_size	param:beam_size	param:score.verbatim1.individual	param:score.verbatim1.individual	param:output.caps	param:output.caps	param:score.verbatim1.mask	param:score.verbatim1.mask	param:score.verbatim0.mask	param:score.verbatim0.mask	param:align.transitive	param:align.transitive	param:length_normalize	param:length_normalize	param:horizon.stay_weights	param:horizon.stay_weights
+22	default	5	3	lm.en.5gram.srilm	lmFile
+21	default	4	3	alignedTopbestHypotheses	testMatchedFile
+15	default	5	4	cu-bojar.eval	topbestSystem1	google.eval	topbestSystem2	uedin.eval	topbestSystem3

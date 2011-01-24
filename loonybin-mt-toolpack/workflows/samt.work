@@ -1,0 +1,38 @@
+WORKDIR /home/jhclark/samt-test
+TOOLDIR tool-packs
+HOMEPATHDIR  /home/jhclark/paths
+MACHINES 1
+localhost	HomeCommandLine
+VERTICES 11
+0	200-create-sent-data	machine-translation/descriptors/samt/SamtCreateSentenceData.py	48	387	hierMode=true	LOONYBIN_MACHINE_CONFIG=localhost
+1	300-extract-phrases	machine-translation/descriptors/samt/SamtExtractPhrases.py	171	344	queueName=m45	numMapTasks=100	numReduceTasks=200	maxPhraseLength=7	LOONYBIN_MACHINE_CONFIG=localhost
+2	310-extract-rules	machine-translation/descriptors/samt/SamtExtractRules.py	218	306	queueName=PARAM_VIA_EDGE	numMapTasks=100	numReduceTasks=100	stopWordList=,_.	maxSourceSymbolCount=5	allowDoublePlus=true	unaryCategoryHandling=bottom	labeledGlueRules=0	naturalSentenceRules=0	allowAbstractSrc=false	allowConsecutiveNonterms=false	useOnlyPos=false	restrictToSet=false	lexMinFreq=2	nonLexMinFreq=4	minFreqGivenSrcArg=0.04	LOONYBIN_MACHINE_CONFIG=localhost
+3	410-filter-lm	machine-translation/descriptors/samt/SamtFilterLM.py	379	235	queueName=PARAM_VIA_EDGE	numMapTasks=100	numReduceTasks=100	outputBufferLimit=100000	LOONYBIN_MACHINE_CONFIG=localhost
+4	400-filter-rules	machine-translation/descriptors/samt/SamtFilterRules.py	273	271	queueName=PARAM_VIA_EDGE	numMapTasks=100	numReduceTasks=100	bufferSize=10000	maxSourceLength=5	NullRules=true	UseNULL=true	UseRefinedIBM1ProbEstimate=true	noAllowAbstractRules=true	noAllowRulesWithOnlyTargetTerminals=false	lexicalWeightCutoff=0	phraseFeatureCount=0	cacheSize=4000	beamFactorLexicalRules=0.05	beamFactorNonLexicalRules=0.05	minOccurrenceCountLexicalRules=0	minOccurrenceCountNonlexicalRules=0	LOONYBIN_MACHINE_CONFIG=localhost
+5	510-tune	machine-translation/descriptors/samt/SamtMert.py	443	156	queueName=PARAM_VIA_EDGE	numMapTasks=100	numReduceTasks=100	AllowConsecSrcNonterminals=false	MaxAbstractionCount=2	SRIHistoryLength=4	HistoryLength=2	RecomputeLMCostsDuringNBest=1	RescoreLM=0	ComboPruningBeamSize=100	PruningMap=0-25-inf-@_S-50-inf	MaxHypsPerCell=300	MaxCombinationCount=15	MaxCombinationCount80words=8	RemoveUnt=0	TagSetList=@_dummy	ScoringMetric=IBMBLEU	DisplayNBestData=100	ExtractUnique=1	v=0	nRefs=7	initialParams=13.3064_-0.37192_10.6937_-12.0117_1.68162_-1.36537_0.953994_-0.090068_0_-3.56535_-7.73976_14.6069_0_3.059 66_0.172398_9.10075_-1.2096_7.10466_-0.623654_-26.7365_29.4476_-0.536325_5.90255_0.0521617_1.03773	iter_limit=10	merge_tasks=100	mer_random_restarts=30	mer_zero_out_dims=35	mer_runs_per_iteration=1	ScoringMetric=IBMBLEU	Opti_Epsilon=0.0001	LOONYBIN_MACHINE_CONFIG=localhost
+6	610-decode	machine-translation/descriptors/samt/SamtDecode.py	427	82	queueName=PARAM_VIA_EDGE	numMapTasks=PARAM_VIA_EDGE	numReduceTasks=PARAM_VIA_EDGE	AllowConsecSrcNonterminals=PARAM_VIA_EDGE	MaxAbstractionCount=PARAM_VIA_EDGE	SRIHistoryLength=PARAM_VIA_EDGE	HistoryLength=PARAM_VIA_EDGE	RecomputeLMCostsDuringNBest=PARAM_VIA_EDGE	RescoreLM=PARAM_VIA_EDGE	ComboPruningBeamSize=PARAM_VIA_EDGE	PruningMap=PARAM_VIA_EDGE	MaxHypsPerCell=PARAM_VIA_EDGE	MaxCombinationCount=PARAM_VIA_EDGE	MaxCombinationCount80words=PARAM_VIA_EDGE	RemoveUnt=PARAM_VIA_EDGE	TagSetList=PARAM_VIA_EDGE	ScoringMetric=PARAM_VIA_EDGE	DisplayNBestData=PARAM_VIA_EDGE	ExtractUnique=PARAM_VIA_EDGE	v=PARAM_VIA_EDGE	LOONYBIN_MACHINE_CONFIG=localhost
+9	FS-input-files	mfs	39	134	fileDir=/home/zollmann/research/SBMT/examples/iwslt/sample_initial_dir	fileNames=aligned.grow-diag-final-and.gz dev.src dev.tgt lex.0-0.f2n lex.0-0.n2f lm.en.5gram.srilm test2.src test2.tgt test.src test.tgt train.src.gz train.tgt.gz train.tgt.parsed.gz	LOONYBIN_MACHINE_CONFIG=localhost
+11	399-cat-dev-and-test	machine-translation/descriptors/monocorpus/Cat.py	77	194	LOONYBIN_MACHINE_CONFIG=localhost
+12	398-calculate-length-ratio	machine-translation/descriptors/parallelcorpus/ParallelLengthRatio.py	60	258	LOONYBIN_MACHINE_CONFIG=localhost
+13	FS-scripts	mfs	38	56	fileDir=/home/zollmann/research/SBMT/scripts	fileNames=simple_normalize_bin	LOONYBIN_MACHINE_CONFIG=localhost
+EDGES 20
+59	default	0	1	hdfs:combinedCorpus	hdfs:combinedSentenceData
+46	default	1	2	hdfs:phraseInstances	hdfs:phraseInstances	param:queueName	param:queueName
+17	default	4	6	hdfs:filteredRules	hdfs:filteredRules
+49	default	3	5	hdfs:filteredLM	hdfs:filteredLM	param:queueName	param:queueName
+16	default	3	6	hdfs:filteredLM	hdfs:filteredLM
+21	default	9	5	dev.src	fDevSents	dev.tgt	eRefSents
+51	default	5	6	tunedParams	tunedWeights	param:SRIHistoryLength	param:SRIHistoryLength	param:ComboPruningBeamSize	param:ComboPruningBeamSize	param:v	param:v	param:RecomputeLMCostsDuringNBest	param:RecomputeLMCostsDuringNBest	param:MaxCombinationCount80words	param:MaxCombinationCount80words	param:PruningMap	param:PruningMap	param:numMapTasks	param:numMapTasks	param:RescoreLM	param:RescoreLM	param:MaxCombinationCount	param:MaxCombinationCount	param:MaxAbstractionCount	param:MaxAbstractionCount	param:AllowConsecSrcNonterminals	param:AllowConsecSrcNonterminals	param:HistoryLength	param:HistoryLength	param:ExtractUnique	param:ExtractUnique	param:queueName	param:queueName	param:TagSetList	param:TagSetList	param:RemoveUnt	param:RemoveUnt	param:DisplayNBestData	param:DisplayNBestData	param:MaxHypsPerCell	param:MaxHypsPerCell	param:ScoringMetric	param:ScoringMetric	param:numReduceTasks	param:numReduceTasks
+22	default	9	6	test.src	fSentsIn
+20	default	9	3	lm.en.5gram.srilm	hdfs:unfilteredLM
+32	default	9	4	lex.0-0.f2n	lexPsgt	lex.0-0.n2f	lexPtgs
+29	default	12	4	ratioTgtOverSrc	meanTargetSourceRatio
+58	default	4	5	hdfs:filteredRules	hdfs:filteredRules
+27	default	11	4	corpusOut	fFilterSet
+55	default	9	12	train.src.gz	fCorpusIn	train.tgt.gz	eCorpusIn
+52	default	13	6	simple_normalize_bin	normalizingScript
+45	default	9	0	train.tgt.gz	hdfs:eCorpus	aligned.grow-diag-final-and.gz	hdfs:alignment	train.src.gz	hdfs:fCorpus
+47	default	2	4	hdfs:ruleInstances	hdfs:unfilteredRules	param:queueName	param:queueName
+48	default	4	3	hdfs:filteredRules	hdfs:filteredRules	param:queueName	param:queueName
+56	default	9	11	dev.src	corpus1	test.src	corpus2
+53	default	13	5	simple_normalize_bin	normalizingScript
