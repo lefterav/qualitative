@@ -116,11 +116,13 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
      targetLanguageSuffix <- source-language
 
 1-BuildLM.500-tokenize-lm: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
-   targetLanguageSuffix=en
    numSplitPieces=1
 
    FROM FS-concatenate-monoCorpora
      inputCorpus < corpusOut
+
+   FROM FS-languagepair
+     targetLanguageSuffix <- target-language
 
 1-BuildLM.510-lowercase-lm: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
 
