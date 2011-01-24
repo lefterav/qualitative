@@ -26,9 +26,10 @@ FS-concatenate-monoCorpora: ON localhost machine-translation/descriptors/monocor
      corpus1 < monoCorpus1.e
      corpus2 < monoCorpus2.e
 
-FS-dev-corpus: ON localhost efs
-   devCorpus.f=/share/emplus/shared-tasks/wmt10/data/wmt08/devtest/nc-devtest2007.de
-   devCorpus.e=/share/emplus/shared-tasks/wmt10/data/wmt08/devtest/nc-devtest2007.en
+FS-languagepair: param
+   source-language=de
+   target-language=en
+   language-pair=de-en
 
 FS-monoCorpora: ON localhost efs
    monoCorpus1.e=/share/emplus/corpora/Acquis/aligned-corpus/de-en/acquis.de-en.en
@@ -37,9 +38,6 @@ FS-monoCorpora: ON localhost efs
 FS-params: ON localhost efs
    paramConfigFile=/home/elav01/experiments/metawp2/joshua-run/init/params.txt
 
-FS-test-corpus: ON localhost efs
-   testCorpus.f=/share/emplus/shared-tasks/wmt10/data/dev/newstest2008.de
-
 FS-training-corpus-1: ON localhost efs
    trainingCorpus.f=/share/emplus/corpora/Acquis/aligned-corpus/de-en/acquis.de-en.de
    trainingCorpus.e=/share/emplus/corpora/Acquis/aligned-corpus/de-en/acquis.de-en.en
@@ -47,6 +45,55 @@ FS-training-corpus-1: ON localhost efs
 FS-training-corpus-2: ON localhost efs
    trainingCorpus.f=/share/emplus/shared-tasks/wmt10/data/parallel/news-commentary10.de-en.de
    trainingCorpus.e=/share/emplus/shared-tasks/wmt10/data/parallel/news-commentary10.de-en.en
+
+0a-dev.corpus: ON localhost efs
+   devCorpus.f=/share/emplus/shared-tasks/wmt10/data/wmt08/devtest/nc-devtest2007.de
+   devCorpus.e=/share/emplus/shared-tasks/wmt10/data/wmt08/devtest/nc-devtest2007.en
+
+0a-dev.lowercase-e: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
+
+   FROM 0a-dev.tokenize-e
+     tokenizedCorpus < tokenizedCorpus
+
+0a-dev.lowercase-f: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
+
+   FROM 0a-dev.tokenize-f
+     tokenizedCorpus < tokenizedCorpus
+
+0a-dev.tokenize-e: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   numSplitPieces=1
+
+   FROM FS-languagepair
+     targetLanguageSuffix <- target-language
+
+   FROM 0a-dev.corpus
+     inputCorpus < devCorpus.e
+
+0a-dev.tokenize-f: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   numSplitPieces=1
+
+   FROM 0a-dev.corpus
+     inputCorpus < devCorpus.f
+
+   FROM FS-languagepair
+     targetLanguageSuffix <- source-language
+
+0b-test.corpus: ON localhost efs
+   testCorpus.f=/share/emplus/shared-tasks/wmt10/data/dev/newstest2008.de
+
+0b-test.lowercase: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
+
+   FROM 0b-test.tokenize
+     tokenizedCorpus < tokenizedCorpus
+
+0b-test.tokenize: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   numSplitPieces=1
+
+   FROM 0b-test.corpus
+     inputCorpus < testCorpus.f
+
+   FROM FS-languagepair
+     targetLanguageSuffix <- source-language
 
 1-BuildLM.500-tokenize-lm: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
    targetLanguageSuffix=en
@@ -69,18 +116,22 @@ FS-training-corpus-2: ON localhost efs
      corpusIn < normalizedCorpus
 
 2-Preproc.100-tokenize-e: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
-   targetLanguageSuffix=en
    numSplitPieces=1
 
    FROM FS-concatenate
      inputCorpus < eCorpusOut
 
+   FROM FS-languagepair
+     targetLanguageSuffix <- target-language
+
 2-Preproc.110-tokenize-f: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
-   targetLanguageSuffix=en
    numSplitPieces=1
 
    FROM FS-concatenate
      inputCorpus < fCorpusOut
+
+   FROM FS-languagepair
+     targetLanguageSuffix <- source-language
 
 2-Preproc.150-lowercase-e: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
 
@@ -102,15 +153,13 @@ FS-training-corpus-2: ON localhost efs
    FROM 2-Preproc.150-lowercase-e
      englishCorpus < normalizedCorpus
 
-   FROM FS-test-corpus
-     testData < testCorpus.f
+   FROM 3-BuildTM.concatenate-dev-test
+     testData < corpusOut
 
 3-BuildTM.300-berkeley-aligner: ON localhost machine-translation/descriptors/wordalign/BerkeleyAligner.py
    heapSizeInMegs=64000
    otherJVMOptions=-XX:+UseCompressedOops
-   base_name=training
    numThreads=8
-   iterations=1
 
    FROM 3-BuildTM.200-subsample-for-tm
      englishCorpus < englishSubsample
@@ -142,8 +191,16 @@ FS-training-corpus-2: ON localhost efs
    FROM 3-BuildTM.200-subsample-for-tm
      englishCorpus < englishSubsample
 
-   FROM FS-dev-corpus
-     fDevSents < devCorpus.f
+   FROM 0a-dev.lowercase-f
+     fDevSents < normalizedCorpus
+
+3-BuildTM.concatenate-dev-test: ON localhost machine-translation/descriptors/monocorpus/Cat.py
+
+   FROM 0b-test.lowercase
+     corpus1 < normalizedCorpus
+
+   FROM 0a-dev.lowercase-f
+     corpus2 < normalizedCorpus
 
 4-TrainRecaser.600-split-recasing-data: ON localhost machine-translation/descriptors/parallelcorpus/ParallelSplit.py
    nHeadLines=600
@@ -158,12 +215,12 @@ FS-training-corpus-2: ON localhost efs
    ratio=0.9
    heapSizeInMegs=64000
 
-   FROM 2-Preproc.100-tokenize-e
-     testData < tokenizedCorpus
-
    FROM 4-TrainRecaser.600-split-recasing-data
      foreignCorpus < fTail
      englishCorpus < eTail
+
+   FROM 4-TrainRecaser.concatenate-test-dev
+     testData < corpusOut
 
 4-TrainRecaser.610-generate-mono-alignment: ON localhost machine-translation/descriptors/parallelcorpus/GenerateMonotoneAlignment.py
 
@@ -197,8 +254,8 @@ FS-training-corpus-2: ON localhost efs
      alignmentGrids < alignmentGrids
      JVMOptions <- JVMOptions
 
-   FROM FS-dev-corpus
-     fDevSents < devCorpus.f
+   FROM 4-TrainRecaser.600-split-recasing-data
+     fDevSents < fHead
 
 4-TrainRecaser.640-build-recasing-lm: ON localhost machine-translation/descriptors/lm/BuildLanguageModel.py
    order=5
@@ -236,12 +293,20 @@ FS-training-corpus-2: ON localhost efs
    FROM 4-TrainRecaser.640-build-recasing-lm
      lmFile < arpaLM
 
-   FROM 4-TrainRecaser.600-split-recasing-data
-     fDevSents < fTail
-     eRefSents < eTail
-
    FROM FS-params
      paramConfigFile < paramConfigFile
+
+   FROM 4-TrainRecaser.600-split-recasing-data
+     fDevSents < fHead
+     eRefSents < eHead
+
+4-TrainRecaser.concatenate-test-dev: ON localhost machine-translation/descriptors/monocorpus/Cat.py
+
+   FROM 0b-test.lowercase
+     corpus1 < normalizedCorpus
+
+   FROM 4-TrainRecaser.600-split-recasing-data
+     corpus2 < fHead
 
 5-Tune.700-tune: ON localhost machine-translation/descriptors/joshua/ZMERTJoshua.py
    lmOrder=5
@@ -269,12 +334,14 @@ FS-training-corpus-2: ON localhost efs
    FROM 3-BuildTM.410-extract-hiero-grammar
      tmFile < englishGrammar
 
-   FROM FS-dev-corpus
-     fDevSents < devCorpus.f
-     eRefSents < devCorpus.e
-
    FROM FS-params
      paramConfigFile < paramConfigFile
+
+   FROM 0a-dev.lowercase-e
+     eRefSents < normalizedCorpus
+
+   FROM 0a-dev.lowercase-f
+     fDevSents < normalizedCorpus
 
 6-Test.5-800-decode: ON localhost machine-translation/descriptors/joshua/Joshua.py
    includeAlign=true
@@ -300,8 +367,8 @@ FS-training-corpus-2: ON localhost efs
    FROM 3-BuildTM.410-extract-hiero-grammar
      tmFile < englishGrammar
 
-   FROM FS-test-corpus
-     fSentsIn < testCorpus.f
+   FROM 0b-test.lowercase
+     fSentsIn < normalizedCorpus
 
 6-Test.900-take-topbest: ON localhost machine-translation/descriptors/joshua/ExtractTopBestJoshua.py
 
@@ -358,13 +425,20 @@ all: 6-Test.920-detokenizer
 # The following entries contain position data for the visual interface. You should never need to modify this. 
 [GUI]
 FS-concatenate: -297 437
-FS-concatenate-monoCorpora: -373 226
-FS-dev-corpus: -364 45
-FS-monoCorpora: -366 177
-FS-params: -359 316
-FS-test-corpus: -362 110
+FS-concatenate-monoCorpora: -306 230
+FS-languagepair: -451 209
+FS-monoCorpora: -372 247
+FS-params: -288 326
 FS-training-corpus-1: -369 387
 FS-training-corpus-2: -373 456
+0a-dev.corpus: -225 -142
+0a-dev.lowercase-e: -298 -18
+0a-dev.lowercase-f: -163 -23
+0a-dev.tokenize-e: -335 -72
+0a-dev.tokenize-f: -199 -69
+0b-test.corpus: -323 51
+0b-test.lowercase: -205 92
+0b-test.tokenize: -309 98
 1-BuildLM.500-tokenize-lm: -181 191
 1-BuildLM.510-lowercase-lm: -88 248
 1-BuildLM.530-build-lm: 33 192
@@ -372,17 +446,19 @@ FS-training-corpus-2: -373 456
 2-Preproc.110-tokenize-f: -97 571
 2-Preproc.150-lowercase-e: -92 410
 2-Preproc.160-lowercase-f: -21 515
-3-BuildTM.200-subsample-for-tm: 117 396
+3-BuildTM.200-subsample-for-tm: 177 390
 3-BuildTM.300-berkeley-aligner: 319 382
 3-BuildTM.400-build-suffix-array-for-tm: 330 330
 3-BuildTM.410-extract-hiero-grammar: 365 261
-4-TrainRecaser.600-split-recasing-data: 15 56
-4-TrainRecaser.605-subsample-for-recaser: 72 -9
+3-BuildTM.concatenate-dev-test: 183 301
+4-TrainRecaser.600-split-recasing-data: 12 -2
+4-TrainRecaser.605-subsample-for-recaser: 99 -19
 4-TrainRecaser.610-generate-mono-alignment: 202 -37
 4-TrainRecaser.620-build-suffix-array-for-recaser: 155 -73
 4-TrainRecaser.630-extract-recasing-rules: 146 -125
 4-TrainRecaser.640-build-recasing-lm: 122 -189
 4-TrainRecaser.650-tune-recaser: 425 -136
+4-TrainRecaser.concatenate-test-dev: 48 42
 5-Tune.700-tune: 405 148
 6-Test.5-800-decode: 521 64
 6-Test.900-take-topbest: 562 35
