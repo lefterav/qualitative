@@ -1,6 +1,6 @@
 #!/usr/bin/env loon
 
-home.baseDir=/home/elav01/experiments/metawp2/joshua-de-en
+home.baseDir=/home/elav01/experiments/metawp2/joshua-es-en
 home.pathDir=/home/elav01/tools/loonybin/paths
 
 [NOTES]
@@ -27,12 +27,12 @@ FS-concatenate-monoCorpora: ON localhost machine-translation/descriptors/monocor
      corpus2 < corpus.e
 
 FS-languagepair: param
-   source-language=de
-   target-language=en
+   source-language=en
+   target-language=de
    language-pair=de-en
 
 FS-monoCorp: ON localhost machine-translation/descriptors/parallelcorpus/ParallelParamFilenames.py
-   corpus.f=/share/emplus/corpora/Acquis/aligned-corpus/de-en/acquis.$pair.$tgt
+   corpus.f=/share/emplus/corpora/Acquis/aligned-corpus/$pair/acquis.$pair.$tgt
    corpus.e=/share/emplus/shared-tasks/wmt10/data/parallel/news-commentary10.$pair.$tgt
 
    FROM FS-languagepair
@@ -53,8 +53,8 @@ FS-training-corp-2: ON localhost machine-translation/descriptors/parallelcorpus/
      langPair <- language-pair
 
 FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpus/ParallelParamFilenames.py
-   corpus.f=/share/emplus/corpora/Acquis/aligned-corpus/de-en/acquis.$pair.$src
-   corpus.e=/share/emplus/corpora/Acquis/aligned-corpus/de-en/acquis.$pair.$tgt
+   corpus.f=/share/emplus/corpora/Acquis/aligned-corpus/$pair/acquis.$pair.$src
+   corpus.e=/share/emplus/corpora/Acquis/aligned-corpus/$pair/acquis.$pair.$tgt
 
    FROM FS-languagepair
      sourceLanguage <- source-language
@@ -98,8 +98,13 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 0a-dev.corp
      inputCorpus < corpus.f
 
-0b-test.corpus: ON localhost efs
-   testCorpus.f=/share/emplus/shared-tasks/wmt10/data/dev/newstest2008.de
+0b-test.corpus: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
+   corpus=/share/emplus/shared-tasks/wmt10/data/dev/newstest2008.$src
+
+   FROM FS-languagepair
+     sourceLanguage <- source-language
+     targetLanguage <- target-language
+     langPair <- language-pair
 
 0b-test.lowercase: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
 
@@ -109,11 +114,11 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
 0b-test.tokenize: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
    numSplitPieces=1
 
-   FROM 0b-test.corpus
-     inputCorpus < testCorpus.f
-
    FROM FS-languagepair
      targetLanguageSuffix <- source-language
+
+   FROM 0b-test.corpus
+     inputCorpus < corpus
 
 1-BuildLM.500-tokenize-lm: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
    numSplitPieces=1
@@ -181,7 +186,7 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
 3-BuildTM.300-berkeley-aligner: ON localhost machine-translation/descriptors/wordalign/BerkeleyAligner.py
    heapSizeInMegs=64000
    otherJVMOptions=-XX:+UseCompressedOops
-   base_name=corpus
+   base_name=training
    numThreads=8
    iterations=5
 
@@ -460,7 +465,7 @@ FS-training-corpus-1: -425 383
 0a-dev.lowercase-f: -163 -23
 0a-dev.tokenize-e: -335 -72
 0a-dev.tokenize-f: -199 -69
-0b-test.corpus: -323 51
+0b-test.corpus: -328 53
 0b-test.lowercase: -205 92
 0b-test.tokenize: -309 98
 1-BuildLM.500-tokenize-lm: -181 191
