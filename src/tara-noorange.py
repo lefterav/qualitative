@@ -14,9 +14,7 @@ from classifier.tree import TreeLearner
 from classifier.svm import SVM
 from os import getenv
 
-if __name__ == '__main__':
-    self.test_length_fg_with_serialized_parsing()
-    
+
 
 
 def test_length_fg_with_serialized_parsing():
@@ -29,7 +27,7 @@ def test_length_fg_with_serialized_parsing():
 
     lfg = LengthFeatureGenerator()
     saxreader = SaxReader( [lfg] )
-    myparser = make_parser( saxreader )
+    myparser = make_parser( [saxreader] )
     myparser.parse( file_object )
     
     dir = getenv("HOME") + "/workspace/TaraXUscripts/data"
@@ -71,6 +69,9 @@ def test_length_fg_with_full_parsing():
     xmlwriter = XmlWriter(fdataset)
     xmlwriter.write_to_file(dir + "/test-length.xml")
     
+
+if __name__ == '__main__':
+    test_length_fg_with_serialized_parsing()
     
         
     

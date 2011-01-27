@@ -181,7 +181,7 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
 3-BuildTM.300-berkeley-aligner: ON localhost machine-translation/descriptors/wordalign/BerkeleyAligner.py
    heapSizeInMegs=64000
    otherJVMOptions=-XX:+UseCompressedOops
-   base_name=corpus
+   base_name=training
    numThreads=8
    iterations=5
 

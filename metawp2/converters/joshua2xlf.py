@@ -40,6 +40,7 @@ def get_str(listVar):
 
 def get_1best (xlf):
     bestSnts = []
+    d={}
     ids = set()
     for snt in xlf:
         # Number of sentence.
@@ -47,11 +48,33 @@ def get_1best (xlf):
         # If a key 'snt_no' was already created in d.
         if snt_no not in ids:
             ids.add(snt_no)
-            bestSnts.append(snt)
+            bestSnts.append( (snt, snt_no) )
             
             
-    return (bestSnts,list(ids))
+    return bestSnts
 
+def annotate_OOV (token):
+    if token.endswith("_OOV"):
+        return "<annotation type=\"OOV\" value=\"1\" />"
+    else :
+        return "<annotation type=\"OOV\" value=\"0\" />"
+
+def remove_OOV (string):
+    return re.sub(r'([^ ]*)_OOV', r'\1', string)
+
+def get_tokens_xml (string, s_phrase_id):
+    tokens = string.split()
+    output = "\n\t\t\t<tokens>"
+    i = 1
+    for token in tokens:
+        s_token_id = "%s_k%s"% (s_phrase_id, str(i))
+        output += "\n\t\t\t\t<token id=\"%s\">" %s_token_id
+        output += "\n\t\t\t\t\t<string>%s</string>" %remove_OOV(token)
+        output += "\n\t\t\t\t\t%s" %annotate_OOV(token)
+        output += "\n\t\t\t\t</token>" 
+        i += 1
+    output += "\n\t\t\t</tokens>"
+    return output
 
 # -----------INPUT-----------
 # file to be converted
@@ -75,7 +98,7 @@ g.close()
 
 
 
-(xlf, sntNumbers) = get_1best(xlf)
+xlf = get_1best(xlf)
 
 
 #-------SELECT THE BEST SENTENCES-------
@@ -117,7 +140,7 @@ g.close()
 xmlFiles = []
 line_no = 0
 # This loop converts an input format of sentences into an output XLF format.
-for line in xlf:
+for (line, snt_no) in xlf:
     #---------------PARSE SENTENCES---------------
     # Returns a part beginning with '(ROOT{... ...)' and ending with '-#end#-'.
     s = line.partition(' ||| ')[2].partition(' ||| ')[0] + '-#end#-'
@@ -235,75 +258,82 @@ for line in xlf:
     sXlf = ''
     sXlf = sXlf + '\n<alt-trans tool-id="t1" add:rank="1">'
     sXlf = sXlf + '\n\t<source>' + inputSnts[line_no].strip() + '</source>'
-    sXlf = sXlf + '\n\t<target>' + tarSnt + '</target>'
+    sXlf = sXlf + '\n\t<target>' + remove_OOV(tarSnt) + '</target>'
 
     # total, lm, pt0, pt1, pt2
     scores = line.rpartition('|||')[0].rpartition('|||')[2].strip().split(' ')
     # word penalty
-    scores.append(line.rpartition('|||')[2].strip())
-    sXlf = sXlf + '\n\t<add:scores>'
-    sXlf = sXlf + '\n\t\t<score type="total" value="' + scores[0] + '" />'
-    sXlf = sXlf + '\n\t\t<score type="lm" value="' + scores[1] + '" />'
-    sXlf = sXlf + '\n\t\t<score type="pt0" value="' + scores[2] + '" />'
-    sXlf = sXlf + '\n\t\t<score type="pt1" value="' + scores[3] + '" />'
-    sXlf = sXlf + '\n\t\t<score type="pt2" value="' + scores[4] + '" />'
-    sXlf = sXlf + '\n\t<score type="wordpenalty" value="' + scores[5] + '" />'
-    sXlf = sXlf + '\n</add:scores>'
-
-    sXlf = sXlf + '\n\t<add:derivation type="hiero_decoding" id="s' + \
-           sntNumbers[line_no] + '_t2">'
-    chList = [node]
-    while chList:
-        i = 1
-        # This loop adds all children of a node chList[0]
-        # between chList[0] and chList[2].
-        for child in chList[0].get_children():
-            chList.insert(i, child)
-            i = i + 1
-
-        # Creates a string with a list of children.
-        sChildren = ''
-        if len(chList[0].get_children()):
-            sChildren = ' children="'
-            for child_no in chList[0].get_children():
-                sChildren = sChildren + 's' + sntNumbers[line_no] + '_p' + \
-                            str(child_no.iPhraseID) + ','
-            sChildren = sChildren.strip(',') + '"'
-
-        # Creates a phrase with node parameters
-        # and with a node string, if exists.
-        sXlf = sXlf + '\n\t\t<phrase id="s' + sntNumbers[line_no] + '_t1_p' + \
-               str(chList[0].iPhraseID) + '"' + sChildren + '>'
-        if chList[0].sString:
-            sXlf = sXlf + '\n\t\t\t<string>' + chList[0].sString.strip() + \
-                   '</string>'
-        sXlf = sXlf + '\n\t\t\t<annotation type="class" value="' + \
-               chList[0].sClass + '" />'
-        sXlf = sXlf + '\n\t\t\t<alignment from="' + chList[0].iFrom + \
-               '" to="' + chList[0].iTo + '" />'
-        sXlf = sXlf + '\n\t\t</phrase>'
-        
-        # The processed (printed) node is removed from the list.
-        chList.pop(0)
-
-    sXlf = sXlf + '\n\t</add:derivation>'
-    sXlf = sXlf + '\n</alt-trans>'
-    # Removes '\n' in the beginning of the string.
-    xmlFiles.append(sXlf.strip())
-    #-------------END CREATING AN OUTPUT FILE--------------
-    # Counts iterations in main for loop.
+    if len(scores) == 5:
+        scores.append(line.rpartition('|||')[2].strip())
+        sXlf = sXlf + '\n\t<add:scores>'
+        sXlf = sXlf + '\n\t\t<score type="total" value="' + scores[5] + '" />'
+        sXlf = sXlf + '\n\t\t<score type="lm" value="' + scores[0] + '" />'
+        sXlf = sXlf + '\n\t\t<score type="pt0" value="' + scores[1] + '" />'
+        sXlf = sXlf + '\n\t\t<score type="pt1" value="' + scores[2] + '" />'
+        sXlf = sXlf + '\n\t\t<score type="pt2" value="' + scores[3] + '" />'
+        sXlf = sXlf + '\n\t\t<score type="wordpenalty" value="' + scores[4] + '" />'
+        sXlf = sXlf + '\n\t</add:scores>'
+    
+        sXlf = sXlf + '\n\t<add:derivation type="hiero_decoding" id="s' + \
+               snt_no + '_t1_r1_d1">'
+        chList = [node]
+        while chList:
+            i = 1
+            # This loop adds all children of a node chList[0]
+            # between chList[0] and chList[2].
+            for child in chList[0].get_children():
+                chList.insert(i, child)
+                i = i + 1
+    
+            # Creates a string with a list of children.
+            sChildren = ''
+            if len(chList[0].get_children()):
+                sChildren = ' children="'
+                for child_no in chList[0].get_children():
+                    sChildren = sChildren + 's' + snt_no + '_p' + \
+                                str(child_no.iPhraseID) + ','
+                sChildren = sChildren.strip(',') +'"'
+    
+            # Creates a phrase with node parameters
+            # and with a node string, if exists.
+            sphrase_id = 's' + snt_no + '_t1_r1_d1_p' + str(chList[0].iPhraseID)  
+            sXlf = sXlf + "\n\t\t<phrase id=\"%s\" %s>" %(sphrase_id, sChildren)
+            if chList[0].sString:
+                sXlf += get_tokens_xml( chList[0].sString.strip(), sphrase_id )
+                #sXlf = sXlf + '\n\t\t\t<string>' + replace_OOV ( chList[0].sString.strip() ) + \
+                #       '</string>'
+            sXlf = sXlf + '\n\t\t\t<annotation type="class" value="' + \
+                   chList[0].sClass + '" />'
+            sXlf = sXlf + '\n\t\t\t<alignment from="' + chList[0].iFrom + \
+                   '" to="' + chList[0].iTo + '" />'
+            sXlf = sXlf + '\n\t\t</phrase>'
+            
+            # The processed (printed) node is removed from the list.
+            chList.pop(0)
+    
+        sXlf = sXlf + '\n\t</add:derivation>'
+        sXlf = sXlf + '\n</alt-trans>'
+        # Removes '\n' in the beginning of the string.
+        xmlFiles.append((sXlf.strip(),snt_no))
+        #-------------END CREATING AN OUTPUT FILE--------------
+        # Counts iterations in main for loop.
     line_no = line_no + 1
 
 # Creates a directory for output files.
-DIR_NAME = FILENAME.rpartition('.')[0] + time.strftime('_%y%m%d_%H%M%S') + \
-           '_output'
-os.mkdir(DIR_NAME)
+DIR_NAME = ("t1-%s-%s" % ( INPUT_LANG, OUTPUT_LANG ))
+#DIR_NAME = FILENAME.rpartition('.')[0] + time.strftime('_%y%m%d_%H%M%S') + \
+#           '_output'
 
-i = 0
+os.mkdir( DIR_NAME )
+
+i = 1
 # Prints output string to .xml files.
-for outputFile in xmlFiles:
-    h = open(DIR_NAME + '//trans-unit-' + INPUT_LANG + '-' + OUTPUT_LANG + \
-             '-t1-s' + sntNumbers[i] + '.xml', 'w')
+for (outputFile,sntNumber) in xmlFiles:
+    
+    filename = ("%s//t1-%s-%s-%.4d.xml" % ( DIR_NAME, INPUT_LANG, OUTPUT_LANG, long(sntNumber) ) )
+    #h = open(DIR_NAME + '//t2-' + INPUT_LANG + '-' + OUTPUT_LANG + \
+    #         '-t1-s' + sntNumbers[i] + '.xml', 'w')
+    h = open(filename,'w')
     h.write(outputFile)
     h.close()
     i = i + 1
