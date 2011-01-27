@@ -115,7 +115,7 @@ xlf = get_1best(xlf)
 xmlFiles = []
 line_no = 0
 # This loop converts an input format of sentences into an output XLF format.
-for line in bestSnts:
+for line in xlf:
     #---------------PARSE SENTENCES---------------
     # Returns a part beginning with '(ROOT{... ...)' and ending with '-#end#-'.
     s = line.partition(' ||| ')[2].partition(' ||| ')[0] + '-#end#-'
