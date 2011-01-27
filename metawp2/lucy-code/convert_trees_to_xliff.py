@@ -255,16 +255,16 @@ def main(src_file, tgt_file, src_lang, tgt_lang, tree_file_prefix):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 7:
+    if len(sys.argv) != 6:
         print usage(sys.argv[0])
         sys.exit(-1)
 
     # Bind command line arguments.
     SOURCE_FILE = sys.argv[1]
     TARGET_FILE = sys.argv[2]
-    SOURCE_LANG = sys.argv[4].lower()
-    TARGET_LANG = sys.argv[5].lower()
-    TREE_FILE_PREFIX = sys.argv[6]
+    SOURCE_LANG = sys.argv[3].lower()
+    TARGET_LANG = sys.argv[4].lower()
+    TREE_FILE_PREFIX = sys.argv[5]
 
     # Call main routine.
     main(SOURCE_FILE, TARGET_FILE, SOURCE_LANG, TARGET_LANG, TREE_FILE_PREFIX)
