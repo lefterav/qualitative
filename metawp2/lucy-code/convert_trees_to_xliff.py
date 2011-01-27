@@ -236,7 +236,7 @@ def main(src_file, tgt_file, src_lang, tgt_lang, tree_file_prefix):
                 xml_buffer += _close_alt_trans()
             
             # Convert & to &amp; and strip superfluous newlines.
-            xml_buffer = xml_buffer.replace('&', '&amp;').strip('\n')
+            xml_buffer = xml_buffer.replace('&', '&amp;').lstrip('\n')
             xml_buffer = xml_buffer.replace('\n\n', '\n')
             
             # Show progress bar printing a dot every 4%.
