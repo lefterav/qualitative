@@ -39,14 +39,14 @@ def get_str(listVar):
 
 # -----------INPUT-----------
 # file to be converted
-FILENAME = 'acquis.de-pl.output.nbest.txt'
+FILENAME = sys.argv[1]
 
 # input sentences
-FILENAME_INPUT = 'acquis.dev.de'
+FILENAME_INPUT = sys.argv[2]
 
 # languages input and output
-INPUT_LANG = 'de'
-OUTPUT_LANG = 'pl'
+INPUT_LANG = sys.argv[3]
+OUTPUT_LANG = sys.argv[4]
 # ---------INPUT END---------
 
 f = open(FILENAME, 'r')
