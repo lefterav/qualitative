@@ -50,7 +50,7 @@ def get_1best (xlf):
             bestSnts.append(snt)
             
             
-    return bestSnts
+    return (bestSnts,list(ids))
 
 
 # -----------INPUT-----------
@@ -75,7 +75,7 @@ g.close()
 
 
 
-xlf = get_1best(xlf)
+(xlf, sntNumbers) = get_1best(xlf)
 
 
 #-------SELECT THE BEST SENTENCES-------
