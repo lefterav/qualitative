@@ -37,6 +37,20 @@ def get_str(listVar):
         string = string + item
     return string
 
+
+def get_1best (xlf):
+    bestSnts = []
+    ids = []
+    for snt in xlf:
+        # Number of sentence.
+        snt_no = snt.partition(' ||| ')[0]
+        # If a key 'snt_no' was already created in d.
+        if snt_no in ids:
+            bestSnts.append(snt)
+            
+    return bestSnts
+
+
 # -----------INPUT-----------
 # file to be converted
 FILENAME = sys.argv[1]
@@ -57,39 +71,44 @@ g = open(FILENAME_INPUT, 'r')
 inputSnts = g.read().split('\n')
 g.close()
 
+
+
+xlf = get_1best(xlf)
+
+
 #-------SELECT THE BEST SENTENCES-------
 # This part of code selects the best sentence translation 
 # from the list according to the reached word penalty.
-bestSnts = []
-d = {}
+#bestSnts = []
+#d = {}
 # Adds all sentences to dictionary d.
-for snt in xlf:
-    # Number of sentence.
-    snt_no = snt.partition(' ||| ')[0]
+#for snt in xlf:
+#    # Number of sentence.
+#    snt_no = snt.partition(' ||| ')[0]
     # Reached word penalty.
-    snt_wp = snt.rpartition(' ||| ')[2]
+#    snt_wp = snt.rpartition(' ||| ')[2]
     # If a key 'snt_no' was already created in d.
-    if snt_no in d:
+#    if snt_no in d:
         # Adds [word penalty, sentence] to a particular sentence number.
-        d[snt_no].append([snt_wp, snt])
-    else:
+#        d[snt_no].append([snt_wp, snt])
+#    else:
         # Creates a new key in d.
-        d[snt_no] = []
-        d[snt_no].append([snt_wp, snt])
+#        d[snt_no] = []
+#        d[snt_no].append([snt_wp, snt])
 
-sntNumbers = d.keys()
+#sntNumbers = d.keys()
 # Selects the best sentence translation for each key in d.
-for sntNo in sntNumbers:
-    minWP = sys.maxint
-    snt = ''
-    for elem in d[sntNo]:
-        # If sentence translation word penalty is lower than so far reached.
-        if abs(float(elem[0])) < minWP:
+#for sntNo in sntNumbers:
+#    minWP = sys.maxint
+#    snt = ''
+#    for elem in d[sntNo]:
+#        # If sentence translation word penalty is lower than so far reached.
+#        if abs(float(elem[0])) < minWP:
             # Sets new minimal word penalty.
-            minWP = abs(float(elem[0]))
+#            minWP = abs(float(elem[0]))
             # Sets new sentence translation with minimal word penalty.
-            snt = elem[1]
-    bestSnts.append(snt)
+#            snt = elem[1]
+#    bestSnts.append(snt)
 #-----END SELECT THE BEST SENTENCES-----
 
 
