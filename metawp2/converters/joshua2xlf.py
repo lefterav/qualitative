@@ -40,13 +40,15 @@ def get_str(listVar):
 
 def get_1best (xlf):
     bestSnts = []
-    ids = []
+    ids = set()
     for snt in xlf:
         # Number of sentence.
         snt_no = snt.partition(' ||| ')[0]
         # If a key 'snt_no' was already created in d.
-        if snt_no in ids:
+        if snt_no not in ids:
+            ids.add(snt_no)
             bestSnts.append(snt)
+            
             
     return bestSnts
 
