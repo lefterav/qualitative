@@ -1,232 +1,288 @@
 """
-This version prints the best version of each sentence to a single file.
+This program prints the best version of each sentence to a single file.
 """
-import re, codecs, os, time, sys
-from copy import deepcopy
+import re
+import os
+import time
+import sys
 
-class Node:
+class _Node:
     sClass = ''
     parent = None
-    phraseID = 0
+    iPhraseID = 0
     iFrom = 0
     iTo = 0
     sString = ''
-    sNodeString = '' # e. g. '[X]{12-14} zmiany :' or '[X]{7-12} jutro ([X]{9-12} wprowadza) nie'
+    sNodeString = ''
 
     def __init__(self):
         self.lChildren = []
         
-    def addChild(self,child):
+    def add_child(self, child):
         self.lChildren.append(child)
 
-    def getChildren(self):
+    def get_children(self):
         return self.lChildren
         
-# replace tags for brackets (prevention of bracket misunderstanding) 
-def rplBrackets(string):
-    return string.replace('<open>','( ').replace('<close>',' )')
+# This method replaces tags with brackets back.
+# It prevents confusing textual brackets and tree brackets.
+def replace_brackets(string):
+    return string.replace('<open>', '( ').replace('<close>', ' )')
 
-
-def getStr(listVar):
+# This method has an array of strings as input 
+# and one string made of array items as an output.
+def get_str(listVar):
     string = ''
     for item in listVar:
         string = string + item
     return string
 
 # -----------INPUT-----------
-# joshua.xlf conversion file
-# small_pl.txt, n.nbest, acquis.de-pl.output.nbest.txt
-filename = 'acquis.de-pl.output.nbest.txt'
+# file to be converted
+FILENAME = 'acquis.de-pl.output.nbest.txt'
 
 # input sentences
-# acquis.dev.de
-filenameInput = 'acquis.dev.de'
+FILENAME_INPUT = 'acquis.dev.de'
 
-# languages input & output
-input_lang = 'de'
-output_lang = 'pl'
+# languages input and output
+INPUT_LANG = 'de'
+OUTPUT_LANG = 'pl'
 # ---------INPUT END---------
 
-f = open(filename,'r')
+f = open(FILENAME, 'r')
 xlf = f.read().split('\n')
 f.close()
 
-g = open(filenameInput,'r')
+g = open(FILENAME_INPUT, 'r')
 inputSnts = g.read().split('\n')
 g.close()
 
-#-------SELECT SENTENCES-------
-# select the best sentences according to the wordpenalty
-
-# add all sentences to dict d
+#-------SELECT THE BEST SENTENCES-------
+# This part of code selects the best sentence translation 
+# from the list according to the reached word penalty.
 bestSnts = []
 d = {}
+# Adds all sentences to dictionary d.
 for snt in xlf:
-    snt_no = snt.partition(' ||| ')[0] # sentence number
-    snt_wp = snt.rpartition(' ||| ')[2] # sentence wordpenalty
-    if snt_no in d: # if a key 'snt_no' already created in d
-        d[snt_no].append([snt_wp, snt]) # add [word penalty, sentence] to a proper sentence number
+    # Number of sentence.
+    snt_no = snt.partition(' ||| ')[0]
+    # Reached word penalty.
+    snt_wp = snt.rpartition(' ||| ')[2]
+    # If a key 'snt_no' was already created in d.
+    if snt_no in d:
+        # Adds [word penalty, sentence] to a particular sentence number.
+        d[snt_no].append([snt_wp, snt])
     else:
-        d[snt_no] = [] # create a key in d
+        # Creates a new key in d.
+        d[snt_no] = []
         d[snt_no].append([snt_wp, snt])
 
-# select the best sentence from dict d
 sntNumbers = d.keys()
+# Selects the best sentence translation for each key in d.
 for sntNo in sntNumbers:
-    minWP = sys.maxint # initialization of minimal word penalty index for each sentence
+    minWP = sys.maxint
     snt = ''
     for elem in d[sntNo]:
+        # If sentence translation word penalty is lower than so far reached.
         if abs(float(elem[0])) < minWP:
+            # Sets new minimal word penalty.
             minWP = abs(float(elem[0]))
+            # Sets new sentence translation with minimal word penalty.
             snt = elem[1]
     bestSnts.append(snt)
-#-----END SELECT SENTENCES-----
+#-----END SELECT THE BEST SENTENCES-----
 
-#---------------PARSE SENTENCES---------------
-xmlFiles = [] # global var for each xml output file
+
+xmlFiles = []
 line_no = 0
+# This loop converts an input format of sentences into an output XLF format.
 for line in bestSnts:
-    line_no = line_no + 1
+    #---------------PARSE SENTENCES---------------
+    # Returns a part beginning with '(ROOT{... ...)' and ending with '-#end#-'.
+    s = line.partition(' ||| ')[2].partition(' ||| ')[0] + '-#end#-'
+    # Replaces textual brackets with '<open>' and '<close>'.
+    # It prevents confusing textual brackets and tree brackets.
+    s = s.replace('( ', '<open>').replace(' )', '<close>')
 
-    s = line.partition(' ||| ')[2].partition(' ||| ')[0] + '-#end#-' # return a part beggining with '(ROOT{... ...)'
-    s = s.replace('( ','<open>').replace(' )','<close>') # replace textual brackets with '<open>' and '<close>'
-
-    # initialization
     a = 0
-    lenS = len(s)
     nodeStrings = dict()
 
-    # first node
-    node = Node() # create the first node
-    num = 1 # index of actual node (used during node iteration)
-    node_no = [num] # stack [zasobnik] of node indexes
-    phraseID = 1 # number of phrase in sentence
-    node.phraseID = phraseID
+    # First node creation.
+    node = _Node()
+    # Index of actual node (used during node iteration).
+    num = 1
+    # Array with node indexes.
+    node_no = [num]
+    # Number of phrase in sentence.
+    iPhraseID = 1
+    node.iPhraseID = iPhraseID
 
+    # This loop has as many iteration as count of letters in s.
     for i in range(len(s)):
         
-        # create next node and make a connection (node.parent) with a previous one
-        if re.findall('[(][[].[]]',s[i:i+4]) != []:
-            # sNodeString
-            node.sNodeString = node.sNodeString +'<<>>'+ re.search('[[].[]][{]\d+-\d+[}]',s[i:]).group(0)
-            oldnode = node # save actual node to temp variable
-            node = Node() # create new node
-            oldnode.addChild(node) # create a connection between old node and his son
-            # parent
-            node.parent = oldnode # create a connection between new node and his father
+        # If a next node starts, it creates new node and makes
+        # a connection (node.parent) with a previous one.
+        if re.findall('[(][[].[]]', s[i:i + 4]):
+            # sNodeString - Saves each node in textual form (e. g. '[X]{3-7}').
+            # It is later used in the whole sentence composition.
+            node.sNodeString = node.sNodeString + '<<>>' + re.search \
+                               ('[[].[]][{]\d+-\d+[}]', s[i:]).group(0)
+            # Saves actual node to temp variable.
+            oldnode = node
+            # Creates new node.
+            node = _Node()
+            # Creates a connection between old node and his son.
+            oldnode.add_child(node)
+            # Creates a connection between new node and his father.
+            node.parent = oldnode
             num = num + 1
+            # Adds a node index.
             node_no.append(num)
-            phraseID = phraseID + 1
-            node.phraseID = phraseID
-                
-        # if there is: '([.]'
-        #        s[i]-->^
-        if re.findall('[(][[].[]]',s[i:i+4]) != [] or re.findall('[(]ROO',s[i:i+4]) != []:
-            # sClass
-            node.sClass = re.search('[A-Z]+',s[i:i+5]).group(0)
+            iPhraseID = iPhraseID + 1
+            node.iPhraseID = iPhraseID
+
+        # If a root node starts or if a next node starts.
+        # (if there is: '([.]' )
+        # (       s[i]-->^     )
+        if re.findall('[(][[].[]]', s[i:i + 4]) or \
+           re.findall('[(]ROO', s[i:i + 4]):
+            # sClass - Saves a node type (ROOT, S, X).
+            node.sClass = re.search('[A-Z]+', s[i:i + 5]).group(0)
             # iFrom
-            node.iFrom = re.match('.*?(\d+)-(\d+).*?',s[i:i+14]).group(1)
+            node.iFrom = re.match('.*?(\d+)-(\d+).*?', s[i:i + 14]).group(1)
             # iTo
-            node.iTo = re.match('.*?(\d+)-(\d+).*?',s[i:i+14]).group(2)
-            # sString --> between } and ([
-            sText = s[i:].partition('}')[2].partition(' ([')[0]#.strip() 
-            if sText.count(')') == 0 and sText != '':
-                # sString
-                node.sString = node.sString + rplBrackets(sText)
-                # sNodeString
-                node.sNodeString = node.sNodeString +'<<>>'+rplBrackets(sText)
+            node.iTo = re.match('.*?(\d+)-(\d+).*?', s[i:i + 14]).group(2)
+            # sString --> between } and ([ - Gains a string in node, if exists.
+            sText = s[i:].partition('}')[2].partition(' ([')[0]
+            if not sText.count(')') and sText:
+                # sString - Saves the gained string.
+                node.sString = node.sString + replace_brackets(sText)
+                # sNodeString - Saves the gained string.
+                # It is later used in the whole sentence composition.
+                node.sNodeString = node.sNodeString + '<<>>' + \
+                                   replace_brackets(sText)
 
-        if s[i] == ')': # if closing bracket
-            # sString --> between } and ) or between next to last ) and last )
-            sText = rplBrackets(s[:i].rpartition('}')[2].split(')')[-1])#.strip()
-            if sText != '':
-                # sString
+        # If a node ends.
+        if s[i] == ')':
+            # sString --> between } and ) or between next to last ) and last ) 
+            # - Gains a string in node, if exists.
+            sText = replace_brackets(s[:i].rpartition('}')[2].split(')')[-1])
+            if sText:
+                # sString - Saves the gained string.
                 node.sString = node.sString + sText
-                # sNodeString                
-                node.sNodeString = node.sNodeString +'<<>>'+sText
-            # sNodeString
+                # sNodeString - Saves the gained string.
+                # It is later used in the whole sentence composition.
+                node.sNodeString = node.sNodeString + '<<>>' + sText
+            # sNodeString is splitted. The list may contain string(s)
+            # or node(s) in textual form (e. g. [S]{0-3}).
             node.sNodeString = node.sNodeString.strip('<<>>').split('<<>>')
-            
-            key = '['+node.sClass+']{'+str(node.iFrom)+'-'+str(node.iTo)+'}' # create key (string with node description)
-            nodeStrings[key] = [key,node.sNodeString]
-            if node.sClass != 'ROOT': # preserve ROOT node as an actual node in memory (important for printing part)
-                node = node.parent # parent node become (active) node
+
+            key = '[' + node.sClass + ']{' + str(node.iFrom) + '-' + \
+                  str(node.iTo) + '}' 
+            nodeStrings[key] = [key, node.sNodeString]
+            # If node.sClass is 'ROOT', keeps ROOT node as an actual node
+            # in memory (important for printing part).
+            if node.sClass != 'ROOT':
+                # Parent node becomes (active) node.
+                node = node.parent
             node_no.pop()
+    #---------------PARSE SENTENCES END---------------
 
-#---------------PARSE SENTENCES END---------------
-#-------------PRINTING PART--------------
 
-    # find child of ROOT...
+    #----------COMPOSITION OF THE WHOLE TARGET LANGUAGE SENTENCE----------
     snt = ''
-    for item in nodeStrings: # for each nodeString
-        if nodeStrings[item][0].count('[ROOT]'): # if nodeString is ROOT
-            for child in nodeStrings[item][1]: # for each child of ROOT
-                snt = snt + child
-                
+    # This loop gets children (in format '[S]{0-3}') of ROOT node.
+    for item in nodeStrings:
+        # If item is ROOT.
+        if nodeStrings[item][0].count('[ROOT]'):
+            # Gets one string from list of strings in ROOT.
+            snt = get_str(nodeStrings[item][1])
+
     a = 0
-    # ...and get the whole sentence (output language)
-    while re.findall('[[].[]][{]\d+-\d+[}]',snt) != [] and a < 1000:
-        for item in re.findall('[[].[]][{]\d+-\d+[}]',snt):
-            snt = snt.replace(item,getStr(nodeStrings[item][1]))
+    # This part of code gets the whole sentence (target language).
+    while re.findall('[[].[]][{]\d+-\d+[}]', snt) and a < 1000:
+        for item in re.findall('[[].[]][{]\d+-\d+[}]', snt):
+            snt = snt.replace(item, get_str(nodeStrings[item][1]))
             break
         a = a + 1
     if a == 1000: print '>1000 operations in creating sentence!'
     tarSnt = snt.strip(' ')
+    #----------END COMPOSITION OF THE WHOLE TARGET LANGUAGE SENTENCE----------
 
+
+    #-------------CREATING AN OUTPUT FILE--------------
     sXlf = ''
     sXlf = sXlf + '\n<alt-trans tool-id="t1" add:rank="1">'
-    sXlf = sXlf + '\n\t<source>'+inputSnts[line_no-1].strip()+'</source>'
-    sXlf = sXlf + '\n\t<target>'+tarSnt+'</target>'
+    sXlf = sXlf + '\n\t<source>' + inputSnts[line_no].strip() + '</source>'
+    sXlf = sXlf + '\n\t<target>' + tarSnt + '</target>'
 
-    # xlf scores
-    scores = line.rpartition('|||')[0].rpartition('|||')[2].strip().split(' ') # total, lm, pt0, pt1, pt2
-    scores.append(line.rpartition('|||')[2].strip()) # add wordpenalty
+    # total, lm, pt0, pt1, pt2
+    scores = line.rpartition('|||')[0].rpartition('|||')[2].strip().split(' ')
+    # word penalty
+    scores.append(line.rpartition('|||')[2].strip())
     sXlf = sXlf + '\n\t<add:scores>'
-    sXlf = sXlf + '\n\t\t<score type="total" value="'+scores[0]+'" />'
-    sXlf = sXlf + '\n\t\t<score type="lm" value="'+scores[1]+'" />'
-    sXlf = sXlf + '\n\t\t<score type="pt0" value="'+scores[2]+'" />'
-    sXlf = sXlf + '\n\t\t<score type="pt1" value="'+scores[3]+'" />'
-    sXlf = sXlf + '\n\t\t<score type="pt2" value="'+scores[4]+'" />'
-    sXlf = sXlf + '\n\t<score type="wordpenalty" value="'+scores[5]+'" />'
+    sXlf = sXlf + '\n\t\t<score type="total" value="' + scores[0] + '" />'
+    sXlf = sXlf + '\n\t\t<score type="lm" value="' + scores[1] + '" />'
+    sXlf = sXlf + '\n\t\t<score type="pt0" value="' + scores[2] + '" />'
+    sXlf = sXlf + '\n\t\t<score type="pt1" value="' + scores[3] + '" />'
+    sXlf = sXlf + '\n\t\t<score type="pt2" value="' + scores[4] + '" />'
+    sXlf = sXlf + '\n\t<score type="wordpenalty" value="' + scores[5] + '" />'
     sXlf = sXlf + '\n</add:scores>'
 
-    # xlf derivation
-    sXlf = sXlf + '\n\t<add:derivation type="hiero_decoding" id="s'+str(line_no)+'_t2">'
+    sXlf = sXlf + '\n\t<add:derivation type="hiero_decoding" id="s' + \
+           sntNumbers[line_no] + '_t2">'
     chList = [node]
-    while chList != []:
+    while chList:
         i = 1
-        # for loop: add all children of node chList[0] between chList[0] and chList[2]
-        for child in chList[0].getChildren():
-            chList.insert(i,child)
+        # This loop adds all children of a node chList[0]
+        # between chList[0] and chList[2].
+        for child in chList[0].get_children():
+            chList.insert(i, child)
             i = i + 1
-        # create children output
+
+        # Creates a string with a list of children.
         sChildren = ''
-        if len(chList[0].getChildren()) > 0:
+        if len(chList[0].get_children()):
             sChildren = ' children="'
-            for child_no in chList[0].getChildren():
-                sChildren = sChildren+'s'+str(line_no)+'_p'+str(child_no.phraseID)+','
-            sChildren = sChildren.strip(',')+'"'
-        # print
-        sXlf = sXlf + '\n\t\t<phrase id="s'+str(line_no)+'_t1_p'+str(chList[0].phraseID)+'"'+sChildren+'>'
-        if chList[0].sString != '': sXlf = sXlf + '\n\t\t\t<string>'+chList[0].sString.strip()+'</string>'
-        sXlf = sXlf + '\n\t\t\t<annotation type="class" value="'+chList[0].sClass+'" />'
-        sXlf = sXlf + '\n\t\t\t<alignment from="'+chList[0].iFrom+'" to="'+chList[0].iTo+'" />'
+            for child_no in chList[0].get_children():
+                sChildren = sChildren + 's' + sntNumbers[line_no] + '_p' + \
+                            str(child_no.iPhraseID) + ','
+            sChildren = sChildren.strip(',') + '"'
+
+        # Creates a phrase with node parameters
+        # and with a node string, if exists.
+        sXlf = sXlf + '\n\t\t<phrase id="s' + sntNumbers[line_no] + '_t1_p' + \
+               str(chList[0].iPhraseID) + '"' + sChildren + '>'
+        if chList[0].sString:
+            sXlf = sXlf + '\n\t\t\t<string>' + chList[0].sString.strip() + \
+                   '</string>'
+        sXlf = sXlf + '\n\t\t\t<annotation type="class" value="' + \
+               chList[0].sClass + '" />'
+        sXlf = sXlf + '\n\t\t\t<alignment from="' + chList[0].iFrom + \
+               '" to="' + chList[0].iTo + '" />'
         sXlf = sXlf + '\n\t\t</phrase>'
+        
+        # The processed (printed) node is removed from the list.
         chList.pop(0)
+
     sXlf = sXlf + '\n\t</add:derivation>'
     sXlf = sXlf + '\n</alt-trans>'
-    xmlFiles.append(sXlf.strip()) # remove '\n' in the beginning of the string
+    # Removes '\n' in the beginning of the string.
+    xmlFiles.append(sXlf.strip())
+    #-------------END CREATING AN OUTPUT FILE--------------
+    # Counts iterations in main for loop.
+    line_no = line_no + 1
 
-# create a directory
-dirName = filename.rpartition('.')[0]+time.strftime('_%y%m%d_%H%M%S')+'_output'
-os.mkdir(dirName)
+# Creates a directory for output files.
+DIR_NAME = FILENAME.rpartition('.')[0] + time.strftime('_%y%m%d_%H%M%S') + \
+           '_output'
+os.mkdir(DIR_NAME)
 
 i = 0
-#print output to .xml files
+# Prints output string to .xml files.
 for outputFile in xmlFiles:
-    h = open(dirName+'//trans-unit-'+input_lang+'-'+output_lang+'-t1-s'+sntNumbers[i]+'.xml', 'w')
+    h = open(DIR_NAME + '//trans-unit-' + INPUT_LANG + '-' + OUTPUT_LANG + \
+             '-t1-s' + sntNumbers[i] + '.xml', 'w')
     h.write(outputFile)
     h.close()
     i = i + 1
-
-#-------------PRINTING PART END--------------
