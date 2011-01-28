@@ -33,44 +33,44 @@ def _close_alt_trans():
 
 
 def _create_derivation(derivation_type, derivation_id, sentence_id):
-    """Creates the <add:derivation...> tag."""
+    """Creates the <META-NET:derivation...> tag."""
     xml_template = """
-        <add:derivation type="lucy{0}" id="s{1}_t2_r1_d{2}">
-            <add:tokens>"""
+        <META-NET:derivation type="lucy{0}" id="s{1}_t2_r1_d{2}">
+            <META-NET:tokens>"""
     return xml_template.format(derivation_type, sentence_id, derivation_id)
 
 
 def _close_derivation():
-    """Closes the <add:derivation...> tag."""
+    """Closes the <META-NET:derivation...> tag."""
     xml_template = """
-            </add:tokens>
-        </add:derivation>
+            </META-NET:tokens>
+        </META-NET:derivation>
 """
     return xml_template
 
 
 def _create_annotations(node):
-    """Creates all <add:annotation...> tags for the given node."""
+    """Creates all <META-NET:annotation...> tags for the given node."""
     _annotations = []
     for key, value in node.attributes.items():
-        _tag = '\t\t\t\t<add:annotation type="{0}" value="{1}" />'.format(
+        _tag = '\t\t\t\t\t<META-NET:annotation type="{0}" value="{1}" />'.format(
           key.lower(), value)
         _annotations.append(_tag)
     
     # If there exists an "ALO" annotation, use it to fill <string...>.
     if 'ALO' in node.attributes.keys():
         _alo = node.attributes['ALO']
-        _tag = '\t\t\t\t<add:string>{0}</add:string>'.format(_alo)
+        _tag = '\t\t\t\t\t<META-NET:string>{0}</META-NET:string>'.format(_alo)
         _annotations.append(_tag)
     
     return '\n'.join(_annotations)
 
 
 def _create_token(node, derivation_id, sentence_id):
-    """Creates a <add:token...> tag."""
+    """Creates a <META-NET:token...> tag."""
     xml_template = """
-            <add:token {0}id="{1}">{2}
-            </add:token>"""
+                <META-NET:token {0}id="{1}">{2}
+                </META-NET:token>"""
     # Generate children ids for this node.
     _children = ""
     if node.children:
@@ -211,7 +211,7 @@ def main(src_file, tgt_file, src_lang, tgt_lang, tree_file_prefix):
                 xml_buffer = _create_alt_trans(source_text[sentence_id-1],
                   target_text[sentence_id-1], src_lang, tgt_lang)
 
-            # Create <add:derivation...> tag.
+            # Create <META-NET:derivation...> tag.
             xml_buffer += _create_derivation(key, derivations[key],
               sentence_id)
 
@@ -231,7 +231,7 @@ def main(src_file, tgt_file, src_lang, tgt_lang, tree_file_prefix):
                 # Removes already processed node.
                 children_list.pop(0)
             
-            # Close <add:derivation...> tag.
+            # Close <META-NET:derivation...> tag.
             xml_buffer += _close_derivation()
 
             # Create XML closing tag in "generation" mode.
