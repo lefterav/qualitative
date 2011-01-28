@@ -35,39 +35,42 @@ def _close_alt_trans():
 def _create_derivation(derivation_type, derivation_id, sentence_id):
     """Creates the <add:derivation...> tag."""
     xml_template = """
-        <add:derivation type="lucy{0}" id="s{1}_t2_r1_d{2}">"""
+        <add:derivation type="lucy{0}" id="s{1}_t2_r1_d{2}">
+            <add:tokens>"""
     return xml_template.format(derivation_type, sentence_id, derivation_id)
 
 
 def _close_derivation():
     """Closes the <add:derivation...> tag."""
     xml_template = """
+            </add:tokens>
         </add:derivation>
 """
     return xml_template
 
 
 def _create_annotations(node):
-    """Creates all <annotation...> tags for the given node."""
+    """Creates all <add:annotation...> tags for the given node."""
     _annotations = []
     for key, value in node.attributes.items():
-        _tag = '\t\t\t\t<annotation type="{0}" value="{1}" />'.format(
+        _tag = '\t\t\t\t<add:annotation type="{0}" value="{1}" />'.format(
           key.lower(), value)
         _annotations.append(_tag)
     
     # If there exists an "ALO" annotation, use it to fill <string...>.
     if 'ALO' in node.attributes.keys():
-        _tag = '\t\t\t\t<string>{0}</string>'.format(node.attributes['ALO'])
+        _alo = node.attributes['ALO']
+        _tag = '\t\t\t\t<add:string>{0}</add:string>'.format(_alo)
         _annotations.append(_tag)
     
     return '\n'.join(_annotations)
 
 
 def _create_token(node, derivation_id, sentence_id):
-    """Creates a <token...> tag."""
+    """Creates a <add:token...> tag."""
     xml_template = """
-            <token {0}id="{1}">{2}
-            </token>"""
+            <add:token {0}id="{1}">{2}
+            </add:token>"""
     # Generate children ids for this node.
     _children = ""
     if node.children:
