@@ -96,8 +96,14 @@ FILENAME_INPUT = sys.argv[2]
 INPUT_LANG = sys.argv[3]
 OUTPUT_LANG = sys.argv[4]
 
+# weights file
+WEIGHTS_FILE = sys.argv[5]
+
+# tool version
+TOOL_VERSION = sys.argv[6] 
+
 # t number
-T_NUM = sys.argv[5]
+T_NUM = sys.argv[7]
 # ---------INPUT END---------
 
 f = open(FILENAME, 'r')
@@ -320,8 +326,8 @@ for (line, snt_no) in xlf:
     
         sXlf += '\n\t</add:derivation>'
         sXlf += '\n</alt-trans>'
-        # Removes '\n' in the beginning of the string.
-        xmlFiles.append((sXlf.strip(),snt_no))
+        
+        xmlFiles.append((sXlf.strip(), snt_no))
         #-------------END CREATING AN OUTPUT FILE--------------
         # Counts iterations in main for loop.
     line_no += 1
@@ -332,11 +338,42 @@ DIR_NAME = ('t%s-%s-%s' % (T_NUM, INPUT_LANG, OUTPUT_LANG))
 os.mkdir(DIR_NAME)
 
 i = 1
-# Prints output string to .xml files.
-for (outputFile, sntNumber) in xmlFiles:
-    filename = ('%s//t%s-%s-%s-%.4d.xml' % (DIR_NAME, T_NUM, INPUT_LANG, \
-                                            OUTPUT_LANG, long(sntNumber)))
-    h = open(filename, 'w')
-    h.write(outputFile)
+for (outputFileSnts, sntNumber) in xmlFiles:
+    # Prints output format of sentences to .xml file.
+    filenameSnts = ('%s//t%s-%s-%s-%.4d.xml' % (DIR_NAME, T_NUM, INPUT_LANG, \
+                                                 OUTPUT_LANG, long(sntNumber)))
+    h = open(filenameSnts, 'w')
+    h.write(outputFileSnts)
     h.close()
+    
     i += 1
+
+# reads the input weights file
+a = open(WEIGHTS_FILE, 'r')
+input_weights = a.readlines()
+a.close()
+
+weights = []
+# Gets weights from input file.
+for line in input_weights:
+    weights.append(line.split(' ||| ')[1].strip())
+
+# Creates weights.
+sWei = ''
+sWei += '<tool tool-id="t%s" tool-name="Joshua" tool-version=' \
+        '"revision:%s">' % (T_NUM, TOOL_VERSION)
+sWei += '\n\t<add:weights>'
+sWei += '\n\t\t<weight type="lm" value="%s" />' % (weights[0])
+sWei += '\n\t\t<weight type="pt0" value="%s" />' % (weights[1])
+sWei += '\n\t\t<weight type="pt1" value="%s" />' % (weights[2])
+sWei += '\n\t\t<weight type="pt2" value="%s" />' % (weights[3])
+sWei += '\n\t\t<weight type="wordpenalty" value="%s" />' % (weights[4])
+sWei += '\n\t</add:weights>'
+sWei += '\n</tool>'
+
+# Prints weights to .xml file.
+filenameWeights = '%s//sysdesc-t%s-%s-%s.xml' % (DIR_NAME, T_NUM, INPUT_LANG, \
+                                                 OUTPUT_LANG)
+x = open(filenameWeights, 'w')
+x.write(sWei)
+x.close()
