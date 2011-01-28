@@ -3,7 +3,7 @@ This program prints the best version of each sentence to a single file.
 """
 import re
 import os
-import time
+import time #for debugging purposes
 import sys
 
 class _Node:
