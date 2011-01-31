@@ -87,7 +87,7 @@ def get_1best(xlf):
     ids = set()
     for snt in xlf:
         # Number of sentence.
-        snt_no = snt.partition(' ||| ')[0]
+        snt_no = str( long(snt.partition(' ||| ')[0])+1 )
         # If a key 'snt_no' was already created in d.
         if snt_no not in ids:
             ids.add(snt_no)
