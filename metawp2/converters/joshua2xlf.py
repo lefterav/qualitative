@@ -416,7 +416,9 @@ for (line, snt_no) in xlf:
     tarSnt = create_tar_lang_snt(node)
 
     # Creates content for output xml file.
-    XML_FILES.append(create_output_file_content(node, line, snt_no))
+    output_file_content = create_output_file_content(node, line, snt_no)
+    if (output_file_content):
+        XML_FILES.append()
 
     # Counts iterations in main for-loop.
     line_no += 1
