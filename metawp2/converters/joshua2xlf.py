@@ -247,7 +247,7 @@ def create_tar_lang_snt(node):
 # This method creates output format of a sentence in xml.
 def create_output_file_content(node, line, snt_no):
     sXlf = ''
-    sXlf += '\n<alt-trans tool-id="t%s" add:rank="1">' % (T_NUM)
+    sXlf += '\n<alt-trans tool-id="t%s" metanet:rank="1">' % (T_NUM)
     sXlf += '\n\t<source xml:lang="%s">%s</source>' % (SOURCE_LANG, INPUT_SNTS[line_no].strip())
     sXlf += '\n\t<target xml:lang="%s">%s</target>' % (TARGET_LANG, remove_OOV(tarSnt))
 
