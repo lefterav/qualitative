@@ -41,7 +41,7 @@ class SuffixArrayBuilderJoshua(Tool):
     def getCommands(self, params, inputs, outputs):
         commands = []
         commands.append('java %s -Dfile.encoding=utf8 -cp joshua.jar joshua.corpus.suffix_array.Compile %s %s %s model' % 
-		(params["JVMOptions"], inputs["englishCorpus"], inputs["foreignCorpus"], inputs["alignmentMap"]));
+		(params["JVMOptions"], inputs["foreignCorpus"], inputs["englishCorpus"], inputs["alignmentMap"]));
 
         commands.append('dir=`pwd`')
         commands.append('ln -s $dir/model/common.vocab %(commonSymbolTable)s' % (outputs))

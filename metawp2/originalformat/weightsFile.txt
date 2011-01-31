@@ -1,0 +1,5 @@
+lm ||| 1.0
+phrasemodel pt 0 ||| 2.4265846968808638
+phrasemodel pt 1 ||| 0.8781219581097949
+phrasemodel pt 2 ||| 0.15008856463200554
+wordpenalty ||| 0.08492878986835015
