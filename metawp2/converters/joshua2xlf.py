@@ -418,7 +418,7 @@ for (line, snt_no) in xlf:
     # Creates content for output xml file.
     output_file_content = create_output_file_content(node, line, snt_no)
     if (output_file_content):
-        XML_FILES.append()
+        XML_FILES.append(output_file_content)
 
     # Counts iterations in main for-loop.
     line_no += 1
