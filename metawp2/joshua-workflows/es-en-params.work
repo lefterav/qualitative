@@ -380,7 +380,7 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 0a-dev.lowercase-f
      fDevSents < normalizedCorpus
 
-6-Test.5-800-decode: ON localhost machine-translation/descriptors/joshua/Joshua.py
+6-Test.800-decode-trees: ON localhost machine-translation/descriptors/joshua/Joshua.py
    treeNBest=true
    includeAlign=false
    useDefaultGlue=true
@@ -407,50 +407,13 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
      numThreads <- numThreads
      heapSizeInMegs <- heapSizeInMegs
 
-6-Test.910-recasing-decoder: ON localhost machine-translation/descriptors/joshua/Joshua.py
-   includeAlign=false
-   useDefaultGlue=true
-   markOovs=false
-
-   FROM 4-TrainRecaser.630-extract-recasing-rules
-     tmFile < englishGrammar
-
-   FROM 4-TrainRecaser.640-build-recasing-lm
-     lmFile < arpaLM
-
-   FROM 6-Test.5-800-decode
-     fSentsIn < eNBestOut
-
-   FROM 4-TrainRecaser.650-tune-recaser
-     weightsFile < finalParams
-     lmOrder <- lmOrder
-     spanLimit <- spanLimit
-     defaultNonterm <- defaultNonterm
-     maxItemsPerBin <- maxItemsPerBin
-     itemRelativeThreshold <- itemRelativeThreshold
-     uniqueNBest <- uniqueNBest
-     treeNBest <- treeNBest
-     numThreads <- numThreads
-     heapSizeInMegs <- heapSizeInMegs
-
-6-Test.920-detokenizer: ON localhost machine-translation/descriptors/joshua/DetokenizerJoshua.py
-   targetLanguageSuffix=en
-
-   FROM 6-Test.920-take-topbest-recasings
-     recasedOutput < topbestOut
-
-6-Test.920-take-topbest-recasings: ON localhost machine-translation/descriptors/joshua/ExtractTopBestJoshua.py
-
-   FROM 6-Test.910-recasing-decoder
-     nbestIn < eNBestOut
-
 
 [INSPECTORS]
 Meteor X-RAY (English): machine-translation/descriptors/visualization/VisualizeSystems.py
    lang=en
 
 [SELECTIONS]
-all: 6-Test.920-detokenizer
+all: 6-Test.800-decode-trees
    FROM default SELECT default
 
 # The following entries contain position data for the visual interface. You should never need to modify this. 
@@ -491,8 +454,5 @@ FS-training-corpus-1: -425 383
 4-TrainRecaser.650-tune-recaser: 425 -136
 4-TrainRecaser.concatenate-test-dev: 48 42
 5-Tune.700-tune: 405 148
-6-Test.5-800-decode: 521 64
-6-Test.910-recasing-decoder: 652 -17
-6-Test.920-detokenizer: 720 -118
-6-Test.920-take-topbest-recasings: 693 -83
+6-Test.800-decode-trees: 521 64
 

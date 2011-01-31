@@ -1,6 +1,6 @@
 #!/usr/bin/env loon
 
-home.baseDir=/home/elav01/experiments/metawp2/joshua-en-de
+home.baseDir=/home/elav01/experiments/metawp2/joshua-en-es
 home.pathDir=/home/elav01/tools/loonybin/paths
 
 [NOTES]
@@ -28,8 +28,8 @@ FS-concatenate-monoCorpora: ON localhost machine-translation/descriptors/monocor
 
 FS-languagepair: param
    source-language=en
-   target-language=de
-   language-pair=de-en
+   target-language=es
+   language-pair=es-en
 
 FS-monoCorp: ON localhost machine-translation/descriptors/parallelcorpus/ParallelParamFilenames.py
    corpus.f=/share/emplus/corpora/Acquis/aligned-corpus/$pair/acquis.$pair.$tgt
@@ -184,15 +184,23 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
      testData < corpusOut
 
 3-BuildTM.300-berkeley-aligner: ON localhost machine-translation/descriptors/wordalign/BerkeleyAligner.py
-   heapSizeInMegs=12000
+   heapSizeInMegs=64000
    otherJVMOptions=-XX:+UseCompressedOops
    base_name=training
    numThreads=8
-   iterations=5
+   model1=MODEL1
+   model2=HMM
+   mode=JOINT
+   iterations1=5
+   iterations2=5
 
    FROM 3-BuildTM.200-subsample-for-tm
      englishCorpus < englishSubsample
      foreignCorpus < foreignSubsample
+
+   FROM FS-languagepair
+     src_suffix <- source-language
+     tgt_suffix <- target-language
 
 3-BuildTM.400-build-suffix-array-for-tm: ON localhost machine-translation/descriptors/joshua/SuffixArrayBuilderJoshua.py
    JVMOptions=-Xmx16G
@@ -372,23 +380,11 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 0a-dev.lowercase-f
      fDevSents < normalizedCorpus
 
-6-Test.5-800-decode: ON localhost machine-translation/descriptors/joshua/Joshua.py
+6-Test.800-decode-trees: ON localhost machine-translation/descriptors/joshua/Joshua.py
+   treeNBest=true
    includeAlign=true
    useDefaultGlue=true
    markOovs=true
-
-   FROM 5-Tune.700-tune
-     weightsFile < finalParams
-     maxItemsPerBin <- maxItemsPerBin
-     spanLimit <- spanLimit
-     numThreads <- numThreads
-     heapSizeInMegs <- heapSizeInMegs
-     lmOrder <- lmOrder
-     nBest <- nBest
-     treeNBest <- treeNBest
-     itemRelativeThreshold <- itemRelativeThreshold
-     uniqueNBest <- uniqueNBest
-     defaultNonterm <- defaultNonterm
 
    FROM 1-BuildLM.530-build-lm
      lmFile < arpaLM
@@ -399,48 +395,17 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 0b-test.lowercase
      fSentsIn < normalizedCorpus
 
-6-Test.900-take-topbest: ON localhost machine-translation/descriptors/joshua/ExtractTopBestJoshua.py
-
-   FROM 6-Test.5-800-decode
-     nbestIn < eNBestOut
-
-6-Test.910-recasing-decoder: ON localhost machine-translation/descriptors/joshua/Joshua.py
-   includeAlign=true
-   useDefaultGlue=true
-   markOovs=true
-
-   FROM 6-Test.900-take-topbest
-     fSentsIn < topbestOut
-
-   FROM 4-TrainRecaser.650-tune-recaser
+   FROM 5-Tune.700-tune
      weightsFile < finalParams
-     numThreads <- numThreads
-     maxItemsPerBin <- maxItemsPerBin
-     uniqueNBest <- uniqueNBest
-     itemRelativeThreshold <- itemRelativeThreshold
-     treeNBest <- treeNBest
-     spanLimit <- spanLimit
-     nBest <- nBest
-     heapSizeInMegs <- heapSizeInMegs
-     defaultNonterm <- defaultNonterm
      lmOrder <- lmOrder
-
-   FROM 4-TrainRecaser.630-extract-recasing-rules
-     tmFile < englishGrammar
-
-   FROM 4-TrainRecaser.640-build-recasing-lm
-     lmFile < arpaLM
-
-6-Test.920-detokenizer: ON localhost machine-translation/descriptors/joshua/DetokenizerJoshua.py
-   targetLanguageSuffix=en
-
-   FROM 6-Test.920-take-topbest-recasings
-     recasedOutput < topbestOut
-
-6-Test.920-take-topbest-recasings: ON localhost machine-translation/descriptors/joshua/ExtractTopBestJoshua.py
-
-   FROM 6-Test.910-recasing-decoder
-     nbestIn < eNBestOut
+     spanLimit <- spanLimit
+     defaultNonterm <- defaultNonterm
+     maxItemsPerBin <- maxItemsPerBin
+     itemRelativeThreshold <- itemRelativeThreshold
+     uniqueNBest <- uniqueNBest
+     nBest <- nBest
+     numThreads <- numThreads
+     heapSizeInMegs <- heapSizeInMegs
 
 
 [INSPECTORS]
@@ -448,7 +413,7 @@ Meteor X-RAY (English): machine-translation/descriptors/visualization/VisualizeS
    lang=en
 
 [SELECTIONS]
-all: 6-Test.920-detokenizer
+all: 6-Test.800-decode-trees
    FROM default SELECT default
 
 # The following entries contain position data for the visual interface. You should never need to modify this. 
@@ -489,9 +454,5 @@ FS-training-corpus-1: -425 383
 4-TrainRecaser.650-tune-recaser: 425 -136
 4-TrainRecaser.concatenate-test-dev: 48 42
 5-Tune.700-tune: 405 148
-6-Test.5-800-decode: 521 64
-6-Test.900-take-topbest: 562 35
-6-Test.910-recasing-decoder: 652 -17
-6-Test.920-detokenizer: 720 -118
-6-Test.920-take-topbest-recasings: 693 -83
+6-Test.800-decode-trees: 521 64
 
