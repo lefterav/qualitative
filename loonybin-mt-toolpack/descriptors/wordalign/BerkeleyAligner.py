@@ -17,7 +17,13 @@ class BerkeleyAligner(Tool):
 	        ("otherJVMOptions", "other arguments to the JVM"),
 	        ("base_name", "base name of the output alignments"),
 		("numThreads", "number of parallel threads of execution"),
-                ("iterations", "number of EM iterations")]
+		("src_suffix", "desired suffix for the source language"),
+		("tgt_suffix", "desired suffix for the target language"),
+		("model1", "1st model used for EM"),
+		("model2", "2ns model used for EM (optional: can be empty"),
+                ("mode", "Mode for combination heuristics"),
+                ("iterations1", "number of EM iterations for 1st model"),
+                ("iterations2", "number of EM iterations for 2nd model")  ]
 
     def getInputNames(self, params):
         return [("englishCorpus", "the English side of the parallel corpus"),
@@ -33,8 +39,8 @@ class BerkeleyAligner(Tool):
                 "echo ForeignCorpusLineCount `wc -l %(foreignCorpus)s`"%(inputs)]
 
     def getCommands(self, params, inputs, outputs):
-		ENGLISH_SUFFIX = "en"
-		FOREIGN_SUFFIX = "fr"
+		ENGLISH_SUFFIX = params["tgt_suffix"]
+		FOREIGN_SUFFIX = params["src_suffix"]
 		BASE_NAME = params["base_name"]
                 CORPUS_DIR = "traincorpus"
 		EXEC_DIR = "alignments"
@@ -47,10 +53,10 @@ class BerkeleyAligner(Tool):
 		conf.append(("trainSources", "./%s/" % CORPUS_DIR))
 		conf.append(("execDir", EXEC_DIR))
 		conf.append(("numThreads", params["numThreads"]))
-		conf.append(("forwardModels", "MODEL1 HMM"))
-		conf.append(("reverseModels", "MODEL1 HMM"))
-		conf.append(("mode", "JOINT JOINT"))
-		conf.append(("iters",  "%s %s"%(params["iterations"],params["iterations"])))
+		conf.append(("forwardModels", "%(model1)s %(model2)s"%params))
+		conf.append(("reverseModels", "%(model1)s %(model2)s"%params))
+		conf.append(("mode", "%(mode)s %(mode)s"%params))
+		conf.append(("iters",  "%(iterations1)s %(iterations2)s"%params))
 		conf.append(("create", ""))
 		conf.append(("saveParams", "false"))
 		conf.append(("msPerLine", "10000"))
@@ -64,7 +70,7 @@ class BerkeleyAligner(Tool):
 		cmd.append("mkdir -p example/test");
 		cmd.append("java -Xmx%sm %s -jar berkeleyaligner.jar ++%s" % (params["heapSizeInMegs"], params["otherJVMOptions"], CONF_FILE))
                 cmd.append('dir=`pwd`')
-		cmd.append("ln -s $dir/%s/%s.%s-%s.align %s" % (EXEC_DIR, BASE_NAME, ENGLISH_SUFFIX, FOREIGN_SUFFIX, outputs["alignmentMap"]))
+		cmd.append("ln -s $dir/%s/%s.align %s" % (EXEC_DIR, BASE_NAME, outputs["alignmentMap"]))
 		return cmd
 
     def getPostAnalyzers(self, params, inputs, outputs):
