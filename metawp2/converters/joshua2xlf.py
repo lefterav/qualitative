@@ -99,9 +99,9 @@ def get_1best(xlf):
 # the value on 1, otherwise 0. 
 def annotate_OOV(token):
     if token.endswith('_OOV'):
-        return '<META-NET:annotation type=\"OOV\" value=\"1\" />'
+        return '<metanet:annotation type=\"OOV\" value=\"1\" />'
     else :
-        return '<META-NET:annotation type=\"OOV\" value=\"0\" />'
+        return '<metanet:annotation type=\"OOV\" value=\"0\" />'
 
 
 # Removes a string '_OOV' from the end of a token, if the token has it.
@@ -112,16 +112,16 @@ def remove_OOV(string):
 # This method encapsulates each token to the appropriate tags.
 def get_tokens_xml(string, s_phrase_id):
     tokens = string.split()
-    output = '\n\t\t\t<META-NET:tokens>'
+    output = '\n\t\t\t<metanet:tokens>'
     i = 1
     for token in tokens:
         s_token_id = '%s_k%s'% (s_phrase_id, str(i))
-        output += '\n\t\t\t\t<META-NET:token id=\"%s\">' % s_token_id
-        output += '\n\t\t\t\t\t<META-NET:string>%s</string>' % remove_OOV(token)
+        output += '\n\t\t\t\t<metanet:token id=\"%s\">' % s_token_id
+        output += '\n\t\t\t\t\t<metanet:string>%s</string>' % remove_OOV(token)
         output += '\n\t\t\t\t\t%s' % annotate_OOV(token)
-        output += '\n\t\t\t\t</META-NET:token>' 
+        output += '\n\t\t\t\t</metanet:token>' 
         i += 1
-    output += '\n\t\t\t</META-NET:tokens>'
+    output += '\n\t\t\t</metanet:tokens>'
     return output
 
 
@@ -248,24 +248,24 @@ def create_tar_lang_snt(node):
 def create_output_file_content(node, line, snt_no):
     sXlf = ''
     sXlf += '\n<alt-trans tool-id="t%s" add:rank="1">' % (T_NUM)
-    sXlf += '\n\t<source>%s</source>' % (INPUT_SNTS[line_no].strip())
-    sXlf += '\n\t<target>%s</target>' % (remove_OOV(tarSnt))
+    sXlf += '\n\t<source xml:lang="%s">%s</source>' % (SOURCE_LANG, INPUT_SNTS[line_no].strip())
+    sXlf += '\n\t<target xml:lang="%s">%s</target>' % (TARGET_LANG, remove_OOV(tarSnt))
 
     # total, lm, pt0, pt1, pt2
     scores = line.rpartition('|||')[0].rpartition('|||')[2].strip().split(' ')
     # word penalty
     if len(scores) == 5:
         scores.append(line.rpartition('|||')[2].strip())
-        sXlf += '\n\t<META-NET:scores>'
-        sXlf += '\n\t\t<META-NET:score type="total" value="%s" />' % (scores[5])
-        sXlf += '\n\t\t<META-NET:score type="lm" value="%s" />' % (scores[0])
-        sXlf += '\n\t\t<META-NET:score type="pt0" value="%s" />' % (scores[1])
-        sXlf += '\n\t\t<META-NET:score type="pt1" value="%s" />' % (scores[2])
-        sXlf += '\n\t\t<META-NET:score type="pt2" value="%s" />' % (scores[3])
-        sXlf += '\n\t\t<META-NET:score type="wordpenalty" value="%s" />' % (scores[4])
-        sXlf += '\n\t</META-NET:scores>'
+        sXlf += '\n\t<metanet:scores>'
+        sXlf += '\n\t\t<metanet:score type="total" value="%s" />' % (scores[5])
+        sXlf += '\n\t\t<metanet:score type="lm" value="%s" />' % (scores[0])
+        sXlf += '\n\t\t<metanet:score type="pt0" value="%s" />' % (scores[1])
+        sXlf += '\n\t\t<metanet:score type="pt1" value="%s" />' % (scores[2])
+        sXlf += '\n\t\t<metanet:score type="pt2" value="%s" />' % (scores[3])
+        sXlf += '\n\t\t<metanet:score type="wordpenalty" value="%s" />' % (scores[4])
+        sXlf += '\n\t</metanet:scores>'
     
-        sXlf += '\n\t<META-NET:derivation type="hiero_decoding" id="s%s_t1_r1_d1">'\
+        sXlf += '\n\t<metanet:derivation type="hiero_decoding" id="s%s_t1_r1_d1">'\
                 % (snt_no)
         chList = [node]
         while chList:
@@ -288,19 +288,19 @@ def create_output_file_content(node, line, snt_no):
             # and with a node string, if exists.
             sPhrase_id = 's%s_t%s_r1_d1_p%s' % (snt_no, T_NUM,
                                                 str(chList[0].iPhraseID))
-            sXlf += '\n\t\t<META-NET:phrase id=\"%s\" %s>' % (sPhrase_id, sChildren)
+            sXlf += '\n\t\t<metanet:phrase id=\"%s\" %s>' % (sPhrase_id, sChildren)
             if chList[0].sString:
                 sXlf += get_tokens_xml(chList[0].sString.strip(), sPhrase_id)
-            sXlf += '\n\t\t\t<META-NET:annotation type="class" value="%s" />' % \
+            sXlf += '\n\t\t\t<metanet:annotation type="class" value="%s" />' % \
                     (chList[0].sClass)
-            sXlf += '\n\t\t\t<META-NET:alignment from="%s" to="%s" />' % \
+            sXlf += '\n\t\t\t<metanet:alignment from="%s" to="%s" />' % \
                     (chList[0].iFrom, chList[0].iTo)
-            sXlf += '\n\t\t</META-NET:phrase>'
+            sXlf += '\n\t\t</metanet:phrase>'
             
             # The processed (printed) node is removed from the list.
             chList.pop(0)
     
-        sXlf += '\n\t</META-NET:derivation>'
+        sXlf += '\n\t</metanet:derivation>'
         sXlf += '\n</alt-trans>'
         
         return (sXlf.strip(), snt_no)
@@ -338,13 +338,13 @@ def create_weights_output(weights):
     sWei = ''
     sWei += '<tool tool-id="t%s" tool-name="Joshua" tool-version=' \
             '"revision:%s">' % (T_NUM, TOOL_VERSION)
-    sWei += '\n\t<META-NET:weights>'
-    sWei += '\n\t\t<META-NET:weight type="lm" value="%s" />' % (weights[0])
-    sWei += '\n\t\t<META-NET:weight type="pt0" value="%s" />' % (weights[1])
-    sWei += '\n\t\t<META-NET:weight type="pt1" value="%s" />' % (weights[2])
-    sWei += '\n\t\t<META-NET:weight type="pt2" value="%s" />' % (weights[3])
-    sWei += '\n\t\t<META-NET:weight type="wordpenalty" value="%s" />' % (weights[4])
-    sWei += '\n\t</META-NET:weights>'
+    sWei += '\n\t<metanet:weights>'
+    sWei += '\n\t\t<metanet:weight type="lm" value="%s" />' % (weights[0])
+    sWei += '\n\t\t<metanet:weight type="pt0" value="%s" />' % (weights[1])
+    sWei += '\n\t\t<metanet:weight type="pt1" value="%s" />' % (weights[2])
+    sWei += '\n\t\t<metanet:weight type="pt2" value="%s" />' % (weights[3])
+    sWei += '\n\t\t<metanet:weight type="wordpenalty" value="%s" />' % (weights[4])
+    sWei += '\n\t</metanet:weights>'
     sWei += '\n</tool>'
     return sWei
 
