@@ -120,7 +120,7 @@ def get_tokens_xml(string, s_phrase_id):
     for token in tokens:
         s_token_id = '%s_k%s'% (s_phrase_id, str(i))
         output += '\n\t\t\t\t<metanet:token id=\"%s\">' % s_token_id
-        output += '\n\t\t\t\t\t<metanet:string>%s</string>' % remove_OOV(token)
+        output += '\n\t\t\t\t\t<metanet:string>%s</metanet:string>' % remove_OOV(token)
         output += '\n\t\t\t\t\t%s' % annotate_OOV(token)
         output += '\n\t\t\t\t</metanet:token>' 
         i += 1
