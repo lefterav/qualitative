@@ -106,34 +106,7 @@ def get_1best(xlf):
     return bestSnts
 
 
-# This method returns an annotation for a token. If the token is OOV, it sets
-# the value on 1, otherwise 0. 
-def annotate_OOV(token):
-    if token.endswith('_OOV'):
-        return '<metanet:annotation type=\"OOV\" value=\"1\" />'
-    else :
-        return '<metanet:annotation type=\"OOV\" value=\"0\" />'
 
-
-# Removes a string '_OOV' from the end of a token, if the token has it.
-def remove_OOV(string):
-    return re.sub(r'([^ ]*)_OOV', r'\1', string)
-
-
-# This method encapsulates each token to the appropriate tags.
-def get_tokens_xml(string, s_phrase_id):
-    tokens = string.split()
-    output = '\n\t\t\t<metanet:tokens>'
-    i = 1
-    for token in tokens:
-        s_token_id = '%s_k%s'% (s_phrase_id, str(i))
-        output += '\n\t\t\t\t<metanet:token id=\"%s\">' % s_token_id
-        output += '\n\t\t\t\t\t<metanet:string>%s</metanet:string>' % remove_OOV(token)
-        output += '\n\t\t\t\t\t%s' % annotate_OOV(token)
-        output += '\n\t\t\t\t</metanet:token>' 
-        i += 1
-    output += '\n\t\t\t</metanet:tokens>'
-    return output
 
 
 # This method gains information from an input sentence (=line in input file).
@@ -255,6 +228,44 @@ def create_tar_lang_snt(node):
     if i == 1000: print 'Error! Over 1000 iterations in creating sentence!'
     return snt.strip(' ')
 
+# This method returns an annotation for a token. If the token is OOV, it sets
+# the value on 1, otherwise 0. 
+def annotate_OOV(token):
+    if token.endswith('_OOV'):
+        return '<metanet:annotation type=\"OOV\" value=\"1\" />'
+    else :
+        return '<metanet:annotation type=\"OOV\" value=\"0\" />'
+
+
+# Removes a string '_OOV' from the end of a token, if the token has it.
+def remove_OOV(string):
+    return re.sub(r'([^ ]*)_OOV', r'\1', string)
+
+
+# This method encapsulates each token to the appropriate tags.
+def get_tokens_xml(string, s_phrase_id):
+    tokens = string.split()
+    output = '\n\t\t\t<metanet:tokens>'
+    i = 1
+    for token in tokens:
+        s_token_id = '%s_k%s'% (s_phrase_id, str(i))
+        output += '\n\t\t\t\t<metanet:token id=\"%s\">' % s_token_id
+        output += '\n\t\t\t\t\t<metanet:string>%s</metanet:string>' % remove_OOV(token)
+        output += '\n\t\t\t\t\t%s' % annotate_OOV(token)
+        output += '\n\t\t\t\t</metanet:token>' 
+        i += 1
+    output += '\n\t\t\t</metanet:tokens>'
+    return output
+
+def get_scores_xml(scores):
+    output = ""
+    i = 0
+    for score in scores:
+        output += '\n\t\t\t\t\t<metanet:score type="translogp%d">%s</metanet:score>' % (i, score)
+        i += 1
+    if output != "" :
+        final_output = "\n\t\t\t\t<metanet:scores>%s\n\t\t\t\t</metanet:scores>" % output
+    return final_output
 
 # This method creates output format of a sentence in xml.
 def create_output_file_content(node, line, snt_no):
