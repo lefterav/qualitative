@@ -16,6 +16,7 @@ class _Node:
     sNodeString = ''
     sKey = ''
     nodeDict = dict()
+    scores=[] #TODO: use this to store scores that you get from the parse 
 
     def __init__(self):
         self.lChildren = []
@@ -25,6 +26,13 @@ class _Node:
 
     def get_children(self):
         return self.lChildren
+    
+    #TODO: Use this functions to store transition costs that you get from the parse 
+    def set_scores(self,scores):
+        self.scores = scores
+    
+    def get_scores(self):
+        return self.scores
 
 
 # -----------INPUT-----------
@@ -159,6 +167,7 @@ def get_sentence_attributes(line):
             node = save_node_attributes(node, s, i)
 
         # If a node ends.
+        # TODO: parse and store the scores of the node starting with <!-- and separated with commas
         if s[i] == ')':
             node = operations_end_node(node, s, i)
             nodeDict[node.sKey] = [node.sNodeString]
