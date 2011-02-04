@@ -16,7 +16,7 @@ class _Node:
     sNodeString = ''
     sKey = ''
     nodeDict = dict()
-    scores=[] #TODO: use this to store scores that you get from the parse 
+    scores = [] 
 
     def __init__(self):
         self.lChildren = []
@@ -27,13 +27,6 @@ class _Node:
     def get_children(self):
         return self.lChildren
     
-    #TODO: Use this functions to store transition costs that you get from the parse 
-    def set_scores(self,scores):
-        self.scores = scores
-    
-    def get_scores(self):
-        return self.scores
-
 
 # -----------INPUT-----------
 # file to be converted
@@ -73,7 +66,7 @@ DIR_NAME = ('t%s-%s-%s' % (T_NUM, SOURCE_LANG, TARGET_LANG))
 
 # This method replaces tags with brackets back.
 # It prevents confusing textual brackets and tree brackets.
-def replace_brackets(string):
+def return_brackets(string):
     return string.replace('<open>', '( ').replace('<close>', ' )')
 
 
@@ -104,9 +97,6 @@ def get_1best(xlf):
                 ids.add(snt_no)
                 bestSnts.append( (snt, snt_no) )
     return bestSnts
-
-
-
 
 
 # This method gains information from an input sentence (=line in input file).
@@ -140,7 +130,6 @@ def get_sentence_attributes(line):
             node = save_node_attributes(node, s, i)
 
         # If a node ends.
-        # TODO: parse and store the scores of the node starting with <!-- and separated with commas
         if s[i] == ')':
             node = operations_end_node(node, s, i)
             nodeDict[node.sKey] = [node.sNodeString]
@@ -185,10 +174,10 @@ def save_node_attributes(node, s, i):
     sText = s[i:].partition('}')[2].partition(' ([')[0]
     if not sText.count(')') and sText:
         # sString - Saves the gained string.
-        node.sString += replace_brackets(sText)
+        node.sString += return_brackets(sText)
         # sNodeString - Saves the gained string.
         # It is later used in the whole sentence composition.
-        node.sNodeString += '<<>>%s' % (replace_brackets(sText))
+        node.sNodeString += '<<>>%s' % (return_brackets(sText))
     return node
 
 
@@ -196,7 +185,11 @@ def save_node_attributes(node, s, i):
 def operations_end_node(node, s, i):
     # sString --> between } and ) or between next to last ) and last ) 
     # - Gains a string in node, if exists.
-    sText = replace_brackets(s[:i].rpartition('}')[2].split(')')[-1])
+    sText = return_brackets(s[:i].rpartition('}')[2].split(')')[-1])
+    # Gets scores for a node.
+    node.scores = sText.split('<!-')[1].split('->')[0].strip('-').split(',')
+    # Removes score tag from string. 
+    sText = re.sub(' <!--([^>]*)>', '', sText)
     if sText:
         # sString - Saves the gained string.
         node.sString += sText
@@ -243,36 +236,46 @@ def remove_OOV(string):
 
 
 # This method encapsulates each token to the appropriate tags.
-def get_tokens_xml(string, s_phrase_id):
+def get_tokens_xml(string, s_phrase_id, scores):
     tokens = string.split()
     output = '\n\t\t\t<metanet:tokens>'
     i = 1
     for token in tokens:
         s_token_id = '%s_k%s'% (s_phrase_id, str(i))
         output += '\n\t\t\t\t<metanet:token id=\"%s\">' % s_token_id
-        output += '\n\t\t\t\t\t<metanet:string>%s</metanet:string>' % remove_OOV(token)
+        output += '\n\t\t\t\t\t<metanet:string>%s</metanet:string>' % \
+                  remove_OOV(token)
+        output += get_scores_xml(scores)
         output += '\n\t\t\t\t\t%s' % annotate_OOV(token)
         output += '\n\t\t\t\t</metanet:token>' 
         i += 1
     output += '\n\t\t\t</metanet:tokens>'
     return output
 
+
+# This method creates output format for node scores. An input is the whole tag
+# with scores, e. g. ' <!---3.561,17.192,0.000,0.000,0.000,0.000-->'. 
 def get_scores_xml(scores):
-    output = ""
+    output = ''
     i = 0
     for score in scores:
-        output += '\n\t\t\t\t\t<metanet:score type="translogp%d">%s</metanet:score>' % (i, score)
+        output += '\n\t\t\t\t\t\t<metanet:score type="translogp%d">%s' \
+                  '</metanet:score>' % (i, score)
         i += 1
-    if output != "" :
-        final_output = "\n\t\t\t\t<metanet:scores>%s\n\t\t\t\t</metanet:scores>" % output
+    if output != '' :
+        final_output = '\n\t\t\t\t\t<metanet:scores>%s\n\t\t\t\t\t' \
+                       '</metanet:scores>' % output
     return final_output
+
 
 # This method creates output format of a sentence in xml.
 def create_output_file_content(node, line, snt_no):
     sXlf = ''
     sXlf += '\n<alt-trans tool-id="t%s" metanet:rank="1">' % (T_NUM)
-    sXlf += '\n\t<source xml:lang="%s">%s</source>' % (SOURCE_LANG, INPUT_SNTS[line_no].strip())
-    sXlf += '\n\t<target xml:lang="%s">%s</target>' % (TARGET_LANG, remove_OOV(tarSnt))
+    sXlf += '\n\t<source xml:lang="%s">%s</source>' % (SOURCE_LANG, \
+                                                   INPUT_SNTS[line_no].strip())
+    sXlf += '\n\t<target xml:lang="%s">%s</target>' % (TARGET_LANG, \
+                                                       remove_OOV(tarSnt))
 
     # total, lm, pt0, pt1, pt2
     scores = line.rpartition('|||')[0].rpartition('|||')[2].strip().split(' ')
@@ -285,11 +288,12 @@ def create_output_file_content(node, line, snt_no):
         sXlf += '\n\t\t<metanet:score type="pt0" value="%s" />' % (scores[1])
         sXlf += '\n\t\t<metanet:score type="pt1" value="%s" />' % (scores[2])
         sXlf += '\n\t\t<metanet:score type="pt2" value="%s" />' % (scores[3])
-        sXlf += '\n\t\t<metanet:score type="wordpenalty" value="%s" />' % (scores[4])
+        sXlf += '\n\t\t<metanet:score type="wordpenalty" value="%s" />' % \
+                (scores[4])
         sXlf += '\n\t</metanet:scores>'
     
-        sXlf += '\n\t<metanet:derivation type="hiero_decoding" id="s%s_t1_r1_d1">'\
-                % (snt_no)
+        sXlf += '\n\t<metanet:derivation type="hiero_decoding" id="' \
+                's%s_t1_r1_d1">' % (snt_no)
         chList = [node]
         while chList:
             i = 1
@@ -304,17 +308,20 @@ def create_output_file_content(node, line, snt_no):
             if len(chList[0].get_children()):
                 sChildren = ' children="'
                 for child_no in chList[0].get_children():
-                    sChildren += 's%s_t%s_r1_d1_p%s,' % (snt_no, T_NUM, str(child_no.iPhraseID))
+                    sChildren += 's%s_t%s_r1_d1_p%s,' % (snt_no, T_NUM, \
+                                                       str(child_no.iPhraseID))
                 sChildren = '%s"' % (sChildren.strip(','))
     
             # Creates a phrase with node parameters
             # and with a node string, if exists.
             sPhrase_id = 's%s_t%s_r1_d1_p%s' % (snt_no, T_NUM,
                                                 str(chList[0].iPhraseID))
-            sXlf += '\n\t\t<metanet:phrase id=\"%s\" %s>' % (sPhrase_id, sChildren)
+            sXlf += '\n\t\t<metanet:phrase id=\"%s\" %s>' % \
+                    (sPhrase_id, sChildren)
             if chList[0].sString:
-                sXlf += get_tokens_xml(chList[0].sString.strip(), sPhrase_id)
-            sXlf += '\n\t\t\t<metanet:annotation type="class" value="%s" />' % \
+                sXlf += get_tokens_xml(chList[0].sString.strip(), sPhrase_id, \
+                                       chList[0].scores)
+            sXlf += '\n\t\t\t<metanet:annotation type="class" value="%s" />' %\
                     (chList[0].sClass)
             sXlf += '\n\t\t\t<metanet:alignment from="%s" to="%s" />' % \
                     (chList[0].iFrom, chList[0].iTo)
@@ -366,7 +373,8 @@ def create_weights_output(weights):
     sWei += '\n\t\t<metanet:weight type="pt0" value="%s" />' % (weights[1])
     sWei += '\n\t\t<metanet:weight type="pt1" value="%s" />' % (weights[2])
     sWei += '\n\t\t<metanet:weight type="pt2" value="%s" />' % (weights[3])
-    sWei += '\n\t\t<metanet:weight type="wordpenalty" value="%s" />' % (weights[4])
+    sWei += '\n\t\t<metanet:weight type="wordpenalty" value="%s" />' % \
+            (weights[4])
     sWei += '\n\t</metanet:weights>'
     sWei += '\n</tool>'
     return sWei
@@ -453,5 +461,6 @@ os.mkdir(DIR_NAME)
 # Creates xml files with transformed format of input sentences.
 create_xml_files()
 
-# Creates weights' xml file.
-create_weights()
+# Creates weights' xml file, if input weights file is available.
+if WEIGHTS_FILE:
+    create_weights()
