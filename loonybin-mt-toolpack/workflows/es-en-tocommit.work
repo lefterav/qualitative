@@ -440,10 +440,12 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
      lmFile < arpaLM
 
 6-Test.920-detokenizer: ON localhost machine-translation/descriptors/joshua/DetokenizerJoshua.py
-   targetLanguageSuffix=en
 
    FROM 6-Test.920-take-topbest-recasings
      recasedOutput < topbestOut
+
+   FROM FS-languagepair
+     targetLanguageSuffix <- target-language
 
 6-Test.920-take-topbest-recasings: ON localhost machine-translation/descriptors/joshua/ExtractTopBestJoshua.py
 
