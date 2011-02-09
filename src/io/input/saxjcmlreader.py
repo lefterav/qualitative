@@ -6,6 +6,7 @@
 """
 
 from xml.sax.handler import ContentHandler
+from xml.sax.saxutils import XMLGenerator
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 
@@ -17,7 +18,7 @@ if __name__ == '__main__':
 
 
 
-class SaxReader(ContentHandler):
+class SaxJCMLReader(ContentHandler):
     
     def __init__(self, feature_generators=[]):
         
@@ -37,7 +38,7 @@ class SaxReader(ContentHandler):
         self.feature_generators = feature_generators
         
     
-    def startElement(self, name, attrs):
+    def startElement(self, name, attrs=[]):
         """
         Signals the start of an element (simplesentence or parallelsentence)
         @param name: the name of the element
@@ -64,7 +65,7 @@ class SaxReader(ContentHandler):
         if self.is_simplesentence :
             self.ss_text += ch
     
-    def endElement(self, name, attrs):
+    def endElement(self, name, attrs=[]):
         """
         Signals the end of an element.
         Data stored in global vars of the class, time to create our objects and fire their processing
@@ -86,7 +87,7 @@ class SaxReader(ContentHandler):
         if name == "judgedsentence":
             parallelsentence = ParallelSentence ( self.src, self.tgt, self.ref , self.ps_attributes)
             
-        for fg in self.feature_generators:
-            annotated_parallelsentence = fg.add_features_parallelsentence(parallelsentence)
-            print annotated_parallelsentence
+            for fg in self.feature_generators:
+                annotated_parallelsentence = fg.add_features_parallelsentence(parallelsentence)
+                print annotated_parallelsentence.get_source().get_string() , annotated_parallelsentence.get_attributes()
             #saxwriter.print( annotated_parallelsentence )

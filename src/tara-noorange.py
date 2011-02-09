@@ -19,20 +19,22 @@ from os import getenv
 
 def test_length_fg_with_serialized_parsing():
     from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
-    from io.input.saxreader import SaxReader
+    from io.input.saxjcmlreader import SaxJCMLReader
     from xml.sax import make_parser
     import codecs
     
+    dir = getenv("HOME") + "/workspace/TaraXUscripts/data"
+    filename = dir + "/evaluations_feat.jcml"
+    file_object = codecs.open(filename, 'r', 'utf-8')
     
 
     lfg = LengthFeatureGenerator()
-    saxreader = SaxReader( [lfg] )
-    myparser = make_parser( [saxreader] )
+    saxreader = SaxJCMLReader( [lfg] )
+    myparser = make_parser( )
+    myparser.setContentHandler( saxreader )
     myparser.parse( file_object )
     
-    dir = getenv("HOME") + "/workspace/TaraXUscripts/data"
-    filename = dir + "/evaluations_feat.jcml"
-    file_object = codecs.open(tmpFileName, 'r', 'utf-8')
+   
 
     
     
