@@ -28,8 +28,12 @@ def test_length_fg_with_serialized_parsing():
     file_object = codecs.open(filename, 'r', 'utf-8')
     
 
+    dir = getenv("HOME") + "/workspace/TaraXUscripts/data"
+    filename2 = dir + "/evaluations_feat00.jcml"
+    file_object2 = codecs.open(filename2, 'w', 'utf-8')
+
     lfg = LengthFeatureGenerator()
-    saxreader = SaxJCMLReader( [lfg] )
+    saxreader = SaxJCMLReader( file_object2, [lfg] )
     myparser = make_parser( )
     myparser.setContentHandler( saxreader )
     myparser.parse( file_object )
