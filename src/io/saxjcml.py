@@ -131,6 +131,9 @@ class SaxJCMLProcessor(XMLGenerator):
             XMLGenerator.endElement(self, "src")
             
             for tgt in parallelsentence.get_translations():
+                for fg in self.feature_generators:
+                    tgt.add_attributes( fg.get_features_sentence(tgt, parallelsentence) )
+
                 XMLGenerator._write(self, "\n\t\t")
                 XMLGenerator.startElement(self, "tgt", tgt.get_attributes())
                 XMLGenerator.characters(self, tgt.get_string())
