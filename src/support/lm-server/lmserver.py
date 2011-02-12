@@ -48,7 +48,6 @@ class LM:
     def getSentenceProb(self, s, n):
         import base64
         s = base64.standard_b64decode(s)
-        print s,n 
         return srilm.getSentenceProb(self.lm, s, n)
 
     def getCorpusProb(self, filename):
