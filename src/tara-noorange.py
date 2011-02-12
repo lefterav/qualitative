@@ -19,12 +19,13 @@ from os import getenv
 
 def test_length_fg_with_serialized_parsing():
     from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
-    from io.input.saxjcmlreader import SaxJCMLReader
+    from featuregenerator.lm.srilm.srilmclient import SRILMFeatureGenerator
+    from io.saxjcml import SaxJCMLProcessor
     from xml.sax import make_parser
     import codecs
     
     dir = getenv("HOME") + "/workspace/TaraXUscripts/data"
-    filename = dir + "/evaluations_feat.jcml"
+    filename = dir + "/evaluations_all.jcml"
     file_object = codecs.open(filename, 'r', 'utf-8')
     
 
@@ -33,7 +34,8 @@ def test_length_fg_with_serialized_parsing():
     file_object2 = codecs.open(filename2, 'w', 'utf-8')
 
     lfg = LengthFeatureGenerator()
-    saxreader = SaxJCMLReader( file_object2, [lfg] )
+    srlm = SRILMFeatureGenerator()
+    saxreader = SaxJCMLProcessor( file_object2, [lfg, srlm] )
     myparser = make_parser( )
     myparser.setContentHandler( saxreader )
     myparser.parse( file_object )
