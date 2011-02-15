@@ -49,6 +49,9 @@ TOOL_VERSION = sys.argv[6]
 
 # t number
 T_NUM = sys.argv[7]
+
+# sentence info
+INFO_FILE = sys.argv[8]
 # ---------INPUT END---------
 
 f = open(FILENAME, 'r')
@@ -58,6 +61,7 @@ f.close()
 g = open(FILENAME_INPUT, 'r')
 INPUT_SNTS = g.read().split('\n')
 g.close()
+
 
 # Creates global string with name of output directory. 
 DIR_NAME = ('t%s-%s-%s' % (T_NUM, SOURCE_LANG, TARGET_LANG))
@@ -77,6 +81,22 @@ def get_str(listVar):
     for item in listVar:
         string += item
     return string
+
+
+# This method parses an input info file. It returns a list of additional info 
+# parameters for each sentence.
+def getInfo():
+    h = open(INFO_FILE, 'r')
+    content = h.read()
+    h.close()
+    info_strs = content.split('INFO: Sentence id=')[:-1]
+    info = []
+    for s in info_strs:
+        info.append(re.match(r'ADDED: (\d+); MERGED: (\d+); PRUNED: (\d+); ' \
+                             'PRE-PRUNED: (\d+), FUZZ1: (\d+), FUZZ2: (\d+); '\
+                             'DOT-ITEMS ADDED: (\d+)', \
+                             s.rpartition('INFO: ')[2]).groups())
+    return info
 
 
 # This method has as an input all translated sentences in nbest file. In this
@@ -188,6 +208,7 @@ def operations_end_node(node, s, i):
     sText = return_brackets(s[:i].rpartition('}')[2].split(')')[-1])
     # Gets scores for a node.
     node.scores = sText.split('<!-')[1].split('->')[0].strip('-').split(',')
+
     # Removes score tag from string. 
     sText = re.sub(' <!--([^>]*)>', '', sText)
     if sText:
@@ -291,9 +312,24 @@ def create_output_file_content(node, line, snt_no):
         sXlf += '\n\t\t<metanet:score type="wordpenalty" value="%s" />' % \
                 (scores[4])
         sXlf += '\n\t</metanet:scores>'
-    
-        sXlf += '\n\t<metanet:derivation type="hiero_decoding" id="' \
-                's%s_t1_r1_d1">' % (snt_no)
+        
+        if INFO_FILE:
+            sXlf += '\n\t<metanet:derivation type="hiero_decoding" id="' \
+                    's%s_t1_r1_d1">' % (snt_no)
+            sXlf += '\n\t<metanet:annotation type="added" value="%s" />' % \
+                    I_NUMS[int(snt_no)-1][0]
+            sXlf += '\n\t<metanet:annotation type="merged" value="%s" />' % \
+                    I_NUMS[int(snt_no)-1][1]
+            sXlf += '\n\t<metanet:annotation type="pruned" value="%s" />' % \
+                    I_NUMS[int(snt_no)-1][2]
+            sXlf += '\n\t<metanet:annotation type="pre-pruned" value="%s" />'%\
+                    I_NUMS[int(snt_no)-1][3]
+            sXlf += '\n\t<metanet:annotation type="fuzz1" value="%s" />' % \
+                    I_NUMS[int(snt_no)-1][4]
+            sXlf += '\n\t<metanet:annotation type="fuzz2" value="%s" />' % \
+                    I_NUMS[int(snt_no)-1][5]
+            sXlf += '\n\t<metanet:annotation type="dot-items added" ' \
+                    'value="%s" />' % I_NUMS[int(snt_no)-1][6]
         chList = [node]
         while chList:
             i = 1
@@ -401,40 +437,9 @@ def create_weights():
 xlf = get_1best(xlf)
 
 
-#-------SELECT THE BEST SENTENCES-------
-# This part of code selects the best sentence translation 
-# from the list according to the reached word penalty.
-#bestSnts = []
-#d = {}
-# Adds all sentences to dictionary d.
-#for snt in xlf:
-#    # Number of sentence.
-#    snt_no = snt.partition(' ||| ')[0]
-    # Reached word penalty.
-#    snt_wp = snt.rpartition(' ||| ')[2]
-    # If a key 'snt_no' was already created in d.
-#    if snt_no in d:
-        # Adds [word penalty, sentence] to a particular sentence number.
-#        d[snt_no].append([snt_wp, snt])
-#    else:
-        # Creates a new key in d.
-#        d[snt_no] = []
-#        d[snt_no].append([snt_wp, snt])
-
-#sntNumbers = d.keys()
-# Selects the best sentence translation for each key in d.
-#for sntNo in sntNumbers:
-#    minWP = sys.maxint
-#    snt = ''
-#    for elem in d[sntNo]:
-#        # If sentence translation word penalty is lower than so far reached.
-#        if abs(float(elem[0])) < minWP:
-            # Sets new minimal word penalty.
-#            minWP = abs(float(elem[0]))
-            # Sets new sentence translation with minimal word penalty.
-#            snt = elem[1]
-#    bestSnts.append(snt)
-#-----END SELECT THE BEST SENTENCES-----
+# Gets info about a sentence from the sentence info file.
+if INFO_FILE:
+    I_NUMS = getInfo()
 
 
 XML_FILES = []
