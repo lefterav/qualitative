@@ -1,10 +1,23 @@
 """
 This program prints the best version of each sentence to a single file.
 """
+import getopt
 import re
 import os
-#import time
+import shutil
 import sys
+
+
+class _Input:
+    FILENAME = '' # file with sentences in a tree format
+    FILENAME_INPUT = '' # input sentences
+    SOURCE_LANG = '' # source language
+    TARGET_LANG = '' # target language
+    WEIGHTS_FILE = '' # weights file
+    TOOL_VERSION = '' # tool version 
+    T_NUM = '' # t number
+    INFO_FILE = '' # sentence info
+
 
 class _Node:
     sClass = ''
@@ -28,44 +41,70 @@ class _Node:
         return self.lChildren
     
 
-# -----------INPUT-----------
-# file to be converted
-FILENAME = sys.argv[1]
+# This method prints a list of all required and possible parameters.
+def help():
+    print "\nList of parameters:"
+    print "-c [File with sentences in a tree format]"
+    print "-i [Input sentences]"
+    print "-s [Source language]"
+    print "-t [Target language]"
+    print "(optional) -w [Weight file]"
+    print "(optional) -v [Tool version]"
+    print "(optional) -n [T-number]"
+    print "(optional) -f [Sentence info file]\n"
+    
 
-# input sentences
-FILENAME_INPUT = sys.argv[2]
-
-# source language
-SOURCE_LANG = sys.argv[3]
-
-# target language
-TARGET_LANG = sys.argv[4]
-
-# weights file
-WEIGHTS_FILE = sys.argv[5]
-
-# tool version
-TOOL_VERSION = sys.argv[6] 
-
-# t number
-T_NUM = sys.argv[7]
-
-# sentence info
-INFO_FILE = sys.argv[8]
-# ---------INPUT END---------
-
-f = open(FILENAME, 'r')
-xlf = f.read().split('\n')
-f.close()
-
-g = open(FILENAME_INPUT, 'r')
-INPUT_SNTS = g.read().split('\n')
-g.close()
+# This method checks, if the user gave all required arguments.
+def check_args(Input):
+    stop = False
+    if not Input.FILENAME:
+        stop = True
+        print "ERROR: Missing parameter -c [File with sentences in a tree " \
+              "format]"
+    if not Input.FILENAME_INPUT:
+        stop = True
+        print "ERROR: Missing parameter -i [File with sentences in source " \
+              "language]"
+    if not Input.SOURCE_LANG:
+        stop = True
+        print "ERROR: Missing parameter -s [Source language]"
+    if not Input.TARGET_LANG:
+        stop = True
+        print "ERROR: Missing parameter -t [Target language]"
+    if not Input.WEIGHTS_FILE:
+        print "WARNING: Missing parameter -w [Weights file]"
+    if not Input.TOOL_VERSION:
+        print "WARNING: Missing parameter -v [Tool version]"
+    if not Input.T_NUM:
+        print "WARNING: Missing parameter -n [T-number]"
+    if not Input.INFO_FILE:
+        print "WARNING: Missing parameter -f [Sentence info file]"
+    if stop:
+        sys.exit("Program terminated.")
 
 
-# Creates global string with name of output directory. 
-DIR_NAME = ('t%s-%s-%s' % (T_NUM, SOURCE_LANG, TARGET_LANG))
-#DIR_NAME = '%s_output' % (time.strftime('_%y%m%d_%H%M%S'))
+# This method reads the command line arguments, saves them to the Input class
+# variables and checks, if the user gave all required arguments.
+def read_commandline_args(Input):
+    try:
+        args = getopt.getopt(sys.argv[1:], "c:i:s:t:w:v:n:f:")[0]
+    except getopt.GetoptError:
+        help()
+        sys.exit("Program terminated.")
+        
+    for opt, arg in args:
+        if opt == '-c': Input.FILENAME = arg
+        if opt == '-i': Input.FILENAME_INPUT = arg
+        if opt == '-s': Input.SOURCE_LANG = arg
+        if opt == '-t': Input.TARGET_LANG = arg
+        if opt == '-w': Input.WEIGHTS_FILE = arg
+        if opt == '-v': Input.TOOL_VERSION = arg
+        if opt == '-n': Input.T_NUM = arg
+        if opt == '-f': Input.INFO_FILE = arg
+            
+    check_args(Input)
+    
+    return Input
 
 
 # This method replaces tags with brackets back.
@@ -86,7 +125,7 @@ def get_str(listVar):
 # This method parses an input info file. It returns a list of additional info 
 # parameters for each sentence.
 def getInfo():
-    h = open(INFO_FILE, 'r')
+    h = open(Input.INFO_FILE, 'r')
     content = h.read()
     h.close()
     info_strs = content.split('INFO: Sentence id=')[:-1]
@@ -103,26 +142,26 @@ def getInfo():
 # file the sentences are in descending order according to the translation word
 # penalty. The method gets always the first (best) sentence and
 # returns these as a list. 
-def get_1best(xlf):
+def get_1best(content):
     bestSnts = []
     ids = set()
-    for snt in xlf:
-        if xlf != "":
+    for snt in content:
+        if content != "":
             # Number of sentence.
             snt_no = snt.partition(' ||| ')[0]
             if snt_no != '': 
-                snt_no = str( long(snt.partition(' ||| ')[0])+1 )
+                snt_no = str(long(snt.partition(' ||| ')[0]) + 1)
             # If a key 'snt_no' was already created in d.
             if snt_no not in ids:
                 ids.add(snt_no)
-                bestSnts.append( (snt, snt_no) )
+                bestSnts.append((snt, snt_no, 1))
     return bestSnts
 
 
 # This method gains information from an input sentence (=line in input file).
-def get_sentence_attributes(line):
+def get_sentence_attributes(snt):
     # Returns a part beginning with '(ROOT{... ...)' and ending with '-#end#-'.
-    s = '%s-#end#-' % (line.partition(' ||| ')[2].partition(' ||| ')[0])
+    s = '%s-#end#-' % (snt.partition(' ||| ')[2].partition(' ||| ')[0])
     # Replaces textual brackets with '<open>' and '<close>'.
     # It prevents confusing textual brackets and tree brackets.
     s = s.replace('( ', '<open>').replace(' )', '<close>')
@@ -207,7 +246,12 @@ def operations_end_node(node, s, i):
     # - Gains a string in node, if exists.
     sText = return_brackets(s[:i].rpartition('}')[2].split(')')[-1])
     # Gets scores for a node.
-    node.scores = sText.split('<!-')[1].split('->')[0].strip('-').split(',')
+    try:
+        node.scores = sText.split('<!-')[1].split('->')[0].strip('-') \
+                      .split(',')
+    except:
+        print "The sentence score was not found!"
+        pass
 
     # Removes score tag from string. 
     sText = re.sub(' <!--([^>]*)>', '', sText)
@@ -278,6 +322,7 @@ def get_tokens_xml(string, s_phrase_id, scores):
 # with scores, e. g. ' <!---3.561,17.192,0.000,0.000,0.000,0.000-->'. 
 def get_scores_xml(scores):
     output = ''
+    final_output = ''
     i = 0
     for score in scores:
         output += '\n\t\t\t\t\t\t<metanet:score type="translogp%d">%s' \
@@ -290,19 +335,20 @@ def get_scores_xml(scores):
 
 
 # This method creates output format of a sentence in xml.
-def create_output_file_content(node, line, snt_no):
+def create_output_file_content(node, snt, snt_no, rank):
     sXlf = ''
-    sXlf += '\n<alt-trans tool-id="t%s" metanet:rank="1">' % (T_NUM)
-    sXlf += '\n\t<source xml:lang="%s">%s</source>' % (SOURCE_LANG, \
+    sXlf += '\n<alt-trans tool-id="t%s" metanet:rank="%s">' % (Input.T_NUM, \
+                                                               rank)
+    sXlf += '\n\t<source xml:lang="%s">%s</source>' % (Input.SOURCE_LANG, \
                                                    INPUT_SNTS[line_no].strip())
-    sXlf += '\n\t<target xml:lang="%s">%s</target>' % (TARGET_LANG, \
+    sXlf += '\n\t<target xml:lang="%s">%s</target>' % (Input.TARGET_LANG, \
                                                        remove_OOV(tarSnt))
 
     # total, lm, pt0, pt1, pt2
-    scores = line.rpartition('|||')[0].rpartition('|||')[2].strip().split(' ')
+    scores = snt.rpartition('|||')[0].rpartition('|||')[2].strip().split(' ')
     # word penalty
     if len(scores) == 5:
-        scores.append(line.rpartition('|||')[2].strip())
+        scores.append(snt.rpartition('|||')[2].strip())
         sXlf += '\n\t<metanet:scores>'
         sXlf += '\n\t\t<metanet:score type="total" value="%s" />' % (scores[5])
         sXlf += '\n\t\t<metanet:score type="lm" value="%s" />' % (scores[0])
@@ -313,9 +359,9 @@ def create_output_file_content(node, line, snt_no):
                 (scores[4])
         sXlf += '\n\t</metanet:scores>'
         
-        if INFO_FILE:
+        if Input.INFO_FILE:
             sXlf += '\n\t<metanet:derivation type="hiero_decoding" id="' \
-                    's%s_t1_r1_d1">' % (snt_no)
+                    's%s_t1_r%s_d1">' % (snt_no, rank)
             sXlf += '\n\t<metanet:annotation type="added" value="%s" />' % \
                     I_NUMS[int(snt_no)-1][0]
             sXlf += '\n\t<metanet:annotation type="merged" value="%s" />' % \
@@ -344,13 +390,13 @@ def create_output_file_content(node, line, snt_no):
             if len(chList[0].get_children()):
                 sChildren = ' children="'
                 for child_no in chList[0].get_children():
-                    sChildren += 's%s_t%s_r1_d1_p%s,' % (snt_no, T_NUM, \
-                                                       str(child_no.iPhraseID))
+                    sChildren += 's%s_t%s_r%s_d1_p%s,' % (snt_no, Input.T_NUM, \
+                                                 rank, str(child_no.iPhraseID))
                 sChildren = '%s"' % (sChildren.strip(','))
     
             # Creates a phrase with node parameters
             # and with a node string, if exists.
-            sPhrase_id = 's%s_t%s_r1_d1_p%s' % (snt_no, T_NUM,
+            sPhrase_id = 's%s_t%s_r%s_d1_p%s' % (snt_no, Input.T_NUM, rank, \
                                                 str(chList[0].iPhraseID))
             sXlf += '\n\t\t<metanet:phrase id=\"%s\" %s>' % \
                     (sPhrase_id, sChildren)
@@ -373,11 +419,11 @@ def create_output_file_content(node, line, snt_no):
 
 
 # This method creates xml files with transformed format of input sentences.
-def create_xml_files():
-    for (outputFileSnts, sntNumber) in XML_FILES:
+def create_xlf_files():
+    for (outputFileSnts, sntNumber) in XLF_FILES:
         # Prints output format of sentences to .xml file.
-        filenameSnts = '%s//t%s-%s-%s-%.4d.xml' % (DIR_NAME, T_NUM, \
-                                     SOURCE_LANG, TARGET_LANG, long(sntNumber))
+        filenameSnts = '%s//t%s-%s-%s-%.4d.xml' % (DIR_NAME, Input.T_NUM, \
+                        Input.SOURCE_LANG, Input.TARGET_LANG, long(sntNumber))
         f = open(filenameSnts, 'w')
         f.write(outputFileSnts)
         f.close()
@@ -385,7 +431,7 @@ def create_xml_files():
 
 # This method reads the input weights file and returns list of file lines.
 def read_weight_file():
-    a = open(WEIGHTS_FILE, 'r')
+    a = open(Input.WEIGHTS_FILE, 'r')
     content = a.readlines()
     a.close()
     return content
@@ -403,7 +449,7 @@ def get_weights(wFileContent):
 def create_weights_output(weights):
     sWei = ''
     sWei += '<tool tool-id="t%s" tool-name="Joshua" tool-version=' \
-            '"revision:%s">' % (T_NUM, TOOL_VERSION)
+            '"revision:%s">' % (Input.T_NUM, Input.TOOL_VERSION)
     sWei += '\n\t<metanet:weights>'
     sWei += '\n\t\t<metanet:weight type="lm" value="%s" />' % (weights[0])
     sWei += '\n\t\t<metanet:weight type="pt0" value="%s" />' % (weights[1])
@@ -418,8 +464,9 @@ def create_weights_output(weights):
 
 # This method prints weights to .xml file.
 def write_weights_output_file(weightsOutput):
-    filenameWeights = '%s//sysdesc-t%s-%s-%s.xml' % (DIR_NAME, T_NUM, \
-                                                     SOURCE_LANG, TARGET_LANG)
+    filenameWeights = '%s//sysdesc-t%s-%s-%s.xml' % (DIR_NAME, Input.T_NUM, \
+                                                     Input.SOURCE_LANG, \
+                                                     Input.TARGET_LANG)
     x = open(filenameWeights, 'w')
     x.write(weightsOutput)
     x.close()
@@ -433,39 +480,56 @@ def create_weights():
     write_weights_output_file(weightsOutput)
 
 
-# Makes from XLF a list of best translated sentences.
-xlf = get_1best(xlf)
+Input = _Input()
+# Reads the command line input arguments. Explains what is the correct syntax
+# in case of wrong input arguments and stops the program run.
+Input = read_commandline_args(Input)
 
+# Opens file with sentences in a tree format and saves it's content.
+f = open(Input.FILENAME, 'r')
+content = f.read().split('\n')
+f.close()
 
-# Gets info about a sentence from the sentence info file.
-if INFO_FILE:
+# Makes from content a list of best translated sentences.
+SNTS = get_1best(content)
+
+# Opens file with source language sentences and saves it's content.
+g = open(Input.FILENAME_INPUT, 'r')
+INPUT_SNTS = g.read().split('\n')
+g.close()
+
+# Gets info about sentences from the sentence info file.
+if Input.INFO_FILE:
     I_NUMS = getInfo()
 
-
-XML_FILES = []
+XLF_FILES = []
 line_no = 0
 # This loop converts an input format of sentences into an output XLF format.
-for (line, snt_no) in xlf:
-    node = get_sentence_attributes(line)
+for (snt, snt_no, rank) in SNTS:
+    # Saves the sentence information to a class node.
+    node = get_sentence_attributes(snt)
 
     # Composes the whole sentence in target language.
     tarSnt = create_tar_lang_snt(node)
 
-    # Creates content for output xml file.
-    output_file_content = create_output_file_content(node, line, snt_no)
+    # Creates content for output XLF file.
+    output_file_content = create_output_file_content(node, snt, snt_no, rank)
     if (output_file_content):
-        XML_FILES.append(output_file_content)
+        XLF_FILES.append(output_file_content)
 
     # Counts iterations in main for-loop.
     line_no += 1
 
 
-# Creates a directory for output files.
-os.mkdir(DIR_NAME)
+# Creates a directory for output files. 
+DIR_NAME = ('t%s-%s-%s' % (Input.T_NUM, Input.SOURCE_LANG, Input.TARGET_LANG))
+if os.path.exists(DIR_NAME):
+    shutil.rmtree(DIR_NAME)
+os.mkdir(DIR_NAME) 
 
-# Creates xml files with transformed format of input sentences.
-create_xml_files()
+# Creates files with XLF format from input sentences in tree format.
+create_xlf_files()
 
-# Creates weights' xml file, if input weights file is available.
-if WEIGHTS_FILE:
+# Creates weights' XLF file, if input weights file is available.
+if Input.WEIGHTS_FILE:
     create_weights()
