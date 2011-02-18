@@ -1,6 +1,4 @@
 import xmlrpclib 
-import socket
-import sys
 import base64
 from featuregenerator.featuregenerator import FeatureGenerator
  
@@ -11,13 +9,16 @@ class SRILMFeatureGenerator(FeatureGenerator):
     '''
 
 
-    def __init__(self):
+    def __init__(self, url):
         '''
-        Constructor
+        Define connection with the server
         '''
-        self.s = xmlrpclib.Server("http://localhost:8585")
+        self.s = xmlrpclib.Server(url)
         
     def get_features_sentence(self, simplesentence, parallelsentence):
+        """
+        
+        """
         sent_string = simplesentence.get_string()
         l = len(sent_string.split(" "))
         attributes = {}
