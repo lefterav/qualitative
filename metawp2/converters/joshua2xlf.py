@@ -17,6 +17,7 @@ class _Input:
     TOOL_VERSION = '' # tool version 
     T_NUM = '' # t number
     INFO_FILE = '' # sentence info
+    BEST_HYP = '' # number of best hypothesis per one sentence 
 
 
 class _Node:
@@ -41,7 +42,7 @@ class _Node:
         return self.lChildren
     
 
-# This method prints a list of all required and possible parameters.
+# Function prints a list of all required and possible parameters.
 def help():
     print "\nList of parameters:"
     print "-c [File with sentences in a tree format]"
@@ -51,10 +52,11 @@ def help():
     print "(optional) -w [Weight file]"
     print "(optional) -v [Tool version]"
     print "(optional) -n [T-number]"
-    print "(optional) -f [Sentence info file]\n"
+    print "(optional) -f [Sentence info file]"
+    print "(optional) -h [Number of best hypothesis]\n"
     
 
-# This method checks, if the user gave all required arguments.
+# Function checks, if the user gave all required arguments.
 def check_args(Input):
     stop = False
     if not Input.FILENAME:
@@ -79,15 +81,19 @@ def check_args(Input):
         print "WARNING: Missing parameter -n [T-number]"
     if not Input.INFO_FILE:
         print "WARNING: Missing parameter -f [Sentence info file]"
+    if not Input.BEST_HYP:
+        print "WARNING: Missing parameter -h [Number of best hypothesis]"
+        Input.BEST_HYP = 1
+        print "Number of best hypothesis was set on 1."
     if stop:
         sys.exit("Program terminated.")
 
 
-# This method reads the command line arguments, saves them to the Input class
+# Function reads the command line arguments, saves them to the Input class
 # variables and checks, if the user gave all required arguments.
 def read_commandline_args(Input):
     try:
-        args = getopt.getopt(sys.argv[1:], "c:i:s:t:w:v:n:f:")[0]
+        args = getopt.getopt(sys.argv[1:], "c:i:s:t:w:v:n:f:h:")[0]
     except getopt.GetoptError:
         help()
         sys.exit("Program terminated.")
@@ -101,19 +107,20 @@ def read_commandline_args(Input):
         if opt == '-v': Input.TOOL_VERSION = arg
         if opt == '-n': Input.T_NUM = arg
         if opt == '-f': Input.INFO_FILE = arg
+        if opt == '-h': Input.BEST_HYP = arg
             
     check_args(Input)
     
     return Input
 
 
-# This method replaces tags with brackets back.
+# Function replaces tags with brackets back.
 # It prevents confusing textual brackets and tree brackets.
 def return_brackets(string):
     return string.replace('<open>', '( ').replace('<close>', ' )')
 
 
-# This method has an array of strings as input 
+# Function has an array of strings as input 
 # and one string made of array items as an output.
 def get_str(listVar):
     string = ''
@@ -122,7 +129,7 @@ def get_str(listVar):
     return string
 
 
-# This method parses an input info file. It returns a list of additional info 
+# Function parses an input info file. It returns a list of additional info 
 # parameters for each sentence.
 def getInfo():
     h = open(Input.INFO_FILE, 'r')
@@ -138,27 +145,7 @@ def getInfo():
     return info
 
 
-# This method has as an input all translated sentences in nbest file. In this
-# file the sentences are in descending order according to the translation word
-# penalty. The method gets always the first (best) sentence and
-# returns these as a list. 
-def get_1best(content):
-    bestSnts = []
-    ids = set()
-    for snt in content:
-        if content != "":
-            # Number of sentence.
-            snt_no = snt.partition(' ||| ')[0]
-            if snt_no != '': 
-                snt_no = str(long(snt.partition(' ||| ')[0]) + 1)
-            # If a key 'snt_no' was already created in d.
-            if snt_no not in ids:
-                ids.add(snt_no)
-                bestSnts.append((snt, snt_no, 1))
-    return bestSnts
-
-
-# This method gains information from an input sentence (=line in input file).
+# Function gains information from an input sentence (=line in input file).
 def get_sentence_attributes(snt):
     # Returns a part beginning with '(ROOT{... ...)' and ending with '-#end#-'.
     s = '%s-#end#-' % (snt.partition(' ||| ')[2].partition(' ||| ')[0])
@@ -201,7 +188,7 @@ def get_sentence_attributes(snt):
     return node
 
 
-# This method saves a "string node" (e.g. '[X]{9-12}'), creates a new node and
+# Function saves a "string node" (e.g. '[X]{9-12}'), creates a new node and
 # connections between new and old node (parent-child structure). 
 def create_new_node_and_connections(node, s, i, index):
     # sNodeString - Saves each node in textual form (e. g. '[X]{3-7}').
@@ -221,7 +208,7 @@ def create_new_node_and_connections(node, s, i, index):
     return node
 
 
-# This method gets and saves node attributes and a string, if exists. 
+# Function gets and saves node attributes and a string, if exists. 
 def save_node_attributes(node, s, i):
     # sClass - Saves a node type (ROOT, S, X).
     node.sClass = re.search('[A-Z]+', s[i:i + 5]).group(0)
@@ -240,7 +227,7 @@ def save_node_attributes(node, s, i):
     return node
 
 
-# This method saves a string after node end, if the text exists. 
+# Function saves a string after node end, if the text exists. 
 def operations_end_node(node, s, i):
     # sString --> between } and ) or between next to last ) and last ) 
     # - Gains a string in node, if exists.
@@ -250,7 +237,7 @@ def operations_end_node(node, s, i):
         node.scores = sText.split('<!-')[1].split('->')[0].strip('-') \
                       .split(',')
     except:
-        print "The sentence score was not found!"
+        #print "The sentence score was not found!"
         pass
 
     # Removes score tag from string. 
@@ -269,7 +256,7 @@ def operations_end_node(node, s, i):
     return node
 
 
-# This method composes the whole target language sentence and returns it.
+# Function composes the whole target language sentence and returns it.
 # Example of input variable:
 # nodeStrings[16] == ['[X]{10-18}', ['kocham cie Kukuszu', '[X]{15-18}']]
 def create_tar_lang_snt(node):
@@ -286,7 +273,7 @@ def create_tar_lang_snt(node):
     if i == 1000: print 'Error! Over 1000 iterations in creating sentence!'
     return snt.strip(' ')
 
-# This method returns an annotation for a token. If the token is OOV, it sets
+# Function returns an annotation for a token. If the token is OOV, it sets
 # the value on 1, otherwise 0. 
 def annotate_OOV(token):
     if token.endswith('_OOV'):
@@ -300,7 +287,7 @@ def remove_OOV(string):
     return re.sub(r'([^ ]*)_OOV', r'\1', string)
 
 
-# This method encapsulates each token to the appropriate tags.
+# Function encapsulates each token to the appropriate tags.
 def get_tokens_xml(string, s_phrase_id, scores):
     tokens = string.split()
     output = '\n\t\t\t<metanet:tokens>'
@@ -318,7 +305,7 @@ def get_tokens_xml(string, s_phrase_id, scores):
     return output
 
 
-# This method creates output format for node scores. An input is the whole tag
+# Function creates output format for node scores. An input is the whole tag
 # with scores, e. g. ' <!---3.561,17.192,0.000,0.000,0.000,0.000-->'. 
 def get_scores_xml(scores):
     output = ''
@@ -334,13 +321,13 @@ def get_scores_xml(scores):
     return final_output
 
 
-# This method creates output format of a sentence in xml.
+# Function creates output format of a sentence in xml.
 def create_output_file_content(node, snt, snt_no, rank):
     sXlf = ''
     sXlf += '\n<alt-trans tool-id="t%s" metanet:rank="%s">' % (Input.T_NUM, \
                                                                rank)
     sXlf += '\n\t<source xml:lang="%s">%s</source>' % (Input.SOURCE_LANG, \
-                                                   INPUT_SNTS[line_no].strip())
+                                                   INPUT_SNTS[snt_no].strip())
     sXlf += '\n\t<target xml:lang="%s">%s</target>' % (Input.TARGET_LANG, \
                                                        remove_OOV(tarSnt))
 
@@ -363,19 +350,19 @@ def create_output_file_content(node, snt, snt_no, rank):
             sXlf += '\n\t<metanet:derivation type="hiero_decoding" id="' \
                     's%s_t1_r%s_d1">' % (snt_no, rank)
             sXlf += '\n\t<metanet:annotation type="added" value="%s" />' % \
-                    I_NUMS[int(snt_no)-1][0]
+                    I_NUMS[snt_no][0]
             sXlf += '\n\t<metanet:annotation type="merged" value="%s" />' % \
-                    I_NUMS[int(snt_no)-1][1]
+                    I_NUMS[snt_no][1]
             sXlf += '\n\t<metanet:annotation type="pruned" value="%s" />' % \
-                    I_NUMS[int(snt_no)-1][2]
+                    I_NUMS[snt_no][2]
             sXlf += '\n\t<metanet:annotation type="pre-pruned" value="%s" />'%\
-                    I_NUMS[int(snt_no)-1][3]
+                    I_NUMS[snt_no][3]
             sXlf += '\n\t<metanet:annotation type="fuzz1" value="%s" />' % \
-                    I_NUMS[int(snt_no)-1][4]
+                    I_NUMS[snt_no][4]
             sXlf += '\n\t<metanet:annotation type="fuzz2" value="%s" />' % \
-                    I_NUMS[int(snt_no)-1][5]
+                    I_NUMS[snt_no][5]
             sXlf += '\n\t<metanet:annotation type="dot-items added" ' \
-                    'value="%s" />' % I_NUMS[int(snt_no)-1][6]
+                    'value="%s" />' % I_NUMS[snt_no][6]
         chList = [node]
         while chList:
             i = 1
@@ -390,14 +377,14 @@ def create_output_file_content(node, snt, snt_no, rank):
             if len(chList[0].get_children()):
                 sChildren = ' children="'
                 for child_no in chList[0].get_children():
-                    sChildren += 's%s_t%s_r%s_d1_p%s,' % (snt_no, Input.T_NUM, \
-                                                 rank, str(child_no.iPhraseID))
+                    sChildren += 's%s_t%s_r%s_d1_p%s,' % (snt_no, \
+                                    Input.T_NUM, rank, str(child_no.iPhraseID))
                 sChildren = '%s"' % (sChildren.strip(','))
     
             # Creates a phrase with node parameters
             # and with a node string, if exists.
-            sPhrase_id = 's%s_t%s_r%s_d1_p%s' % (snt_no, Input.T_NUM, rank, \
-                                                str(chList[0].iPhraseID))
+            sPhrase_id = 's%s_t%s_r%s_d1_p%s' % (snt_no, Input.T_NUM, \
+                                                rank, str(chList[0].iPhraseID))
             sXlf += '\n\t\t<metanet:phrase id=\"%s\" %s>' % \
                     (sPhrase_id, sChildren)
             if chList[0].sString:
@@ -413,23 +400,25 @@ def create_output_file_content(node, snt, snt_no, rank):
             chList.pop(0)
     
         sXlf += '\n\t</metanet:derivation>'
+
         sXlf += '\n</alt-trans>'
         
-        return (sXlf.strip(), snt_no)
+        return (sXlf.strip(), snt_no, rank)
 
 
-# This method creates xml files with transformed format of input sentences.
+# Function creates xml files with transformed format of input sentences.
 def create_xlf_files():
-    for (outputFileSnts, sntNumber) in XLF_FILES:
+    for (outputFileSnts, snt_no, rank) in XLF_FILES:
         # Prints output format of sentences to .xml file.
-        filenameSnts = '%s//t%s-%s-%s-%.4d.xml' % (DIR_NAME, Input.T_NUM, \
-                        Input.SOURCE_LANG, Input.TARGET_LANG, long(sntNumber))
+        filenameSnts = '%s//t%s-%s-%s-s%.4d-r%.4d.xml' % (DIR_NAME, \
+                       Input.T_NUM, Input.SOURCE_LANG, Input.TARGET_LANG, \
+                       long(snt_no), long(rank))
         f = open(filenameSnts, 'w')
         f.write(outputFileSnts)
         f.close()
 
 
-# This method reads the input weights file and returns list of file lines.
+# Function reads the input weights file and returns list of file lines.
 def read_weight_file():
     a = open(Input.WEIGHTS_FILE, 'r')
     content = a.readlines()
@@ -437,7 +426,7 @@ def read_weight_file():
     return content
 
 
-# This method receives lines of weight file and returns weights.
+# Function receives lines of weight file and returns weights.
 def get_weights(wFileContent):
     weights = []
     for line in wFileContent:
@@ -445,7 +434,7 @@ def get_weights(wFileContent):
     return weights
 
 
-# This method receives weights and returns content for weights' output file.
+# Function receives weights and returns content for weights' output file.
 def create_weights_output(weights):
     sWei = ''
     sWei += '<tool tool-id="t%s" tool-name="Joshua" tool-version=' \
@@ -462,7 +451,7 @@ def create_weights_output(weights):
     return sWei
 
 
-# This method prints weights to .xml file.
+# Function prints weights to .xml file.
 def write_weights_output_file(weightsOutput):
     filenameWeights = '%s//sysdesc-t%s-%s-%s.xml' % (DIR_NAME, Input.T_NUM, \
                                                      Input.SOURCE_LANG, \
@@ -472,7 +461,7 @@ def write_weights_output_file(weightsOutput):
     x.close()
 
 
-# This method manages weights' creation.
+# Function manages weights' creation.
 def create_weights():
     wFileContent = read_weight_file()
     weights = get_weights(wFileContent)
@@ -485,27 +474,34 @@ Input = _Input()
 # in case of wrong input arguments and stops the program run.
 Input = read_commandline_args(Input)
 
-# Opens file with sentences in a tree format and saves it's content.
-f = open(Input.FILENAME, 'r')
-content = f.read().split('\n')
-f.close()
-
-# Makes from content a list of best translated sentences.
-SNTS = get_1best(content)
-
 # Opens file with source language sentences and saves it's content.
 g = open(Input.FILENAME_INPUT, 'r')
-INPUT_SNTS = g.read().split('\n')
+INPUT_SNTS = g.read().strip().split('\n')
 g.close()
 
 # Gets info about sentences from the sentence info file.
 if Input.INFO_FILE:
     I_NUMS = getInfo()
 
+# Opens file with sentences in a tree format and saves it's content.
+f = open(Input.FILENAME, 'r')
+content = f.read().split('\n')
+f.close()
+
 XLF_FILES = []
-line_no = 0
+old_snt_no = -1
 # This loop converts an input format of sentences into an output XLF format.
-for (snt, snt_no, rank) in SNTS:
+for snt in content:
+    
+    # Gets a sentence number.
+    snt_no = int(re.match(r"(\d+)", snt).group(1))
+    # Sets rank to 1 in case of new sentence.
+    if snt_no > old_snt_no:
+        rank = 1
+    # Jumps to next iteration in case of higher rank than required. 
+    if int(Input.BEST_HYP) < rank:
+        continue
+
     # Saves the sentence information to a class node.
     node = get_sentence_attributes(snt)
 
@@ -517,9 +513,10 @@ for (snt, snt_no, rank) in SNTS:
     if (output_file_content):
         XLF_FILES.append(output_file_content)
 
-    # Counts iterations in main for-loop.
-    line_no += 1
-
+    # Raises a hypothesis rank by 1.
+    rank += 1
+    # Saves old number of sentence.
+    old_snt_no = snt_no
 
 # Creates a directory for output files. 
 DIR_NAME = ('t%s-%s-%s' % (Input.T_NUM, Input.SOURCE_LANG, Input.TARGET_LANG))
