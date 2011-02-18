@@ -34,7 +34,7 @@ def test_length_fg_with_serialized_parsing():
     file_object2 = codecs.open(filename2, 'w', 'utf-8')
 
     lfg = LengthFeatureGenerator()
-    srlm = SRILMFeatureGenerator()
+    srlm = SRILMFeatureGenerator("http://localhost:8585")
     saxreader = SaxJCMLProcessor( file_object2, [lfg, srlm] )
     myparser = make_parser( )
     myparser.setContentHandler( saxreader )
