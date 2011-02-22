@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,14 +7,10 @@ import java.util.Map;
 import edu.berkeley.nlp.PCFGLA.BerkeleyParser;
 import edu.berkeley.nlp.PCFGLA.CoarseToFineMaxRuleParser;
 import edu.berkeley.nlp.PCFGLA.CoarseToFineNBestParser;
-import edu.berkeley.nlp.PCFGLA.Corpus;
 import edu.berkeley.nlp.PCFGLA.Grammar;
 import edu.berkeley.nlp.PCFGLA.Lexicon;
-import edu.berkeley.nlp.PCFGLA.MultiThreadedParserWrapper;
-import edu.berkeley.nlp.PCFGLA.OptionParser;
 import edu.berkeley.nlp.PCFGLA.ParserData;
 import edu.berkeley.nlp.PCFGLA.TreeAnnotations;
-import edu.berkeley.nlp.PCFGLA.BerkeleyParser.Options;
 import edu.berkeley.nlp.io.PTBLineLexer;
 import edu.berkeley.nlp.syntax.Tree;
 import edu.berkeley.nlp.util.Numberer;
@@ -51,28 +46,23 @@ public class myParser extends BerkeleyParser {
 		}
 		
 		
-		public List<Map<String, String>> parse (String line){
+		public Map parse (String line){
 			try {
+				Map<String, Object> output = null;
+				//Map<String, Object> output = new HashMap<String, Object>();
 				
 				System.out.println ("parsing first string");
-				
 				List<String>  sentence = tokenizer.tokenizeLine(line);
 						
-				
-				if (sentence.size()>=80) {  
+				if (sentence.size()>=80)  
 	    			System.err.println("Skipping sentence with "+sentence.size()+" words since it is too long."); 
-	    		}
+	    		
+				//List<Tree<String>> parsedTrees = parser.getKBestConstrainedParses(sentence, null, kbest);	
 				
-				List<Tree<String>> parsedTrees = parser.getKBestConstrainedParses(sentence, null, kbest);
-
+				//output.put("nbest", this.outputTrees(parsedTrees, parser));
+				//output.put("loglikelihood", this.getLogLikelihood(parser) );
 				
-//				List<ScoredTree> scoredList = this.outputTrees(parsedTrees, parser);
-//				
-//				for ( ScoredTree item : scoredList ){
-//					System.out.println(item.logLikelihood + ":" + item.confidence + ":\t" + item.tree );
-//				}
-
-				return this.outputTrees(parsedTrees, parser);
+				return output;
 				
 				
 			} catch (IOException e) {
@@ -87,6 +77,12 @@ public class myParser extends BerkeleyParser {
 		    return 1;
 		 }
 	
+		
+		public Double getLogLikelihood(CoarseToFineMaxRuleParser parser){
+			return parser.getLogLikelihood();
+		}
+		
+		
 		 /**
 		 * @param parsedTree
 		 * @param outputData
@@ -94,25 +90,16 @@ public class myParser extends BerkeleyParser {
 		 * @return 
 		 */
 		private List<Map<String,String>> outputTrees(List<Tree<String>> parseTrees, CoarseToFineMaxRuleParser parser) {
-			
 			ArrayList<Map<String, String>> treeList = new ArrayList<Map<String,String>>();
-			
 			for (Tree<String> parsedTree : parseTrees){
-				
 				Map<String,String> scoredTree =  new HashMap<String,String>();
-				//
 				if (! parsedTree.getChildren().isEmpty() ){
-					
-					scoredTree.put("logLikelihood", Double.toString(parser.getLogLikelihood()) );
-					
 					parsedTree = TreeAnnotations.unAnnotateTree(parsedTree);
 					scoredTree.put("confidence",   Double.toString(parser.getLogLikelihood(parsedTree)) );
 					scoredTree.put("tree", parsedTree.getChildren().get(0)+" )");
-								
 				}
 				treeList.add(scoredTree);
 			}
-			
 			return treeList;
 		}
 	
