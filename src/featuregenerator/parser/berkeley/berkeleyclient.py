@@ -2,13 +2,6 @@ import xmlrpclib
 import base64
 from featuregenerator.featuregenerator import FeatureGenerator
  
-
-'''
-Created on Feb 15, 2011
-
-@author: elav01
-'''
-
 class BerkeleyFeatureGenerator(FeatureGenerator):
     '''
     classdocs
@@ -19,7 +12,9 @@ class BerkeleyFeatureGenerator(FeatureGenerator):
         '''
         Constructor
         '''
-        
         self.s = xmlrpclib.Server(url)
-    
-    
+        
+    def get_features_sentence(self, simplesentence, parallelsentence):
+        sent_string = simplesentence.get_string()
+        print self.s.parse ( sent_string )
+        return None
