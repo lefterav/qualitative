@@ -42,7 +42,8 @@ public class BerkeleyParserXMLRPCserver  {
 	          webServer.start();
 
 		} catch (Exception exception) {
-		     System.err.println("JavaServer: " + exception);
+
+			exception.printStackTrace();
 		}
 
 	}
