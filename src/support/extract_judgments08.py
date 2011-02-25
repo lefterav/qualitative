@@ -197,6 +197,7 @@ def create_evaluation(judgments, path):
                     desiredsystemid1 = int (system.index(desiredsystem1[0] ))
                     desiredsystemid2 = int (system.index(desiredsystem2[0] ))
                     
+                    
                     #get the scores given, in the columns relevant to each system
                     score1 = (fields[CSV_MAPPING_SCORE[desiredsystemid1]])
                     score2 = (fields[CSV_MAPPING_SCORE[desiredsystemid2]])

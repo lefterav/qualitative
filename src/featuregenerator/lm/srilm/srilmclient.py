@@ -22,7 +22,7 @@ class SRILMFeatureGenerator(FeatureGenerator):
         sent_string = simplesentence.get_string()
         l = len(sent_string.split(" "))
         attributes = {}
-
+        
    
         #print l, sent_string
         sentProb = self.s.getSentenceProb(base64.standard_b64encode(sent_string), l)
