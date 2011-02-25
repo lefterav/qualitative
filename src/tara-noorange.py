@@ -20,6 +20,7 @@ from os import getenv
 def test_length_fg_with_serialized_parsing():
     from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
     from featuregenerator.lm.srilm.srilmclient import SRILMFeatureGenerator
+    from featuregenerator.parser.berkeley.berkeleyclient import BerkeleyFeatureGenerator 
     from io.saxjcml import SaxJCMLProcessor
     from xml.sax import make_parser
     import codecs
@@ -34,8 +35,9 @@ def test_length_fg_with_serialized_parsing():
     file_object2 = codecs.open(filename2, 'w', 'utf-8')
 
     lfg = LengthFeatureGenerator()
-    srlm = SRILMFeatureGenerator("http://localhost:8585")
-    saxreader = SaxJCMLProcessor( file_object2, [lfg, srlm] )
+    #srlm = SRILMFeatureGenerator("http://localhost:8585")
+    berkeley = BerkeleyFeatureGenerator("http://localhost:8682")
+    saxreader = SaxJCMLProcessor( file_object2, [lfg, berkeley] )
     myparser = make_parser( )
     myparser.setContentHandler( saxreader )
     myparser.parse( file_object )
