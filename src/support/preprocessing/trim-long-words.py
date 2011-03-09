@@ -11,5 +11,5 @@ for line in sys.stdin:
             counter +=1
         else:
             newline = newline + word  + " " 
-    sys.stdout.write(newline)
+    sys.stdout.write(newline.strip())
 sys.stderr.write("%d words trimmed" % counter) 
