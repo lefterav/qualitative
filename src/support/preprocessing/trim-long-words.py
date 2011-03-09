@@ -4,11 +4,12 @@ import sys
 counter = 0
 
 for line in sys.stdin:
+    newline = ""
     for word in line.split(' '):
         if len(word) > 100:
-            line2 = re.sub(word, word[0:100], line)
+            newline = newline + word[0:100] + " "
             counter +=1
         else:
-            line2 = line 
-    sys.stdout.write(line2)
+            newline = newline + word  + " " 
+    sys.stdout.write(newline)
 sys.stderr.write("%d words trimmed" % counter) 
