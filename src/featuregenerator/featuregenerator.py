@@ -51,6 +51,12 @@ class FeatureGenerator(object):
         
         return d
     
+    def add_features_src(self,simplesentence, parallelsentence):
+        return self.add_features_sentence(simplesentence, parallelsentence)
+
+    def add_features_tgt(self,simplesentence, parallelsentence):
+        return self.add_features_sentence(simplesentence, parallelsentence)
+    
     def add_features_sentence(self, simplesentence, parallelsentence):
         ss = deepcopy( simplesentence )
         newfeatures = self.get_features_sentence( ss, parallelsentence )
