@@ -8,15 +8,31 @@ class BerkeleyFeatureGenerator(FeatureGenerator):
     '''
 
 
-    def __init__(self, url):
+    def __init__(self, url, lang=""):
         '''
         Constructor
         '''
-        self.s = xmlrpclib.Server(url)
+        self.server = xmlrpclib.Server(url)
+        self.lang = lang
+    
+    #TODO: see if scope of self.lang allows to move these 2 methods in featuregenerator class  
+    def add_features_src(self, simplesentence, parallelsentence):
+        src_lang = parallelsentence.get_attribute("langsrc")
+        if src_lang == self.lang:
+            atts = self.get_features_sentence(self, simplesentence, parallelsentence)
+            simplesentence.add_attributes(atts)
+        return simplesentence
+
+    def add_features_tgt(self, simplesentence, parallelsentence):
+        tgt_lang = parallelsentence.get_attribute("langtgt")
+        if tgt_lang == self.lang:
+            atts = self.get_features_sentence(self, simplesentence, parallelsentence)
+            simplesentence.add_attributes(atts)
+        return simplesentence      
         
     def get_features_sentence(self, simplesentence, parallelsentence):
         sent_string = simplesentence.get_string()
-        results = self.s.bParser.parse ( sent_string )
+        results = self.server.bParser.parse ( sent_string )
 
         loglikelihood = results['loglikelihood']
         nbestList = results['nbest']
