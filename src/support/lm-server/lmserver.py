@@ -45,9 +45,11 @@ class LM:
     def getTrigramProb(self, s):
         return srilm.getTrigramProb(self.lm, s)
 
-    def getSentenceProb(self, s, n):
+    def getSentenceProb(self, s, n=None ):
         import base64
         s = base64.standard_b64decode(s)
+        if not n:
+            n = len(s.split(' '))
         return srilm.getSentenceProb(self.lm, s, n)
 
     def getCorpusProb(self, filename):
