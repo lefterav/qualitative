@@ -18,11 +18,18 @@ import edu.berkeley.nlp.PCFGLA.CoarseToFineMaxRuleParser;
 public class BerkeleyParserXMLRPCserver  {
 
 	
-    private static final int port =  8682;
+    //private static final int port =  8682;
     
 
 
 	public static void main (String [] args) {
+		
+		if (args.length < 1){
+			System.err.print("Please provide one argument with the port number");
+		}
+		
+		Integer port = Integer.valueOf(args[0]);
+		String grammarFile = args[1];
 		
 		try {
 	          WebServer webServer = new WebServer(port);
@@ -31,9 +38,16 @@ public class BerkeleyParserXMLRPCserver  {
 	        
 	          PropertyHandlerMapping phm = new PropertyHandlerMapping();
 	          
+	          //bParser bparser = new bParser( "/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr" );
 	         
-	          phm.addHandler("bParser", bParser.class);
+	          //phm.addHandler("bParser", bparser.getClass());
+	          
+	          phm.setRequestProcessorFactoryFactory(new BParserRequestProcessorFactoryFactory( grammarFile ));
+	          phm.setVoidMethodEnabled(true);
+	          phm.addHandler(BParser.class.getName(), BParser.class);
+	          
 	          xmlRpcServer.setHandlerMapping(phm);
+	          
 	        
 	          XmlRpcServerConfigImpl serverConfig =
 	              (XmlRpcServerConfigImpl) xmlRpcServer.getConfig();
