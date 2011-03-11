@@ -18,6 +18,7 @@ from os import getenv
 
 
 def test_length_fg_with_serialized_parsing():
+    
     from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
     from featuregenerator.lm.srilm.srilmclient import SRILMFeatureGenerator
     from featuregenerator.parser.berkeley.berkeleyclient import BerkeleyFeatureGenerator 
@@ -34,10 +35,21 @@ def test_length_fg_with_serialized_parsing():
     filename2 = dir + "/evaluations_feat00.jcml"
     file_object2 = codecs.open(filename2, 'w', 'utf-8')
 
+    ###INITIALIZE FEATURE GENERATORS
+
     lfg = LengthFeatureGenerator()
-    #srlm = SRILMFeatureGenerator("http://localhost:8585", "en")
-    berkeley = BerkeleyFeatureGenerator("http://localhost:8682", "en")
-    saxreader = SaxJCMLProcessor( file_object2, [lfg, berkeley] )
+    
+    #SRILM feature generator
+    srilm_en = SRILMFeatureGenerator("http://percival.dfki.uni-sb.de:8585", "en")
+    srilm_de = SRILMFeatureGenerator("http://percival.dfki.uni-sb.de:8586", "de")
+    
+    #Berkeley feature generator
+    berkeley_en = BerkeleyFeatureGenerator("http://localhost:8682", "en")
+    berkeley_de =BerkeleyFeatureGenerator("http://localhost:8683", "de")
+    
+    
+    #proceed with parcing
+    saxreader = SaxJCMLProcessor( file_object2, [lfg, srilm_en, srilm_de, berkeley_en, berkeley_de] )
     myparser = make_parser( )
     myparser.setContentHandler( saxreader )
     myparser.parse( file_object )

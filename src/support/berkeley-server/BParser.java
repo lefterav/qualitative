@@ -16,14 +16,15 @@ import edu.berkeley.nlp.syntax.Tree;
 import edu.berkeley.nlp.util.Numberer;
 
 
-public class bParser {
+public class BParser {
 		PTBLineLexer tokenizer;
 		Boolean tokenize;
 		CoarseToFineMaxRuleParser parser;
 		int kbest;
 		
-		public bParser(){		
-			String inFileName = "/home/lefterav/tools/berkeley/eng_sm6.gr";			
+		public BParser( String inFileName ){		
+			//String inFileName = "/home/lefterav/tools/berkeley/eng_sm6.gr";
+			//String inFileName = "/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr";
 			ParserData pData = ParserData.Load(inFileName);
 			Grammar grammar = pData.getGrammar();
 		    Lexicon lexicon = pData.getLexicon();
@@ -36,9 +37,26 @@ public class bParser {
 		    //kbest parser
 		    parser = new CoarseToFineNBestParser(grammar, lexicon, kbest ,threshold,-1, false , false , false , false, false, false, true);
 		    parser.binarization = pData.getBinarization();
-		    tokenizer = new PTBLineLexer();   
+		    tokenizer = new PTBLineLexer();
+		    System.err.print("Server initialized\n");
 		}
 		
+		public void initialiaze( String inFileName ){
+			//String inFileName = "/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr";
+			ParserData pData = ParserData.Load(inFileName);
+			Grammar grammar = pData.getGrammar();
+		    Lexicon lexicon = pData.getLexicon();
+		    Numberer.setNumberers(pData.getNumbs());
+		    
+		    kbest = 1000;
+		    //if (opts.chinese) Corpus.myTreebank = Corpus.TreeBankType.CHINESE;
+		    double threshold = 1.0;
+		    
+		    //kbest parser
+		    parser = new CoarseToFineNBestParser(grammar, lexicon, kbest ,threshold,-1, false , false , false , false, false, false, true);
+		    parser.binarization = pData.getBinarization();
+		    tokenizer = new PTBLineLexer();
+		}
 		
 		public Map<String, Object> parse (String line){
 			System.out.println("Parsing... " +line);

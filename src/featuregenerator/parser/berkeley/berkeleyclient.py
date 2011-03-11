@@ -32,7 +32,7 @@ class BerkeleyFeatureGenerator(FeatureGenerator):
         
     def get_features_sentence(self, simplesentence, parallelsentence):
         sent_string = simplesentence.get_string()
-        results = self.server.bParser.parse ( sent_string )
+        results = self.server.BParser.parse ( sent_string )
 
         loglikelihood = results['loglikelihood']
         nbestList = results['nbest']
