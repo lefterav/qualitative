@@ -16,54 +16,46 @@ import edu.berkeley.nlp.syntax.Tree;
 import edu.berkeley.nlp.util.Numberer;
 
 
-public class myParser extends BerkeleyParser {
-
+public class bParser {
 		PTBLineLexer tokenizer;
 		Boolean tokenize;
 		CoarseToFineMaxRuleParser parser;
-		Options opts;
 		int kbest;
 		
-		public myParser(){
-					
-			String inFileName = "/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr";			
+		public bParser(){		
+			String inFileName = "/home/lefterav/tools/berkeley/eng_sm6.gr";			
 			ParserData pData = ParserData.Load(inFileName);
 			Grammar grammar = pData.getGrammar();
 		    Lexicon lexicon = pData.getLexicon();
 		    Numberer.setNumberers(pData.getNumbs());
 		    
-		    kbest = 10;
+		    kbest = 1000;
 		    //if (opts.chinese) Corpus.myTreebank = Corpus.TreeBankType.CHINESE;
 		    double threshold = 1.0;
-		    
 		    
 		    //kbest parser
 		    parser = new CoarseToFineNBestParser(grammar, lexicon, kbest ,threshold,-1, false , false , false , false, false, false, true);
 		    parser.binarization = pData.getBinarization();
-		    tokenizer = new PTBLineLexer();
-		    String line = "";
-		    
+		    tokenizer = new PTBLineLexer();   
 		}
 		
 		
-		public Map parse (String line){
+		public Map<String, Object> parse (String line){
+			System.out.println("Parsing... " +line);
 			try {
-				Map<String, Object> output = null;
-				//Map<String, Object> output = new HashMap<String, Object>();
-				
 				System.out.println ("parsing first string");
 				List<String>  sentence = tokenizer.tokenizeLine(line);
 						
 				if (sentence.size()>=80)  
 	    			System.err.println("Skipping sentence with "+sentence.size()+" words since it is too long."); 
 	    		
-				//List<Tree<String>> parsedTrees = parser.getKBestConstrainedParses(sentence, null, kbest);	
+				List<Tree<String>> parsedTrees = parser.getKBestConstrainedParses(sentence, null, kbest);	
 				
-				//output.put("nbest", this.outputTrees(parsedTrees, parser));
-				//output.put("loglikelihood", this.getLogLikelihood(parser) );
+				Map<String, Object> output = new HashMap<String, Object>();
+				output.put("nbest", this.outputTrees(parsedTrees, parser));
+				output.put("loglikelihood", this.getLogLikelihood() );
 				
 				return output;
-				
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -78,7 +70,7 @@ public class myParser extends BerkeleyParser {
 		 }
 	
 		
-		public Double getLogLikelihood(CoarseToFineMaxRuleParser parser){
+		public Double getLogLikelihood(){
 			return parser.getLogLikelihood();
 		}
 		

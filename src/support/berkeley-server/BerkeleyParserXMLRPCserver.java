@@ -12,7 +12,7 @@ import org.apache.xmlrpc.webserver.ServletWebServer;
 import org.apache.xmlrpc.webserver.WebServer;
 import org.apache.xmlrpc.webserver.XmlRpcServlet;
 
-import edu.berkeley.nlp.PCFGLA.Grammar;
+import edu.berkeley.nlp.PCFGLA.CoarseToFineMaxRuleParser;
 
 
 public class BerkeleyParserXMLRPCserver  {
@@ -30,8 +30,9 @@ public class BerkeleyParserXMLRPCserver  {
 	          XmlRpcServer xmlRpcServer = webServer.getXmlRpcServer();
 	        
 	          PropertyHandlerMapping phm = new PropertyHandlerMapping();
+	          
 	         
-	          phm.addHandler("myParser", myParser.class);
+	          phm.addHandler("bParser", bParser.class);
 	          xmlRpcServer.setHandlerMapping(phm);
 	        
 	          XmlRpcServerConfigImpl serverConfig =
