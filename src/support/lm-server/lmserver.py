@@ -97,6 +97,7 @@ except:
 # Create a server that is built on top of this LM data structure
 try:
     server = StoppableServer((address, port), lmstruct, logRequests = False)
+    sys.stderr.write('Server ready\n')
 except:
     sys.stderr.write('Error: Could not create server\n')
     sys.exit(1)
