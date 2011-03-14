@@ -123,6 +123,7 @@ class SaxJCMLProcessor(XMLGenerator):
             for fg in self.feature_generators:
                 src = fg.add_features_src(src, parallelsentence)
                 #src.add_attributes( fg.get_features_src(src, parallelsentence) )
+            parallelsentence.set_source(src)
 
             #display modifications on output file
             XMLGenerator._write(self, "\n\t")

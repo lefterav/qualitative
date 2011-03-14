@@ -40,8 +40,8 @@ def test_length_fg_with_serialized_parsing():
     lfg = LengthFeatureGenerator()
     
     #SRILM feature generator
-    srilm_en = SRILMFeatureGenerator("http://percival.dfki.uni-sb.de:8585", "en")
-    srilm_de = SRILMFeatureGenerator("http://percival.dfki.uni-sb.de:8586", "de")
+    srilm_en = SRILMFeatureGenerator("http://134.96.187.4:8585", "en")
+    srilm_de = SRILMFeatureGenerator("http://134.96.187.4:8586", "de")
     
     #Berkeley feature generator
     berkeley_en = BerkeleyFeatureGenerator("http://localhost:8682", "en")

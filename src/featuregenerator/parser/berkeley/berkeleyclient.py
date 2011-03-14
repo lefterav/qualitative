@@ -19,7 +19,7 @@ class BerkeleyFeatureGenerator(FeatureGenerator):
     def add_features_src(self, simplesentence, parallelsentence):
         src_lang = parallelsentence.get_attribute("langsrc")
         if src_lang == self.lang:
-            atts = self.get_features_sentence(self, simplesentence, parallelsentence)
+            atts = self.get_features_sentence(simplesentence, parallelsentence)
             simplesentence.add_attributes(atts)
         return simplesentence
 
