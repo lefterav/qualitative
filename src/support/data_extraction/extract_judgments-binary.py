@@ -193,7 +193,14 @@ def writeXMLFile(doc, filename='evaluations_all.jcml'):
     file_object = codecs.open(filename, 'w', 'utf-8')
     file_object.write(doc.toprettyxml())
     file_object.close()  
-    
+
+def scores_get_rank_unit(score1, score2):
+    if (score1 < score2) :
+        rank = 1
+    elif (score1 > score2) :
+        rank = -1
+    else :
+        rank = 0
 
 
 def create_evaluation(judgments, path, config):
@@ -214,8 +221,10 @@ def create_evaluation(judgments, path, config):
     accepted_id =0
     avg_rank = 0
     
+    
     SYSTEM_FIELDS = config.get("format", "systems").split(",")
-    if config.getboolena("filters", "systemselection"):
+    SYSTEMSELECTION = config.getboolean("filters", "systemselection")
+    if SYSTEMSELECTION:
         SYSTEMSET1 = config.get("filters", "systemsset1").split(",")
         SYSTEMSET2 = config.get("filters", "systemsset2").split(",")
     
@@ -229,102 +238,106 @@ def create_evaluation(judgments, path, config):
    
         fields = line.split(',')
         #Jump first line
-        if not fields[0]=='TASK':
+        if fields[0]=='TASK':
+            continue
+    
+        #First column has a lot of data separated with spaces
+        col1 = fields[0].split(' ')
+        #task = col1[0]
         
-            #First column has a lot of data separated with spaces
-            col1 = fields[0].split(' ')
-            #task = col1[0]
+        #extract the src and trg language from language pair
+        language_pair = col1[1].split('-')
+        
+        #skip sentences which have an unclear language flag
+        if ( "All" in language_pair ):
+            continue
+        
+        src = LANGUAGES[language_pair[0]]
+        tgt = LANGUAGES[language_pair[1]]
+        dir = src + "-" + tgt
+    
+        testset = TESTSETS[col1[2]]
+        type = fields[ config.get("format", "type") ]
+        index = int(fields[ config.get("format", "index") ])
+        entries = []
+        
+        #system_names = [ '', '','','','','']
+        systems_count = 0
+        
+        i=0
+        for system_field in SYSTEM_FIELDS:
+            try:
+                system_names.append( fields[system_field] )
+                systems_count += 1
+            except:
+                system_names.append("")
+        
             
-            #extract the src and trg language from language pair
-            language_pair = col1[1].split('-')
+        
+        
+        #system[1] = fields[5]
+        #avoid empty indices, when less than 5 judgemnts
+        #if len(fields)>8:
+        #    system[2] = fields[8]
+        #if len(fields)>11:
+        #    system[3] = fields[11]
+        #if len(fields)>14:
+        #    system[4] = fields[14]
+        #if len(fields)> 17:
+        #    system[5] = fields[17]
+        
+        
+        #we are interested in the comparison of two systems groups. First check whether they both exist 
+        desiredsystem1 = intersect( system_names , SYSTEMSET1 )
+        desiredsystem2 = intersect( system_names , SYSTEMSET2 )
+        
+        
+        #apply filters check if both lists have contents 
+        if SYSTEMSELECTION and not ( desiredsystem1 and desiredsystem2 and (type in TYPES)):
+            continue
+    
+        accepted_id+=1
+        
+        #get the indices of each system
+        desiredsystemid1 = int (system.index(desiredsystem1[0] ))
+        desiredsystemid2 = int (system.index(desiredsystem2[0] ))
             
-            if not ( "All" in language_pair ):
-                src = LANGUAGES[language_pair[0]]
-                tgt = LANGUAGES[language_pair[1]]
-                dir = src + "-" + tgt
-            
-                testset = TESTSETS[col1[2]]
-                type = fields[ config.get("format", "type") ]
-                index = int(fields[ config.get("format", "index") ])
-                entries = []
-                
-                #system_names = [ '', '','','','','']
-                systems_count = 0
-                
-                i=0
-                for system_field in SYSTEM_FIELDS:
-                    try:
-                        system_names.append( fields[system_field] )
-                        systems_count += 1
-                    except:
-                        system_names.append("")
-                
-                    
-                
-                
-                #system[1] = fields[5]
-                #avoid empty indices, when less than 5 judgemnts
-                #if len(fields)>8:
-                #    system[2] = fields[8]
-                #if len(fields)>11:
-                #    system[3] = fields[11]
-                #if len(fields)>14:
-                #    system[4] = fields[14]
-                #if len(fields)> 17:
-                #    system[5] = fields[17]
-                
-                
-                #we are interested in the comparison of two systems groups. First check whether they both exist 
-                desiredsystem1 = intersect( system , SYSTEMSET1 )
-                desiredsystem2 = intersect( system , SYSTEMSET2 )
-                
-                
-                #check if both lists have contents 
-                if ( desiredsystem1 and desiredsystem2 and (type in TYPES)):
-                    accepted_id+=1
-                    
-                    #get the indices of each system
-                    desiredsystemid1 = int (system.index(desiredsystem1[0] ))
-                    desiredsystemid2 = int (system.index(desiredsystem2[0] ))
-                        
-                    
-                    #get the scores given, in the columns relevant to each system
-                    score1 = (fields[CSV_MAPPING_SCORE[desiredsystemid1]])
-                    score2 = (fields[CSV_MAPPING_SCORE[desiredsystemid2]])
+        
+        #get the scores given, in the columns relevant to each system
+        score1 = (fields[CSV_MAPPING_SCORE[desiredsystemid1]])
+        score2 = (fields[CSV_MAPPING_SCORE[desiredsystemid2]])
 
-                    if (score1 < score2) :
-                        rank = 1
-                    elif (score1 > score2) :
-                        rank = -1
-                    else :
-                        rank = 0
-                        
-                    #accumulate the judgments ranking
-                    score_sum = score_sum + rank
-                    
-                    if not ( cur_desiredsystem1 == desiredsystem1[0] and cur_desiredsystem2 == desiredsystem2[0] and dir == cur_dir and testset == cur_testset and index == cur_index ) :
-                        if score_sum > 0 :
-                            avg_rank = 1
-                        elif score_sum < 0 :
-                            avg_rank = -1
-                        else :
-                            avg_rank = 0
-                        
-                        #print [entry_id, path, cur_desiredsystem1, cur_desiredsystem2, cur_dir, cur_index, cur_testset, score1, score2, avg_rank, cur_src]
-                        if accepted_id>1 :
-                            docXML = process_current_judgments_set(path, docXML, cur_desiredsystem1, cur_desiredsystem2, cur_dir, cur_index, cur_testset, score1, score2, avg_rank, cur_src, cur_tgt)
-                        
-                        
-                        #update 
-                        cur_desiredsystem1 = desiredsystem1[0]
-                        cur_desiredsystem2 = desiredsystem2[0]
-                        cur_dir = dir
-                        cur_index = index
-                        cur_testset = testset
-                        cur_src = src
-                        cur_tgt = tgt
-                        score_sum =0 
-                        avg_rank = 0
+        rank = scores_get_rank_unit(score1, score2)
+          
+        #accumulate the judgments ranking (majority voting when more than one judgments)
+        score_sum = score_sum + rank
+        
+        #if a new sentence_id has come up
+        if not ( cur_desiredsystem1 == desiredsystem1[0] and cur_desiredsystem2 == desiredsystem2[0] and dir == cur_dir and testset == cur_testset and index == cur_index ) :
+            
+            ### Get only the prefix of the summed rankings
+            if score_sum > 0 :
+                avg_rank = 1
+            elif score_sum < 0 :
+                avg_rank = -1
+            else :
+                avg_rank = 0
+            
+            #process the input for all sentences apart from the first one
+            #print [entry_id, path, cur_desiredsystem1, cur_desiredsystem2, cur_dir, cur_index, cur_testset, score1, score2, avg_rank, cur_src]
+            if accepted_id>1 :
+                docXML = process_current_judgments_set(path, docXML, cur_desiredsystem1, cur_desiredsystem2, cur_dir, cur_index, cur_testset, score1, score2, avg_rank, cur_src, cur_tgt)
+            
+            #update sentence and buffer variables
+            cur_desiredsystem1 = desiredsystem1[0]
+            cur_desiredsystem2 = desiredsystem2[0]
+            cur_dir = dir
+            cur_index = index
+            cur_testset = testset
+            cur_src = src
+            cur_tgt = tgt
+            score_sum =0 
+            avg_rank = 0
                                         
     #                if entry_id == len(judgments) :
     docXML = process_current_judgments_set(path, docXML, cur_desiredsystem1, cur_desiredsystem2, cur_dir, cur_index, cur_testset, score1, score2, avg_rank, cur_src, cur_tgt)
