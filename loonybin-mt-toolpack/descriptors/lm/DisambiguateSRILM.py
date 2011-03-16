@@ -18,7 +18,8 @@ class DisambiguateSRILM(Tool):
     
     def getInputNames(self, params):
         return [ ('corpusIn','corpus to be disambiguated, one sentence per line from which the language model will be estimated'),
-		 ('arpaLM','ARPA-format n-gram language model') ]
+		 ('arpaLM','ARPA-format n-gram language model'),
+		 ('map', 'Map that defines the disambiguation') ]
 
     def getOutputNames(self, params):
         return [ ('corpusOut', 'disambiguated corpus') ]
@@ -36,9 +37,9 @@ class DisambiguateSRILM(Tool):
         # SRILM machine type doesn't always work.  To minimize inconvenience,
         # link actual subdir to ``i686'', ex:
         # $ ln -s i686-m64 i686
-        return [ './bin/i686/ngram-count -%(smoothingType)s -order %(order)s -keep-unk'%params +
+        return [ './bin/i686/disambig -%(smoothingType)s -order %(order)s -keep-unk'%params +
                 interpolation +
-                ' -text %(corpusIn)s -lm %(arpaLM)s'%inputs +
+                ' -text %(corpusIn)s -lm %(arpaLM)s -map %(map)s'%inputs +
                 ' > corpusOut',
 		'ln -s corpusOut %(corpusOut)s'%outputs ]
 
