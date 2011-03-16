@@ -298,6 +298,8 @@ def create_evaluation(judgments, path, config):
     
         accepted_id+=1
         
+        #TODO: insert here a loop that will be able to process a list of pairs. Then create a method for getting pairwise all the system outputs for this source sentence
+        
         #get the indices of each system
         desiredsystemid1 = int (system.index(desiredsystem1[0] ))
         desiredsystemid2 = int (system.index(desiredsystem2[0] ))
