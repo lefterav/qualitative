@@ -1,6 +1,6 @@
 #!/usr/bin/env loon
 
-home.baseDir=/home/elav01/experiments/metawp2/joshua-fr-en
+home.baseDir=/share/accurat/tmp.elav01/wmt11/joshua-de-en-final
 home.pathDir=/home/elav01/tools/loonybin/paths
 
 [NOTES]
@@ -21,16 +21,13 @@ FS-concatenate: ON localhost machine-translation/descriptors/parallelcorpus/Para
      eCorpus1 < corpus.e
 
 FS-languagepair: param
-   source-language=fr
+   source-language=de
    target-language=en
-   language-pair=fr-en
-
-FS-params: ON localhost efs
-   paramConfigFile=/home/elav01/experiments/metawp2/joshua-run/init/params.txt
+   language-pair=de-en
 
 FS-training-corp-2: ON localhost machine-translation/descriptors/parallelcorpus/ParallelParamFilenames.py
-   corpus.f=/share/emplus/shared-tasks/wmt10/data/parallel/news-commentary10.$pair.$src
-   corpus.e=/share/emplus/shared-tasks/wmt10/data/parallel/news-commentary10.$pair.$tgt
+   corpus.f=/share/emplus/shared-tasks/wmt11/data/training/news-commentary-v6.$pair.$src
+   corpus.e=/share/emplus/shared-tasks/wmt11/data/training/news-commentary-v6.$pair.$tgt
 
    FROM FS-languagepair
      sourceLanguage <- source-language
@@ -38,8 +35,8 @@ FS-training-corp-2: ON localhost machine-translation/descriptors/parallelcorpus/
      langPair <- language-pair
 
 FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpus/ParallelParamFilenames.py
-   corpus.f=/share/emplus/corpora/Acquis/aligned-corpus/$pair/acquis.$pair.$src
-   corpus.e=/share/emplus/corpora/Acquis/aligned-corpus/$pair/acquis.$pair.$tgt
+   corpus.f=/share/emplus/shared-tasks/wmt11/data/training/europarl-v6.$pair.$src
+   corpus.e=/share/emplus/shared-tasks/wmt11/data/training/europarl-v6.$pair.$tgt
 
    FROM FS-languagepair
      sourceLanguage <- source-language
@@ -47,8 +44,8 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
      langPair <- language-pair
 
 0a-dev.corp: ON localhost machine-translation/descriptors/parallelcorpus/ParallelParamFilenames.py
-   corpus.f=/share/emplus/shared-tasks/wmt10/data/wmt08/devtest/nc-devtest2007.$src
-   corpus.e=/share/emplus/shared-tasks/wmt10/data/wmt08/devtest/nc-devtest2007.$tgt
+   corpus.f=/share/emplus/shared-tasks/wmt10/data/wmt08/devtest/test2007.$src
+   corpus.e=/share/emplus/shared-tasks/wmt10/data/wmt08/devtest/test2007.$tgt
 
    FROM FS-languagepair
      sourceLanguage <- source-language
@@ -83,27 +80,67 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 0a-dev.corp
      inputCorpus < corpus.f
 
-0b-test.corpus: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
-   corpus=/share/emplus/shared-tasks/wmt10/data/dev/newstest2008.$src
+0b-test2011.corpus: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
+   corpus=/share/emplus/shared-tasks/wmt11/data/test/newstest2011.$src.txt
 
    FROM FS-languagepair
      sourceLanguage <- source-language
      targetLanguage <- target-language
      langPair <- language-pair
 
-0b-test.lowercase: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
+0b-test2011.lowercase: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
 
-   FROM 0b-test.tokenize
+   FROM 0b-test2011.tokenize
      tokenizedCorpus < tokenizedCorpus
 
-0b-test.tokenize: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+0b-test2011.tokenize: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
    numSplitPieces=1
 
    FROM FS-languagepair
      targetLanguageSuffix <- source-language
 
-   FROM 0b-test.corpus
+   FROM 0b-test2011.corpus
      inputCorpus < corpus
+
+0c-test2010.corpus: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
+   corpus=/share/emplus/shared-tasks/wmt10/data/test/newstest2010.$src
+
+   FROM FS-languagepair
+     sourceLanguage <- source-language
+     targetLanguage <- target-language
+     langPair <- language-pair
+
+0c-test2010.lowercase: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   numSplitPieces=1
+
+   FROM 0c-test2010.corpus
+     inputCorpus < corpus
+     targetLanguageSuffix <- targetLanguage
+
+0c-test2010.tokenize: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
+
+   FROM 0c-test2010.lowercase
+     tokenizedCorpus < tokenizedCorpus
+
+0d-test2008.corpus: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
+   corpus=/share/emplus/shared-tasks/wmt10/data/wmt08/test/test2008.$src
+
+   FROM FS-languagepair
+     sourceLanguage <- source-language
+     targetLanguage <- target-language
+     langPair <- language-pair
+
+0d-test2008.lowercase: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   numSplitPieces=1
+
+   FROM 0d-test2008.corpus
+     inputCorpus < corpus
+     targetLanguageSuffix <- targetLanguage
+
+0d-test2008.tokenize: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
+
+   FROM 0d-test2008.lowercase
+     tokenizedCorpus < tokenizedCorpus
 
 1-BuildLM.530-reuse: ON localhost efs
    lm=/share/emplus/shared-tasks/wmt10/lm/news.en.lm.gz
@@ -146,7 +183,7 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 2-Preproc.150-lowercase-e
      englishCorpus < normalizedCorpus
 
-   FROM 3-BuildTM.concatenate-dev-test
+   FROM 3-BuildTM.concatenate-all
      testData < corpusOut
 
 3-BuildTM.300-berkeley-aligner: ON localhost machine-translation/descriptors/wordalign/BerkeleyAligner.py
@@ -197,13 +234,42 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 0a-dev.lowercase-f
      fDevSents < normalizedCorpus
 
+3-BuildTM.concatenate-08-10: ON localhost machine-translation/descriptors/monocorpus/Cat.py
+
+   FROM 0c-test2010.tokenize
+     corpus1 < normalizedCorpus
+
+   FROM 0d-test2008.tokenize
+     corpus2 < normalizedCorpus
+
+3-BuildTM.concatenate-all: ON localhost machine-translation/descriptors/monocorpus/Cat.py
+
+   FROM 3-BuildTM.concatenate-08-10
+     corpus1 < corpusOut
+
+   FROM 3-BuildTM.concatenate-dev-test
+     corpus2 < corpusOut
+
 3-BuildTM.concatenate-dev-test: ON localhost machine-translation/descriptors/monocorpus/Cat.py
 
-   FROM 0b-test.lowercase
+   FROM 0b-test2011.lowercase
      corpus1 < normalizedCorpus
 
    FROM 0a-dev.lowercase-f
      corpus2 < normalizedCorpus
+
+4-recaser.200.map: ON localhost machine-translation/descriptors/joshua/TruecaseMapper.py
+
+   FROM 2-Preproc.100-tokenize-e
+     inputCorpus < tokenizedCorpus
+
+4-recaser.truecaseLM: ON localhost machine-translation/descriptors/lm/BuildLanguageModel.py
+   order=5
+   smoothingType=kndiscount1 -kndiscount2 -kndiscount3 -kndiscount4 -kndiscount5
+   interpolate=false
+
+   FROM 2-Preproc.100-tokenize-e
+     corpusIn < tokenizedCorpus
 
 5-Tune.700-tune: ON localhost machine-translation/descriptors/joshua/ZMERTJoshua.py
    lmOrder=5
@@ -228,7 +294,7 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 3-BuildTM.410-extract-hiero-grammar
      tmFile < englishGrammar
 
-   FROM FS-params
+   FROM 6-Test.weightsFile
      paramConfigFile < paramConfigFile
 
    FROM 0a-dev.lowercase-e
@@ -240,16 +306,129 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 1-BuildLM.530-reuse
      lmFile < lm
 
-6-Test.800-decode-trees: ON localhost machine-translation/descriptors/joshua/Joshua.py
+6-Test.weightsFile: ON localhost efs
+   paramConfigFile=/home/elav01/experiments/metawp2/joshua-run/init/params.txt
+
+6-Test2008.800-decode: ON localhost machine-translation/descriptors/joshua/Joshua.py
    treeNBest=false
    includeAlign=false
    useDefaultGlue=true
    markOovs=false
+   nBest=false
+
+   FROM 1-BuildLM.530-reuse
+     lmFile < lm
+
+   FROM 0d-test2008.tokenize
+     fSentsIn < normalizedCorpus
+
+   FROM 5-Tune.700-tune
+     weightsFile < finalParams
+     itemRelativeThreshold <- itemRelativeThreshold
+     defaultNonterm <- defaultNonterm
+     maxItemsPerBin <- maxItemsPerBin
+     numThreads <- numThreads
+     spanLimit <- spanLimit
+     heapSizeInMegs <- heapSizeInMegs
+     lmOrder <- lmOrder
+     uniqueNBest <- uniqueNBest
+     itemRelativeThreshold <- itemRelativeThreshold
 
    FROM 3-BuildTM.410-extract-hiero-grammar
      tmFile < englishGrammar
 
-   FROM 0b-test.lowercase
+6-Test2008.810-disambig: ON localhost machine-translation/descriptors/lm/DisambiguateSRILM.py
+   order=5
+   smoothingType=keep-unk
+   interpolate=false
+
+   FROM 4-recaser.200.map
+     map < truecaseMap
+
+   FROM 4-recaser.truecaseLM
+     arpaLM < arpaLM
+
+   FROM 6-Test2008.800-decode
+     corpusIn < eNBestOut
+
+6-Test2008.820-striptags: ON localhost machine-translation/descriptors/joshua/StripSentTags.py
+
+   FROM 6-Test2008.810-disambig
+     corpusIn < corpusOut
+
+6-Test2008.830-detokenize: ON localhost machine-translation/descriptors/joshua/DetokenizerJoshua.py
+
+   FROM 6-Test2010.830-detokenize2010
+     targetLanguageSuffix <- targetLanguageSuffix
+
+   FROM 6-Test2008.820-striptags
+     recasedOutput < corpusOut
+
+6-Test2010.800-decode: ON localhost machine-translation/descriptors/joshua/Joshua.py
+   treeNBest=false
+   useDefaultGlue=true
+   markOovs=false
+   nBest=false
+
+   FROM 1-BuildLM.530-reuse
+     lmFile < lm
+
+   FROM 0c-test2010.tokenize
+     fSentsIn < normalizedCorpus
+
+   FROM 5-Tune.700-tune
+     weightsFile < finalParams
+     itemRelativeThreshold <- itemRelativeThreshold
+     numThreads <- numThreads
+     defaultNonterm <- defaultNonterm
+     lmOrder <- lmOrder
+     includeAlign <- includeAlign
+     heapSizeInMegs <- heapSizeInMegs
+     uniqueNBest <- uniqueNBest
+     spanLimit <- spanLimit
+     maxItemsPerBin <- maxItemsPerBin
+
+   FROM 3-BuildTM.410-extract-hiero-grammar
+     tmFile < englishGrammar
+
+6-Test2010.810-disambig: ON localhost machine-translation/descriptors/lm/DisambiguateSRILM.py
+   order=5
+   smoothingType=keep-unk
+   interpolate=false
+
+   FROM 4-recaser.truecaseLM
+     arpaLM < arpaLM
+
+   FROM 4-recaser.200.map
+     map < truecaseMap
+
+   FROM 6-Test2010.800-decode
+     corpusIn < eNBestOut
+
+6-Test2010.820-striptags: ON localhost machine-translation/descriptors/joshua/StripSentTags.py
+
+   FROM 6-Test2010.810-disambig
+     corpusIn < corpusOut
+
+6-Test2010.830-detokenize2010: ON localhost machine-translation/descriptors/joshua/DetokenizerJoshua.py
+
+   FROM 6-Test2011.830-detokenize
+     targetLanguageSuffix <- targetLanguageSuffix
+
+   FROM 6-Test2010.820-striptags
+     recasedOutput < corpusOut
+
+6-Test2011.800-decode: ON localhost machine-translation/descriptors/joshua/Joshua.py
+   treeNBest=false
+   includeAlign=false
+   useDefaultGlue=true
+   markOovs=false
+   nBest=false
+
+   FROM 3-BuildTM.410-extract-hiero-grammar
+     tmFile < englishGrammar
+
+   FROM 0b-test2011.lowercase
      fSentsIn < normalizedCorpus
 
    FROM 5-Tune.700-tune
@@ -260,12 +439,38 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
      maxItemsPerBin <- maxItemsPerBin
      itemRelativeThreshold <- itemRelativeThreshold
      uniqueNBest <- uniqueNBest
-     nBest <- nBest
      numThreads <- numThreads
      heapSizeInMegs <- heapSizeInMegs
 
    FROM 1-BuildLM.530-reuse
      lmFile < lm
+
+6-Test2011.810-disambig: ON localhost machine-translation/descriptors/lm/DisambiguateSRILM.py
+   order=5
+   smoothingType=keep-unk
+   interpolate=false
+
+   FROM 6-Test2011.800-decode
+     corpusIn < eNBestOut
+
+   FROM 4-recaser.truecaseLM
+     arpaLM < arpaLM
+
+   FROM 4-recaser.200.map
+     map < truecaseMap
+
+6-Test2011.820-striptags: ON localhost machine-translation/descriptors/joshua/StripSentTags.py
+
+   FROM 6-Test2011.810-disambig
+     corpusIn < corpusOut
+
+6-Test2011.830-detokenize: ON localhost machine-translation/descriptors/joshua/DetokenizerJoshua.py
+
+   FROM FS-languagepair
+     targetLanguageSuffix <- target-language
+
+   FROM 6-Test2011.820-striptags
+     recasedOutput < corpusOut
 
 
 [INSPECTORS]
@@ -273,34 +478,55 @@ Meteor X-RAY (English): machine-translation/descriptors/visualization/VisualizeS
    lang=en
 
 [SELECTIONS]
-all: 6-Test.800-decode-trees
+all: 6-Test2011.830-detokenize
    FROM default SELECT default
 
 # The following entries contain position data for the visual interface. You should never need to modify this. 
 [GUI]
-FS-concatenate: -297 437
-FS-languagepair: -451 209
-FS-params: -288 326
-FS-training-corp-2: -425 452
-FS-training-corpus-1: -425 383
+FS-concatenate: -233 502
+FS-languagepair: -397 324
+FS-training-corp-2: -361 517
+FS-training-corpus-1: -361 448
 0a-dev.corp: -398 -146
 0a-dev.lowercase-e: -298 -18
 0a-dev.lowercase-f: -163 -23
 0a-dev.tokenize-e: -335 -72
 0a-dev.tokenize-f: -199 -69
-0b-test.corpus: -328 53
-0b-test.lowercase: -205 92
-0b-test.tokenize: -309 98
-1-BuildLM.530-reuse: 5 176
+0b-test2011.corpus: -312 121
+0b-test2011.lowercase: -273 91
+0b-test2011.tokenize: -294 107
+0c-test2010.corpus: -278 198
+0c-test2010.lowercase: -253 184
+0c-test2010.tokenize: -218 170
+0d-test2008.corpus: -190 252
+0d-test2008.lowercase: -154 239
+0d-test2008.tokenize: -124 228
+1-BuildLM.530-reuse: 185 -168
 2-Preproc.100-tokenize-e: -156 466
 2-Preproc.110-tokenize-f: -97 571
 2-Preproc.150-lowercase-e: -92 410
 2-Preproc.160-lowercase-f: -21 515
-3-BuildTM.200-subsample-for-tm: 177 390
-3-BuildTM.300-berkeley-aligner: 319 382
-3-BuildTM.400-build-suffix-array-for-tm: 330 330
-3-BuildTM.410-extract-hiero-grammar: 365 261
-3-BuildTM.concatenate-dev-test: 183 301
-5-Tune.700-tune: 405 148
-6-Test.800-decode-trees: 521 64
+3-BuildTM.200-subsample-for-tm: 195 405
+3-BuildTM.300-berkeley-aligner: 337 397
+3-BuildTM.400-build-suffix-array-for-tm: 348 345
+3-BuildTM.410-extract-hiero-grammar: 383 276
+3-BuildTM.concatenate-08-10: 129 261
+3-BuildTM.concatenate-all: 129 293
+3-BuildTM.concatenate-dev-test: 133 235
+4-recaser.200.map: 553 504
+4-recaser.truecaseLM: 530 525
+5-Tune.700-tune: 330 134
+6-Test.weightsFile: 255 80
+6-Test2008.800-decode: 576 91
+6-Test2008.810-disambig: 609 78
+6-Test2008.820-striptags: 661 66
+6-Test2008.830-detokenize: 697 40
+6-Test2010.800-decode: 483 -50
+6-Test2010.810-disambig: 513 -62
+6-Test2010.820-striptags: 568 -78
+6-Test2010.830-detokenize2010: 624 -110
+6-Test2011.800-decode: 395 -178
+6-Test2011.810-disambig: 424 -192
+6-Test2011.820-striptags: 475 -223
+6-Test2011.830-detokenize: 522 -273
 
