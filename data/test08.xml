@@ -1,0 +1,3587 @@
+<?xml version="1.0" ?>
+<jcml>
+	<judgedsentence id="54" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Nur so besteht eine Chance auch für Kaliningrad, die Entwicklungsmöglichkeiten zu verbessern.
+		</src>
+		<tgt system="rbmt5">
+			A chance only thus exists also for Kaliningrad to improve the development possibilities.
+		</tgt>
+		<tgt system="uedin">
+			That is the only way that a chance for Kaliningrad, to improve the opportunities for development.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="154" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Und mehr als von endlosen buchhalterischen Prüfungen sollten wir uns zu gegebener Zeit von genau diesem Gefühl, oder dem Nichtvorhandensein dieses Gefühls, bei unseren Entscheidungen im Bereich der Erweiterung leiten lassen, denn die europäische Einigung verliert ihren Sinn, wenn sie nicht mehr vor allem politischer Natur ist.
+		</src>
+		<tgt system="rbmt6">
+			We should lead let ourselves loses and more than of endless bookkeeping tests to given time of exactly this feeling, or the absence of this feeling, in our decisions in the area of the expansion, for the European unification its sense if it is no longer above all political nature.
+		</tgt>
+		<tgt system="saar">
+			And more than of endless bookkeeping tests, we should look at the appropriate time of precisely this feeling, or the absence of this feeling, in our decisions in the field of enlargement, because the European agreement loses its meaning when they are no longer in particular is political in nature.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="154" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Und mehr als von endlosen buchhalterischen Prüfungen sollten wir uns zu gegebener Zeit von genau diesem Gefühl, oder dem Nichtvorhandensein dieses Gefühls, bei unseren Entscheidungen im Bereich der Erweiterung leiten lassen, denn die europäische Einigung verliert ihren Sinn, wenn sie nicht mehr vor allem politischer Natur ist.
+		</src>
+		<tgt system="cmu-statxfer">
+			And more than of endless accounting tests should we are at the appropriate time of exactly what this sense, or the lack of feeling, in our decisions in the area of the enlargement inspiration, because the European agreement lose their sense, if they no longer above all political in nature is.
+		</tgt>
+		<tgt system="rbmt6">
+			We should lead let ourselves loses and more than of endless bookkeeping tests to given time of exactly this feeling, or the absence of this feeling, in our decisions in the area of the expansion, for the European unification its sense if it is no longer above all political nature.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="248" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Ferner kommt es darauf an, dass weiterhin unabhängige Vorabprüfungen durchgeführt werden, die zwar eventuell dezentralisiert erfolgen mögen, bei denen die Finanzkontrolleure aber keinesfalls dem Generaldirektor der zu kontrollierenden Generaldirektion hierarchisch untergeordnet sein dürfen.
+		</src>
+		<tgt system="cmu-statxfer">
+			In addition is it to, that still independent Vorabprüfungen being carried out, which is may have to decentralised be may, in which the cabinet but not the Director-General of to uncontrollable Directorate-General report subject be must.
+		</tgt>
+		<tgt system="rbmt2">
+			Furthermore it matters that furthermore independent first of all examinations which may be carried out although perhaps decentralized are carried out in which the finance inspectors, however, may under no circumstances be subordinated to the president of the head office to be checked hierarchically.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="248" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Ferner kommt es darauf an, dass weiterhin unabhängige Vorabprüfungen durchgeführt werden, die zwar eventuell dezentralisiert erfolgen mögen, bei denen die Finanzkontrolleure aber keinesfalls dem Generaldirektor der zu kontrollierenden Generaldirektion hierarchisch untergeordnet sein dürfen.
+		</src>
+		<tgt system="rbmt2">
+			Furthermore it matters that furthermore independent first of all examinations which may be carried out although perhaps decentralized are carried out in which the finance inspectors, however, may under no circumstances be subordinated to the president of the head office to be checked hierarchically.
+		</tgt>
+		<tgt system="uedin">
+			Furthermore, it is important that independent Vorabprüfungen continue to be carried out, which must of course be decentralised may possibly be subordinated to where the financial controllers but it is not the Director-General of the Directorate-General to choose a hierarchy.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="254" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Ich finde diesen Vorschlag wirklich so sinnvoll, dass ich es geradezu bedaure, nicht selber darauf gekommen zu sein.
+		</src>
+		<tgt system="rbmt5">
+			I find this suggestion really so meaningful that I almost regret it, on it to have come.
+		</tgt>
+		<tgt system="rbmt6">
+			I find this proposal really so meaningfully that I regret it quite to not to have come self on that.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="254" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Ich finde diesen Vorschlag wirklich so sinnvoll, dass ich es geradezu bedaure, nicht selber darauf gekommen zu sein.
+		</src>
+		<tgt system="rbmt6">
+			I find this proposal really so meaningfully that I regret it quite to not to have come self on that.
+		</tgt>
+		<tgt system="saar">
+			I think this is a very sensible proposal so that I regret almost have come.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="295" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Ich stimme voll und ganz den Darlegungen im Bericht sowie den Ausführungen der Abgeordneten zu, die sich dafür ausgesprochen haben, den Tenor des Berichts unbedingt zu ändern.
+		</src>
+		<tgt system="cmu-statxfer">
+			I agree with that fully the statement in the report and the comments of the Members to, which is to very have, the tone of the report is to change.
+		</tgt>
+		<tgt system="ucl">
+			I fully agree with the approach adopted in the report and the comments that Members have in favour absolutely the content of the report to be changed.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="304" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Diese Empfehlung, die zwar einen Schritt in die richtige Richtung darstellt, weist gleichwohl zahlreiche Schwachstellen auf, die durch den Bericht Evans behoben werden.
+		</src>
+		<tgt system="rbmt5">
+			This recommendation, which represents a step in the correct direction, exhibits nevertheless numerous weak points, which are repaired by the report Evans.
+		</tgt>
+		<tgt system="saar">
+			This recommendation, which is a step in the right direction, however, a number of points on which the Evans report.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="304" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Diese Empfehlung, die zwar einen Schritt in die richtige Richtung darstellt, weist gleichwohl zahlreiche Schwachstellen auf, die durch den Bericht Evans behoben werden.
+		</src>
+		<tgt system="saar">
+			This recommendation, which is a step in the right direction, however, a number of points on which the Evans report.
+		</tgt>
+		<tgt system="ucl">
+			The recommendation is a step in the right direction which, however, has many shortcomings by the Evans put right.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="340" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Herr Papoutsis hat bereits eine sehr wichtige Abteilung seines Ministeriums &quot;ausgebootet &quot;, die Aufsichtsbehörde für Handelsschiffe.
+		</src>
+		<tgt system="liu">
+			Mr Papoutsis already has a very important department of his Ministry ausgebootet ',' the supervisory authority for commercial ships.
+		</tgt>
+		<tgt system="rbmt4">
+			Mr. Papoutsis already has a very important department of his ministry &quot;ausgebootet&quot;, the supervisory authority for merchant ships.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="385" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Die elementare Sorge um das Allgemeininteresse sollte uns alle dazu veranlassen, dem Vorschlag zuzustimmen, Erwägungsgründe zur Beschäftigung in die heute ausschließlich wettbewerbspolitisch bestimmten Verordnungen und Entscheidungen zu Unternehmenszusammenschlüssen aufzunehmen.
+		</src>
+		<tgt system="cmu-statxfer">
+			The basic concern for the interests should all of us to ensure that the proposal favour, recitals to employment in the today only competition policy certain regulations and decisions on mergers. .
+		</tgt>
+		<tgt system="rbmt2">
+			The elementary worry over the general interest should induce all of us to agree to the suggestion to include consideration reasons for the occupation in the ordinances exclusively determined today competition politically and decisions to mergers.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="404" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Das entspricht der Forderung nach mehr Transparenz.
+		</src>
+		<tgt system="rbmt3">
+			That corresponds to the demand for more transparency.
+		</tgt>
+		<tgt system="rbmt6">
+			That corresponds the demand for more transparency.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="428" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Aber es gibt eine grundlegende Frage, die ich den Herrn Ratspräsidenten zu klären bitte.
+		</src>
+		<tgt system="limsi">
+			But there is one fundamental question, the President-in-Office of the Council, I would like to clarify.
+		</tgt>
+		<tgt system="rbmt4">
+			But there is a basic question which I ask to clear Mr. council president.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="446" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Wir sind eine Oppositionskraft, die meines Erachtens das Recht hat, andere Entschließungen zugunsten der Charta als die Mehrheit anzunehmen.
+		</src>
+		<tgt system="rbmt3">
+			We are an opposition strength, that my opinion's the is right, to accept other resolutions for the benefit of the charter as the majority.
+		</tgt>
+		<tgt system="rbmt6">
+			We are an opposition power that is right my considering the to suppose other resolutions for the benefit of the charter as the majority.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="446" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Wir sind eine Oppositionskraft, die meines Erachtens das Recht hat, andere Entschließungen zugunsten der Charta als die Mehrheit anzunehmen.
+		</src>
+		<tgt system="rbmt3">
+			We are an opposition strength, that my opinion's the is right, to accept other resolutions for the benefit of the charter as the majority.
+		</tgt>
+		<tgt system="rbmt4">
+			We are an opposition strength which has in my opinion the right to accept other resolutions in favour of the charter than the majority.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="454" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Wir sollten Ihn auf keinen Fall heute zerstören.
+		</src>
+		<tgt system="cmu-statxfer">
+			We should That in no way today destroy.
+		</tgt>
+		<tgt system="rbmt2">
+			We should destroy him in no case today.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="454" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Wir sollten Ihn auf keinen Fall heute zerstören.
+		</src>
+		<tgt system="limsi">
+			We should, in any case, it today.
+		</tgt>
+		<tgt system="rbmt3">
+			We should not destroy It in any case today.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="454" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Wir sollten Ihn auf keinen Fall heute zerstören.
+		</src>
+		<tgt system="cmu-statxfer">
+			We should That in no way today destroy.
+		</tgt>
+		<tgt system="rbmt6">
+			We should destroy it under no circumstances today.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="499" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Ich muss das Parlament aber eben auch ersuchen, hier verhandlungsbereit zu sein.
+		</src>
+		<tgt system="liu">
+			I must ask Parliament, but it also has to be willing to negotiate.
+		</tgt>
+		<tgt system="ucl">
+			I must however Parliament also ask this to be verhandlungsbereit.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="513" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Ich persönlich habe sie nicht unterzeichnet, da ein oder zwei davon immer noch zu weit gehen.
+		</src>
+		<tgt system="limsi">
+			I personally have not signed them, because one or two of them are still go too far.
+		</tgt>
+		<tgt system="rbmt3">
+			I personally did not sign it since one or two go from that still too far.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="527" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Anfrage Nr. 1 von (H-0709/00):
+		</src>
+		<tgt system="rbmt4">
+			Inquiry No. 1 from (H-0709 / 00):
+		</tgt>
+		<tgt system="ucl">
+			Question No 1 by (H-0709 / 00)
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="527" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Anfrage Nr. 1 von (H-0709/00):
+		</src>
+		<tgt system="rbmt3">
+			Inquiry no. 1 of (H-0709/00):
+		</tgt>
+		<tgt system="ucl">
+			Question No 1 by (H-0709 / 00)
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="554" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Serbiens Verantwortliche in Politik und Wirtschaft unterstreichen immer wieder, dass sie nicht abhängig werden wollen von unserer Hilfe, dass sie aber jetzt unsere Hilfe brauchen, um kurzfristig Not zu lindern, und dass sie dann Hilfe zur Selbsthilfe brauchen, um mittel- und langfristig soziale Marktwirtschaft einzuführen und auch notwendige Auslandsinvestitionen zu ermöglichen.
+		</src>
+		<tgt system="cmu-statxfer">
+			Serbian leaders in policy and Economic point out time and again, that they not be subject to of our aid, that it but now our aid need, in order to reduce short-term need, and that it will help to people need, in order to introduce medium and long-term social market and also need external investment countries.
+		</tgt>
+		<tgt system="limsi">
+			Serbia is responsible in politics and the economy we constantly stress that they do not want to be totally dependent on our help, but that they now need our help in order to alleviate the short term, and that they will need help to help themselves, in the medium and long term social market economy, and also to make the necessary investment.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="554" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Serbiens Verantwortliche in Politik und Wirtschaft unterstreichen immer wieder, dass sie nicht abhängig werden wollen von unserer Hilfe, dass sie aber jetzt unsere Hilfe brauchen, um kurzfristig Not zu lindern, und dass sie dann Hilfe zur Selbsthilfe brauchen, um mittel- und langfristig soziale Marktwirtschaft einzuführen und auch notwendige Auslandsinvestitionen zu ermöglichen.
+		</src>
+		<tgt system="liu">
+			Serbia in political and economic responsibility we constantly stress that they do not want to be totally dependent on our help, but now that they need our help in the short term, if necessary, and that they need to help themselves, in the medium and long term, to introduce social market economy and necessary foreign investment.
+		</tgt>
+		<tgt system="rbmt4">
+			Persons responsible of Serbia in policy and economy underline over and over again that they do not want to become dependent on our help that they need, however, now our help to relieve at short notice need, and that they need then help to the self-help to introduce in the medium term and in the long term social market economy and also to allow necessary foreign investments.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="554" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Serbiens Verantwortliche in Politik und Wirtschaft unterstreichen immer wieder, dass sie nicht abhängig werden wollen von unserer Hilfe, dass sie aber jetzt unsere Hilfe brauchen, um kurzfristig Not zu lindern, und dass sie dann Hilfe zur Selbsthilfe brauchen, um mittel- und langfristig soziale Marktwirtschaft einzuführen und auch notwendige Auslandsinvestitionen zu ermöglichen.
+		</src>
+		<tgt system="rbmt4">
+			Persons responsible of Serbia in policy and economy underline over and over again that they do not want to become dependent on our help that they need, however, now our help to relieve at short notice need, and that they need then help to the self-help to introduce in the medium term and in the long term social market economy and also to allow necessary foreign investments.
+		</tgt>
+		<tgt system="rbmt6">
+			Serbia responsible in politics and economy underline again and again that they do not want to become dependent of our aid, that they need however now our aid in order to mitigate short-termed need, and that they need then aid to the self-help in order to introduce mittel- and long-termed social market economy and to enable also necessary foreign country investments.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="561" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Untätig, müde und enttäuscht sind die Fischer.
+		</src>
+		<tgt system="cmu-statxfer">
+			Untätig, tired and disappointed are the the fishermen.
+		</tgt>
+		<tgt system="rbmt3">
+			The fishermen are inactive, tired and disappointed.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="604" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Deshalb benötigen wir diese Lebensmittelbehörde, und deshalb legen wir darauf zu Recht den erforderlichen Nachdruck.
+		</src>
+		<tgt system="cmu-statxfer">
+			We Therefore need this Authority, and why are we to on Legal Affairs the necessary support.
+		</tgt>
+		<tgt system="saar">
+			That is why we need this food safety authority, and this is why we have the ambition to right.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="654" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Faktisch betreibt das Europäische Parlament eine Verschleppungstaktik.
+		</src>
+		<tgt system="ucl">
+			In fact the European Parliament is filibustering.
+		</tgt>
+		<tgt system="uedin">
+			In fact, the European Parliament is waging a filibustering.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="654" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Faktisch betreibt das Europäische Parlament eine Verschleppungstaktik.
+		</src>
+		<tgt system="saar">
+			In fact the European Parliament operates delaying tactics.
+		</tgt>
+		<tgt system="ucl">
+			In fact the European Parliament is filibustering.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="695" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Wie auch Frau Randzio-Plath bemerkte, können wir die Banken nicht mit politischen Entscheidungen zwingen, die Gebühren zu senken.
+		</src>
+		<tgt system="rbmt5">
+			As also Mrs. Randzio Randzio-Plath noticed, we cannot force the banks with political decisions to lower the fees.
+		</tgt>
+		<tgt system="rbmt6">
+			How also woman Randzio-Plath noted, we cannot force the banks with political decisions to sink the fees.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="695" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Wie auch Frau Randzio-Plath bemerkte, können wir die Banken nicht mit politischen Entscheidungen zwingen, die Gebühren zu senken.
+		</src>
+		<tgt system="rbmt3">
+			As also Ms Randzio-Plath noticed, we can not force the banks to lower the fees with political decisions.
+		</tgt>
+		<tgt system="rbmt6">
+			How also woman Randzio-Plath noted, we cannot force the banks with political decisions to sink the fees.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="696" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Wir in Brüssel erleben es ja selbst als Abgeordnete, aber auch unsere Mitarbeiter, dass wir wegen den hohen Euro-Gebühren keine Auslandsüberweisungen tätigen.
+		</src>
+		<tgt system="rbmt3">
+			We in Brussels it experiences yes even as representatives, but also our employees, that we do not make any foreign transfers because of the high euro fees.
+		</tgt>
+		<tgt system="uedin">
+			In Brussels, we see it as Members of Parliament, but also our staff that we make the euro because of the high charges no cross-border payments.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="716" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			In den letzten Tagen kamen, dem Himmel sei Dank, einige positive Signale vom Balkan, die indirekt auch Albanien betreffen.
+		</src>
+		<tgt system="limsi">
+			In the last few days, which, thank God, some positive signals from the Balkans, which also, indirectly, Albania.
+		</tgt>
+		<tgt system="liu">
+			In the last few days, which have, thank God, some positive signals from the Balkans, also, indirectly, Albania.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="716" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			In den letzten Tagen kamen, dem Himmel sei Dank, einige positive Signale vom Balkan, die indirekt auch Albanien betreffen.
+		</src>
+		<tgt system="cmu-statxfer">
+			In the last few days, , the sky is The, some positive signals from the Balkans, the indirectly also Albania are.
+		</tgt>
+		<tgt system="liu">
+			In the last few days, which have, thank God, some positive signals from the Balkans, also, indirectly, Albania.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="716" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			In den letzten Tagen kamen, dem Himmel sei Dank, einige positive Signale vom Balkan, die indirekt auch Albanien betreffen.
+		</src>
+		<tgt system="rbmt2">
+			Came it, it is for the sky gratitude, some positive signals of the Balkans which indirectly also concern Albania, in the last few days?
+		</tgt>
+		<tgt system="uedin">
+			In the last few days, thanks to the sky, some positive signals from the Balkans indirectly connected with Albania.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="742" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Insbesondere die Fischer haben kein Verständnis für die Situation und sind enttäuscht darüber, dass die Verhandlungen über das Abkommen mit Marokko sich so sehr in die Länge ziehen.
+		</src>
+		<tgt system="rbmt3">
+			In particular the fishermen do not have any sense for the situation and are disappointed over the negotiations on the agreement with Morocco dragging themselves out so very much.
+		</tgt>
+		<tgt system="saar">
+			In particular, the fishermen have no understanding for the situation and are disappointed that the negotiations on the agreement with Morocco itself in the long term.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="754" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Herr Präsident, meine Damen und Herren Abgeordneten! Der Fall der Fremdsprachenlektoren nichtitalienischer Herkunft an italienischen Hochschulen ist der Kommission und den meisten europäischen Organen wohl bekannt.
+		</src>
+		<tgt system="rbmt6">
+			Ladies and Mr. delegates Mr. president, means! The case of the foreign language lecturers not Italian origin at Italian universities is the commission and most European organs well well known.
+		</tgt>
+		<tgt system="saar">
+			Mr President, ladies and gentlemen, the case of the origin of non-Italian lecturers at Italian universities and the Commission is well aware of the majority of the European institutions.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="796" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Ich möchte nur wenige Punkte anschneiden, die meines Erachtens sehr entscheidend sind für die zukünftige Kontrollarbeit im Zusammenhang mit Forschungsarbeit generell.
+		</src>
+		<tgt system="cmu-statxfer">
+			I should like to make just a few points raised, which is very important are for the future Kontrollarbeit in connection with work in general.
+		</tgt>
+		<tgt system="uedin">
+			I should just like to mention a few points which, in my view, very important for the future work in connection with research in general.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="804" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Die Charta ist zudem ein völlig kohärenter Text.
+		</src>
+		<tgt system="rbmt3">
+			The charter is furthermore a completely coherent text.
+		</tgt>
+		<tgt system="rbmt6">
+			The charter is moreover a text coherent totally.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="804" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Die Charta ist zudem ein völlig kohärenter Text.
+		</src>
+		<tgt system="rbmt4">
+			Besides, the charter is an absolutely coherent text.
+		</tgt>
+		<tgt system="saar">
+			The Charter is a totally coherent text.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="922" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Wir haben es hier also mit der folgenden Situation zu tun, und dazu hätte ich gern von dem Herrn Minister eine Antwort. Zunächst heißt es in den Schlussfolgerungen von Helsinki, die Lösung der Zypern-Frage sei keine Voraussetzung für den Beitritt Zyperns.
+		</src>
+		<tgt system="rbmt4">
+			We have to do it here with the following situation, and in addition I would have with pleasure from Mr. minister an answer. At first one says in the conclusions of Helsinki, the solution of the Cyprus question is no condition for the entry of Cyprus.
+		</tgt>
+		<tgt system="rbmt6">
+			We have it here therefore with the following situation to do, and in addition I would have gladly an answer of the Mr. minister. First of all it is named would be joins in the conclusions of Helsinki, the solution of the Cyprus-question no prerequisite for that Cyprus.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="922" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Wir haben es hier also mit der folgenden Situation zu tun, und dazu hätte ich gern von dem Herrn Minister eine Antwort. Zunächst heißt es in den Schlussfolgerungen von Helsinki, die Lösung der Zypern-Frage sei keine Voraussetzung für den Beitritt Zyperns.
+		</src>
+		<tgt system="rbmt6">
+			We have it here therefore with the following situation to do, and in addition I would have gladly an answer of the Mr. minister. First of all it is named would be joins in the conclusions of Helsinki, the solution of the Cyprus-question no prerequisite for that Cyprus.
+		</tgt>
+		<tgt system="saar">
+			We therefore have to do with the following situation, and I would like a response from the Minister: firstly, it says in the Helsinki conclusions, the solution of the Cyprus issue is not a prerequisite for Cyprus's accession.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="924" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Das vorgeschlagene Abkommen hat eine Laufzeit von zwei statt von fünf Jahren und sieht außerdem vor, dass die Europäische Union Marokko die 21 Milliarden Pesetas bezahlt, die sie auch derzeit zahlt.
+		</src>
+		<tgt system="rbmt4">
+			The suggested agreement has a term of two instead of from five years and, in addition, intends that the European Union of Morocco pays the 21 billions Pesetas which she also pays nowadays.
+		</tgt>
+		<tgt system="ucl">
+			The proposed agreement last two rather than five years and is also in the European Union, Morocco to ESP 21 billion paid currently they pay.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="924" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Das vorgeschlagene Abkommen hat eine Laufzeit von zwei statt von fünf Jahren und sieht außerdem vor, dass die Europäische Union Marokko die 21 Milliarden Pesetas bezahlt, die sie auch derzeit zahlt.
+		</src>
+		<tgt system="rbmt4">
+			The suggested agreement has a term of two instead of from five years and, in addition, intends that the European Union of Morocco pays the 21 billions Pesetas which she also pays nowadays.
+		</tgt>
+		<tgt system="saar">
+			The proposed agreement is for two instead of five years and also provides for the European Union that Morocco the 21 billion pesetas which also pays them at the moment.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="924" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Das vorgeschlagene Abkommen hat eine Laufzeit von zwei statt von fünf Jahren und sieht außerdem vor, dass die Europäische Union Marokko die 21 Milliarden Pesetas bezahlt, die sie auch derzeit zahlt.
+		</src>
+		<tgt system="rbmt2">
+			The suggested agreement has a running time of two instead of of five years and in addition provides that the European Union which is paying them at present, too pays Morocco the 21 billion pesetas.
+		</tgt>
+		<tgt system="rbmt4">
+			The suggested agreement has a term of two instead of from five years and, in addition, intends that the European Union of Morocco pays the 21 billions Pesetas which she also pays nowadays.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="954" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Dieses Anliegen ist ehrlich und glaubwürdig. Ich werde meiner Fraktion empfehlen, nicht abzulehnen.
+		</src>
+		<tgt system="ucl">
+			This matter is honest and credibility, I recommend that my group will not be rejected.
+		</tgt>
+		<tgt system="uedin">
+			This concern is honest and credible and I shall not advise my group to reject.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="954" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Dieses Anliegen ist ehrlich und glaubwürdig. Ich werde meiner Fraktion empfehlen, nicht abzulehnen.
+		</src>
+		<tgt system="liu">
+			This concern is honest and credible, and I shall be recommending that my group will not be rejected.
+		</tgt>
+		<tgt system="uedin">
+			This concern is honest and credible and I shall not advise my group to reject.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="955" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Damit wird durchaus kein Ausnahmesystem gegenüber der international üblichen Praxis geschaffen, sondern im Gegenteil man nähert sich mit diesem flexiblen Mechanismus zu vertretbaren Kosten für die Vorbeugung und Bewältigung von Krisen dem an, was in einigen Drittländern praktiziert wird, so den Einkommenssicherungssystemen in den Vereinigten Staaten und in Kanada.
+		</src>
+		<tgt system="rbmt5">
+			Thus no exception system is quite created in relation to internationally usual practice, but in the opposite one approaches on with this flexible mechanism to justifiable costs of the vorbeugung and accomplishment of crises, which in some third countries one practices, so the income security systems in the United States and in Canada.
+		</tgt>
+		<tgt system="saar">
+			This is not at all a special system of international standard practice to be created, but on the contrary it is approaching this flexible mechanism to justifiable costs for the prevention and management of crises, which is applied in certain third countries, so the income in the United States and Canada.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="955" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Damit wird durchaus kein Ausnahmesystem gegenüber der international üblichen Praxis geschaffen, sondern im Gegenteil man nähert sich mit diesem flexiblen Mechanismus zu vertretbaren Kosten für die Vorbeugung und Bewältigung von Krisen dem an, was in einigen Drittländern praktiziert wird, so den Einkommenssicherungssystemen in den Vereinigten Staaten und in Kanada.
+		</src>
+		<tgt system="rbmt3">
+			In this way no exception system is absolutely created opposite the internationally usual practice, but on the contrary one approximates to what is practised in some third countries with this flexible mechanism to justifiable costs for the prevention and overcoming of crises so the income standby systems in the United States and in Canada.
+		</tgt>
+		<tgt system="rbmt6">
+			Therewith no exception system is created thoroughly vis-à-vis the internationally usual practice, but rather approaches in the opposite one with this flexible mechanism to justifiable costs for the prevention and mastering of crises that on, what in some third countries practice becomes, so the income security systems in the United States and in Canada.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="984" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Aus dem schlichten Grund haben wir hier eine andere Ansicht vertreten, und wir können dem Plenum von Seiten der Mehrheit des Ausschusses für Recht und Binnenmarkt nur anraten, insbesondere den Anträgen 38 oder 41, die sich mit einer Abschwächung des Exportverbotes befassen, zu folgen.
+		</src>
+		<tgt system="rbmt3">
+			For the simple reason we represented another opinion here, and we can only recommend to the plenum to follow in particular the requests 38 or 41 which deal with an attenuation of the export prohibition on the part of the majority of the committee for right and home market.
+		</tgt>
+		<tgt system="saar">
+			For the simple reason that we have here a different view, and we can give the House on the part of the majority of the Committee on Legal Affairs and the internal market, in particular, only recommend the Amendments 38 and 41, which deal with a reduction of the export ban.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1010" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			. (EL) Die Ausdehnung des Tätigkeitsbereichs der Europäischen Agentur für den Wiederaufbau auf das Gebiet der Bundesrepublik Jugoslawien hätte schon vor geraumer Zeit erfolgen müssen und nicht mit den innenpolitischen Veränderungen in diesem Land verknüpft werden dürfen.
+		</src>
+		<tgt system="cmu-statxfer">
+			., EL, The extension of the scope of the European agency for reconstruction in the area the Federal Republic of Yugoslavia would have some time ago be must and not with the internal changes in this country which will must.
+		</tgt>
+		<tgt system="uedin">
+			- (EL) The extension of the scope of the European Agency for Reconstruction in the territory of the Federal Republic of Yugoslavia would have to be some time ago, and not with the internal political changes in the country must be linked.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1034" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Gemäß diesem Konzept erhält der Markt für Zusatzkrankenversicherungen mit Erwerbszweck in zunehmendem Maße und immer eindeutiger die Funktion einer Ergänzung der öffentlichen Basissysteme.
+		</src>
+		<tgt system="rbmt5">
+			In accordance with this concept the market for auxiliary health insurances with profit-making purpose keeps the function of an addition of the public basic systems increasingly and ever clearer.
+		</tgt>
+		<tgt system="ucl">
+			In accordance with this approach, the market with zusatzkrankenversicherungen erwerbszweck increasingly clear and always complement the role of public basissysteme.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1034" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Gemäß diesem Konzept erhält der Markt für Zusatzkrankenversicherungen mit Erwerbszweck in zunehmendem Maße und immer eindeutiger die Funktion einer Ergänzung der öffentlichen Basissysteme.
+		</src>
+		<tgt system="rbmt3">
+			According to this draft the market receives for addition health insurances with acquisition purpose in increasing measure and increasingly more unequivocally the function of a supplement of the public basic communications systems.
+		</tgt>
+		<tgt system="ucl">
+			In accordance with this approach, the market with zusatzkrankenversicherungen erwerbszweck increasingly clear and always complement the role of public basissysteme.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1036" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Herzlichen Glückwunsch an den Berichterstatter Michel Rocard.
+		</src>
+		<tgt system="cmu-statxfer">
+			Congratulations to the rapporteur Mr Michel Rocard.
+		</tgt>
+		<tgt system="rbmt3">
+			Cordial congratulation onto the reporter Michel Rocard.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1047" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Die Nichtmitgliedstaaten der Euro-Zone legen ihre Konvergenzprogramme vor, die den Stabilitätsprogrammen weitgehend ähneln, nur dass die Zielsetzungen unterschiedlich sind.
+		</src>
+		<tgt system="rbmt5">
+			The non-member states of the euro-zone submit its convergence programs, which resemble large the stability programs, only that the objectives are different.
+		</tgt>
+		<tgt system="ucl">
+			The non-Member States of the euro zone are their convergence programmes in the programmes are broadly similar only the different objectives.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1104" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Ich gebe aber zu, dass &quot;Armut &quot; politisch ein besonders starkes Wort ist und bin einverstanden, dass wir es, wo es im Text des Vorschlags möglich ist, in Verbindung mit sozialer Ausgrenzung verwenden.
+		</src>
+		<tgt system="saar">
+			I admit, however, that 'political' poverty is a particularly strong word and agree that we, in the text of the proposal where it is possible, in connection with social exclusion.
+		</tgt>
+		<tgt system="uedin">
+			I admit, however, that poverty is &quot;politically a particularly strong word and agree that we use it, where it is possible in the text of the proposal, in conjunction with social exclusion.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1104" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Ich gebe aber zu, dass &quot;Armut &quot; politisch ein besonders starkes Wort ist und bin einverstanden, dass wir es, wo es im Text des Vorschlags möglich ist, in Verbindung mit sozialer Ausgrenzung verwenden.
+		</src>
+		<tgt system="rbmt6">
+			I admit however that &quot;poverty&quot; is political an especially strong word and am use agreed that we am possible it, where it in the text of the proposal, in connection with social exclusion.
+		</tgt>
+		<tgt system="saar">
+			I admit, however, that 'political' poverty is a particularly strong word and agree that we, in the text of the proposal where it is possible, in connection with social exclusion.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1115" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Außerdem möchte ich die Kommissarin davon in Kenntnis setzen, dass Irland in ganz kurzer Zeit auf dem Gebiet der Windenergie wettbewerbsfähig sein kann.
+		</src>
+		<tgt system="rbmt4">
+			In addition, I would like to inform the commissioner of the fact that Ireland can be competitive in completely short time in the area of the wind energy.
+		</tgt>
+		<tgt system="rbmt6">
+			Moreover I would like to set the commissioner therefrom in knowledge that Ireland in entirely short time can be competitive in the field of the wind power.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1115" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Außerdem möchte ich die Kommissarin davon in Kenntnis setzen, dass Irland in ganz kurzer Zeit auf dem Gebiet der Windenergie wettbewerbsfähig sein kann.
+		</src>
+		<tgt system="limsi">
+			I should also like the Commissioner to inform the House that Ireland in a short space of time, in the field of wind energy can be competitive.
+		</tgt>
+		<tgt system="uedin">
+			In addition, I would like to inform the Commissioner that Ireland is in a short space of time to be competitive in the field of wind energy.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1120" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			. (ES) Herr Präsident! Zunächst möchte ich Frau Rothe zu ihrer ausgezeichneten Arbeit beglückwünschen sowie allen Abgeordneten danken, die sich an der Aussprache beteiligt haben und die ebenfalls in vielen Fällen den Text, der dem Parlament und dem Rat vorgeschlagen wurde, verbessert haben.
+		</src>
+		<tgt system="rbmt3">
+			. (IT) Mr Präsident! First of all I Ms Rothe would like to congratulate on their excellent work as well as to thank all representatives that participated in the pronunciation and that corrected the text that was suggested to the parliament and the council also in many cases.
+		</tgt>
+		<tgt system="rbmt5">
+			. (IT) Mr. Praesident! First I would like to congratulate Mrs. Rothe to its excellent work as well as thank all delegates, who in the discussion to have taken part and in many cases the text, which was suggested to the parliament and the advice, have likewise improved.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1180" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Mit der GAP wurde von jeher die Ertragsintensivierung, die schrittweise &quot;Vertikalisierung &quot; der Produktion und die Konzentration der Ländereien gefördert, was vor allem den Interessen der Agrarindustrie und der großen transnationalen Lebensmittelhersteller diente.
+		</src>
+		<tgt system="rbmt2">
+			With the CAP the yield intensification, the gradual &quot;Vertikalisierung&quot; of the production and the concentration of the estates was promoted always, what primarily served the interests of the agribusiness and the big transnational food manufacturers.
+		</tgt>
+		<tgt system="uedin">
+			With the CAP, the Ertragsintensivierung, the gradual 'verticalisation' of production and the concentration of the land has been promoted, which was, above all, the interests of the agro-industry and the large transnational producers.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1198" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Diese Frage gehört zu den Fragen, die praktisch einmütige Empfindungen auslösen, nicht nur in dieser Versammlung, sondern auch bei vielen Abgeordneten, die aufgrund unserer eigenen parlamentarischen Entstehungsgeschichte den Prozess der Zusammenarbeit und der Stärkung von Institutionen, in Ländern, die wir wie unsere eigenen hochachten, mit enormer Sympathie verfolgen.
+		</src>
+		<tgt system="limsi">
+			This issue is one of the issues which are practically unanimous sentiments, not only in this Assembly, but also in many of the members of the European Parliament, on the basis of our own parliamentary history the process of cooperation and the strengthening of institutions in countries which we have as our own hochachten, with enormous sympathy.
+		</tgt>
+		<tgt system="saar">
+			This issue is one of the issues which give rise to virtually unanimous feelings, not only in this House but also in the case of many Members, the basis of our own parliamentary background the process of cooperation and the strengthening of institutions, which we, in countries such as our own, with enormous sympathy.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1204" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Als Ouattaras Anhänger auf die Straße gingen, um Neuwahlen zu fordern, wurde ihr Protest gewaltsam niedergeschlagen.
+		</src>
+		<tgt system="cmu-statxfer">
+			As Ouattaras people on the road were, in order new elections to do so, was their protests forced affected.
+		</tgt>
+		<tgt system="ucl">
+			As supporters ouattaras on to the streets to demand new elections, your complaint was put down by force.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1204" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Als Ouattaras Anhänger auf die Straße gingen, um Neuwahlen zu fordern, wurde ihr Protest gewaltsam niedergeschlagen.
+		</src>
+		<tgt system="rbmt2">
+			When Ouattaras supporters walked onto the street to demand new elections, their protest was suppressed forcibly.
+		</tgt>
+		<tgt system="ucl">
+			As supporters ouattaras on to the streets to demand new elections, your complaint was put down by force.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1213" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Nach Annahme der Entschließung konnten wir feststellen, dass es einige kleine Verbesserungen gab.
+		</src>
+		<tgt system="rbmt6">
+			After acceptance of the resolution, we were able to assess that there were some small improvements.
+		</tgt>
+		<tgt system="saar">
+			After the adoption of the resolution, we were able to see that there were some small improvements.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1213" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Nach Annahme der Entschließung konnten wir feststellen, dass es einige kleine Verbesserungen gab.
+		</src>
+		<tgt system="rbmt6">
+			After acceptance of the resolution, we were able to assess that there were some small improvements.
+		</tgt>
+		<tgt system="ucl">
+			After the adoption of the resolution, we could see that there were some small improvements.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1213" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Nach Annahme der Entschließung konnten wir feststellen, dass es einige kleine Verbesserungen gab.
+		</src>
+		<tgt system="liu">
+			After the adoption of the resolution, we have seen some small improvements.
+		</tgt>
+		<tgt system="ucl">
+			After the adoption of the resolution, we could see that there were some small improvements.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1213" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Nach Annahme der Entschließung konnten wir feststellen, dass es einige kleine Verbesserungen gab.
+		</src>
+		<tgt system="cmu-statxfer">
+			The adoption of the resolution, we see, that it was a few small improvements.
+		</tgt>
+		<tgt system="saar">
+			After the adoption of the resolution, we were able to see that there were some small improvements.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1239" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Wenn es Abweichungen gibt, muss der Bewerber die Möglichkeit haben, darauf aufmerksam zu machen.
+		</src>
+		<tgt system="saar">
+			If there are deviations, the applicant must have the opportunity to draw attention to.
+		</tgt>
+		<tgt system="uedin">
+			If there are derogations, the candidates must have the opportunity to draw attention to this.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1261" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			In einigen Mitgliedstaaten, namentlich in Deutschland und Österreich, bestehen verfassungsmäßige Bedenken.
+		</src>
+		<tgt system="rbmt2">
+			Member states, by name reconcile in Germany and constitutional doubts pass, Austria, into.
+		</tgt>
+		<tgt system="ucl">
+			In some Member States, particularly in Germany and Austria are constitutional reservations.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1261" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			In einigen Mitgliedstaaten, namentlich in Deutschland und Österreich, bestehen verfassungsmäßige Bedenken.
+		</src>
+		<tgt system="rbmt2">
+			Member states, by name reconcile in Germany and constitutional doubts pass, Austria, into.
+		</tgt>
+		<tgt system="rbmt4">
+			In some member states, in particular in Germany and Austria, doubts according to constitution exist.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1332" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Das ist ein Beweis dafür, dass verbale Gewalt später zu körperlicher Gewalt führen kann.
+		</src>
+		<tgt system="liu">
+			This is proof that verbal violence on physical violence.
+		</tgt>
+		<tgt system="rbmt6">
+			That is a proof that verbal force can lead later to physical force.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1332" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Das ist ein Beweis dafür, dass verbale Gewalt später zu körperlicher Gewalt führen kann.
+		</src>
+		<tgt system="cmu-statxfer">
+			That is a proof, however, that verbal violence can later lead to physical violence.
+		</tgt>
+		<tgt system="rbmt3">
+			That is an evidence for verbal power being able to lead to physical power later.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1332" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Das ist ein Beweis dafür, dass verbale Gewalt später zu körperlicher Gewalt führen kann.
+		</src>
+		<tgt system="liu">
+			This is proof that verbal violence on physical violence.
+		</tgt>
+		<tgt system="rbmt2">
+			This is a proof for it that verbal force can lead to physical force later.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1332" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Das ist ein Beweis dafür, dass verbale Gewalt später zu körperlicher Gewalt führen kann.
+		</src>
+		<tgt system="rbmt3">
+			That is an evidence for verbal power being able to lead to physical power later.
+		</tgt>
+		<tgt system="rbmt6">
+			That is a proof that verbal force can lead later to physical force.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1349" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Durch die Offensive gegen Taloqan wurde die einzige Versorgungsstraße für das Panshir-Tal und die Shamali-Ebene unterbrochen, wo sich die Kräfte von Ahmad Shah Massoud, aber auch ein Großteil der vertriebenen und geflüchteten Bevölkerung konzentrieren.
+		</src>
+		<tgt system="cmu-statxfer">
+			The the offensive against alerted was the only one Versorgungsstraße for the Panshir-Tal and the Shamali-Ebene suspended, however, where is the forces of Ahmad Shah Massoud, and a majority of displaced and geflüchteten people focus on.
+		</tgt>
+		<tgt system="liu">
+			Through the offensive against Taloqan was the only road of supply for the Panshir valley and the level shamali-, where the forces of Ahmad Shah Massoud, but also a large part of the displaced persons and geflüchteten population.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1404" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Wie wir nur allzu gut wissen, ereigneten sich seither leider viele weitere Schiffskatastrophen.
+		</src>
+		<tgt system="limsi">
+			As we all know full well, unfortunately, have occurred since then, many other disasters.
+		</tgt>
+		<tgt system="liu">
+			As we know only too well, since there are unfortunately many other maritime disasters.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1415" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Die Unsicherheit im Seeverkehr ist, wie zahlreiche Akteure unterstreichen, weitgehend eine Folge der Deregulierung und der Gefälligkeitspraktiken.
+		</src>
+		<tgt system="saar">
+			For maritime safety, as many players stress is largely the result of deregulation and can.
+		</tgt>
+		<tgt system="uedin">
+			Maritime safety is, as many players, largely as a result of deregulation and the break.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1415" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Die Unsicherheit im Seeverkehr ist, wie zahlreiche Akteure unterstreichen, weitgehend eine Folge der Deregulierung und der Gefälligkeitspraktiken.
+		</src>
+		<tgt system="rbmt3">
+			The insecurity in the sea traffic is to a large extent a consequence of the deregulation and the favor practices as numerous actors underline.
+		</tgt>
+		<tgt system="ucl">
+			Maritime safety, as many players stress largely the result of deregulation and gefälligkeitspraktiken.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1454" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Was die allgemeine Ausweitung der Abstimmung mit qualifizierter Mehrheit betrifft, so ist das meiner Ansicht nach kein hilfreicher Vorschlag, denn damit würde Mitgliedstaaten das Recht vorenthalten, zu gegebener Zeit eine Entscheidung darüber zu treffen, ob eine Politik zur Gemeinschaftspolitik werden sollte.
+		</src>
+		<tgt system="rbmt4">
+			What concerns the general expansion of the vote with certified majority, is in my opinion no helpful suggestion, because with it the right would keep member states to meet a decision on at given time whether a policy should become the communal policy.
+		</tgt>
+		<tgt system="uedin">
+			As far as the general extension of qualified majority voting, I do not think there is any useful proposal, because this would mean that Member States are deprived of the right to take a decision at the appropriate time, whether a policy should be to Community policy.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1454" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Was die allgemeine Ausweitung der Abstimmung mit qualifizierter Mehrheit betrifft, so ist das meiner Ansicht nach kein hilfreicher Vorschlag, denn damit würde Mitgliedstaaten das Recht vorenthalten, zu gegebener Zeit eine Entscheidung darüber zu treffen, ob eine Politik zur Gemeinschaftspolitik werden sollte.
+		</src>
+		<tgt system="rbmt2">
+			What the general expansion of the coordination with a qualified majority concerns, this isn't a helpful suggestion in my opinion so because would withhold the right from member states with that to take a decision at given time whether a politics should become a community politics.
+		</tgt>
+		<tgt system="saar">
+			As far as the general extension of qualified majority voting is concerned, that is, in my view, not a helpful suggestion, because that would deprive Member States of the right, at the appropriate time to make a decision on whether a policy to Community policy should be.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1454" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Was die allgemeine Ausweitung der Abstimmung mit qualifizierter Mehrheit betrifft, so ist das meiner Ansicht nach kein hilfreicher Vorschlag, denn damit würde Mitgliedstaaten das Recht vorenthalten, zu gegebener Zeit eine Entscheidung darüber zu treffen, ob eine Politik zur Gemeinschaftspolitik werden sollte.
+		</src>
+		<tgt system="limsi">
+			As far as the general extension of qualified majority voting is concerned, which I believe to be a helpful suggestion, because that would be deprived of the right of Member States, at the appropriate time to decide whether a policy should be a Community policy.
+		</tgt>
+		<tgt system="uedin">
+			As far as the general extension of qualified majority voting, I do not think there is any useful proposal, because this would mean that Member States are deprived of the right to take a decision at the appropriate time, whether a policy should be to Community policy.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1454" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Was die allgemeine Ausweitung der Abstimmung mit qualifizierter Mehrheit betrifft, so ist das meiner Ansicht nach kein hilfreicher Vorschlag, denn damit würde Mitgliedstaaten das Recht vorenthalten, zu gegebener Zeit eine Entscheidung darüber zu treffen, ob eine Politik zur Gemeinschaftspolitik werden sollte.
+		</src>
+		<tgt system="cmu-statxfer">
+			What the general extension of the vote with qualified majority voting is concerned, it is the think is not useful proposal, because it would States the right not, at any given moment a decision on to take, whether a policy should be for Community.
+		</tgt>
+		<tgt system="limsi">
+			As far as the general extension of qualified majority voting is concerned, which I believe to be a helpful suggestion, because that would be deprived of the right of Member States, at the appropriate time to decide whether a policy should be a Community policy.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1454" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Was die allgemeine Ausweitung der Abstimmung mit qualifizierter Mehrheit betrifft, so ist das meiner Ansicht nach kein hilfreicher Vorschlag, denn damit würde Mitgliedstaaten das Recht vorenthalten, zu gegebener Zeit eine Entscheidung darüber zu treffen, ob eine Politik zur Gemeinschaftspolitik werden sollte.
+		</src>
+		<tgt system="limsi">
+			As far as the general extension of qualified majority voting is concerned, which I believe to be a helpful suggestion, because that would be deprived of the right of Member States, at the appropriate time to decide whether a policy should be a Community policy.
+		</tgt>
+		<tgt system="rbmt6">
+			What concerns the general expansion of the voting with qualified majority, is would be withheld that of my view after no helpful proposal, for therewith members states the right to make to given time a decision about that whether a politics should become the partnership politics.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1454" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Was die allgemeine Ausweitung der Abstimmung mit qualifizierter Mehrheit betrifft, so ist das meiner Ansicht nach kein hilfreicher Vorschlag, denn damit würde Mitgliedstaaten das Recht vorenthalten, zu gegebener Zeit eine Entscheidung darüber zu treffen, ob eine Politik zur Gemeinschaftspolitik werden sollte.
+		</src>
+		<tgt system="rbmt2">
+			What the general expansion of the coordination with a qualified majority concerns, this isn't a helpful suggestion in my opinion so because would withhold the right from member states with that to take a decision at given time whether a politics should become a community politics.
+		</tgt>
+		<tgt system="ucl">
+			As regards the general extension of qualified majority voting is, in my opinion, it is not useful proposal for Member States that would denied the right to appropriate time to make a decision on whether a policy a Community policy should be.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1468" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Die einzigen positiven Aspekte dieses Berichts bestehen darin, dass er die &quot;Festsetzung einer europäischen Definition der Hausarbeit &quot; und &quot;klare Bestimmungen über die Höchstzahl der zu leistenden Arbeitsstunden &quot; fordert.
+		</src>
+		<tgt system="limsi">
+			The only positive aspects of this report is that it is the establishment of a European definition of housework 'and' clear provisions on the maximum number of hours of work to be done '.
+		</tgt>
+		<tgt system="uedin">
+			The only positive aspects of this report is that it calls for the establishment of a European definition of domestic chores' and 'clear provisions on the maximum number of hours of work to be done.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1493" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Herr Präsident! Wenn dieser Vorschlag in der zweiten Lesung tatsächlich zum Gesetz erhoben wird, führt das dazu, dass die unternehmerische Freiheit etwas eingeschränkt und die Volksgesundheit etwas besser geschützt wird.
+		</src>
+		<tgt system="rbmt3">
+			Mr Präsident! If this proposal is raised in the second reading in fact for the law, that results in the entrepreneurial freedom being restricted a little and protected a little better.
+		</tgt>
+		<tgt system="uedin">
+			Mr President, if this proposal is actually in the second reading to the law to something that the entrepreneurial freedom, and the health is protected something better.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1493" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Herr Präsident! Wenn dieser Vorschlag in der zweiten Lesung tatsächlich zum Gesetz erhoben wird, führt das dazu, dass die unternehmerische Freiheit etwas eingeschränkt und die Volksgesundheit etwas besser geschützt wird.
+		</src>
+		<tgt system="ucl">
+			Mr President, if this proposal at second reading to actually be made law that is to the commercial freedom curtailed and something rather better public health is protected.
+		</tgt>
+		<tgt system="uedin">
+			Mr President, if this proposal is actually in the second reading to the law to something that the entrepreneurial freedom, and the health is protected something better.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1519" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Der Text zur Verlängerung der sechs Aktionsprogramme im Bereich der öffentlichen Gesundheit, über welchen heute Übereinstimmung erzielt wurde, spiegelt das wider, was zwischen den Organen informell vereinbart wurde.
+		</src>
+		<tgt system="rbmt2">
+			The text for the prolongation of the six programs for action in the area of the public health over which agreement was obtained today reflects what was agreed on informally between the organs.
+		</tgt>
+		<tgt system="rbmt4">
+			The text for the lengthening of six schemes in the area of the public health about which today correspondence was achieved reflects this what was agreed between the organs informally.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1545" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Fisch, Frau Kommissarin, ist ein wesentlicher Bestandteil jeder gesunden, ausgewogenen und proteinreichen Ernährung.
+		</src>
+		<tgt system="limsi">
+			Fish, Commissioner, is an essential component of any healthy, balanced and proteinreichen diet.
+		</tgt>
+		<tgt system="rbmt5">
+			Fish, Mrs. Kommissarin, is a substantial component of each healthy, balanced and protein-rich nutrition.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1554" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Vor zwei Monaten haben die Bildungsminister einen Aktionsplan zugunsten der Mobilität gebilligt, der 42 Maßnahmen umfasst. Weiterhin haben wir uns auf eine umfassende Mittelausstattung von 400 Millionen Euro für das Programm MEDIA plus geeinigt, das von besonderer Wichtigkeit für das europäische Film- und Fernsehschaffen ist und von der ganzen Branche erwartet wurde.
+		</src>
+		<tgt system="rbmt5">
+			Two months ago ago the Secretaries of Education approved of a plan of action in favor of the mobility, which covers 42 measures. Further we agreed on comprehensive central equipment of 400 million euro for the program MEDIA plus, which is of special importance for the European film and television work and was expected by the whole industry.
+		</tgt>
+		<tgt system="rbmt6">
+			Two months ago the development ministers approved an action plan for the benefit of the mobility, comprised the 42 measures. Further we have on a comprehensive means equipment of 400 million Euro for the program MEDIA plus agreed, that is of special importance for the European film and Fernsehschaffen and was expected of the entire industry.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1554" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Vor zwei Monaten haben die Bildungsminister einen Aktionsplan zugunsten der Mobilität gebilligt, der 42 Maßnahmen umfasst. Weiterhin haben wir uns auf eine umfassende Mittelausstattung von 400 Millionen Euro für das Programm MEDIA plus geeinigt, das von besonderer Wichtigkeit für das europäische Film- und Fernsehschaffen ist und von der ganzen Branche erwartet wurde.
+		</src>
+		<tgt system="liu">
+			Two months ago, the Education Ministers have approved a plan of action in favour of the mobility of 42 measures, and we have an overall budget of EUR 400 million for the MEDIA Plus programme, this agreement is of particular significance for the European film and television create and of the whole industry is expected.
+		</tgt>
+		<tgt system="saar">
+			Two months ago the Education Ministers have approved a plan of action in favour of mobility, of 42 measures, and we have drawn up an overall budget of EUR 400 million for the MEDIA Plus programme which is of special importance for the European film and television work and was expected of the entire industry.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1604" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Aber das Europäische Parlament kann nicht ewig seine Verpflichtungen in den externen Politikbereichen nach unten korrigieren.
+		</src>
+		<tgt system="rbmt5">
+			But the European parliament cannot downward correct eternally its obligations within the external politics policies.
+		</tgt>
+		<tgt system="ucl">
+			But the European Parliament may not always its commitments in external actions correct down.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1604" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Aber das Europäische Parlament kann nicht ewig seine Verpflichtungen in den externen Politikbereichen nach unten korrigieren.
+		</src>
+		<tgt system="rbmt3">
+			But the European Parliament can not correct eternally his obligations in the external political fields down.
+		</tgt>
+		<tgt system="rbmt5">
+			But the European parliament cannot downward correct eternally its obligations within the external politics policies.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1654" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Das Militär übt heute zwar einen geringeren, aber noch immer einen viel zu großen Einfluss aus.
+		</src>
+		<tgt system="saar">
+			The military exercises today indeed a smaller, but still a much too great influence.
+		</tgt>
+		<tgt system="ucl">
+			The military is now a less, but there are still far too many clout.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1654" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Das Militär übt heute zwar einen geringeren, aber noch immer einen viel zu großen Einfluss aus.
+		</src>
+		<tgt system="rbmt4">
+			Today, indeed, the military practices a lower, but still a too big influence from.
+		</tgt>
+		<tgt system="saar">
+			The military exercises today indeed a smaller, but still a much too great influence.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1654" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Das Militär übt heute zwar einen geringeren, aber noch immer einen viel zu großen Einfluss aus.
+		</src>
+		<tgt system="rbmt2">
+			The armed forces perform a lower, but still a far too big influence today although.
+		</tgt>
+		<tgt system="rbmt3">
+			The military practices today indeed a smaller, however still a much too great influence from.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1704" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Hinzu kommt noch der Hinweis auf die Richtlinie von 1997.
+		</src>
+		<tgt system="liu">
+			In addition, there is the reference to the 1997 directive.
+		</tgt>
+		<tgt system="rbmt6">
+			Thereto yet the reference comes to the guideline of 1997.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1704" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Hinzu kommt noch der Hinweis auf die Richtlinie von 1997.
+		</src>
+		<tgt system="liu">
+			In addition, there is the reference to the 1997 directive.
+		</tgt>
+		<tgt system="rbmt5">
+			In addition still the reference to the guideline of 1997 comes.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1704" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Hinzu kommt noch der Hinweis auf die Richtlinie von 1997.
+		</src>
+		<tgt system="cmu-statxfer">
+			This is not only the view of the directive of 1997.
+		</tgt>
+		<tgt system="rbmt2">
+			There is the reference to the guideline of 1997. in addition
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1704" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Hinzu kommt noch der Hinweis auf die Richtlinie von 1997.
+		</src>
+		<tgt system="rbmt3">
+			In addition still the tip comes to the guideline of 1997.
+		</tgt>
+		<tgt system="rbmt5">
+			In addition still the reference to the guideline of 1997 comes.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1731" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Herr Präsident, die Beobachter dieser Debatte werden sich ebenso verwundert die Augen reiben wie ich selbst, denn diese ganze Sache wird immer absurder.
+		</src>
+		<tgt system="rbmt6">
+			Mr. president, the observers of this debate the eyes will rub themselves just as amazed like I myself, for this entire thing becomes more and more more absurd.
+		</tgt>
+		<tgt system="uedin">
+			Mr President, the observers will be surprised at this debate also rub your eyes as I myself, because this whole business is more absurd.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1788" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Ebenso wie Herr Skinner bin ich der Meinung, dass die Vorschläge des Berichterstatters, Herrn García-Margallo y Marfil, zur Mehrwertsteuer auf elektronische Dienstleistungen richtig sind.
+		</src>
+		<tgt system="rbmt2">
+			Just like Mr Skinner I think that the suggestions of the reporter, Mr García-Margallo y Marfil, are correct to the value added tax on electronic services.
+		</tgt>
+		<tgt system="ucl">
+			Like Mr Skinner, I believe that the proposals made by the rapporteur, Mr García-Margallo y Marfil on VAT on electronic services is right.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1798" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Das Parlament hat am 30. November beschlossen; Sie hatten eine gute Vorlage, und wir haben schnell beschlossen.
+		</src>
+		<tgt system="liu">
+			Parliament has decided on 30 November; you had a good report, and we have decided quickly.
+		</tgt>
+		<tgt system="rbmt5">
+			The parliament decided on 30 November; They had a good collecting main, and we decided fast.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1798" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Das Parlament hat am 30. November beschlossen; Sie hatten eine gute Vorlage, und wir haben schnell beschlossen.
+		</src>
+		<tgt system="limsi">
+			Parliament has decided on 30 November; you had a good proposal, and we have decided quickly.
+		</tgt>
+		<tgt system="liu">
+			Parliament has decided on 30 November; you had a good report, and we have decided quickly.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1798" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Das Parlament hat am 30. November beschlossen; Sie hatten eine gute Vorlage, und wir haben schnell beschlossen.
+		</src>
+		<tgt system="limsi">
+			Parliament has decided on 30 November; you had a good proposal, and we have decided quickly.
+		</tgt>
+		<tgt system="rbmt5">
+			The parliament decided on 30 November; They had a good collecting main, and we decided fast.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1808" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Wie will die Europäische Kommission angesichts des unlauteren Wettbewerbs Koreas, auf den sie in ihrem letzten Bericht einmal mehr hingewiesen hat, den Fortbestand des noch verbleibenden Restes des Sektors nach Januar 2001 sicherstellen?
+		</src>
+		<tgt system="rbmt6">
+			How does the European commission want remained guarantee in view of the unfair competition Koreas, on which it referred more in its last report once, that the yet remaining remainder of the sector after January 2001?
+		</tgt>
+		<tgt system="ucl">
+			How can the Commission given the unfair Korean competition in its last report to which you referred once again the survival of restes remaining in the sector to ensure January 2001?
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1826" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Aber ich denke, dass ich im Namen meines Kollegen Michel Barnier eines doch feststellen darf: Die von dem Herrn Abgeordneten erwähnten Tatsachen werden bei der Analyse des Vorschlags gebührend berücksichtigt.
+		</src>
+		<tgt system="rbmt3">
+			But I think that nevertheless I may arrest one thing on behalf of my colleague Michel Barnier: The facts mentioned to representatives by the gentleman are considered at the analysis of the proposal duly.
+		</tgt>
+		<tgt system="rbmt5">
+			But I think that I may determine one nevertheless in the name of my colleague Michel Barnier: The facts mentioned by the Mr. Abgeordneten are being entitled considered with the analysis of the suggestion.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1842" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Eine andere Fraktion spricht möglicherweise von technischen Problemen.
+		</src>
+		<tgt system="rbmt2">
+			Another parliamentary group talks possibly about technical problems.
+		</tgt>
+		<tgt system="saar">
+			Another group of technical problems may be.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1854" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Ich möchte dem Europäischen Parlament für seine Unterstützung des Standpunkts der Europäischen Kommission und die beachtlichen Bemühungen danken, die von ihm unternommen wurden, um den Interessen des Rates entgegenzukommen.
+		</src>
+		<tgt system="cmu-statxfer">
+			I would like the European Parliament for its support the position of the Commission and the considerable efforts thank, the made of him were, in order to accommodate the interests of the Council.
+		</tgt>
+		<tgt system="rbmt5">
+			I would like to thank the European parliament for its support of the point of view of the European commission and the considerable efforts, which were undertaken by him, in order to come to meet the interests of the advice.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1854" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Ich möchte dem Europäischen Parlament für seine Unterstützung des Standpunkts der Europäischen Kommission und die beachtlichen Bemühungen danken, die von ihm unternommen wurden, um den Interessen des Rates entgegenzukommen.
+		</src>
+		<tgt system="cmu-statxfer">
+			I would like the European Parliament for its support the position of the Commission and the considerable efforts thank, the made of him were, in order to accommodate the interests of the Council.
+		</tgt>
+		<tgt system="rbmt3">
+			I would like to thank the European Parliament for his support of the point of view of the European Commission and the considerable efforts which were undertaken by him in order to comply with the interests of the council.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1904" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Das festigt die Macht der großen Länder auf Kosten der kleinen.
+		</src>
+		<tgt system="rbmt6">
+			That consolidates the power of the large countries on costs of the small.
+		</tgt>
+		<tgt system="saar">
+			That consolidates the power of the large countries, to the detriment of the smaller countries.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1904" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Das festigt die Macht der großen Länder auf Kosten der kleinen.
+		</src>
+		<tgt system="liu">
+			The consolidates the power of the large countries, at the expense of the smaller countries.
+		</tgt>
+		<tgt system="uedin">
+			This consolidates the power of the large countries, at the expense of the small.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1904" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Das festigt die Macht der großen Länder auf Kosten der kleinen.
+		</src>
+		<tgt system="cmu-statxfer">
+			This will the power of the large countries to costs the small.
+		</tgt>
+		<tgt system="limsi">
+			It consolidates the power of the large countries at the expense of the smaller countries.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1954" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Wir bedauern, dass die anderen Fraktionen diesmal nicht den Willen dazu hatten.
+		</src>
+		<tgt system="cmu-statxfer">
+			We regret, however, that the other groups on not the will to had.
+		</tgt>
+		<tgt system="liu">
+			We regret that the other groups do not have the will to do it this time.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1954" langsrc="de" langtgt="en" rank="1" testset="test2008">
+		<src>
+			Wir bedauern, dass die anderen Fraktionen diesmal nicht den Willen dazu hatten.
+		</src>
+		<tgt system="rbmt5">
+			We regret that the other parliamentary groups did not have this time the will in addition.
+		</tgt>
+		<tgt system="saar">
+			We regret the fact that the other groups on this occasion do the will for this purpose.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1954" langsrc="de" langtgt="en" rank="-1" testset="test2008">
+		<src>
+			Wir bedauern, dass die anderen Fraktionen diesmal nicht den Willen dazu hatten.
+		</src>
+		<tgt system="rbmt5">
+			We regret that the other parliamentary groups did not have this time the will in addition.
+		</tgt>
+		<tgt system="uedin">
+			We regret the fact that the other groups had not the will to do this.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="28" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Gefragt nach ihrem Interesse an der Volksabstimmung antworteten 60 Prozent, dass sie &quot;mit Sicherheit&quot; partizipieren, und weitere 20% ihr Votum &quot;wahrscheinlich&quot; abgeben würden.
+		</src>
+		<tgt system="bbn-combo">
+			In its interest in the referendum of 60% said that they participate with security &quot;, and another 20% of their vote&quot; probably &quot;.
+		</tgt>
+		<tgt system="saar-contrast">
+			Asked for their interest in the plebiscite 60 percent answered that they participate &quot;with security&quot;, and another 20% of their vote &quot;probably&quot; would hand.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="30" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			74% würden gegen die Studiengebühren, 79% gegen die Praxisgebühr, und 84% gegen das Krankenhaus-Taggeld stimmen.
+		</src>
+		<tgt system="liu">
+			74% would charges against the study, 79% against the practical fee and 84% against the krankenhaus-taggeld votes.
+		</tgt>
+		<tgt system="rbmt3">
+			74 % would become against the tuition fees, 79 % against the practice fee, and 84 % against the hospital day money make.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="64" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Vielerorts wird an Desinfektionsmitteln gespart
+		</src>
+		<tgt system="rbmt2">
+			Disinfectants in many places are saved up for
+		</tgt>
+		<tgt system="saar">
+			In many places saving
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="102" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			MRSA-Infektionen in den Griff zu bekommen verursacht den Krankenversicherungen enorme Kosten, daher werden sie überall bekämpft.
+		</src>
+		<tgt system="liu">
+			Mrsa- infections to get to grips with the health insurance caused enormous costs, it will therefore be combatted everywhere.
+		</tgt>
+		<tgt system="rbmt2">
+			Health insurances cause this one enormous costs, to get a grip on MRSA infections they are therefore fought everywhere.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="102" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			MRSA-Infektionen in den Griff zu bekommen verursacht den Krankenversicherungen enorme Kosten, daher werden sie überall bekämpft.
+		</src>
+		<tgt system="bbn-combo">
+			Mrsa-infections to manage the health insurance caused enormous costs, so they will be fought everywhere.
+		</tgt>
+		<tgt system="liu">
+			Mrsa- infections to get to grips with the health insurance caused enormous costs, it will therefore be combatted everywhere.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="110" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Der ehemalige Polizeichef bog mit seinem eigenen Pkw im XXII. Bezirk in die Kossuth Lajos Straße ein und hat dabei einen 55 jährigen Mann überfahren, der die Straße an einer nicht gekennzeichneten Stelle überquerte.
+		</src>
+		<tgt system="rbmt3">
+			The former police chief turned with his own Pkw in the XXII. District into the Kossuth Lajos street one and ran over in this case one 55 year man, that crossed the street at a not marked place.
+		</tgt>
+		<tgt system="rbmt6">
+			The former police boss bent with its own automobile in the XXII. District into the Kossuth Lajos street on and has run over at the same time a 55 year-old man, who crossed the street at a not marked place.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="110" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Der ehemalige Polizeichef bog mit seinem eigenen Pkw im XXII. Bezirk in die Kossuth Lajos Straße ein und hat dabei einen 55 jährigen Mann überfahren, der die Straße an einer nicht gekennzeichneten Stelle überquerte.
+		</src>
+		<tgt system="limsi">
+			The former police commissioner bog with his own cars in XXII. District Lajos in the Kossuth Street and has a 55 years, man knocked down the street at an unmarked crossing point.
+		</tgt>
+		<tgt system="rbmt6">
+			The former police boss bent with its own automobile in the XXII. District into the Kossuth Lajos street on and has run over at the same time a 55 year-old man, who crossed the street at a not marked place.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="113" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Laut Polizeiberichten erlitt der Lenker einen Schock, legte danach seine Funktionen zurück und ersuchte um Pensionierung.
+		</src>
+		<tgt system="liu">
+			According to the police reports the driver has suffered a shock, presented its functions and then it asked for retirement.
+		</tgt>
+		<tgt system="rbmt5">
+			According to police reports the steering wheel suffered a shock, put thereafter its functions back and asked for retirement.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="141" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Jene, die sich niederlassen wollen, kaufen entweder revitalisierte Immobilien um 50-100.000 Euro, oder heruntergekommene Häuser um 5-15.000 Euro, die sie dann selbst renovieren.
+		</src>
+		<tgt system="rbmt6">
+			Buy that that want to establish itself either revitalisierte real estate around 50-100,000 Euro, or come down houses around 5-15,000 Euro, that renovate it then itself.
+		</tgt>
+		<tgt system="uedin">
+			Those who want to buy property revitalisierte either 50-EUR 100 000, or an houses 5-EUR 15 000, which they then renovate itself.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="160" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Die Vorgabe für Ungarn lautet Reduktion der Treibhausgasemissionen um 6% im Vergleich zu den Jahren 1985-87 - eine Vorgabe, die das Land durchaus erfüllen wird, wie in der Pressemitteilung des Umweltministeriums nachzulesen ist.
+		</src>
+		<tgt system="rbmt2">
+			Diminution of the greenhouse gas emissions by 6% in comparison with the years 1985-87, a specification which will absolutely fulfill the country as the specification has to be looked up in the press release of the Ministry of the Environment, is for Hungary.
+		</tgt>
+		<tgt system="saar-contrast">
+			The guideline for Hungary says reduction of the greenhouse gas emissions by 6% in comparison with the years - a default, which will quite fulfill the country, such as in the press release of the Ministry of the environment is to be read.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="160" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Die Vorgabe für Ungarn lautet Reduktion der Treibhausgasemissionen um 6% im Vergleich zu den Jahren 1985-87 - eine Vorgabe, die das Land durchaus erfüllen wird, wie in der Pressemitteilung des Umweltministeriums nachzulesen ist.
+		</src>
+		<tgt system="cmu-statxfer">
+			The demand for them is reduction of greenhouse gas emissions to 6 in with respect to the years 1985-87, a target, which it can do is, as is stated in the press of the Ministry.
+		</tgt>
+		<tgt system="uedin-combo">
+			The target for Hungary is the reduction of greenhouse gas emissions by 6% in comparison to the years - a, which will meet the country, as is stated in the press release of the Ministry of the environment.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="198" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Auf Anfrage von [origo] teilte man mit: Es herrschte am Ball keine Ballkleid- oder Anzugspflicht.
+		</src>
+		<tgt system="limsi">
+			In response to a question of &quot; [left-bracket origo] was told: it was to Ballkleid- the ball Anzugspflicht or not.
+		</tgt>
+		<tgt system="rbmt5">
+			On request of [ origo ] one divided with: It did not prevail at the ball ball dress or a suit obligation.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="198" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Auf Anfrage von [origo] teilte man mit: Es herrschte am Ball keine Ballkleid- oder Anzugspflicht.
+		</src>
+		<tgt system="limsi">
+			In response to a question of &quot; [left-bracket origo] was told: it was to Ballkleid- the ball Anzugspflicht or not.
+		</tgt>
+		<tgt system="uedin">
+			On the question of [origo] we told: there was no Ballkleid- Anzugspflicht or on the ball.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="260" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Jährlich würden Risikoanalyseberichte veröffentlicht, und sollten risikoverändernden Tendenzen erkennbar sein, wird die öffentliche Meinung informiert, wie in dem Fall durch die Herausgabe des Risikowarnberichtes.
+		</src>
+		<tgt system="bbn-combo">
+			Every year, would be published risikoanalyseberichte and risk-changing should be clear, the public opinion is informed, as in the case of the publication of the Risikowarnberichtes.
+		</tgt>
+		<tgt system="uedin">
+			Every year, would be published Risikoanalyseberichte and risk-changing tendencies should be clear, public opinion will be kept informed, as in the case of the publication of the Risikowarnberichtes.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="263" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Auch in der EU und in Amerika versteht man etwas anderes unter &quot;Feiertag&quot;.
+		</src>
+		<tgt system="rbmt4">
+			Also in the EU and in America one understands something else by &quot;holiday&quot;.
+		</tgt>
+		<tgt system="uedin-combo">
+			Also in the EU and in America, something else, &quot;holiday.&quot;
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="274" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Die Rechtsvorschrift gilt für alle Arbeitgeber und -nehmer, für öffentliche Angestellte und Beamte des öffentlichen Dienstes gleichermaßen.
+		</src>
+		<tgt system="liu">
+			The legislation applies to all employers and -nehmer, for public officials and officials of the public service as well.
+		</tgt>
+		<tgt system="uedin">
+			The legislation applies to all employers and employees, for public equally employees and officials of the public service.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="310" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Ungewollt ein Telefongespräch mitgehört, das man besser nicht hätte hören sollen?
+		</src>
+		<tgt system="rbmt6">
+			Overheard unintentional a telephone conversation, that one better not should have heard?
+		</tgt>
+		<tgt system="uedin">
+			Unwanted mitgehört a telephone call, that we should not listen better?
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="314" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Ist ein Projekt nicht fristgerecht fertig, hat man einen wichtigen Brief oder wichtige Nachrichte vergessen abzuschicken, sollte man die Schuld der eigenen Vergesslichkeit nicht bei anderen suchen!
+		</src>
+		<tgt system="liu">
+			A project is not ready on time, it has been an important letter or important nachrichte forget, abzuschicken should be the fault of the own vergesslichkeit not in other ways.
+		</tgt>
+		<tgt system="rbmt5">
+			If a project is finished not within the prescribed period, one has an important letter or important realigns forgotten to send, should not look for one the debt of the own forgetfulness not with others!
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="324" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Aus dem Radio erklingt eine seltsame Melodie: Der Klang einer Geige, gepaart mit elektronischen Effekten.
+		</src>
+		<tgt system="rbmt3">
+			From the radio a strange melody rings out: The sound of a violin, paired with electronic effects.
+		</tgt>
+		<tgt system="uedin">
+			A strange refrain from the radio erklingt: the tone of a violin, coupled with electronic effects.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="360" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Dennoch ist mir eins aufgefallen: Willst du es allen recht machen, bist du nicht mehr interessant.
+		</src>
+		<tgt system="liu">
+			Nonetheless, I am struck by one thing: are you going to make it all right, but if you are not more interesting.
+		</tgt>
+		<tgt system="saar">
+			Nevertheless, one struck me: you want to make it all right, you are not more interesting.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="360" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Dennoch ist mir eins aufgefallen: Willst du es allen recht machen, bist du nicht mehr interessant.
+		</src>
+		<tgt system="rbmt6">
+			Nevertheless is been noticeable me one: If you quite want to make it all, you are no longer interesting.
+		</tgt>
+		<tgt system="uedin">
+			Nevertheless, I have noticed one: you make it all very disturbing, you are not more interesting.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="360" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Dennoch ist mir eins aufgefallen: Willst du es allen recht machen, bist du nicht mehr interessant.
+		</src>
+		<tgt system="limsi">
+			Still, I am struck by one thing: you want to please everybody, but if you are not more interesting.
+		</tgt>
+		<tgt system="rbmt6">
+			Nevertheless is been noticeable me one: If you quite want to make it all, you are no longer interesting.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="360" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Dennoch ist mir eins aufgefallen: Willst du es allen recht machen, bist du nicht mehr interessant.
+		</src>
+		<tgt system="limsi">
+			Still, I am struck by one thing: you want to please everybody, but if you are not more interesting.
+		</tgt>
+		<tgt system="uedin">
+			Nevertheless, I have noticed one: you make it all very disturbing, you are not more interesting.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="360" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Dennoch ist mir eins aufgefallen: Willst du es allen recht machen, bist du nicht mehr interessant.
+		</src>
+		<tgt system="saar-contrast">
+			Nevertheless, one struck me: you want to make it all right, you are not more interesting.
+		</tgt>
+		<tgt system="uedin">
+			Nevertheless, I have noticed one: you make it all very disturbing, you are not more interesting.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="369" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			B. Zs.: Wir hatten keine Pläne, einen Hit zu schreiben, der dann als Zugpferd für das Album herhalten soll.
+		</src>
+		<tgt system="liu">
+			Example. Zs: we had no plans to write a bestseller, which can be used as a motor for album.
+		</tgt>
+		<tgt system="rbmt6">
+			B. Zs.: We had no plans to write a hit, that should serve then as a train horse for the album.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="369" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			B. Zs.: Wir hatten keine Pläne, einen Hit zu schreiben, der dann als Zugpferd für das Album herhalten soll.
+		</src>
+		<tgt system="rbmt6">
+			B. Zs.: We had no plans to write a hit, that should serve then as a train horse for the album.
+		</tgt>
+		<tgt system="uedin-combo">
+			B..: we had no plans to write a, which can be used as a motor for the album.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="451" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Das Verkehrsprogramm ist das größte Entwicklungsprogramm und umfasst bis zu 22 Prozent der Mittel, die Tschechien aus dem Fonds erhalten kann.
+		</src>
+		<tgt system="bbn-combo">
+			The program is the verkehrsprogramm development program and covers up to 22% of the resources that the Czech czechia can from the Fund.
+		</tgt>
+		<tgt system="liu">
+			The transport programme is the greatest development programme, covering up to 22% of the resources that the Czech Republic can obtain from the Fund.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="460" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Der Vorsitzenden des Berufungsgerichts, Ileana Pérez, zufolge wird es jetzt von den Haftbeamten abhängen, ob man Alemán seine Strafe zuhause absitzen lässt, oder ob er ins Gefängnis muss.
+		</src>
+		<tgt system="limsi">
+			The chairman of the Court of Appeal, Ileana Pérez, it will, according to the Haftbeamten now determine whether we Alemán his punishment are at home, or whether he is put in prison.
+		</tgt>
+		<tgt system="rbmt4">
+			Now of the chairpersons of the court of appeal, Ileana Pérez, according to it will depend on the like officials whether one allows to sit out his punishment Alemán at home, or whether he must go in the prison.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="460" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Der Vorsitzenden des Berufungsgerichts, Ileana Pérez, zufolge wird es jetzt von den Haftbeamten abhängen, ob man Alemán seine Strafe zuhause absitzen lässt, oder ob er ins Gefängnis muss.
+		</src>
+		<tgt system="cmu-statxfer">
+			The chairman of the Appeal, Ileana Pérez, , will it now of the Haftbeamten depend on it, whether we Alemán his sentence at home absitzen is, or whether he is in prison.
+		</tgt>
+		<tgt system="uedin-combo">
+			The chairman of the Court of Appeal, according to Ileana Pérez, it will depend on the liability of officials, whether his sentence are at home, or whether he is in prison.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="460" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Der Vorsitzenden des Berufungsgerichts, Ileana Pérez, zufolge wird es jetzt von den Haftbeamten abhängen, ob man Alemán seine Strafe zuhause absitzen lässt, oder ob er ins Gefängnis muss.
+		</src>
+		<tgt system="rbmt3">
+			According to the chairperson of the court of appeal, Ileana Pérez, it will depend now on the custody officials whether one makes Alemán sit out his punishment at home or whether it into the prison must.
+		</tgt>
+		<tgt system="uedin-combo">
+			The chairman of the Court of Appeal, according to Ileana Pérez, it will depend on the liability of officials, whether his sentence are at home, or whether he is in prison.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="472" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Das ist gewissermaßen paradox.
+		</src>
+		<tgt system="rbmt4">
+			This is paradoxical as it were.
+		</tgt>
+		<tgt system="saar">
+			This is, as it were, the paradox here.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="481" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Das größte Risiko ist jedoch nicht das staatliche Haushaltsdefizit.
+		</src>
+		<tgt system="limsi">
+			The greatest risk is not the state budget deficit.
+		</tgt>
+		<tgt system="saar-contrast">
+			The greatest risk is not, however, the state budget deficit.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="481" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Das größte Risiko ist jedoch nicht das staatliche Haushaltsdefizit.
+		</src>
+		<tgt system="rbmt3">
+			The greatest risk is not, however, the state budget deficit.
+		</tgt>
+		<tgt system="rbmt5">
+			The largest risk is not however the national budgetary deficit.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="487" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Soweit wir uns nur an offizielle und nachprüfbare Tatsachen halten, stellen wir fest, dass:
+		</src>
+		<tgt system="limsi">
+			As far as we are only at official and verifiable facts, we note that:
+		</tgt>
+		<tgt system="rbmt4">
+			As far as we keep only to official and checkable facts, we find out, that:
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="487" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Soweit wir uns nur an offizielle und nachprüfbare Tatsachen halten, stellen wir fest, dass:
+		</src>
+		<tgt system="cmu-statxfer">
+			We are not only to formal and verifiable facts our opinion, are we see, that,
+		</tgt>
+		<tgt system="rbmt4">
+			As far as we keep only to official and checkable facts, we find out, that:
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="505" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Auf diesen Auktionen versteigern die Banken Zinssätze, zu denen sie bereit sind sich gegenseitig Geld zu leihen.
+		</src>
+		<tgt system="cmu-statxfer">
+			In these auctions auction the bank interest rates, to which they will have to each other money to lend.
+		</tgt>
+		<tgt system="rbmt2">
+			On these auctions the banks auction interest rates at which they are ready to lend each other money.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="505" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Auf diesen Auktionen versteigern die Banken Zinssätze, zu denen sie bereit sind sich gegenseitig Geld zu leihen.
+		</src>
+		<tgt system="cmu-statxfer">
+			In these auctions auction the bank interest rates, to which they will have to each other money to lend.
+		</tgt>
+		<tgt system="liu">
+			On these auctions auction banks interest rates, to which you are prepared to lend money to each other.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="510" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Die Banken haben wegen nicht bedienter Kredite schon um 60 Milliarden Dollar verloren, vor allem in den Vereinigten Staaten.
+		</src>
+		<tgt system="rbmt2">
+			The banks have already lost by 60 billion dollars because of not used loans primarily in the United States.
+		</tgt>
+		<tgt system="uedin">
+			The banks have not already bedienter loans for 60 billion dollars lost, especially in the United States.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="510" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Die Banken haben wegen nicht bedienter Kredite schon um 60 Milliarden Dollar verloren, vor allem in den Vereinigten Staaten.
+		</src>
+		<tgt system="cmu-statxfer">
+			The banks have for not bedienter loans have to more than 60 billion dollars lost, in particular in the United States.
+		</tgt>
+		<tgt system="limsi">
+			The banks have bedienter on loans for $60 billion lost, especially in the United States.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="510" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Die Banken haben wegen nicht bedienter Kredite schon um 60 Milliarden Dollar verloren, vor allem in den Vereinigten Staaten.
+		</src>
+		<tgt system="saar-contrast">
+			The banks have because of not operated credits already around 60 billion dollars, primarily in the United States.
+		</tgt>
+		<tgt system="uedin">
+			The banks have not already bedienter loans for 60 billion dollars lost, especially in the United States.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="532" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Als Hauptaussage des Buches bezeichnete er die These, dass das Klima sich ständig ändere und dass seine Veränderungen also normal seien, dass es zur Erderwärmung keine übereinstimmende Meinung unter den Wissenschaftlern gebe, dass die Folgen der gegenwärtigen Veränderungen nicht allzu groß und ernst seien und somit keine Bedrohung darstellten, und dass die Bemühungen, die Entwicklung des Klimas zu beeinflussen, überflüssig, wirkungslos und inakzeptabel aufwändig seien.
+		</src>
+		<tgt system="bbn-combo">
+			The main thrust of the book he described the thesis that the climate is constantly changing and that its changes are therefore quite natural that it to global warming, is no consensus among scientists that the consequences of the current changes are not too large and serious and therefore no threat, and that the efforts to influence the development of the climate, superfluous, ineffective and expensive.
+		</tgt>
+		<tgt system="rbmt4">
+			He called the thesis main statement of the book that the climate changes constantly and that his changes are normal that there is no correspondent opinion among the scientists to the global warming that the results of the present changes are big not too and serious and showed therefore no menace, and that the efforts to influence the development of the climate are is superfluous, luxurious ineffectively and unacceptably.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="540" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Den Behörden zufolge haben hauptsächlich diejenigen ihren Führerschein nicht umgetauscht, die gar nicht mehr fahren wollen.
+		</src>
+		<tgt system="limsi">
+			According to the authorities, particularly those who have not changed their driving licence, which no longer want to drive.
+		</tgt>
+		<tgt system="rbmt3">
+			According to the authorities those ones that do not want to drive more at all did mainly not change their driver's license.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="560" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Am Jahresende werden Führerscheine ungültig, die zwischen 1964 und 1993 ausgestellt wurden.
+		</src>
+		<tgt system="limsi">
+			At the end of this year, driving licences invalid between 1964 and 1993.
+		</tgt>
+		<tgt system="rbmt2">
+			Driver's licenses which were issued between 1964 and 1993 get invalid at the end of the year.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="560" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Am Jahresende werden Führerscheine ungültig, die zwischen 1964 und 1993 ausgestellt wurden.
+		</src>
+		<tgt system="liu">
+			At the end of the year, which will be invalid between driving licences issued in 1964 and 1993.
+		</tgt>
+		<tgt system="rbmt2">
+			Driver's licenses which were issued between 1964 and 1993 get invalid at the end of the year.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="560" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Am Jahresende werden Führerscheine ungültig, die zwischen 1964 und 1993 ausgestellt wurden.
+		</src>
+		<tgt system="bbn-combo">
+			At the end of the year will become invalid driving licences issued between in 1964 and 1993.
+		</tgt>
+		<tgt system="rbmt5">
+			At the year end driving licences become invalid, which were issued between 1964 and 1993.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="560" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Am Jahresende werden Führerscheine ungültig, die zwischen 1964 und 1993 ausgestellt wurden.
+		</src>
+		<tgt system="rbmt2">
+			Driver's licenses which were issued between 1964 and 1993 get invalid at the end of the year.
+		</tgt>
+		<tgt system="rbmt5">
+			At the year end driving licences become invalid, which were issued between 1964 and 1993.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="567" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Das entschied in einem rechtskräftigen Urteil das Prager Oberlandesgericht, das dabei ihre Strafe um ein beziehungsweise um zwei Jahre verringerte.
+		</src>
+		<tgt system="rbmt5">
+			That decided the Prager higher regional court, which reduced thereby its punishment around and/or by two years in a valid judgement.
+		</tgt>
+		<tgt system="rbmt6">
+			That decided the citizen of Prague in a legally valid judgment federal court that diminished at the same time its punishment around an or around two years.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="586" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Für jede der Mütter je drei Millionen, für die Väter je zwei Millionen und für die Kinder je eine Million.
+		</src>
+		<tgt system="liu">
+			For each of the mothers and fathers, three million for the two million and for the children per million.
+		</tgt>
+		<tgt system="saar-contrast">
+			For each of the mothers per three million, for the fathers ever two million and for the children per one million.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="590" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			&quot;Um uns aber eine Meinung zu diesem Gegenvorschlag bilden zu können, brauchen wir das Gutachten, das die Gegenseite erstellen ließ.
+		</src>
+		<tgt system="saar">
+			&quot;But to counter proposal to form an opinion on this, we need the expert opinion, which the opposite side made create.
+		</tgt>
+		<tgt system="uedin-combo">
+			&quot;in order to be able to form an opinion on this proposal, however, we need the opinion, which the other side.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="590" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			&quot;Um uns aber eine Meinung zu diesem Gegenvorschlag bilden zu können, brauchen wir das Gutachten, das die Gegenseite erstellen ließ.
+		</src>
+		<tgt system="cmu-statxfer">
+			\&quot; To us but a view to this counter-proposal which to reach a decision, need we the opinion, the the counterparts produce has.
+		</tgt>
+		<tgt system="saar">
+			&quot;But to counter proposal to form an opinion on this, we need the expert opinion, which the opposite side made create.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="597" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Die Männer vertrugen die Stress-Situation besser, auch wenn sie sich Vorwürfen gegenüber sahen, sie hätten die Verwechslung der Neugeborenen verhindern können.
+		</src>
+		<tgt system="cmu-statxfer">
+			The men vertrugen the Stress-Situation more effectively, even if they are there to see, it might have been the confusion the Neugeborenen prevented.
+		</tgt>
+		<tgt system="rbmt4">
+			The men stood the stress situation better, even if they were up against reproaches, they could have prevented the mistake of the newborn children.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="597" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Die Männer vertrugen die Stress-Situation besser, auch wenn sie sich Vorwürfen gegenüber sahen, sie hätten die Verwechslung der Neugeborenen verhindern können.
+		</src>
+		<tgt system="cmu-statxfer">
+			The men vertrugen the Stress-Situation more effectively, even if they are there to see, it might have been the confusion the Neugeborenen prevented.
+		</tgt>
+		<tgt system="rbmt3">
+			The men took the stress-situation better even if they saw themselves opposite reproaches, they could have prevented the confusion of the newborns.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="597" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Die Männer vertrugen die Stress-Situation besser, auch wenn sie sich Vorwürfen gegenüber sahen, sie hätten die Verwechslung der Neugeborenen verhindern können.
+		</src>
+		<tgt system="rbmt3">
+			The men took the stress-situation better even if they saw themselves opposite reproaches, they could have prevented the confusion of the newborns.
+		</tgt>
+		<tgt system="rbmt6">
+			The men endured the stress-situation better, also if they saw itself vis-à-vis accusations, it would have the confusion of the new-born prevent can.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="609" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Seinem Anwalt zufolge ist die Sache damit aber wahrscheinlich nicht beendet und sein Mandant wird wohl Berufung einlegen.
+		</src>
+		<tgt system="liu">
+			His lawyer, but the matter will not be brought to an end and that the client will appeal.
+		</tgt>
+		<tgt system="rbmt6">
+			According to its lawyer the thing not therewith however probably is concluded and will insert its client probably calling.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="610" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			&quot;Der Streit geht darum, dass Herr Harabiš und sein Team an der Popularität Bolek Polívkas parasitär teilhaben wollen,&quot; sagte nach der Verhandlung Polívkas Anwalt.
+		</src>
+		<tgt system="liu">
+			'The dispute is the point that Mr harabis and his team for the popularity bolek polívkas wish to participate parasitär, &quot;said the negotiation polívkas prosecutor.
+		</tgt>
+		<tgt system="uedin">
+			'The dispute is that Mr Harabiš and his team at the popularity Bolek Polívkas parasitär wish to participate,' Polívkas lawyer said after the negotiations.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="610" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			&quot;Der Streit geht darum, dass Herr Harabiš und sein Team an der Popularität Bolek Polívkas parasitär teilhaben wollen,&quot; sagte nach der Verhandlung Polívkas Anwalt.
+		</src>
+		<tgt system="rbmt4">
+			&quot; The quarrel goes about the fact that Mr. Harabiš and his team want to participate in the popularity Bolek Polívkas parasitär, &quot; said after the negotiations Polívkas lawyer.
+		</tgt>
+		<tgt system="saar">
+			&quot;The quarrel goes around Mr? and his team at the popularity bolek polívkas want to participate,&quot; said after the negotiations advocate.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="627" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			&quot;Die Popularität Polívkas hat dem Projekt des walachischen Königreichs sicher geholfen,&quot; sagte die Richterin.
+		</src>
+		<tgt system="rbmt5">
+			&quot;the popularity Polívkas helped the project of the walachischen kingdom reliably,&quot; said the Richterin.
+		</tgt>
+		<tgt system="uedin-combo">
+			&quot;the popularity of the project of the walachischen kingdom,&quot; said the judge.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="660" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Aber unterhalten wir uns über das Ladevolumen.
+		</src>
+		<tgt system="liu">
+			However, we are talking about the loading volume.
+		</tgt>
+		<tgt system="rbmt2">
+			But we talk about the loading up volume.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="660" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Aber unterhalten wir uns über das Ladevolumen.
+		</src>
+		<tgt system="limsi">
+			But do we know about the ladevolumen.
+		</tgt>
+		<tgt system="rbmt4">
+			However, we talk about the loading volume.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="677" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Wir hatten allerdings Kopfairbags, automatische Klimaanlage, automatische Scheibenwischerauslösung, elektrische Fensterheber hinten und und...
+		</src>
+		<tgt system="liu">
+			However, we have had difficulty airbags, automatic air-conditioning, automatic scheiben# wische# raus# solution, electricity and the fensterheber and...
+		</tgt>
+		<tgt system="saar-contrast">
+			We had however bags, automatic air conditioning system, automatic windshield wiper electrical window lifters behind and and...
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="688" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Die Beschuldigte verteidigte sich damit, dass der Junge sie mit rassistischen Beschimpfungen beleidigt habe.
+		</src>
+		<tgt system="limsi">
+			The accused, defended the young with racist insults offended.
+		</tgt>
+		<tgt system="liu">
+			Defence of the accused, so as to ensure that the young with racist abuse have insulted.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="688" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Die Beschuldigte verteidigte sich damit, dass der Junge sie mit rassistischen Beschimpfungen beleidigt habe.
+		</src>
+		<tgt system="rbmt2">
+			The accused defended himself, that with that the boy has offended her by racialist insults.
+		</tgt>
+		<tgt system="rbmt6">
+			The accused defended itself therewith that the boy had insulted it with racist outrages.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="732" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Das Viñales-Tal im Westen der Insel ist einer der malerischsten Winkel Kubas.
+		</src>
+		<tgt system="rbmt5">
+			The Viñales valley in the west of the island is one of the most pictorial angles of Cuba.
+		</tgt>
+		<tgt system="uedin-combo">
+			The Valley in the west of the island of Cuba is one of the most angles.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="732" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Das Viñales-Tal im Westen der Insel ist einer der malerischsten Winkel Kubas.
+		</src>
+		<tgt system="rbmt4">
+			The Viñales valley in the west of the island is one of the most picturesque corners of Cuba.
+		</tgt>
+		<tgt system="uedin-combo">
+			The Valley in the west of the island of Cuba is one of the most angles.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="740" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Ruhm und Reichtum brachte ihr der Handel mit Sklaven und Zucker.
+		</src>
+		<tgt system="rbmt6">
+			Renown and wealth the trade with slave and sugar brought it.
+		</tgt>
+		<tgt system="uedin">
+			Glory and wealth expressed their the trafficking of slaves and sugar.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="753" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Dort wird die beste Schokolade hergestellt, in der Kirche zeigt man das Kreuz von Kolumbus (in Wirklichkeit ist es etwa hundert Jahre nach den Fahrten von Kolumbus entstanden), und vom Hügel, wo die ehemalige Burg, das jetzige Hotel El Castillo, steht, sind mehrere Tafelberge zu sehen, von denen El Yunque der bekannteste ist.
+		</src>
+		<tgt system="uedin">
+			The best is produced chocolate, in the Church is) the Cross of Columbus (in reality it is approximately one hundred years after the journeys of Columbus, and the hills, where the former Burg, the current hotel El Castillo, are to see several Tafelberge which El Yunque is the best known.
+		</tgt>
+		<tgt system="uedin-combo">
+			There the best chocolate is produced in the church, one shows the Cross of people, in fact, it is about a hundred years after the journeys of), and from the top, where the former Castle, the current hotel El Castillo, are to be seen, several of which El yunque is the best known.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="753" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Dort wird die beste Schokolade hergestellt, in der Kirche zeigt man das Kreuz von Kolumbus (in Wirklichkeit ist es etwa hundert Jahre nach den Fahrten von Kolumbus entstanden), und vom Hügel, wo die ehemalige Burg, das jetzige Hotel El Castillo, steht, sind mehrere Tafelberge zu sehen, von denen El Yunque der bekannteste ist.
+		</src>
+		<tgt system="saar-contrast">
+			The best chocolate is produced there, in the church, one shows the Cross of Columbus (in reality, it is about a hundred years arisen after the journeys of Columbus), and from the hill, where the former castle, the present hotel El Castillo, stands, are several board to see, of which El yunque is the best known.
+		</tgt>
+		<tgt system="uedin-combo">
+			There the best chocolate is produced in the church, one shows the Cross of people, in fact, it is about a hundred years after the journeys of), and from the top, where the former Castle, the current hotel El Castillo, are to be seen, several of which El yunque is the best known.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="753" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Dort wird die beste Schokolade hergestellt, in der Kirche zeigt man das Kreuz von Kolumbus (in Wirklichkeit ist es etwa hundert Jahre nach den Fahrten von Kolumbus entstanden), und vom Hügel, wo die ehemalige Burg, das jetzige Hotel El Castillo, steht, sind mehrere Tafelberge zu sehen, von denen El Yunque der bekannteste ist.
+		</src>
+		<tgt system="liu">
+			There, the best chocolate in the Church, shows the Cross of Columbus (in fact, it is about a hundred years after the journeys created by Columbus), and from the top, where the former Burg, the current hotel, El Castillo, several table mountains, which is the most well-known El yunque.
+		</tgt>
+		<tgt system="saar-contrast">
+			The best chocolate is produced there, in the church, one shows the Cross of Columbus (in reality, it is about a hundred years arisen after the journeys of Columbus), and from the hill, where the former castle, the present hotel El Castillo, stands, are several board to see, of which El yunque is the best known.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="753" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Dort wird die beste Schokolade hergestellt, in der Kirche zeigt man das Kreuz von Kolumbus (in Wirklichkeit ist es etwa hundert Jahre nach den Fahrten von Kolumbus entstanden), und vom Hügel, wo die ehemalige Burg, das jetzige Hotel El Castillo, steht, sind mehrere Tafelberge zu sehen, von denen El Yunque der bekannteste ist.
+		</src>
+		<tgt system="liu">
+			There, the best chocolate in the Church, shows the Cross of Columbus (in fact, it is about a hundred years after the journeys created by Columbus), and from the top, where the former Burg, the current hotel, El Castillo, several table mountains, which is the most well-known El yunque.
+		</tgt>
+		<tgt system="rbmt4">
+			There the best chocolate is produced, in the church one shows the cross of Columbus (in reality it has originated about hundred years after the journeys of Columbus), and several mesas from which El Yunque is the best known one are to be seen by the hill where the former castle, current hotel El Castillo, stands.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="757" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Zu wenig Soldaten und der Mangel an nötiger Ausrüstung beeinflusst den Vereinigten Staaten zufolge den Verlauf der Mission in Afghanistan.
+		</src>
+		<tgt system="limsi">
+			Too few soldiers and the lack of necessary equipment affected, according to the United States over the mission in Afghanistan.
+		</tgt>
+		<tgt system="rbmt4">
+			Not enough soldiers and the lack of necessary equipment influences according to the United States the course of the mission in Afghanistan.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="757" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Zu wenig Soldaten und der Mangel an nötiger Ausrüstung beeinflusst den Vereinigten Staaten zufolge den Verlauf der Mission in Afghanistan.
+		</src>
+		<tgt system="cmu-statxfer">
+			Too little soldiers and the lack of nötiger equipment on the United States, the course of the mission in Afghanistan.
+		</tgt>
+		<tgt system="uedin">
+			Too little soldiers and the lack of equipment needed influence on the United States, the progress of the mission in Afghanistan.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="760" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Neben dem wachsenden Widerstand von Seiten des Taliban diskutieren die acht teilnehmenden Staaten auch über weitere Koordinierungspläne unter den Verbündeten.
+		</src>
+		<tgt system="cmu-statxfer">
+			Despite the growing resistance from the Taliban discuss the eight participating Member States but also on further coordination plans in the allies.
+		</tgt>
+		<tgt system="rbmt6">
+			Next to the growing resistance of sides of the Talibans, the eight interested countries discuss also further coordination plans under the ally.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="760" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Neben dem wachsenden Widerstand von Seiten des Taliban diskutieren die acht teilnehmenden Staaten auch über weitere Koordinierungspläne unter den Verbündeten.
+		</src>
+		<tgt system="cmu-statxfer">
+			Despite the growing resistance from the Taliban discuss the eight participating Member States but also on further coordination plans in the allies.
+		</tgt>
+		<tgt system="uedin-combo">
+			In addition to the growing resistance on the part of the Taliban, the eight participating States on further coordination among the allies.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="816" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Die Britin wurde beschuldigt, sechs- bis siebenjährigen Schülern erlaubt zu haben, einem Teddybären den Namen Mahomet zu geben, obwohl jegliche Darstellung des islamischen Propheten untersagt ist.
+		</src>
+		<tgt system="rbmt4">
+			The Briton was accused to have permitted 6 to seven-year-old pupils, to give the name Mahomet to a teddy bear, although any representation of the Islamic prophet is prohibited.
+		</tgt>
+		<tgt system="uedin-combo">
+			The British six to seven years of pupils, to a have to bear the name of, although any representation of the Islamic is prohibited.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="844" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Russland war und bleibt Fürsprecher einer ausgehandelten Lösung, einer einvernehmlichen Lösung, sagte Botsane-Khartchenko.
+		</src>
+		<tgt system="rbmt3">
+			Russia was and intercessor of a negotiated solution, an agreed solution stays, Botsane-Khartchenko said.
+		</tgt>
+		<tgt system="rbmt5">
+			&quot;Russia was and remains advocate of a negotiated solution, a concerted solution&quot;, said Botsane Khartchenko.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="884" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Der Zustand des Wagens (verbeulter Kotflügel, gesplitterte Windschutzscheibe, abgerissene Stoßstange) zeugt von der Heftigkeit des Aufpralls.
+		</src>
+		<tgt system="limsi">
+			The condition of car kotflügel (verbeulter gesplitterte, who demolished squeegee kid or dents) is a sign of the fury of the collision.
+		</tgt>
+		<tgt system="saar-contrast">
+			The condition of the car (battered, shattered windshield, torn off bumper) witnesses from the violence of the impact.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="910" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Zeugenaussagen zufolge waren in der Stadt Lahore im Osten des Landes ungefähr 2.000 Anwälte, die gegen die i Rahmen des Notstandes getroffenen Maßnahmen demonsrierten, von den Tränengasgranaten verletzt worden, die die Ordnungskräfte dort einsetzten.
+		</src>
+		<tgt system="rbmt2">
+			According to testimonies approximately 2,000 advocates, the measures demonsrierten taken against the I frames of the crisis, had been injured by the tear gas shells which used the order strengths there in the city of Lahore in the east of the country.
+		</tgt>
+		<tgt system="saar">
+			According to testimonies in the city Lahore about personnel in the east of the country, the lawyers against the I framework of emergency measures of the been violated which used the order strengths there.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="939" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Das Problem trat am Mittwoch auf, als die Astronauten das Modul Harmony von der Raumfähre Discovery abgeladen hatten, ein großes zylinderförmiges Teil, das bald die europäischen und japanischen wissenschaftlichen Labore aufnehmen soll.
+		</src>
+		<tgt system="cmu-statxfer">
+			The problem was on Wednesday to, and the astronauts the module Harmony of the Raumfähre Discovery pulled had, a very important zylinderförmiges part, as long as it is soon the European and Japanese scientific laboratory to admit is.
+		</tgt>
+		<tgt system="limsi">
+			The problem met on Wednesday as the astronauts the module harmony of the Challenger Discovery had pushed, a huge zylinderförmiges part, which will soon be the European and Japanese science laboratories.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1010" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Dennoch, ein Teil der wissenschaftlichen Gemeinschaft zeigt nur ein begrenztes Interesse am Zugang zu Bad Arolsen.
+		</src>
+		<tgt system="rbmt2">
+			A part of the scientific community nevertheless shows only a restricted interest in the entry to Bad Arolsen.
+		</tgt>
+		<tgt system="saar">
+			Nevertheless, a part of the scientific community is only a limited interest in the access to bath.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1024" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Um die Befürchtungen abzuschwächen, denen zufolge die Bedingungen am Finanzmarkt Ende des Jahres besonders hart sein werden, und um den Banken eine größere Gewissheit über die Art und Weise zu geben, mit der sie ihre Liquiditätspositionen in dieser Zeit organisieren sollen, hat die Bank die Absicht, einen bedeutenden Teil ihrer Spareinlagen während der Erhaltungsphase, die am 6. Dezember beginnt, anzubieten, in Form einer Open-Market-Operation für fünf Wochen, gibt sie in einer Mitteilung an.
+		</src>
+		<tgt system="rbmt3">
+			In order to weaken the apprehensions, these the conditions at the financial market end of the year follows especially hard are, in order to give the banks a greater certainty about the kind and manner with which they are supposed to organize their liquidity positions in this time and, the bank has the intention, a significant part of their savings deposits during the preservation phase that begins on 6th December to offer in the form of an Open-Market-Operation for five weeks it indicates in a communication.
+		</tgt>
+		<tgt system="saar-contrast">
+			&quot;around the fears, according to which the conditions at the financial market at the end of the year will be particularly hard, and around the banks a greater certainty about the type and way to give their with which they are supposed to organize in this time, the Bank has the intention, a significant part of their savings deposits during the preservation phase, which begins on 6 December to offer, in the form of a open-market for five weeks&quot;, gives them in a report.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1024" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Um die Befürchtungen abzuschwächen, denen zufolge die Bedingungen am Finanzmarkt Ende des Jahres besonders hart sein werden, und um den Banken eine größere Gewissheit über die Art und Weise zu geben, mit der sie ihre Liquiditätspositionen in dieser Zeit organisieren sollen, hat die Bank die Absicht, einen bedeutenden Teil ihrer Spareinlagen während der Erhaltungsphase, die am 6. Dezember beginnt, anzubieten, in Form einer Open-Market-Operation für fünf Wochen, gibt sie in einer Mitteilung an.
+		</src>
+		<tgt system="bbn-combo">
+			 in order to mitigate the fears, according to which the conditions at the financial market at the end of the year will be particularly hard, and the banks a greater certainty about the way to give their in which they are to organize in this time, the bank has the intention, a significant part of their savings during the, Erhaltungsphase begins on 6 December to offer, in the form of an Open-market-operation for five weeks ,  in a communication.
+		</tgt>
+		<tgt system="saar-contrast">
+			&quot;around the fears, according to which the conditions at the financial market at the end of the year will be particularly hard, and around the banks a greater certainty about the type and way to give their with which they are supposed to organize in this time, the Bank has the intention, a significant part of their savings deposits during the preservation phase, which begins on 6 December to offer, in the form of a open-market for five weeks&quot;, gives them in a report.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1024" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Um die Befürchtungen abzuschwächen, denen zufolge die Bedingungen am Finanzmarkt Ende des Jahres besonders hart sein werden, und um den Banken eine größere Gewissheit über die Art und Weise zu geben, mit der sie ihre Liquiditätspositionen in dieser Zeit organisieren sollen, hat die Bank die Absicht, einen bedeutenden Teil ihrer Spareinlagen während der Erhaltungsphase, die am 6. Dezember beginnt, anzubieten, in Form einer Open-Market-Operation für fünf Wochen, gibt sie in einer Mitteilung an.
+		</src>
+		<tgt system="cmu-statxfer">
+			Um the concerns down, however, that the conditions on markets end of the year will be be particularly hard, and to the banks a greater certainty on the way to make progress, with the it their Liquiditätspositionen in this time organise themselves are, has the bank the intention, a substantial part of their investment in the Erhaltungsphase, the on 6 December gets under way, offer, in form a Open-Market-Operation for five Wochen, is it in a letter to.
+		</tgt>
+		<tgt system="saar">
+			In order to the fears, according to which the financial market conditions at the end of the year will be particularly hard, and the banks to a greater certainty about the way in which they have to give their in this time should organize, the Bank has the intention, a significant part of their savings deposits during the preservation phase, which begins on 6 December, to offer in the form of a open-market for five weeks, present in a communication.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1032" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Laut gewisser Gerüchte, verstärkt durch die Entwicklung des Pfundkurses im Gegensatz zum Euro, zogen es viele vor, für die Summen zu unterschreiben, die von der Europäischen Zentralbank in Umlauf gebracht wurden, zu vorteilhafteren Zinssätzen und mit sichererer Diskretion
+		</src>
+		<tgt system="rbmt2">
+			It preferred sound of certain rumors made grow by the development of the Sterling exchange rate unlike the euro in front of much these were got of the European Central Bank into circulation sign sums for which, at more advantageous interest rates and with safer discretion
+		</tgt>
+		<tgt system="uedin">
+			According to some rumours, enhanced by the development of Pfundkurses contrary to the euro, there were many to sign for the sums that have been expressed by the European Central Bank in circulation, to set interest rates and with safer discretion
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1045" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			1989 hat er die Leitung des Reading Festivals im Vereinten Königreich übernommen, das jährlich um die 80.000 Menschen anlockt.
+		</src>
+		<tgt system="limsi">
+			In 1989, he led the Reading Festival in the United Kingdom, the year in anlockt the 80,000 people.
+		</tgt>
+		<tgt system="rbmt3">
+			In 1989 it took the management of the Reading festival in the United Kingdom that attracts annually around the 80.000 people.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1049" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Wir haben Philadelphia als Markt ausgewählt und arbeiten eifrig mit der Fairmount Park Kommission zusammen, um ein Festival im Stadtzentrum von Philadelphia zu schaffen, meint Charlie Jones.
+		</src>
+		<tgt system="liu">
+			We have  Philadelphia selected as a market and are working actively with the fairmount park Commission, together with a festival in the centre of Philadelphia, Charlie Jones means to create.
+		</tgt>
+		<tgt system="saar">
+			We selected Philadelphia as a market and cooperates with the fairmount park Commission together to a festival in the city centre of Philadelphia, Charlie Jones thinks.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1110" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Popular wird seine 200 Kreditinstitute von montags bis freitags 12 Stunden am Tag geöffnet haben.
+		</src>
+		<tgt system="rbmt2">
+			Popular will have opened its 200 credit institutions from on Mondays until on Fridays 12 hours on the day.
+		</tgt>
+		<tgt system="rbmt6">
+			Popular will have opened its 200 credit banks of Monday through Friday 12 hours at the day.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1122" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			So wird die Erweiterung der Öffnungszeiten mit einer neuen Raumgestaltung der Filialen verbunden, die sich durch ein aktuelleres, farbenfroheres Design auszeichnet.
+		</src>
+		<tgt system="rbmt3">
+			So the enlargement of the opening times is joined with a new room organization of the branches which is characterized by a more current, more colorful design.
+		</tgt>
+		<tgt system="rbmt5">
+			Thus the extension of the opening times is connected with a new spatial arrangement of the branches, which is characterised by a more current, farbenfroheres Design.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1210" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Klimapropaganda
+		</src>
+		<tgt system="bbn-combo">
+			Klimapropaganda
+		</tgt>
+		<tgt system="rbmt2">
+			Climate propaganda
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1210" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Klimapropaganda
+		</src>
+		<tgt system="rbmt5">
+			Climatic propaganda
+		</tgt>
+		<tgt system="uedin-combo">
+			propaganda
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1210" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Klimapropaganda
+		</src>
+		<tgt system="rbmt3">
+			Climate propaganda
+		</tgt>
+		<tgt system="rbmt5">
+			Climatic propaganda
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1210" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Klimapropaganda
+		</src>
+		<tgt system="rbmt3">
+			Climate propaganda
+		</tgt>
+		<tgt system="uedin-combo">
+			propaganda
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1260" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			(Artikel 270 Strafgesetzbuch).
+		</src>
+		<tgt system="rbmt6">
+			(Articles 270 punishment code).
+		</tgt>
+		<tgt system="saar">
+			(Article 270 penal code).
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1310" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Sie fahren insgesamt entspannter und besitzen eine größere Kaufkraft, die es ihnen erlaubt, eine höhere Beitragszahlung anzusetzen, stellt Luis Noguera fest.
+		</src>
+		<tgt system="rbmt5">
+			&quot;you drive altogether more relaxed and possess a larger purchasing power, which permits it to them, a higher payment of dues to set&quot;, determine Luis Noguera.
+		</tgt>
+		<tgt system="saar">
+			You go more loosely in total and have a greater purchasing power that allows them to a higher contribution payment determine Luis Noguera.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1366" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Der Bericht des Hauptprüfers besagt nun, neben anderen Empfehlungen, dass der Vorstand Leitlinien des Strafregisterauszugs aufgreifen solle, der Arbeitgebern bei Kontrollen in verschiedenen Ländern hilft.
+		</src>
+		<tgt system="rbmt6">
+			The report of the head inspector purports now, next to other recommendations that the board of directors should take up guidelines of the punishment index statement, that helps employers in inspections in different countries.
+		</tgt>
+		<tgt system="saar-contrast">
+			The report of the main says now, in addition to other recommendations, that the Executive Board is supposed to pick up guidelines of the employers with controls in different countries helps.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1369" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			BMA Schottland-Vorsitzender Dr. Peter Terry sagte es sei &quot;extrem unwahrscheinlich&quot;, dass Untersuchungen im Vorfeld der Anstellung potentieller NHS-Mitarbeiter Menschen identifizieren würden, die zukünftige terroristische Anschläge begehen könnten.
+		</src>
+		<tgt system="bbn-combo">
+			Bma Dr. Peter Scotland-chairman Terry Wynn said it is extremely unlikely, that investigations in the run-up to the employment potential nhs-mitarbeiter would identify people who could commit future terrorist attacks.
+		</tgt>
+		<tgt system="rbmt4">
+			BMA Scotland-presiding Dr. Peter Terry said it is &quot;extremely unlikely&quot; that investigations would identify people in the approach of the employment of potential NHS employees who could commit future terrorist posters.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1379" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Control, die Filmbiographie über den späten Joy Division Sänger Ian Curtis hat fünf Preise bei den British Independent Film-Festspielen eingeheimst, unter anderem für den besten Film.
+		</src>
+		<tgt system="limsi">
+			The Filmbiographie control over the late Joy Division singer Ian Curtis has five in Film-Festspielen British independent garnered, including best film.
+		</tgt>
+		<tgt system="saar-contrast">
+			Control, the film biography on the late joy division singer Ian curtis has five prices with the British independent, among other things for the best film.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1392" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			&quot;Es waren Leute wie Richard Harris and Albert Finney, die Türen für Leute wie mich geöffnet haben&quot;, sagte er.
+		</src>
+		<tgt system="rbmt5">
+			&quot;were people such as Richard Harris and Albert Finney, who opened, said doors for people like me&quot; he.
+		</tgt>
+		<tgt system="uedin">
+			'It were people as Richard Harris and Albert Finney the doors open for people like me,' he said.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1392" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			&quot;Es waren Leute wie Richard Harris and Albert Finney, die Türen für Leute wie mich geöffnet haben&quot;, sagte er.
+		</src>
+		<tgt system="limsi">
+			&quot;There were people like Richard Harris and Albert Finney, paving the way for people like me have opened up,&quot; he said.
+		</tgt>
+		<tgt system="uedin">
+			'It were people as Richard Harris and Albert Finney the doors open for people like me,' he said.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1395" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Die unabhängigen Filmpreise, bekannt als Bifas, werden von einer Gruppe ausgewählt, zu der Filmemacher, Schauspieler und Festivalorganisatoren gehören.
+		</src>
+		<tgt system="cmu-statxfer">
+			The independent Filmpreise, well known as Bifas, will be chosen by a group, to the filmmakers, Schauspieler and Festivalorganisatoren are.
+		</tgt>
+		<tgt system="rbmt3">
+			The independent film prices, confessed as Bifas, are selected by a group which film-makers, actors and festival organizers belong to.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1395" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Die unabhängigen Filmpreise, bekannt als Bifas, werden von einer Gruppe ausgewählt, zu der Filmemacher, Schauspieler und Festivalorganisatoren gehören.
+		</src>
+		<tgt system="cmu-statxfer">
+			The independent Filmpreise, well known as Bifas, will be chosen by a group, to the filmmakers, Schauspieler and Festivalorganisatoren are.
+		</tgt>
+		<tgt system="uedin">
+			The independent Filmpreise, known as the Bifas be selected by a group, belong to the film-maker, actors and Festivalorganisatoren.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1410" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Die Verhaftungen betrafen auch eine &quot;Medienzelle&quot; von 16 aus Medina, die es darauf abzielte, für das &quot;Takfiri Denken&quot; zu werben - die Ideologie der radikalen sunnitischen Muslimen, die Gewalt gegen Muslime unterstützt, die als Ungläubige und Abtrünnige gebranntmarkt werden.
+		</src>
+		<tgt system="liu">
+			The arrests were also a 'media cell' of 16 from Medina, it sought, for the takfiri think - to promote the ideology of the radical Sunni Muslims, the violence against Muslims, supported the ungläubige and breakaway gebrannt# market.
+		</tgt>
+		<tgt system="rbmt2">
+			The arrests also concerned a &quot;medium cell&quot; of 16 the ideology for the &quot;Takfiri intellect&quot; from Medina who aimed it at it -- to advertise the radical Sunni Muslims whom force supports against Muslims who become gebranntmarkt as unbelieving and rebels.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1460" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Keine Adelstitel scheinen verkauft, keines Politikers Pariser Hotelrechnungen bezahlt, keine außerehelichen Zehen gelutscht worden zu sein.
+		</src>
+		<tgt system="liu">
+			No adels# title seem, sold any politician Paris hotel bills, paid no zehen gelutscht wedlock.
+		</tgt>
+		<tgt system="uedin">
+			No title seem to be sold, paid any politician Paris Hotelrechnungen, been no wedlock gelutscht 'toes.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1495" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Kartenhaie
+		</src>
+		<tgt system="rbmt2">
+			Card sharks
+		</tgt>
+		<tgt system="rbmt5">
+			Map sharks
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1495" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Kartenhaie
+		</src>
+		<tgt system="liu">
+			Kartenhaie
+		</tgt>
+		<tgt system="rbmt2">
+			Card sharks
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1500" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Anzeichen der Anspannung sind deutlich sichtbar.
+		</src>
+		<tgt system="rbmt6">
+			Signs of the strain are clearly visible.
+		</tgt>
+		<tgt system="uedin-combo">
+			signs of the negotiations are clearly visible.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1500" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Anzeichen der Anspannung sind deutlich sichtbar.
+		</src>
+		<tgt system="rbmt2">
+			Symptoms of the strain are considerably visible.
+		</tgt>
+		<tgt system="uedin-combo">
+			signs of the negotiations are clearly visible.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1510" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Dennis Moroney von der TowerGroup, einem Forschungsunternehmen, rechnet damit, dass die Ausgabemengen für 2007 letztlich 25% höher sein werden als letztes Jahr.
+		</src>
+		<tgt system="rbmt4">
+			Dennis Moroney of the TowerGroup, a research enterprise, calculates on the fact that the issue amounts will be 25% higher for 2007, in the end, than the last year.
+		</tgt>
+		<tgt system="saar-contrast">
+			Dennis moroney of the towergroup, a research enterprise, expects that the amounts for 2007, in the long run will be 25% higher than last year.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1510" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Dennis Moroney von der TowerGroup, einem Forschungsunternehmen, rechnet damit, dass die Ausgabemengen für 2007 letztlich 25% höher sein werden als letztes Jahr.
+		</src>
+		<tgt system="cmu-statxfer">
+			Dennis Moroney of the TowerGroup, a Forschungsunternehmen, certainly expected to, that the Ausgabemengen for 2007 after all the 25% higher be will as a last year.
+		</tgt>
+		<tgt system="liu">
+			Dennis by the moroney group tower#, a research companies, expects that the amounts of expenditure for 2007 will ultimately be 25% higher than last year.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1510" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Dennis Moroney von der TowerGroup, einem Forschungsunternehmen, rechnet damit, dass die Ausgabemengen für 2007 letztlich 25% höher sein werden als letztes Jahr.
+		</src>
+		<tgt system="bbn-combo">
+			Dennis moroney of the Towergroup, a research enterprise, expects that the ausgabemengen for 2007, the, will be 25% higher than last year.
+		</tgt>
+		<tgt system="uedin">
+			Dennis Moroney the TowerGroup, a research companies, expects the Ausgabemengen will be for 2007 at the end of the day, 25% higher than last year.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1510" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Dennis Moroney von der TowerGroup, einem Forschungsunternehmen, rechnet damit, dass die Ausgabemengen für 2007 letztlich 25% höher sein werden als letztes Jahr.
+		</src>
+		<tgt system="rbmt3">
+			Catalan-English English-Catalan Catalan-Spanish Spanish-Catalan Catalan-French French-Catalan English-French English-German English-Italian English-Russian English-Spanish French-English French-German French-Spanish German-English German-French German-Spanish German-Russian Russian-English Russian-German Spanish-English Spanish-French Spanish-Galician Spanish-German
+		</tgt>
+		<tgt system="saar-contrast">
+			Dennis moroney of the towergroup, a research enterprise, expects that the amounts for 2007, in the long run will be 25% higher than last year.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1601" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Die Behörden haben noch nicht festgestellt was Frau Arroyos Tod verursacht hat, und sind hoffnungsvoll, dass toxokologische Untersuchungen, deren Ergebnisse für Wochen nicht verfügbar sein könnten, helfen werden, einen mysteriösen Tod aufzuklären, der einen Trauer durch die Führungspitze der Newark Polizei gesendet hat.
+		</src>
+		<tgt system="cmu-statxfer">
+			The authorities have still not said what Mrs Arroyos death caused has, however, and are important, that toxokologische research, the results for weeks not be available could, help will, however, a mysterious death information, the a struggle by the Führungspitze the Newark police sent has.
+		</tgt>
+		<tgt system="limsi">
+			The authorities have still not been established what Mrs Arroyos death, and that toxokologische investigations, the results for weeks, could be available to help investigate a mysterious death of a Führungspitze mourning by the Newark Police has broadcast.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1610" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Die Behörden sagten sie seien an dem Haus um etwa 3 Uhr nachmittags im November angekommen.
+		</src>
+		<tgt system="rbmt4">
+			The authorities said them have come in the house at about 3 o'clock in the afternoon in November.
+		</tgt>
+		<tgt system="uedin-combo">
+			The authorities have said they were in the House at 3 o'clock in the afternoon in November.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1629" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Die Ausführungen halfen auch die Wall Street zu beruhigen, angesichts von weiteren schlechten Nachrichten aus der US-Wirtschaft, jetzt da die Verkäufe von US-Immobilien ein neues Rekordtief im Oktober erreichten.
+		</src>
+		<tgt system="limsi">
+			The speech also helped Wall Street, with the addition of bad news from the US economy, now that the sale of US-Immobilien a new record low in October.
+		</tgt>
+		<tgt system="rbmt3">
+			The carrying out helped with calming also the rampart Street, faced with further bad news from the US economy, now since the sales of US immovables achieved a new record depression in October.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1629" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Die Ausführungen halfen auch die Wall Street zu beruhigen, angesichts von weiteren schlechten Nachrichten aus der US-Wirtschaft, jetzt da die Verkäufe von US-Immobilien ein neues Rekordtief im Oktober erreichten.
+		</src>
+		<tgt system="rbmt3">
+			The carrying out helped with calming also the rampart Street, faced with further bad news from the US economy, now since the sales of US immovables achieved a new record depression in October.
+		</tgt>
+		<tgt system="rbmt5">
+			The remarks helped to calm down also the barrier Street, in view of of further bad messages from the US economy, the sales of US real estates a new record low in October reached now there.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1660" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Für Shah spricht seine funkelnden und wertvollen 88 Test-Debüt-Innings in Bombay, 43 erstklassige Hunderte und nur sechs von Bopara, der mit 22 Jahren sieben Jahre jünger ist, und eine exzellente Bilanz gegen angedrehtes Kugeln.
+		</src>
+		<tgt system="rbmt5">
+			For Shah speak its sparkling and valuable 88 test debut Innings in Bombay, 43 first-class hundreds and only six of Bopara, which is seven years younger with 22 years, and a exzellente balance against turned balls.
+		</tgt>
+		<tgt system="saar">
+			For Shah speaks his sparkling and valuable 88 test debut in Bombay, 43 first-class hundreds, and only six of the seven years younger with 22 years, and an excellent balance against bullets.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1660" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Für Shah spricht seine funkelnden und wertvollen 88 Test-Debüt-Innings in Bombay, 43 erstklassige Hunderte und nur sechs von Bopara, der mit 22 Jahren sieben Jahre jünger ist, und eine exzellente Bilanz gegen angedrehtes Kugeln.
+		</src>
+		<tgt system="rbmt5">
+			For Shah speak its sparkling and valuable 88 test debut Innings in Bombay, 43 first-class hundreds and only six of Bopara, which is seven years younger with 22 years, and a exzellente balance against turned balls.
+		</tgt>
+		<tgt system="uedin-combo">
+			The Shah his sparkling and valuable 88 in Bombay, 43 first-class hundreds, and only six of the seven years younger with 22 years, and an excellent balance against bullets.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1660" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Für Shah spricht seine funkelnden und wertvollen 88 Test-Debüt-Innings in Bombay, 43 erstklassige Hunderte und nur sechs von Bopara, der mit 22 Jahren sieben Jahre jünger ist, und eine exzellente Bilanz gegen angedrehtes Kugeln.
+		</src>
+		<tgt system="rbmt4">
+			For Shah his sparkling and valuable 88 Test-Debüt-Innings speaks in Bombay, 43 high-class hundreds and only six of Bopara which is younger at the age of 22 years seven years and an excellent balance against turned on balls.
+		</tgt>
+		<tgt system="rbmt6">
+			For Shah, its twinkling and valuable 88 test-debut-Innings in Bombay, 43 first-class hundreds and only six of Bopara that at 22 years of age seven years is younger, and an excellent balance against turned on rolling speaks.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1674" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Ich kam heute zurück, wegen dem, was ich im Fernsehen gesehen habe und was ich in der Zeitung gelesen habe, über das, was in Bagdad geschehen ist, und wie es jetzt sicher wäre.
+		</src>
+		<tgt system="saar-contrast">
+			today, I came back because of what I have seen on television and what I read in the newspaper, about what has happened in Baghdad, and how it would be safe now.
+		</tgt>
+		<tgt system="uedin-combo">
+			I came back today, because of what I have seen on television and what I have read in the newspapers about what has happened in Baghdad, and, as it is now.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1700" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			&quot;Im Saarland nutzt man das berufliche Bildungssystem&quot;, sagt Axel Plünnecke, Bildungsexperte beim IW.
+		</src>
+		<tgt system="cmu-statxfer">
+			' In Saarland is we the vocational education which, however, said Axel Plünnecke, Bildungsexperte the IW.
+		</tgt>
+		<tgt system="saar-contrast">
+			&quot;in the Saarland one uses the vocational education system&quot;, expert, says at the iw.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1718" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			In Spanien wird Chávez derweil zur Witzfigur.
+		</src>
+		<tgt system="liu">
+			Meanwhile, in Spain, to the witz# Chávez.
+		</tgt>
+		<tgt system="rbmt5">
+			In Spain Chávez becomes meanwhile the joke figure.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1760" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Und während Kohlendioxid auf der Erde in Karbonatgesteinen fixiert ist, macht es auf der Venus den Großteil der Atmosphäre aus.
+		</src>
+		<tgt system="rbmt6">
+			And during carbon dioxide on the earth in carbonate rock fixed is, makes it on the Venus the large part of the atmosphere from.
+		</tgt>
+		<tgt system="saar">
+			And while while on earth in carbonate rocks on the Venus, does the majority of the atmosphere.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1760" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Und während Kohlendioxid auf der Erde in Karbonatgesteinen fixiert ist, macht es auf der Venus den Großteil der Atmosphäre aus.
+		</src>
+		<tgt system="bbn-combo">
+			And while carbon dioxide in Karbonatgesteinen fixated on the planet, it makes on the majority of the atmosphere.
+		</tgt>
+		<tgt system="saar-contrast">
+			And while carbon dioxide on the earth in carbonate rocks, makes it on the Venus, the majority of the atmosphere.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1760" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Und während Kohlendioxid auf der Erde in Karbonatgesteinen fixiert ist, macht es auf der Venus den Großteil der Atmosphäre aus.
+		</src>
+		<tgt system="bbn-combo">
+			And while carbon dioxide in Karbonatgesteinen fixated on the planet, it makes on the majority of the atmosphere.
+		</tgt>
+		<tgt system="rbmt6">
+			And during carbon dioxide on the earth in carbonate rock fixed is, makes it on the Venus the large part of the atmosphere from.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1773" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Nach dem Empfang des Dalai Lamas im Kanzleramt kam es zu heftigen Irritationen im deutsch-chinesischen Verhältnis.
+		</src>
+		<tgt system="rbmt6">
+			After the reception of the Dalai Lamas in the chancellor's office, it came to violent irritations in the German-Chinese ratio.
+		</tgt>
+		<tgt system="saar-contrast">
+			After the reception of the Dalai Lama in the Chancellery it came to intense irritations in the relationship.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1773" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Nach dem Empfang des Dalai Lamas im Kanzleramt kam es zu heftigen Irritationen im deutsch-chinesischen Verhältnis.
+		</src>
+		<tgt system="saar">
+			After the reception of the Dalai Lama in the chancellorship it came to heavy irritations in the relationship.
+		</tgt>
+		<tgt system="uedin">
+			After the reception of the Dalaï Lama in Kanzleramt there was considerable confusion in the German-Chinese relationship.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1773" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Nach dem Empfang des Dalai Lamas im Kanzleramt kam es zu heftigen Irritationen im deutsch-chinesischen Verhältnis.
+		</src>
+		<tgt system="saar-contrast">
+			After the reception of the Dalai Lama in the Chancellery it came to intense irritations in the relationship.
+		</tgt>
+		<tgt system="uedin">
+			After the reception of the Dalaï Lama in Kanzleramt there was considerable confusion in the German-Chinese relationship.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1779" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Straßenschlachten mit der Polizei, Schüsse, brennende Autos: Wolfgang Schäuble warnt vor Krawallen wie in Frankreich.
+		</src>
+		<tgt system="liu">
+			Street fighting with the police bullets, burnt-out cars: Wolfgang Schäuble warns against the riots in France.
+		</tgt>
+		<tgt system="saar-contrast">
+			Battles with the police, shots, burning cars: Wolfgang Schäuble warns of riots as in France.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1779" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Straßenschlachten mit der Polizei, Schüsse, brennende Autos: Wolfgang Schäuble warnt vor Krawallen wie in Frankreich.
+		</src>
+		<tgt system="saar">
+			With the police, shots, burning cars: Wolfgang Schäuble warns against riots as in France.
+		</tgt>
+		<tgt system="saar-contrast">
+			Battles with the police, shots, burning cars: Wolfgang Schäuble warns of riots as in France.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1787" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Vom Integrationsgipfel bis zur Islamkonferenz zeigt das bereits erste Erfolge.
+		</src>
+		<tgt system="liu">
+			'of the Summit of integration to the Islamic Conference shows that first successes.'
+		</tgt>
+		<tgt system="rbmt5">
+			from the integration summit to the conference of Islam that shows already first successes.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1787" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Vom Integrationsgipfel bis zur Islamkonferenz zeigt das bereits erste Erfolge.
+		</src>
+		<tgt system="bbn-combo">
+			from the summit to the shows first successes.
+		</tgt>
+		<tgt system="rbmt2">
+			From the integration peak until the Islam conference this already shows first successes.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1800" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Viele Jugendliche mit Migrationshintergrund wollten zudem nicht das zerstören, was ihre Eltern hier aufgebaut haben.
+		</src>
+		<tgt system="rbmt4">
+			Besides, many youngsters with migration background did not want to destroy this what her parents have built up here.
+		</tgt>
+		<tgt system="rbmt5">
+			Many young people with migration background wanted besides not that to destroy, which their parents developed here.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1801" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Kolat mahnte: &quot;Aber trotzdem müssen wir aufpassen.&quot;
+		</src>
+		<tgt system="bbn-combo">
+			Kolat was: &quot;But, nevertheless, we must be careful.&quot;
+		</tgt>
+		<tgt system="uedin-combo">
+			kolat was: &quot;but, nevertheless, we must be careful.&quot;
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1810" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Die Krawalle entzündeten sich an einem Verkehrsunfall, bei dem am Sonntag zwei Jugendliche ums Leben gekommen waren.
+		</src>
+		<tgt system="liu">
+			The riots in entzündeten a traffic accident, in the Sunday two young people lost their lives.
+		</tgt>
+		<tgt system="rbmt2">
+			The riots ignited at a road accident at which two teenagers had been killed on Sunday.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1855" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Schon bald nach seiner Vereidigung wird Musharraf laut Generalstaatsanwalt Malik Muhammad Qayyum den Ausnahmezustand aufheben und damit eine weitere Forderung des Westens erfüllen.
+		</src>
+		<tgt system="cmu-statxfer">
+			Soon after his or her Vereidigung will Musharraf the Appeal Malik Muhammad Qayyum lift the state of emergency and to another calling for the West meet.
+		</tgt>
+		<tgt system="rbmt4">
+			Soon after his swearing Musharraf will lift the state of emergency according to Chief State Prosecutor Malik Muhammad Qayyum and fulfil an other demand of the west with it.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1861" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Zum Revival erscheint ein Mitschnitt aus ihrer großen Zeit &quot;Live 1974&quot;.
+		</src>
+		<tgt system="cmu-statxfer">
+			I Revival seems a Mitschnitt from the EU's most important time ' Live 1974 out.
+		</tgt>
+		<tgt system="rbmt2">
+			For the revival one seems recorded from her great time &quot;live 1974&quot;.
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1974" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Diese Präferenz bedeutet für uns, dass wir in dem bisher von uns angedachten Zeitraum bis 2028 keine realistischen Chancen haben werden.
+		</src>
+		<tgt system="rbmt5">
+			this preference means for us that we will not have realistic chances in the period to 2028, angedachten so far by us.
+		</tgt>
+		<tgt system="uedin">
+			'This preference means for us is that we will have to date by us in the proposed period up to 2028 any realistic opportunities.'
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1974" langsrc="de" langtgt="en" rank="1" testset="newstest2008">
+		<src>
+			Diese Präferenz bedeutet für uns, dass wir in dem bisher von uns angedachten Zeitraum bis 2028 keine realistischen Chancen haben werden.
+		</src>
+		<tgt system="cmu-statxfer">
+			' The preference is for us, that we in the so far of us information period up until 2028 no realistic chance have will. which
+		</tgt>
+		<tgt system="liu">
+			'This preference is for us that we had in the past period until we have a realistic chance of 2028.'
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+	<judgedsentence id="1974" langsrc="de" langtgt="en" rank="-1" testset="newstest2008">
+		<src>
+			Diese Präferenz bedeutet für uns, dass wir in dem bisher von uns angedachten Zeitraum bis 2028 keine realistischen Chancen haben werden.
+		</src>
+		<tgt system="liu">
+			'This preference is for us that we had in the past period until we have a realistic chance of 2028.'
+		</tgt>
+		<tgt system="uedin">
+			'This preference means for us is that we will have to date by us in the proposed period up to 2028 any realistic opportunities.'
+		</tgt>
+		<ref>
+			?
+		</ref>
+	</judgedsentence>
+</jcml>
