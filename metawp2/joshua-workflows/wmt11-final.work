@@ -93,6 +93,14 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 0b-test2011.tokenize
      tokenizedCorpus < tokenizedCorpus
 
+0b-test2011.ref: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
+   corpus=/share/emplus/shared-tasks/wmt11/data/test/newstest2011.$tgt.txt
+
+   FROM FS-languagepair
+     sourceLanguage <- source-language
+     targetLanguage <- target-language
+     langPair <- language-pair
+
 0b-test2011.tokenize: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
    numSplitPieces=1
 
@@ -117,6 +125,14 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
      inputCorpus < corpus
      targetLanguageSuffix <- targetLanguage
 
+0c-test2010.ref: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
+   corpus=/share/emplus/shared-tasks/wmt10/data/test/newstest2010.$tgt
+
+   FROM FS-languagepair
+     targetLanguage <- target-language
+     sourceLanguage <- source-language
+     langPair <- language-pair
+
 0c-test2010.tokenize: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
 
    FROM 0c-test2010.lowercase
@@ -136,6 +152,14 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 0d-test2008.corpus
      inputCorpus < corpus
      targetLanguageSuffix <- targetLanguage
+
+0d-test2008.ref: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
+   corpus=/share/emplus/shared-tasks/wmt10/data/wmt08/test/test2008.$tgt
+
+   FROM FS-languagepair
+     sourceLanguage <- source-language
+     targetLanguage <- target-language
+     langPair <- language-pair
 
 0d-test2008.tokenize: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
 
@@ -215,25 +239,6 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
      englishCorpus < englishSubsample
      foreignCorpus < foreignSubsample
 
-3-BuildTM.410-extract-hiero-grammar: ON localhost machine-translation/descriptors/joshua/GrammarExtractorJoshua.py
-   JVMOptions=-Xmx16G
-
-   FROM 3-BuildTM.400-build-suffix-array-for-tm
-     englishBinaryCorpus < englishBinaryCorpus
-     commonSymbolTable < commonSymbolTable
-     alignmentGrids < alignmentGrids
-     foreignBinaryCorpus < foreignBinaryCorpus
-     englishSuffixArray < englishSuffixArray
-     lexprobs < lexprobs
-     foreignSuffixArray < foreignSuffixArray
-     frequentPhrases < frequentPhrases
-
-   FROM 3-BuildTM.200-subsample-for-tm
-     englishCorpus < englishSubsample
-
-   FROM 0a-dev.lowercase-f
-     fDevSents < normalizedCorpus
-
 3-BuildTM.concatenate-08-10: ON localhost machine-translation/descriptors/monocorpus/Cat.py
 
    FROM 0c-test2010.tokenize
@@ -271,6 +276,22 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 2-Preproc.100-tokenize-e
      corpusIn < tokenizedCorpus
 
+5-Tune.700-extract-grammar: ON localhost machine-translation/descriptors/joshua/GrammarExtractorJoshua.py
+   JVMOptions=-Xmx60G
+
+   FROM 3-BuildTM.400-build-suffix-array-for-tm
+     englishBinaryCorpus < englishBinaryCorpus
+     commonSymbolTable < commonSymbolTable
+     alignmentGrids < alignmentGrids
+     foreignBinaryCorpus < foreignBinaryCorpus
+     englishSuffixArray < englishSuffixArray
+     lexprobs < lexprobs
+     foreignSuffixArray < foreignSuffixArray
+     frequentPhrases < frequentPhrases
+
+   FROM 0a-dev.lowercase-f
+     fDevSents < normalizedCorpus
+
 5-Tune.700-tune: ON localhost machine-translation/descriptors/joshua/ZMERTJoshua.py
    lmOrder=5
    spanLimit=10
@@ -282,19 +303,19 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    includeAlign=false
    useDefaultGlue=true
    markOovs=false
-   nBest=300
-   numThreads=1
-   heapSizeInMegs=2000
+   nBest=100
+   numThreads=4
+   heapSizeInMegs=64000
    metric=BLEU 4 closest
    maxIts=10
    randomRestarts=4
    nbestSize=300
    stopSig=0.0001
 
-   FROM 3-BuildTM.410-extract-hiero-grammar
+   FROM 5-Tune.700-extract-grammar
      tmFile < englishGrammar
 
-   FROM 6-Test.weightsFile
+   FROM 5-Tune.weightsFile
      paramConfigFile < paramConfigFile
 
    FROM 0a-dev.lowercase-e
@@ -306,7 +327,7 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 1-BuildLM.530-reuse
      lmFile < lm
 
-6-Test.weightsFile: ON localhost efs
+5-Tune.weightsFile: ON localhost efs
    paramConfigFile=/home/elav01/experiments/metawp2/joshua-run/init/params.txt
 
 6-Test2008.800-decode: ON localhost machine-translation/descriptors/joshua/Joshua.py
@@ -314,7 +335,7 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    includeAlign=false
    useDefaultGlue=true
    markOovs=false
-   nBest=false
+   nBest=1
 
    FROM 1-BuildLM.530-reuse
      lmFile < lm
@@ -334,7 +355,7 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
      uniqueNBest <- uniqueNBest
      itemRelativeThreshold <- itemRelativeThreshold
 
-   FROM 3-BuildTM.410-extract-hiero-grammar
+   FROM 6-Test2008.extract-grammar
      tmFile < englishGrammar
 
 6-Test2008.810-disambig: ON localhost machine-translation/descriptors/lm/DisambiguateSRILM.py
@@ -358,20 +379,41 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
 
 6-Test2008.830-detokenize: ON localhost machine-translation/descriptors/joshua/DetokenizerJoshua.py
 
-   FROM 6-Test2010.830-detokenize2010
-     targetLanguageSuffix <- targetLanguageSuffix
-
    FROM 6-Test2008.820-striptags
      recasedOutput < corpusOut
+
+   FROM FS-languagepair
+     targetLanguageSuffix <- target-language
+
+6-Test2008.840-bleu: ON localhost machine-translation/descriptors/metrics/MultiBleu.py
+
+   FROM 6-Test2008.830-detokenize
+     hyps < detokenizedOutput
+
+   FROM 0d-test2008.ref
+     refs < corpus
+
+6-Test2008.extract-grammar: ON localhost machine-translation/descriptors/joshua/GrammarExtractorJoshua.py
+   JVMOptions=-Xmx32G
+
+   FROM 3-BuildTM.400-build-suffix-array-for-tm
+     commonSymbolTable < commonSymbolTable
+     foreignBinaryCorpus < foreignBinaryCorpus
+     foreignSuffixArray < foreignSuffixArray
+     englishBinaryCorpus < englishBinaryCorpus
+     englishSuffixArray < englishSuffixArray
+     frequentPhrases < frequentPhrases
+     alignmentGrids < alignmentGrids
+     lexprobs < lexprobs
+
+   FROM 0d-test2008.tokenize
+     fDevSents < normalizedCorpus
 
 6-Test2010.800-decode: ON localhost machine-translation/descriptors/joshua/Joshua.py
    treeNBest=false
    useDefaultGlue=true
    markOovs=false
-   nBest=false
-
-   FROM 1-BuildLM.530-reuse
-     lmFile < lm
+   nBest=1
 
    FROM 0c-test2010.tokenize
      fSentsIn < normalizedCorpus
@@ -388,8 +430,11 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
      spanLimit <- spanLimit
      maxItemsPerBin <- maxItemsPerBin
 
-   FROM 3-BuildTM.410-extract-hiero-grammar
+   FROM 6-Test2010.extract-grammar
      tmFile < englishGrammar
+
+   FROM 1-BuildLM.530-reuse
+     lmFile < lm
 
 6-Test2010.810-disambig: ON localhost machine-translation/descriptors/lm/DisambiguateSRILM.py
    order=5
@@ -412,21 +457,42 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
 
 6-Test2010.830-detokenize2010: ON localhost machine-translation/descriptors/joshua/DetokenizerJoshua.py
 
-   FROM 6-Test2011.830-detokenize
-     targetLanguageSuffix <- targetLanguageSuffix
-
    FROM 6-Test2010.820-striptags
      recasedOutput < corpusOut
+
+   FROM FS-languagepair
+     targetLanguageSuffix <- target-language
+
+6-Test2010.840-bleu: ON localhost machine-translation/descriptors/metrics/MultiBleu.py
+
+   FROM 6-Test2010.830-detokenize2010
+     hyps < detokenizedOutput
+
+   FROM 0c-test2010.ref
+     refs < corpus
+
+6-Test2010.extract-grammar: ON localhost machine-translation/descriptors/joshua/GrammarExtractorJoshua.py
+   JVMOptions=-Xmx40G
+
+   FROM 3-BuildTM.400-build-suffix-array-for-tm
+     lexprobs < lexprobs
+     frequentPhrases < frequentPhrases
+     alignmentGrids < alignmentGrids
+     englishSuffixArray < englishSuffixArray
+     englishBinaryCorpus < englishBinaryCorpus
+     foreignSuffixArray < foreignSuffixArray
+     foreignBinaryCorpus < foreignBinaryCorpus
+     commonSymbolTable < commonSymbolTable
+
+   FROM 0c-test2010.tokenize
+     fDevSents < normalizedCorpus
 
 6-Test2011.800-decode: ON localhost machine-translation/descriptors/joshua/Joshua.py
    treeNBest=false
    includeAlign=false
    useDefaultGlue=true
    markOovs=false
-   nBest=false
-
-   FROM 3-BuildTM.410-extract-hiero-grammar
-     tmFile < englishGrammar
+   nBest=1
 
    FROM 0b-test2011.lowercase
      fSentsIn < normalizedCorpus
@@ -444,6 +510,9 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
 
    FROM 1-BuildLM.530-reuse
      lmFile < lm
+
+   FROM 6-Test2011.extract-grammar
+     tmFile < englishGrammar
 
 6-Test2011.810-disambig: ON localhost machine-translation/descriptors/lm/DisambiguateSRILM.py
    order=5
@@ -472,6 +541,30 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 6-Test2011.820-striptags
      recasedOutput < corpusOut
 
+6-Test2011.840-bleu: ON localhost machine-translation/descriptors/metrics/MultiBleu.py
+
+   FROM 6-Test2011.830-detokenize
+     hyps < detokenizedOutput
+
+   FROM 0b-test2011.ref
+     refs < corpus
+
+6-Test2011.extract-grammar: ON localhost machine-translation/descriptors/joshua/GrammarExtractorJoshua.py
+   JVMOptions=-Xmx40G
+
+   FROM 0b-test2011.lowercase
+     fDevSents < normalizedCorpus
+
+   FROM 3-BuildTM.400-build-suffix-array-for-tm
+     commonSymbolTable < commonSymbolTable
+     foreignBinaryCorpus < foreignBinaryCorpus
+     foreignSuffixArray < foreignSuffixArray
+     englishBinaryCorpus < englishBinaryCorpus
+     englishSuffixArray < englishSuffixArray
+     alignmentGrids < alignmentGrids
+     frequentPhrases < frequentPhrases
+     lexprobs < lexprobs
+
 
 [INSPECTORS]
 Meteor X-RAY (English): machine-translation/descriptors/visualization/VisualizeSystems.py
@@ -494,13 +587,16 @@ FS-training-corpus-1: -361 448
 0a-dev.tokenize-f: -199 -69
 0b-test2011.corpus: -312 121
 0b-test2011.lowercase: -273 91
+0b-test2011.ref: -330 82
 0b-test2011.tokenize: -294 107
 0c-test2010.corpus: -278 198
 0c-test2010.lowercase: -253 184
+0c-test2010.ref: -304 200
 0c-test2010.tokenize: -218 170
-0d-test2008.corpus: -190 252
-0d-test2008.lowercase: -154 239
-0d-test2008.tokenize: -124 228
+0d-test2008.corpus: -145 284
+0d-test2008.lowercase: -109 271
+0d-test2008.ref: -180 284
+0d-test2008.tokenize: -79 260
 1-BuildLM.530-reuse: 185 -168
 2-Preproc.100-tokenize-e: -156 466
 2-Preproc.110-tokenize-f: -97 571
@@ -508,25 +604,31 @@ FS-training-corpus-1: -361 448
 2-Preproc.160-lowercase-f: -21 515
 3-BuildTM.200-subsample-for-tm: 195 405
 3-BuildTM.300-berkeley-aligner: 337 397
-3-BuildTM.400-build-suffix-array-for-tm: 348 345
-3-BuildTM.410-extract-hiero-grammar: 383 276
+3-BuildTM.400-build-suffix-array-for-tm: 351 337
 3-BuildTM.concatenate-08-10: 129 261
 3-BuildTM.concatenate-all: 129 293
 3-BuildTM.concatenate-dev-test: 133 235
 4-recaser.200.map: 553 504
 4-recaser.truecaseLM: 530 525
-5-Tune.700-tune: 330 134
-6-Test.weightsFile: 255 80
+5-Tune.700-extract-grammar: 265 135
+5-Tune.700-tune: 293 107
+5-Tune.weightsFile: 246 68
 6-Test2008.800-decode: 576 91
 6-Test2008.810-disambig: 609 78
 6-Test2008.820-striptags: 661 66
 6-Test2008.830-detokenize: 697 40
+6-Test2008.840-bleu: 745 20
+6-Test2008.extract-grammar: 554 116
 6-Test2010.800-decode: 483 -50
 6-Test2010.810-disambig: 513 -62
 6-Test2010.820-striptags: 568 -78
-6-Test2010.830-detokenize2010: 624 -110
+6-Test2010.830-detokenize2010: 621 -90
+6-Test2010.840-bleu: 667 -110
+6-Test2010.extract-grammar: 448 -34
 6-Test2011.800-decode: 395 -178
 6-Test2011.810-disambig: 424 -192
 6-Test2011.820-striptags: 475 -223
 6-Test2011.830-detokenize: 522 -273
+6-Test2011.840-bleu: 557 -288
+6-Test2011.extract-grammar: 371 -154
 
