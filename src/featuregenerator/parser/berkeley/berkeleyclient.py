@@ -26,7 +26,7 @@ class BerkeleyFeatureGenerator(FeatureGenerator):
     def add_features_tgt(self, simplesentence, parallelsentence):
         tgt_lang = parallelsentence.get_attribute("langtgt")
         if tgt_lang == self.lang:
-            atts = self.get_features_sentence(self, simplesentence, parallelsentence)
+            atts = self.get_features_sentence(simplesentence, parallelsentence)
             simplesentence.add_attributes(atts)
         return simplesentence      
         
@@ -52,7 +52,10 @@ class BerkeleyFeatureGenerator(FeatureGenerator):
             sum_confidence += float(confidence)
         
         print
-        avg_confidence = sum_confidence / n
+        if n !=0:
+            avg_confidence = sum_confidence / n
+        else:
+            avg_confidence = -float('inf')
         
         attributes={}
         attributes ["berkeley-n"] = str(n)

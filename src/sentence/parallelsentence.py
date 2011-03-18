@@ -16,7 +16,7 @@ class ParallelSentence(object):
     """
     
 
-    def __init__(self, source, translations, reference, attributes=[]):
+    def __init__(self, source, translations, reference=None, attributes={}):
         """
         Constructor
         @type source SimpleSentence
@@ -44,6 +44,15 @@ class ParallelSentence(object):
     
     def add_attributes (self, attributes):
         self.attributes.update( attributes )
+    
+    def set_langsrc (self, langsrc):
+        self.attributes["langsrc"] = langsrc
+
+    def set_langtgt (self, langtgt):
+        self.attributes["langtgt"] = langtgt
+        
+    def set_id (self, id):
+        self.attributes["id"] = str(id)
     
     def get_source(self):
         return self.src
