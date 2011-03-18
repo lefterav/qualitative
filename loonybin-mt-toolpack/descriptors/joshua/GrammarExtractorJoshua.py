@@ -15,24 +15,22 @@ class GrammarExtractorJoshua(Tool):
         return [("JVMOptions", "JVM options. You may specify amount of heap space, e.g., by '-Xmx512m', or specify the 64-bit flag by '-d64', which you might want to accompany with a heap space amount such as '-Xmx10g'")]
 
     def getInputNames(self, params):
-        return [("englishCorpus", "the English corpus from which the grammar will be extracted"),
-		("commonSymbolTable", "Common symbol table for source and target language"),
+        return [("commonSymbolTable", "Common symbol table for source and target language"),
 		("foreignBinaryCorpus", "Source language corpus"),
 		("foreignSuffixArray", "Source language suffix array"),
 		("englishBinaryCorpus", "Target language corpus"),
 		("englishSuffixArray", "Target language suffix array"),
-                ("frequentPhrases", "Frequent phrases produced along with suffix array"),
+        ("frequentPhrases", "Frequent phrases produced along with suffix array"),
 		("alignmentGrids", "Source-target alignment grids"),
-                ("fDevSents", "\"French\" sentences from tuning set"),
+        ("fDevSents", "Grammar will be extracted so that these sentences can be decoded"),
+
 		("lexprobs", "Lexprobs")]
 
     def getOutputNames(self, params):
         return [("englishGrammar", "the grammar for the English side")]
 
     def getPreAnalyzers(self, params, inputs):
-        return ['echo EnglishCorpusWordCount `wc -w %(englishCorpus)s`'%(inputs),
-		'echo EnglishCorpusLineCount `wc -l %(englishCorpus)s`'%(inputs),
-		'echo CommonSymbolTableSize `du -b %(commonSymbolTable)s`'%(inputs),
+        return ['echo CommonSymbolTableSize `du -b %(commonSymbolTable)s`'%(inputs),
 		'echo ForeignBinaryCorpusSize `du -b %(foreignBinaryCorpus)s`'%(inputs),
 		'echo ForeignSuffixArraySize `du -b %(foreignSuffixArray)s`'%(inputs),
 		'echo EnglishBinaryCorpusSize `du -b %(englishBinaryCorpus)s`'%(inputs),
