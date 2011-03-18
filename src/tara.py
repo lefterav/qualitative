@@ -17,7 +17,7 @@ import os
 
 if __name__ == '__main__':
     
-    filename = os.getenv("HOME") + "/workspace/TaraXUscripts/data/evaluations_feat.jcml"
+    filename = os.getenv("HOME") + "/workspace/TaraXUscripts/data/wmt08_human_binary.jcml"
     class_name = "rank"
     desired_attributes = []
     

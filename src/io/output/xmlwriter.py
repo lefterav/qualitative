@@ -3,6 +3,7 @@
 """
 
 from xml.dom import minidom
+from sentence.parallelsentence import ParallelSentence
 import codecs
 
 class XmlWriter(object):
@@ -17,6 +18,9 @@ class XmlWriter(object):
         """
         if isinstance ( data , minidom.Document ):
             self.object_xml = data
+        elif isinstance(data, list):
+            self.object_xml = None
+            self.convert_to_xml( data )
         else:
             self.object_xml = None
             self.convert_to_xml( data.get_parallelsentences() )
@@ -52,8 +56,9 @@ class XmlWriter(object):
                 parallelsentence_xml.appendChild( tgt_xml )
 
             #add reference as a child of parallel sentence
-            ref_xml = self.__create_xml_sentence__(doc_xml, ps.get_reference(), "ref")
-            parallelsentence_xml.appendChild( ref_xml )
+            if ps.get_reference():
+                ref_xml = self.__create_xml_sentence__(doc_xml, ps.get_reference(), "ref")
+                parallelsentence_xml.appendChild( ref_xml )
 
             #append the newly populated parallel sentence to the document
             jcml.appendChild(parallelsentence_xml)
@@ -82,7 +87,7 @@ class XmlWriter(object):
 
         for attribute_key in sentence.get_attributes().keys():
             sentence_xml.setAttribute( attribute_key , sentence.get_attribute( attribute_key ) )            
-        sentence_xml.appendChild( doc_xml.createTextNode( sentence.get_string() ) )
+        sentence_xml.appendChild( doc_xml.createTextNode( sentence.get_string().strip() ) )
         
         return sentence_xml
         

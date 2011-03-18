@@ -13,11 +13,50 @@ from classifier.bayes import Bayes
 from classifier.tree import TreeLearner
 from classifier.svm import SVM
 from os import getenv
+import os
+
+from io.input.orangereader import OrangeData
+from io.output.xmlwriter import XmlWriter
+
+def split_corpus():
+    filename = os.getenv("HOME") + "/taraxu_data/wmt08-humaneval-data/wmt08_human_binary.jcml"
+    class_name = "rank"
+    desired_attributes = []
+    
+    #Load data from external file
+    pdr = XmlReader(filename) 
+    dataset =  pdr.get_dataset()
+    
+    
+    desired_attributes=['langsrc', 'langtgt', 'testset']
+    
+    #convert data in orange format
+    orangedata = OrangeData( dataset, class_name, desired_attributes )
+    
+    orig_dataset = orangedata.get_dataset()
+    
+    i=0
+    
+    #split data the orange way (stratified)
+    [training_part, test_part] = orangedata.split_data(0.1)
+    training_data = OrangeData(training_part, class_name)
+    test_data = OrangeData(test_part, class_name)
+    
+    print "TESTSET------"
+    orig_test_data = test_data.get_dataset()    
+    xmlwriter = XmlWriter(orig_test_data)
+    xmlwriter.write_to_file(os.getenv("HOME") + "/workspace/TaraXUscripts/data/test08.xml")
+    orig_test_data = None
+
+    print "TRAINSET------"
+    orig_train_data = training_data.get_dataset()    
+    xmlwriter = XmlWriter(dataset)
+    xmlwriter.write_to_file(os.getenv("HOME") + "/workspace/TaraXUscripts/data/train08.xml")
+
+    
 
 
-
-
-def test_length_fg_with_serialized_parsing():
+def test_length_fg_with_serialized_parsing(given_filename="evaluations_all.jcml"):
     
     from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
     from featuregenerator.lm.srilm.srilmclient import SRILMFeatureGenerator
@@ -27,13 +66,13 @@ def test_length_fg_with_serialized_parsing():
     import codecs
     
     dir = getenv("HOME") + "/workspace/TaraXUscripts/data"
-    filename = dir + "/evaluations_all.jcml"
+    filename = dir + "/" + given_filename
     file_object = codecs.open(filename, 'r', 'utf-8')
     
 
     dir = getenv("HOME") + "/workspace/TaraXUscripts/data"
-    filename2 = dir + "/evaluations_feat00.jcml"
-    file_object2 = codecs.open(filename2, 'w', 'utf-8')
+    filename_out = dir + "/featured_" + given_filename
+    file_object2 = codecs.open(filename_out, 'w', 'utf-8')
 
     ###INITIALIZE FEATURE GENERATORS
 
@@ -93,7 +132,9 @@ def test_length_fg_with_full_parsing():
     
 
 if __name__ == '__main__':
-    test_length_fg_with_serialized_parsing()
+    #test_length_fg_with_serialized_parsing()
+    #split_corpus()
+    test_length_fg_with_serialized_parsing("test08.xml")
     
         
     
