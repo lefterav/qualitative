@@ -167,7 +167,7 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
      tokenizedCorpus < tokenizedCorpus
 
 1-BuildLM.530-reuse: ON localhost efs
-   lm=/share/emplus/shared-tasks/wmt10/lm/news.en.lm.gz
+   lm=/home/elav01/experiments/metawp2/joshua-de-en/1-BuildLM.530-build-lm/default/final/arpaLM
 
 2-Preproc.100-tokenize-e: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
    numSplitPieces=1
@@ -304,10 +304,10 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    useDefaultGlue=true
    markOovs=false
    nBest=100
-   numThreads=4
+   numThreads=6
    heapSizeInMegs=64000
    metric=BLEU 4 closest
-   maxIts=10
+   maxIts=30
    randomRestarts=4
    nbestSize=300
    stopSig=0.0001
@@ -358,6 +358,11 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 6-Test2008.extract-grammar
      tmFile < englishGrammar
 
+6-Test2008.805-selectbest: ON localhost machine-translation/descriptors/joshua/ExtractTopBestJoshua.py
+
+   FROM 6-Test2008.800-decode
+     nbestIn < eNBestOut
+
 6-Test2008.810-disambig: ON localhost machine-translation/descriptors/lm/DisambiguateSRILM.py
    order=5
    smoothingType=keep-unk
@@ -369,8 +374,8 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 4-recaser.truecaseLM
      arpaLM < arpaLM
 
-   FROM 6-Test2008.800-decode
-     corpusIn < eNBestOut
+   FROM 6-Test2008.805-selectbest
+     corpusIn < topbestOut
 
 6-Test2008.820-striptags: ON localhost machine-translation/descriptors/joshua/StripSentTags.py
 
@@ -436,6 +441,11 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 1-BuildLM.530-reuse
      lmFile < lm
 
+6-Test2010.805-selectbest: ON localhost machine-translation/descriptors/joshua/ExtractTopBestJoshua.py
+
+   FROM 6-Test2010.800-decode
+     nbestIn < eNBestOut
+
 6-Test2010.810-disambig: ON localhost machine-translation/descriptors/lm/DisambiguateSRILM.py
    order=5
    smoothingType=keep-unk
@@ -447,8 +457,8 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 4-recaser.200.map
      map < truecaseMap
 
-   FROM 6-Test2010.800-decode
-     corpusIn < eNBestOut
+   FROM 6-Test2010.805-selectbest
+     corpusIn < topbestOut
 
 6-Test2010.820-striptags: ON localhost machine-translation/descriptors/joshua/StripSentTags.py
 
@@ -514,19 +524,24 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 6-Test2011.extract-grammar
      tmFile < englishGrammar
 
+6-Test2011.805-selectbest: ON localhost machine-translation/descriptors/joshua/ExtractTopBestJoshua.py
+
+   FROM 6-Test2011.800-decode
+     nbestIn < eNBestOut
+
 6-Test2011.810-disambig: ON localhost machine-translation/descriptors/lm/DisambiguateSRILM.py
    order=5
    smoothingType=keep-unk
    interpolate=false
-
-   FROM 6-Test2011.800-decode
-     corpusIn < eNBestOut
 
    FROM 4-recaser.truecaseLM
      arpaLM < arpaLM
 
    FROM 4-recaser.200.map
      map < truecaseMap
+
+   FROM 6-Test2011.805-selectbest
+     corpusIn < topbestOut
 
 6-Test2011.820-striptags: ON localhost machine-translation/descriptors/joshua/StripSentTags.py
 
@@ -613,21 +628,24 @@ FS-training-corpus-1: -361 448
 5-Tune.700-extract-grammar: 265 135
 5-Tune.700-tune: 293 107
 5-Tune.weightsFile: 246 68
-6-Test2008.800-decode: 576 91
-6-Test2008.810-disambig: 609 78
-6-Test2008.820-striptags: 661 66
+6-Test2008.800-decode: 582 101
+6-Test2008.805-selectbest: 607 85
+6-Test2008.810-disambig: 647 72
+6-Test2008.820-striptags: 670 60
 6-Test2008.830-detokenize: 697 40
 6-Test2008.840-bleu: 745 20
 6-Test2008.extract-grammar: 554 116
 6-Test2010.800-decode: 483 -50
-6-Test2010.810-disambig: 513 -62
-6-Test2010.820-striptags: 568 -78
-6-Test2010.830-detokenize2010: 621 -90
-6-Test2010.840-bleu: 667 -110
+6-Test2010.805-selectbest: 533 -61
+6-Test2010.810-disambig: 580 -76
+6-Test2010.820-striptags: 623 -88
+6-Test2010.830-detokenize2010: 658 -100
+6-Test2010.840-bleu: 705 -123
 6-Test2010.extract-grammar: 448 -34
 6-Test2011.800-decode: 395 -178
-6-Test2011.810-disambig: 424 -192
-6-Test2011.820-striptags: 475 -223
+6-Test2011.805-selectbest: 430 -204
+6-Test2011.810-disambig: 471 -226
+6-Test2011.820-striptags: 496 -252
 6-Test2011.830-detokenize: 522 -273
 6-Test2011.840-bleu: 557 -288
 6-Test2011.extract-grammar: 371 -154
