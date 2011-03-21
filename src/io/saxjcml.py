@@ -45,6 +45,9 @@ class SaxJCMLProcessor(XMLGenerator):
         
     def startDocument(self):
         XMLGenerator.startDocument(self)
+
+    def endDocument(self):
+        XMLGenerator.endDocument(self)
     
     def startElement(self, name, attrs=[]):
         """
