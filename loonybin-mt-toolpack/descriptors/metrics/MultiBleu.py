@@ -10,7 +10,7 @@ class MultiMetric(Tool):
         return "Runs BLEU on a set of hypotheses."
     
     def getRequiredPaths(self):
-        return ['multibleu']
+        return ['moses-scripts']
 
     def getInputNames(self, params):
         return [ ('refs', 'Plaintext "laced" references, one per line with all references for the first sentence coming before the second sentence, etc.'),
