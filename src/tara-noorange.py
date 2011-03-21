@@ -56,7 +56,7 @@ def split_corpus():
     
 
 
-def test_length_fg_with_serialized_parsing(given_filename="evaluations_all.jcml"):
+def add_external_features(given_filename="evaluations_all.jcml"):
     
     from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
     from featuregenerator.lm.srilm.srilmclient import SRILMFeatureGenerator
@@ -95,7 +95,29 @@ def test_length_fg_with_serialized_parsing(given_filename="evaluations_all.jcml"
     
    
 
+def train_classifiers(filename="evaluations_all.jcml"):
+    reader = XmlReader(filename)
+    dataset =  reader.get_dataset()
+    class_name = "rank"
+    #TODO: get list of attributes directly from feature generators
+    desired_attributes={'tgt-1_berkeley-n' : 'c', 'tgt-1_berkeley-best-parse-confidence' : 'c', 'tgt-1_berkeley-avg-confidence' :'c'}
+    training_data = OrangeData(dataset, class_name, desired_attributes)
     
+    #train data
+    bayes = Bayes( training_data )
+    tree = TreeLearner( training_data )
+    svm = SVM ( training_data )
+    
+    bayes.name = "bayes"
+    tree.name = "tree"
+    svm.name = "SVM"
+    classifiers = [bayes, tree, svm]
+    
+    training_data.cross_validation()
+    training_data.print_statistics()
+    # compute accuracies
+    
+
     
     
     
@@ -132,9 +154,14 @@ def test_length_fg_with_full_parsing():
     
 
 if __name__ == '__main__':
-    #test_length_fg_with_serialized_parsing()
+    dir = getenv("HOME") + "/workspace/TaraXUscripts/data/"
+    
+    #add_external_features()
     #split_corpus()
-    test_length_fg_with_serialized_parsing("test08.xml")
+    #add_external_features("test08.xml")
+    
+    filename = dir + "featured_test08.xml"
+    train_classifiers(filename)
     
         
     

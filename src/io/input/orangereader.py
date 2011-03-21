@@ -39,7 +39,7 @@ class OrangeData:
             self.data = orange.ExampleTable(tmpFileName)
             print "Loaded ", len(self.data) , " sentences from file " , tmpFileName
             #get rid of the temp file
-            os.unlink(tmpFileName)
+            #os.unlink(tmpFileName)
         return None
     
     
@@ -181,7 +181,7 @@ class OrangeData:
         return tmpFileName
         
     
-    def __getOrangeFormat__(self, dataset, class_name, desired_attributes=[]):
+    def __getOrangeFormat__(self, dataset, class_name, desired_attributes={}):
         #first construct the lines for the declaration
         line_1 = "" #line for the name of the arguments
         line_2 = "" #line for the type of the arguments
@@ -192,21 +192,26 @@ class OrangeData:
 
         
         #if no desired attribute define, get all of them
-        if not desired_attributes:
-            desired_attributes =  attribute_names
+        #if not desired_attributes:
+        #    desired_attributes =  attribute_names
         
         #prepare heading
         for attribute_name in attribute_names :
             #line 1 holds just the names
             line_1 += attribute_name +"\t"
             
+            #TODO: find a way to define continuous and discrete arg
             #line 2 holds the class type
-            line_2 += "d\t"
+            if attribute_name in  desired_attributes.keys():
+                line_2 += "%s\t" % desired_attributes[attribute_name]
+            else:
+                line_2 += "d\t"
+
             
             #line 3 defines the class and the metadata
             if attribute_name == class_name:
                 line_3 = line_3 + "c"
-            elif attribute_name not in desired_attributes:
+            elif attribute_name not in desired_attributes.keys():
                 line_3 = line_3 + "m"
             line_3 = line_3 + "\t"
         
