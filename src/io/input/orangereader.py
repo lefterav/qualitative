@@ -39,7 +39,7 @@ class OrangeData:
             self.data = orange.ExampleTable(tmpFileName)
             print "Loaded ", len(self.data) , " sentences from file " , tmpFileName
             #get rid of the temp file
-            #os.unlink(tmpFileName)
+            os.unlink(tmpFileName)
         return None
     
     
