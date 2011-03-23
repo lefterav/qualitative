@@ -3,7 +3,7 @@ from loonybin import Tool
 class TrainTruecaserMoses(Tool):
 
     def getName(self):
-        return 'Machine Translation/Monolingual Corpus/Tarin truecaser (Moses)'
+        return 'Machine Translation/Monolingual Corpus/Train truecaser (Moses)'
 
     def getDescription(self):
         return ("Instead of lowercasing all training and test data, we may also want to keep words in their natural case, and only change the words at the beginning of their sentence to their most frequent form. This is what we mean by truecasing. Again, this requires first the training of a truecasing model, which is a list of words and the frequency of their different forms. ")
@@ -31,5 +31,5 @@ class TrainTruecaserMoses(Tool):
 
 if __name__ == '__main__':
     import sys
-    t = LowercaserJoshua();
+    t = TrainTruecaserMoses();
     t.handle(sys.argv)

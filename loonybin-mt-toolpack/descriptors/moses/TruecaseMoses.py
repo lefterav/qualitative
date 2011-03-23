@@ -32,5 +32,5 @@ class TruecaseMoses(Tool):
 
 if __name__ == '__main__':
     import sys
-    t = LowercaserJoshua();
+    t = TruecaseMoses();
     t.handle(sys.argv)

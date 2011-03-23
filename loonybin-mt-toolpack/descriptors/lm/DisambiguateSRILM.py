@@ -25,9 +25,9 @@ class DisambiguateSRILM(Tool):
         return [ ('corpusOut', 'disambiguated corpus') ]
     
     def getPreAnalyzers(self, params, inputs):
-        return [ 'echo corpusInWordCount `wc -w %(corpusIn)s'%inputs,
-		 'echo corpusInLineCount `wc -l %(corpusIn)s'%inputs,
-		 'echo arpaLMSize `du -h $(arpaLM)s'%inputs ]
+        return [ 'echo corpusInWordCount `wc -w %(corpusIn)s`'%inputs,
+		 'echo corpusInLineCount `wc -l %(corpusIn)s`'%inputs,
+		 'echo LMSize `du -h %(arpaLM)s`'%inputs ]
     
     def getCommands(self, params, inputs, outputs):
         interpolation = ''
@@ -40,11 +40,9 @@ class DisambiguateSRILM(Tool):
         return [ './bin/i686/disambig -%(smoothingType)s -order %(order)s -keep-unk'%params +
                 interpolation +
                 ' -text %(corpusIn)s -lm %(arpaLM)s -map %(map)s'%inputs +
-                ' > corpusOut',
-		'ln -s corpusOut %(corpusOut)s'%outputs ]
+                ' > %(corpusOut)s'%outputs ]
 
-    def getPostAnalyzers(self, params, inputs, outputs):
-        return [ ]
+
 
 if __name__ == '__main__':
     import sys
