@@ -43,6 +43,198 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
      targetLanguage <- target-language
      langPair <- language-pair
 
+LM-1.400.interpolate: ON localhost machine-translation/descriptors/lm/InterpolateLM.py
+   number-of-LMs=6
+
+   FROM LM-1.nc6.BuildLM
+     lm1 < arpaLM
+
+   FROM LM-1.news20.2011.BuildLM
+     lm2 < arpaLM
+
+   FROM LM-1.news20.2010.BuildLM
+     lm3 < arpaLM
+
+   FROM LM-1.news20.2009.BuildLM
+     lm4 < arpaLM
+
+   FROM LM-1.news20.2008.BuildLM
+     lm5 < arpaLM
+
+   FROM LM-1.news20.2007.BuildLM
+     lm6 < arpaLM
+
+   FROM 0a-dev.lowercase-e
+     fTuningCorpus < normalizedCorpus
+
+LM-1.nc6.100.get: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
+   corpus=/share/emplus/shared-tasks/wmt11/data/training-monolingual/news-commentary-v6.$tgt
+
+   FROM FS-languagepair
+     language-pair <- language-pair
+     source-language <- source-language
+     target-language <- target-language
+
+LM-1.nc6.110.tokenize: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   numSplitPieces=1
+
+   FROM LM-1.nc6.100.get
+     inputCorpus < corpus
+     targetLanguageSuffix <- target-language
+
+LM-1.nc6.120.lowercase: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
+
+   FROM LM-1.nc6.110.tokenize
+     tokenizedCorpus < tokenizedCorpus
+
+LM-1.nc6.BuildLM: ON localhost machine-translation/descriptors/lm/BuildLanguageModel.py
+   order=5
+   smoothingType=kndiscount
+   interpolate=true
+
+   FROM LM-1.nc6.120.lowercase
+     corpusIn < normalizedCorpus
+
+LM-1.news20.2007.BuildLM: ON localhost machine-translation/descriptors/lm/BuildLanguageModel.py
+   order=5
+   smoothingType=kndiscount
+   interpolate=true
+
+   FROM LM-1.news2007.120.lowercase
+     corpusIn < normalizedCorpus
+
+LM-1.news20.2008.BuildLM: ON localhost machine-translation/descriptors/lm/BuildLanguageModel.py
+   order=5
+   smoothingType=kndiscount
+   interpolate=true
+
+   FROM LM-1.news2008.120.lowercase
+     corpusIn < normalizedCorpus
+
+LM-1.news20.2009.BuildLM: ON localhost machine-translation/descriptors/lm/BuildLanguageModel.py
+   order=5
+   smoothingType=kndiscount
+   interpolate=true
+
+   FROM LM-1.news2009.120.lowercase
+     corpusIn < normalizedCorpus
+
+LM-1.news20.2010.BuildLM: ON localhost machine-translation/descriptors/lm/BuildLanguageModel.py
+   order=5
+   smoothingType=kndiscount
+   interpolate=true
+
+   FROM LM-1.news2010.120.lowercase
+     corpusIn < normalizedCorpus
+
+LM-1.news20.2011.BuildLM: ON localhost machine-translation/descriptors/lm/BuildLanguageModel.py
+   order=5
+   smoothingType=kndiscount
+   interpolate=true
+
+   FROM LM-1.news2011.120.lowercase
+     corpusIn < normalizedCorpus
+
+LM-1.news2007.100.get: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
+   corpus=/share/emplus/shared-tasks/wmt11/data/training-monolingual/news.2007.$tgt.shuffled 
+
+   FROM FS-languagepair
+     source-language <- source-language
+     target-language <- target-language
+     language-pair <- language-pair
+
+LM-1.news2007.110.tokenize: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   numSplitPieces=1
+
+   FROM LM-1.news2007.100.get
+     inputCorpus < corpus
+     targetLanguageSuffix <- target-language
+
+LM-1.news2007.120.lowercase: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
+
+   FROM LM-1.news2007.110.tokenize
+     tokenizedCorpus < tokenizedCorpus
+
+LM-1.news2008.100.get: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
+   corpus=/share/emplus/shared-tasks/wmt11/data/training-monolingual/news.2008.$tgt.shuffled 
+
+   FROM FS-languagepair
+     target-language <- target-language
+     language-pair <- language-pair
+     source-language <- source-language
+
+LM-1.news2008.110.tokenize: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   numSplitPieces=1
+
+   FROM LM-1.news2008.100.get
+     inputCorpus < corpus
+     targetLanguageSuffix <- target-language
+
+LM-1.news2008.120.lowercase: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
+
+   FROM LM-1.news2008.110.tokenize
+     tokenizedCorpus < tokenizedCorpus
+
+LM-1.news2009.100.get: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
+   corpus=/share/emplus/shared-tasks/wmt11/data/training-monolingual/news.2009.$tgt.shuffled 
+
+   FROM FS-languagepair
+     language-pair <- language-pair
+     target-language <- target-language
+     source-language <- source-language
+
+LM-1.news2009.110.tokenize: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   numSplitPieces=1
+
+   FROM LM-1.news2009.100.get
+     inputCorpus < corpus
+     targetLanguageSuffix <- target-language
+
+LM-1.news2009.120.lowercase: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
+
+   FROM LM-1.news2009.110.tokenize
+     tokenizedCorpus < tokenizedCorpus
+
+LM-1.news2010.100.get: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
+   corpus=/share/emplus/shared-tasks/wmt11/data/training-monolingual/news.2010.$tgt.shuffled 
+
+   FROM FS-languagepair
+     language-pair <- language-pair
+     target-language <- target-language
+     source-language <- source-language
+
+LM-1.news2010.110.tokenize: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   numSplitPieces=1
+
+   FROM LM-1.news2010.100.get
+     inputCorpus < corpus
+     targetLanguageSuffix <- target-language
+
+LM-1.news2010.120.lowercase: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
+
+   FROM LM-1.news2010.110.tokenize
+     tokenizedCorpus < tokenizedCorpus
+
+LM-1.news2011.100.get: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
+   corpus=/share/emplus/shared-tasks/wmt11/data/training-monolingual/news.2011.$tgt.shuffled 
+
+   FROM FS-languagepair
+     target-language <- target-language
+     language-pair <- language-pair
+     source-language <- source-language
+
+LM-1.news2011.110.tokenize: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   numSplitPieces=1
+
+   FROM LM-1.news2011.100.get
+     inputCorpus < corpus
+     targetLanguageSuffix <- target-language
+
+LM-1.news2011.120.lowercase: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
+
+   FROM LM-1.news2011.110.tokenize
+     tokenizedCorpus < tokenizedCorpus
+
 0a-dev.corp: ON localhost machine-translation/descriptors/parallelcorpus/ParallelParamFilenames.py
    corpus.f=/share/emplus/shared-tasks/wmt10/data/wmt08/devtest/test2007.$src
    corpus.e=/share/emplus/shared-tasks/wmt10/data/wmt08/devtest/test2007.$tgt
@@ -65,28 +257,24 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
 0a-dev.tokenize-e: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
    numSplitPieces=1
 
-   FROM FS-languagepair
-     targetLanguageSuffix <- target-language
-
    FROM 0a-dev.corp
      inputCorpus < corpus.e
+     targetLanguageSuffix <- targetLanguage
 
 0a-dev.tokenize-f: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
    numSplitPieces=1
 
-   FROM FS-languagepair
-     targetLanguageSuffix <- source-language
-
    FROM 0a-dev.corp
      inputCorpus < corpus.f
+     targetLanguageSuffix <- sourceLanguage
 
 0b-test2011.corpus: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
    corpus=/share/emplus/shared-tasks/wmt11/data/test/newstest2011.$src.txt
 
    FROM FS-languagepair
-     sourceLanguage <- source-language
-     targetLanguage <- target-language
-     langPair <- language-pair
+     source-language <- source-language
+     language-pair <- language-pair
+     target-language <- target-language
 
 0b-test2011.lowercase: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
 
@@ -97,41 +285,39 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    corpus=/share/emplus/shared-tasks/wmt11/data/test/newstest2011.$tgt.txt
 
    FROM FS-languagepair
-     sourceLanguage <- source-language
-     targetLanguage <- target-language
-     langPair <- language-pair
+     source-language <- source-language
+     language-pair <- language-pair
+     target-language <- target-language
 
 0b-test2011.tokenize: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
    numSplitPieces=1
 
-   FROM FS-languagepair
-     targetLanguageSuffix <- source-language
-
    FROM 0b-test2011.corpus
      inputCorpus < corpus
+     targetLanguageSuffix <- target-language
 
 0c-test2010.corpus: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
    corpus=/share/emplus/shared-tasks/wmt10/data/test/newstest2010.$src
 
    FROM FS-languagepair
-     sourceLanguage <- source-language
-     targetLanguage <- target-language
-     langPair <- language-pair
+     source-language <- source-language
+     language-pair <- language-pair
+     target-language <- target-language
 
 0c-test2010.lowercase: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
    numSplitPieces=1
 
    FROM 0c-test2010.corpus
      inputCorpus < corpus
-     targetLanguageSuffix <- targetLanguage
+     targetLanguageSuffix <- target-language
 
 0c-test2010.ref: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
    corpus=/share/emplus/shared-tasks/wmt10/data/test/newstest2010.$tgt
 
    FROM FS-languagepair
-     targetLanguage <- target-language
-     sourceLanguage <- source-language
-     langPair <- language-pair
+     source-language <- source-language
+     language-pair <- language-pair
+     target-language <- target-language
 
 0c-test2010.tokenize: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
 
@@ -142,32 +328,29 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    corpus=/share/emplus/shared-tasks/wmt10/data/wmt08/test/test2008.$src
 
    FROM FS-languagepair
-     sourceLanguage <- source-language
-     targetLanguage <- target-language
-     langPair <- language-pair
+     language-pair <- language-pair
+     target-language <- target-language
+     source-language <- source-language
 
 0d-test2008.lowercase: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
    numSplitPieces=1
 
    FROM 0d-test2008.corpus
      inputCorpus < corpus
-     targetLanguageSuffix <- targetLanguage
+     targetLanguageSuffix <- target-language
 
 0d-test2008.ref: ON localhost machine-translation/descriptors/monocorpus/ParamFilenames.py
    corpus=/share/emplus/shared-tasks/wmt10/data/wmt08/test/test2008.$tgt
 
    FROM FS-languagepair
-     sourceLanguage <- source-language
-     targetLanguage <- target-language
-     langPair <- language-pair
+     language-pair <- language-pair
+     source-language <- source-language
+     target-language <- target-language
 
 0d-test2008.tokenize: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
 
    FROM 0d-test2008.lowercase
      tokenizedCorpus < tokenizedCorpus
-
-1-BuildLM.530-reuse: ON localhost efs
-   lm=/home/elav01/experiments/metawp2/joshua-de-en/1-BuildLM.530-build-lm/default/final/arpaLM
 
 2-Preproc.100-tokenize-e: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
    numSplitPieces=1
@@ -265,7 +448,7 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
 
 4-recaser.200.map: ON localhost machine-translation/descriptors/joshua/TruecaseMapper.py
 
-   FROM 2-Preproc.100-tokenize-e
+   FROM LM-1.news2009.110.tokenize
      inputCorpus < tokenizedCorpus
 
 4-recaser.truecaseLM: ON localhost machine-translation/descriptors/lm/BuildLanguageModel.py
@@ -273,7 +456,7 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    smoothingType=kndiscount1 -kndiscount2 -kndiscount3 -kndiscount4 -kndiscount5
    interpolate=false
 
-   FROM 2-Preproc.100-tokenize-e
+   FROM LM-1.news2009.110.tokenize
      corpusIn < tokenizedCorpus
 
 5-Tune.700-extract-grammar: ON localhost machine-translation/descriptors/joshua/GrammarExtractorJoshua.py
@@ -324,8 +507,8 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 0a-dev.lowercase-f
      fDevSents < normalizedCorpus
 
-   FROM 1-BuildLM.530-reuse
-     lmFile < lm
+   FROM LM-1.400.interpolate
+     lmFile < interpolated-lm
 
 5-Tune.weightsFile: ON localhost efs
    paramConfigFile=/home/elav01/experiments/metawp2/joshua-run/init/params.txt
@@ -336,9 +519,6 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    useDefaultGlue=true
    markOovs=false
    nBest=1
-
-   FROM 1-BuildLM.530-reuse
-     lmFile < lm
 
    FROM 0d-test2008.tokenize
      fSentsIn < normalizedCorpus
@@ -357,6 +537,9 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
 
    FROM 6-Test2008.extract-grammar
      tmFile < englishGrammar
+
+   FROM LM-1.400.interpolate
+     lmFile < interpolated-lm
 
 6-Test2008.805-selectbest: ON localhost machine-translation/descriptors/joshua/ExtractTopBestJoshua.py
 
@@ -438,8 +621,8 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
    FROM 6-Test2010.extract-grammar
      tmFile < englishGrammar
 
-   FROM 1-BuildLM.530-reuse
-     lmFile < lm
+   FROM LM-1.400.interpolate
+     lmFile < interpolated-lm
 
 6-Test2010.805-selectbest: ON localhost machine-translation/descriptors/joshua/ExtractTopBestJoshua.py
 
@@ -518,11 +701,11 @@ FS-training-corpus-1: ON localhost machine-translation/descriptors/parallelcorpu
      numThreads <- numThreads
      heapSizeInMegs <- heapSizeInMegs
 
-   FROM 1-BuildLM.530-reuse
-     lmFile < lm
-
    FROM 6-Test2011.extract-grammar
      tmFile < englishGrammar
+
+   FROM LM-1.400.interpolate
+     lmFile < interpolated-lm
 
 6-Test2011.805-selectbest: ON localhost machine-translation/descriptors/joshua/ExtractTopBestJoshua.py
 
@@ -595,15 +778,40 @@ FS-concatenate: -233 502
 FS-languagepair: -397 324
 FS-training-corp-2: -361 517
 FS-training-corpus-1: -361 448
+LM-1.400.interpolate: 175 -346
+LM-1.nc6.100.get: -110 -337
+LM-1.nc6.110.tokenize: -80 -352
+LM-1.nc6.120.lowercase: -53 -370
+LM-1.nc6.BuildLM: -25 -381
+LM-1.news20.2007.BuildLM: 48 -50
+LM-1.news20.2008.BuildLM: 3 -124
+LM-1.news20.2009.BuildLM: 8 -192
+LM-1.news20.2010.BuildLM: 16 -255
+LM-1.news20.2011.BuildLM: 33 -308
+LM-1.news2007.100.get: -46 3
+LM-1.news2007.110.tokenize: -24 -5
+LM-1.news2007.120.lowercase: 0 -26
+LM-1.news2008.100.get: -124 -82
+LM-1.news2008.110.tokenize: -86 -99
+LM-1.news2008.120.lowercase: -41 -111
+LM-1.news2009.100.get: -120 -154
+LM-1.news2009.110.tokenize: -82 -169
+LM-1.news2009.120.lowercase: -37 -180
+LM-1.news2010.100.get: -135 -217
+LM-1.news2010.110.tokenize: -81 -223
+LM-1.news2010.120.lowercase: -27 -233
+LM-1.news2011.100.get: -70 -265
+LM-1.news2011.110.tokenize: -37 -279
+LM-1.news2011.120.lowercase: -2 -292
 0a-dev.corp: -398 -146
-0a-dev.lowercase-e: -298 -18
-0a-dev.lowercase-f: -163 -23
-0a-dev.tokenize-e: -335 -72
-0a-dev.tokenize-f: -199 -69
-0b-test2011.corpus: -312 121
-0b-test2011.lowercase: -273 91
-0b-test2011.ref: -330 82
-0b-test2011.tokenize: -294 107
+0a-dev.lowercase-e: -337 -44
+0a-dev.lowercase-f: -282 -91
+0a-dev.tokenize-e: -353 -78
+0a-dev.tokenize-f: -347 -121
+0b-test2011.corpus: -352 89
+0b-test2011.lowercase: -296 52
+0b-test2011.ref: -353 43
+0b-test2011.tokenize: -317 68
 0c-test2010.corpus: -278 198
 0c-test2010.lowercase: -253 184
 0c-test2010.ref: -304 200
@@ -612,7 +820,6 @@ FS-training-corpus-1: -361 448
 0d-test2008.lowercase: -109 271
 0d-test2008.ref: -180 284
 0d-test2008.tokenize: -79 260
-1-BuildLM.530-reuse: 185 -168
 2-Preproc.100-tokenize-e: -156 466
 2-Preproc.110-tokenize-f: -97 571
 2-Preproc.150-lowercase-e: -92 410
