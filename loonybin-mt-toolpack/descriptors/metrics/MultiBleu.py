@@ -22,8 +22,10 @@ class MultiMetric(Tool):
     def getCommands(self, params, inputs, outputs):
         # multimetric.sh refs hyps scoresOut
         commands = []
-        command = 'perl multi-bleu.perl %(refs)s < %(hyps)s '%inputs
+        command = 'perl ./generic/multi-bleu.perl %(refs)s < %(hyps)s '%inputs
         command += '>  %(bleuOut)s'%outputs
+        commands.append(command)
+        command = 'echo "Results: `cat %(bleuOut)s`" '
         commands.append(command)
         return commands
 

@@ -2,7 +2,7 @@ from loonybin import Tool
 
 class ParamFilename(Tool):
     def getName(self):
-        return 'Machine Translation/Parallel Corpus/Dynamic Filenames'
+        return 'Machine Translation/Monolingual Corpus/Dynamic Filenames'
     
     def getDescription(self):
         return "Allows to enter filenames that include replacement wildcards, allowing for execution of multiple language pairs, whose data are located at the same directory"
@@ -10,9 +10,9 @@ class ParamFilename(Tool):
     
     def getParamNames(self):
         return [ ('corpus', 'corpus file, replacement wildcards allowed'),
-                 ('sourceLanguage', 'abbreviation used for source language'),
-                 ('targetLanguage', 'abbreviation used for source language'),
-                 ('langPair', 'abbreviation used for the language pair') ]
+                 ('source-language', 'abbreviation used for source language'),
+                 ('target-language', 'abbreviation used for source language'),
+                 ('language-pair', 'abbreviation used for the language pair') ]
     
     def getInputNames(self, params):
         return [  ]
@@ -21,9 +21,9 @@ class ParamFilename(Tool):
         return [ ('corpus', 'corpus file, replacements done')            ]
     
     def __doReplacements__(self, filename, params):
-        filename = filename.replace("$src", params['sourceLanguage'])
-        filename = filename.replace("$tgt", params['targetLanguage'])
-        filename = filename.replace("$pair", params['langPair'])
+        filename = filename.replace("$src", params['source-language'])
+        filename = filename.replace("$tgt", params['target-language'])
+        filename = filename.replace("$pair", params['language-pair'])
         return filename
     
     def getCommands(self, params, inputs, outputs):   
