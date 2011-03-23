@@ -100,7 +100,20 @@ def train_classifiers(filename="evaluations_all.jcml"):
     dataset =  reader.get_dataset()
     class_name = "rank"
     #TODO: get list of attributes directly from feature generators
-    desired_attributes={'tgt-1_berkeley-n' : 'c', 'tgt-1_berkeley-best-parse-confidence' : 'c', 'tgt-1_berkeley-avg-confidence' :'c'}
+    desired_attributes={'tgt-1_berkeley-n' : 'c', 
+                        'tgt-1_berkeley-best-parse-confidence' : 'c', 
+                        'tgt-1_berkeley-avg-confidence' :'c',
+                        'tgt-1_prob' :'c',
+                        'tgt-1_system' :'d',
+                        'tgt-1_length_ratio' :'d',
+                        'tgt-2_berkeley-n' : 'c',
+                        'tgt-2_berkeley-best-parse-confidence' : 'c', 
+                        'tgt-2_berkeley-avg-confidence' :'c',
+                        'tgt-2_prob' :'c',
+                        'tgt-2_system' :'d',
+                        'tgt-2_length_ratio' :'d',
+                        }
+    
     training_data = OrangeData(dataset, class_name, desired_attributes)
     
     #train data
@@ -117,7 +130,15 @@ def train_classifiers(filename="evaluations_all.jcml"):
     training_data.print_statistics()
     # compute accuracies
     
-
+    import orange, orngLR
+    
+    lr = orngLR.LogRegLearner(training_data.get_data()) # compute classification accuracy 
+    correct = 0.0 
+    for ex in training_data.get_data: 
+        if lr(ex) == ex.getclass(): 
+            correct += 1
+    print "Classification accuracy:", correct/len(training_data.get_data()) 
+    orngLR.printOUT(lr) 
     
     
     
