@@ -21,6 +21,9 @@ class SRILMFeatureGenerator(FeatureGenerator):
         if src_lang == self.lang:
             prob = self.__get_sentence_probability__(simplesentence)
             simplesentence.add_attribute("prob", prob)
+            print "Got src probability"
+        else:
+            print "Src lang didn't match"
         return simplesentence
 
     def add_features_tgt(self, simplesentence, parallelsentence):

@@ -84,7 +84,7 @@ def add_external_features(given_filename="evaluations_all.jcml"):
     
     #Berkeley feature generator
     berkeley_en = BerkeleyFeatureGenerator("http://localhost:8682", "en")
-    berkeley_de =BerkeleyFeatureGenerator("http://localhost:8683", "de")
+    berkeley_de = BerkeleyFeatureGenerator("http://localhost:8683", "de")
     
     
     #proceed with parcing
