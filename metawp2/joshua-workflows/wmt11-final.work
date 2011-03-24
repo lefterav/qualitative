@@ -97,7 +97,7 @@ LM-1.nc6.BuildLM: ON localhost machine-translation/descriptors/lm/BuildLanguageM
 
 LM-1.news20.2007.BuildLM: ON localhost machine-translation/descriptors/lm/BuildLanguageModel.py
    order=5
-   smoothingType=kndiscount
+   smoothingType=kndiscount1 -kndiscount2 -kndiscount3
    interpolate=true
 
    FROM LM-1.news2007.120.lowercase
@@ -129,7 +129,7 @@ LM-1.news20.2010.BuildLM: ON localhost machine-translation/descriptors/lm/BuildL
 
 LM-1.news20.2011.BuildLM: ON localhost machine-translation/descriptors/lm/BuildLanguageModel.py
    order=5
-   smoothingType=kndiscount
+   smoothingType=kndiscount1 -kndiscount2 -kndiscount3
    interpolate=true
 
    FROM LM-1.news2011.120.lowercase
@@ -774,86 +774,86 @@ all: 6-Test2011.830-detokenize
 
 # The following entries contain position data for the visual interface. You should never need to modify this. 
 [GUI]
-FS-concatenate: -233 502
-FS-languagepair: -397 324
-FS-training-corp-2: -361 517
-FS-training-corpus-1: -361 448
-LM-1.400.interpolate: 175 -346
-LM-1.nc6.100.get: -110 -337
-LM-1.nc6.110.tokenize: -80 -352
-LM-1.nc6.120.lowercase: -53 -370
-LM-1.nc6.BuildLM: -25 -381
-LM-1.news20.2007.BuildLM: 48 -50
-LM-1.news20.2008.BuildLM: 3 -124
-LM-1.news20.2009.BuildLM: 8 -192
-LM-1.news20.2010.BuildLM: 16 -255
-LM-1.news20.2011.BuildLM: 33 -308
-LM-1.news2007.100.get: -46 3
-LM-1.news2007.110.tokenize: -24 -5
-LM-1.news2007.120.lowercase: 0 -26
-LM-1.news2008.100.get: -124 -82
-LM-1.news2008.110.tokenize: -86 -99
-LM-1.news2008.120.lowercase: -41 -111
-LM-1.news2009.100.get: -120 -154
-LM-1.news2009.110.tokenize: -82 -169
-LM-1.news2009.120.lowercase: -37 -180
-LM-1.news2010.100.get: -135 -217
-LM-1.news2010.110.tokenize: -81 -223
-LM-1.news2010.120.lowercase: -27 -233
-LM-1.news2011.100.get: -70 -265
-LM-1.news2011.110.tokenize: -37 -279
-LM-1.news2011.120.lowercase: -2 -292
-0a-dev.corp: -398 -146
-0a-dev.lowercase-e: -337 -44
-0a-dev.lowercase-f: -282 -91
-0a-dev.tokenize-e: -353 -78
-0a-dev.tokenize-f: -347 -121
+FS-concatenate: -102 682
+FS-languagepair: -370 513
+FS-training-corp-2: -230 697
+FS-training-corpus-1: -230 628
+LM-1.400.interpolate: 278 -344
+LM-1.nc6.100.get: -6 -335
+LM-1.nc6.110.tokenize: 23 -350
+LM-1.nc6.120.lowercase: 50 -368
+LM-1.nc6.BuildLM: 78 -379
+LM-1.news20.2007.BuildLM: 151 -48
+LM-1.news20.2008.BuildLM: 106 -122
+LM-1.news20.2009.BuildLM: 111 -190
+LM-1.news20.2010.BuildLM: 119 -253
+LM-1.news20.2011.BuildLM: 136 -306
+LM-1.news2007.100.get: 57 4
+LM-1.news2007.110.tokenize: 79 -3
+LM-1.news2007.120.lowercase: 103 -24
+LM-1.news2008.100.get: -20 -80
+LM-1.news2008.110.tokenize: 17 -97
+LM-1.news2008.120.lowercase: 62 -109
+LM-1.news2009.100.get: -16 -152
+LM-1.news2009.110.tokenize: 21 -167
+LM-1.news2009.120.lowercase: 66 -178
+LM-1.news2010.100.get: -31 -215
+LM-1.news2010.110.tokenize: 22 -221
+LM-1.news2010.120.lowercase: 76 -231
+LM-1.news2011.100.get: 33 -263
+LM-1.news2011.110.tokenize: 66 -277
+LM-1.news2011.120.lowercase: 101 -290
+0a-dev.corp: -378 -146
+0a-dev.lowercase-e: -317 -44
+0a-dev.lowercase-f: -262 -91
+0a-dev.tokenize-e: -333 -78
+0a-dev.tokenize-f: -327 -121
 0b-test2011.corpus: -352 89
 0b-test2011.lowercase: -296 52
-0b-test2011.ref: -353 43
+0b-test2011.ref: -379 102
 0b-test2011.tokenize: -317 68
-0c-test2010.corpus: -278 198
-0c-test2010.lowercase: -253 184
-0c-test2010.ref: -304 200
-0c-test2010.tokenize: -218 170
-0d-test2008.corpus: -145 284
-0d-test2008.lowercase: -109 271
-0d-test2008.ref: -180 284
-0d-test2008.tokenize: -79 260
-2-Preproc.100-tokenize-e: -156 466
-2-Preproc.110-tokenize-f: -97 571
-2-Preproc.150-lowercase-e: -92 410
-2-Preproc.160-lowercase-f: -21 515
-3-BuildTM.200-subsample-for-tm: 195 405
-3-BuildTM.300-berkeley-aligner: 337 397
-3-BuildTM.400-build-suffix-array-for-tm: 351 337
-3-BuildTM.concatenate-08-10: 129 261
-3-BuildTM.concatenate-all: 129 293
-3-BuildTM.concatenate-dev-test: 133 235
-4-recaser.200.map: 553 504
-4-recaser.truecaseLM: 530 525
-5-Tune.700-extract-grammar: 265 135
-5-Tune.700-tune: 293 107
-5-Tune.weightsFile: 246 68
-6-Test2008.800-decode: 582 101
-6-Test2008.805-selectbest: 607 85
-6-Test2008.810-disambig: 647 72
-6-Test2008.820-striptags: 670 60
-6-Test2008.830-detokenize: 697 40
-6-Test2008.840-bleu: 745 20
-6-Test2008.extract-grammar: 554 116
-6-Test2010.800-decode: 483 -50
-6-Test2010.805-selectbest: 533 -61
-6-Test2010.810-disambig: 580 -76
-6-Test2010.820-striptags: 623 -88
-6-Test2010.830-detokenize2010: 658 -100
-6-Test2010.840-bleu: 705 -123
-6-Test2010.extract-grammar: 448 -34
-6-Test2011.800-decode: 395 -178
-6-Test2011.805-selectbest: 430 -204
-6-Test2011.810-disambig: 471 -226
-6-Test2011.820-striptags: 496 -252
-6-Test2011.830-detokenize: 522 -273
-6-Test2011.840-bleu: 557 -288
-6-Test2011.extract-grammar: 371 -154
+0c-test2010.corpus: -352 221
+0c-test2010.lowercase: -327 207
+0c-test2010.ref: -378 237
+0c-test2010.tokenize: -292 193
+0d-test2008.corpus: -343 353
+0d-test2008.lowercase: -307 340
+0d-test2008.ref: -377 369
+0d-test2008.tokenize: -277 329
+2-Preproc.100-tokenize-e: -11 628
+2-Preproc.110-tokenize-f: -13 661
+2-Preproc.150-lowercase-e: 53 576
+2-Preproc.160-lowercase-f: 62 605
+3-BuildTM.200-subsample-for-tm: 220 557
+3-BuildTM.300-berkeley-aligner: 362 549
+3-BuildTM.400-build-suffix-array-for-tm: 376 489
+3-BuildTM.concatenate-08-10: 154 413
+3-BuildTM.concatenate-all: 154 445
+3-BuildTM.concatenate-dev-test: 158 387
+4-recaser.200.map: 547 -377
+4-recaser.truecaseLM: 524 -356
+5-Tune.700-extract-grammar: 540 131
+5-Tune.700-tune: 568 103
+5-Tune.weightsFile: 521 64
+6-Test2008.800-decode: 752 194
+6-Test2008.805-selectbest: 769 169
+6-Test2008.810-disambig: 807 148
+6-Test2008.820-striptags: 832 124
+6-Test2008.830-detokenize: 871 100
+6-Test2008.840-bleu: 891 75
+6-Test2008.extract-grammar: 710 208
+6-Test2010.800-decode: 755 -19
+6-Test2010.805-selectbest: 793 -35
+6-Test2010.810-disambig: 815 -60
+6-Test2010.820-striptags: 839 -78
+6-Test2010.830-detokenize2010: 865 -98
+6-Test2010.840-bleu: 891 -119
+6-Test2010.extract-grammar: 708 -3
+6-Test2011.800-decode: 727 -212
+6-Test2011.805-selectbest: 762 -238
+6-Test2011.810-disambig: 803 -260
+6-Test2011.820-striptags: 828 -286
+6-Test2011.830-detokenize: 854 -307
+6-Test2011.840-bleu: 889 -322
+6-Test2011.extract-grammar: 703 -188
 
