@@ -40,7 +40,7 @@ class InterpolateLM(Tool):
         for i in xrange(1, numFiles+1):
             lms.append(inputs["lm%d" % i]) 
         lmfiles = ','.join(lms)          
-        return ['perl /ems/support/interpolate-lm.perl --tuning %s --name %s  --srilm %s/bin/i686 --lm %s ' % (inputs["fTuningCorpus"], outputs["interpolated-lm"], paths["srilm"], lmfiles)]
+        return ['perl ./ems/support/interpolate-lm.perl --tuning %s --name %s  --srilm %s/bin/i686 --lm %s ' % (inputs["fTuningCorpus"], outputs["interpolated-lm"], paths["srilm"], lmfiles)]
 
 
 
