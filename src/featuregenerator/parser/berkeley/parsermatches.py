@@ -12,28 +12,53 @@ class ParserMatches(FeatureGenerator):
     '''
     classdocs
     '''
-    self.mappings=[(["NP"], ["NP"]),
+    mappings=[(["NP"], ["NP"]),
               (["VP", "VZ"], ["VP"]),
               (["VVFIN", "VAFIN",  "VMFIN", "VAINF", "VVINF" ,"VVPP" ], ["VB", "VBZ", "VBP", "VBN", "VBG" ]),
-              (["NN", "NE"], ["NN", "NNP", "NNS"])
+              (["NN", "NE"], ["NN", "NNP", "NNS"]),
               (["PP"], ["PP"])]
-    
+
 
     def __init__(self, params=[]):
         '''
         Constructor
         '''
     
+    def __count_nodetags__(self, treestring="", taglist=[]):
+        match_count = 0
+        for parse_tag in taglist:
+            parse_tag = "(%s" %parse_tag #get the bracket so that you can search in the parse string
+            match_count += treestring.count(parse_tag)
+        return match_count
+
+    def add_features_src(self, simplesentence, parallelsentence):
+        attributes = {}
+        src_parse = simplesentence.get_attribute("berkeley-tree")
+        for (src_map, tgt_map) in self.mappings:
+            src_map_count = self.__count_nodetags__(src_parse, src_map)
+            attributes["parse-%s" % src_map[0]] = str(src_map_count)
+            
+            
     def add_features_tgt(self, simplesentence, parallelsentence):
+        attributes = {}
         tgt_parse = simplesentence.get_attribute("berkeley-tree")
         src_parse = parallelsentence.get_source().get_attribute("berkeley-tree")
         if tgt_parse and src_parse:
-            src_map_count = 0
-            tgt_map_count = 0
-            
             for (src_map, tgt_map) in self.mappings:
-                tree_tag = "(%s"% tgt_map
-                tgt_parse.count() 
+                src_map_count = int(parallelsentence.get_source().get_attribute("parse-%s" %src_map[0]))
+                tgt_map_count = self.__count_nodetags__(tgt_parse, tgt_map)
+                attributes["parse-%s" %tgt_map[0]] = tgt_map_count
+                if tgt_map_count != 0:
+                    attributes["parse-ratio-%s" % tgt_map[0]] = str(1.0 * src_map_count / tgt_map_count)
+                else:
+                    attributes["parse-ratio-%s" % tgt_map[0]] = str(float("Inf"))
+        simplesentence.add_attributes(attributes)
+        return simplesentence
+        
+
+                    
+                    
+                    
                     
                      
     

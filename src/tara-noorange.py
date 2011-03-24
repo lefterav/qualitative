@@ -79,8 +79,8 @@ def add_external_features(given_filename="evaluations_all.jcml"):
     lfg = LengthFeatureGenerator()
     
     #SRILM feature generator
-    srilm_en = SRILMFeatureGenerator("http://134.96.187.4:8585", "en")
-    srilm_de = SRILMFeatureGenerator("http://134.96.187.4:8586", "de")
+    #srilm_en = SRILMFeatureGenerator("http://134.96.187.4:8585", "en" )
+    srilm_de = SRILMFeatureGenerator("http://134.96.187.4:8586", "de" )
     
     #Berkeley feature generator
     berkeley_en = BerkeleyFeatureGenerator("http://localhost:8682", "en")
@@ -88,7 +88,7 @@ def add_external_features(given_filename="evaluations_all.jcml"):
     
     
     #proceed with parcing
-    saxreader = SaxJCMLProcessor( file_object2, [lfg, srilm_en, srilm_de, berkeley_en, berkeley_de] )
+    saxreader = SaxJCMLProcessor( file_object2, [lfg, srilm_de, berkeley_en, berkeley_de] )
     myparser = make_parser( )
     myparser.setContentHandler( saxreader )
     myparser.parse( file_object )
@@ -179,10 +179,10 @@ if __name__ == '__main__':
     
     #add_external_features()
     #split_corpus()
-    #add_external_features("test08.xml")
+    add_external_features("train08.xml")
     
-    filename = dir + "featured_test08.xml"
-    train_classifiers(filename)
+    #filename = dir + "featured_test08.xml"
+    #train_classifiers(filename)
     
         
     
