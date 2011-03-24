@@ -29,7 +29,8 @@ class BerkeleyFeatureGenerator(FeatureGenerator):
             atts = self.get_features_sentence(simplesentence, parallelsentence)
             simplesentence.add_attributes(atts)
         return simplesentence      
-        
+    
+    #Warning: not language-aware function. Use the ones above
     def get_features_sentence(self, simplesentence, parallelsentence):
         sent_string = simplesentence.get_string()
         results = self.server.BParser.parse ( sent_string )
