@@ -16,7 +16,9 @@ class ParserMatches(FeatureGenerator):
               (["VP", "VZ"], ["VP"]),
               (["VVFIN", "VAFIN",  "VMFIN", "VAINF", "VVINF" ,"VVPP" ], ["VB", "VBZ", "VBP", "VBN", "VBG" ]),
               (["NN", "NE"], ["NN", "NNP", "NNS"]),
-              (["PP"], ["PP"])]
+              (["PP"], ["PP"]),
+              (["$."], ["."]),
+              (["$,"], [","])]
 
 
     def __init__(self, params=[]):
