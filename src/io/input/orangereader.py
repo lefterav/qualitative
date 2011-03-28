@@ -21,7 +21,7 @@ class OrangeData:
         Handles the conversion of the generic data objects to a format handled by Orange library
     """
     
-    def __init__ (self, dataSet, class_name, desired_attributes=[]):
+    def __init__ (self, dataSet, class_name="", desired_attributes=[], keep_temp=False):
         
         if isinstance ( dataSet , orange.ExampleTable ):
             self.data = dataSet
@@ -36,10 +36,12 @@ class OrangeData:
             tmpFileName = self.__writeTempFile__(fileData)
 
             #load the data
+            print "Feeding file to Orange"
             self.data = orange.ExampleTable(tmpFileName)
             print "Loaded ", len(self.data) , " sentences from file " , tmpFileName
             #get rid of the temp file
-            os.unlink(tmpFileName)
+            if not keep_temp:
+                os.unlink(tmpFileName)
         return None
     
     
@@ -186,6 +188,7 @@ class OrangeData:
         line_1 = "" #line for the name of the arguments
         line_2 = "" #line for the type of the arguments
         line_3 = "" #line for the definition of the class 
+        print "Getting attributes"
         attribute_names = dataset.get_all_attribute_names()
         
         print attribute_names
@@ -195,6 +198,7 @@ class OrangeData:
         #if not desired_attributes:
         #    desired_attributes =  attribute_names
         
+        print "Constructing file"
         #prepare heading
         for attribute_name in attribute_names :
             #line 1 holds just the names
@@ -332,8 +336,12 @@ class OrangeData:
         correct = [0.0]*len(classifiers)
         for ex in self.data:
             for i in range(len(classifiers)):
-                if classifiers[i](ex) == ex.getclass():
-                    correct[i] += 1
+                try:
+                    if classifiers[i](ex) == ex.getclass():
+                        correct[i] += 1
+                except:
+                    print "kind of error"
+                
         for i in range(len(correct)):
             correct[i] = correct[i] / len(self.data)
         return correct

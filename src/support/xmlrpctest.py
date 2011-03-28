@@ -2,6 +2,8 @@ from twisted.web.xmlrpc import Proxy
 from twisted.internet import reactor, stdio
 from twisted.protocols import basic
 import sys
+import base64
+
 
    
 
@@ -32,6 +34,9 @@ class Shell(basic.LineReceiver):
         m = tline.split('(')
         method = m.pop(0)
         args = m[0].split(',')
+        for arg in args:
+            arg = base64.standard_b64encode(arg)
+        
        
         self.proxy.callRemote(method,*args).addCallbacks(self.printValue, self.printError)
         self.sendLine('Echo: ' + line)
