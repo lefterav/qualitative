@@ -4,11 +4,11 @@ import sys
 
 
 class _Input:
-    SOURCE_FILENAME = '' # source filename
-    TARGET_SENTENCES_FILENAME = '' # filename of target
+    SOURCE_FILENAME = None # source filename
+    TARGET_SENTENCES_FILENAME = None # filename of target
     # sentences list
     SOURCE_SENTENCES_FILENAME = '' # required filename
-    OUTPUT_FILENAME = ''
+    OUTPUT_FILENAME = None
     # of source sentences list
     SYSTEM = '' # system (z.B. Google)
     TARGET_LANG = '' # target language
@@ -17,12 +17,12 @@ class _Input:
 # Function prints a list of all required and possible parameters.
 def help():
     print "\nList of parameters:"
-    print "-i [Input filename]"
-    print "-o [Output filename]"
-    print "-j [Name of input file with target sentences list]"
-    print "-t [Required name of output file with source sentences list]"
-    print "-s [Kind of system]"
-    print "-l [Target language]\n"
+    print "-i [Input filename in DEB format]"
+    print "-t [Output filename for sentence/line extraction  (function 1)]"
+    print "-j [Input filename containing translated sentences in sentence/line format]"
+    print "-o [Output filename re-wrapping translation outcome into the original format (function 2)]"
+    print "-s [Name/id of system]"
+    print "-l [Target language code e.g. en]\n"
     
 
 # Function checks, if the user gave all required arguments.
@@ -36,7 +36,7 @@ def check_args(Input):
 #        print "ERROR: Missing parameter -t [Required name of output " \
 #          "file with source sentences list]"
 #    if not Input.TARGET_SENTENCES_FILENAME:
-#        stop = True
+#        stop = True    
 #        print "ERROR: Missing parameter -j [Name of input file " \
 #          "with target sentences list]"
 #    if not Input.SYSTEM:
@@ -53,7 +53,7 @@ def check_args(Input):
 # variables and checks, if the user gave all required arguments.
 def read_commandline_args(Input):
     try:
-        args = getopt.getopt(sys.argv[1:], "i:j:t:s:l:")[0]
+        args = getopt.getopt(sys.argv[1:], "i:j:t:o:s:l:")[0]
     except getopt.GetoptError:
         help()
         sys.exit("Program terminated.")
@@ -136,13 +136,13 @@ def create_output_file(filename, output_filename, text):
 Input = _Input()
 Input = read_commandline_args(Input)
 
-if (Input.SOURCE_FILENAME and Input.SOURCE_SENTENCES_FILENAME):
+if (Input.SOURCE_FILENAME and Input.SOURCE_SENTENCES_FILENAME != ''):
     # Reads the source file.
     text = read_source_file(Input.SOURCE_FILENAME)
     
     # Saves source sentences line by line as a list to the file.
     save_source_sentences(Input.SOURCE_SENTENCES_FILENAME, text)
-    
+    print 
 else:
     # Reads the source file.
     text = read_source_file(Input.SOURCE_FILENAME)
