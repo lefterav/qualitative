@@ -43,7 +43,8 @@ TESTSETS = {
             }
 
 
-PTRN_SUBMISSIONS = '%s/submissions/%s.%s.%s'
+#PTRN_SUBMISSIONS = '%s/submissions/%s.%s.%s'
+
 PTRN_SOURCEREF = '%s/src-ref/%s.%s'
 
 SYSTEMSET1 = ['rbmt3']
@@ -63,20 +64,32 @@ def intersect(a, b):
  
  
 
-def extract_sentence(path, system, langpairection, sentence_index, testset):
+def extract_sentence(path, system, langpair, sentence_index, testset, config):
     result = ''
+    fieldmap={ 'path' : path ,
+            'langpair' : langpair,
+            'testset' : testset,
+            'system' : system } 
+            
     if system != '_ref':
-        translations = list(enumerate(codecs.open(PTRN_SUBMISSIONS % (path, langpairection, testset, system), 'r', 'utf-8')))
+        pattern_submissions = config.get('data', 'pattern_submissions')
+        try:
+            filename = codecs.open(pattern_submissions % fieldmap, 'r', 'utf-8')
+        except:
+            sys.stderr.write("possibly system %s is not provided for this language pair %s and testset %s, please filter it out through config file to proceed" % (system, langpair, testset))
+            sys.exit() 
+        translations = list(enumerate(filename))
         for (index, sentence) in translations:
             if index == sentence_index:
                 result = sentence
                 break
     else:
-        result = extract_ref(path, langpairection[-2:], sentence_index)
+        result = extract_ref(path, langpair[-2:], sentence_index)
 
     return result
 
-def extract_source(path, language, sentence_index, testset):
+def extract_source(path, language, sentence_index, testset, config):
+    PTRN_SOURCEREF=config.get("data","pattern_sourceref")
     translations = list(enumerate(codecs.open(PTRN_SOURCEREF %
                                (path,  testset, language), 'r', 'utf-8')))
     result = ''
@@ -88,7 +101,8 @@ def extract_source(path, language, sentence_index, testset):
         print "Cannot resolve sentence [" + str(sentence_index) + "] in file " + PTRN_SOURCEREF % (path,  testset, language)
     return result
 
-def extract_ref(path, language, sentence_index):
+def extract_ref(path, language, sentence_index, config):
+    PTRN_SOURCEREF=config.get("data","pattern_sourceref")    
     translations = list(enumerate(codecs.open(PTRN_SOURCEREF %
                                (path, language), 'r', 'utf-8')))
     result = ''
@@ -229,7 +243,18 @@ def get_pairs_combinatorial(list):
     pairs.sort()
     return pairs
             
-
+"""
+    Some fields in WMT08 and WMT09 need to be expanded, because they are separated with space instead of comma
+    @param list: A list of elements that will be broken into pairs
+    @return: a list of tuples of items 
+"""
+def expand_field(fields, colposition, separator):
+    col1 = fields[colposition].split(separator)
+    #task = col1[0]
+    adaptedfields = fields[0:colposition]
+    adaptedfields.extend(col1)
+    adaptedfields.extend(fields[colposition+1:len(fields)])
+    return adaptedfields
 
         
             
@@ -256,7 +281,7 @@ def parse_sentences(judgments, path, config):
     entry_id = 0
     accepted_id =0
     avg_rank = 0
-    
+    firstline = True
     
     SYSTEM_FIELDS = config.get("format", "systems").split(",")
     CSV_MAPPING_SCORE = config.get("format", "scores").split(",")
@@ -271,18 +296,34 @@ def parse_sentences(judgments, path, config):
     for line in judgments:
         #general counter
         entry_id += 1
-        fields = line.split(',')
+        separator = config.get("format", "separator").replace("\s", " ").replace("\\t", u"\t") #take care of separators that are a space
+        fields = line.split(separator)
+        
         #Jump first line (header)
-        if fields[0]=='TASK':
+        if firstline:
+            firstline=False
             continue
-    
-        #First column has a lot of data separated with spaces
-        col1 = fields[0].split(' ')
-        #task = col1[0]
         
-        #extract the langsrc and trg language from language pair
-        language_pair = col1[1].split('-')
+        if len(fields) < 3:
+            continue
         
+        
+        if config.getboolean("format", "col_task_span"):
+            #First column has a lot of data separated with spaces
+            separator = config.get("format", "col_task_separator").replace("\s", " ")
+            colposition = config.getint("format", "col_task")
+            fields=expand_field(fields, colposition, separator)
+
+        
+        if config.getboolean("format", "col_langpair_span"):
+            #extract the langsrc and trg language from language pair
+            colposition = config.getint("format", "col_langpair")
+            language_pair = fields[colposition].split('-')
+            #fields = expand_field(fields, colposition, '')
+        
+        if len(language_pair) < 2:
+            sys.err.write("Language not detected")
+            
        
         langsrc = language_pair[0]
         langtgt = language_pair[1]
@@ -293,7 +334,8 @@ def parse_sentences(judgments, path, config):
             pass   
         langpair = "%s-%s" % (langsrc, langtgt)
     
-        testset = TESTSETS[col1[2]]
+        testset_name = fields[config.getint("format", "testset")]
+        testset = config.get('testsets', testset_name)
         type = fields[ config.getint("format", "type") ]
         index = int(fields[ config.getint("format", "index") ])
         
@@ -320,7 +362,7 @@ def parse_sentences(judgments, path, config):
             print "\n" , index ,
             cur_testset = testset
             sentence_judgments = {}
-        	
+
             
         #apply filters
         if config.get("filters", "types"):
@@ -347,6 +389,8 @@ def parse_sentences(judgments, path, config):
             unacceptablelangtgt = config.get("filters-exclude", "langtgt").split(",")
             if langtgt in unacceptablelangtgt:
                 continue
+        
+
 
         
         system_names = []
@@ -355,6 +399,10 @@ def parse_sentences(judgments, path, config):
         for system_field in SYSTEM_FIELDS:
             try:
                 system_name = fields[int(system_field)]
+                if config.get("filters-exclude", "systems"):
+                    unacceptablesystems = config.get("filters-exclude", "systems").split(",")
+                    if system_name in unacceptablesystems:
+                        continue
                 system_names.append( system_name )
                 systems_count += 1
             except:
@@ -412,14 +460,14 @@ def process_sentence_judgments (sentence_judgments, cur_langpair, cur_langsrc, c
         rank = math.copysign(1, rank)
         
         #browse special file for the sentence text
-        target1_string = extract_sentence(path, desiredsystem1, cur_langpair, cur_index, cur_testset)
-        target2_string = extract_sentence(path, desiredsystem2, cur_langpair, cur_index, cur_testset)
+        target1_string = extract_sentence(path, desiredsystem1, cur_langpair, cur_index, cur_testset, config)
+        target2_string = extract_sentence(path, desiredsystem2, cur_langpair, cur_index, cur_testset, config)
         
         target1 = SimpleSentence(target1_string, {'system': desiredsystem1 })
         target2 = SimpleSentence(target2_string, {'system': desiredsystem2 })
         target = [target1, target2]
         
-        source_string = extract_source(path, cur_langsrc, cur_index, cur_testset)
+        source_string = extract_source(path, cur_langsrc, cur_index, cur_testset, config)
         source = SimpleSentence(source_string)
 
         parallelsentence = ParallelSentence (source, target)
@@ -443,7 +491,7 @@ if __name__ == "__main__":
         #print 'USAGE: %s SORTEDJUDGMENTS.CSV PATH' % sys.argv[0]
         #print '\tpath = path to folder with evaluation raw data'
     else:
-        config = ConfigParser.ConfigParser()
+        config = ConfigParser.RawConfigParser()
         config.read([ sys.argv[1] ])
         filename = config.get("data", "filename")
         path = config.get("data", "path")
