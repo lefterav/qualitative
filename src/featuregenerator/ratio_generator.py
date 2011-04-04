@@ -26,10 +26,21 @@ class RatioGenerator(FeatureGenerator):
         #get the length of the source
         tgt_attributes = simplesentence.get_attributes()
         src_attributes = parallelsentence.get_source().get_attributes()
-        src_length = int(parallelsentence.get_source().get_attributes())
-        tgt_length = len(PunktWordTokenizer().tokenize(sent_string))
-        length_ratio = src_length / tgt_length
-        simplesentence.add_attribute("length", str(tgt_length))
-        simplesentence.add_attribute("length_ratio", str(length_ratio))
+        
+        #if there are two features with the same name in bot src and target, calculate their ratio and add it
+        for tgt_attribute_name in tgt_attributes.keys():
+            if tgt_attribute_name in src_attributes.keys():
+                try:
+                    new_attribute_name = "%s_ratio" % tgt_attribute_name
+                    if new_attribute_name not in tgt_attributes.keys():
+                        #do calculations only if needed
+                        tgt_attribute_value = float(tgt_attributes[tgt_attribute_name])
+                        src_attribute_value = float(src_attributes[tgt_attribute_name])
+                        ratio = 1.0 * src_attribute_value / tgt_attribute_value
+                        simplesentence.add_attribute(new_attribute_name, str(ratio))
+                except ValueError:
+                    pass
+                    
+                    
         return simplesentence
         

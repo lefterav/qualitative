@@ -1,0 +1,1 @@
+python newstest2010_conversion.py -i newstest2010-src.de_1030.sgm -j target_sentences_list.txt -s new_source_sentences_list.txt -l en

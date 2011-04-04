@@ -15,10 +15,11 @@ from classifier.svm import SVM
 from os import getenv
 import os
 import pickle
+import orange, orngLR
 
 from io.input.orangereader import OrangeData
 from io.output.xmlwriter import XmlWriter
-
+ 
 class Experiment:
 
     desired_attributes={ 
@@ -116,45 +117,13 @@ class Experiment:
         myparser = make_parser( )
         myparser.setContentHandler( saxreader )
         myparser.parse( file_object )
-    
-    
-    def train_classifiers_tab(self, filename, tabfile):
-        import orange
-        orangetable = orange.ExampleTable(tabfile)
-        print "Passing data to Orange"
-        training_data = OrangeData(orangetable)
-        dataset=None
-        #train data
-            
-        
-            
-        #training_data.cross_validation()
-        #training_data.print_statistics()
-        # compute accuracies
-        
-        import orange, orngLR
-        
-        print "training loglinear"
-        lr = orngLR.LogRegLearner(training_data.get_data()) # compute classification accuracy
-        print "Bayes" 
-        bayes = Bayes( training_data )
-        print "Tree"
-        tree = TreeLearner( training_data )
-        print "SVM"
-        svm = SVM ( training_data )
-        
-    
-        bayes.name = "bayes"
-        tree.name = "tree"
-        svm.name = "SVM"
-        lr.name = "logl"
-        
-        return [lr, bayes, tree, svm]
        
     
     def train_classifiers(self, filename="evaluations_all.jcml"):
-        if filename.endswith(".ord"):
-            training_data = pickle.load(filename)            
+        if filename.endswith(".tab"):
+            orangetable = orange.ExampleTable(filename)
+            print "Passing data to Orange"
+            training_data = OrangeData(orangetable)
         else:
             print "Reading XML"
             reader = XmlReader(filename)
@@ -166,17 +135,12 @@ class Experiment:
             training_data = OrangeData(dataset, class_name, self.desired_attributes, True)
             dataset=None
             #train data
-            
-        
-            
-        #training_data.cross_validation()
+            #training_data.cross_validation()
         #training_data.print_statistics()
         # compute accuracies
         
-        import orange, orngLR
-        
         print "training loglinear"
-        lr = orngLR.LogRegLearner(training_data.get_data()) # compute classification accuracy
+#        lr = orngLR.LogRegLearner(training_data.get_data()) # compute classification accuracy
         print "Bayes" 
         bayes = Bayes( training_data )
         print "Tree"
@@ -188,9 +152,10 @@ class Experiment:
         bayes.name = "bayes"
         tree.name = "tree"
         svm.name = "SVM"
-        lr.name = "logl"
+        #lr.name = "logl"
         
-        return [lr, bayes, tree, svm]
+        
+        return [ bayes, tree, svm]
         
     
     def test_classifiers(self, classifiers, filename):
@@ -242,10 +207,14 @@ if __name__ == '__main__':
     #add_external_features()
     #split_corpus()
     #add_external_features("train08.xml")
-    #add_external_features("test08.xml")
+    
     myexperiment = Experiment()
+    
+    #myexperiment.add_external_features("test08.xml")
+    
     train_filename = dir + "featured_train08.xml"
-    classifiers = myexperiment.train_classifiers_tab(train_filename, '/home/elav01/workspace/TaraXUscripts/src/tmpa04du_.tab')
+    classifiers = myexperiment.train_classifiers('/home/elav01/workspace/TaraXUscripts/src/tmpa04du_.tab')
+    #classifiers = myexperiment.train_classifiers('/home/elav01/workspace/TaraXUscripts/src/tmpa04du_.tab')
     test_filename = dir + "featured_test08.xml"
     myexperiment.test_classifiers(classifiers, test_filename)
     

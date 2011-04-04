@@ -76,8 +76,9 @@ def extract_sentence(path, system, langpair, sentence_index, testset, config):
         try:
             filename = codecs.open(pattern_submissions % fieldmap, 'r', 'utf-8')
         except:
-            sys.stderr.write("possibly system %s is not provided for this language pair %s and testset %s, please filter it out through config file to proceed" % (system, langpair, testset))
-            sys.exit() 
+            sys.stderr.write("possibly system %s is not provided for this language pair %s and testset %s, please filter it out through config file to proceed\n" % (system, langpair, testset))
+            return ""
+            #sys.exit() 
         translations = list(enumerate(filename))
         for (index, sentence) in translations:
             if index == sentence_index:
@@ -249,6 +250,7 @@ def get_pairs_combinatorial(list):
     @return: a list of tuples of items 
 """
 def expand_field(fields, colposition, separator):
+
     col1 = fields[colposition].split(separator)
     #task = col1[0]
     adaptedfields = fields[0:colposition]
@@ -304,15 +306,21 @@ def parse_sentences(judgments, path, config):
             firstline=False
             continue
         
-        if len(fields) < 3:
+        if fields<5:
+            sys.stderr.write("Broken line. Check separator")
             continue
+            
+
         
         
         if config.getboolean("format", "col_task_span"):
             #First column has a lot of data separated with spaces
             separator = config.get("format", "col_task_separator").replace("\s", " ")
             colposition = config.getint("format", "col_task")
-            fields=expand_field(fields, colposition, separator)
+            try:
+                fields=expand_field(fields, colposition, separator)
+            except:
+                continue
 
         
         if config.getboolean("format", "col_langpair_span"):
@@ -320,18 +328,18 @@ def parse_sentences(judgments, path, config):
             colposition = config.getint("format", "col_langpair")
             language_pair = fields[colposition].split('-')
             #fields = expand_field(fields, colposition, '')
-        
-        if len(language_pair) < 2:
-            sys.err.write("Language not detected")
             
        
+        if len(language_pair)<2:
+            continue
+        
         langsrc = language_pair[0]
         langtgt = language_pair[1]
         try:
             langsrc = LANGUAGES[language_pair[0]]
             langtgt = LANGUAGES[language_pair[1]]
         except:
-            pass   
+            continue   
         langpair = "%s-%s" % (langsrc, langtgt)
     
         testset_name = fields[config.getint("format", "testset")]

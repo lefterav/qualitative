@@ -1,0 +1,3598 @@
+<tstset trglang="en">
+<doc sysid="google" id="DG_gesamt" source_language="de" target_language="en">
+
+<sentence id="4" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">DAfStb-Richtlinie „Qualität der Bewehrung“</target>
+</sentence>
+
+<sentence id="5" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Inzwischen haben sich diese Leistungen in die Zulieferkette verschoben.</target>
+</sentence>
+
+<sentence id="6" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Die dort enthaltenen Regelungen richten sich zumeist an den Bauleiter ohne genauer zu spezifizieren, um wen es sich dabei eigentlich handelt.</target>
+</sentence>
+
+<sentence id="7" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Demzufolge müssen Arbeiten nach der vorliegenden Richtlinie zwischen den Vertragspartnern ausdrücklich vereinbart werden.</target>
+</sentence>
+
+<sentence id="8" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Die Berücksichtigung der Anforderungen dieser DAfStb Richtlinie in den Ausführungsunterlagen ist als besondere Leistung zusätzlich zu den Grundleistungen zu vereinbaren.</target>
+</sentence>
+
+<sentence id="9" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">DIN 1045-1 bzw. DIN EN 1992-1-1</target>
+</sentence>
+
+<sentence id="10" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Für die Anwendung dieser Richtlinie gelten die folgenden Begriffe.</target>
+</sentence>
+
+<sentence id="11" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Unter Ausführungsunterlagen sind in der vorliegenden Richtlinie folgende Zeichnungen und Listen zu verstehen:</target>
+</sentence>
+
+<sentence id="12" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Stücklisten für Zubehörteile,</target>
+</sentence>
+
+<sentence id="13" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Als eine Bewehrungsposition werden alle Bewehrungselemente mit identischer Geometrie (Längenmaß, Biegeform etc.) und gleichem Stabdurchmesser verstanden.</target>
+</sentence>
+
+<sentence id="14" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Winkelmaß für die Abweichung aus der Hauptebene einer Bewehrung.</target>
+</sentence>
+
+<sentence id="15" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Passmaße werden z. B. erforderlich bei besonderen Anforderungen an die Maßgenauigkeit bei komplizierten Bewehrungsführungen.</target>
+</sentence>
+
+<sentence id="16" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Über die Durchführung einer Sonderüberwachung entscheidet die Überwachungsstelle.</target>
+</sentence>
+
+<sentence id="17" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Die Überwachungsstelle muss die Anforderungen gemäß DIN 18200 erfüllen.</target>
+</sentence>
+
+<sentence id="18" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Die Zertifizierungsstelle muss die Anforderungen gemäß DIN 18200 erfüllen.</target>
+</sentence>
+
+<sentence id="19" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Eine Lagerung, bei der die Bewehrung mit dem Erdreich in Berührung kommt, ist nicht zulässig.</target>
+</sentence>
+
+<sentence id="20" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">4.1.2.7	Herstellung von mechanischen Verbindungen</target>
+</sentence>
+
+<sentence id="21" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">4.2	Toleranzen für die Weiterverarbeitung von Betonstahl</target>
+</sentence>
+
+<sentence id="22" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Tabelle 2 - Grenzabweichungen von Längen- und Passmaßen (in mm)</target>
+</sentence>
+
+<sentence id="23" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">In Abhängigkeit vom Stabdurchmesser des Bügels gelten folgende Grenzabweichungen für den Abstand der zu stoßenden Bügelschenkel (siehe Bild 2):</target>
+</sentence>
+
+<sentence id="24" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">In Abhängigkeit vom Stabdurchmesser der Biegeform gelten folgende Anforderungen an die Ebenheit der Biegeform (siehe Bild 3):</target>
+</sentence>
+
+<sentence id="25" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Dabei können sowohl einzelne Längen einer Biegeform als Passmaße als auch komplette Bewehrungspositionen (z. B. Bügel) als Passform gekennzeichnet werden.</target>
+</sentence>
+
+<sentence id="26" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">5.1.2	Regeln für den Einbau der Bewehrung</target>
+</sentence>
+
+<sentence id="27" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Die Prüfung ist ausschließlich eine Plausibilitätsprüfung und sollte, sofern vorhanden, mit der für den Rohbau verantwortlichen Bauleitung gemeinsam durchgeführt werden.</target>
+</sentence>
+
+<sentence id="28" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Unterstützung der oberen Bewehrung;</target>
+</sentence>
+
+<sentence id="29" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Montagebügel in U-Form bei den Wänden;</target>
+</sentence>
+
+<sentence id="30" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">wird zudem, sofern vorhanden, die für den Rohbau verantwortliche Bauleitung in Kenntnis zu</target>
+</sentence>
+
+<sentence id="31" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(1)	Für das Biegen der Bewehrung auf der Baustelle gilt 4.1.2.5.</target>
+</sentence>
+
+<sentence id="32" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(5)	Bei besonderen Anforderungen an die Steifigkeit des Bewehrungsgeflechtes, z. B. Aufgrund besonderer Betonierverfahren, sind gesonderte Maßnahmen mit dem Auftraggeber des Verlegebetriebes abzustimmen.</target>
+</sentence>
+
+<sentence id="33" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">5.2	Toleranzen für die Weiterverabeitung von Betonstahl auf der Baustelle</target>
+</sentence>
+
+<sentence id="34" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Angabe der Verlegeabstände;</target>
+</sentence>
+
+<sentence id="35" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">5.3.2	Grenzabweichung für das Verlegemaß zur Einhaltung der Betondeckung</target>
+</sentence>
+
+<sentence id="36" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">werden (z. B. abhängig von der Bauteilhöhe, bei gekrümmten Bauteilen, etc.).</target>
+</sentence>
+
+<sentence id="37" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Mindestabstände dürfen grundsätzlich nicht unterschritten werden.</target>
+</sentence>
+
+<sentence id="38" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">5.3.4	Grenzabweichungen für Längenmaße</target>
+</sentence>
+
+<sentence id="39" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">5.3.7	Grenzabweichungen für Verankerungslängen</target>
+</sentence>
+
+<sentence id="40" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	Stücklisten für Einbauteile und Bewehrungspositionen.</target>
+</sentence>
+
+<sentence id="41" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Die Art und der Aufbau der Schalung sind auf die Bewehrungszeichnungen und die Betonierreihenfolge abzustimmen.</target>
+</sentence>
+
+<sentence id="42" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Die Darstellungen müssen mit den Bezeichnungen in den statischen Berechnungen übereinstimmen und sollten alle Größen beinhalten, die für die Konstruktion der Bauteile, die Nachprüfung der Maße und die Kontrolle von Toleranzen notwendig sind (siehe auch DIN EN ISO 3766).</target>
+</sentence>
+
+<sentence id="43" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Anzahl, Stabdurchmesser, Form und Lage von Bewehrungsstäben;</target>
+</sentence>
+
+<sentence id="44" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	der Abstand zwischen den Stäben;</target>
+</sentence>
+
+<sentence id="45" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Anordnung, Maße und Ausbildung von Stößen;</target>
+</sentence>
+
+<sentence id="46" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	der Mattenaufbau bei Zeichnungsmatten;</target>
+</sentence>
+
+<sentence id="47" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Art, Anzahl und Anordnung der Abstandhalter für die Bewehrung;</target>
+</sentence>
+
+<sentence id="48" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die für den Einbau erforderliche Montagebewehrung und konstruktive Bewehrung;</target>
+</sentence>
+
+<sentence id="49" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	der Typ und die Lage der mechanischen Verbindungselemente;</target>
+</sentence>
+
+<sentence id="50" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Lage und Breite von Rüttelgassen;</target>
+</sentence>
+
+<sentence id="51" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Lage von Betonieröffnungen;</target>
+</sentence>
+
+<sentence id="52" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	Bewegungsfugen (Arbeitsfugen sind gegebenenfalls durch den Ausführenden vor Ausführung auf den Bewehrungsplänen zu ergänzen);</target>
+</sentence>
+
+<sentence id="53" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	gegebenenfalls die Hinweise auf besondere Maßnahmen zur Qualitätssicherung;</target>
+</sentence>
+
+<sentence id="54" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	bei Änderungen: Art der Änderung mit Datum.</target>
+</sentence>
+
+<sentence id="55" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(4)	Bei der Verwendung von Fertigteilen sind ferner anzugeben:</target>
+</sentence>
+
+<sentence id="56" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Mindestdruckfestigkeit des Betons beim Transport und bei der Montage;</target>
+</sentence>
+
+<sentence id="57" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die auf der Baustelle zusätzlich zu verlegende Bewehrung in gesonderter Darstellung.</target>
+</sentence>
+
+<sentence id="58" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	Bei jedem Bewehrungselement ein eindeutiger Verweis auf die Positionsnummern der Bewehrungszeichnung;</target>
+</sentence>
+
+<sentence id="59" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	alle Außenmaße der Biegeformen und Betonstahlmatten;</target>
+</sentence>
+
+<sentence id="60" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Biegerollendurchmesser für gebogene Bewehrung.</target>
+</sentence>
+
+<sentence id="61" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Die Fremdüberwachung muss durch eine Überwachungsstelle erfolgen.</target>
+</sentence>
+
+<sentence id="62" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(1)	Bei Anlieferung jeder Betonstahlmenge ist anhand der Lieferpapiere die Herkunft des Betonstahls lückenlos wie folgt zu prüfen:</target>
+</sentence>
+
+<sentence id="63" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(3)	In gleicher Weise muss die Überprüfung von mechanischen Verbindungen, Unterstützungen und Bewehrungsanschlüssen erfolgen.</target>
+</sentence>
+
+<sentence id="64" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(2)	Bei der Herstellung von mechanischen Verbindungen sind die nach den allgemeinen bauaufsichtlichen Zulassungen geforderten Proben sachgemäß anzufertigen und der Überwachungsstelle zu übergeben.</target>
+</sentence>
+
+<sentence id="65" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Bei Mehrfachbiegungen ist zusätzlich noch die Ebenheit zu prüfen.</target>
+</sentence>
+
+<sentence id="66" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Liegt bei einem Bügel eines der Maße nach B.2.4 (1) außerhalb der geforderten Toleranzen, so ist die gesamte Bewehrungsposition zu prüfen.</target>
+</sentence>
+
+<sentence id="67" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(2)	Unter Umständen kann eine Sonderüberwachung erforderlich werden.</target>
+</sentence>
+
+<sentence id="68" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(4)	Übernimmt der Biegebetrieb im Rahmen einer allgemeinen bauaufsichtlichen Zulassung die Ausführung von mechanischen Betonstahlverbindungen, so sind die in der allgemeinen bauaufsichtlichen Zulassung geforderten Nachweise zu erbringen.</target>
+</sentence>
+
+<sentence id="69" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(4)	Die Ergebnisse der Prüfung sind schriftlich in geeigneter Weise zu dokumentieren.</target>
+</sentence>
+
+<sentence id="70" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	20 Prüfungen an Bügeln maximal 2 die Anforderungen nicht erfüllen.</target>
+</sentence>
+
+<sentence id="71" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(3)	Bei Beanstandungen kann die Eignungsprüfung frühestens nach 3 Monaten, höchstens aber zweimal wiederholt werden.</target>
+</sentence>
+
+<sentence id="72" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Das Zertifikat wird für die Dauer von drei Jahren erteilt.</target>
+</sentence>
+
+<sentence id="73" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Eigenüberwachung durch den Biegebetrieb im vorgeschriebenen Umfang durchgeführt und dokumentiert wird,</target>
+</sentence>
+
+<sentence id="74" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die gefertigte Bewehrung mit den Stahllisten und den Bewehrungszeichnungen übereinstimmt,</target>
+</sentence>
+
+<sentence id="75" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Steifigkeit von Bewehrungskörben ausreichend ist,</target>
+</sentence>
+
+<sentence id="76" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Messgeräte geeignet sind,</target>
+</sentence>
+
+<sentence id="77" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Lagerung und Beschriftung der gefertigten Positionen korrekt erfolgt.</target>
+</sentence>
+
+<sentence id="78" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">B.3.5 Dokumentation der Fremdüberwachung</target>
+</sentence>
+
+<sentence id="79" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Die Fremdüberwachung muss durch eine Überwachungsstelle erfolgen.</target>
+</sentence>
+
+<sentence id="80" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">ANMERKUNG Die im Folgenden beschriebenen Prüfungen auf der Baustelle ersetzen nicht die Bewehrungskontrolle durch einen Prüfingenieur.</target>
+</sentence>
+
+<sentence id="81" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(5)	Sollten bei der Überprüfung Abweichungen von den Zeichnungsvorgaben festgestellt werden oder Zweifel am Zustand der gelieferten Bewehrung bestehen, sind der Auftraggeber des Verlegebetriebes und die für den Rohbau verantwortliche Bauleitung zu informieren.</target>
+</sentence>
+
+<sentence id="82" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(2)	Es gelten die Toleranzen nach 4.2.2 bis 4.2.5 dieser Richtlinie.</target>
+</sentence>
+
+<sentence id="83" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Dabei sind die Stückzahl und die Durchmesser sowie an einer Probe die unter C.2.3 (1) aufgeführten Merkmale zu prüfen.</target>
+</sentence>
+
+<sentence id="84" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(2)	Es gelten die Toleranzen nach 5.3 dieser Richtlinie.</target>
+</sentence>
+
+<sentence id="85" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(3)	Im Rahmen der Eigenüberwachung sind stichprobenartige Überprüfungen in folgender Mindestanzahl durchzuführen:</target>
+</sentence>
+
+<sentence id="86" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Bei stabförmigen Bauteilen hat je 10 m an jeder Seite eine Überprüfung zu erfolgen.</target>
+</sentence>
+
+<sentence id="87" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Bei stabförmigen Bauteilen hat je 10 m an jeder Seite eine Überprüfung zu erfolgen.</target>
+</sentence>
+
+<sentence id="88" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Bei stabförmigen Bauteilen hat je 10 m eine Überprüfung zu erfolgen.</target>
+</sentence>
+
+<sentence id="89" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Eine Intensivierung der Überprüfungen nach (a) bis (e) kann zwischen Auftragnehmer und Auftraggeber vereinbart werden.</target>
+</sentence>
+
+<sentence id="90" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(1)	Die Fremdüberwachung besteht aus</target>
+</sentence>
+
+<sentence id="91" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(2)	Unter Umständen kann eine Sonderüberwachung erforderlich sein.</target>
+</sentence>
+
+<sentence id="92" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(2)	Übernimmt der Verlegebetrieb im Rahmen einer allgemeinen bauaufsichtlichen Zulassung die Ausführung von mechanischen Betonstahlverbindungen, so sind die in der Zulassung geforderten Nachweise zu erbringen.</target>
+</sentence>
+
+<sentence id="93" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Es gelten die Toleranzen nach Abschnitt 5.3 dieser Richtlinie.</target>
+</sentence>
+
+<sentence id="94" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	20 Prüfungen an Bügeln maximal 2 die Anforderungen nicht erfüllen.</target>
+</sentence>
+
+<sentence id="95" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">In diesen Fällen ist die Anzahl der Prüfungen jeweils zu verdoppeln.</target>
+</sentence>
+
+<sentence id="96" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(4)	Bei Beanstandungen kann die Eignungsprüfung frühestens nach 3 Monaten, höchstens aber zweimal wiederholt werden.</target>
+</sentence>
+
+<sentence id="97" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Das Zertifikat wird für die Dauer von drei Jahren erteilt.</target>
+</sentence>
+
+<sentence id="98" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die korrekte Anarbeitung von mechanischen Verbindungen,</target>
+</sentence>
+
+<sentence id="99" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Steifigkeit von Bewehrungskörben,</target>
+</sentence>
+
+<sentence id="100" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Lagerung und Beschriftung der auf der Baustelle gefertigten Bewehrungspositionen,</target>
+</sentence>
+
+<sentence id="101" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">–	die Qualifikation des Personals des Verlegebetriebes.</target>
+</sentence>
+
+<sentence id="102" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(2)	Personal und Anlagen müssen den Anforderungen gemäß der Eignungsprüfung entsprechen.</target>
+</sentence>
+
+<sentence id="103" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(2)	Im Rahmen der Sonderüberwachung wird ein Bauabschnitt erneut überprüft.</target>
+</sentence>
+
+<sentence id="104" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Die Eigenüberwachung ist die vom Hersteller vorzunehmende kontinuierliche Überwachung der Produktion, um sicherzustellen, dass die von ihm hergestellten Produkte den Anforderungen der maßgebenden technischen Regeln entsprechen.</target>
+</sentence>
+
+<sentence id="105" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">Das Fertigteilwerk ist laut dieser Richtlinie ausschließlich Verlegebetrieb.</target>
+</sentence>
+
+<sentence id="106" data_source="N-2010-0711-DE.doc_utf8.xml">
+	<target system="google">(1)	Die Maßnahmen zur Eigenüberwachung im Fertigteilwerk in Abhängigkeit der Aufgabenverteilung nach D.1.2 sind Tabelle D.1 zu entnehmen.</target>
+</sentence>
+
+<sentence id="107" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Landesgesetz, mit dem das Landesgesetz über das Aufstellen und den Betrieb</target>
+</sentence>
+
+<sentence id="108" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Den Landesgesetzgebern ist es dementsprechend möglich, im Rahmen des § 5 GSpG die Aufstellung und den Betrieb Glücksspielautomaten zu erlauben oder zu verbieten.</target>
+</sentence>
+
+<sentence id="109" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">-	Beschränkung der Anzahl der Glücksspielautomaten auf 1175,</target>
+</sentence>
+
+<sentence id="110" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">-	Maßnahmen zur Geldwäschevorbeugung und Terrorismusbekämpfung,</target>
+</sentence>
+
+<sentence id="111" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">-	Kontrollmaßnahmen und Aufsicht,</target>
+</sentence>
+
+<sentence id="112" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Die Gesetzgebungskompetenz des Landes beschränkt sich bei der Regelung eines Zuschlags zu einer Stammabgabe des Bundes auf die Höhe des Zuschlags in Form eines Prozentsatzes der Stammabgabe.</target>
+</sentence>
+
+<sentence id="113" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Damit beträgt der jährliche Ertrag der Glücksspielautomatenabgabe im Vollbetrieb aller 1.175 Glücksspielautomaten für das Land OÖ insgesamt 5.287.500 Euro.</target>
+</sentence>
+
+<sentence id="114" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Diesen Kosten stehen jedoch große Steuereinnahmen gegenüber.</target>
+</sentence>
+
+<sentence id="115" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Entsprechend der Richtlinie 98/34/EG des Europäischen Parlaments und des Rates über Informationsverfahren auf dem Gebiet der Normen und technischen Vorschriften und der Vorschriften für die Dienste der Informationsgesellschaft ( Richtlinie AB:1. L 204 vom 21. Juli 1998) erfolgt eine technische Notifikation.</target>
+</sentence>
+
+<sentence id="116" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Dieses Landesgesetz ist intentional auf den Schutz von Spielern ausgelegt und soll daher auf diese Gruppe besondere - positiv zu wertende - Auswirkungen haben.</target>
+</sentence>
+
+<sentence id="117" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Eine Mitwirkung von Bundesorganen im Sinn des Art. 97 Abs. 2 B-VG ist in den §§ 14 Abs. 4, 18 und 19 des Oö.</target>
+</sentence>
+
+<sentence id="118" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Die Begriffsbestimmungen werden im Wesentlichen aus dem Glücksspielgesetz  übernommen.</target>
+</sentence>
+
+<sentence id="119" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Es wurde auf einen Automaten heruntergebrochen, wobei das Mindesterfordernis von 8.000 Euro pro Automat ein in ein bis zwei Monaten erzielbares Einspielergebnis eines Automaten darstellt.</target>
+</sentence>
+
+<sentence id="120" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Die vorgesehene Bewilligungsdauer entspricht der Laufzeit für Spielbanken im Glücksspielgesetz.</target>
+</sentence>
+
+<sentence id="121" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Mit der vorgesehenen Regelung über die Einhaltung von Mindestabständen zwischen Spielbanken und Automatensalons mit mehr als 15 Glücksspielautomaten soll eine weitere Maßnahme zum Ausbau des Spielerschutzes gesetzt werden.</target>
+</sentence>
+
+<sentence id="122" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Die Bewilligung ist nur unter den Voraussetzungen des Abs. 2 zu erteilen.</target>
+</sentence>
+
+<sentence id="123" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Dies äußert sich insbesondere in einer Verpflichtung zum umfassenden Spielerschutzmonitoring, das gewährleistet, dass in Hinkunft auf ihre Besuchsfrequenz oder ihr Spielverhalten auffällige Spieler eine Handlungsverpflichtung der Bewilligungsinhaberin auslösen.</target>
+</sentence>
+
+<sentence id="124" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Einem Spielteilnehmer wird für die Nutzung an Glückspielautomaten in Einzelaufstellung eine eigene Spielerkarte nach Identitätsnachweis ausgestellt.</target>
+</sentence>
+
+<sentence id="125" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Die Vorschriften des § 25 Abs. 4 und 5 sind bereits in § 11 geregelt worden.</target>
+</sentence>
+
+<sentence id="126" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Die Pflichten der Bewilligungsinhaberin ergeben aus dem Glückspielgesetz.</target>
+</sentence>
+
+<sentence id="127" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Die Bestimmungen über das Spielgeheimnis gilt bereits für Bundeskonzessionäre.</target>
+</sentence>
+
+<sentence id="128" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Auch Bewilligungsinhaber sollen diese Transparenzauflage Folge leisten müssen.</target>
+</sentence>
+
+<sentence id="129" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Die Überprüfungsbefugnis schließt auch die Überprüfung der Glücksspielautomaten einschließlich der Spielprogramme und Spielinhalte mit ein.</target>
+</sentence>
+
+<sentence id="130" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Da sich die Stammabgabe des Bundes mit 10 % der Bemessungsgrundlage, das ist das Bruttoeinspielergebnis ohne Umsatzsteuer, errechnet, beträgt der Zuschlag im Ergebnis somit 15 % der Bemessungsgrundlage.</target>
+</sentence>
+
+<sentence id="131" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Grundlage für diese Abgabenbesteuerung ist der um die gesetzliche Umsatzsteuer verminderte Jahresbruttospielbetrag.</target>
+</sentence>
+
+<sentence id="132" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Die Aufteilung des Abgabenertrages erfolgt nach dem abgestuften Bevölkerungsschlüssel.</target>
+</sentence>
+
+<sentence id="133" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Die Begründung liegt darin, dass Gemeinden mit höherer Bevölkerungskonzentration überproportional höhere Kosten bspw. In Form von Theatern, Straßenbahnen) entstehen.</target>
+</sentence>
+
+<sentence id="134" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Die Höhe der Strafe orientiert sich am Strafrahmen des Glücksspielgesetzes.</target>
+</sentence>
+
+<sentence id="135" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Zu Z. 1 bis Z. 6 (§§ 1, 2, 3 und 5):</target>
+</sentence>
+
+<sentence id="136" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Glückspielautomatengesetz geregelt, sodass das Oö.</target>
+</sentence>
+
+<sentence id="137" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Zu Z. 7 und 8 (§§ 12 und 13 Abs. 1 Z. 1):</target>
+</sentence>
+
+<sentence id="138" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Die Bestimmungen müssen daher mit 1. Jänner 2011 aufgehoben werden.</target>
+</sentence>
+
+<sentence id="139" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">mit dem das Landesgesetz über das Aufstellen und den Betrieb</target>
+</sentence>
+
+<sentence id="140" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Glücksspielautomatengesetz) erlassen und das Oö.</target>
+</sentence>
+
+<sentence id="141" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">§ 12	Maßnahmen bei Einzelaufstellung</target>
+</sentence>
+
+<sentence id="142" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">§ 14	Maßnahmen zur Geldwäschevorbeugung</target>
+</sentence>
+
+<sentence id="143" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Jugendschutzgesetz 2001 und das Oö.</target>
+</sentence>
+
+<sentence id="144" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">7.	Einzelaufstellung: Die Aufstellung und der Betrieb von bis zu drei Glücksspielautomaten.</target>
+</sentence>
+
+<sentence id="145" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">1.	eine Kapitalgesellschaft mit einem Aufsichtsrat ist,</target>
+</sentence>
+
+<sentence id="146" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">5.	eine Konzernstruktur vorweist, die eine wirksame Aufsicht über die Bewilligungsinhaberin nicht behindert,</target>
+</sentence>
+
+<sentence id="147" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">8.	ein Konzept über die Einrichtung eines Warnsystems mit abgestuften Spielerschutzmaßnahmen von der Spielinformation bis zur Spielersperre abhängig vom Ausmaß der Besuche der Spielteilnehmerin bzw. des Spielteilnehmers in den Automatensalons sowie bei Einzelaufstellung vorlegt sowie</target>
+</sentence>
+
+<sentence id="148" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">1.	Die Dauer der Bewilligung; diese ist mit längstens 15 Jahre zu begrenzen;</target>
+</sentence>
+
+<sentence id="149" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">2.	die Höhe und Art der zu leistenden Sicherstellung;</target>
+</sentence>
+
+<sentence id="150" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">4.	die Anzahl der zulässigen Glücksspielautomaten sowie die Frist für ihre Aufstellung;</target>
+</sentence>
+
+<sentence id="151" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">5.	die Einhaltung der Maßnahmen zum Spielerschutz, der Geldwäschevorbeugung und der Aufsicht;</target>
+</sentence>
+
+<sentence id="152" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">3.	mit dem Enden des Bestehens der Rechtsform der Bewilligungsinhaberin oder</target>
+</sentence>
+
+<sentence id="153" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">(1) Eine Standortbewilligung für einen Automatensalon kann nur einer Inhaberin einer Ausspielbewilligung erteilt werden.</target>
+</sentence>
+
+<sentence id="154" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">(2) Der Antrag auf Bewilligung hat folgende Angaben zu enthalten:</target>
+</sentence>
+
+<sentence id="155" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">1.	Name und Anschrift der zuständigen Geschäftsleiterin oder des zuständigen  Geschäftsleiters,</target>
+</sentence>
+
+<sentence id="156" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Sie kann mit Auflagen und Bedingungen versehen sein, wenn dies dem öffentlichen Interesse, insbesondere der Sicherung der Entrichtung der Abgaben, der Einhaltung der Bestimmungen über den Spielerschutz, der Geldwäschevorbeugung sowie der Aufsicht dient.</target>
+</sentence>
+
+<sentence id="157" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">1.	die Dauer der Bewilligung; diese ist mit längstens 15 Jahren zu begrenzen,</target>
+</sentence>
+
+<sentence id="158" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">4.	die Verpflichtung, diese Automaten in der Höchstzahl aufzustellen und zu betreiben.</target>
+</sentence>
+
+<sentence id="159" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">1.	den Ablauf der Bewilligungsdauer oder</target>
+</sentence>
+
+<sentence id="160" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">2.	die Auflassung des Standortes oder</target>
+</sentence>
+
+<sentence id="161" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">(8) Als  verantwortliche Person darf nur bestellt werden, wer</target>
+</sentence>
+
+<sentence id="162" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">1.	die persönlichen Voraussetzungen des § 3 Abs. 2 Z. 4 erfüllt und</target>
+</sentence>
+
+<sentence id="163" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">2.	der Bestellung nachweislich zugestimmt hat.</target>
+</sentence>
+
+<sentence id="164" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Die Bewilligungsdauer darf 15 Jahre nicht übersteigen.</target>
+</sentence>
+
+<sentence id="165" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">1.	den Ablauf der Bewilligungsdauer oder</target>
+</sentence>
+
+<sentence id="166" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">2.	die Entfernung  des Glücksspielautomaten oder</target>
+</sentence>
+
+<sentence id="167" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">4.	die Schließung der Betriebsstätte bei Einzelaufstellung oder</target>
+</sentence>
+
+<sentence id="168" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Die Geschäftsleitung eines Automatensalons hat die Identität der Besucherin bzw. des Besuchers und die Daten des amtlichen Lichtbildausweises, mit dem diese Identität nachgewiesen wurde, festzuhalten und diese Aufzeichnungen mindestens fünf Jahre aufzubewahren.</target>
+</sentence>
+
+<sentence id="169" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">1.	Es sind Auskünfte bei einer unabhängigen Einrichtung einzuholen, die Bonitätsauskünfte erteilt.</target>
+</sentence>
+
+<sentence id="170" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">2.	Ist die Einholung unabhängiger Bonitätsauskünfte nicht möglich oder sind diese nicht aussagekräftig, so hat die Geschäftsleitung</target>
+</sentence>
+
+<sentence id="171" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Dieses System muss auch eine zeitliche Begrenzung der Spielzeiten an den Glücksspielautomaten ermöglichten.</target>
+</sentence>
+
+<sentence id="172" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Die Bestimmungen des § 11 Abs. 4 bis 7 gelten sinngemäß.</target>
+</sentence>
+
+<sentence id="173" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Spielverlauf und Spielprogramme</target>
+</sentence>
+
+<sentence id="174" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">1.	die vermögenswerte Leistung der Spielteilnehmerinnen bzw. Spielteilnehmer höchstens 10 Euro pro Spiel beträgt;</target>
+</sentence>
+
+<sentence id="175" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">6.	keine Jackpots ausgespielt werden;</target>
+</sentence>
+
+<sentence id="176" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">1.	die vermögenswerte Leistung der Spielerinnen bzw. Spieler höchstens 1 Euro pro Spiel beträgt;</target>
+</sentence>
+
+<sentence id="177" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">6.	keine Jackpots ausgespielt werden und</target>
+</sentence>
+
+<sentence id="178" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Maßnahmen zur Geldwäschevorbeugung</target>
+</sentence>
+
+<sentence id="179" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">In diesen Fällen dürfen laufende Transaktionen bis zur Entscheidung der Behörde nicht abgewickelt werden.</target>
+</sentence>
+
+<sentence id="180" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">(2) Die Bewilligungsinhaberin hat sicherzustellen, dass</target>
+</sentence>
+
+<sentence id="181" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Aufstellungsort aufliegenden technischen Handbuch angegeben und beschrieben sind.</target>
+</sentence>
+
+<sentence id="182" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">(2) Die Verpflichtung zur Wahrung des Spielgeheimnisses besteht nicht</target>
+</sentence>
+
+<sentence id="183" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">2.	gegenüber Verlassenschaftsabhandlungs- und Pflegschaftsgerichten;</target>
+</sentence>
+
+<sentence id="184" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">2.	die Bedingungen für den Eintritt in den Automatensalon</target>
+</sentence>
+
+<sentence id="185" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">3.	die Spielzeiten und den Preis der Eintrittskarten.</target>
+</sentence>
+
+<sentence id="186" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">(1) Behörden im Sinne dieses Landesgesetzes sind</target>
+</sentence>
+
+<sentence id="187" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">1.	die Landesregierung für die Verfahren nach §§ 3, 4, 7, 9, 10</target>
+</sentence>
+
+<sentence id="188" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">(2) Gegen Bescheide der Bezirksverwaltungsbehörde bzw. Bundespolizeidirektion kann Berufung an den unabhängigen Verwaltungssenat erhoben werden.</target>
+</sentence>
+
+<sentence id="189" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">(1) Die Organe des öffentlichen Sicherheitsdienstes haben an der Vollziehung der §§ 20 und 23 mitzuwirken durch</target>
+</sentence>
+
+<sentence id="190" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">1.	Vorbeugungsmaßnahmen gegen drohende Verwaltungsübertretungen und</target>
+</sentence>
+
+<sentence id="191" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">2.	Maßnahmen, die für die Einleitung von Verwaltungsstrafverfahren erforderlich sind.</target>
+</sentence>
+
+<sentence id="192" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">(4) Die im Abs. 1 genannten Personen haben bei der Wahrnehmung ihres Überprüfungs- und Anweisungsrechtes einen ihre Organschaft bestätigenden Ausweis mit sich zu führen und diesen auf Verlangen vorzuweisen.</target>
+</sentence>
+
+<sentence id="193" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">(1) Der Ertrag aus dem Zuschlag wird zwischen dem Land und den Gemeinden im Verhältnis von 60 % : 40 % geteilt.</target>
+</sentence>
+
+<sentence id="194" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">4.	gegen die Bewilligungsauflagen verstößt,</target>
+</sentence>
+
+<sentence id="195" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">9.	den behördlichen Organen nicht die Überprüfung in Sinn des § 20 ermöglicht,</target>
+</sentence>
+
+<sentence id="196" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">(1) Soweit in diesem Landesgesetz auf bundesrechtliche Vorschriften verwiesen wird, sind diese in folgender Fassung anzuwenden:</target>
+</sentence>
+
+<sentence id="197" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Jugendschutzgesetz 2001 und das Oö.</target>
+</sentence>
+
+<sentence id="198" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">4.	Im § 3 Abs. 2 Z. 7 wird die Wortfolge "Geldspielapparate bzw. um keine Geldspielprogramme" durch die Wortfolge "Glücksspielautomaten bzw. um keine Glücksspielprogramme handelt" ersetzt.</target>
+</sentence>
+
+<sentence id="199" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">6.	Im § 5 Abs. 2 entfällt die Wortfolge "jedenfalls Geldspielapparate oder Geldspielprogramme sind oder".</target>
+</sentence>
+
+<sentence id="200" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">das Aufstellen und den Betrieb von Spielapparaten;</target>
+</sentence>
+
+<sentence id="201" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">(2) Soweit durch Bestimmungen dieses Landesgesetzes der Zuständigkeitsbereich des Bundes, insbesondere in Angelegenheiten des Glücksspielmonopols, berührt wird, sind sie so auszulegen, dass sich keine über die Zuständigkeit des Landes hinausgehende rechtliche Wirkung ergibt.</target>
+</sentence>
+
+<sentence id="202" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Betreiberin, Betreiber: die Person, die über den Aufstellort verfügungsberechtigt ist;</target>
+</sentence>
+
+<sentence id="203" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Wettterminal: eine technische Einrichtung in einem Wettbüro oder in einer Wettannahmestelle, die ausschließlich der Übermittlung von Daten über eine Datenleitung zum bzw. vom Wettbüro dient;</target>
+</sentence>
+
+<sentence id="204" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">den Nachweis über das Verfügungsrecht der Betreiberin oder des Betreibers über den Aufstellort;</target>
+</sentence>
+
+<sentence id="205" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">eine schriftliche Bestätigung auszustellen, dass das Aufstellen nicht untersagt wird, oder</target>
+</sentence>
+
+<sentence id="206" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">(7) Jede Änderung der im Rahmen der Anzeige der Gemeinde gegenüber mitgeteilten Angaben und Daten, insbesondere Änderungen von Programmversionen bereits angezeigter Spielprogramme, Austausch von Spielprogrammen oder von Datenträgern, bedürfen vor ihrer Durchführung einer neuerlichen Anzeige; die Abs. 2 bis 6 gelten dabei sinngemäß.</target>
+</sentence>
+
+<sentence id="207" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">das Aufstellen von Geldspielapparaten;</target>
+</sentence>
+
+<sentence id="208" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">die Verwendung von Spielprogrammen,</target>
+</sentence>
+
+<sentence id="209" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">c) durch deren Spielinhalt oder Spielweise Menschen auf Grund ihres Geschlechts, ihrer Rasse, ihrer Hautfarbe, ihrer nationalen oder ethnischen Herkunft, ihres religiösen Bekenntnisses oder einer Behinderung herabgesetzt werden;</target>
+</sentence>
+
+<sentence id="210" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">(2) Die Landesregierung kann durch Verordnung feststellen, welche Arten oder Typen von Spielapparaten oder Spielprogrammen jedenfalls Geldspielapparate oder Geldspielprogramme sind oder von den Verboten gemäß Abs. 1 umfasst sind.</target>
+</sentence>
+
+<sentence id="211" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">die Gemeinde für das Anzeigeverfahren gemäß § 3 und für die Erhebung der Zuschlagsabgaben nach § 12,</target>
+</sentence>
+
+<sentence id="212" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">die Landesregierung für die Bewilligungen nach § 7,</target>
+</sentence>
+
+<sentence id="213" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Glücksspielgesetz - GSpG, BGBl.Nr. 620/1989, zuletzt geändert durch das Bundesgesetz BGBl.</target>
+</sentence>
+
+<sentence id="214" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Strafregistergesetz 1968, BGBl.Nr. 277, zuletzt geändert durch das Bundesgesetz BGBl.</target>
+</sentence>
+
+<sentence id="215" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Strafgesetzbuch, BGBl.Nr. 60/1974, zuletzt geändert durch das Bundesgesetz BGBl.</target>
+</sentence>
+
+<sentence id="216" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">mit dem das Landesgesetz über das Aufstellen und den Betrieb</target>
+</sentence>
+
+<sentence id="217" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Glücksspielautomatengesetz) erlassen und das Oö.</target>
+</sentence>
+
+<sentence id="218" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">Jugendschutzgesetz 2001 und das Oö.</target>
+</sentence>
+
+<sentence id="219" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">4.	Im § 3 Abs. 2 Z. 7 wird die Wortfolge "Geldspielapparate bzw. um keine Geldspielprogramme" durch die Wortfolge "Glücksspielautomaten bzw. um keine Glücksspielprogramme handelt" ersetzt.</target>
+</sentence>
+
+<sentence id="220" data_source="N-2010-0718-DE.doc_utf8.xml">
+	<target system="google">6.	Im § 5 Abs. 2 entfällt die Wortfolge "jedenfalls Geldspielapparate oder Geldspielprogramme sind oder".</target>
+</sentence>
+
+<sentence id="221" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">I S. 1619) eingefügt, § 12 Absatz 1 durch Artikel 1 Nummer 4 des Gesetzes vom 15. Juli 2006 (BGBl.</target>
+</sentence>
+
+<sentence id="222" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">I S. 1950) neu gefasst und § 36c durch Artikel 8 Nummer 10 des Gesetzes vom 27. Juli 2001 (BGBl.</target>
+</sentence>
+
+<sentence id="223" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">	des § 7 Absatz 4 des Bundes-Immissionsschutzgesetzes,</target>
+</sentence>
+
+<sentence id="224" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">In der Inhaltsübersicht wird in der Angabe zu Anhang 3 die Zahl „7“ durch die Zahl „8“ ersetzt.</target>
+</sentence>
+
+<sentence id="225" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">In § 1 Absatz 3 Nummer 3 Buchstabe b werden nach den Wörtern „getroffen worden sind,“ die Wörter „mit Ausnahme der §§ 14 bis 17,“ eingefügt.</target>
+</sentence>
+
+<sentence id="226" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">In § 2 Nummer 33 werden die Wörter „und unter Berücksichtigung“ durch die Wörter „bei Anwendung“ ersetzt.</target>
+</sentence>
+
+<sentence id="227" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">aa) Satz 1 wird wie folgt geändert:</target>
+</sentence>
+
+<sentence id="228" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">bb) Satz 2 wird wie folgt geändert:</target>
+</sentence>
+
+<sentence id="229" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">aa) Nummer 2 wird wie folgt gefasst:</target>
+</sentence>
+
+<sentence id="230" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">cc) Die bisherigen Nummern 3 und 4 werden die Nummern 4 und 5.</target>
+</sentence>
+
+<sentence id="231" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">b) In Absatz 2 Satz 1 und 2 wird jeweils vor dem Wort „gefährliche“ das Wort „andere“ eingefügt.</target>
+</sentence>
+
+<sentence id="232" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">aa) Satz 5 wird durch folgende Sätze ersetzt:</target>
+</sentence>
+
+<sentence id="233" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">bb) Im neuen Satz 10 wird vor dem Wort „gefährliche“ das Wort „andere“ eingefügt.</target>
+</sentence>
+
+<sentence id="234" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">e) Folgender Absatz 6 wird eingefügt:</target>
+</sentence>
+
+<sentence id="235" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">f) Die bisherigen Absätze 6 bis 9 werden Absätze 7 bis 10.</target>
+</sentence>
+
+<sentence id="236" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">Dem § 13 Absatz 5 wird folgender Satz angefügt:</target>
+</sentence>
+
+<sentence id="237" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">a) In Absatz 2 Nummer 1 wird das Wort „künstliche“ durch die Wörter „andere gefährliche“    ersetzt.</target>
+</sentence>
+
+<sentence id="238" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">b) Absatz 3 wird wie folgt geändert:</target>
+</sentence>
+
+<sentence id="239" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">„§ 6 Absatz 4 Satz 3 gilt entsprechend.“</target>
+</sentence>
+
+<sentence id="240" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">§ 18 Absatz 2 wird wie folgt geändert:</target>
+</sentence>
+
+<sentence id="241" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">(1) Für die Errichtung und den Betrieb von Langzeitlagern gelten die folgenden Vorschriften entsprechend:</target>
+</sentence>
+
+<sentence id="242" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">2.  für die Klasse IV der § 3 Absatz 2 und 3, die §§ 4 bis 6, § 7 Absatz 2 sowie die §§ 8, 9, 12, 13 und 18.</target>
+</sentence>
+
+<sentence id="243" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">(2) Metallische Quecksilberabfälle können in folgenden Langzeitlagern angenommen werden:</target>
+</sentence>
+
+<sentence id="244" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">In § 26 Absatz 2 wird die Angabe „§ 25 Absatz 4“ durch die Wörter „§ 25 Absatz 3 und 4“ ersetzt.</target>
+</sentence>
+
+<sentence id="245" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">b) In Nummer 10 wird die Angabe „Absatz 6“ durch die Angabe „Absatz 7“ ersetzt.</target>
+</sentence>
+
+<sentence id="246" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">e) Nummer 32 wird wie folgt gefasst:</target>
+</sentence>
+
+<sentence id="247" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">„32. entgegen § 13 Absatz 4 die zuständige Behörde nicht oder nicht rechtzeitig unterrichtet,“</target>
+</sentence>
+
+<sentence id="248" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">f) Nummer 33 wird wie folgt gefasst:</target>
+</sentence>
+
+<sentence id="249" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">g) Nummer 35 wird wie folgt gefasst:</target>
+</sentence>
+
+<sentence id="250" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">Anhang 1 wird wie folgt geändert:</target>
+</sentence>
+
+<sentence id="251" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">bb) Satz 3 Nummer 13 wird wie folgt gefasst:</target>
+</sentence>
+
+<sentence id="252" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">Abweichend von Satz 1 können mineralische Abdichtungskomponenten, deren Wirksamkeit nicht mit Durchlässigkeitsbeiwerten beschrieben werden kann, eingesetzt werden, wenn sie im fünfjährigen Mittel nicht mehr als 20 mm/Jahr Durchsickerung aufweisen.</target>
+</sentence>
+
+<sentence id="253" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">Abweichend von Satz 1 können mineralische Abdichtungskomponenten, deren Wirksamkeit nicht mit Durchlässigkeitsbeiwerten beschrieben werden kann, eingesetzt werden, wenn sie im fünfjährigen Mittel nicht mehr als 10 mm/Jahr Durchsickerung aufweisen.</target>
+</sentence>
+
+<sentence id="254" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">Anhang 3 wird wie folgt geändert:</target>
+</sentence>
+
+<sentence id="255" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">a)    In der Überschrift wird die Angabe „und 7“ durch die Angabe „und 8“ ersetzt.</target>
+</sentence>
+
+<sentence id="256" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">b)    In Nummer 1 Satz 1 werden nach den Wörtern „Tabelle 1 Nummer 1.1, 2.1“ das Wort „sowie“ durch ein Komma und die Angabe „bis 4.3“ durch die Angabe „und 4.4.1“ ersetzt.</target>
+</sentence>
+
+<sentence id="257" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">auf Deponien der Klasse 0 ein TOC von 6 Masseprozent nicht überschritten wird und</target>
+</sentence>
+
+<sentence id="258" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">4) Bei PAK-Gehalten von mehr als 3 mg/kg ist mit Hilfe eines Säulenversuches nachzuweisen, dass in dem zu erwartenden Sickerwasser ein Wert von 0,20 μg/l nicht überschritten wird.</target>
+</sentence>
+
+<sentence id="259" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">Bei Über- oder Unterschreitungen ist die Ursache zu prüfen.</target>
+</sentence>
+
+<sentence id="260" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">Anhang 4 wird wie folgt geändert:</target>
+</sentence>
+
+<sentence id="261" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">Die Probe von pastösen und schlammigen Abfällen ist durch Kollern so aufzubereiten, dass aus einer Ausgangsprobe von 5 bis 50 kg eine homogene Probe von 1 000 g gewonnen wird.</target>
+</sentence>
+
+<sentence id="262" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">Diese Methode ist nicht geeignet für Abfälle, die Kunststoffe oder andere schwer abbaubare Stoffe enthalten.“</target>
+</sentence>
+
+<sentence id="263" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">f)   In Nummer 3.1.6 wird die Angabe „16. November 2004“ durch die Angabe „15. Dezember 2009“ ersetzt.</target>
+</sentence>
+
+<sentence id="264" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">„DIN ISO 18287, Ausgabe Mai 2006</target>
+</sentence>
+
+<sentence id="265" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">DIN ISO 11047, Ausgabe Mai 2003</target>
+</sentence>
+
+<sentence id="266" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">DIN ISO 22036, Ausgabe Juni 2009</target>
+</sentence>
+
+<sentence id="267" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">Nummer 3.2.2 wird wie folgt gefasst:</target>
+</sentence>
+
+<sentence id="268" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">m) In den Nummern 3.2.6, 3.2.7, 3.2.8, 3.2.9, 3.2.10 und 3.2.12 werden jeweils die Wörter</target>
+</sentence>
+
+<sentence id="269" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">DIN EN ISO 11885, Ausgabe April 1998</target>
+</sentence>
+
+<sentence id="270" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">DIN ISO 22036, Ausgabe Juni 2009</target>
+</sentence>
+
+<sentence id="271" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">n) In den Nummern 3.2.13 und 3.2.14 werden jeweils die Wörter</target>
+</sentence>
+
+<sentence id="272" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">p) Nummer 3.2.16 wird wie folgt gefasst:</target>
+</sentence>
+
+<sentence id="273" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">q) Nummer 3.2.17 wird wie folgt gefasst:</target>
+</sentence>
+
+<sentence id="274" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">DIN ISO 22036, Ausgabe Juni 2009</target>
+</sentence>
+
+<sentence id="275" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">„DIN EN ISO 11885, Ausgabe April 1998</target>
+</sentence>
+
+<sentence id="276" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">„DIN ISO 22036, Ausgabe Juni 2009</target>
+</sentence>
+
+<sentence id="277" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">s) Nummer 3.2.19 wird wie folgt gefasst:</target>
+</sentence>
+
+<sentence id="278" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">DIN ISO 22036, Ausgabe Juni 2009</target>
+</sentence>
+
+<sentence id="279" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">t)  In den Nummern 3.2.20 und 3.2.21 werden jeweils die Wörter</target>
+</sentence>
+
+<sentence id="280" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">„DIN EN ISO 11885, Ausgabe April 1998</target>
+</sentence>
+
+<sentence id="281" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">„DIN ISO 22036, Ausgabe Juni 2009</target>
+</sentence>
+
+<sentence id="282" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">u) Nummer 3.2.22 wird wie folgt gefasst:</target>
+</sentence>
+
+<sentence id="283" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">DIN 38409-1, Ausgabe Januar 1987</target>
+</sentence>
+
+<sentence id="284" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">v)  Nummer 4 wird wie folgt gefasst:</target>
+</sentence>
+
+<sentence id="285" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">Abweichend von Satz 1 gelten bei Überprüfungen und Kontrolluntersuchungen für mechanisch-biologisch behandelte Abfälle die Zuordnungskriterien für folgende Parameter als noch eingehalten, wenn ein Parameter den nachfolgend aufgeführten jeweiligen Zuordnungswert zwar überschreitet, aber dieser Zuordnungswert vom Perzentilwert P80 aller Messwerte nicht überschritten wurde und der Median aller Messwerte der letzten 24 Monate den entsprechenden Zuordnungswert eingehalten hat, der für die Deponie in der behördlichen Entscheidung nach § 21 dieser Verordnung festgelegt wurde: </target>
+</sentence>
+
+<sentence id="286" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">w) Nummer 5 Satz 2 wird wie folgt geändert:</target>
+</sentence>
+
+<sentence id="287" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">bb) In Ziffer 4 werden die Wörter „Stand: 16. November 2004“ durch die Wörter „Stand:</target>
+</sentence>
+
+<sentence id="288" data_source="N-2010-0722-DE.doc_utf8.xml">
+	<target system="google">(1) Diese Verordnung tritt am … [einsetzen: Datum des ersten Tages des zweiten auf die Verkündung folgenden Kalendermonats] in Kraft.</target>
+</sentence>
+
+<sentence id="289" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Zu beziehen bei der Österreichischen Forschungsgemeinschaft Straße und Verkehr (FSV), A-1010 Wien, Eschenbachgasse 9, Tel.+43/1/585 55 67 FAX +43/1/585 66 40</target>
+</sentence>
+
+<sentence id="290" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Hinsichtlich der Bestimmungen für den EWR und die Türkei gilt die RVS 01.01.11.</target>
+</sentence>
+
+<sentence id="291" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Ständig besetzter Stützpunkt für die Betriebsführung und Überwachung von Tunnelanlagen</target>
+</sentence>
+
+<sentence id="292" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Feuerlöschnische (FLN) zur Aufnahme von Löscheinrichtungen und -zubehör</target>
+</sentence>
+
+<sentence id="293" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Bei der Planung der Tunnelausrüstung sind insbesondere die RVS 09.01.24 und RVS 09.01.25 zu berücksichtigen.</target>
+</sentence>
+
+<sentence id="294" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Zusätzliche über die RVS hinausgehende Bestimmungen des Straßenerhalters sind zu berücksichtigen.</target>
+</sentence>
+
+<sentence id="295" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">In allen Abbildungen sind die Abmessungen in [cm] angegeben.</target>
+</sentence>
+
+<sentence id="296" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Bei der Festlegung der BuS ist wie nachfolgend angeführt, vorzugehen:</target>
+</sentence>
+
+<sentence id="297" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Ermittlung der Gefährdungsklasse (s. Pkt. 5)</target>
+</sentence>
+
+<sentence id="298" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Anlagenkonzeption ist frühzeitig mit den Einsatzdiensten abzustimmen.</target>
+</sentence>
+
+<sentence id="299" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Bestimmungen über Videoanlagen für Bundesstraßen sind im STSG enthalten.</target>
+</sentence>
+
+<sentence id="300" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Überwachung der Luftverhältnisse</target>
+</sentence>
+
+<sentence id="301" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Überholverbot für Kfz > 3,5 t bei RV</target>
+</sentence>
+
+<sentence id="302" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Gefahrenzeichen       Achtung Gegenverkehr</target>
+</sentence>
+
+<sentence id="303" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Wechselverkehrszeichen im Tunnel</target>
+</sentence>
+
+<sentence id="304" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">im Tunnelfahrraum mit Tunnellüftung für den Brandfall</target>
+</sentence>
+
+<sentence id="305" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Trockenlöschleitung in Tunneln mit einer Länge von 500 m bis 1000 m</target>
+</sentence>
+
+<sentence id="306" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Nasslöschleitung in Tunneln mit einer Länge von 500 m bis 1000 m</target>
+</sentence>
+
+<sentence id="307" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Nasslöschleitung in Tunneln mit einer Länge > 1000 m</target>
+</sentence>
+
+<sentence id="308" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Auf eine eindeutige Sichtbeziehung und Wahrnehmbarkeit ist zu achten.</target>
+</sentence>
+
+<sentence id="309" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Überwachung der Luftverhältnisse</target>
+</sentence>
+
+<sentence id="310" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Über Lichtraumprofil in Fahrstreifenmitte, Regelabstand 250 m</target>
+</sentence>
+
+<sentence id="311" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Sind mehr als 2 Fahrstreifen vorhanden, so ist die beidseitige Anordnung zu prüfen.</target>
+</sentence>
+
+<sentence id="312" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Kameraabstand ca. 125 m bzw. 250 m, der Straßenverlauf ist zu berücksichtigen</target>
+</sentence>
+
+<sentence id="313" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">In Vorportalbereichen von Fluchtstollen bzw. Fluchtstiegenhäusern</target>
+</sentence>
+
+<sentence id="314" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Bei BS und BZ in ca. 1,4 m Höhe</target>
+</sentence>
+
+<sentence id="315" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Für die Energieversorgung von EN, NRN, NRNe und FLN ist für Anlagen im Autobahn- und Schnellstraßennetz Tabelle 3 heranzuziehen.</target>
+</sentence>
+
+<sentence id="316" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Schukosteckdose (16 A) von EVU-Netz versorgt</target>
+</sentence>
+
+<sentence id="317" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Schukosteckdose (max. 16 A), versorgt von zweiter Phase</target>
+</sentence>
+
+<sentence id="318" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Fluchtwegorientierungsleuchten (max. 550 m Versorgungsabschnittslänge)</target>
+</sentence>
+
+<sentence id="319" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Notrufeinrichtungen (s. Pkt. 9.4 )</target>
+</sentence>
+
+<sentence id="320" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Gefahrenmeldeanlage (s. Pkt. 9.6 )</target>
+</sentence>
+
+<sentence id="321" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Tunnelbeleuchtung (s. Pkt. 9.8 )</target>
+</sentence>
+
+<sentence id="322" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Übertragungssysteme (s. Pkt. 9.9 )</target>
+</sentence>
+
+<sentence id="323" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Überwachung der Luftverhältnisse im Tunnel</target>
+</sentence>
+
+<sentence id="324" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Ausführung einer Tunnellüftungsanlage hat gemäß RVS 09.02.31 und RVS 09.02.32 zu erfolgen.</target>
+</sentence>
+
+<sentence id="325" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Für die Anzahl und Anordnung der Messeinrichtungen für die Luftverhältnisse gilt Tabelle 2 und RVS 09.02.31. Die Anordnung ist so auszuwählen, dass die maßgeblichen Schadstoffwerte erfasst werden.</target>
+</sentence>
+
+<sentence id="326" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Trübung wird durch den Extinktionskoeffizient k angegeben.</target>
+</sentence>
+
+<sentence id="327" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Für den Lüftungsbetrieb ist der Messwert der Längsgeschwindigkeit als Mittelwert bezogen quer zur Tunnelachse auszugeben.</target>
+</sentence>
+
+<sentence id="328" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Das Ergebnis der Ausbreitungsberechnung ist in Korrelation mit den Emissionsmessergebnissen im Tunnel (Portal, Abluftschacht) zu bringen.</target>
+</sentence>
+
+<sentence id="329" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Im Ausbreitungsberechnungsmodell sind allenfalls erforderliche zusätzliche Maßnahmen bekannt zu geben.</target>
+</sentence>
+
+<sentence id="330" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die zulässige Höchstgeschwindigkeit ist von der zuständigen Behörde festzulegen.</target>
+</sentence>
+
+<sentence id="331" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Bei der Anordnung der Lichtsignale und Zeichen sind die gegenseitigen Sichtrelationen zu beachten.</target>
+</sentence>
+
+<sentence id="332" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Folgende Betriebszustände sind zu beachten:</target>
+</sentence>
+
+<sentence id="333" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Bei Tunnel mit RV ist für langfristige Behinderungen eine Verkehrsführung im GV zu untersuchen.</target>
+</sentence>
+
+<sentence id="334" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Standardprogramm für den Normalbetrieb</target>
+</sentence>
+
+<sentence id="335" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Abweichungen der Geschwindigkeitsbeschränkungen sind mit der Verkehrsbehörde abzustimmen.</target>
+</sentence>
+
+<sentence id="336" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Eine Eingriffsmöglichkeit des Bedienpersonals in den vollautomatischen Betrieb ist zu ermöglichen.</target>
+</sentence>
+
+<sentence id="337" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Eine Steuerungskoordinierung von mit VLSA geregelten Kreuzungen in Vorportalbereichen ist durchzuführen.</target>
+</sentence>
+
+<sentence id="338" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">In der Einsichtsstrecke sind im Regelfall keine VZ zu situieren.</target>
+</sentence>
+
+<sentence id="339" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Parameter für den Stau sind Fahrzeuggeschwindigkeit und -frequenz.</target>
+</sentence>
+
+<sentence id="340" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Grundsätzlich muss durch fix installierte Kameras eine lückenlose Überwachung des Fahrraumes (Fahrstreifen, Abstellstreifen, erhöhter Seitenstreifen) möglich sein (s. Tab. 2).</target>
+</sentence>
+
+<sentence id="341" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Bei der Montagehöhe gemäß Tabelle 2 darf der Kameraabstand maximal 250 m betragen.</target>
+</sentence>
+
+<sentence id="342" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Es ist anzustreben, die Bildsammeleinheit in einer BZ bzw. ÜZ zu situieren.</target>
+</sentence>
+
+<sentence id="343" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Im Regelfall sind alle Kamerasignale in eine ÜZ zu übertragen, eine Bildwiedergaberate von 25 Bildern/s ist zu erreichen.</target>
+</sentence>
+
+<sentence id="344" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Gerätespezifikationen sind in Anhang 2 enthalten.</target>
+</sentence>
+
+<sentence id="345" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Videobildsteuereinheit ist in der Regel in der BZ zu situieren.</target>
+</sentence>
+
+<sentence id="346" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Sofern eine Videobildauswertung gemäß Tabelle 1 gefordert ist, ist zu überprüfen, ob dadurch andere BuS (wie z.B. Zählschleifen) ersetzt werden können.</target>
+</sentence>
+
+<sentence id="347" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die automatische Videobildauswertung ist in der Regel in der BZ anzuordnen.</target>
+</sentence>
+
+<sentence id="348" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Das Videobildauswertesystem kann als Kombination mit dem Bildspeichersystem ausgeführt werden.</target>
+</sentence>
+
+<sentence id="349" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Informationen und die Bedienung der Videobildauswertung sind in die Prozessleittechnik vollständig einzubinden.</target>
+</sentence>
+
+<sentence id="350" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">eine Detektionsrate von 95 % in jeder Kategorie zu erfüllen</target>
+</sentence>
+
+<sentence id="351" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Das jeweilige Auslösekriterium für die Bildaufzeichnung ist zeitrichtig im Videobild einzublenden.</target>
+</sentence>
+
+<sentence id="352" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Notrufe sind in eine BZ und ÜZ bzw. ÜS zu übertragen.</target>
+</sentence>
+
+<sentence id="353" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">NRE sind im Tunnel und in den Vorportalbereichen anzuordnen.</target>
+</sentence>
+
+<sentence id="354" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die NRE hat aus folgenden Elementen zu bestehen:</target>
+</sentence>
+
+<sentence id="355" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">NRN-Türe, links angeschlagen, mit Türdrücker innen und außen, nicht sperrbar</target>
+</sentence>
+
+<sentence id="356" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Energie-/Steuerverteiler (entfällt bei NRNe)</target>
+</sentence>
+
+<sentence id="357" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Feuerlöscherabteil mit UK = 1,05 m über dem erhöhten Seitenstreifen, vom Fahrraum zugänglich und mit Türdrücker zu öffnen, rechts angeschlagen mit Einscheiben-Sicherheitsverglasung ca. 300 x 400 mm (B x H).</target>
+</sentence>
+
+<sentence id="358" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Nachfolgende Anforderungen sind zu beachten:</target>
+</sentence>
+
+<sentence id="359" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Optische Information für den Hilfesuchenden über die Betriebsbereitschaft der NRE</target>
+</sentence>
+
+<sentence id="360" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Beschallungsanlage besteht aus in Nischen- oder Freifeldverteilern einzubauenden Verstärkern und diesen zugeordneten Lautsprecherkombinationen.</target>
+</sentence>
+
+<sentence id="361" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die einzelnen Lautsprecherstandorte müssen sowohl einzeln als auch in Gruppen ansprechbar sein.</target>
+</sentence>
+
+<sentence id="362" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Einsprechmöglichkeiten sind in der BZ und ÜZ vorzusehen.</target>
+</sentence>
+
+<sentence id="363" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Tunnel und Verbindungen ins Freie (s. RVS 09.01.24) sind mit einem Funkkanal für den Funkverkehr der betrieblichen Erhaltung und mit 2 Funkkanälen für Feuerwehr sowie je einem Funkkanal für die Polizei und Rettung auszustatten.</target>
+</sentence>
+
+<sentence id="364" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Erfordernis und Anforderungen an die Tunnelfunkanlage sind in Abhängigkeit von der Gefährdungsklasse und gemäß Tabelle 1 festzulegen.</target>
+</sentence>
+
+<sentence id="365" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Nachstehende Funkanlagenkategorien und Anforderungen sind zu berücksichtigen:</target>
+</sentence>
+
+<sentence id="366" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Alle Komponenten und Systeme der Gefahrenmeldeanlage sind ständig auf deren Funktion zu überwachen.</target>
+</sentence>
+
+<sentence id="367" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Sie dürfen in Busstruktur ausgeführt und in NRN durchgeschleift werden.</target>
+</sentence>
+
+<sentence id="368" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Brandmeldeanlage für Betriebs- und Betriebsführungsräume</target>
+</sentence>
+
+<sentence id="369" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Brandmeldezentrale hat der ÖNORM EN 54 Teil 2 zu entsprechen.</target>
+</sentence>
+
+<sentence id="370" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Alle Brandmelder sind in einer (mehreren) Brandmeldezentrale(n) zusammenzufassen und auszuwerten.</target>
+</sentence>
+
+<sentence id="371" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Branderkennungsanlage für den Tunnelfahrraum</target>
+</sentence>
+
+<sentence id="372" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Sowohl bei der Situierung als auch bei der Produktwahl ist auf eine rasche Branddetektion zu achten.</target>
+</sentence>
+
+<sentence id="373" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Beim Maximal- und Differenzialmeldersystem darf der Messpunktabstand (in Tunnellängsrichtung) höchstens 10 m betragen.</target>
+</sentence>
+
+<sentence id="374" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Das System ist so aufzubauen, dass bei Auftreten eines Einfach-Fehlers (z.B. Leitungsbruch, Ausfall einer Auswerteeinheit) höchstens 1.000 m Überwachungslänge ausfallen.</target>
+</sentence>
+
+<sentence id="375" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Bei ortsfesten Löschsystemen ist darauf zu achten, dass die Detektion über Strahlungswärme erfolgt.</target>
+</sentence>
+
+<sentence id="376" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Nominelle Brandleistung: ca. 1,5 MW</target>
+</sentence>
+
+<sentence id="377" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Nominelle Brandleistung: ca. 3,5 MW</target>
+</sentence>
+
+<sentence id="378" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Ein zuverlässiger Alarm ist bereits in der Schwelbrandphase des entstehenden Brandes zu gewährleisten.</target>
+</sentence>
+
+<sentence id="379" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Funktionstüchtigkeit der Anlage ist ohne Fremdenergie zu gewährleisten.</target>
+</sentence>
+
+<sentence id="380" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Löschpistole soll einfach von Sprühstrahl auf Vollstrahl bei einer Mindestwurfweite von 15 m und einem Durchfluss von 50 l/min umgestellt werden können.</target>
+</sentence>
+
+<sentence id="381" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Anlage ist drucklos zu halten.</target>
+</sentence>
+
+<sentence id="382" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Besteht Frostgefahr in den Nischen, so sind diese temperaturgesteuert zu beheizen.</target>
+</sentence>
+
+<sentence id="383" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Das Löschzubehör in den FLN (ausgenommen die mit Wandhydrant ausgestatteten FLN in der PB) ist im Einvernehmen mit dem LFV festzulegen.</target>
+</sentence>
+
+<sentence id="384" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Entfernungsangaben sind auf 5 m zu runden und auf den Schnittpunkt Fahrbahnachse zu Fluchtwegachse zu beziehen.</target>
+</sentence>
+
+<sentence id="385" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Fluchtwegorientierungstafeln sind mit einer reflektierenden Folie mit gleicher Symbolik wie die Fluchtwegorientierungsleuchte zu bestücken.</target>
+</sentence>
+
+<sentence id="386" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Allgemeine Leistungsanforderungen</target>
+</sentence>
+
+<sentence id="387" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Übertragungssysteme bestehen im Regelfall aus:</target>
+</sentence>
+
+<sentence id="388" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">An Übertragungssystemen sind zu berücksichtigen:</target>
+</sentence>
+
+<sentence id="389" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Folgende Redundanzen sind realisierbar:</target>
+</sentence>
+
+<sentence id="390" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Im Detail ist festzulegen, welche Art der Geräteredundanz gefordert wird:</target>
+</sentence>
+
+<sentence id="391" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Warm/Standby: Neben dem aktiven System steht ein zweites System in Bereitschaft.</target>
+</sentence>
+
+<sentence id="392" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Anlagenbedingte Schaltzeiten müssen in den Informationslaufzeiten enthalten sein.</target>
+</sentence>
+
+<sentence id="393" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Allgemeine Leistungsanforderungen</target>
+</sentence>
+
+<sentence id="394" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Allgemeinanlagen (jeder größere Verbraucher)</target>
+</sentence>
+
+<sentence id="395" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Aus den Ist-Daten sind entsprechend den Anlageverhältnissen nachstehende Rechenwerte ebenfalls zu erfassen:</target>
+</sentence>
+
+<sentence id="396" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Datenverarbeitung hat nach Befehlen, Meldungen (Betriebs- und Gefahrenmeldungen), Mess- und Zählwerten zu erfolgen.</target>
+</sentence>
+
+<sentence id="397" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Werte sind zu unterscheiden nach:</target>
+</sentence>
+
+<sentence id="398" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Der gültige Wert ist entweder der Original- oder der Ersatzwert.</target>
+</sentence>
+
+<sentence id="399" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Betriebsstundenauswertung mit Stufen- oder Schwellwertzuordnung</target>
+</sentence>
+
+<sentence id="400" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Der Auswertekopf hat zu umfassen:</target>
+</sentence>
+
+<sentence id="401" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Einheit; Ort; Anlagenbezeichnung; Gruppe (Messstellen usw.)</target>
+</sentence>
+
+<sentence id="402" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Automatisch sind zu steuern bzw. zu regeln:</target>
+</sentence>
+
+<sentence id="403" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Tunnellüftung (s. RVS 09.02.31)</target>
+</sentence>
+
+<sentence id="404" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Einfahrtsbeleuchtung (s. RVS 09.02.41)</target>
+</sentence>
+
+<sentence id="405" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Durchfahrtsbeleuchtung (s. RVS 09.02.41)</target>
+</sentence>
+
+<sentence id="406" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Leitungen dürfen ausschließlich in Betriebsräumen verlegt werden.</target>
+</sentence>
+
+<sentence id="407" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Kabelführungen sind an folgenden Stellen brandbeständig (E 90) zu trennen:</target>
+</sentence>
+
+<sentence id="408" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Kollektor zum Fahrraum bzw. zu Schlitzen im Fahrraum</target>
+</sentence>
+
+<sentence id="409" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Folgende Leistungsmerkmale sind bei der Planung zu berücksichtigen:</target>
+</sentence>
+
+<sentence id="410" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Bei kombinierten Zu- und Abluftschächten ist eine gemeinsame Schachtbefahrungsanlage vorzusehen</target>
+</sentence>
+
+<sentence id="411" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Geschwindigkeit des Fahrkorbes hat mindestens 20 m/min zu betragen</target>
+</sentence>
+
+<sentence id="412" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Schachtbefahrungsanlagen mit Seilantrieb sind mit einer einlagigen Aufwicklung auszuführen</target>
+</sentence>
+
+<sentence id="413" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Während des Betriebes der Schachtbefahrungsanlage ist die Lüftungsanlage außer Betrieb zu nehmen</target>
+</sentence>
+
+<sentence id="414" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Notwendigkeit der beiderseitigen Zugänglichkeit von Schaltschränken ist zu prüfen.</target>
+</sentence>
+
+<sentence id="415" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Gemeinsamer Raum für Niederspannungs- und Sicherheitseinrichtungen, Kommunikations- und Übertragungseinrichtungen</target>
+</sentence>
+
+<sentence id="416" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Eine BZ umfasst projektsbezogen Räumlichkeiten der BS, Einrichtungen für die Überwachung sowie Sanitärräumlichkeiten.</target>
+</sentence>
+
+<sentence id="417" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">In einer Tischkombination sind die Geräte für die Überwachung unterzubringen.</target>
+</sentence>
+
+<sentence id="418" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Zugänglichkeit der Räume hat entweder direkt vom Freien oder über Gänge zu erfolgen.</target>
+</sentence>
+
+<sentence id="419" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Netzwerkausführung für die Visualisierung und Rechner</target>
+</sentence>
+
+<sentence id="420" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Bedieneinheit für den Notruf aller zu überwachenden Tunnelanlagen und der Freilandstrecke mit Hörer</target>
+</sentence>
+
+<sentence id="421" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Videoüberwachungsmonitore, je Tunnelanlage und Tunnelröhre sind im Regelfall zwei Monitore (Portal und Tunnelröhre) vorzusehen.</target>
+</sentence>
+
+<sentence id="422" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Tunnelbetriebsanweisung (s. RVS 09.04.11)</target>
+</sentence>
+
+<sentence id="423" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Der Umfang und die Vorgangsweise für den Probebetrieb sind festzulegen.</target>
+</sentence>
+
+<sentence id="424" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Rauch- und Brandversuche gemäß RVS 09.02.31 sind im Rahmen des Probebetriebes durchzuführen.</target>
+</sentence>
+
+<sentence id="425" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Überwachung der Luftverhältnisse</target>
+</sentence>
+
+<sentence id="426" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Automatischer Brand-(Rauch-) melder</target>
+</sentence>
+
+<sentence id="427" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Bei der Kennzeichnung von Räumlichkeiten und Einrichtungen sind zu berücksichtigen:</target>
+</sentence>
+
+<sentence id="428" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">KEIN BRANDSCHUTZ IN DIESEM RAUM</target>
+</sentence>
+
+<sentence id="429" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Folgen Sie den Zeichen zu den Notausgängen</target>
+</sentence>
+
+<sentence id="430" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">BITTE WARTEN – ZENTRALE MELDET SICH</target>
+</sentence>
+
+<sentence id="431" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">AUSSER BETRIEB – BITTE BENUTZEN SIE DIE NACHSTE NOTRUFSTELLE</target>
+</sentence>
+
+<sentence id="432" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Folgende Kennzeichnungen sind auszuführen:</target>
+</sentence>
+
+<sentence id="433" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Fluchtwegorientierungsleuchten (s. Pkt. 9.8.4), Anordnung gemäß Tabelle 2</target>
+</sentence>
+
+<sentence id="434" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Als Werkstoff sind im Regelfall Edelstähle, welche der aggressiven Tunnelatmosphäre ausgesetzt werden können, zu verwenden.</target>
+</sentence>
+
+<sentence id="435" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Verwendung von halogenfreien Kunststoffen ist anzustreben.</target>
+</sentence>
+
+<sentence id="436" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Die Lacke, Anstriche und Pulverbeschichtungen müssen für den Einsatz in Tunnelatmosphäre geeignet sein.</target>
+</sentence>
+
+<sentence id="437" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Geräte für Verkehrslenkung und -überwachung</target>
+</sentence>
+
+<sentence id="438" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Bundesgesetz zum Schutz vor Immissionen durch Luftschadstoffe (Immissionsschutzgesetz-Luft, IG-L), BGBl.</target>
+</sentence>
+
+<sentence id="439" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Verordnung des BMSK über die Sicherheits- und Gesundheitsschutzkennzeichnung (Kennzeichnungsverordnung - KennV), BGBl.</target>
+</sentence>
+
+<sentence id="440" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Geräte mit Mess- und Steuerschnittstellen</target>
+</sentence>
+
+<sentence id="441" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">genormten Messwerten (4 bis 20 mA)</target>
+</sentence>
+
+<sentence id="442" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Außenflächen mit einer reflexionsarmen Lackierung oder mit Kunststoffbeschichtung versehen</target>
+</sentence>
+
+<sentence id="443" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Kabeleinführungen vorzugsweise von unten</target>
+</sentence>
+
+<sentence id="444" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Versorgungsspannung 230 V ± 10 % / 50 Hz</target>
+</sentence>
+
+<sentence id="445" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Versorgungsspannung beträgt 230 V ± 10 % / 50 Hz</target>
+</sentence>
+
+<sentence id="446" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">WVZ müssen eine Blinkfunktion unterstützen</target>
+</sentence>
+
+<sentence id="447" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Blinkrhythmus synchronisierbar mit anderen Einrichtungen des Tunnels, externer Eingang des Tunnelblinktaktes</target>
+</sentence>
+
+<sentence id="448" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Nicht mehr erkennbare / anzeigbare Anzeigeinhalten</target>
+</sentence>
+
+<sentence id="449" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Wechselverkehrszeichen und Wechselwegweiser in Prismentechnik</target>
+</sentence>
+
+<sentence id="450" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Versorgungsspannung 230 V ± 10 % / 50 Hz.</target>
+</sentence>
+
+<sentence id="451" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Erdungsanschlüsse an Gehäuse und Wartungstüren</target>
+</sentence>
+
+<sentence id="452" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Versorgungsspannung 230 V ± 10 % / 50 Hz</target>
+</sentence>
+
+<sentence id="453" data_source="N-2010-0732-DE.doc_utf8.xml">
+	<target system="google">Folgende Mindestanforderungen sind einzuhalten:</target>
+</sentence>
+
+<sentence id="454" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Die NÖ Wohnungsförderungsrichtlinien 2011 wurden von der NÖ Landesregierung unter Bedachtnahme auf die vorliegenden Zukunftsprognosen auf der Grundlage des § 7 Abs. 1 bis 3 NÖ Wohnungsförderungsgesetz 2005 (NÖ WFG 2005),</target>
+</sentence>
+
+<sentence id="455" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">bestimmungen, die, soweit im Einzelfall nichts anderes vorgesehen ist, für alle Arten von Förderungen von Bedeutung sind.</target>
+</sentence>
+
+<sentence id="456" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(Errichtung von Mehrfamilienwohnhäusern)</target>
+</sentence>
+
+<sentence id="457" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(Sanierung von Mehrfamilienwohnhäusern)</target>
+</sentence>
+
+<sentence id="458" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Rechtsansprüche auf Förderungen entstehen erst mit der rechtswirksamen Annahme des Angebots der Landesregierung durch den Förderungswerber (§ 10 Abs. 3 NÖ WFG 2005).</target>
+</sentence>
+
+<sentence id="459" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Geschlechtsspezifische Bezeichnungen in den vorliegenden Richtlinien gelten jeweils auch in ihrer männlichen bzw. weiblichen Form.</target>
+</sentence>
+
+<sentence id="460" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Die Energiekennzahl ist der rechnerische Wert, der auf der Berechnung</target>
+</sentence>
+
+<sentence id="461" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">a)  Das Familieneinkommen ist die Summe der Einkünfte des Wohnungsnutzers</target>
+</sentence>
+
+<sentence id="462" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">d)  Für Personen, die im Inland nicht oder nur beschränkt steuerpflichtig sind,</target>
+</sentence>
+
+<sentence id="463" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">5. Gesundheitsversorgung – Einrichtungen:</target>
+</sentence>
+
+<sentence id="464" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Diese Einrichtungen können sowohl nach Abschnitt VI als auch nach</target>
+</sentence>
+
+<sentence id="465" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Abschnitt VII gefördert werden.</target>
+</sentence>
+
+<sentence id="466" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">b)  der Keller- und Dachbodenräume, sofern es sich nicht um Wohnräume samt</target>
+</sentence>
+
+<sentence id="467" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">- im Zusammenhang mit einer Sanierung nach Abschnitt VII</target>
+</sentence>
+
+<sentence id="468" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">9. Sanierungsobjekte – Eigenheimsanierung</target>
+</sentence>
+
+<sentence id="469" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Die Eigenheimsanierung erstreckt sich auf Ansuchen natürlicher Personen</target>
+</sentence>
+
+<sentence id="470" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">10. Sanierungsobjekte – Wohnungssanierung</target>
+</sentence>
+
+<sentence id="471" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">bestehender und zu sanierender (Wohn)Nutzfläche</target>
+</sentence>
+
+<sentence id="472" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">a)  Wärmeschutzmaßnahmen und Maßnahmen zur Verminderung des</target>
+</sentence>
+
+<sentence id="473" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Die Sanierung von Gasleitungsanlagen.</target>
+</sentence>
+
+<sentence id="474" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">g)  im Zusammenhang mit anderen überwiegenden Sanierungsmaßnahmen</target>
+</sentence>
+
+<sentence id="475" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">i)   Heizungsanlagen mit und ohne Warmwasseraufbereitung mit</target>
+</sentence>
+
+<sentence id="476" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">n) Wärmepumpe für die Warmwasserbereitung</target>
+</sentence>
+
+<sentence id="477" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">c)  Beleuchtungskörper in den Wohnungen,</target>
+</sentence>
+
+<sentence id="478" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">g)  Festbrennstoffkessel (Allesbrenner),</target>
+</sentence>
+
+<sentence id="479" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">h)  Investitionskosten für Kühlanlagen die nicht ausschließlich mit erneuerbarer</target>
+</sentence>
+
+<sentence id="480" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">gilt nur für Sanierungsmaßnahmen gemäß Abs. 1:</target>
+</sentence>
+
+<sentence id="481" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">i)  Oberflächenendausführung in den Wohnungen, außer diese wird durch</target>
+</sentence>
+
+<sentence id="482" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Ein Wohnhaus ist ein Gebäude, das baubehördlich zumindest teilweise für Wohnzwecke bewilligt ist.</target>
+</sentence>
+
+<sentence id="483" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">16. Innovative klimarelevante Systeme:</target>
+</sentence>
+
+<sentence id="484" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">a)  Systeme auf Basis erneuerbarer Energien unter Berücksichtigung möglichst</target>
+</sentence>
+
+<sentence id="485" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">c)  Fernwärme aus hocheffizienten Kraft-Wärme-Koppelungs-Anlagen im Sinne</target>
+</sentence>
+
+<sentence id="486" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">d)  Fernwärme mit einem Anteil erneuerbarer Energie von zumindest 80 %.</target>
+</sentence>
+
+<sentence id="487" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Der Anteil der solaren Erträge soll dabei optimiert werden.</target>
+</sentence>
+
+<sentence id="488" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Berechnung und Nachweis des Einkommens:</target>
+</sentence>
+
+<sentence id="489" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">5c (Überbrückungshilfe für Bundesbedienstete), 5d (Beihilfen nach dem Arbeitsmarktförderungsgesetz), 9, 10, 11 (Einkünfte aus Auslandstätigkeit),</target>
+</sentence>
+
+<sentence id="490" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">6.  War der Förderungswerber im Prüfzeitraum noch Schüler oder Student,</target>
+</sentence>
+
+<sentence id="491" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">7.  Soweit in diesen Richtlinien nichts anderes bestimmt ist, ist das</target>
+</sentence>
+
+<sentence id="492" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">EStG 1988 Grundlage für die Berechnung des Familieneinkommens (§ 1 Z. 3).</target>
+</sentence>
+
+<sentence id="493" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">1.  unselbständig Erwerbstätigen durch Vorlage des Jahreslohnzettels (L16)</target>
+</sentence>
+
+<sentence id="494" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">2.  selbständig Erwerbstätigen durch Vorlage des zum Zeitpunkt des</target>
+</sentence>
+
+<sentence id="495" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">EStG 1988, sind ebenfalls vor zu legen.</target>
+</sentence>
+
+<sentence id="496" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">den Stichtag des Ansuchens um Förderung oder bezogen auf den Stichtag</target>
+</sentence>
+
+<sentence id="497" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Ausgenommen von dieser Regelung sind Bauspardarlehen.</target>
+</sentence>
+
+<sentence id="498" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Diese Regelung ist in den Ausleihungsverträgen zu vereinbaren.</target>
+</sentence>
+
+<sentence id="499" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Förderungswürdig ist, wer beabsichtigt, in der geförderten Wohnung einen</target>
+</sentence>
+
+<sentence id="500" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Als Obergrenze für das jährliche Familieneinkommen gilt bei Wohnungen bei</target>
+</sentence>
+
+<sentence id="501" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">1. von einer Person      € 28.000,--.</target>
+</sentence>
+
+<sentence id="502" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">2. von zwei Personen   € 48.000,--.</target>
+</sentence>
+
+<sentence id="503" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Der Betrag erhöht sich für jede weitere Person um € 7.000,--</target>
+</sentence>
+
+<sentence id="504" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(3) Unbeschadet der Abs. 4 und 5 wird die Förderung mit der Maßgabe zuerkannt,</target>
+</sentence>
+
+<sentence id="505" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">diesbezüglichen Bestimmungen gefördert sind, dürfen</target>
+</sentence>
+
+<sentence id="506" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">1.  gemeinnützigen Bauvereinigungen,</target>
+</sentence>
+
+<sentence id="507" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(Kommunalimmobiliengesellschaft) nach einer Bestandsdauer des Objektes von mindestens zehn Jahren</target>
+</sentence>
+
+<sentence id="508" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">erworben werden, jedoch nur dann, wenn sie an Personen weitergegeben werden sollen, die zum Zeitpunkt des Beginns der Benützung förderungswürdig sind.</target>
+</sentence>
+
+<sentence id="509" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">2.  juristischen Personen mit dem Sitz im Inland oder in einem anderen EWR-</target>
+</sentence>
+
+<sentence id="510" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(6) Die Abs. 1 und 2 finden keine Anwendung auf nach Abschnitt VI geförderte</target>
+</sentence>
+
+<sentence id="511" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">der Finanzierungsplan einen Bestandteil des Förderungsvertrags.</target>
+</sentence>
+
+<sentence id="512" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(3) Im Förderungsvertrag sind die Gründe festzulegen, aus denen die Förderung</target>
+</sentence>
+
+<sentence id="513" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(4) In die Zusicherung ist weiters eine Regelung hinsichtlich der ausreichenden</target>
+</sentence>
+
+<sentence id="514" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(5) Zusicherungen werden mit der Maßgabe erteilt, dass Zuschüsse (§ 3), die den</target>
+</sentence>
+
+<sentence id="515" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Die Landesregierung hat im Förderungsvertrag auszubedingen, dass die</target>
+</sentence>
+
+<sentence id="516" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">b)  Bedingungen und Auflagen der Zusicherung (Förderungsvertrag,</target>
+</sentence>
+
+<sentence id="517" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Schuldschein) nicht erfüllt oder einhält;</target>
+</sentence>
+
+<sentence id="518" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">f)  die Förderung bzw. die Zustimmung zur Eigentumsübertragung durch</target>
+</sentence>
+
+<sentence id="519" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">ohne dass dies notwendig wäre aus triftigen Gründen, wie insbesondere des Berufes, der Gesundheit, der beruflichen Ausbildung oder der Altersversorgung.</target>
+</sentence>
+
+<sentence id="520" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">a)  die mit Zuschuss (§ 3) gestützte Ausleihung zurückgezahlt wurde</target>
+</sentence>
+
+<sentence id="521" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">des Nutzungsberechtigten nicht ausgesprochen werden.</target>
+</sentence>
+
+<sentence id="522" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(5) Die Förderung für eine Dienstwohnung wird nicht gekündigt, wenn der</target>
+</sentence>
+
+<sentence id="523" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">§ 26 Abs. 2 lit. c bleibt unberührt.</target>
+</sentence>
+
+<sentence id="524" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">vorgang eine Prüfung der Förderungswürdigkeit nicht erforderlich ist.</target>
+</sentence>
+
+<sentence id="525" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">von Förderungsleistungen gemäß § 4 Abs. 2 durchgeführt.</target>
+</sentence>
+
+<sentence id="526" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(6) Mit der Einverleibung des Eigentumsrechtes im Grundbuch ist der übertragende</target>
+</sentence>
+
+<sentence id="527" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Verpflichtungen im Rahmen der Objektförderung</target>
+</sentence>
+
+<sentence id="528" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Eine Zusicherung wird nur ausgestellt, wenn sich der Förderungswerber:</target>
+</sentence>
+
+<sentence id="529" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">2.  schriftlich mit der Überwachung der Bauausführung und Kontrolle des Energie-</target>
+</sentence>
+
+<sentence id="530" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Hinsichtlich der erstmaligen Errichtung von Heizungs- und Warmwasserbereit-</target>
+</sentence>
+
+<sentence id="531" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Für Wärmepumpensysteme kann in begründeten Fällen eine Jahresarbeitszahl zwischen 3 und 4 festgelegt werden.</target>
+</sentence>
+
+<sentence id="532" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Änderungen am Sanierungsentwurf können bei Endabrechnung berücksichtigt werden.</target>
+</sentence>
+
+<sentence id="533" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Die Eigenheimförderung besteht in der Gewährung von Darlehen für natürliche</target>
+</sentence>
+
+<sentence id="534" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Pächter können nur gefördert werden, wenn die betreffenden Liegenschaften im</target>
+</sentence>
+
+<sentence id="535" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(3) Der Ersterwerb von Eigenheimen und Wohnungen wird auch dann gefördert,</target>
+</sentence>
+
+<sentence id="536" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Förderungswerbers erforderlich sind.</target>
+</sentence>
+
+<sentence id="537" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Ist der Förderungswerber Eigentümer, so muss er sein Eigentumsrecht</target>
+</sentence>
+
+<sentence id="538" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Förderung nachweisen (Pachtvertrag).</target>
+</sentence>
+
+<sentence id="539" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Ansuchen gemäß § 13 Abs. 5 (Passivhausbauweise) sind vor Baubeginn einzubringen.</target>
+</sentence>
+
+<sentence id="540" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(5) Der Förderungswerber hat vor Zusicherung als Nachweis, dass die Finanzierung</target>
+</sentence>
+
+<sentence id="541" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">des Bauvorhabens gesichert ist, einen Finanzierungsplan vorzulegen.</target>
+</sentence>
+
+<sentence id="542" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Die maximale Punkteanzahl für Basis Energieausweis und Nachhaltigkeit ist bei 100 Punkten gegeben.</target>
+</sentence>
+
+<sentence id="543" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">………………………………………………………….…………. bis zu</target>
+</sentence>
+
+<sentence id="544" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Garten- Freiraumgestaltung, Regenwassernutzung</target>
+</sentence>
+
+<sentence id="545" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Garten- Freiraumgestaltung, Regenwassernutzung</target>
+</sentence>
+
+<sentence id="546" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(4) Die Objektförderung erhöht sich um folgende Beträge:</target>
+</sentence>
+
+<sentence id="547" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Das sind Familien mit mindestens einem zum Haushalt</target>
+</sentence>
+
+<sentence id="548" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Lebenspartner das 35. Lebensjahr zum Zeitpunkt der</target>
+</sentence>
+
+<sentence id="549" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Einreichung noch nicht vollendet hat, sowie Einzelpersonen</target>
+</sentence>
+
+<sentence id="550" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">bis zum 35. Lebensjahr mit mindestens einem zum Haushalt</target>
+</sentence>
+
+<sentence id="551" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">gemäß Bundespflegegeldgesetz 1993 bzw. NÖ Pflegegeld-</target>
+</sentence>
+
+<sentence id="552" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">für Nutzungsberechtigte, die in den letzten 15 Monaten</target>
+</sentence>
+
+<sentence id="553" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">drei Jahren einen Hauptwohnsitz in Niederösterreich begründet</target>
+</sentence>
+
+<sentence id="554" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(5) Für die Errichtung eines Eigenheimes in Passivhausbauweise mit einer errechneten</target>
+</sentence>
+
+<sentence id="555" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Es kann ausschließlich die Förderung gemäß § 14 (Abwanderungsgemeinden) und</target>
+</sentence>
+
+<sentence id="556" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(6) Für ein Eigenheim mit zwei Wohnungen wird für die zweite Wohnung 40 % des</target>
+</sentence>
+
+<sentence id="557" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(7) Eine Aufstockung des Förderungsdarlehens ist bis zur nachweislichen Benutzbarkeit</target>
+</sentence>
+
+<sentence id="558" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(8) Im Bereich der Objektförderung für Wohnungen im Geschoßwohnbau ist das erste</target>
+</sentence>
+
+<sentence id="559" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Die Auszahlung des erhöhten Förderungsdarlehens erfolgt gemäß § 15.</target>
+</sentence>
+
+<sentence id="560" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(3) Die Auszahlung des nicht rückzahlbaren Zuschusses erfolgt nach Bewilligung</target>
+</sentence>
+
+<sentence id="561" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(5) § 14 tritt mit 31.12.2012 außer Kraft.</target>
+</sentence>
+
+<sentence id="562" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Sicherstellung und Auszahlung des Förderungsdarlehens</target>
+</sentence>
+
+<sentence id="563" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Förderungsdarlehen, ausgenommen Aufstockungen, werden unter der</target>
+</sentence>
+
+<sentence id="564" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Die Auszahlung der Darlehensbeträge gemäß §§ 13 Abs. 1 und Abs. 2 oder Abs. 3</target>
+</sentence>
+
+<sentence id="565" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">in Verbindung mit Abs. 4, 6 und 7 erfolgt bei</target>
+</sentence>
+
+<sentence id="566" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(3) Die Auszahlung der Darlehensbeträge gemäß § 13 Abs. 5 in Verbindung mit</target>
+</sentence>
+
+<sentence id="567" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Mit der Annahme der Zusicherung verpflichtet sich der Förderungswerber zur</target>
+</sentence>
+
+<sentence id="568" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Die Tilgung erfolgt halbjährlich zu den Rückzahlungsterminen 1. April und</target>
+</sentence>
+
+<sentence id="569" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Das Förderungsdarlehen hat einen Tilgungszeitraum von 27,5 Jahren und ist mit</target>
+</sentence>
+
+<sentence id="570" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Die Annuitäten betragen in den ersten fünf Jahren 2 % des Darlehensbetrages.</target>
+</sentence>
+
+<sentence id="571" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(§ 1 Z. 11 Abs. 2) an Sanierungsobjekten gemäß § 1 Z. 9.</target>
+</sentence>
+
+<sentence id="572" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Die Objektförderung besteht in der Zuerkennung von konstanten, nicht</target>
+</sentence>
+
+<sentence id="573" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Die Höhe der Ausleihung, für die gemäß § 17 Zuschüsse zuerkannt werden,</target>
+</sentence>
+
+<sentence id="574" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Das förderbare Nominale wird nach einem Punktesystem wie folgt ermittelt:</target>
+</sentence>
+
+<sentence id="575" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Förderbares Nominale: 1 Punkt = 1 % Förderung</target>
+</sentence>
+
+<sentence id="576" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Die maximale Förderung für die Objektförderung ist bei 100 Punkten gegeben.</target>
+</sentence>
+
+<sentence id="577" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Die Punkteanzahl ergibt sich aus den nachfolgend angeführten Tabellen.</target>
+</sentence>
+
+<sentence id="578" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Sanierungsmaßnahmen gemäß § 1 Z. 11 Abs. 2, die die unten angeführten Mindestanforderungen nicht erreichen</target>
+</sentence>
+
+<sentence id="579" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">hülle sind folgende energetische Mindeststandards einzuhalten.</target>
+</sentence>
+
+<sentence id="580" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Für die Sanierung von Sanierungsobjekten gemäß § 1 Z. 9 in einer Abwanderungs-</target>
+</sentence>
+
+<sentence id="581" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">gemeinde werden die gemäß § 19 zuerkannten Zuschüsse auf jährlich 4 %, erhöht.</target>
+</sentence>
+
+<sentence id="582" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Für die Anweisung der erhöhten Zuschüsse gilt § 22 Abs. 3.</target>
+</sentence>
+
+<sentence id="583" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(3) Die Abwanderungsgemeinden sind in der Beilage A angeführt.</target>
+</sentence>
+
+<sentence id="584" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(4) § 20 tritt mit 31.12.2012 außer Kraft.</target>
+</sentence>
+
+<sentence id="585" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Die förderbare Obergrenze der Sanierungskosten beträgt € 500,--/m² Wohnnutzfläche</target>
+</sentence>
+
+<sentence id="586" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">für eine höchstförderbare Nutzfläche von 130 m² für jede Wohnungseinheit.</target>
+</sentence>
+
+<sentence id="587" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Die Zuerkennung der Förderung hat zur Voraussetzung, dass mit den</target>
+</sentence>
+
+<sentence id="588" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) In der Förderungsvereinbarung ist auszubedingen, dass nach Abschluss der</target>
+</sentence>
+
+<sentence id="589" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Die Vorlage der Benützbarkeitsbestätigung ist nicht erforderlich.</target>
+</sentence>
+
+<sentence id="590" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1)  Für den Einbau folgender Einbruchschutzmaßnahmen können natürliche</target>
+</sentence>
+
+<sentence id="591" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">2.  Elektronischer Schutz bei einem Eigenheim, Wohnhaus oder Wohnung:</target>
+</sentence>
+
+<sentence id="592" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2)  Sicherheitstüren und Sicherheitsfenster müssen der ÖNORM B 5338, der</target>
+</sentence>
+
+<sentence id="593" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Alarmanlagen müssen den VSÖ oder VDS Richtlinien, der EN 50130 oder der EN 50131 entsprechen.</target>
+</sentence>
+
+<sentence id="594" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Die Videoüberwachungsanlage muss in Kombination mit einer Alarmanlage errichtet werden und die Aufzeichnungen müssen gespeichert werden können.</target>
+</sentence>
+
+<sentence id="595" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(3)  Förderungsansuchen sind innerhalb von sechs Monaten ab Einbau der Einbruch-</target>
+</sentence>
+
+<sentence id="596" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">a) Ziviltechniker oder eine Ziviltechnikergesellschaft</target>
+</sentence>
+
+<sentence id="597" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Der Förderungswerber hat vor Zusicherung schriftlich zu erklären, ob die</target>
+</sentence>
+
+<sentence id="598" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Der Förderungswerber hat vor Zusicherung durch eine Erklärung nachzuweisen,</target>
+</sentence>
+
+<sentence id="599" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(3) Der Förderungswerber hat vor Zusicherung als Nachweis, dass die Finanzierung</target>
+</sentence>
+
+<sentence id="600" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">des Bauvorhabens gesichert ist, einen Finanzierungsplan vorzulegen.</target>
+</sentence>
+
+<sentence id="601" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(4) Der Förderungswerber hat sowohl bei Förderung des Wohnungsbaus als auch</target>
+</sentence>
+
+<sentence id="602" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(5) Bei der Förderung des Wohnungsbaus hat der Förderungswerber vor</target>
+</sentence>
+
+<sentence id="603" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(6) Der Förderungswerber hat vor Zusicherung – und bei Änderungen während der</target>
+</sentence>
+
+<sentence id="604" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(7) Der Förderungswerber hat durch Vorlage eines Grundbuchsauszuges vor</target>
+</sentence>
+
+<sentence id="605" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Wird ein Ansuchen von der Landesregierung bewilligt, so ist dem Förderungs-</target>
+</sentence>
+
+<sentence id="606" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Ergänzend zu den Bestimmungen des § 6 sind zusätzlich in die Zusicherung</target>
+</sentence>
+
+<sentence id="607" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(3) In die Zusicherung kann aufgenommen werden, dass auf Dauer der Förderung</target>
+</sentence>
+
+<sentence id="608" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(4) In die Zusicherung kann aufgenommen werden, dass eine gemeinnützige</target>
+</sentence>
+
+<sentence id="609" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(5) In der Zusicherung können Bedingungen festgelegt werden unter denen das</target>
+</sentence>
+
+<sentence id="610" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Der Förderungswerber muss innerhalb eines Jahres ab Nachweis, dass das</target>
+</sentence>
+
+<sentence id="611" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">1.  Die Endabrechnung hat den Nachweis über die Gesamtbaukosten in Form</target>
+</sentence>
+
+<sentence id="612" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">2.  Bei der Förderung im Wohnungssanierungs-Bereich ist in Fällen, bei denen</target>
+</sentence>
+
+<sentence id="613" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Die Förderung wird unter der Auflage zuerkannt, dass der Förderungswerber</target>
+</sentence>
+
+<sentence id="614" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(3) Die Genehmigung der Endabrechnung hat zur Voraussetzung, dass der</target>
+</sentence>
+
+<sentence id="615" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Ansuchen um Förderung von Wohnungsbau (§ 1 Z. 15) haben zur Voraussetzung,</target>
+</sentence>
+
+<sentence id="616" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Der Gestaltungsbeirat ist ein ausschließlich den zuständigen politischen</target>
+</sentence>
+
+<sentence id="617" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Sein Aufwand bildet Wohnbauforschung.</target>
+</sentence>
+
+<sentence id="618" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(3) Die Beurteilung durch den Gestaltungsbeirat oder Durchführung eines</target>
+</sentence>
+
+<sentence id="619" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Der Zuschuss im Ausmaß von 50 % des förderbaren Nominales ist verzinst und rückzahlbar, der Zuschuss im Ausmaß von 20 % ist nicht rückzahlbar.</target>
+</sentence>
+
+<sentence id="620" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Das förderbare Nominale wird nach einem Punktesystem wie folgt ermittelt.</target>
+</sentence>
+
+<sentence id="621" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Das Mindestausmaß der geförderten Fläche beträgt 35 m².</target>
+</sentence>
+
+<sentence id="622" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Demgemäß ergeben sich folgende Punkte (Beispiel)</target>
+</sentence>
+
+<sentence id="623" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Punkte für Photovoltaikanlagen werden nur zuerkannt, sofern keine Tarifförderung</target>
+</sentence>
+
+<sentence id="624" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Darüber hinaus ist die Zuerkennung von Punkten für Barrierefreies Bauen und die Lagequalität möglich.</target>
+</sentence>
+
+<sentence id="625" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Innenbereich Gang (nicht in Wohnungen)</target>
+</sentence>
+
+<sentence id="626" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">………………………………………………………………. bis zu</target>
+</sentence>
+
+<sentence id="627" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Barrierefreie Ausführung des Gebäudes,</target>
+</sentence>
+
+<sentence id="628" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(beispielsweise: Lese-, Internet- und Fernsehraum);</target>
+</sentence>
+
+<sentence id="629" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">die Wohnungsgröße sollte 45 m² bis 65 m² betragen</target>
+</sentence>
+
+<sentence id="630" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">die Vergabe darf nur in Miete erfolgen</target>
+</sentence>
+
+<sentence id="631" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(4) Die Objektförderung ist auf alle Wohnungsarten, Wohnheime sowie</target>
+</sentence>
+
+<sentence id="632" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">des Förderungswerbers und des Darlehens- oder Kreditgebers.</target>
+</sentence>
+
+<sentence id="633" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Sowohl das Förderungsdarlehen als auch der rückzahlbare Zuschuss für eine</target>
+</sentence>
+
+<sentence id="634" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Die Annuitäten dieser beiden rückzahlbaren Förderungsleistungen (Darlehen des Landes und rückzahlbarer Zuschuss) betragen in den ersten vier Jahren 4 % des Darlehensbetrages, steigen dann in Vierjahressprüngen um jeweils 1 % an, betragen vom 21. bis 24. Jahr 9,5 %, im 25. Jahr 11 % und im 26. Jahr 20 %.</target>
+</sentence>
+
+<sentence id="635" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Die beiden gemäß Abs. 1 verbundenen Wohnungen müssen von dieser</target>
+</sentence>
+
+<sentence id="636" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Die geförderte Nutzfläche darf höchstens 130 m² betragen.</target>
+</sentence>
+
+<sentence id="637" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Eine Förderung für die Wohnungssanierung kann den im § 3 Abs. 3 NÖ WFG</target>
+</sentence>
+
+<sentence id="638" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Bei der Sanierung von Wohnungseigentumsanlagen kann für die Förderung von</target>
+</sentence>
+
+<sentence id="639" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Dem Ansuchen sind – unbeschadet der §§ 10 und 25 - alle zur Beurteilung erforderlichen Unterlagen anzuschließen, insbesondere sind dies</target>
+</sentence>
+
+<sentence id="640" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">€ 360,--/m² Wohnnutzfläche hat der Zuschuss eine Laufzeit von 10 Jahren.</target>
+</sentence>
+
+<sentence id="641" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Die geförderten Sanierungsmaßnahmen und ältere Förderungen bleiben unberücksichtigt.</target>
+</sentence>
+
+<sentence id="642" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(4) Die höchst förderbare Nutzfläche beträgt 130 m².</target>
+</sentence>
+
+<sentence id="643" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(5) Zuschüsse werden nur für die Annuitäten von Ausleihungen, die zur</target>
+</sentence>
+
+<sentence id="644" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Der Nachweis über die Aufnahme einer Ausleihung erfolgt mittels Erklärung des Förderungswerbers und des Darlehens- oder Kreditgebers.</target>
+</sentence>
+
+<sentence id="645" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Als Voraussetzung für die Zuerkennung einer Förderung für die umfassende</target>
+</sentence>
+
+<sentence id="646" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Demgemäß ergeben sich folgende Punkte (Beispiel)</target>
+</sentence>
+
+<sentence id="647" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Erstellung eines Gesamtsanierungskonzeptes</target>
+</sentence>
+
+<sentence id="648" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Innenbereich Gang (nicht in Wohnungen)</target>
+</sentence>
+
+<sentence id="649" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(3) Werden im Zuge einer Sanierung von Objekten Wohnungen neu errichtet, können diese im Rahmen der Wohnungssanierung wahlweise anstelle der Förderungsart gemäß § 36 entsprechend den Bestimmungen des Abschnitt VI ausgenommen</target>
+</sentence>
+
+<sentence id="650" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(4) Die Zusicherung wird unter der Voraussetzung erteilt, dass der Förderungswerber</target>
+</sentence>
+
+<sentence id="651" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(5) Bei der Einzelbauteilsanierung oder -erneuerung an der thermischen</target>
+</sentence>
+
+<sentence id="652" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Gebäudehülle sind folgende energetische Mindeststandards einzuhalten:</target>
+</sentence>
+
+<sentence id="653" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Über den in § 4 (Österreicher und Gleichgestellte) genannten Personenkreis</target>
+</sentence>
+
+<sentence id="654" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">hinaus kann eine Subjektförderung auch zugesichert werden:</target>
+</sentence>
+
+<sentence id="655" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">bescheidmäßig zugesichert worden ist,</target>
+</sentence>
+
+<sentence id="656" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Der Förderungswerber und dessen (Ehe-) Partner müssen in der geförderten</target>
+</sentence>
+
+<sentence id="657" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Grundsätzlich ist das gesamte Einkommen (Familieneinkommen gemäß</target>
+</sentence>
+
+<sentence id="658" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">der Erwerbsfähigkeit von mindestens 55 % im Sinne des § 35 EStG 1988 aufweist oder bei Anspruch auf Pflegegeld ab der Höhe der Stufe II gemäß Bundespflegegesetz 1993, bzw. NÖ Pflegegeldgesetz 1993, sowie Familien mit einem Kind, für das zum Zeitpunkt des Ansuchens erhöhte Familienbeihilfe bezogen wird.</target>
+</sentence>
+
+<sentence id="659" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Subjektförderung kann nur Förderungswerbern zuerkannt werden, die eine nach</target>
+</sentence>
+
+<sentence id="660" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Der gleichzeitige Bezug von Wohnbeihilfe und Wohnzuschuss ist nicht möglich.</target>
+</sentence>
+
+<sentence id="661" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">ab der nachweislichen Benutzbarkeit</target>
+</sentence>
+
+<sentence id="662" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">- bei der Wohnungssanierung: ab Zusicherung der Objektförderung;</target>
+</sentence>
+
+<sentence id="663" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">der Ausleihungen, welche zur Errichtung oder zur Sanierung des geförderten Objektes aufgenommen wurden, - abzüglich allfälliger Zuschüsse.</target>
+</sentence>
+
+<sentence id="664" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">diesem Zeitpunkt aufgrund der Zusicherung, zu berechnen.</target>
+</sentence>
+
+<sentence id="665" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Eine Änderung der Finanzierung einer genehmigten Endabrechnung ist innerhalb der Gesamtbaukosten möglich.</target>
+</sentence>
+
+<sentence id="666" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Zuerkennung der Subjektförderung</target>
+</sentence>
+
+<sentence id="667" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Sie kann jedoch nur für einen Zeitraum bis drei Monate vor Einlangen des Ansuchens zuerkannt werden.</target>
+</sentence>
+
+<sentence id="668" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Eine Änderung der Förderungsvereinbarung kann erfolgen,</target>
+</sentence>
+
+<sentence id="669" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">b)  bei der Geburt eines Kindes, das gegenüber dem Förderungswerber</target>
+</sentence>
+
+<sentence id="670" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">c)  bei einer gravierenden Einkommensminderung (§ 40 Abs. 2),</target>
+</sentence>
+
+<sentence id="671" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">sofern der Änderungsbetrag mehr als € 20,-- beträgt.</target>
+</sentence>
+
+<sentence id="672" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Die Wohnbeihilfe wird den Benutzern von geförderten Wohnungen,</target>
+</sentence>
+
+<sentence id="673" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">zu einem Bundes-, Wohn- und Siedlungsfonds;</target>
+</sentence>
+
+<sentence id="674" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">b)  Wohnhauswiederaufbaugesetz;</target>
+</sentence>
+
+<sentence id="675" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">d)  Wohnbauförderungsgesetz 1968</target>
+</sentence>
+
+<sentence id="676" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">f)   Bundessonderwohnbaugesetz 1983</target>
+</sentence>
+
+<sentence id="677" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">g)  Wohnbauförderungsgesetz 1984</target>
+</sentence>
+
+<sentence id="678" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(Abschnitte III und VII NÖ Wohnungsförderungsrichtlinien 2005 und 2011, soferne eine Förderung gemäß lit. a) bis i) besteht)</target>
+</sentence>
+
+<sentence id="679" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(3) Der Wohnungsaufwand kann nur in folgender Höhe anerkannt werden:</target>
+</sentence>
+
+<sentence id="680" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">ist der anrechenbare Aufwand pro Quadratmeter mit € 4,50 pro Quadratmeter Nutzfläche begrenzt</target>
+</sentence>
+
+<sentence id="681" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Bei Wohnheimen ist die Wohnnutzfläche des Heimplatzes Grundlage für die Berechnung.</target>
+</sentence>
+
+<sentence id="682" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Der Wohnzuschuss ist ein Zuschuss zu den Annuitäten im Ausmaß</target>
+</sentence>
+
+<sentence id="683" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">a)  aufgrund des von der NÖ Landesregierung am 11. Juni 1991 beschlossenen</target>
+</sentence>
+
+<sentence id="684" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">2. Juli 1993 und am 19. Oktober 1993 gemäß § 55 NÖ WFG in Verbindung mit</target>
+</sentence>
+
+<sentence id="685" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Familieneinkommen (§ 40) um € 1.200,-- für die erste Person und um € 420,-- für jede weitere Person verringert.</target>
+</sentence>
+
+<sentence id="686" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(3) Die Höhe des Wohnzuschusses darf die zu leistende Annuität nicht übersteigen.</target>
+</sentence>
+
+<sentence id="687" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">bis zu 100 % der Sanierungskosten einschließlich der Ortskernförderung für den Ankauf eines Eigenheimes sowie die Förderung nach § 19 Abs. 4.</target>
+</sentence>
+
+<sentence id="688" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">jeweils unter Berücksichtigung der 3 %-igen Toleranzgrenze</target>
+</sentence>
+
+<sentence id="689" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Der Wohnzuschuss „Modell 2009“ ist ein Zuschuss zum Wohnungsaufwand.</target>
+</sentence>
+
+<sentence id="690" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">a) aufgrund des von der NÖ Landesregierung am 11. Juni 1991 beschlossenen</target>
+</sentence>
+
+<sentence id="691" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">der Beginn des Nutzungsverhältnisses nach dem 30.6.2009 lag.</target>
+</sentence>
+
+<sentence id="692" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Die Höhe des Wohnzuschusses ergibt sich aus dem Differenzbetrag zwischen</target>
+</sentence>
+
+<sentence id="693" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(3) Der Wohnungsaufwand kann bis zu einer Höhe von € 4,-- bzw. € 4,50 pro m² Nutz-</target>
+</sentence>
+
+<sentence id="694" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Das Jahreseinkommen erhöht sich für</target>
+</sentence>
+
+<sentence id="695" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">1988 Anspruch auf den Alleinerzieherabsetzbetrag haben, um 10 %</target>
+</sentence>
+
+<sentence id="696" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">gekündigt wird oder kein Zuschuss mehr geleistet wird;</target>
+</sentence>
+
+<sentence id="697" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Förderungen nach diesem Abschnitt, die zu Unrecht empfangen wurden, können</target>
+</sentence>
+
+<sentence id="698" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(3) Die Förderungsvereinbarung wird mit der Maßgabe abgeschlossen, dass der</target>
+</sentence>
+
+<sentence id="699" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">Förderungsnehmer alle Tatsachen, die eine Änderung der Höhe der</target>
+</sentence>
+
+<sentence id="700" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">FLAG 1967:  Familienlastenausgleichsgesetz 1967</target>
+</sentence>
+
+<sentence id="701" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">EStG 1988:  Einkommensteuergesetz 1988</target>
+</sentence>
+
+<sentence id="702" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">WGG: Wohnungsgemeinnützigkeitsgesetz</target>
+</sentence>
+
+<sentence id="703" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">BGBl. Nr. 70/2002 in der Fassung BGBl. I. Nr. 58/2010</target>
+</sentence>
+
+<sentence id="704" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(1) Förderungsansuchen, die bis zum Inkrafttreten dieser Richtlinien eingebracht</target>
+</sentence>
+
+<sentence id="705" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">(2) Abs. 1 gilt nicht für Ansuchen, die sich auf noch nicht durch die Landesregierung</target>
+</sentence>
+
+<sentence id="706" data_source="N-2010-0739-DE.doc_utf8.xml">
+	<target system="google">entschiedene Förderungen der Errichtung von Mehrfamilienhäusern</target>
+</sentence>
+
+<sentence id="707" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Beilage zu Verf-1-128000/457-2010</target>
+</sentence>
+
+<sentence id="708" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Da diese Verordnung eine einzige österreichische Akkreditierungsstelle verlangt, laufen vor dem Hintergrund der von der Verfassung vorgegebenen Kompetenzverteilung noch Verhandlungen mit dem Bund mit dem Ziel der Schaffung einer gemeinsamen nationalen Akkreditierungsstelle.</target>
+</sentence>
+
+<sentence id="709" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Außerdem müsste eine reaktive Marktüberwachung für nicht CE-gekennzeichnete Bauprodukte ansonsten von den einzelnen Ländern, und damit auch vom Land Oberösterreich, gesondert durchgeführt werden.</target>
+</sentence>
+
+<sentence id="710" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Mit diesem Landesgesetzentwurf sollen die Rahmenbedingungen für die Vollziehung der Verordnung (EG) 765/2008, soweit sie die Marktüberwachung von Bauprodukten betrifft, geschaffen werden.</target>
+</sentence>
+
+<sentence id="711" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Notifikationsgesetzes dem Bund zur Weiterleitung an die zuständigen europäischen Organe zu übermitteln, um der "Informationsrichtlinie" 98/34/EG Genüge zu tun.</target>
+</sentence>
+
+<sentence id="712" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Zu Art. I Z. 3 (§ 44 Abs. 1 dritter und vierte Satz):</target>
+</sentence>
+
+<sentence id="713" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Zu Art. I Z. 7 (§ 61o bis § 61w):</target>
+</sentence>
+
+<sentence id="714" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Darunter fallen somit auch Bauprodukte, die in der Baustoffliste ÖA angeführt sind.</target>
+</sentence>
+
+<sentence id="715" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Die Heranziehung des Sitzes bzw. Hauptwohnsitzes ist zweckmäßig, da nur dies eine eindeutige Zuordnung erlaubt.</target>
+</sentence>
+
+<sentence id="716" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Mit § 61u wird Art. 8 der Vereinbarung gemäß Art. 15a B-VG über die Marktüberwachung von Bauprodukten umgesetzt, womit im Hinblick auf die Anforderungen des Datenschutzgesetzes sicherstellt wird, dass die Marktüberwachungsbehörde die für den Informationsaustausch benötigten Daten automationsunterstützt verarbeiten und übermitteln darf (Abs. 1).</target>
+</sentence>
+
+<sentence id="717" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Zum Begriff des "Verschuldens" existiert eine umfangreiche Judikatur des Verwaltungsgerichtshofes (vgl. etwa die Erkenntnisse vom 27.06.2006, Zl.</target>
+</sentence>
+
+<sentence id="718" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Bautechnikgesetz geändert wird (2. Oö.</target>
+</sentence>
+
+<sentence id="719" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">1.	Im Inhaltsverzeichnis werden folgende Änderungen vorgenommen:</target>
+</sentence>
+
+<sentence id="720" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">die Zusammenarbeit im Bauwesen, die Regelung der Verwendbarkeit</target>
+</sentence>
+
+<sentence id="721" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">von Bauprodukten und die Marktüberwachung von Bauprodukten"</target>
+</sentence>
+
+<sentence id="722" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">§ 61w Überprüfung und Bewertung der Marktüberwachungsmaßnahmen"</target>
+</sentence>
+
+<sentence id="723" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">3.	§ 44 Abs. 1 dritter und vierter Satz lauten:</target>
+</sentence>
+
+<sentence id="724" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">4.	§ 58 Abs. 4 vorletzter und letzter Satz entfallen.</target>
+</sentence>
+
+<sentence id="725" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">4.	Information und Warnung der Öffentlichkeit vor gefährlichen Bauprodukten;</target>
+</sentence>
+
+<sentence id="726" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">7.	Überprüfung der Durchführung der Korrekturmaßnahmen;</target>
+</sentence>
+
+<sentence id="727" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Erlangt die Baubehörde Kenntnis</target>
+</sentence>
+
+<sentence id="728" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">hat sie der Marktüberwachungsbehörde unverzüglich darüber zu berichten.</target>
+</sentence>
+
+<sentence id="729" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Ist dies nicht möglich, hat die Marktüberwachungsbehörde eine Probenentschädigung in der Höhe des Einstandspreises zu leisten.</target>
+</sentence>
+
+<sentence id="730" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">1.	eine Tätigkeit, für die eine Akkreditierung erforderlich ist, ohne Akkreditierung ausübt,</target>
+</sentence>
+
+<sentence id="731" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">§  6  Ausnahmen von den Vorschriften betreffend Abstände und</target>
+</sentence>
+
+<sentence id="732" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">§  8  Stellplätze für Kraftfahrzeuge</target>
+</sentence>
+
+<sentence id="733" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">§ 27  Barrierefreie Gestaltung baulicher Anlagen</target>
+</sentence>
+
+<sentence id="734" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">§ 27a Hochwassergeschützte Gestaltung von Gebäuden</target>
+</sentence>
+
+<sentence id="735" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">§ 29  Einfriedungen, Lärm- und Schallschutzwände</target>
+</sentence>
+
+<sentence id="736" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">§ 33  Bauten für größere Menschenansammlungen</target>
+</sentence>
+
+<sentence id="737" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">§ 36  Landwirtschaftliche Bauten</target>
+</sentence>
+
+<sentence id="738" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">§ 50  Gemeinsame Akkreditierungsvoraussetzungen für Prüf-,</target>
+</sentence>
+
+<sentence id="739" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">§ 51  Zusätzliche Voraussetzungen für Überwachungs- und</target>
+</sentence>
+
+<sentence id="740" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">§ 55  Konformitätsnachweisverfahren</target>
+</sentence>
+
+<sentence id="741" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">technische Spezifikationen vorliegen</target>
+</sentence>
+
+<sentence id="742" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">§ 61m Untersagung der Verwendung von Bauprodukten</target>
+</sentence>
+
+<sentence id="743" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">§ 64  Verordnungsermächtigung an die Landesregierung</target>
+</sentence>
+
+<sentence id="744" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Anlage 1: CE-Konformitätskennzeichnung</target>
+</sentence>
+
+<sentence id="745" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Sie hat nach Maßgabe einer entsprechenden Vereinbarung gemäß Art. 15a B-VG eine gemeinsame Stelle der Länder oder der Länder und des Bundes mit dieser Angelegenheit zu betrauen, sofern diese über die notwendigen personellen und sachlichen Voraussetzungen verfügt.</target>
+</sentence>
+
+<sentence id="746" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">1.	den Namen und die Anschrift des Antragstellers,</target>
+</sentence>
+
+<sentence id="747" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">3.	die Art der beantragten Akkreditierung,</target>
+</sentence>
+
+<sentence id="748" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">8.	das Qualitätssicherungshandbuch.</target>
+</sentence>
+
+<sentence id="749" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Zum Zeitpunkt der Antragstellung muß die Eintragung im Firmenbuch nicht nachgewiesen werden.</target>
+</sentence>
+
+<sentence id="750" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">1.	der Name und das Kennzeichen des Herstellers;</target>
+</sentence>
+
+<sentence id="751" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">2.	die letzten beiden Ziffern des Jahres, in dem die CE-Kennzeichnung angebracht wurde;</target>
+</sentence>
+
+<sentence id="752" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">4.	die Nummer der EG-Konformitätsbescheinigung.</target>
+</sentence>
+
+<sentence id="753" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Die Landesregierung kann die Verwendung des Zeichens so lange verbieten, bis das betroffene Bauprodukt wieder den Konformitätskriterien entspricht.</target>
+</sentence>
+
+<sentence id="754" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">(1) Bauprodukte dürfen nur in Verkehr gebracht werden, wenn sie brauchbar sind (§ 4 Abs. 1), das heißt</target>
+</sentence>
+
+<sentence id="755" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">3.	in einer Verordnung der Landesregierung festgestellt ist, dass sie keinen wesentlichen Anforderungen entsprechen müssen (§ 64 Abs. 1 Z 6) oder</target>
+</sentence>
+
+<sentence id="756" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">4.	sie das Einbauzeichen ÜA (§ 61i) tragen.</target>
+</sentence>
+
+<sentence id="757" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Eine Beschlagnahme von Bauprodukten auf Kosten des Herstellers oder seines in einem Mitgliedstaat des EWR ansässigen Vertreters oder Bevollmächtigten ist zulässig.</target>
+</sentence>
+
+<sentence id="758" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Werden Bauprodukte entgegen den Bestimmungen der §§ 61b und 61k verwendet, hat die Bezirksverwaltungsbehörde dem Händler die weitere Verwendung dieser Produkte zu untersagen.</target>
+</sentence>
+
+<sentence id="759" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Dasselbe gilt für Verwaltungsverfahren des Österreichischen Institutes für Bautechnik auf Basis der Vereinbarung gemäß Art. 15a B-VG über die Zusammenarbeit im Bauwesen, LGBl.</target>
+</sentence>
+
+<sentence id="760" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">(3) Die in diesem Hauptstück genannten Verpflichtungen der beim Amt der Landesregierung eingerichteten Zulassungs- und Zertifizierungsstelle zur Veröffentlichung (Kundmachung) von Daten gelten - abgesehen vom Fall der Kundmachung in der Amtlichen Linzer Zeitung - als erfüllt, wenn die Veröffentlichung (Kundmachung) über eine bei dieser Stelle aufliegende einsehbare Liste hinaus in einem von der Landesregierung betriebenen elektronischen allgemein zugänglichen Medium (Internet) erfolgt.</target>
+</sentence>
+
+<sentence id="761" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">(1) Eine Verwaltungsübertretung begeht, wer</target>
+</sentence>
+
+<sentence id="762" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">1.	eine Tätigkeit, für die eine Akkreditierung erforderlich ist, ohne Akkreditierung ausübt,</target>
+</sentence>
+
+<sentence id="763" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">4.	den Bestimmungen des § 58 Abs. 4 und 5 zuwiderhandelt,</target>
+</sentence>
+
+<sentence id="764" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">5.	Bauprodukte verwendet, die nicht den Anforderungen des § 61b oder des § 61k entsprechen,</target>
+</sentence>
+
+<sentence id="765" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">1.	Im Inhaltsverzeichnis werden folgende Änderungen vorgenommen:</target>
+</sentence>
+
+<sentence id="766" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">die Zusammenarbeit im Bauwesen, die Regelung der Verwendbarkeit</target>
+</sentence>
+
+<sentence id="767" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">von Bauprodukten und die Marktüberwachung von Bauprodukten"</target>
+</sentence>
+
+<sentence id="768" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">§ 61w Überprüfung und Bewertung der Marktüberwachungsmaßnahmen"</target>
+</sentence>
+
+<sentence id="769" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">3.	§ 44 Abs. 1 dritter und vierter Satz lauten:</target>
+</sentence>
+
+<sentence id="770" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">4.	§ 58 Abs. 4 vorletzter und letzter Satz entfallen.</target>
+</sentence>
+
+<sentence id="771" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">4.	Information und Warnung der Öffentlichkeit vor gefährlichen Bauprodukten;</target>
+</sentence>
+
+<sentence id="772" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">7.	Überprüfung der Durchführung der Korrekturmaßnahmen;</target>
+</sentence>
+
+<sentence id="773" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Erlangt die Baubehörde Kenntnis</target>
+</sentence>
+
+<sentence id="774" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">hat sie der Marktüberwachungsbehörde unverzüglich darüber zu berichten.</target>
+</sentence>
+
+<sentence id="775" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">Ist dies nicht möglich, hat die Marktüberwachungsbehörde eine Probenentschädigung in der Höhe des Einstandspreises zu leisten.</target>
+</sentence>
+
+<sentence id="776" data_source="N-2011-0031-DE.doc_utf8.xml">
+	<target system="google">1.	eine Tätigkeit, für die eine Akkreditierung erforderlich ist, ohne Akkreditierung ausübt,</target>
+</sentence>
+
+<sentence id="777" data_source="N-2011-0043-DE.doc_utf8.xml">
+	<target system="google">der §§ 2, 8 Abs. 2 und 8 Abs. 4 des Elektrotechnikgesetzes 1992 – ETG 1992, BGBl.</target>
+</sentence>
+
+<sentence id="778" data_source="N-2011-0043-DE.doc_utf8.xml">
+	<target system="google">der §§ 69 Abs. 1 und 71 der Gewerbeordnung 1994, BGBl.</target>
+</sentence>
+
+<sentence id="779" data_source="N-2011-0043-DE.doc_utf8.xml">
+	<target system="google">des § 32 des Bundesgesetzes gegen den unlauteren Wettbewerb 1984 – UWG, BGBl.</target>
+</sentence>
+
+<sentence id="780" data_source="N-2011-0043-DE.doc_utf8.xml">
+	<target system="google">Im Inhaltsverzeichnis lautet die Bezeichnung von § 5:</target>
+</sentence>
+
+<sentence id="781" data_source="N-2011-0043-DE.doc_utf8.xml">
+	<target system="google">„Durchführungsmaßnahmen“ auf der Grundlage der Richtlinie 2009/125/EG zur Schaffung eines Rahmens für die Festlegung von Anforderungen an die umweltgerechte Gestaltung energieverbrauchsrelevanter Produkte erlassene Maßnahmen zur Festlegung der Ökodesign-Anforderungen für bestimmte Produkte oder zu bestimmten Umweltaspekten;“</target>
+</sentence>
+
+<sentence id="782" data_source="N-2011-0043-DE.doc_utf8.xml">
+	<target system="google">Managementsystem für die Konformitätsbewertung (gemäß § 8)</target>
+</sentence>
+
+<sentence id="783" data_source="N-2011-0043-DE.doc_utf8.xml">
+	<target system="google">Umweltorientierte Produktpolitik</target>
+</sentence>
+
+<sentence id="784" data_source="N-2011-0043-DE.doc_utf8.xml">
+	<target system="google">Der Hersteller muss nachweisen können, dass die Anforderungen der maßgebenden ergänzenden Rechtsvorschrift erfüllt sind.</target>
+</sentence>
+
+<sentence id="785" data_source="N-2011-0043-DE.doc_utf8.xml">
+	<target system="google">Der Hersteller hat Folgendes auszuarbeiten und zu aktualisieren:</target>
+</sentence>
+
+<sentence id="786" data_source="N-2011-0043-DE.doc_utf8.xml">
+	<target system="google">3.4.	Prüfungen und Abstellung von Mängeln</target>
+</sentence>
+
+<sentence id="787" data_source="N-2011-0043-DE.doc_utf8.xml">
+	<target system="google">Inhalt der Durchführungsmaßnahmen (gemäß § 15)</target>
+</sentence>
+
+<sentence id="788" data_source="N-2011-0043-DE.doc_utf8.xml">
+	<target system="google">In einer Durchführungsmaßnahme ist insbesondere Folgendes festzulegen:</target>
+</sentence>
+
+<sentence id="789" data_source="N-2011-0043-DE.doc_utf8.xml">
+	<target system="google">Angaben zur Konformitätsbewertung nach dem Beschluss 93/465/EWG,</target>
+</sentence>
+
+<sentence id="790" data_source="N-2011-0047-DE.doc_utf8.xml">
+	<target system="google">Der Landtag von Kärnten hat beschlossen:</target>
+</sentence>
+
+<sentence id="791" data_source="N-2011-0047-DE.doc_utf8.xml">
+	<target system="google">Nach dem 4. Abschnitt wird folgender 5. Abschnitt eingefügt:</target>
+</sentence>
+
+<sentence id="792" data_source="N-2011-0047-DE.doc_utf8.xml">
+	<target system="google">Bauprodukte, für die europäische technische Spezifikationen nicht bestehen, unterliegen der Marktüberwachung nach den sinngemäß anzuwendenden Bestimmungen der Art. 19 bis 21 der Verordnung (EG) Nr. 765/2008 sowie den Bestimmungen dieses Abschnitts, ausgenommen dem § 26m Abs. 2 lit. a und h.</target>
+</sentence>
+
+<sentence id="793" data_source="N-2011-0047-DE.doc_utf8.xml">
+	<target system="google">Die Marktüberwachungsbehörde hat insbesondere folgende Aufgaben der Marktüberwachung wahrzunehmen:</target>
+</sentence>
+
+<sentence id="794" data_source="N-2011-0047-DE.doc_utf8.xml">
+	<target system="google">Erlangt die Baubehörde Kenntnis</target>
+</sentence>
+
+<sentence id="795" data_source="N-2011-0047-DE.doc_utf8.xml">
+	<target system="google">so hat sie der Marktüberwachungsbehörde unverzüglich darüber zu berichten.</target>
+</sentence>
+
+<sentence id="796" data_source="N-2011-0047-DE.doc_utf8.xml">
+	<target system="google">Die Marktüberwachungsbehörde ist ermächtigt, die für die Vollziehung der Bestimmungen des III.</target>
+</sentence>
+
+<sentence id="797" data_source="N-2011-0047-DE.doc_utf8.xml">
+	<target system="google">Die Kosten sind von der Marktüberwachungsbehörde mit Bescheid vorzuschreiben.</target>
+</sentence>
+
+<sentence id="798" data_source="N-2011-0047-DE.doc_utf8.xml">
+	<target system="google">Wurden von der Marktüberwachungsbehörde im Rahmen der Marktüberwachung Proben genommen, so sind die Proben nach Abschluss des Verfahrens auf Verlangen des betroffenen Wirtschaftsakteurs zurückzugeben.</target>
+</sentence>
+
+<sentence id="799" data_source="N-2011-0047-DE.doc_utf8.xml">
+	<target system="google">Der bisherige 5. Abschnitt wird als 6. Abschnitt bezeichnet.</target>
+</sentence>
+
+<sentence id="800" data_source="N-2011-0047-DE.doc_utf8.xml">
+	<target system="google">Der bisherige 6. Abschnitt wird als 7. Abschnitt bezeichnet.</target>
+</sentence>
+
+<sentence id="801" data_source="N-2011-0047-DE.doc_utf8.xml">
+	<target system="google">Die Überschrift des § 29 lautet:</target>
+</sentence>
+
+<sentence id="802" data_source="N-2011-0047-DE.doc_utf8.xml">
+	<target system="google">Bei der Durchführung von Verwaltungsverfahren durch das Österreichische Institut für Bautechnik ist, soweit in diesem Gesetz nicht anderes bestimmt ist, das Allgemeine Verwaltungsverfahrensgesetz 1991 – AVG, BGBl. Nr. 51/1991, zuletzt idF des Bundesgesetzes BGBl.</target>
+</sentence>
+
+<sentence id="803" data_source="N-2011-0047-DE.doc_utf8.xml">
+	<target system="google">Verwaltungsübertretungen nach Abs. 1 lit. a, b, c, i, j, l, m, n und o sind von der Bezirksverwaltungsbehörde mit einer Geldstrafe bis zu 14.000 Euro zu bestrafen.</target>
+</sentence>
+
+<sentence id="804" data_source="N-2011-0047-DE.doc_utf8.xml">
+	<target system="google">Nach § 29c Abs. 3 werden folgende Abs. 4 bis 7 angefügt:</target>
+</sentence>
+
+<sentence id="805" data_source="N-2011-0047-DE.doc_utf8.xml">
+	<target system="google">Dieses Gesetz tritt mit dem der Kundmachung folgenden Monatsersten in Kraft.</target>
+</sentence>
+
+<sentence id="806" data_source="N-2011-0047-DE.doc_utf8.xml">
+	<target system="google">Mit diesem Gesetz wird die Richtlinie 2006/123/EG des Europäischen Parlaments und des Rates vom 12. Dezember 2006 über Dienstleistungen im Binnenmarkt, ABl. Nr. L 376 vom 21.12.2006, S 36, umgesetzt.</target>
+</sentence>
+
+<sentence id="807" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Die Verordnung gilt für folgende Angebote der Behörden der Bundesverwaltung:</target>
+</sentence>
+
+<sentence id="808" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Intranetauftritte und -angebote, die öffentlich zugänglich sind, und</target>
+</sentence>
+
+<sentence id="809" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">§ 4 Umsetzungsfristen für die Standards</target>
+</sentence>
+
+<sentence id="810" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Sie wird spätestens drei Jahre nach ihrem Inkrafttreten auf ihre Wirkung hin überprüft.</target>
+</sentence>
+
+<sentence id="811" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">§ 6 Inkrafttreten, Außerkrafttreten</target>
+</sentence>
+
+<sentence id="812" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">(zu § 3 und § 4 Absatz 1 BITV 2.0)</target>
+</sentence>
+
+<sentence id="813" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Text-Alternativen müssen in den folgenden Fällen nicht bereitgestellt werden:</target>
+</sentence>
+
+<sentence id="814" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Für aufgezeichnete Audio-Inhalte von synchronisierten Medien sind erweiterte Untertitel (Captions) bereitzustellen.</target>
+</sentence>
+
+<sentence id="815" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Kein Mindestkontrast ist erforderlich für nebensächliche Texte und Schriftgrafiken,</target>
+</sentence>
+
+<sentence id="816" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">die Teil einer inaktiven Komponente der Benutzerschnittstelle sind,</target>
+</sentence>
+
+<sentence id="817" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">bei denen es sich um nebensächlichen Text in einem Bild handelt oder</target>
+</sentence>
+
+<sentence id="818" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">die für den Nutzer oder die Nutzerin nicht sichtbar sind.</target>
+</sentence>
+
+<sentence id="819" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Für die Vermittlung von Informationen sind keine Schriftgrafiken zu verwenden, es sei denn,</target>
+</sentence>
+
+<sentence id="820" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">diese lassen sich individuell an die visuellen Bedürfnisse der Nutzerin oder des Nutzers anpassen oder</target>
+</sentence>
+
+<sentence id="821" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">eine bestimmte Präsentation ist für die Vermittlung der Informationen des Textes wesentlich.</target>
+</sentence>
+
+<sentence id="822" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Den Nutzerinnen und Nutzern ist ausreichend Zeit zu geben, um Inhalte zu lesen und zu verwenden.</target>
+</sentence>
+
+<sentence id="823" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Die Nutzerin oder der Nutzer wird vorgewarnt, dass die Zeit abläuft, und hat dann mindestens 20 Sekunden Zeit, die Dauer durch eine einfache Aktion (z. B. durch Drücken der Leertaste) zu verlängern.</target>
+</sentence>
+
+<sentence id="824" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Es ist nicht erforderlich, die Zeitbegrenzung anzupassen, wenn</target>
+</sentence>
+
+<sentence id="825" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">die Zeitbegrenzung ein notwendiger Bestandteil eines Echtzeit-Ereignisses (z. B. einer Auktion) ist und es keine Alternative zur vorgesehenen Zeitbegrenzung gibt,</target>
+</sentence>
+
+<sentence id="826" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">die Zeitbegrenzung notwendig ist und durch Verlängerung die Aktivität ungültig werden würde oder</target>
+</sentence>
+
+<sentence id="827" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">der zeitliche Rahmen mehr als 20 Stunden beträgt.</target>
+</sentence>
+
+<sentence id="828" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Informationen, die sich bewegen, blinken oder scrollen und die</target>
+</sentence>
+
+<sentence id="829" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">müssen angehalten, beendet oder ausgeblendet werden können, es sei denn, diese Bewegung ist wesentlich für eine Aktivität.</target>
+</sentence>
+
+<sentence id="830" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Informationen, die sich automatisch aktualisieren und die</target>
+</sentence>
+
+<sentence id="831" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Inhalte sind so zu gestalten, dass keine epileptischen Anfälle ausgelöst werden.</target>
+</sentence>
+
+<sentence id="832" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Es werden alternative Möglichkeiten angeboten, um Inhalte und Webseiten innerhalb verbundener Webangebote zu finden.</target>
+</sentence>
+
+<sentence id="833" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Bei Tastaturbedienung ist immer ein Tastaturfokus sichtbar.</target>
+</sentence>
+
+<sentence id="834" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Prinzip 3: Verständlichkeit – Die Informationen und die Bedienung der Benutzerschnittstelle müssen verständlich sein.</target>
+</sentence>
+
+<sentence id="835" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Texte sind lesbar und verständlich zu gestalten.</target>
+</sentence>
+
+<sentence id="836" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Webseiten sind so zu gestalten, dass Aufbau und Benutzung vorhersehbar sind.</target>
+</sentence>
+
+<sentence id="837" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Erhält eine Komponente den Fokus, wird dadurch keine Änderung des Kontextes ausgelöst.</target>
+</sentence>
+
+<sentence id="838" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Die Ausführung kann rückgängig gemacht werden.</target>
+</sentence>
+
+<sentence id="839" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Prinzip 4: Robustheit – Inhalte müssen so robust sein, dass sie von möglichst allen Benutzeragenten, einschließlich assistiver Technologien, zuverlässig interpretiert werden können.</target>
+</sentence>
+
+<sentence id="840" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Sie verfügen über vollständige Start- und End-Tags,</target>
+</sentence>
+
+<sentence id="841" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">sie werden entsprechend ihren Spezifikationen verschachtelt,</target>
+</sentence>
+
+<sentence id="842" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">sie enthalten keine doppelten Attribute und</target>
+</sentence>
+
+<sentence id="843" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">es sei denn, ihre Spezifikationen erlauben diese Besonderheit.</target>
+</sentence>
+
+<sentence id="844" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">die Teil einer inaktiven Komponente der Benutzerschnittstelle sind,</target>
+</sentence>
+
+<sentence id="845" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">bei denen es sich um nebensächlichen Text in einem Bild handelt oder</target>
+</sentence>
+
+<sentence id="846" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">die für die Nutzerin oder den Nutzer nicht sichtbar sind.</target>
+</sentence>
+
+<sentence id="847" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">die Zeilenbreite beträgt nicht mehr als 80 Zeichen,</target>
+</sentence>
+
+<sentence id="848" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">der Text ist nicht im Blocksatz ausgerichtet,</target>
+</sentence>
+
+<sentence id="849" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">der Abstand zwischen den Absätzen ist größer als der Zeilenabstand und</target>
+</sentence>
+
+<sentence id="850" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Den Nutzerinnen und Nutzern ist ausreichend Zeit zu geben, um Inhalte zu lesen und zu verwenden.</target>
+</sentence>
+
+<sentence id="851" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Unterbrechungen können aufgeschoben oder unterdrückt werden, es sei denn, es handelt sich um Unterbrechungen in Notfällen.</target>
+</sentence>
+
+<sentence id="852" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Inhalte sind so zu gestalten, dass keine epileptischen Anfälle ausgelöst werden.</target>
+</sentence>
+
+<sentence id="853" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Ziel und Zweck eines Links sind aus dem Linktext selbst ersichtlich.</target>
+</sentence>
+
+<sentence id="854" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Es sind Abschnittsüberschriften zu verwenden, die den Inhalt weiter strukturieren.</target>
+</sentence>
+
+<sentence id="855" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Prinzip 3: Verständlichkeit – Die Informationen und die Bedienung der Benutzerschnittstelle müssen verständlich sein.</target>
+</sentence>
+
+<sentence id="856" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Für alle Inhalte ist die klarste und einfachste Sprache zu verwenden, die angemessen ist.</target>
+</sentence>
+
+<sentence id="857" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Webseiten sind so zu gestalten, dass Aufbau und Benutzung vorhersehbar sind.</target>
+</sentence>
+
+<sentence id="858" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Es sind kontextabhängige Hilfen zur Verfügung zu stellen.</target>
+</sentence>
+
+<sentence id="859" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Bei Webseiten, die verlangen, dass Nutzerinnen und Nutzer Informationen übermitteln, haben diese mindestens eine der folgenden Möglichkeiten:</target>
+</sentence>
+
+<sentence id="860" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Die Ausführung kann rückgängig gemacht werden.</target>
+</sentence>
+
+<sentence id="861" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Spracherkennungssoftware, die z. B. von körperbehinderten Menschen benutzt wird;</target>
+</sentence>
+
+<sentence id="862" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">alternative Tastaturen z. B. für seh- und körperbehinderte Menschen;</target>
+</sentence>
+
+<sentence id="863" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Der Tonspur hinzugefügte Beschreibung wichtiger visueller Einzelheiten, deren Verständnis sich nicht allein aus der Haupttonspur ergibt.</target>
+</sentence>
+
+<sentence id="864" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Dies gilt beispielsweise, wenn eine erweiterte Gliederung oder ein dynamisches Menü eingefügt werden, es sei denn, sie ändern einen der oben genannten Punkte.</target>
+</sentence>
+
+<sentence id="865" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Text, durch den die Software eine Komponente im Webinhalt für Anwender und Anwenderinnen aufzeigen kann.</target>
+</sentence>
+
+<sentence id="866" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Durch ein Programm gesetzt werden</target>
+</sentence>
+
+<sentence id="867" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Synchronisierte visuelle Alternative und/oder Text-Alternative für sprachliche und nichtsprachliche Audio-Informationen, die zum Verständnis des Medieninhalts benötigt werden.</target>
+</sentence>
+
+<sentence id="868" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Dabei gelten folgende Definitionen:</target>
+</sentence>
+
+<sentence id="869" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Ein Blitz besteht aus zwei entgegengesetzten Übergängen.</target>
+</sentence>
+
+<sentence id="870" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Es ist jedoch kein Hilfsmittel zur Bewertung dieser Bedingung notwendig, wenn ein Aufblitzen mit drei oder weniger Blitzen pro Sekunde erfolgt.</target>
+</sentence>
+
+<sentence id="871" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Kontext im Zusammenhang mit dieser Verordnung beinhaltet folgende Elemente:</target>
+</sentence>
+
+<sentence id="872" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Das Kontrastverhältnis berechnet sich aus: (L1 + 0,05) / (L2 + 0,05), wobei</target>
+</sentence>
+
+<sentence id="873" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">L2 die relative Luminanz der dunkleren Vorder- oder Hintergrundfarben ist.</target>
+</sentence>
+
+<sentence id="874" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Ein Fehler liegt vor, wenn die Farbe des Textes festgelegt ist, die Hintergrundfarbe jedoch nicht; für Nutzerinnen und Nutzer ist die Standard-Hintergrundfarbe unbekannt und kann daher nicht als ausreichend kontrastiert bewertet werden.</target>
+</sentence>
+
+<sentence id="875" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Text oder andere Komponente mit einer Text-Alternative, die den Nutzerinnen und Nutzern präsentiert wird, um eine Komponente im Webinhalt aufzuzeigen.</target>
+</sentence>
+
+<sentence id="876" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Verweis in einem elektronischen Dokument auf ein beliebiges Verweisziel.</target>
+</sentence>
+
+<sentence id="877" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Markup-Sprache ist eine Kategorie von Programmiersprachen, die z. B. HTML (Hypertext Markup Language) oder XML (Extensible Markup Language) umfasst.</target>
+</sentence>
+
+<sentence id="878" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Prozess oder Technik, der oder die dazu dient, ein bestimmtes Resultat zu erreichen.</target>
+</sentence>
+
+<sentence id="879" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Inhalt, der in einer für die Nutzerin oder den Nutzer wahrnehmbaren Form dargestellt wird.</target>
+</sentence>
+
+<sentence id="880" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Synchronisierte Medien sind Audio- und Video-Inhalte, die mit anderen Formaten zur Darstellung von Informationen und/oder mit zeitabhängigen interaktiven Komponenten synchronisiert werden.</target>
+</sentence>
+
+<sentence id="881" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Informationen sind wesentlich, wenn sich bei ihrem Fehlen Information oder Funktionalität des Inhalts grundlegend ändern.</target>
+</sentence>
+
+<sentence id="882" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Ergebnis, das durch Aktivierung eines Hyperlinks erreicht wird.</target>
+</sentence>
+
+<sentence id="883" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">(zu § 3 Absatz 2 und § 4 Absatz 1 BITV 2.0)</target>
+</sentence>
+
+<sentence id="884" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Schatten auf dem Körper der Darstellerin oder des Darstellers sind zu vermeiden.</target>
+</sentence>
+
+<sentence id="885" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Dabei soll die Kleidung dunkel und einfarbig sein.</target>
+</sentence>
+
+<sentence id="886" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Die farbliche Gestaltung des Logos kann dem jeweiligen Design des Auftritts angepasst werden.</target>
+</sentence>
+
+<sentence id="887" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Die Auflösung beträgt mindestens 320 mal 240 Pixel.</target>
+</sentence>
+
+<sentence id="888" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Es sind kurze Sätze mit klarer Satzgliederung zu bilden.</target>
+</sentence>
+
+<sentence id="889" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Aufzählungen mit mehr als drei Punkten sind durch Listen zu gliedern.</target>
+</sentence>
+
+<sentence id="890" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Wichtige Informationen und Überschriften sind hervorzuheben.</target>
+</sentence>
+
+<sentence id="891" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Jeder Satz beginnt mit einer neuen Zeile.</target>
+</sentence>
+
+<sentence id="892" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Es sind aussagekräftige Symbole und Bilder zu verwenden.</target>
+</sentence>
+
+<sentence id="893" data_source="N-2011-0070-DE.doc_utf8.xml">
+	<target system="google">Anschriften sind nicht als Fließtext zu schreiben.</target>
+</sentence>
+
+<sentence id="894" data_source="N-2011-0072-DE.doc_utf8.xml">
+	<target system="google">In der Anlage 1 (Positivliste) der Beschichtungsleitlinie ergeben sich zum 26.11.2010  folgende Änderungen:</target>
+</sentence>
+
+<sentence id="895" data_source="N-2011-0072-DE.doc_utf8.xml">
+	<target system="google">Folgende Stoffe werden aufgenommen:</target>
+</sentence>
+
+<sentence id="896" data_source="N-2011-0072-DE.doc_utf8.xml">
+	<target system="google">Folgender Stoff wird aufgenommen:</target>
+</sentence>
+
+<sentence id="897" data_source="N-2011-0072-DE.doc_utf8.xml">
+	<target system="google">Im Abschnitt Lösemittel wird ein neuer Unterpunkt eingefügt:</target>
+</sentence>
+
+<sentence id="898" data_source="N-2011-0072-DE.doc_utf8.xml">
+	<target system="google">Folgender Stoff wird aufgenommen:</target>
+</sentence>
+
+<sentence id="899" data_source="N-2011-0072-DE.doc_utf8.xml">
+	<target system="google">Folgende Stoffe werden aufgenommen:</target>
+</sentence>
+
+<sentence id="900" data_source="N-2011-0072-DE.doc_utf8.xml">
+	<target system="google">Darüber hinaus werden für Klebstoffe folgende Photoinitiatoren benötigt:</target>
+</sentence>
+
+<sentence id="901" data_source="N-2011-0072-DE.doc_utf8.xml">
+	<target system="google">Folgende Substanzen werden aufgenommen:</target>
+</sentence>
+
+</doc>
+
+</tstset>
