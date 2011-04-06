@@ -89,6 +89,7 @@ def extract_sentence(path, system, langpair, sentence_index, testset, config):
 
     return result
 
+
 def extract_source(path, language, sentence_index, testset, config):
     PTRN_SOURCEREF=config.get("data","pattern_sourceref")
     translations = list(enumerate(codecs.open(PTRN_SOURCEREF %
@@ -101,6 +102,7 @@ def extract_source(path, language, sentence_index, testset, config):
     if result =='':
         print "Cannot resolve sentence [" + str(sentence_index) + "] in file " + PTRN_SOURCEREF % (path,  testset, language)
     return result
+
 
 def extract_ref(path, language, sentence_index, config):
     PTRN_SOURCEREF=config.get("data","pattern_sourceref")    
