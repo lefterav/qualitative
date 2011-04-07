@@ -63,7 +63,7 @@ class XmlWriter(object):
             #append the newly populated parallel sentence to the document
             jcml.appendChild(parallelsentence_xml)
             
-            print ">", i
+            #print ">", i
             i +=1
             
         doc_xml.appendChild(jcml)
