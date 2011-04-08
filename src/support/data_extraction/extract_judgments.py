@@ -115,7 +115,8 @@ class WMTEvalReader:
     def get_translations(self, row):
         
         translations = []
-        for i in range(1, self.systems_num + 1 ):
+        system_indexing_base = self.config.getint("format","system_indexing_base")
+        for i in range(system_indexing_base, self.systems_num + system_indexing_base):
             system_id = row["system%dId" % i]
             if system_id: #avoid rows with less than n systems
                 attributes = {"system": system_id, 
@@ -129,6 +130,7 @@ class WMTEvalReader:
     def extract_translation(self, system, srclang, trglang, sentence_index, testset):
         langpair = "%s-%s" % (srclang, trglang)
         sentence_index = int(sentence_index)
+        sentence_indexing_base = self.config.getint("format","sentence_indexing_base")
         path = self.config.get("data","path")
         result = ''
         fieldmap={ 'path' : path ,
@@ -148,7 +150,7 @@ class WMTEvalReader:
                 #sys.exit() 
             translations = list(enumerate(file))
             for (index, sentence) in translations:
-                if index+1 == sentence_index:
+                if (index + sentence_indexing_base) == sentence_index:
                     result = sentence
                     break
         else:
@@ -160,6 +162,8 @@ class WMTEvalReader:
     def extract_source(self, srclang, testset, sentence_index ):
         path = self.config.get("data","path")
         sentence_index = int(sentence_index)
+        sentence_indexing_base = self.config.getint("format","sentence_indexing_base")
+
         pattern_sourceref = self.config.get("data","pattern_sourceref")
         pattern_fields = {"path": path,
                           "srclang": srclang,
@@ -168,7 +172,7 @@ class WMTEvalReader:
         translations = list(enumerate(codecs.open(full_filename, 'r', 'utf-8')))
         result = ''
         for (index, sentence) in translations:
-            if index+1 == sentence_index:
+            if (index + sentence_indexing_base) == sentence_index:
                 result = sentence
                 break
         if result =='':
@@ -178,7 +182,8 @@ class WMTEvalReader:
     
     def get_system_names(self, row):
         system_names=[]
-        for i in range(1, self.systems_num + 1 ):
+        system_indexing_base = self.config.getint("format","system_indexing_base")
+        for i in range(system_indexing_base, self.systems_num + system_indexing_base):
             try:
                 system_names.append(row["system%dId" % i] )
             except:
