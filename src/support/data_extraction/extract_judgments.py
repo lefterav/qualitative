@@ -15,12 +15,16 @@ LANGUAGES = {
              'Czech' : 'cz',
              'German' : 'de',
              'French' : 'fr',
-             'Hungarian' : 'hu'
+             'Hungarian' : 'hu',
+             'All': 'All'
              }
 
 class WMTEvalReader:
     
-
+    """
+    Initialize function, by providing a config file with the parameters for data and format
+    @param config File object containing a config file of the required format
+    """
     def __init__(self, config):
         self.config = config
         fieldnames = config.get("format","fieldnames").split(',')
@@ -28,52 +32,84 @@ class WMTEvalReader:
         csvfile = open(csvfilename)
         self.reader =  csv.DictReader(csvfile, fieldnames)
         self.systems_num = config.getint("format","systems_num")
-        
+
+    """
+    Iterates through the csv rows, parses the data and creates a list of parallelsentences
+    @return A list of Parallelsentence objects, one object for each csv row
+    """    
     def parse(self):
         parallelsentences = []
         firstrow = True
         for row in self.reader:
             
+            #skip the first row as it contains headers
             if firstrow:
                 firstrow = False
                 continue
             
-            attributes = {}
-            
+            #for some sets (eg wmt08) one needs to split a space separated cell to get some information
             if self.config.getboolean("format", "split_task_column"):
                 row = self.get_task_data(row)
                 
+            #standardize naming of languages and testsets
             row = self.convert_languages(row)
-                   
-            if "testset" in row:
-                attributes["testset"] = row["testset"]
-            else:
-                row["testset"] = ""
+            row = self.map_testsets(row)
 
             #skip this row if it doesn't match filtering criteria
             if not self.check_filters(row):
                 continue
             
-            attributes["id"] = row["srcIndex"]
-            attributes["document_id"] = row["documentId"]
-            attributes["segment_id"] = row["segmentId"]
-            attributes["judge_id"] = row["judgeId"]
+            #additional row fields are useful for arguments of the parallel sentences but need to be renamed
+            attributes = {}
+            attributes = self.map_attributes(row, attributes)
             
-            
+            #this will open the file of the source sentences, get its text and create a SimpleSentence objece            
             source_text = self.extract_source(row["srclang"], row["testset"], row["srcIndex"])
             source = SimpleSentence(source_text)
             
+            #this will get a list of Simplsentences containing the translations provided by the several systems from the files
             translations = self.get_translations(row)
             
+            #initialize object and append it to the list
             parallelsentence = ParallelSentence(source, translations, None, attributes)
             parallelsentences.append(parallelsentence)
+        
+        #sort sentences with sort criteria
+        for (criterion, type) in self.config.items("sort"):
+            if type == "int":
+                parallelsentences = sorted(parallelsentences, key=lambda parallelsentence: int(parallelsentence.get_attribute(criterion)))
+            else:
+                parallelsentences = sorted(parallelsentences, key=lambda parallelsentence: parallelsentence.get_attribute(criterion))
         return parallelsentences
+    
+    
+    def map_testsets(self, row ):
+        if "testset" in row:
+            for (oldname, newname) in self.config.items("testsets"):
+                if row["testset"].lower() == oldname:
+                    row["testset"] = newname          
+        else:
+            row["testset"] = ""
+        
+        return row
             
-            
-            
-    def convert_languages(self,row):
-        row["srclang"] = LANGUAGES[row["srclang"]]
-        row["trglang"] = LANGUAGES[row["trglang"]]  
+        
+    def map_attributes(self, row, attributes):
+        for (attribute, key) in self.config.items("attributes"):
+                try:
+                    attributes[attribute] = row[key]
+                except:
+                    sys.stderr.write("attribute [%s:%s] failed" % (attribute, key))
+                    pass
+        return attributes
+
+        
+    def convert_languages(self, row):
+        try:
+            row["srclang"] = LANGUAGES[row["srclang"]]
+            row["trglang"] = LANGUAGES[row["trglang"]]
+        except:
+            sys.stderr.write("Not known language\n")  
         return row
             
     def get_translations(self, row):
@@ -81,11 +117,12 @@ class WMTEvalReader:
         translations = []
         for i in range(1, self.systems_num + 1 ):
             system_id = row["system%dId" % i]
-            attributes = {"system": system_id, 
-                      "rank": row["system%drank" % i] }
-            translation_string = self.extract_translation(system_id, row["srclang"], row["trglang"], row["srcIndex"], row["testset"])
-            
-            translations.append(SimpleSentence(translation_string, attributes))
+            if system_id: #avoid rows with less than n systems
+                attributes = {"system": system_id, 
+                          "rank": row["system%drank" % i] }
+                translation_string = self.extract_translation(system_id, row["srclang"], row["trglang"], row["srcIndex"], row["testset"])
+                
+                translations.append(SimpleSentence(translation_string, attributes))
         return translations
     
     
@@ -101,14 +138,15 @@ class WMTEvalReader:
                 
         if system != '_ref':
             pattern_submissions = self.config.get('data', 'pattern_submissions')
+            filename = pattern_submissions % fieldmap
             try:
                 #print "trying to access %s" % (pattern_submissions % fieldmap)
-                filename = codecs.open(pattern_submissions % fieldmap, 'r', 'utf-8')
+                file = codecs.open(filename, 'r', 'utf-8')
             except:
-                sys.stderr.write("possibly system %s is not provided for this language pair %s and testset %s, please filter it out through config file to proceed\n" % (system, langpair, testset))
+                sys.stderr.write("error opening %s for system %s, on language pair %s and testset %s, please filter it out through config file to proceed\n" % (filename, system, langpair, testset))
                 return ""
                 #sys.exit() 
-            translations = list(enumerate(filename))
+            translations = list(enumerate(file))
             for (index, sentence) in translations:
                 if index+1 == sentence_index:
                     result = sentence
@@ -150,8 +188,9 @@ class WMTEvalReader:
     def get_task_data(self, row):
         task_details = row["task"].split(' ')
         row["task"] = task_details[0]
+        
         #get language data
-        [row["srclang"], row["trglang"]] = task_details[0].split('-')
+        [row["srclang"], row["trglang"]] = task_details[1].split('-')
         #get dataset
         row["testset"] = task_details[2]
         return row
@@ -197,7 +236,8 @@ if __name__ == "__main__":
         config.read([sys.argv[1]])
         wmtr = WMTEvalReader(config)
         parallelsentences = wmtr.parse()
-        sys.stderr.write("Sentences read, proceeding with writing XML")
+        
+        sys.stderr.write("Sentences read, proceeding with writing XML\n")
         xmlwriter = XmlWriter(parallelsentences)
         filename = config.get("output", "filename")
         xmlwriter.write_to_file(filename)
