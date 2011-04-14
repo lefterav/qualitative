@@ -2,8 +2,9 @@ import xmlrpclib
 import base64
 from featuregenerator.featuregenerator import FeatureGenerator
 from nltk.tokenize.punkt import PunktWordTokenizer
+import sys
 
-class SRILMUnknownWord(FeatureGenerator):
+class SRILMngramGenerator(FeatureGenerator):
     '''
     Gets all the words of a sentence through a SRILM language model and counts how many of them are unknown (unigram prob -99) 
     '''
@@ -34,15 +35,16 @@ class SRILMUnknownWord(FeatureGenerator):
     
     def __prepare_sentence__(self, simplesentence):
         sent_string = simplesentence.get_string().strip()
+        if self.lowercase:
+            sent_string = sent_string.lower()
         if self.tokenize:
             tokenized_string = PunktWordTokenizer().tokenize(sent_string)
             sent_string = ' '.join(tokenized_string)
         else:
             tokenized_string = sent_string.split(' ')
             
-        if self.lowercase:
-            sent_string = sent_string.lower()
-        return (tokenized_string,sent_string)
+        
+        return (tokenized_string, sent_string)
     
     
     def __process__(self, simplesentence):
@@ -55,31 +57,44 @@ class SRILMUnknownWord(FeatureGenerator):
         
         #check for unknown words and collecting unigram probabilities:
         for token in tokens:
-            uni_prob = self.server.getUnigramProb(base64.standard_b64encode(token))
-            if uni_prob == -99:
-                unk_count += 1
-                unk_tokens.append(token)
-            else:
-                uni_probs *= uni_prob
+            try: 
+                uni_prob = self.server.getUnigramProb(token)
+                if uni_prob == -99:
+                    unk_count += 1
+                    unk_tokens.append(token)
+                    sys.stderr.write("Unknown word: %s\n" % token)
+                else:
+                    uni_probs += uni_prob
+            except: 
+                sys.stderr.write("Failed to retrieve unigram probability for token: '%s'\n" % token) 
+                pass
+        
         
         #get bigram probabilities
         for pos in range ( len(tokens) -1 ):
-            token = tokens[pos:pos+1]
+            token = tokens[pos:pos+2]
             if (token[0] not in unk_tokens) and (token[1] not in unk_tokens):
-                bi_prob = self.server.getBigramProb(base64.standard_b64encode(token))
-                bi_probs *= bi_prob
+                try:
+                    bi_prob = self.server.getBigramProb(' '.join(token))
+                    bi_probs += bi_prob
+                except:
+                    sys.stderr.write("Failed to retrieve bigram probability for tokens: '%s'\n" % ' '.join(token)) 
+
          
         #get trigram probabilities
         for pos in range ( len(tokens) -2 ):
-            token = tokens[pos:pos+2]
+            token = tokens[pos:pos+3]
             if (token[0] not in unk_tokens) and (token[1] not in unk_tokens) and (token[2] not in unk_tokens):
-                tri_prob = self.server.getTrigramProb(base64.standard_b64encode(token))
-                tri_probs *= tri_prob
+                try:
+                    tri_prob = self.server.getTrigramProb(' '.join(token))
+                    tri_probs += tri_prob
+                except:
+                    sys.stderr.write("Failed to retrieve trigram probability for tokens: '%s'\n" % ' '.join(token)) 
         
         attributes = { 'unk' : str(unk_count),
-                       'uni-prob' : str(uni_prob),
-                       'bi-prob' : str(bi_prob),
-                       'tri-prob' : str(tri_prob) }
+                       'uni-prob' : str(uni_probs),
+                       'bi-prob' : str(bi_probs),
+                       'tri-prob' : str(tri_probs) }
         
         simplesentence.add_attributes(attributes)
         return simplesentence

@@ -2,6 +2,8 @@
 
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 import srilm, sys
+import base64
+
 
 _baseclass = SimpleXMLRPCServer
 class StoppableServer(_baseclass):
@@ -37,16 +39,18 @@ class LM:
         return srilm.howManyNgrams(self.lm, type)
 
     def getUnigramProb(self, s):
+        s = base64.standard_b64decode(s)
         return srilm.getUnigramProb(self.lm, s)
 
     def getBigramProb(self, s):
+        s = base64.standard_b64decode(s)
         return srilm.getBigramProb(self.lm, s)
 
     def getTrigramProb(self, s):
+        s = base64.standard_b64decode(s)
         return srilm.getTrigramProb(self.lm, s)
 
     def getSentenceProb(self, s, n=None ):
-        import base64
         s = base64.standard_b64decode(s)
         if not n:
             n = len(s.split(' '))
