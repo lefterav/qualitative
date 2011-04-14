@@ -31,6 +31,7 @@ class DataSet(object):
     def get_attribute_names(self):
         if not self.attribute_names_found: 
             self.attribute_names = self.__retrieve_attribute_names__()
+            self.attribute_names_found = True
         return self.attribute_names
     
     def get_all_attribute_names(self):
@@ -49,7 +50,11 @@ class DataSet(object):
         for parallelsentence in self.parallelsentences:
             attribute_names.update( parallelsentence.get_attribute_names() )
         return attribute_names
-            
+    
+    def append_dataset(self, add_dataset):
+        self.parallelsentences.append(add_dataset.get_parallelsentences())
+        self.attribute_names = self.get_attribute_names().append(add_dataset.get_attribute_names())
+        
             
     
     """

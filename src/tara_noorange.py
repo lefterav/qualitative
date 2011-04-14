@@ -153,25 +153,29 @@ class Experiment:
             if (ranks_count > 1):
                 ties += ranks_count-1
         return ties
+    
+    
                 
     
-    def add_external_features(self, given_filename="evaluations_all.jcml"):
+    
+    def add_external_features(self, filename, filename_out):
         
         from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
         from featuregenerator.lm.srilm.srilmclient import SRILMFeatureGenerator
+        from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
         from featuregenerator.parser.berkeley.berkeleyclient import BerkeleyFeatureGenerator 
         from io.saxjcml import SaxJCMLProcessor
         from xml.sax import make_parser
         import codecs
         
-        dir = getenv("HOME") + "/workspace/TaraXUscripts/data"
-        filename = dir + "/" + given_filename
-        file_object = codecs.open(filename, 'r', 'utf-8')
+        #dir = getenv("HOME") + "/workspace/TaraXUscripts/data"
+        #filename = dir + "/" + given_filename
+        input_file_object = codecs.open(filename, 'r', 'utf-8')
         
     
-        dir = getenv("HOME") + "/workspace/TaraXUscripts/data"
-        filename_out = dir + "/featured_" + given_filename
-        file_object2 = codecs.open(filename_out, 'w', 'utf-8')
+        #dir = getenv("HOME") + "/workspace/TaraXUscripts/data"
+        #filename_out = dir + "/featured_" + filename
+        output_input_file_object = codecs.open(filename_out, 'w', 'utf-8')
     
         ###INITIALIZE FEATURE GENERATORS
     
@@ -180,6 +184,7 @@ class Experiment:
         #SRILM feature generator
         srilm_en = SRILMFeatureGenerator("http://134.96.187.4:8585", "en" )
         #srilm_de = SRILMFeatureGenerator("http://134.96.187.4:8586", "de" )
+        srilm_ngram_en = SRILMngramGenerator("http://134.96.187.4:8585", "en" )
         
         #Berkeley feature generator
         berkeley_en = BerkeleyFeatureGenerator("http://localhost:8682", "en")
@@ -187,24 +192,34 @@ class Experiment:
         
         
         #proceed with parcing
-        saxreader = SaxJCMLProcessor( file_object2, [lfg, srilm_en, berkeley_en, berkeley_de] )
-        myparser = make_parser( )
-        myparser.setContentHandler( saxreader )
-        myparser.parse( file_object )
+        saxreader = SaxJCMLProcessor(output_input_file_object, [lfg, srilm_en, srilm_ngram_en, berkeley_en, berkeley_de])
+        myparser = make_parser()
+        myparser.setContentHandler(saxreader)
+        myparser.parse(input_file_object)
        
     
-    def train_classifiers(self, filename="evaluations_all.jcml"):
-        if filename.endswith(".tab"):
-            orangetable = orange.ExampleTable(filename)
-            print "Passing data to Orange"
-            training_data = OrangeData(orangetable)
+    
+    
+    def train_classifiers(self, filenames=["evaluations_all.jcml"]):
+        if filenames[0].endswith(".tab"):
+                orangetable = orange.ExampleTable(filenames[0])
+                print "Passing data to Orange"
+                training_data = OrangeData(orangetable)
         else:
-            print "Reading XML"
-            reader = XmlReader(filename)
-            dataset =  reader.get_dataset()
+            dataset = None
+            for filename in filenames:
+            
+                print "Reading XML %s " % filename
+                reader = XmlReader(filename)
+                cur_dataset =  reader.get_dataset()
+                if not dataset:
+                    dataset = cur_dataset
+                else:
+                    dataset.append_dataset(cur_dataset)
+                
             class_name = "rank"
             #TODO: get list of attributes directly from feature generators
-           
+            
             print "Passing data to Orange"
             training_data = OrangeData(dataset, class_name, self.desired_attributes, True)
             dataset=None
@@ -216,11 +231,11 @@ class Experiment:
         print "training loglinear"
 #        lr = orngLR.LogRegLearner(training_data.get_data()) # compute classification accuracy
         print "Bayes" 
-        bayes = Bayes( training_data )
+        bayes = Bayes(training_data)
         print "Tree"
-        tree = TreeLearner( training_data )
+        tree = TreeLearner(training_data)
         print "SVM"
-        svm = SVM ( training_data )
+        svm = SVM (training_data)
         
     
         bayes.name = "bayes"
@@ -275,6 +290,15 @@ class Experiment:
         xmlwriter.write_to_file(dir + "/test-length.xml")
     
 
+    ###PARTICULAR FUNCTIONS TO BE RUN ONCE
+    def get_testset_trainset_wmt10(self):
+        self.get_test_sentences("/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10.jcml", "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml" , "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.jcml")
+        
+    def add_external_features_042011(self):
+        datafiles = [ "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt08.jcml" , "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml" , "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.jcml"]
+        for datafile in datafiles:
+            self.add_external_features(datafile, datafile.replace("jcml", "xf.jcml"))
+
 if __name__ == '__main__':
     dir = getenv("HOME") + "/workspace/TaraXUscripts/data/"
     
@@ -285,11 +309,12 @@ if __name__ == '__main__':
     #myexperiment = Experiment()
 
     exp = Experiment()
-    exp.get_test_sentences("/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10.jcml", "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml" , "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.jcml")
+    exp.add_external_features_042011()
+    #exp.get_test_sentences("/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10.jcml", "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml" , "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.jcml")
     
     #myexperiment.add_external_features("test08.xml")
     
-#    train_filename = dir + "featured_train08.xml"
+    train_filename = dir + "featured_train08.xml"
 #    classifiers = myexperiment.train_classifiers('/home/elav01/workspace/TaraXUscripts/src/tmpa04du_.tab')
 #    #classifiers = myexperiment.train_classifiers('/home/elav01/workspace/TaraXUscripts/src/tmpa04du_.tab')
 #    test_filename = dir + "featured_test08.xml"
