@@ -38,6 +38,7 @@ class SRILMngramGenerator(FeatureGenerator):
         if self.lowercase:
             sent_string = sent_string.lower()
         if self.tokenize:
+            sent_string.replace("%"," %") #TODO: this is an issue
             tokenized_string = PunktWordTokenizer().tokenize(sent_string)
             sent_string = ' '.join(tokenized_string)
         else:
