@@ -8,8 +8,7 @@ Created on 15 Οκτ 2010
 @author: Eleftherios Avramidis
 """
 
-import codecs
-import xml.dom.minidom
+
 from xml.dom.minidom import parse
 from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence

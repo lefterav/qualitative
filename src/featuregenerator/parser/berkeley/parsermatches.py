@@ -38,7 +38,10 @@ class ParserMatches(FeatureGenerator):
         src_parse = simplesentence.get_attribute("berkeley-tree")
         for (src_map, tgt_map) in self.mappings:
             src_map_count = self.__count_nodetags__(src_parse, src_map)
-            attributes["parse-%s" % src_map[0]] = str(src_map_count)
+            src_label = self.__canonicalize__(src_map[0])
+            attributes["parse-%s" % src_label] = str(src_map_count)
+        simplesentence.add_attributes(attributes)
+        return simplesentence
             
             
     def add_features_tgt(self, simplesentence, parallelsentence):
@@ -47,17 +50,26 @@ class ParserMatches(FeatureGenerator):
         src_parse = parallelsentence.get_source().get_attribute("berkeley-tree")
         if tgt_parse and src_parse:
             for (src_map, tgt_map) in self.mappings:
-                src_map_count = int(parallelsentence.get_source().get_attribute("parse-%s" %src_map[0]))
+                #src_label = self.__canonicalize__(src_map[0])
+                #src_map_count = int(parallelsentence.get_source().get_attribute("parse-%s" % src_label))
                 tgt_map_count = self.__count_nodetags__(tgt_parse, tgt_map)
-                attributes["parse-%s" %tgt_map[0]] = tgt_map_count
-                if tgt_map_count != 0:
-                    attributes["parse-ratio-%s" % tgt_map[0]] = str(1.0 * src_map_count / tgt_map_count)
-                else:
-                    attributes["parse-ratio-%s" % tgt_map[0]] = str(float("Inf"))
+                tgt_label = self.__canonicalize__(tgt_map[0])
+                attributes["parse-%s" % tgt_label] = str(tgt_map_count)
+#                if tgt_map_count != 0:
+#                    attributes["parse-%s_ratio" % tgt_label] = str(1.0 * src_map_count / tgt_map_count)
+#                else:
+#                    attributes["parse-%s_ratio" % tgt_label] = str(float("Inf"))
         simplesentence.add_attributes(attributes)
         return simplesentence
         
 
+    def __canonicalize__(self, string):
+        string = string.replace("$." , "dot").replace("$," , "comma")
+        string = string.replace(".", "dot").replace("," , "comma")
+        return string
+        
+        
+        
                     
                     
                     

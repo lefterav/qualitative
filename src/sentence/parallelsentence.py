@@ -9,6 +9,7 @@
 
 from copy import deepcopy
 from sentence import SimpleSentence
+import sys
 
 class ParallelSentence(object):
     """
@@ -74,9 +75,10 @@ class ParallelSentence(object):
     
     def get_nested_attributes(self):
         """
-            function that gathers all the features of the nested sentences 
-            to the parallel sentence object, by prefixing their names accordingly
+        function that gathers all the features of the nested sentences 
+        to the parallel sentence object, by prefixing their names accordingly
         """
+        
         new_attributes = deepcopy (self.attributes)
         new_attributes.update( self.__prefix__(self.src.get_attributes(), "src") )
         i=0
@@ -86,13 +88,16 @@ class ParallelSentence(object):
             #prefixeditems = self.__prefix__( tgtitem.get_attributes(), tgtitem.get_attributes()["system"] )
             new_attributes.update( prefixeditems )
 
-            new_attributes.update( self.__prefix__( self.ref.get_attributes(), "ref" ) )
+            try:
+                new_attributes.update( self.__prefix__( self.ref.get_attributes(), "ref" ) )
+            except:
+                pass
         return new_attributes
 
 
     def recover_attributes(self):
         """
-            Moves the attributes back to the nested sentences
+        Moves the attributes back to the nested sentences
             
         """
         for attribute_name in self.attributes.keys():
@@ -122,5 +127,3 @@ class ParallelSentence(object):
             newlistitems[new_item_key] = listitems[item_key]
         return newlistitems  
             
-
-        

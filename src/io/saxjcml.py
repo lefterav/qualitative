@@ -45,8 +45,10 @@ class SaxJCMLProcessor(XMLGenerator):
         
     def startDocument(self):
         XMLGenerator.startDocument(self)
+        XMLGenerator.startElement(self, "jcml", {})
 
     def endDocument(self):
+        XMLGenerator.endElement(self, "jcml")
         XMLGenerator.endDocument(self)
     
     def startElement(self, name, attrs=[]):
@@ -120,9 +122,9 @@ class SaxJCMLProcessor(XMLGenerator):
                 parallelsentence = fg.add_features_parallelsentence(parallelsentence)
                 #parallelsentence.add_attributes( fg.get_features_parallelsentence(parallelsentence) )
             
-            print parallelsentence
+            #print parallelsentence
             src = self.src
-            print src.get_string()
+            #print src.get_string()
             for fg in self.feature_generators:
                 src = fg.add_features_src(src, parallelsentence)
                 #src.add_attributes( fg.get_features_src(src, parallelsentence) )

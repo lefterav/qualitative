@@ -53,6 +53,9 @@ class SimpleSentence(object):
     def add_attributes(self, attributes):
         self.attributes.update( attributes )
         
+    def del_attribute(self, attribute):
+        del(self.attributes[attribute])
+        
     def __str__(self):
         return self.string + ": " + str(self.attributes)
         

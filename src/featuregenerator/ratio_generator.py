@@ -36,7 +36,10 @@ class RatioGenerator(FeatureGenerator):
                         #do calculations only if needed
                         tgt_attribute_value = float(tgt_attributes[tgt_attribute_name])
                         src_attribute_value = float(src_attributes[tgt_attribute_name])
-                        ratio = 1.0 * src_attribute_value / tgt_attribute_value
+                        if tgt_attribute_value == 0:
+                            ratio = float('inf')
+                        else:
+                            ratio = 1.0 * src_attribute_value / tgt_attribute_value
                         simplesentence.add_attribute(new_attribute_name, str(ratio))
                 except ValueError:
                     pass

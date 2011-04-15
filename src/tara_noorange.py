@@ -20,29 +20,121 @@ from sentence.dataset import DataSet
 
 from io.input.orangereader import OrangeData
 from io.output.xmlwriter import XmlWriter
+
+
+from io.saxjcml import SaxJCMLProcessor
+from xml.sax import make_parser
+import codecs
+
+from sentence.rankhandler import RankHandler
+
  
 class Experiment:
+    desired_attributes = {}
+    
+    def __init__(self):
 
-    desired_attributes={ 
-                            'tgt-1_prob' :'c',
-                            'tgt-2_prob' :'c',
-                            'src_berkeley-n' : 'c',
-                            'tgt-1_berkeley-n' : 'c',
-                            'tgt-2_berkeley-n' : 'c',
-                            'src_berkeley-best-parse-confidence' : 'c',
-                            'tgt-1_berkeley-best-parse-confidence' : 'c', 
-                            'tgt-2_berkeley-best-parse-confidence' : 'c',
-                            'src_berkeley-avg-confidence' :'c',
-                            'tgt-1_berkeley-avg-confidence' :'c', 
-                            'tgt-2_berkeley-avg-confidence' :'c',
-                            'src_length_ratio' :'d',
-                            'tgt-1_length_ratio' :'d',
-                            'tgt-2_length_ratio' :'d',
-                            'src_length' :'d',
-                            'tgt-1_length' :'d',
-                            'tgt-2_length' :'d',
-                            
-                            }
+        desired_att_list = [u'tgt-1_berkeley-avg-confidence_ratio',
+                            u'tgt-1_length_ratio', 
+                            u'tgt-1_berkeley-avg-confidence', 
+                            u'tgt-2_berkeley-avg-confidence_ratio', 
+                            u'tgt-2_berkeley-best-parse-confidence_ratio', 
+                            u'tgt-2_parse-dot', 
+                            u'tgt-2_parse-VP', 
+                            u'tgt-2_length_ratio', 
+                            u'tgt-2_parse-comma', 
+                            u'tgt-1_parse-dot', 
+                            u'tgt-2_berkley-loglikelihood_ratio', 
+                            u'tgt-2_uni-prob', u'tgt-2_parse-VB', 
+                            u'tgt-1_parse-NN_ratio', 
+                            u'src_parse-dot', 
+                            u'tgt-1_length', 
+                            u'tgt-2_prob', 
+                            u'src_parse-comma', 
+                            u'src_parse-NP', 
+                            u'tgt-2_parse-VP_ratio', 
+                            u'tgt-1_parse-comma_ratio', 
+                            u'src_parse-NN', 
+                            u'tgt-1_berkeley-n_ratio', 
+                            u'tgt-2_parse-PP', 
+                            u'tgt-1_parse-PP_ratio', 
+                            u'tgt-2_parse-comma_ratio', 
+                            u'tgt-1_unk', 
+                            u'tgt-1_parse-NP', 
+                            u'tgt-1_berkeley-best-parse-confidence_ratio', 
+                            u'tgt-2_parse-NP_ratio', 
+                            u'tgt-1_berkeley-n', 
+                            u'tgt-1_tri-prob', 
+                            u'tgt-1_parse-NP_ratio', 
+                            u'src_length', 
+                            u'tgt-2_unk', 
+                            u'tgt-1_berkley-loglikelihood', 
+                            u'src_berkeley-best-parse-confidence', 
+                            u'tgt-2_berkley-loglikelihood', 
+                            u'src_berkley-loglikelihood',
+                            u'tgt-1_prob',
+                            u'tgt-2_parse-dot_ratio',
+                            u'tgt-2_berkeley-best-parse-confidence',
+                            u'src_parse-VVFIN',
+                            u'tgt-1_uni-prob',
+                            u'tgt-2_bi-prob',
+                            u'tgt-1_bi-prob',
+                            u'tgt-1_berkeley-best-parse-confidence',
+                            u'tgt-2_tri-prob',
+                            u'tgt-2_length',
+                            u'tgt-1_parse-NN',
+                            u'tgt-2_parse-NP',
+                            u'src_parse-VP',
+                            u'tgt-1_parse-PP',
+                            u'src_berkeley-n',
+                            u'tgt-1_parse-VP',
+                            u'tgt-2_parse-PP_ratio',
+                            u'tgt-1_berkley-loglikelihood_ratio',
+                            u'tgt-2_berkeley-n',
+                            u'tgt-2_berkeley-n_ratio',
+                            u'tgt-1_parse-VP_ratio',
+                            u'tgt-2_parse-NN_ratio',
+                            u'src_parse-PP',
+                            u'tgt-1_parse-dot_ratio',
+                            u'tgt-1_parse-VB',
+                            u'tgt-2_parse-NN',
+                            u'tgt-1_parse-comma',
+                            u'tgt-2_berkeley-avg-confidence',
+                            u'src_berkeley-avg-confidence']
+        
+        for desire_att in desired_att_list:
+            if desire_att.endswith("prob"):
+                self.desired_attributes[desire_att] = 'c'
+
+#    desired_attributes={ 
+#                            'tgt-1_prob' :'c',
+                           
+#                            'tgt-2_prob' :'c',
+#                            'src_berkeley-n' : 'c',
+#                            'tgt-1_berkeley-n' : 'c',
+#                            'tgt-2_berkeley-n' : 'c',
+#                            'src_berkeley-best-parse-confidence' : 'c',
+#                            'tgt-1_berkeley-best-parse-confidence' : 'c', 
+#                            'tgt-2_berkeley-best-parse-confidence' : 'c',
+#                            'src_berkeley-avg-confidence' :'c',
+#                            'tgt-1_berkeley-avg-confidence' :'c', 
+#                            'tgt-2_berkeley-avg-confidence' :'c',
+#                            'src_length_ratio' :'d',
+#                            'tgt-1_length_ratio' :'d',
+#                            'tgt-2_length_ratio' :'d',
+#                            'src_length' :'d',
+#                            'tgt-1_length' :'d',
+#                            'tgt-2_length' :'d',
+#                            
+#                            'src_parse-comma' : 'c',
+#                            'tgt1_parse-comma' : 'c',
+#                            'tgt2_parse-comma' : 'c',
+#                            
+#                            
+#                        
+#                            
+#                            
+#                            }
     
     def split_corpus(self, filename, filename_train, filename_test, proportion=0.1):
         #filename = os.getenv("HOME") + "/taraxu_data/wmt08-humaneval-data/wmt08_human_binary.jcml"
@@ -55,15 +147,15 @@ class Experiment:
         dataset =  pdr.get_dataset()
         
         
-        self.desired_attributes = {'tgt-1_system' : 'd', 
-                                   'tgt-2_system' : 'd',
-                                   'tgt-3_system' : 'd',
-                                   'tgt-4_system' : 'd',
-                                   'tgt-5_system' : 'd',
-                                   'segment_id' : 'd', 
-                                   'id' : 'd',
-                                   'document_id' : 'd',
-                                   'judge_id': 'd'}
+#        self.desired_attributes = {'tgt-1_system' : 'd', 
+#                                   'tgt-2_system' : 'd',
+#                                   'tgt-3_system' : 'd',
+#                                   'tgt-4_system' : 'd',
+#                                   'tgt-5_system' : 'd',
+#                                   'segment_id' : 'd', 
+#                                   'id' : 'd',
+#                                   'document_id' : 'd',
+#                                   'judge_id': 'd'}
         
         
         #convert data in orange format
@@ -89,15 +181,16 @@ class Experiment:
         xmlwriter = XmlWriter(dataset)
         xmlwriter.write_to_file(filename_train)
     
-    """
-    Splits a judgments set into two sets, one testset and one training set. Allows for extra criteria 
-    for the test set, such as no-repetitive judgments and clear ranking (no ties)
-    @param  filename: pointing to the xml file containing the original full set to be read from
-    @param filename_train: xml file to be created with the training data
-    @param filename_test: xml file to be created with the test data
-    @param ties_threshold: test sentences will be dropped, if they have nore than n ties when ranked
-    """
+   
     def get_test_sentences(self, filename, filename_train, filename_test, ties_threshold = 1, max_sentences = 100):
+        """
+        Splits a judgments set into two sets, one testset and one training set. Allows for extra criteria 
+        for the test set, such as no-repetitive judgments and clear ranking (no ties)
+        @param  filename: pointing to the xml file containing the original full set to be read from
+        @param filename_train: xml file to be created with the training data
+        @param filename_test: xml file to be created with the test data
+        @param ties_threshold: test sentences will be dropped, if they have nore than n ties when ranked
+        """
         reader = XmlReader(filename)
         parallelsentences = reader.get_parallelsentences()
         
@@ -155,32 +248,20 @@ class Experiment:
         return ties
     
     
-                
+    
     
     
     def add_external_features(self, filename, filename_out):
-        
         from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
         from featuregenerator.lm.srilm.srilmclient import SRILMFeatureGenerator
         from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
         from featuregenerator.parser.berkeley.berkeleyclient import BerkeleyFeatureGenerator 
-        from io.saxjcml import SaxJCMLProcessor
-        from xml.sax import make_parser
-        import codecs
         
-        #dir = getenv("HOME") + "/workspace/TaraXUscripts/data"
-        #filename = dir + "/" + given_filename
         input_file_object = codecs.open(filename, 'r', 'utf-8')
-        
-    
-        #dir = getenv("HOME") + "/workspace/TaraXUscripts/data"
-        #filename_out = dir + "/featured_" + filename
         output_input_file_object = codecs.open(filename_out, 'w', 'utf-8')
     
         ###INITIALIZE FEATURE GENERATORS
-    
-        lfg = LengthFeatureGenerator()
-        
+        lfg = LengthFeatureGenerator()   
         #SRILM feature generator
         srilm_en = SRILMFeatureGenerator("http://134.96.187.4:8585", "en" )
         #srilm_de = SRILMFeatureGenerator("http://134.96.187.4:8586", "de" )
@@ -189,18 +270,39 @@ class Experiment:
         #Berkeley feature generator
         berkeley_en = BerkeleyFeatureGenerator("http://localhost:8682", "en")
         berkeley_de = BerkeleyFeatureGenerator("http://localhost:8683", "de")
-        
-        
+        featuregenerators = [lfg, srilm_en, srilm_ngram_en, berkeley_en, berkeley_de]
         #proceed with parcing
-        saxreader = SaxJCMLProcessor(output_input_file_object, [lfg, srilm_en, srilm_ngram_en, berkeley_en, berkeley_de])
+        saxreader = SaxJCMLProcessor(output_input_file_object, featuregenerators)
         myparser = make_parser()
         myparser.setContentHandler(saxreader)
         myparser.parse(input_file_object)
-       
+
     
+    def analyze_external_features(self, filename, filename_out):
+        from featuregenerator.parser.berkeley.parsermatches import ParserMatches
+        from featuregenerator.lm.srilm.srilmclient import SRILMFeatureGenerator
+        from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
+        from featuregenerator.ratio_generator import RatioGenerator
+        
+        input_file_object = codecs.open(filename, 'r', 'utf-8')
+        output_input_file_object = codecs.open(filename_out, 'w', 'utf-8')
+                
+        #srilm_de = SRILMFeatureGenerator("http://134.96.187.4:8586", "de" )
+        #srilm_ngram_de = SRILMngramGenerator("http://134.96.187.4:8585", "de" )
+        parsematches = ParserMatches()
+        ratio_generator = RatioGenerator()
+        featuregenerators = [parsematches, ratio_generator]
+        #proceed with parcing
+        saxreader = SaxJCMLProcessor(output_input_file_object, featuregenerators)
+        myparser = make_parser()
+        myparser.setContentHandler(saxreader)
+        myparser.parse(input_file_object)
+        
     
+        
     
-    def train_classifiers(self, filenames=["evaluations_all.jcml"]):
+    def train_classifiers(self, filenames):
+        
         if filenames[0].endswith(".tab"):
                 orangetable = orange.ExampleTable(filenames[0])
                 print "Passing data to Orange"
@@ -211,7 +313,15 @@ class Experiment:
             
                 print "Reading XML %s " % filename
                 reader = XmlReader(filename)
-                cur_dataset =  reader.get_dataset()
+                
+                rankhandler = RankHandler()
+                allow_ties = False
+                parallelsentences = reader.get_parallelsentences()
+                parallelsentences = rankhandler.get_pairwise_from_multiclass_set(parallelsentences, allow_ties)
+                cur_dataset = DataSet(parallelsentences)
+                
+                
+                #cur_dataset =  reader.get_dataset()
                 if not dataset:
                     dataset = cur_dataset
                 else:
@@ -219,6 +329,11 @@ class Experiment:
                 
             class_name = "rank"
             #TODO: get list of attributes directly from feature generators
+            
+#            i_xmlwriter = XmlWriter(dataset)
+#            i_xmlwriter.write_to_file("/home/elav01/taraxu_data/wmt10-humaneval-data/wmt08.pair.jcml")
+#            i_xmlwriter = None
+            
             
             print "Passing data to Orange"
             training_data = OrangeData(dataset, class_name, self.desired_attributes, True)
@@ -249,8 +364,13 @@ class Experiment:
     
     def test_classifiers(self, classifiers, filename):
         reader = XmlReader(filename)
-        dataset =  reader.get_dataset()
+        #dataset =  reader.get_dataset()
         
+        rankhandler = RankHandler()
+        allow_ties = False
+        parallelsentences = reader.get_parallelsentences()
+        parallelsentences = rankhandler.get_pairwise_from_multiclass_set(parallelsentences, allow_ties)
+        dataset = DataSet(parallelsentences)
         
         class_name = "rank"
         test_data = OrangeData(dataset, class_name, self.desired_attributes)
@@ -295,9 +415,18 @@ class Experiment:
         self.get_test_sentences("/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10.jcml", "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml" , "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.jcml")
         
     def add_external_features_042011(self):
-        datafiles = [ "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt08.jcml" , "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml" , "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.jcml"]
+        #datafiles = [ "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt08.jcml"]
+        #datafiles = ["/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml"]
+        datafiles = ["/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.jcml"]
         for datafile in datafiles:
             self.add_external_features(datafile, datafile.replace("jcml", "xf.jcml"))
+
+    def analyze_external_features_042011(self):
+        datafiles = [ "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt08.xf.jcml"]
+        #datafiles = ["/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml"]
+        datafiles.append("/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.xf.jcml")
+        for datafile in datafiles:
+            self.analyze_external_features(datafile, datafile.replace("xf.jcml", "if.jcml"))
 
 if __name__ == '__main__':
     dir = getenv("HOME") + "/workspace/TaraXUscripts/data/"
@@ -309,16 +438,18 @@ if __name__ == '__main__':
     #myexperiment = Experiment()
 
     exp = Experiment()
-    exp.add_external_features_042011()
+    #exp.add_external_features_042011()
+    #exp.analyze_external_features_042011()
     #exp.get_test_sentences("/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10.jcml", "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml" , "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.jcml")
     
     #myexperiment.add_external_features("test08.xml")
     
-    train_filename = dir + "featured_train08.xml"
+#    train_filename = dir + "featured_train08.xml"
 #    classifiers = myexperiment.train_classifiers('/home/elav01/workspace/TaraXUscripts/src/tmpa04du_.tab')
 #    #classifiers = myexperiment.train_classifiers('/home/elav01/workspace/TaraXUscripts/src/tmpa04du_.tab')
 #    test_filename = dir + "featured_test08.xml"
 #    myexperiment.test_classifiers(classifiers, test_filename)
-    
+    classifiers = exp.train_classifiers(['/home/elav01/taraxu_data/wmt10-humaneval-data/wmt08.if.jcml'])
+    exp.test_classifiers(classifiers, '/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.if.jcml')
         
     
