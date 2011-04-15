@@ -49,11 +49,14 @@ class DataSet(object):
         attribute_names = set()
         for parallelsentence in self.parallelsentences:
             attribute_names.update( parallelsentence.get_attribute_names() )
-        return attribute_names
+        return list(attribute_names)
     
     def append_dataset(self, add_dataset):
-        self.parallelsentences.append(add_dataset.get_parallelsentences())
-        self.attribute_names = self.get_attribute_names().append(add_dataset.get_attribute_names())
+        self.parallelsentences.extend(add_dataset.get_parallelsentences())
+        existing_attribute_names = set(self.get_attribute_names())
+        new_attribute_names = set(add_dataset.get_attribute_names())
+        merged_attribute_names = existing_attribute_names.union(new_attribute_names)
+        self.attribute_names = list(merged_attribute_names)
         
             
     
