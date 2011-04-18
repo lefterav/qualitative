@@ -39,7 +39,7 @@ class RankHandler(object):
                 if system_a == system_b:
                     continue
                 rank = self.__normalize_rank__(system_a, system_b)
-                if rank != 0 or allow_ties:
+                if rank != "0" or allow_ties:
                     new_attributes = parallelsentence.get_attributes()
                     new_attributes["rank"] = rank 
                     pairwise_sentence = ParallelSentence(source, [system_a, system_b], None, new_attributes) 

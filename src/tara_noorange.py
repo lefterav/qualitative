@@ -30,85 +30,99 @@ from sentence.rankhandler import RankHandler
 
  
 class Experiment:
-    desired_attributes = {}
+    desired_attributes = []
+    meta_attributes = [ "id" , 
+                       "testset" , 
+                       "judge_id", 
+                       "segment_id", 
+                       "tgt-1_berkeley-tree", 
+                       "tgt-2_berkeley-tree", 
+                       "src_berkeley-tree", 
+                       "langsrc", 
+                       "langtgt", 
+                       'tgt-1_system', 
+                       'tgt-2_system', 
+                       'document_id']
     
     def __init__(self):
+        pass 
+    
 
-        desired_att_list = [
-                            #===================================================
-                             'tgt-1_berkeley-avg-confidence_ratio',
-                             'tgt-1_length_ratio', 
-                             'tgt-1_berkeley-avg-confidence', 
-                             'tgt-2_berkeley-avg-confidence_ratio', 
-                             'tgt-2_berkeley-best-parse-confidence_ratio', 
-                             'tgt-2_parse-dot', 
-                             'tgt-2_parse-VP', 
-                             'tgt-2_length_ratio', 
-                             'tgt-2_parse-comma', 
-                             'tgt-1_parse-dot', 
-                             'tgt-2_berkley-loglikelihood_ratio', 
-                             'tgt-2_uni-prob', 'tgt-2_parse-VB', 
-                             'tgt-1_parse-NN_ratio', 
-                             'src_parse-dot', 
-                             'tgt-1_length', 
-                             'tgt-2_prob', 
-                             'src_parse-comma', 
-                             'src_parse-NP', 
-                             'tgt-2_parse-VP_ratio', 
-                             'tgt-1_parse-comma_ratio', 
-                             'src_parse-NN', 
-                             'tgt-1_berkeley-n_ratio', 
-                             'tgt-2_parse-PP', 
-                             'tgt-1_parse-PP_ratio', 
-                             'tgt-2_parse-comma_ratio', 
-                             'tgt-1_unk', 
-                             'tgt-1_parse-NP', 
-                             'tgt-1_berkeley-best-parse-confidence_ratio', 
-                             'tgt-2_parse-NP_ratio', 
-                             'tgt-1_berkeley-n', 
-                             'tgt-1_tri-prob', 
-                             'tgt-1_parse-NP_ratio', 
-                             'src_length', 
-                             'tgt-2_unk', 
-                             'tgt-1_berkley-loglikelihood', 
-                             'src_berkeley-best-parse-confidence', 
-                             'tgt-2_berkley-loglikelihood', 
-                             'src_berkley-loglikelihood',
-                             'tgt-1_prob',
-                             'tgt-2_parse-dot_ratio',
-                             'tgt-2_berkeley-best-parse-confidence',
-                             'src_parse-VVFIN',
-                             'tgt-1_uni-prob',
-                             'tgt-2_bi-prob',
-                             'tgt-1_bi-prob',
-                             'tgt-1_berkeley-best-parse-confidence',
-                             'tgt-2_tri-prob',
-                             'tgt-2_length',
-                             'tgt-1_parse-NN',
-                             'tgt-2_parse-NP',
-                             'src_parse-VP',
-                             'tgt-1_parse-PP',
-                             'src_berkeley-n',
-                             'tgt-1_parse-VP',
-                             'tgt-2_parse-PP_ratio',
-                             'tgt-1_berkley-loglikelihood_ratio',
-                             'tgt-2_berkeley-n',
-                             'tgt-2_berkeley-n_ratio',
-                             'tgt-1_parse-VP_ratio',
-                             'tgt-2_parse-NN_ratio',
-                             'src_parse-PP',
-                             'tgt-1_parse-dot_ratio',
-                             'tgt-1_parse-VB',
-                             'tgt-2_parse-NN',
-                             'tgt-1_parse-comma',
-                             'tgt-2_berkeley-avg-confidence',
-                             'src_berkeley-avg-confidence' ]
-                            #===================================================
+#        desired_att_list = [
+#                            #===================================================
+#                             'tgt-1_berkeley-avg-confidence_ratio',
+#                             'tgt-1_length_ratio', 
+#                             'tgt-1_berkeley-avg-confidence', 
+#                             'tgt-2_berkeley-avg-confidence_ratio', 
+#                             'tgt-2_berkeley-best-parse-confidence_ratio', 
+#                             'tgt-2_parse-dot', 
+#                             'tgt-2_parse-VP', 
+#                             'tgt-2_length_ratio', 
+#                             'tgt-2_parse-comma', 
+#                             'tgt-1_parse-dot', 
+#                             'tgt-2_berkley-loglikelihood_ratio', 
+#                             'tgt-2_uni-prob', 'tgt-2_parse-VB', 
+#                             'tgt-1_parse-NN_ratio', 
+#                             'src_parse-dot', 
+#                             'tgt-1_length', 
+#                             'tgt-2_prob', 
+#                             'src_parse-comma', 
+#                             'src_parse-NP', 
+#                             'tgt-2_parse-VP_ratio', 
+#                             'tgt-1_parse-comma_ratio', 
+#                             'src_parse-NN', 
+#                             'tgt-1_berkeley-n_ratio', 
+#                             'tgt-2_parse-PP', 
+#                             'tgt-1_parse-PP_ratio', 
+#                             'tgt-2_parse-comma_ratio', 
+#                             'tgt-1_unk', 
+#                             'tgt-1_parse-NP', 
+#                             'tgt-1_berkeley-best-parse-confidence_ratio', 
+#                             'tgt-2_parse-NP_ratio', 
+#                             'tgt-1_berkeley-n', 
+#                             'tgt-1_tri-prob', 
+#                             'tgt-1_parse-NP_ratio', 
+#                             'src_length', 
+#                             'tgt-2_unk', 
+#                             'tgt-1_berkley-loglikelihood', 
+#                             'src_berkeley-best-parse-confidence', 
+#                             'tgt-2_berkley-loglikelihood', 
+#                             'src_berkley-loglikelihood',
+#                             'tgt-1_prob',
+#                             'tgt-2_parse-dot_ratio',
+#                             'tgt-2_berkeley-best-parse-confidence',
+#                             'src_parse-VVFIN',
+#                             'tgt-1_uni-prob',
+#                             'tgt-2_bi-prob',
+#                             'tgt-1_bi-prob',
+#                             'tgt-1_berkeley-best-parse-confidence',
+#                             'tgt-2_tri-prob',
+#                             'tgt-2_length',
+#                             'tgt-1_parse-NN',
+#                             'tgt-2_parse-NP',
+#                             'src_parse-VP',
+#                             'tgt-1_parse-PP',
+#                             'src_berkeley-n',
+#                             'tgt-1_parse-VP',
+#                             'tgt-2_parse-PP_ratio',
+#                             'tgt-1_berkley-loglikelihood_ratio',
+#                             'tgt-2_berkeley-n',
+#                             'tgt-2_berkeley-n_ratio',
+#                             'tgt-1_parse-VP_ratio',
+#                             'tgt-2_parse-NN_ratio',
+#                             'src_parse-PP',
+#                             'tgt-1_parse-dot_ratio',
+#                             'tgt-1_parse-VB',
+#                             'tgt-2_parse-NN',
+#                             'tgt-1_parse-comma',
+#                             'tgt-2_berkeley-avg-confidence',
+#                             'src_berkeley-avg-confidence' ]
+#                            #===================================================
                             
-        
-        for desire_att in desired_att_list:
-            #if desire_att.endswith("prob"):
-            self.desired_attributes[desire_att] = 'c'
+#        
+#        for desire_att in desired_att_list:
+#            #if desire_att.endswith("prob"):
+#            self.desired_attributes[desire_att] = 'c'
 
 #    desired_attributes={ 
 #                            'tgt-1_prob' :'c',
@@ -163,7 +177,7 @@ class Experiment:
         
         
         #convert data in orange format
-        orangedata = OrangeData( dataset, class_name, self.desired_attributes )
+        orangedata = OrangeData( dataset, class_name, self.desired_attributes, self.meta_attributes )
         
         #orig_dataset = orangedata.get_dataset()
         
@@ -302,6 +316,17 @@ class Experiment:
         myparser.setContentHandler(saxreader)
         myparser.parse(input_file_object)
         
+    def add_diff_features(self, filename, filename_out):
+        from featuregenerator.diff_generator import DiffGenerator
+        dg = DiffGenerator()
+        input_file_object = codecs.open(filename, 'r', 'utf-8')
+        output_input_file_object = codecs.open(filename_out, 'w', 'utf-8')
+        
+        saxreader = SaxJCMLProcessor(output_input_file_object, [dg] )
+        myparser = make_parser()
+        myparser.setContentHandler(saxreader)
+        myparser.parse(input_file_object)
+        
     
         
     
@@ -322,8 +347,16 @@ class Experiment:
                 allow_ties = False
                 parallelsentences = reader.get_parallelsentences()
                 parallelsentences = rankhandler.get_pairwise_from_multiclass_set(parallelsentences, allow_ties)
-                cur_dataset = DataSet(parallelsentences)
                 
+                from featuregenerator.diff_generator import DiffGenerator
+                dg = DiffGenerator()
+                diff_parallelsentences = []
+                for ps in parallelsentences:
+                    ps = dg.add_features_parallelsentence(ps)
+                    diff_parallelsentences.append(ps)
+                parallelsentences = diff_parallelsentences
+                
+                cur_dataset = DataSet(parallelsentences)
                 
                 #cur_dataset =  reader.get_dataset()
                 if not dataset:
@@ -340,7 +373,7 @@ class Experiment:
             
             
             print "Passing data to Orange"
-            data = OrangeData(dataset, class_name, self.desired_attributes, True)
+            data = OrangeData(dataset, class_name, self.desired_attributes, self.meta_attributes, True)
             dataset=None
             
           
@@ -363,7 +396,7 @@ class Experiment:
         # compute accuracies
         
         print "training loglinear"
-        #lr = orngLR.LogRegLearner(training_data.get_data()) # compute classification accuracy
+        lr = orngLR.LogRegLearner(data.get_data()) # compute classification accuracy
         print "Bayes" 
         bayes = Bayes(data)
         print "Tree"
@@ -375,10 +408,10 @@ class Experiment:
         bayes.name = "bayes"
         tree.name = "tree"
         svm.name = "SVM"
-        #lr.name = "logl"
+        lr.name = "logl"
         
         
-        return [ bayes, tree, svm]
+        return [ lr, bayes, tree, svm]
         
     def report_relevance(self, data):
         m = orngFSS.attMeasure(data)
@@ -393,6 +426,16 @@ class Experiment:
         allow_ties = False
         parallelsentences = reader.get_parallelsentences()
         parallelsentences = rankhandler.get_pairwise_from_multiclass_set(parallelsentences, allow_ties)
+        
+        from featuregenerator.diff_generator import DiffGenerator
+        dg = DiffGenerator()
+        diff_parallelsentences=[]
+        for ps in parallelsentences:
+            ps = dg.add_features_parallelsentence(ps)
+            diff_parallelsentences.append(ps)
+        parallelsentences = diff_parallelsentences
+
+            
         dataset = DataSet(parallelsentences)
         
         class_name = "rank"
@@ -439,31 +482,42 @@ class Experiment:
         
     def add_external_features_042011(self):
         #datafiles = [ "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt08.jcml"]
-        #datafiles = ["/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml"]
-        datafiles = ["/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.jcml"]
+        datafiles = ["/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml"]
+        #datafiles = ["/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.jcml"]
         for datafile in datafiles:
             self.add_external_features(datafile, datafile.replace("jcml", "xf.jcml"))
 
+        
+    
     def analyze_external_features_042011(self):
-        datafiles = [ "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt08.xf.jcml"]
-        #datafiles = ["/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml"]
-        datafiles.append("/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.xf.jcml")
+        #datafiles = [ "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt08.xf.jcml"]
+        datafiles = ["/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml"]
+        #datafiles.append("/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.xf.jcml")
         for datafile in datafiles:
             self.analyze_external_features(datafile, datafile.replace("xf.jcml", "if.jcml"))
+    
+
+    def add_diffs(self, datafiles):
+
+        for datafile in datafiles:
+            self.add_diff_features(datafile, datafile.replace("if.jcml", "diff.jcml"))    
 
 if __name__ == '__main__':
     dir = getenv("HOME") + "/workspace/TaraXUscripts/data/multiclass"
     
     #add_external_features()
     #split_corpus()
-    #add_external_features("train08.xml")
+    #
     
     #myexperiment = Experiment()
 
     exp = Experiment()
-    #exp.add_external_features_042011()
+#    exp.add_external_features_042011()
+#    exp.add_external_features_042011()
     #exp.analyze_external_features_042011()
     #exp.get_test_sentences("/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10.jcml", "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml" , "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.jcml")
+    
+
     
     #myexperiment.add_external_features("test08.xml")
     
@@ -472,7 +526,15 @@ if __name__ == '__main__':
 #    #classifiers = myexperiment.train_classifiers('/home/elav01/workspace/TaraXUscripts/src/tmpa04du_.tab')
 #    test_filename = dir + "featured_test08.xml"
 #    myexperiment.test_classifiers(classifiers, test_filename)
-    classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir])
-    exp.test_classifiers(classifiers, '%s/wmt10-test.if.jcml' % dir)
-        
     
+    #===========================================================================
+    #datafile = '%s/wmt10-train.partial.xf.jcml' % dir 
+    #exp.analyze_external_features(datafile, datafile.replace("xf.jcml", "if.jcml"))
+    #files_to_diff = ['%s/wmt08.if.jcml' % dir, '%s/wmt10-test.if.jcml' % dir, '%s/wmt10-train.partial.if.jcml' % dir ]
+    #exp.add_diffs(files_to_diff)
+    # 
+    #===========================================================================
+    #===========================================================================
+    classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir,  '%s/wmt10-train.partial.if.jcml' % dir])
+    exp.test_classifiers(classifiers, '%s/wmt10-test.if.jcml' % dir)
+    #===========================================================================

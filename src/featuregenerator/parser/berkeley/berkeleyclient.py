@@ -33,7 +33,12 @@ class BerkeleyFeatureGenerator(FeatureGenerator):
     #Warning: not language-aware function. Use the ones above
     def get_features_sentence(self, simplesentence, parallelsentence):
         sent_string = simplesentence.get_string()
-        results = self.server.BParser.parse ( sent_string )
+        try:
+            results = self.server.BParser.parse ( sent_string )
+        except Exception as inst:
+            print type(inst) 
+            print inst
+            return {}
 
         loglikelihood = results['loglikelihood']
         nbestList = results['nbest']
