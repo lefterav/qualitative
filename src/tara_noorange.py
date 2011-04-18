@@ -392,7 +392,7 @@ class Experiment:
         rankhandler = RankHandler()
         allow_ties = False
         parallelsentences = reader.get_parallelsentences()
-        parallelsentences = rankhandler.get_pairwise_from_multiclass_set(parallelsentences, allow_ties)[0:350]
+        parallelsentences = rankhandler.get_pairwise_from_multiclass_set(parallelsentences, allow_ties)
         dataset = DataSet(parallelsentences)
         
         class_name = "rank"
