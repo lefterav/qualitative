@@ -22,7 +22,7 @@ class OrangeData:
         Handles the conversion of the generic data objects to a format handled by Orange library
     """
     
-    def __init__ (self, dataSet, class_name="", desired_attributes=[], keep_temp=False):
+    def __init__ (self, dataSet, class_name="", desired_attributes=[], meta_attributes=[], keep_temp=False):
         
         if isinstance ( dataSet , orange.ExampleTable ):
             self.data = dataSet
@@ -30,7 +30,7 @@ class OrangeData:
         elif isinstance ( dataSet , sentence.dataset.DataSet ):
                        
             #get the data in Orange file format
-            fileData = self.__getOrangeFormat__(dataSet, class_name, desired_attributes)
+            fileData = self.__getOrangeFormat__(dataSet, class_name, desired_attributes, meta_attributes)
             
             #write the data in a temporary file
             #not secure but we trust our hard disk
@@ -184,7 +184,7 @@ class OrangeData:
         return tmpFileName
         
     
-    def __get_orange_header__(self, dataset, class_name, attribute_names, desired_attributes={}):
+    def __get_orange_header__(self, dataset, class_name, attribute_names, desired_attributes=[], meta_attributes=[]):
     
                 #first construct the lines for the declaration
         line_1 = "" #line for the name of the arguments
@@ -194,7 +194,8 @@ class OrangeData:
         
         
         print attribute_names
-
+        if desired_attributes == []:
+            desired_attributes = attribute_names
         
         #if no desired attribute define, get all of them
         #if not desired_attributes:
@@ -208,8 +209,12 @@ class OrangeData:
             
             #TODO: find a way to define continuous and discrete arg
             #line 2 holds the class type
-            if attribute_name in  desired_attributes.keys():
-                line_2 += "%s\t" % desired_attributes[attribute_name]
+            if attribute_name == class_name:
+                line_2 += "d\t"
+            elif attribute_name in desired_attributes and attribute_name not in meta_attributes:
+                #line_2 += "%s\t" % desired_attributes[attribute_name]
+                line_2 += "c\t"
+
             else:
                 line_2 += "d\t"
 
@@ -217,7 +222,7 @@ class OrangeData:
             #line 3 defines the class and the metadata
             if attribute_name == class_name:
                 line_3 = line_3 + "c"
-            elif attribute_name not in desired_attributes.keys():
+            elif attribute_name not in desired_attributes or attribute_name in meta_attributes:
                 line_3 = line_3 + "m"
             line_3 = line_3 + "\t"
         
@@ -245,12 +250,12 @@ class OrangeData:
         return output
     
     
-    def __getOrangeFormat__(self, dataset, class_name, desired_attributes={}):
+    def __getOrangeFormat__(self, dataset, class_name, desired_attributes=[], meta_attributes=[]):
         sys.stderr.write("retrieving attribute names\n")
         attribute_names = dataset.get_all_attribute_names()
         
         sys.stderr.write("processing orange header\n") 
-        output = self.__get_orange_header__(dataset, class_name, attribute_names, desired_attributes)
+        output = self.__get_orange_header__(dataset, class_name, attribute_names, desired_attributes, meta_attributes)
         
         sys.stderr.write("processing content\n")
 
