@@ -46,8 +46,21 @@ class Experiment:
     
     def __init__(self):
         pass 
-    
-
+        #length radio, unk, loglikelihood_ratio, berkeley-n_ratio', VP_ratio'
+        self.desired_attributes = [
+                                   "tgt-1_unk",
+                                   "tgt-2_unk",
+                                   "tgt-1_length_ratio",
+                                   "tgt-2_length_ratio",
+                                   "tgt-1_berkeley-n_ratio" ,
+                                   "tgt-2_berkeley-n_ratio" ,
+                                   "tgt-1_parse-VP_ratio" ,
+                                   "tgt-2_parse-VP_ratio" ,
+                                   #"tri-prob_diff",
+                                   "tgt-1_berkley-loglikelihood_ratio",
+                                   "tgt-2_berkley-loglikelihood_ratio"
+                                   #"berkeley-avg-confidence_ratio_diff"
+                                   ]
 #        desired_att_list = [
 #                            #===================================================
 #                             'tgt-1_berkeley-avg-confidence_ratio',
@@ -403,15 +416,17 @@ class Experiment:
         tree = TreeLearner(data)
         print "SVM"
         svm = SVM (data)
+        print "knn"
+        knn = orange.kNNLearner(data.get_data(), k=10)
         
         #lr.name = "Loglinear"
         bayes.name = "bayes"
         tree.name = "tree"
         svm.name = "SVM"
         lr.name = "logl"
+        knn.name = "knn"
         
-        
-        return [ lr, bayes, tree, svm]
+        return [ lr, bayes, tree, svm, knn]
         
     def report_relevance(self, data):
         m = orngFSS.attMeasure(data)
@@ -439,11 +454,12 @@ class Experiment:
         dataset = DataSet(parallelsentences)
         
         class_name = "rank"
-        test_data = OrangeData(dataset, class_name, self.desired_attributes)
-        acc = test_data.get_accuracy(classifiers)
+        test_data = OrangeData(dataset, class_name, self.desired_attributes, self.meta_attributes)
+        (acc, taukendal) = test_data.get_accuracy(classifiers)
+        
         print "Classification accuracies:"
         for i in range(len(classifiers)):
-            print classifiers[i].name, "\t", acc[i]
+            print classifiers[i].name, "\t", acc[i], taukendal[i]
             
         
     def test_length_fg_with_full_parsing(self):
