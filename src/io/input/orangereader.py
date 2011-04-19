@@ -262,11 +262,11 @@ class OrangeData:
         outputlines = []
 
         for psentence in dataset.get_parallelsentences():
-            sys.stderr.write("getting nested attributes\n")
+            #sys.stderr.write("getting nested attributes\n")
             nested_attributes = psentence.get_nested_attributes()
             nested_attribute_names = nested_attributes.keys()
             
-            sys.stderr.write("printing content\n")
+            #sys.stderr.write("printing content\n")
             for attribute_name in attribute_names:
                 if attribute_name in nested_attribute_names:
                     outputlines.append(nested_attributes[attribute_name])
@@ -363,17 +363,23 @@ class OrangeData:
     
     def get_accuracy(self, classifiers):
         correct = [0.0]*len(classifiers)
+        wrong = [0.0]*len(classifiers)
         for ex in self.data:
             for i in range(len(classifiers)):
                 try:
                     if classifiers[i](ex) == ex.getclass():
                         correct[i] += 1
+                    else:
+                        wrong[i] += 1
                 except:
                     print "kind of error"
                 
         for i in range(len(correct)):
+            wrong[i] = (correct[i] - wrong[i]) / len(self.data)
             correct[i] = correct[i] / len(self.data)
-        return correct
+        return (correct, wrong)
+    
+    
     
     
     

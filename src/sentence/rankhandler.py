@@ -18,9 +18,36 @@ class RankHandler(object):
         Constructor
         '''
       
-
+    def get_multiclass_from_pairwise_set(self, parallelsentences, allow_ties = False):
+        sentences_per_judgment = {}
+        #constract groups of pairwise sentences, based on their judgment id, which is unique per group
+        for parallelsentence in parallelsentences:
+            jid = int(parallelsentence.get_attribute("judgement_id"))
+            if jid in sentences_per_judgment:
+                sentences_per_judgment[jid].append(parallelsentence)
+            else:
+                #if this key has not been seen before, initiate a new entry
+                sentences_per_judgment[jid]=[parallelsentence]
+        
+        for jid in sentences_per_judgment:
+            pairwise_sentences = sentences_per_judgment[jid]
+            translation_by_system = {}
+            for pairwise_sentence in pairwise_sentences:
+                #it is supposed to have only two translations
+                translation1 = pairwise_sentence.get_translations()[0]
+                translation2 = pairwise_sentence.get_translations()[1]
+                
+                translation_by_system[translation1.get_attribute("system")] = translation1
+                
+                
+                
+            
+            
+            
+            
+        
     
-    def get_pairwise_from_multiclass_sentence(self, parallelsentence, allow_ties = False):
+    def get_pairwise_from_multiclass_sentence(self, parallelsentence, judgement_id, allow_ties = False):
         """
         Converts a the ranked system translations of one sentence into many sentences containing one translation pair each,
         so that system output can be compared in a pairwise manner. 
@@ -42,6 +69,7 @@ class RankHandler(object):
                 if rank != "0" or allow_ties:
                     new_attributes = parallelsentence.get_attributes()
                     new_attributes["rank"] = rank 
+                    new_attributes["judgement_id"] = judgement_id
                     pairwise_sentence = ParallelSentence(source, [system_a, system_b], None, new_attributes) 
                     pairwise_sentences.append(pairwise_sentence)
         
@@ -54,8 +82,14 @@ class RankHandler(object):
     
     def get_pairwise_from_multiclass_set(self, parallelsentences, allow_ties = False):
         pairwise_parallelsentences = []
-        for parallelsentence in parallelsentences:
-            pairwise_parallelsentences.extend( self.get_pairwise_from_multiclass_sentence(parallelsentence, allow_ties) )
+        j = 0
+        for parallelsentence in parallelsentences: 
+            j += 1
+            if "judgment_id" in parallelsentence.get_attributes():
+                judgement_id = parallelsentence.get_attribute("judgment_id")
+            else
+                judgement_id = j
+            pairwise_parallelsentences.extend( self.get_pairwise_from_multiclass_sentence(parallelsentence, judgement_id, allow_ties) )
         return pairwise_parallelsentences
             
     
