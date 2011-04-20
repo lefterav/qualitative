@@ -360,7 +360,7 @@ class Experiment:
                 allow_ties = False
                 parallelsentences = reader.get_parallelsentences()
                 parallelsentences = rankhandler.get_pairwise_from_multiclass_set(parallelsentences, allow_ties)
-                
+                #rankhandler.get_multiclass_from_pairwise_set(parallelsentences, allow_ties)
                 from featuregenerator.diff_generator import DiffGenerator
                 dg = DiffGenerator()
                 diff_parallelsentences = []
@@ -455,12 +455,22 @@ class Experiment:
         
         class_name = "rank"
         test_data = OrangeData(dataset, class_name, self.desired_attributes, self.meta_attributes)
-        (acc, taukendal) = test_data.get_accuracy(classifiers)
-        
-        print "Classification accuracies:"
-        for i in range(len(classifiers)):
-            print classifiers[i].name, "\t", acc[i], taukendal[i]
-            
+#        (acc, taukendal) = test_data.get_accuracy(classifiers)
+#        
+#        print "Classification accuracies:"
+#        for i in range(len(classifiers)):
+#            print classifiers[i].name, "\t", acc[i], taukendal[i]
+#        
+#        
+        for classifier in classifiers:
+            if classifier.name=="bayes":
+                myclassifier =  classifier
+        classified_data = test_data.classify_with(myclassifier)
+        pairwise_classified_parallelsentences = classified_data.get_dataset().get_parallelsentences()
+        multiclass_classified_parallelsentences = rankhandler.get_multiclass_from_pairwise_set(pairwise_classified_parallelsentences, allow_ties)
+        from io.output.xmlwriter import XmlWriter
+        classified_xmlwriter = XmlWriter(DataSet(multiclass_classified_parallelsentences))
+        classified_xmlwriter.write_to_file("myfile.xml")
         
     def test_length_fg_with_full_parsing(self):
         dir = getenv("HOME") + "/workspace/TaraXUscripts/data"

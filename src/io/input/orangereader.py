@@ -16,6 +16,7 @@ from sentence.dataset import DataSet
 from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence
 import sentence 
+from copy import deepcopy
 
 class OrangeData:
     """
@@ -324,7 +325,7 @@ class OrangeData:
         l.probability=True 
         
         learners = [bayes, tree, l]
-        
+        deepcopy
         # compute accuracies on data
         
         
@@ -360,6 +361,20 @@ class OrangeData:
         return l(self.data) 
     
     
+    def classify_with(self,classifier):
+        """
+        Utility function which classifies the test data with the given classifier
+        """
+        mydata = self.data
+        for ex in mydata:
+            try:
+                new_value = classifier(ex)
+            except:
+                print "couldn't apply classifier"
+                new_value = "0"
+            ex.setclass(new_value)
+        return OrangeData(mydata)
+            
     
     def get_accuracy(self, classifiers):
         correct = [0.0]*len(classifiers)

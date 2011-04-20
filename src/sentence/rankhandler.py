@@ -29,15 +29,56 @@ class RankHandler(object):
                 #if this key has not been seen before, initiate a new entry
                 sentences_per_judgment[jid]=[parallelsentence]
         
+        new_parallelsentences = []
+        
         for jid in sentences_per_judgment:
             pairwise_sentences = sentences_per_judgment[jid]
-            translation_by_system = {}
+            rank_per_system = {}
+            tranlsations_per_system = {}
             for pairwise_sentence in pairwise_sentences:
+                rank = int(pairwise_sentence.get_attribute("rank"))
+                
                 #it is supposed to have only two translations
                 translation1 = pairwise_sentence.get_translations()[0]
+                if translation1.get_attribute("system") in rank_per_system:
+                    rank_per_system[translation1.get_attribute("system")] += rank
+                else:
+                    rank_per_system[translation1.get_attribute("system")] = rank
+                    tranlsations_per_system[translation1.get_attribute("system")] = translation1
+   
                 translation2 = pairwise_sentence.get_translations()[1]
+                if translation2.get_attribute("system") in rank_per_system:
+                    rank_per_system[translation2.get_attribute("system")] -= rank
+                else:
+                    rank_per_system[translation2.get_attribute("system")] = rank
+                    tranlsations_per_system[translation2.get_attribute("system")] = translation2
+            
+            i = 0
+            prev_rank = None
+            translations_new_rank = []
+            for system in sorted(rank_per_system, key=lambda system: rank_per_system[system]):                
+                if rank_per_system[system] != prev_rank:
+                    i += 1
+                #print "system: %s\t%d -> %d" % (system, rank_per_system[system] , i)
+                prev_rank = rank_per_system[system]
+                translation = tranlsations_per_system[system]
+                translation.add_attribute("rank", str(i))
+                translations_new_rank.append(translation)
+            
+            src = pairwise_sentences[0].get_source()
+            attributes = pairwise_sentences.get_attributes()
+            del attributes["rank"]
+            new_parallelsentence = ParallelSentence(src, translations_new_rank, None, attributes)
+            new_parallelsentences.append(new_parallelsentence)
+        return new_parallelsentences                           
                 
-                translation_by_system[translation1.get_attribute("system")] = translation1
+            #print  "------------------"
+                    
+                
+                
+                
+                
+            
                 
                 
                 
@@ -87,8 +128,8 @@ class RankHandler(object):
             j += 1
             if "judgment_id" in parallelsentence.get_attributes():
                 judgement_id = parallelsentence.get_attribute("judgment_id")
-            else
-                judgement_id = j
+            else:
+                judgement_id = str(j)
             pairwise_parallelsentences.extend( self.get_pairwise_from_multiclass_sentence(parallelsentence, judgement_id, allow_ties) )
         return pairwise_parallelsentences
             
