@@ -10,6 +10,7 @@
 from copy import deepcopy
 from sentence import SimpleSentence
 import sys
+import re
 
 class ParallelSentence(object):
     """
@@ -84,7 +85,7 @@ class ParallelSentence(object):
         i=0
         for tgtitem in self.tgt:
             i += 1
-            prefixeditems = self.__prefix__( tgtitem.get_attributes(), "tgt-" + str(i) )
+            prefixeditems = self.__prefix__( tgtitem.get_attributes(), "tgt-%d" % i )
             #prefixeditems = self.__prefix__( tgtitem.get_attributes(), tgtitem.get_attributes()["system"] )
             new_attributes.update( prefixeditems )
 
@@ -100,22 +101,27 @@ class ParallelSentence(object):
         Moves the attributes back to the nested sentences
             
         """
+        
         for attribute_name in self.attributes.keys():
             attribute_value =  self.attributes[attribute_name] 
-            if ( attribute_name.find('_') >0 ) :
-                [tag, new_attribute_name] = attribute_name.split('_')
-                if tag == 'src':                
-                    self.src.add_attribute(new_attribute_name, attribute_value)
+            if (attribute_name.find('_') > 0) :
+
+                src_attribute = re.match("src_(.*)", attribute_name)
+                if src_attribute:
+                    self.src.add_attribute(src_attribute.group(1), attribute_value)
                     del self.attributes[attribute_name]
-                elif tag == 'ref':
-                    self.ref.add_attribute(new_attribute_name, attribute_value)
+                
+                ref_attribute = re.match("ref_(.*)", attribute_name)
+                if ref_attribute:
+                    self.src.add_attribute(ref_attribute.group(1), attribute_value)
                     del self.attributes[attribute_name]
-                elif tag.startswith('tgt'):
-                    [tgttag, id] = tag.split('-')
-                    if ( int(id)>=0 ):
-                        index = int(id)-1
-                        self.tgt[index].add_attribute( new_attribute_name, attribute_value)
-                        del self.attributes[attribute_name]
+                
+                tgt_attribute = re.match("tgt-([0-9]*)_(.*)", attribute_name)
+                if tgt_attribute:
+                    index = int(tgt_attribute.group(1)) - 1
+                    new_attribute_name = tgt_attribute.group(2)
+                    self.tgt[index].add_attribute(new_attribute_name, attribute_value)
+                    del self.attributes[attribute_name]
 
     
         
@@ -123,7 +129,6 @@ class ParallelSentence(object):
     def __prefix__(self, listitems, prefix):
         newlistitems = {}
         for item_key in listitems.keys():
-            new_item_key = prefix + "_" + item_key 
+            new_item_key = "_".join([prefix, item_key]) 
             newlistitems[new_item_key] = listitems[item_key]
-        return newlistitems  
-            
+        return newlistitems              
