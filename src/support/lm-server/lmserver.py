@@ -80,6 +80,9 @@ class LM:
         tri_probs = 1
         unk_tokens = []
         
+        for i in range(len(tokens)):
+            tokens[i] = base64.standard_b64decode(tokens[i])
+        
         #check for unknown words and collecting unigram probabilities:
         for token in tokens:
             try: 
@@ -124,7 +127,7 @@ class LM:
                        'bi-prob' : str(bi_probs),
                        'tri-prob' : str(tri_probs), 
                        'prob' : str(prob) }
-        return attributres
+        return attributes
           
 
 # Get command line arguments
