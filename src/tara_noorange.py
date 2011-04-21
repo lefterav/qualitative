@@ -27,6 +27,7 @@ from xml.sax import make_parser
 import codecs
 import orngFSS
 from sentence.rankhandler import RankHandler
+import sys
 
  
 class Experiment:
@@ -281,6 +282,18 @@ class Experiment:
     
     
     
+    def add_ngram_features_batch(self, filename, filename_out):
+        reader = XmlReader(filename)
+        parallelsentences = reader.get_parallelsentences()
+        reader = None
+        from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
+        srilm_ngram_en = SRILMngramGenerator("http://134.96.187.4:8585", "en" )
+        processed_parallelsentences = srilm_ngram_en.add_features_batch(parallelsentences)
+        writer = XmlWriter(processed_parallelsentences)
+        writer.write_to_file(filename_out)
+        
+        
+    
     
     def add_external_features(self, filename, filename_out):
         from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
@@ -386,7 +399,7 @@ class Experiment:
             
             
             print "Passing data to Orange"
-            data = OrangeData(dataset, class_name, self.desired_attributes, self.meta_attributes, True)
+            data = OrangeData(dataset, class_name, self.desired_attributes, self.meta_attributes, False)
             dataset=None
             
           
@@ -394,13 +407,13 @@ class Experiment:
             print "Before feature subset selection (%d attributes):" %  len(data.get_data().domain.attributes)
             self.report_relevance(data.get_data())
             
-            marg = 0.01
-            filter = orngFSS.FilterRelief(margin=marg)
-            ndata = filter(data.get_data())
-            print "\nAfter feature subset selection with margin %5.3f (%d attributes):" % \
-              (marg, len(ndata.domain.attributes))
-            
-            self.report_relevance(ndata)
+#            marg = 0.01
+#            filter = orngFSS.FilterRelief(margin=marg)
+#            ndata = filter(data.get_data())
+#            print "\nAfter feature subset selection with margin %5.3f (%d attributes):" % \
+#              (marg, len(ndata.domain.attributes))
+#            
+#            self.report_relevance(ndata)
 
             
             #train data
@@ -470,8 +483,11 @@ class Experiment:
         pairwise_classified_parallelsentences = classified_data.get_dataset().get_parallelsentences()
         multiclass_classified_parallelsentences = rankhandler.get_multiclass_from_pairwise_set(pairwise_classified_parallelsentences, allow_ties)
         from io.output.xmlwriter import XmlWriter
-        classified_xmlwriter = XmlWriter(DataSet(multiclass_classified_parallelsentences))
+        classified_xmlwriter = XmlWriter(multiclass_classified_parallelsentences)
         classified_xmlwriter.write_to_file("myfile.xml")
+        from io.output.wmt11tabwriter import Wmt11TabWriter
+        classified_xmlwriter = Wmt11TabWriter(multiclass_classified_parallelsentences, "dfki_parseconf")
+        classified_xmlwriter.write_to_file("myfile.tab")
         
     def test_length_fg_with_full_parsing(self):
         dir = getenv("HOME") + "/workspace/TaraXUscripts/data"
@@ -537,7 +553,7 @@ if __name__ == '__main__':
     #
     
     #myexperiment = Experiment()
-
+    
     exp = Experiment()
 #    exp.add_external_features_042011()
 #    exp.add_external_features_042011()
@@ -562,6 +578,13 @@ if __name__ == '__main__':
     # 
     #===========================================================================
     #===========================================================================
-    classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir]) #,  '%s/wmt10-train.partial.if.jcml' % dir])
-    exp.test_classifiers(classifiers, '%s/wmt10-test.if.jcml' % dir)
+    if sys.argv[1] == "train":
+        classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir]) #,  '%s/wmt10-train.partial.if.jcml' % dir])
+        exp.test_classifiers(classifiers, '%s/wmt10-test.if.jcml' % dir)
+    
+    elif sys.argv[1] == "ngram-features":
+        sourcefile = '%s/wmt08.jcml' % dir
+        targetfile = '%s/wmt08.test.jcml' % dir
+        exp.add_ngram_features_batch(sourcefile, targetfile)
+        
     #===========================================================================

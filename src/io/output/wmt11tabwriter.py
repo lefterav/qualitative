@@ -2,92 +2,55 @@
 @author: Eleftherios Avramidis
 """
 
-from xml.dom import minidom
-from sentence.parallelsentence import ParallelSentence
+from sentence.dataset import DataSet
 import codecs
 
 class Wmt11TabWriter(object):
     """
     classdocs
     """
+    
 
-
-    def __init__(self, data):
+    def __init__(self, data, name="dfki", testset="testset"):
         """
         Constructor
         """
-        if isinstance ( data , minidom.Document ):
-            self.object_xml = data
-        elif isinstance(data, list):
-            self.object_xml = None
-            self.convert_to_xml( data )
-        else:
-            self.object_xml = None
-            self.convert_to_xml( data.get_parallelsentences() )
-            
+        self.metric_name = name
+        self.testset = testset
         
-    def convert_to_xml(self, parallelsentences):
+        if isinstance(data, list):
+            self.object_xml = None
+            self.convert_to_tab(data)
+        elif isinstance(data, DataSet):
+            self.object_xml = None
+            self.convert_to_tab(data.get_parallelsentences())
+        
+    def convert_to_tab(self, parallelsentences):
         """
-        Creates an XML for the document an populates that with the (parallel) sentences of the given object.
-        Resulting XML object gets stored as a variable.
+        Creates an tab for the document an populates that with the (parallel) sentences of the given object.
+        Resulting tab string gets stored as a variable.
         @param parallelsentences: a list of ParallelSentence objects 
         """
-        doc_xml = minidom.Document( )
-        jcml = doc_xml.createElement("jcml")
         
-        i=0
-        
-        
+        entries = []
+        entries.append("<METRIC NAME>\t<LANG-PAIR>\t<TEST SET>\t<SYSTEM>\t<SEGMENT NUMBER>\t<SEGMENT SCORE>")
+                
         for ps in parallelsentences:
-            
-            parallelsentence_xml = doc_xml.createElement("judgedsentence")
-            
-            #add attributes of parallel sentence
-            for attribute_key in ps.get_attributes().keys():
-                parallelsentence_xml.setAttribute( attribute_key , ps.get_attribute( attribute_key ) )
-            
-            #add source as a child of parallel sentence
-            src_xml = self.__create_xml_sentence__(doc_xml, ps.get_source(), "src")
-            parallelsentence_xml.appendChild( src_xml )
-
-            #add translations
+            ps_att = ps.get_attributes()
+            if ps_att.get("testset"):
+                testset = ps_att["testset"]
+            else:
+                testset = self.testset
             for tgt in ps.get_translations():
-                tgt_xml = self.__create_xml_sentence__(doc_xml, tgt, "tgt")
-                parallelsentence_xml.appendChild( tgt_xml )
-
-            #add reference as a child of parallel sentence
-            if ps.get_reference():
-                ref_xml = self.__create_xml_sentence__(doc_xml, ps.get_reference(), "ref")
-                parallelsentence_xml.appendChild( ref_xml )
-
-            #append the newly populated parallel sentence to the document
-            jcml.appendChild(parallelsentence_xml)
+                t_att = tgt.get_attributes()                
+                entry = "\t".join([self.metric_name, "%s-%s" % (ps_att["langsrc"], ps_att["langtgt"]), testset, t_att["system"], ps_att["id"], t_att["rank"]])
+                entries.append(entry)  
             
-            #print ">", i
-            i +=1
-            
-        doc_xml.appendChild(jcml)
-        self.object_xml = doc_xml
-        
+        #entries = sorted (entries, key=lambda entry: entry.split("\t")[4])
+        self.content =  "\n".join(entries)
         
     def write_to_file(self, filename):
         file_object = codecs.open(filename, 'w', 'utf-8')
-        file_object.write(self.object_xml.toprettyxml())
+        file_object.write(self.content)
         file_object.close()  
            
-        
-        
-    def __create_xml_sentence__(self, doc_xml, sentence, tag):
-        """
-        Helper function that fetches the text and the attributes of a sentence
-        and wraps them up into a minidom XML sentenceect
-        """
-        
-        sentence_xml = doc_xml.createElement(tag)
-
-        for attribute_key in sentence.get_attributes().keys():
-            sentence_xml.setAttribute( attribute_key , sentence.get_attribute( attribute_key ) )            
-        sentence_xml.appendChild( doc_xml.createTextNode( sentence.get_string().strip() ) )
-        
-        return sentence_xml
-        

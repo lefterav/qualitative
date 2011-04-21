@@ -56,4 +56,12 @@ class SRILMFeatureGenerator(FeatureGenerator):
    
         #print l, sent_string
         return str (self.server.getSentenceProb(base64.standard_b64encode(sent_string), l))
+
+    def add_features_batch(self, dataset):
+        
+        for parallelsentence in dataset.get_parallelsentences():
+            src = parallelsentence.get_source()
+            
+        
+        
         
