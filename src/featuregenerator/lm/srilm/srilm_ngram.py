@@ -2,6 +2,7 @@ import xmlrpclib
 import base64
 from featuregenerator.featuregenerator import FeatureGenerator
 from nltk.tokenize.punkt import PunktWordTokenizer
+from sentence.parallelsentence import ParallelSentence
 import sys
 
 class SRILMngramGenerator(FeatureGenerator):
@@ -46,6 +47,23 @@ class SRILMngramGenerator(FeatureGenerator):
             
         
         return (tokenized_string, sent_string)
+    
+    
+    def __prepare_sentence_b64__(self, simplesentence):
+        sent_string = simplesentence.get_string().strip()
+        if self.lowercase:
+            sent_string = sent_string.lower()
+        if self.tokenize:
+            sent_string = sent_string.replace('%',' %') #TODO: this is an issue
+            tokenized_string = PunktWordTokenizer().tokenize(sent_string)
+            sent_string = ' '.join(tokenized_string)
+        else:
+            tokenized_string = sent_string.split(' ')
+        
+        for i in range(len(tokenized_string)):
+            tokenized_string[i] = base64.standard_b64encode(tokenized_string[i])
+        
+        return tokenized_string
     
     
     def __process__(self, simplesentence):
@@ -110,3 +128,53 @@ class SRILMngramGenerator(FeatureGenerator):
         #print l, sent_string
         return str (self.server.getSentenceProb(base64.standard_b64encode(sent_string), l))
         
+    
+    def add_features_batch(self, parallelsentences):
+        batch = []
+        preprocessed_batch = []
+        for parallelsentence in parallelsentences:
+            batch.append(parallelsentence.serialize())
+        
+        for row in batch:
+            preprocessed_row = []
+            for simplesentence in row:
+                simplesentence = self.__prepare_sentence_b64__(simplesentence)
+                preprocessed_row.append(simplesentence)
+            preprocessed_batch.append(preprocessed_row)
+        
+        features_batch = self.server.getNgramFeatures_batch(preprocessed_batch)
+        
+        row_id = 0
+
+        
+        new_parallelsentences = []
+        for row in features_batch:
+            parallelsentence = parallelsentences[row_id]
+            src = parallelsentence.get_source()
+            targets = parallelsentence.get_translations()
+            
+            column_id = 0
+            #dig in the batch to retrieve features
+            for feature_set in row:
+                for key in feature_set:
+                    if column_id == 0:
+                        src.add_attribute(key, feature_set[key])
+                    else:
+                        targets[column_id - 1].add_attribute(key, feature_set[key])
+                
+                    
+                column_id += 1
+            
+            parallelsentence.set_source(src)
+            parallelsentence.set_translations(targets)
+            new_parallelsentences.append(parallelsentence)
+            row_id += 1
+        
+        return new_parallelsentences
+                
+            
+        
+            
+                
+                
+                

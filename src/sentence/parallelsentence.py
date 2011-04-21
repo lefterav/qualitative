@@ -124,6 +124,11 @@ class ParallelSentence(object):
                     del self.attributes[attribute_name]
 
     
+    def serialize(self):
+        list = []
+        list.append(self.src)
+        list.extend(self.tgt)
+        return list
         
         
     def __prefix__(self, listitems, prefix):

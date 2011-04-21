@@ -83,7 +83,7 @@ class LM:
         for i in range(len(tokens)):
             tokens[i] = base64.standard_b64decode(tokens[i])
         
-        #check for unknown words and collecting unigram probabilities:
+        #check for unknown words and collect unigram probabilities:
         for token in tokens:
             try: 
                 uni_prob = self.getUnigramProb(base64.standard_b64encode(token))

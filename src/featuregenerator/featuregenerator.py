@@ -76,3 +76,6 @@ class FeatureGenerator(object):
         emptydict = {}
         return emptydict
     
+    def add_features_batch(self, dataset):
+        #Default function, if not overriden
+        self.add_features(dataset)
