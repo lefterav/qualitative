@@ -409,24 +409,25 @@ class Experiment:
         # compute accuracies
         
         print "training loglinear"
-        lr = orngLR.LogRegLearner(data.get_data()) # compute classification accuracy
+        #lr = orngLR.LogRegLearner(data.get_data()) # compute classification accuracy
         print "Bayes" 
         bayes = Bayes(data)
         print "Tree"
-        tree = TreeLearner(data)
+        #tree = TreeLearner(data)
         print "SVM"
-        svm = SVM (data)
+        #svm = SVM (data)
         print "knn"
-        knn = orange.kNNLearner(data.get_data(), k=10)
+        #knn = orange.kNNLearner(data.get_data(), k=10)
         
-        #lr.name = "Loglinear"
+#        lr.name = "Loglinear"
         bayes.name = "bayes"
-        tree.name = "tree"
-        svm.name = "SVM"
-        lr.name = "logl"
-        knn.name = "knn"
-        
-        return [ lr, bayes, tree, svm, knn]
+#        tree.name = "tree"
+#        svm.name = "SVM"
+#        lr.name = "logl"
+#        knn.name = "knn"
+#        
+#        return [ lr, bayes, tree, svm, knn]
+        return [bayes]
         
     def report_relevance(self, data):
         m = orngFSS.attMeasure(data)
@@ -561,6 +562,6 @@ if __name__ == '__main__':
     # 
     #===========================================================================
     #===========================================================================
-    classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir,  '%s/wmt10-train.partial.if.jcml' % dir])
+    classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir]) #,  '%s/wmt10-train.partial.if.jcml' % dir])
     exp.test_classifiers(classifiers, '%s/wmt10-test.if.jcml' % dir)
     #===========================================================================

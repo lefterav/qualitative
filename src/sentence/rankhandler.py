@@ -66,7 +66,7 @@ class RankHandler(object):
                 translations_new_rank.append(translation)
             
             src = pairwise_sentences[0].get_source()
-            attributes = pairwise_sentences.get_attributes()
+            attributes = pairwise_sentences[0].get_attributes()
             del attributes["rank"]
             new_parallelsentence = ParallelSentence(src, translations_new_rank, None, attributes)
             new_parallelsentences.append(new_parallelsentence)
