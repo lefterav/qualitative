@@ -1,7 +1,8 @@
 #!/fs/clip-ssmt2/nmadnani/python2.5_64/bin/python2.5
 
 from SimpleXMLRPCServer import SimpleXMLRPCServer
-import srilm, sys
+import srilm
+import sys
 import base64
 
 
@@ -60,7 +61,71 @@ class LM:
         return srilm.getCorpusProb(self.lm, filename)
 
     def getCorpusPpl(self, filename):
-        return srilm.getCorpusPpl(self.lm, filename)    
+        return srilm.getCorpusPpl(self.lm, filename)
+    
+    def getNgramFeatures_batch(self, batch):
+        features_batch = []
+        for row in batch:
+            features_row = []
+            for tokens in row:
+                features_row.append(self.getNgramFeatures_string(tokens))
+            features_batch.append(features_row)
+        return features_batch                
+            
+    
+    def getNgramFeatures_string(self, tokens):
+        unk_count = 0
+        uni_probs = 1
+        bi_probs = 1
+        tri_probs = 1
+        unk_tokens = []
+        
+        #check for unknown words and collecting unigram probabilities:
+        for token in tokens:
+            try: 
+                uni_prob = self.getUnigramProb(base64.standard_b64encode(token))
+                if uni_prob == -99:
+                    unk_count += 1
+                    unk_tokens.append(token)
+                    sys.stderr.write("Unknown word: %s\n" % token)
+                else:
+                    uni_probs += uni_prob
+            except: 
+                sys.stderr.write("Failed to retrieve unigram probability for token: '%s'\n" % token) 
+                pass
+        
+        
+        #get bigram probabilities
+        for pos in range ( len(tokens) -1 ):
+            token = tokens[pos:pos+2]
+            if (token[0] not in unk_tokens) and (token[1] not in unk_tokens):
+                try:
+                    bi_prob = self.getBigramProb(base64.standard_b64encode(' '.join(token)))
+                    bi_probs += bi_prob
+                except:
+                    sys.stderr.write("Failed to retrieve bigram probability for tokens: '%s'\n" % ' '.join(token)) 
+
+         
+        #get trigram probabilities
+        for pos in range ( len(tokens) -2 ):
+            token = tokens[pos:pos+3]
+            if (token[0] not in unk_tokens) and (token[1] not in unk_tokens) and (token[2] not in unk_tokens):
+                try:
+                    tri_prob = self.getTrigramProb(base64.standard_b64encode(' '.join(token)))
+                    tri_probs += tri_prob
+                except:
+                    sys.stderr.write("Failed to retrieve trigram probability for tokens: '%s'\n" % ' '.join(token)) 
+        
+        sent_string = " ".join(tokens)
+        prob = str(str (self.getSentenceProb(base64.standard_b64encode(sent_string), len(tokens))))
+        
+        attributes = { 'unk' : str(unk_count),
+                       'uni-prob' : str(uni_probs),
+                       'bi-prob' : str(bi_probs),
+                       'tri-prob' : str(tri_probs), 
+                       'prob' : str(prob) }
+        return attributres
+          
 
 # Get command line arguments
 args = sys.argv[1:]
