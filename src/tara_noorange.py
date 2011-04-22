@@ -287,12 +287,21 @@ class Experiment:
         parallelsentences = reader.get_parallelsentences()
         reader = None
         from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
-        srilm_ngram_en = SRILMngramGenerator("http://134.96.187.4:8585", "en" )
+        srilm_ngram_en = SRILMngramGenerator("http://134.96.187.4:8585", "en")
         processed_parallelsentences = srilm_ngram_en.add_features_batch(parallelsentences)
         writer = XmlWriter(processed_parallelsentences)
         writer.write_to_file(filename_out)
         
-        
+
+    def add_b_features_batch(self, filename, filename_out):
+        reader = XmlReader(filename)
+        parallelsentences = reader.get_parallelsentences()
+        reader = None
+        from featuregenerator.parser.berkeley.berkeleyclient import BerkeleyFeatureGenerator
+        parser_en = BerkeleyFeatureGenerator("http://localhost:8682", "en")
+        processed_parallelsentences = parser_en.add_features_batch(parallelsentences);
+        writer = XmlWriter(processed_parallelsentences)
+        writer.write_to_file(filename_out)
     
     
     def add_external_features(self, filename, filename_out):
@@ -586,5 +595,10 @@ if __name__ == '__main__':
         sourcefile = '%s/wmt08.jcml' % dir
         targetfile = '%s/wmt08.test.jcml' % dir
         exp.add_ngram_features_batch(sourcefile, targetfile)
+    
+    elif sys.argv[1] == "b-features":
+        sourcefile = '%s/wmt08.jcml' % dir
+        targetfile = '%s/wmt08.test.jcml' % dir
+        exp.add_b_features_batch(sourcefile, targetfile)
         
     #===========================================================================
