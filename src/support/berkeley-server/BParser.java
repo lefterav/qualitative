@@ -1,8 +1,10 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import edu.berkeley.nlp.PCFGLA.BerkeleyParser;
 import edu.berkeley.nlp.PCFGLA.CoarseToFineMaxRuleParser;
@@ -81,6 +83,87 @@ public class BParser {
 				return null;
 			}
 		}
+		
+		public Map<String, String> getParseFeatures(String line){
+			System.out.println("Parsing... " +line);
+			try {
+				System.out.println ("parsing first string");
+				List<String>  sentence = tokenizer.tokenizeLine(line);
+						
+				if (sentence.size()>=80)  
+	    			System.err.println("Skipping sentence with "+sentence.size()+" words since it is too long."); 
+	    		
+				List<Tree<String>> parsedTrees = parser.getKBestConstrainedParses(sentence, null, kbest);	
+				
+				HashMap<String, String> output = new HashMap<String, String>();
+				output.putAll( this.getNBestTreeFeatures(parsedTrees, parser));
+				output.put("berkeley-loglikelihood", Double.toString(this.getLogLikelihood()));
+				
+				return output;
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
+		
+		private Map<String, String> getNBestTreeFeatures(List<Tree<String>> parseTrees, CoarseToFineMaxRuleParser parser) {
+			double sumConfidence = 0;
+			double bestConfidence = Double.NEGATIVE_INFINITY;
+			String bestParse = new String();
+			
+			for (Tree<String> parsedTree : parseTrees){
+				
+				if (! parsedTree.getChildren().isEmpty() ){
+					parsedTree = TreeAnnotations.unAnnotateTree(parsedTree);
+					double confidence = parser.getLogLikelihood(parsedTree);
+					sumConfidence += confidence;
+					if (confidence > bestConfidence){
+						bestConfidence = confidence;
+						bestParse = parsedTree.getChildren().get(0)+" )";
+					}
+				}
+				
+			}
+			int n = parseTrees.size();
+			double avgConfidence = sumConfidence / n;
+			String strAvgConfidence = new String();
+			if (avgConfidence == Double.NEGATIVE_INFINITY)
+				strAvgConfidence = "-Inf";
+			else
+				strAvgConfidence = Double.toString(avgConfidence);
+			Map<String, String> features = new HashMap<String, String>();
+			features.put("berkeley-n", Integer.toString(n));
+			features.put("berkeley-best-parse-confidence", Double.toString(bestConfidence));
+			features.put("berkeley-avg-confidence", strAvgConfidence);
+			features.put("berkeley-best-parse-tree", bestParse);
+			return features;
+		}
+		
+		
+		public List<List<Map<String, String>>> parse_batch(Object[] givenBatch){
+			//list to carry the packed batch output
+			List<List<Map<String, String>>> featuresBatch = new ArrayList<List<Map<String, String>>>();
+			
+			//XMLRPC can only import iterables as object arrays, so we have to cast repeatedly array contents
+			for (int i=0; i < givenBatch.length; i++ ){
+				Object[] row = (Object[]) givenBatch[i];
+				List<Map<String, String>> featuresRow = new ArrayList<Map<String, String>>();
+				for (int j=0; j<row.length ; j++ ){
+					String sentence = (String) row[j];
+					//return no featurs for empty string
+					if (! sentence.equals(""))
+						featuresRow.add(this.getParseFeatures(sentence));
+					else
+						featuresRow.add(new HashMap<String, String>());
+				}
+				featuresBatch.add(featuresRow);
+			}
+			return featuresBatch;
+		}
+		
 		
 		public Integer sum(String x, String y) {
 			System.out.println (x + y);

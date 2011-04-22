@@ -5,6 +5,10 @@ from nltk.tokenize.punkt import PunktWordTokenizer
 from sentence.parallelsentence import ParallelSentence
 import sys
 
+
+
+
+
 class SRILMngramGenerator(FeatureGenerator):
     '''
     Gets all the words of a sentence through a SRILM language model and counts how many of them are unknown (unigram prob -99) 
@@ -133,15 +137,22 @@ class SRILMngramGenerator(FeatureGenerator):
         batch = []
         preprocessed_batch = []
         for parallelsentence in parallelsentences:
-            batch.append(parallelsentence.serialize())
+            batch.append((parallelsentence.serialize(), parallelsentence.get_attribute("langsrc"),  parallelsentence.get_attribute("langtgt")))
         
-        for row in batch:
+        for (row, langsrc, langtgt) in batch:
             preprocessed_row = []
+            col_id = 0
             for simplesentence in row:
-                simplesentence = self.__prepare_sentence_b64__(simplesentence)
-                preprocessed_row.append(simplesentence)
+                if (col_id == 0 and langsrc == self.lang) or (col_id > 0 and langtgt == self.lang):
+                    simplesentence = self.__prepare_sentence_b64__(simplesentence)
+                    preprocessed_row.append(simplesentence)
+                else:
+                    simplesentence = [base64.standard_b64encode("DUMMY")]
+                    preprocessed_row.append(simplesentence)
+                col_id += 1
             preprocessed_batch.append(preprocessed_row)
         
+        print "sending request"
         features_batch = self.server.getNgramFeatures_batch(preprocessed_batch)
         
         row_id = 0
