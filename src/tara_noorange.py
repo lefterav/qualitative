@@ -639,11 +639,11 @@ if __name__ == '__main__':
         exfile = sourcefile.replace("jcml", "ex.3.jcml")
         exp.analyze_external_features(bpfile1, exfile) 
         
-        print "classifiers"
-        classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir, '%s/wmt10-train.partial.if.jcml' %dir ])
+#        print "classifiers"
+#        classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir, '%s/wmt10-train.partial.if.jcml' %dir ])
         
-        print "testing"
-        exp.test_classifiers(classifiers, exfile)
+#        print "testing"
+#        exp.test_classifiers(classifiers, exfile)
     
         
     #===========================================================================
