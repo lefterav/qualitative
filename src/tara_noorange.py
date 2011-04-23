@@ -293,14 +293,15 @@ class Experiment:
         writer.write_to_file(filename_out)
         
 
-    def add_b_features_batch(self, filename, filename_out):
+    def add_b_features_batch(self, filename, filename_out, server, language):
         reader = XmlReader(filename)
         parallelsentences = reader.get_parallelsentences()
         reader = None
         from featuregenerator.parser.berkeley.berkeleyclient import BerkeleyFeatureGenerator
-        parser_en = BerkeleyFeatureGenerator("http://localhost:8682", "en")
-        processed_parallelsentences = parser_en.add_features_batch(parallelsentences);
-        writer = XmlWriter(processed_parallelsentences)
+        parser_en = BerkeleyFeatureGenerator(server, language)
+        parallesentences = parser_en.add_features_batch(parallelsentences);
+        
+        writer = XmlWriter(parallesentences)
         writer.write_to_file(filename_out)
     
     
@@ -332,9 +333,10 @@ class Experiment:
 
     
     def analyze_external_features(self, filename, filename_out):
+        from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
         from featuregenerator.parser.berkeley.parsermatches import ParserMatches
-        from featuregenerator.lm.srilm.srilmclient import SRILMFeatureGenerator
-        from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
+#        from featuregenerator.lm.srilm.srilmclient import SRILMFeatureGenerator
+#        from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
         from featuregenerator.ratio_generator import RatioGenerator
         
         input_file_object = codecs.open(filename, 'r', 'utf-8')
@@ -344,7 +346,8 @@ class Experiment:
         #srilm_ngram_de = SRILMngramGenerator("http://134.96.187.4:8585", "de" )
         parsematches = ParserMatches()
         ratio_generator = RatioGenerator()
-        featuregenerators = [parsematches, ratio_generator]
+        lfg = LengthFeatureGenerator()  
+        featuregenerators = [lfg, parsematches, ratio_generator]
         #proceed with parcing
         saxreader = SaxJCMLProcessor(output_input_file_object, featuregenerators)
         myparser = make_parser()
@@ -456,7 +459,7 @@ class Experiment:
         for i in m:
             print "%5.3f %s" % (i[1], i[0])
     
-    def test_classifiers(self, classifiers, filename):
+    def test_classifiers(self, classifiers, filename, filename_out):
         reader = XmlReader(filename)
         #dataset =  reader.get_dataset()
         
@@ -493,10 +496,10 @@ class Experiment:
         multiclass_classified_parallelsentences = rankhandler.get_multiclass_from_pairwise_set(pairwise_classified_parallelsentences, allow_ties)
         from io.output.xmlwriter import XmlWriter
         classified_xmlwriter = XmlWriter(multiclass_classified_parallelsentences)
-        classified_xmlwriter.write_to_file("myfile.xml")
+        classified_xmlwriter.write_to_file(filename_out + "xml")
         from io.output.wmt11tabwriter import Wmt11TabWriter
         classified_xmlwriter = Wmt11TabWriter(multiclass_classified_parallelsentences, "dfki_parseconf")
-        classified_xmlwriter.write_to_file("myfile.tab")
+        classified_xmlwriter.write_to_file(filename_out + "tab")
         
     def test_length_fg_with_full_parsing(self):
         dir = getenv("HOME") + "/workspace/TaraXUscripts/data"
@@ -553,6 +556,16 @@ class Experiment:
 
         for datafile in datafiles:
             self.add_diff_features(datafile, datafile.replace("if.jcml", "diff.jcml"))    
+            
+    
+    def convert_wmtdata(self, dir, langpair, filename):
+        from io.input.wmt11reader import Wmt11Reader
+        reader = Wmt11Reader()
+        
+        writer = XmlWriter(reader.read_parallelsentences(dir, langpair))
+        writer.write_to_file(filename)
+        
+        
 
 if __name__ == '__main__':
     dir = getenv("HOME") + "/workspace/TaraXUscripts/data/multiclass"
@@ -600,5 +613,37 @@ if __name__ == '__main__':
         sourcefile = '%s/wmt08.jcml' % dir
         targetfile = '%s/wmt08.test.jcml' % dir
         exp.add_b_features_batch(sourcefile, targetfile)
+    
+    elif sys.argv[1] == "readwmt":
+        dir = "/home/lefterav/taraxu_data/wmt11-data"
+        langpair = "de-en"
+        outfile = "/home/lefterav/taraxu_data/wmt11-data/wmt11.jcml"
+        exp.convert_wmtdata(dir, langpair, outfile)
+        
+    elif sys.argv[1] == "wmt11eval":
+        sourcefile = '%s/wmt11.jcml' % dir
+        
+        #print "language model features"
+        lmfile = sourcefile.replace("jcml", "lm.1.jcml")
+        #exp.add_ngram_features_batch(sourcefile, lmfile)
+        
+        print "parser features"
+        bpfile = sourcefile.replace("jcml", "bp.2.jcml")
+        exp.add_b_features_batch(lmfile, bpfile, "http://localhost:8682", "en")
+        
+        print "german parser features"
+        bpfile1 = sourcefile.replace("jcml", "bp.2b.jcml")
+        exp.add_b_features_batch(bpfile, bpfile1, "http://localhost:8683", "de")
+        
+        print "final features"
+        exfile = sourcefile.replace("jcml", "ex.3.jcml")
+        exp.analyze_external_features(bpfile1, exfile) 
+        
+        print "classifiers"
+        classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir, '%s/wmt10-train.partial.if.jcml' %dir ])
+        
+        print "testing"
+        exp.test_classifiers(classifiers, exfile)
+    
         
     #===========================================================================
