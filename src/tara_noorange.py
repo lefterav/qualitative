@@ -9,13 +9,11 @@
 from io.input.xmlreader import XmlReader
 #from io.input.orangereader import OrangeData
 from io.output.xmlwriter import XmlWriter
-from classifier.bayes import Bayes
-from classifier.tree import TreeLearner
-from classifier.svm import SVM
+
 from os import getenv
 import os
 import pickle
-import orange, orngLR
+
 from sentence.dataset import DataSet
 
 from io.input.orangereader import OrangeData
@@ -369,7 +367,10 @@ class Experiment:
         
     
     def train_classifiers(self, filenames):
-        
+        from classifier.bayes import Bayes
+        from classifier.tree import TreeLearner
+        from classifier.svm import SVM
+        import orange, orngLR
         if filenames[0].endswith(".tab"):
                 orangetable = orange.ExampleTable(filenames[0])
                 print "Passing data to Orange"
@@ -460,6 +461,10 @@ class Experiment:
             print "%5.3f %s" % (i[1], i[0])
     
     def test_classifiers(self, classifiers, filename, filename_out):
+        from classifier.bayes import Bayes
+        from classifier.tree import TreeLearner
+        from classifier.svm import SVM
+        import orange, orngLR
         reader = XmlReader(filename)
         #dataset =  reader.get_dataset()
         
