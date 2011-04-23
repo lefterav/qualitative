@@ -621,7 +621,7 @@ if __name__ == '__main__':
         exp.convert_wmtdata(dir, langpair, outfile)
         
     elif sys.argv[1] == "wmt11eval":
-        sourcefile = '%s/wmt11.jcml' % dir
+        sourcefile = sys.argv[2]
         
         #print "language model features"
         lmfile = sourcefile.replace("jcml", "lm.1.jcml")
