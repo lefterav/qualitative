@@ -1,3 +1,4 @@
+#!/usr/bin/python
 '''
 @author: lefterav
 '''
@@ -52,4 +53,29 @@ class Experiment:
 
 
 if __name__ == '__main__':
-    pass
+    exp = Experiment()
+    
+    if sys.argv[1] == "readwmt":
+        dir = "/home/lefterav/taraxu_data/wmt11-data"
+        langpair = "de-en"
+        outfile = "/home/lefterav/taraxu_data/wmt11-data/wmt11.jcml"
+        exp.convert_wmtdata(dir, langpair, outfile)
+        
+    elif sys.argv[1] == "wmt11eval":
+        sourcefile = sys.argv[2]
+        
+        #print "language model features"
+        lmfile = sourcefile.replace("jcml", "lm.1.jcml")
+        #exp.add_ngram_features_batch(sourcefile, lmfile)
+        
+        print "parser features"
+        bpfile = sourcefile.replace("jcml", "bp.2.jcml")
+        exp.add_b_features_batch(lmfile, bpfile, "http://localhost:8682", "en")
+        
+        print "german parser features"
+        bpfile1 = sourcefile.replace("jcml", "bp.2b.jcml")
+        exp.add_b_features_batch(bpfile, bpfile1, "http://localhost:8683", "de")
+        
+        print "final features"
+        exfile = sourcefile.replace("jcml", "ex.3.jcml")
+        exp.analyze_external_features(bpfile1, exfile) 
