@@ -89,7 +89,7 @@ if __name__ == '__main__':
         
         i = 0
         filenames = []
-        n = len(reader.length())
+        n = reader.length()
         while i < n:
             k = i + 100
             if k >= n:
