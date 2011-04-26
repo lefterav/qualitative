@@ -80,3 +80,24 @@ if __name__ == '__main__':
         print "final features"
         exfile = sourcefile.replace("jcml", "ex.3.jcml")
         exp.analyze_external_features(bpfile1, exfile) 
+        
+    elif sys.argv[1] == "jcml2wmt":
+        sourcefile = sys.argv[2]
+        filename_out = sourcefile.replace("jcml", "%d.tab")
+        reader = XmlReader(sourcefile)
+        from io.output.wmt11tabwriter import Wmt11TabWriter
+        
+        i = 0
+        filenames = []
+        n = len(reader.length())
+        while i < n:
+            k = i + 100
+            if k >= n:
+                k = n - 1
+            classified_xmlwriter = Wmt11TabWriter(None, "dfki_parseconf")
+            classified_xmlwriter.write_to_file_nobuffer(filename_out % i, reader.get_parallelsentences(i, k))
+            filenames.append(filename_out % i) 
+            i = k + 1
+        import commands
+        commands.getstatusoutput("cat %s > %s", (" ".join(filenames), sourcefile.replace("jcml", "tab") ) )
+        commands.getstatusoutput("rm %s", " ".join(filenames) )
