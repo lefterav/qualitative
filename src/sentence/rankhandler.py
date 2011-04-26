@@ -107,16 +107,25 @@ class RankHandler(object):
                 if system_a == system_b:
                     continue
                 rank = self.__normalize_rank__(system_a, system_b)
-                if rank != "0" or allow_ties:
+                if not rank:
+                    new_attributes = parallelsentence.get_attributes()
+                    new_attributes["judgement_id"] = judgement_id
+                    new_attributes["rank"] = "-99"
+                    pairwise_sentence = ParallelSentence(source, [system_a, system_b], None, new_attributes) 
+                    pairwise_sentences.append(pairwise_sentence)
+                elif rank != "0" or allow_ties:
                     new_attributes = parallelsentence.get_attributes()
                     new_attributes["rank"] = rank 
                     new_attributes["judgement_id"] = judgement_id
                     pairwise_sentence = ParallelSentence(source, [system_a, system_b], None, new_attributes) 
                     pairwise_sentences.append(pairwise_sentence)
-        
+                    
         for system in translations:
             #remove existing ranks
-            system.del_attribute("rank")
+            try:
+                system.del_attribute("rank")
+            except KeyError:
+                pass
         
         return pairwise_sentences
                 
@@ -142,15 +151,18 @@ class RankHandler(object):
         comparison value, namely -1 if the first system is better, +1 if the second system output is better, 
         and 0 if they are equally good. 
         """
-        rank_a = system_a.get_attribute("rank")
-        rank_b = system_b.get_attribute("rank")
-        if rank_a < rank_b:
-            rank = "-1"
-        elif rank_a > rank_b:
-            rank = "1"
-        else:
-            rank = "0"       
-        return rank
+        try:
+            rank_a = system_a.get_attribute("rank")
+            rank_b = system_b.get_attribute("rank")
+            if rank_a < rank_b:
+                rank = "-1"
+            elif rank_a > rank_b:
+                rank = "1"
+            else:
+                rank = "0"       
+            return rank
+        except KeyError:
+            return None
         
         
         

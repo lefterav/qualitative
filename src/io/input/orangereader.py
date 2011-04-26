@@ -366,13 +366,15 @@ class OrangeData:
         Utility function which classifies the test data with the given classifier
         """
         mydata = self.data
-        for ex in mydata:
+        for i in range(len(mydata)):
+            
+        #for ex in mydata:
             try:
-                new_value = classifier(ex)
+                new_value = classifier(mydata[i])
             except:
                 print "couldn't apply classifier"
                 new_value = "0"
-            ex.setclass(new_value)
+            mydata[i].setclass(new_value)
         return OrangeData(mydata)
             
     

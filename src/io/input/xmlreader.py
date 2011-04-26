@@ -43,14 +43,20 @@ class XmlReader(object):
             for attributeKey in xmlEntry.attributes.keys():
                 attributesKeySet.add(attributeKey)            
         return list(attributesKeySet)
+    
+    def length(self):
+        judgedCorpus = self.xmlObject.getElementsByTagName('jcml')
+        return len(judgedCorpus[0].getElementsByTagName('judgedsentence'))
         
-        
-    def get_parallelsentences(self):
+    def get_parallelsentences(self, start = None, end = None):
         """
         @return: a list of ParallelSentence objects
         """
         judgedCorpus = self.xmlObject.getElementsByTagName('jcml')
-        sentenceList = judgedCorpus[0].getElementsByTagName('judgedsentence')
+        if not start and not end:
+            sentenceList = judgedCorpus[0].getElementsByTagName('judgedsentence')
+        else:
+            sentenceList = judgedCorpus[0].getElementsByTagName('judgedsentence')[start:end]
         newssentences = [] 
         for xmlEntry in sentenceList:
             srcXML = xmlEntry.getElementsByTagName('src')

@@ -460,6 +460,26 @@ class Experiment:
         for i in m:
             print "%5.3f %s" % (i[1], i[0])
     
+    
+    def evaluate_sax(self, classifiers, filename, filename_out):
+        input_file_object = codecs.open(filename, 'r', 'utf-8')
+        output_input_file_object = codecs.open(filename_out, 'w', 'utf-8')
+    
+        from classifier.ranker import Ranker
+        
+        for classifier in classifiers:
+            if classifier.name=="bayes":
+                myclassifier =  classifier
+        
+        ranker =  Ranker(myclassifier, self.desired_attributes, self.meta_attributes)
+        #proceed with parcing
+        saxreader = SaxJCMLProcessor(output_input_file_object, [ranker])
+        myparser = make_parser()
+        myparser.setContentHandler(saxreader)
+        myparser.parse(input_file_object)
+        
+    
+    
     def test_classifiers(self, classifiers, filename, filename_out):
         from classifier.bayes import Bayes
         from classifier.tree import TreeLearner
@@ -475,11 +495,9 @@ class Experiment:
         
         from featuregenerator.diff_generator import DiffGenerator
         dg = DiffGenerator()
-        diff_parallelsentences=[]
-        for ps in parallelsentences:
-            ps = dg.add_features_parallelsentence(ps)
-            diff_parallelsentences.append(ps)
-        parallelsentences = diff_parallelsentences
+        for i in range(len(parallelsentences)):
+            parallelsentences[i] = dg.add_features_parallelsentence(parallelsentences[i])
+        
 
             
         dataset = DataSet(parallelsentences)
@@ -497,13 +515,13 @@ class Experiment:
             if classifier.name=="bayes":
                 myclassifier =  classifier
         classified_data = test_data.classify_with(myclassifier)
-        pairwise_classified_parallelsentences = classified_data.get_dataset().get_parallelsentences()
-        multiclass_classified_parallelsentences = rankhandler.get_multiclass_from_pairwise_set(pairwise_classified_parallelsentences, allow_ties)
+        parallelsentences = classified_data.get_dataset().get_parallelsentences()
+        parallelsentences = rankhandler.get_multiclass_from_pairwise_set(parallelsentences, allow_ties)
         from io.output.xmlwriter import XmlWriter
-        classified_xmlwriter = XmlWriter(multiclass_classified_parallelsentences)
+        classified_xmlwriter = XmlWriter(parallelsentences)
         classified_xmlwriter.write_to_file(filename_out + "xml")
         from io.output.wmt11tabwriter import Wmt11TabWriter
-        classified_xmlwriter = Wmt11TabWriter(multiclass_classified_parallelsentences, "dfki_parseconf")
+        classified_xmlwriter = Wmt11TabWriter(parallelsentences, "dfki_parseconf")
         classified_xmlwriter.write_to_file(filename_out + "tab")
         
     def test_length_fg_with_full_parsing(self):
@@ -625,30 +643,61 @@ if __name__ == '__main__':
         outfile = "/home/lefterav/taraxu_data/wmt11-data/wmt11.jcml"
         exp.convert_wmtdata(dir, langpair, outfile)
         
+    elif sys.argv[1] == "jcml2wmt":
+        sourcefile = sys.argv[2]
+        filename_out = sourcefile.replace("jcml", "%d.tab")
+        reader = XmlReader(sourcefile)
+        from io.output.wmt11tabwriter import Wmt11TabWriter
+        
+        i = 0
+        filenames = []
+        n = len(reader.length())
+        while i < n:
+            k = i + 100
+            if k >= n:
+                k = n - 1
+            classified_xmlwriter = Wmt11TabWriter(None, "dfki_parseconf")
+            classified_xmlwriter.write_to_file_nobuffer(filename_out % i, reader.get_parallelsentences(i, k))
+            filenames.append(filename_out % i) 
+            i = k + 1
+        import commands
+        commands.getstatusoutput("cat %s > %s", (" ".join(filenames), sourcefile.replace("jcml", "tab") ) )
+        commands.getstatusoutput("rm %s", " ".join(filenames) )
+        
+    
+    elif sys.argv[1] == "wmt11evalsax":
+        sourcefile = sys.argv[2]
+        print "classifiers"
+        classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir, '%s/wmt10-train.partial.if.jcml' %dir ])
+        print "testing"
+        outfile = sourcefile.replace("jcml", "out.jcml")
+        exp.evaluate_sax(classifiers, sourcefile, outfile)
+    
     elif sys.argv[1] == "wmt11eval":
         sourcefile = sys.argv[2]
-        
-        #print "language model features"
-        lmfile = sourcefile.replace("jcml", "lm.1.jcml")
-        #exp.add_ngram_features_batch(sourcefile, lmfile)
-        
-        print "parser features"
-        bpfile = sourcefile.replace("jcml", "bp.2.jcml")
-        exp.add_b_features_batch(lmfile, bpfile, "http://localhost:8682", "en")
-        
-        print "german parser features"
-        bpfile1 = sourcefile.replace("jcml", "bp.2b.jcml")
-        exp.add_b_features_batch(bpfile, bpfile1, "http://localhost:8683", "de")
-        
-        print "final features"
+#        
+#        #print "language model features"
+#        lmfile = sourcefile.replace("jcml", "lm.1.jcml")
+#        #exp.add_ngram_features_batch(sourcefile, lmfile)
+#        
+#        print "parser features"
+#        #bpfile = sourcefile.replace("jcml", "bp.2.jcml")
+#        #exp.add_b_features_batch(lmfile, bpfile, "http://localhost:8682", "en")
+#        
+#        print "german parser features"
+#        bpfile1 = sourcefile.replace("jcml", "bp.2c.jcml")
+#        #exp.add_b_features_batch(bpfile, bpfile1, "http://localhost:8683", "de")
+#        
+#        print "final features"
         exfile = sourcefile.replace("jcml", "ex.3.jcml")
-        exp.analyze_external_features(bpfile1, exfile) 
+#        exp.analyze_external_features(bpfile1, exfile) 
         
-#        print "classifiers"
-#        classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir, '%s/wmt10-train.partial.if.jcml' %dir ])
+        print "classifiers"
+        classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir, '%s/wmt10-train.partial.if.jcml' %dir ])
         
-#        print "testing"
-#        exp.test_classifiers(classifiers, exfile)
+        print "testing"
+        outfile = sourcefile.replace("jcml", "out.jcml")
+        exp.test_classifiers(classifiers, exfile, outfile)
     
         
     #===========================================================================
