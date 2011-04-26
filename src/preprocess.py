@@ -66,16 +66,16 @@ if __name__ == '__main__':
         sourcefile = sys.argv[2]
         
         #print "language model features"
-        lmfile = sourcefile.replace("jcml", "lm.1.jcml")
+        #lmfile = sourcefile.replace("jcml", "lm.1.jcml")
         #exp.add_ngram_features_batch(sourcefile, lmfile)
         
-        print "parser features"
-        bpfile = sourcefile.replace("jcml", "bp.2.jcml")
-        exp.add_b_features_batch(lmfile, bpfile, "http://localhost:8682", "en")
+        #print "parser features"
+        #bpfile = sourcefile.replace("jcml", "bp.2.jcml")
+        #exp.add_b_features_batch(lmfile, bpfile, "http://localhost:8682", "en")
         
-        print "german parser features"
+        #print "german parser features"
         bpfile1 = sourcefile.replace("jcml", "bp.2b.jcml")
-        exp.add_b_features_batch(bpfile, bpfile1, "http://localhost:8683", "de")
+        #exp.add_b_features_batch(bpfile, bpfile1, "http://localhost:8683", "de")
         
         print "final features"
         exfile = sourcefile.replace("jcml", "ex.3.jcml")
