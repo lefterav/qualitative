@@ -4,11 +4,22 @@ Orange library:
 Ubuntu/Debian
 =============
 
+1. Orange ML toolkit
+--------------------
 sudo apt-get install python-dev g++ build-essential python-pip 
 sudo pip install --upgrade pip  
-sudo pip install orange
+sudo pip install orange *
 
-There is also a debian package called orangesvn but works only with python 2.5
+* There is also a debian package / repository called orangesvn ( sudo apt-get install orangesvn) but works only with python 2.5. If you use it, you may have to tackle pythonpath issues
+
+No root access:
+- Go to http://orange.biolab.si/nightly_builds.html and download Nightly packed sources
+- python setup.py install --user
+
+
+2. NLTK
+-------
+sudo apt-get install python-nltk (in Ubuntu 10.04 or later) otherwise try with pip  
 
 
 Other platforms
@@ -17,4 +28,5 @@ Other platforms
 Use the standard way to install pip at your operating system or get pip from here: 
 http://pypi.python.org/pypi/pip
 
-run pip install orange
+pip install orange
+

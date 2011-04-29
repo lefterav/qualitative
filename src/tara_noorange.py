@@ -588,6 +588,25 @@ class Experiment:
         writer = XmlWriter(reader.read_parallelsentences(dir, langpair))
         writer.write_to_file(filename)
         
+    def jcml2wmt(self, sourcefile):
+        filename_out = sourcefile.replace("jcml", "%d.tab")
+        reader = XmlReader(sourcefile)
+        from io.output.wmt11tabwriter import Wmt11TabWriter
+        
+        i = 0
+        filenames = []
+        n = len(reader.length())
+        while i < n:
+            k = i + 100
+            if k >= n:
+                k = n - 1
+            classified_xmlwriter = Wmt11TabWriter(None, "dfki_parseconf")
+            classified_xmlwriter.write_to_file_nobuffer(filename_out % i, reader.get_parallelsentences(i, k))
+            filenames.append(filename_out % i) 
+            i = k + 1
+        import commands
+        commands.getstatusoutput("cat %s > %s", (" ".join(filenames), sourcefile.replace("jcml", "tab") ) )
+        commands.getstatusoutput("rm %s", " ".join(filenames) )
         
 
 if __name__ == '__main__':
@@ -645,28 +664,11 @@ if __name__ == '__main__':
         
     elif sys.argv[1] == "jcml2wmt":
         sourcefile = sys.argv[2]
-        filename_out = sourcefile.replace("jcml", "%d.tab")
-        reader = XmlReader(sourcefile)
-        from io.output.wmt11tabwriter import Wmt11TabWriter
-        
-        i = 0
-        filenames = []
-        n = len(reader.length())
-        while i < n:
-            k = i + 100
-            if k >= n:
-                k = n - 1
-            classified_xmlwriter = Wmt11TabWriter(None, "dfki_parseconf")
-            classified_xmlwriter.write_to_file_nobuffer(filename_out % i, reader.get_parallelsentences(i, k))
-            filenames.append(filename_out % i) 
-            i = k + 1
-        import commands
-        commands.getstatusoutput("cat %s > %s", (" ".join(filenames), sourcefile.replace("jcml", "tab") ) )
-        commands.getstatusoutput("rm %s", " ".join(filenames) )
+        exp.jcml2wmt(sourcefile)
         
     
     elif sys.argv[1] == "wmt11evalsax":
-        
+        sourcefile = sys.argv[2]
         #print "language model features"
         lmfile = sourcefile.replace("jcml", "lm.1.jcml")
         #exp.add_ngram_features_batch(sourcefile, lmfile, "http://134.96.187.4:8585", "en")
@@ -689,6 +691,9 @@ if __name__ == '__main__':
         print "testing"
         outfile = sourcefile.replace("jcml", "out.jcml")
         exp.evaluate_sax(classifiers, sourcefile, outfile)
+        
+        exp.jcml2wmt(outfile)
+        
     
     elif sys.argv[1] == "wmt11eval":
         sourcefile = sys.argv[2]
