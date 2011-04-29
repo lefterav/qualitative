@@ -280,12 +280,12 @@ class Experiment:
     
     
     
-    def add_ngram_features_batch(self, filename, filename_out):
+    def add_ngram_features_batch(self, filename, filename_out, server, language):
         reader = XmlReader(filename)
         parallelsentences = reader.get_parallelsentences()
         reader = None
         from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
-        srilm_ngram_en = SRILMngramGenerator("http://134.96.187.4:8585", "en")
+        srilm_ngram_en = SRILMngramGenerator(server, language)
         processed_parallelsentences = srilm_ngram_en.add_features_batch(parallelsentences)
         writer = XmlWriter(processed_parallelsentences)
         writer.write_to_file(filename_out)
@@ -666,6 +666,23 @@ if __name__ == '__main__':
         
     
     elif sys.argv[1] == "wmt11evalsax":
+        
+        #print "language model features"
+        lmfile = sourcefile.replace("jcml", "lm.1.jcml")
+        #exp.add_ngram_features_batch(sourcefile, lmfile, "http://134.96.187.4:8585", "en")
+        
+        print "parser features"
+        bpfile = sourcefile.replace("jcml", "bp.2.jcml")
+        exp.add_b_features_batch(lmfile, bpfile, "http://localhost:8682", "en")
+        
+        print "german parser features"
+        bpfile1 = sourcefile.replace("jcml", "bp.2c.jcml")
+        exp.add_b_features_batch(bpfile, bpfile1, "http://localhost:8683", "de")
+        
+        print "final features"
+        exfile = sourcefile.replace("jcml", "ex.3.jcml")
+        exp.analyze_external_features(bpfile1, exfile) 
+        
         sourcefile = sys.argv[2]
         print "classifiers"
         classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir, '%s/wmt10-train.partial.if.jcml' %dir ])
