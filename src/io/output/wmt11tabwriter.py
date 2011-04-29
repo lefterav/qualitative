@@ -68,6 +68,7 @@ class Wmt11TabWriter(object):
             for tgt in ps.get_translations():
                 t_att = tgt.get_attributes()                
                 entry = "\t".join([self.metric_name, "%s-%s" % (ps_att["langsrc"], ps_att["langtgt"]), testset, t_att["system"], ps_att["id"], t_att["rank"]])
+                entry = "%s\n" % entry
                 file_object.write(entry)  
             
         #entries = sorted (entries, key=lambda entry: entry.split("\t")[4])
