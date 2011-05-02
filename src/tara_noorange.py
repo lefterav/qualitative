@@ -309,8 +309,8 @@ class Experiment:
         from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
         from featuregenerator.parser.berkeley.berkeleyclient import BerkeleyFeatureGenerator 
         
-        input_file_object = open(filename, 'r')
-        #input_file_object = codecs.open(filename, 'r', 'utf-8')
+        #input_file_object = open(filename, 'r')
+        input_file_object = codecs.open(filename, 'r', 'utf-8')
         output_input_file_object = codecs.open(filename_out, 'w', 'utf-8')
     
         ###INITIALIZE FEATURE GENERATORS
@@ -338,7 +338,8 @@ class Experiment:
 #        from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
         from featuregenerator.ratio_generator import RatioGenerator
         
-        input_file_object = codecs.open(filename, 'r', 'utf-8')
+        input_file_object = open(filename, 'r')
+        #input_file_object = codecs.open(filename, 'r', 'utf-8')
         output_input_file_object = codecs.open(filename_out, 'w', 'utf-8')
                 
         #srilm_de = SRILMFeatureGenerator("http://134.96.187.4:8586", "de" )
@@ -356,6 +357,7 @@ class Experiment:
     def add_diff_features(self, filename, filename_out):
         from featuregenerator.diff_generator import DiffGenerator
         dg = DiffGenerator()
+        
         input_file_object = codecs.open(filename, 'r', 'utf-8')
         output_input_file_object = codecs.open(filename_out, 'w', 'utf-8')
         
