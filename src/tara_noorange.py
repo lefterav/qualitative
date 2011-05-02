@@ -356,7 +356,7 @@ class Experiment:
         from featuregenerator.diff_generator import DiffGenerator
         dg = DiffGenerator()
         input_file_object = open(filename, 'r', 'utf-8')
-        output_input_file_object = codecs.open(filename_out, 'w', 'utf-8')
+        output_input_file_object = open(filename_out, 'w', 'utf-8')
         
         saxreader = SaxJCMLProcessor(output_input_file_object, [dg] )
         myparser = make_parser()
