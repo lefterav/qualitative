@@ -310,8 +310,8 @@ class Experiment:
         from featuregenerator.parser.berkeley.berkeleyclient import BerkeleyFeatureGenerator 
         
         #input_file_object = open(filename, 'r')
-        input_file_object = codecs.open(filename, 'r', 'utf-8')
-        output_input_file_object = codecs.open(filename_out, 'w', 'utf-8')
+        input_file_object = open(filename, 'r' )
+        output_input_file_object = open(filename_out, 'w' )
     
         ###INITIALIZE FEATURE GENERATORS
         lfg = LengthFeatureGenerator()   
@@ -340,7 +340,7 @@ class Experiment:
         
         input_file_object = open(filename, 'r')
         #input_file_object = codecs.open(filename, 'r', 'utf-8')
-        output_input_file_object = open(filename_out, 'w', 'utf-8')
+        output_input_file_object = open(filename_out, 'w')
                 
         #srilm_de = SRILMFeatureGenerator("http://134.96.187.4:8586", "de" )
         #srilm_ngram_de = SRILMngramGenerator("http://134.96.187.4:8585", "de" )
@@ -358,8 +358,8 @@ class Experiment:
         from featuregenerator.diff_generator import DiffGenerator
         dg = DiffGenerator()
         
-        input_file_object = open(filename, 'r', 'utf-8')
-        output_input_file_object = open(filename_out, 'w', 'utf-8')
+        input_file_object = open(filename, 'r')
+        output_input_file_object = open(filename_out, 'w')
         
         saxreader = SaxJCMLProcessor(output_input_file_object, [dg] )
         myparser = make_parser()
@@ -466,7 +466,7 @@ class Experiment:
     
     def evaluate_sax(self, classifiers, filename, filename_out):
         input_file_object = open(filename, 'r', 'utf-8')
-        output_input_file_object = open(filename_out, 'w', 'utf-8')
+        output_input_file_object = open(filename_out, 'w')
     
         from classifier.ranker import Ranker
         
