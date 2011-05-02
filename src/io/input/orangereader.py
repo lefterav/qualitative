@@ -94,7 +94,7 @@ class OrangeData:
                     
                 else:
                 #if not attribute_names = src|ref|tgt
-                    sentence_attributes [attribute_name] =  unicode ( metas[key].value )
+                    sentence_attributes [attribute_name] =  metas[key].value
                     attribute_names.add(attribute_name)
             
             #create a new sentence and add it to the list
