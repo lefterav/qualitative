@@ -40,7 +40,8 @@ class SaxJCMLProcessor(XMLGenerator):
         self.ss_text=""
         
         self.feature_generators = feature_generators
-        XMLGenerator._encoding = "UTF-8"
+        self._encoding = "utf-8"
+        XMLGenerator._encoding = "utf-8"
         XMLGenerator._out = out
         
     def startDocument(self):
@@ -87,7 +88,7 @@ class SaxJCMLProcessor(XMLGenerator):
         @type ch: str 
         """
         if self.is_simplesentence :
-            self.ss_text += ch
+            self.ss_text = "%s%s" % (self.ss_text, ch)
             
     
     def endElement(self, name):
