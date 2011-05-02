@@ -614,7 +614,8 @@ class Experiment:
 
 if __name__ == '__main__':
     dir = getenv("HOME") + "/workspace/TaraXUscripts/data/multiclass"
-    
+    if len(sys.argv) ==  4:
+        dir = sys.argv[3]
     #add_external_features()
     #split_corpus()
     #
