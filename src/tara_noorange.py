@@ -695,7 +695,7 @@ if __name__ == '__main__':
         classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir, '%s/wmt10-train.partial.if.jcml' %dir ])
         print "testing"
         outfile = sourcefile.replace("jcml", "out.jcml")
-        exp.evaluate_sax(classifiers, sourcefile, outfile)
+        exp.evaluate_sax(classifiers, exfile, outfile)
         
         exp.jcml2wmt(outfile)
         
