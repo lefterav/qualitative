@@ -465,7 +465,7 @@ class Experiment:
     
     
     def evaluate_sax(self, classifiers, filename, filename_out):
-        input_file_object = open(filename, 'r', 'utf-8')
+        input_file_object = open(filename, 'r')
         output_input_file_object = open(filename_out, 'w')
     
         from classifier.ranker import Ranker
