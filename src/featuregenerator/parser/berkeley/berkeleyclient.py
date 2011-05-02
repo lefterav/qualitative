@@ -1,4 +1,6 @@
 import xmlrpclib 
+import time
+import sys
 from featuregenerator.featuregenerator import FeatureGenerator
  
 class BerkeleyFeatureGenerator(FeatureGenerator):
@@ -12,6 +14,7 @@ class BerkeleyFeatureGenerator(FeatureGenerator):
         Constructor
         '''
         self.server = xmlrpclib.Server(url)
+        self.url = url
         self.lang = lang
     
     #TODO: see if scope of self.lang allows to move these 2 methods in featuregenerator class  
@@ -91,7 +94,15 @@ class BerkeleyFeatureGenerator(FeatureGenerator):
                 col_id += 1
             preprocessed_batch.append(preprocessed_row)
         
-        features_batch = self.server.BParser.parse_batch(preprocessed_batch)
+        
+        connected = False
+        while not connected:
+            try:
+                features_batch = self.server.BParser.parse_batch(preprocessed_batch)
+                connected = True
+            except:
+                sys.stderr.write("Connection to server %s failed, trying again after a few seconds...\n" % self.url)
+                time.sleep(5)
         
         row_id = 0
 
