@@ -309,7 +309,8 @@ class Experiment:
         from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
         from featuregenerator.parser.berkeley.berkeleyclient import BerkeleyFeatureGenerator 
         
-        input_file_object = codecs.open(filename, 'r', 'utf-8')
+        input_file_object = open(filename, 'r')
+        #input_file_object = codecs.open(filename, 'r', 'utf-8')
         output_input_file_object = codecs.open(filename_out, 'w', 'utf-8')
     
         ###INITIALIZE FEATURE GENERATORS
@@ -355,8 +356,8 @@ class Experiment:
     def add_diff_features(self, filename, filename_out):
         from featuregenerator.diff_generator import DiffGenerator
         dg = DiffGenerator()
-        input_file_object = open(filename, 'r', 'utf-8')
-        output_input_file_object = open(filename_out, 'w', 'utf-8')
+        input_file_object = codecs.open(filename, 'r', 'utf-8')
+        output_input_file_object = codecs.open(filename_out, 'w', 'utf-8')
         
         saxreader = SaxJCMLProcessor(output_input_file_object, [dg] )
         myparser = make_parser()
