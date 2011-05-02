@@ -138,7 +138,7 @@ public class BParser {
 			features.put("berkeley-n", Integer.toString(n));
 			features.put("berkeley-best-parse-confidence", Double.toString(bestConfidence));
 			features.put("berkeley-avg-confidence", strAvgConfidence);
-			features.put("berkeley-best-parse-tree", bestParse);
+			features.put("berkeley-tree", bestParse);
 			return features;
 		}
 		
