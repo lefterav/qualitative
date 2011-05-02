@@ -178,7 +178,7 @@ class OrangeData:
     def __writeTempFile__(self, data):
         
         tmpFileName = mktemp(dir='.', suffix='.tab')
-        file_object = codecs.open(tmpFileName, 'w', 'utf-8')
+        file_object = open(tmpFileName, 'w', 'utf-8')
         file_object.write(data)
         file_object.close()  
         
