@@ -9,7 +9,7 @@ from xml.sax.handler import ContentHandler
 from xml.sax.saxutils import XMLGenerator
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
-
+import sys
 
 class SaxJCMLProcessor(XMLGenerator):
     """
@@ -39,6 +39,7 @@ class SaxJCMLProcessor(XMLGenerator):
         
         self.ss_text=""
         
+        
         self.feature_generators = feature_generators
         self._encoding = "utf-8"
         XMLGenerator._encoding = "utf-8"
@@ -63,7 +64,7 @@ class SaxJCMLProcessor(XMLGenerator):
         if name == 'judgedsentence':
             
             #empty up string and attribute buffer
-            self.ss_text = ""
+            self.ss_text = u""
             self.ps_attributes = {}
             self.tgt = []
             for att_name in attrs.getNames():
@@ -73,7 +74,7 @@ class SaxJCMLProcessor(XMLGenerator):
         elif name in ['src', 'tgt', 'ref']:
             
             #empty up string and attribute buffer
-            self.ss_text = ""
+            self.ss_text = u""
             self.ss_attributes = {}
             for att_name in attrs.getNames():
                 self.ss_attributes[att_name] = attrs.getValue(att_name)
@@ -88,7 +89,7 @@ class SaxJCMLProcessor(XMLGenerator):
         @type ch: str 
         """
         if self.is_simplesentence :
-            self.ss_text = "%s%s" % (self.ss_text, ch)
+            self.ss_text = u"%s%s" % (self.ss_text, ch)
             
     
     def endElement(self, name):
@@ -109,10 +110,10 @@ class SaxJCMLProcessor(XMLGenerator):
         if name == 'src':
             
             self.src = SimpleSentence (self.ss_text, self.ss_attributes )
-            self.ss_text = ""
+            self.ss_text = u""
         elif name =='tgt':
             self.tgt.append ( SimpleSentence (self.ss_text, self.ss_attributes ) )
-            self.ss_text = ""
+            self.ss_text = u""
         elif name == "judgedsentence":
             #when the judged sentence gets closed, all previously inserted data have to be converted to objects 
             parallelsentence = ParallelSentence ( self.src, self.tgt, self.ref , self.ps_attributes)
