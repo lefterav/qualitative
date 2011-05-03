@@ -62,39 +62,39 @@ class OrangeData:
             sentence_attributes = {}
             
 
-            sentence_attributes[ unicode(item.domain.classVar.name) ] = unicode(item.getclass().value)
+            sentence_attributes[item.domain.classVar.name] = str(item.getclass().value)
             
             #first get normal features
             for att in item.domain.attributes:
-                sentence_attributes [ unicode(att.name) ] = unicode( item[att].value )
-                attribute_names.add( unicode(att.name) )
+                sentence_attributes[att.name] = str(item[att].value) 
+                attribute_names.add(att.name)
 
             metas = item.getmetas()
             
             src = SimpleSentence()
-            tgt = [ SimpleSentence() , SimpleSentence() ] #TODO: this will break if more than two SimpleSentences()
+            tgt = [SimpleSentence(), SimpleSentence()] #TODO: this will break if more than two SimpleSentences()
             ref = SimpleSentence()
             
             #then get metas
             for key in metas: 
-                attribute_name = unicode ( metas[key].variable.name )
+                attribute_name = metas[key].variable.name
                 
                 if attribute_name == 'src':
-                    src = SimpleSentence( metas[key].value )
+                    src = SimpleSentence(metas[key].value)
                 elif attribute_name == 'ref':
                     try:
-                        ref = SimpleSentence ( metas[key].value )
+                        ref = SimpleSentence(metas[key].value)
                     except KeyError:
                         pass
                 elif (attribute_name.startswith('tgt') and attribute_name.find('_') == -1):
                     tag, index = attribute_name.split( "-")
                     #assume they appear the right order
-                    tgt[int(index)-1] = SimpleSentence( metas[key].value )
+                    tgt[int(index)-1] = SimpleSentence(metas[key].value)
                     #tgt.append( SimpleSentence ( metas[key].value ) )
                     
                 else:
                 #if not attribute_names = src|ref|tgt
-                    sentence_attributes [attribute_name] =  metas[key].value
+                    sentence_attributes[attribute_name] = str(metas[key].value) 
                     attribute_names.add(attribute_name)
             
             #create a new sentence and add it to the list
@@ -102,7 +102,7 @@ class OrangeData:
             #print src
             #print "Target", tgt
             #print ref
-            new_parallelsentence = ParallelSentence( src, tgt, ref, sentence_attributes )
+            new_parallelsentence = ParallelSentence(src, tgt, ref, sentence_attributes)
             new_parallelsentence.recover_attributes()
             new_data.append(new_parallelsentence)
             
@@ -178,7 +178,7 @@ class OrangeData:
     def __writeTempFile__(self, data):
         
         tmpFileName = mktemp(dir='.', suffix='.tab')
-        file_object = open(tmpFileName, 'w')
+        file_object = codecs.open(tmpFileName, 'w', 'utf-8')
         file_object.write(data)
         file_object.close()  
         
