@@ -593,6 +593,7 @@ class Experiment:
         
     def jcml2wmt(self, sourcefile):
         filename_out = sourcefile.replace("jcml", "%d.tab")
+        print "opening %s" % sourcefile 
         reader = XmlReader(sourcefile)
         from io.output.wmt11tabwriter import Wmt11TabWriter
         
@@ -680,11 +681,11 @@ if __name__ == '__main__':
         
         print "parser features"
         bpfile = sourcefile.replace("jcml", "bp.2.jcml")
-        exp.add_b_features_batch(lmfile, bpfile, "http://localhost:8682", "en")
+        exp.add_b_features_batch(lmfile, bpfile, "http://134.96.187.4:8682", "en")
         
         print "german parser features"
         bpfile1 = sourcefile.replace("jcml", "bp.2c.jcml")
-        exp.add_b_features_batch(bpfile, bpfile1, "http://localhost:8683", "de")
+        exp.add_b_features_batch(bpfile, bpfile1, "http://134.96.187.4:8683", "de")
         
         print "final features"
         exfile = sourcefile.replace("jcml", "ex.3.jcml")
