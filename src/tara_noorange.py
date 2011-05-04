@@ -599,7 +599,7 @@ class Experiment:
         
         i = 0
         filenames = []
-        n = len(reader.length())
+        n = reader.length()
         while i < n:
             k = i + 100
             if k >= n:
@@ -609,8 +609,8 @@ class Experiment:
             filenames.append(filename_out % i) 
             i = k + 1
         import commands
-        commands.getstatusoutput("cat %s > %s", (" ".join(filenames), sourcefile.replace("jcml", "tab") ) )
-        commands.getstatusoutput("rm %s", " ".join(filenames) )
+        commands.getstatusoutput("cat %s > %s" %(" ".join(filenames), sourcefile.replace("jcml", "tab") ) )
+        commands.getstatusoutput("rm %s" % " ".join(filenames) )
         
 
 if __name__ == '__main__':

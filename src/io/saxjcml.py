@@ -5,11 +5,10 @@
 @author: Eleftherios Avramidis
 """
 
-from xml.sax.handler import ContentHandler
+
 from xml.sax.saxutils import XMLGenerator
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
-import sys
 
 class SaxJCMLProcessor(XMLGenerator):
     """
@@ -109,14 +108,14 @@ class SaxJCMLProcessor(XMLGenerator):
         #for each element, create the objects and clear "buffers"
         if name == 'src':
             
-            self.src = SimpleSentence (self.ss_text, self.ss_attributes )
+            self.src = SimpleSentence(self.ss_text, self.ss_attributes)
             self.ss_text = u""
         elif name =='tgt':
-            self.tgt.append ( SimpleSentence (self.ss_text, self.ss_attributes ) )
+            self.tgt.append(SimpleSentence(self.ss_text, self.ss_attributes))
             self.ss_text = u""
         elif name == "judgedsentence":
             #when the judged sentence gets closed, all previously inserted data have to be converted to objects 
-            parallelsentence = ParallelSentence ( self.src, self.tgt, self.ref , self.ps_attributes)
+            parallelsentence = ParallelSentence(self.src, self.tgt, self.ref, self.ps_attributes)
             
             
             #apply feature generators
@@ -134,6 +133,7 @@ class SaxJCMLProcessor(XMLGenerator):
 
             #display modifications on output file
             XMLGenerator._write(self, "\n\t")
+             
             XMLGenerator.startElement(self, name, parallelsentence.get_attributes())
                         
             XMLGenerator._write(self, "\n\t\t")

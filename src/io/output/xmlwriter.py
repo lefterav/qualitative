@@ -4,7 +4,7 @@
 
 from xml.dom import minidom
 from sentence.parallelsentence import ParallelSentence
-import codecs
+from xml.sax.saxutils import escape
 
 class XmlWriter(object):
     """
@@ -16,14 +16,14 @@ class XmlWriter(object):
         """
         Constructor
         """
-        if isinstance ( data , minidom.Document ):
+        if isinstance (data , minidom.Document):
             self.object_xml = data
         elif isinstance(data, list):
             self.object_xml = None
-            self.convert_to_xml( data )
+            self.convert_to_xml(data)
         else:
             self.object_xml = None
-            self.convert_to_xml( data.get_parallelsentences() )
+            self.convert_to_xml(data.get_parallelsentences())
             
         
     def convert_to_xml(self, parallelsentences):
@@ -86,8 +86,9 @@ class XmlWriter(object):
         sentence_xml = doc_xml.createElement(tag)
 
         for attribute_key in sentence.get_attributes().keys():
-            sentence_xml.setAttribute( attribute_key , sentence.get_attribute( attribute_key ) )            
-        sentence_xml.appendChild( doc_xml.createTextNode( sentence.get_string().strip() ) )
+            sentence_xml.setAttribute(attribute_key, escape(sentence.get_attribute(attribute_key)))       
+        textnode = escape(sentence.get_string().strip())     
+        sentence_xml.appendChild(doc_xml.createTextNode(textnode))
         
         return sentence_xml
         
