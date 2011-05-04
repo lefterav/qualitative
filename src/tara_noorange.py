@@ -466,7 +466,7 @@ class Experiment:
     
     def evaluate_sax(self, classifiers, filename, filename_out):
         input_file_object = open(filename, 'r')
-        output_input_file_object = open(filename_out, 'w')
+        output_file_object = open(filename_out, 'w')
     
         from classifier.ranker import Ranker
         
@@ -476,10 +476,12 @@ class Experiment:
         
         ranker =  Ranker(myclassifier, self.desired_attributes, self.meta_attributes)
         #proceed with parcing
-        saxreader = SaxJCMLProcessor(output_input_file_object, [ranker])
+        saxreader = SaxJCMLProcessor(output_file_object, [ranker])
         myparser = make_parser()
         myparser.setContentHandler(saxreader)
         myparser.parse(input_file_object)
+        input_file_object.close()
+        output_file_object.close()
         
     
     
