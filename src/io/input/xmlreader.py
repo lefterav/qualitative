@@ -13,6 +13,7 @@ from xml.dom.minidom import parse
 from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence
 from sentence.dataset import DataSet
+from xml.sax.saxutils import unescape
  
 
 class XmlReader(object):
@@ -63,14 +64,14 @@ class XmlReader(object):
             tgtXML = xmlEntry.getElementsByTagName('tgt')
             refXML = xmlEntry.getElementsByTagName('ref')
             
-            src = SimpleSentence ( srcXML[0].childNodes[0].nodeValue.strip() , self.__read_attributes__(srcXML[0]) )
+            src = SimpleSentence (unescape(srcXML[0].childNodes[0].nodeValue.strip()) , self.__read_attributes__(srcXML[0]) )
             
             #Create a list of SimpleSentence objects out of the object
-            tgt = map( lambda x: SimpleSentence ( x.childNodes[0].nodeValue.strip(), self.__read_attributes__(x) )  , tgtXML ) 
+            tgt = map( lambda x: SimpleSentence(unescape(x.childNodes[0].nodeValue.strip()), self.__read_attributes__(x) )  , tgtXML ) 
             
             ref = SimpleSentence()
             try:    
-                ref = SimpleSentence ( refXML[0].childNodes[0].nodeValue.strip() ,  self.__read_attributes__(refXML[0]))
+                ref = SimpleSentence (unescape(refXML[0].childNodes[0].nodeValue.strip()) ,  self.__read_attributes__(refXML[0]))
             except LookupError:
                 pass
             
@@ -92,7 +93,7 @@ class XmlReader(object):
         attributes = {}
         attributeKeys = xmlEntry.attributes.keys()
         for attributeKey in attributeKeys:
-            attributes[attributeKey] = xmlEntry.attributes[attributeKey].value                     
+            attributes[attributeKey] = unescape(xmlEntry.attributes[attributeKey].value)                     
         return attributes
         
     
