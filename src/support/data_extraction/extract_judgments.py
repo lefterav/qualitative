@@ -29,9 +29,10 @@ class WMTEvalReader:
         self.config = config
         fieldnames = config.get("format","fieldnames").split(',')
         csvfilename = "%s/%s" % (config.get("data", "path"), config.get("data", "filename"))
-        csvfile = open(csvfilename)
-        self.reader =  csv.DictReader(csvfile, fieldnames)
+        csvfile = open(csvfilename, 'r')
+        self.reader =  csv.DictReader(csvfile, fieldnames, None, None, config.get("format","dialect"))
         self.systems_num = config.getint("format","systems_num")
+        
 
     """
     Iterates through the csv rows, parses the data and creates a list of parallelsentences
