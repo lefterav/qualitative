@@ -39,9 +39,10 @@ class FeatureGenerator(object):
                 tgt.append( self.add_features_sentence (tgt_item, parallelsentence))
             ref = self.add_features_sentence (parallelsentence.get_reference(), parallelsentence)
             
+             
             #replace the parallelsentence
-            parallelsentences[i] = ParallelSentence(src, tgt, ref, parallelsentence.get_attributes())
-                                   
+            parallelsentence = ParallelSentence(src, tgt, ref, parallelsentence.get_attributes())
+            parallelsentences[i] = self.add_features_parallelsentence(parallelsentence)                       
             #ps0 = self.add_features_parallelsentence ( ps )
             
             #newset.append(ps0)
@@ -82,7 +83,7 @@ class FeatureGenerator(object):
     
     def add_features_batch(self, parallelsentences):
         #Default function, if not overriden
-        self.add_features(DataSet(parallelsentences))
+        return self.add_features(DataSet(parallelsentences))
         
     def add_features_batch_xml(self, filename_in, filename_out):
         reader = XmlReader(filename_in)

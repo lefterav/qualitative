@@ -27,7 +27,7 @@ class XmlReader(object):
         """
         self.xmlObject = parse(inputFilename)
     
-    
+        
     def get_dataset(self):
         return DataSet(self.get_parallelsentences(), self.get_attributes())
     
