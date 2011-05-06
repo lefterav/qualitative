@@ -24,7 +24,6 @@ class OrangeData:
     """
     
     def __init__ (self, dataSet, class_name="", desired_attributes=[], meta_attributes=[], keep_temp=False):
-        
         if isinstance ( dataSet , orange.ExampleTable ):
             self.data = dataSet
             

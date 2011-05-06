@@ -21,11 +21,12 @@ LANGUAGES = {
 
 class WMTEvalReader:
     
-    """
-    Initialize function, by providing a config file with the parameters for data and format
-    @param config File object containing a config file of the required format
-    """
+
     def __init__(self, config):
+        """
+        Initialize function, by providing a config file with the parameters for data and format
+        @param config File object containing a config file of the required format
+        """
         self.config = config
         fieldnames = config.get("format","fieldnames").split(',')
         csvfilename = "%s/%s" % (config.get("data", "path"), config.get("data", "filename"))
@@ -34,11 +35,12 @@ class WMTEvalReader:
         self.systems_num = config.getint("format","systems_num")
         
 
-    """
-    Iterates through the csv rows, parses the data and creates a list of parallelsentences
-    @return A list of Parallelsentence objects, one object for each csv row
-    """    
+       
     def parse(self):
+        """
+        Iterates through the csv rows, parses the data and creates a list of parallelsentences
+        @return A list of Parallelsentence objects, one object for each csv row
+        """ 
         parallelsentences = []
         firstrow = True
         for row in self.reader:
