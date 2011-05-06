@@ -5,6 +5,8 @@
 from copy import deepcopy
 from sentence.parallelsentence import ParallelSentence
 from sentence.dataset import DataSet
+from io.input.xmlreader import XmlReader
+from io.output.xmlwriter import XmlWriter
 
 class FeatureGenerator(object):
     """
@@ -24,32 +26,34 @@ class FeatureGenerator(object):
         
         """
         tgt=[]
-        newset = []
-        i = 0
+        parallelsentences = dataset.get_parallelsentences()
         
-        for parallelsentence in dataset.get_parallelsentences():
+        for i in range(len(parallelsentences)):
+            parallelsentence = parallelsentences[i]
+             
+        #for parallelsentence in dataset.get_parallelsentences():
             
-            src = self.add_features_sentence ( parallelsentence.get_source(), parallelsentence )
+            src = self.add_features_sentence (parallelsentence.get_source(), parallelsentence)
                         
             for tgt_item in parallelsentence.get_translations():
-                tgt.append( self.add_features_sentence ( tgt_item, parallelsentence ) )
-            ref = self.add_features_sentence ( parallelsentence.get_reference(), parallelsentence )
+                tgt.append( self.add_features_sentence (tgt_item, parallelsentence))
+            ref = self.add_features_sentence (parallelsentence.get_reference(), parallelsentence)
             
-            ps = ParallelSentence( src, tgt, ref, parallelsentence.get_attributes() )
+            #replace the parallelsentence
+            parallelsentences[i] = ParallelSentence(src, tgt, ref, parallelsentence.get_attributes())
                                    
-            ps0 = self.add_features_parallelsentence ( ps )
+            #ps0 = self.add_features_parallelsentence ( ps )
             
-            newset.append(ps0)
-            i +=1
+            #newset.append(ps0)
             print i
     
         
-        d = DataSet( newset )
+        dataset = DataSet(parallelsentences)
         
         print ".",
 
         
-        return d
+        return dataset
     
     def add_features_src(self,simplesentence, parallelsentence):
         return self.add_features_sentence(simplesentence, parallelsentence)
@@ -79,3 +83,13 @@ class FeatureGenerator(object):
     def add_features_batch(self, parallelsentences):
         #Default function, if not overriden
         self.add_features(DataSet(parallelsentences))
+        
+    def add_features_batch_xml(self, filename_in, filename_out):
+        reader = XmlReader(filename_in)
+        parallelsentences = reader.get_parallelsentences()
+        parallelsentences = self.add_features_batch(parallelsentences)
+        reader = None
+        writer = XmlWriter(parallelsentences)
+        writer.write_to_file(filename_out)
+        
+        
