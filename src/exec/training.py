@@ -82,8 +82,7 @@ class Training(object):
         
         for filename in filenames:
             print "Reading XML %s " % filename
-            reader = XmlReader(filename)
-            parallelsentences = reader.get_parallelsentences()
+            parallelsentences = XmlReader(filename).get_parallelsentences()
             
             if self.convert_pairwise:
                 parallelsentences = RankHandler().get_pairwise_from_multiclass_set(parallelsentences, self.allow_ties)
@@ -121,10 +120,12 @@ class Training(object):
                 classifier = learner(training_data.get_data())
                 model[",".join(attribute_names)].append((attribute_names,classifier))
         return model
+            
+    
     
     def rank_evaluate_and_print(self, test_xml, model):
         output = []
-        test_dataset = self.read_xml_data([test_xml])
+        test_dataset_pairwise = self.read_xml_data([test_xml])
         output.append("\t")
         for classifier in self.classifiers:
             output.append(classifier.__class__.__name__)
@@ -136,20 +137,26 @@ class Training(object):
             prev_attribute_names = []
             for (attribute_names, classifier) in  model[attribute_names_string]:
                 if attribute_names != prev_attribute_names:
-                    test_data = OrangeData(test_dataset, self.class_name, attribute_names, self.meta_attribute_names, False)
+                    test_data_pairwise = OrangeData(test_dataset_pairwise, self.class_name, attribute_names, self.meta_attribute_names, False)
                 prev_attribute_names = attribute_names
                 
-                #classified_data = test_data.classify_with(classifier)
-                #parallelsentences = classified_data.get_dataset().get_parallelsentences()
-                (acc, taukendal) = test_data.get_accuracy([classifier])
+                #first pairwise scores with kendal tau
+                (acc, taukendal) = test_data_pairwise.get_accuracy([classifier])
                 #output.append(classifier.name)
+                classified_pairwise = test_data_pairwise.classify_with(classifier)
+                parallelsentences_multiclass = RankHandler().get_multiclass_from_pairwise_set(classified_pairwise.get_dataset(), self.allow_ties)
+                
+                
+                
+                
+                #parallelsentences = classified_data.get_dataset().get_parallelsentences()
                 output.append("\t")
+                output.append(str(acc))
                 output.append(str(taukendal[0]))
             output.append("\n")
         print "".join(output)
             
-            #if self.convert_pairwise:
-            #    parallelsentences = RankHandler().get_multiclass_from_pairwise_set(parallelsentences, self.allow_ties)
+            
                 
     def train_evaluate(self):
         model = self.train_classifiers_attributes(self.training_filenames)

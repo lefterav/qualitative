@@ -460,6 +460,7 @@ class Experiment:
         
     def report_relevance(self, data):
         m = orngFSS.attMeasure(data)
+        sorted(m)
         for i in m:
             print "%5.3f %s" % (i[1], i[0])
     
