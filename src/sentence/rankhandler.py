@@ -5,7 +5,7 @@ Created on Apr 15, 2011
 '''
 
 from parallelsentence import ParallelSentence
-
+from dataset import DataSet
 
 class RankHandler(object):
     '''
@@ -19,6 +19,10 @@ class RankHandler(object):
         '''
       
     def get_multiclass_from_pairwise_set(self, parallelsentences, allow_ties = False):
+        if isinstance(parallelsentences, DataSet):
+            parallelsentences = parallelsentences.get_parallelsentences()
+            
+            
         sentences_per_judgment = {}
         #constract groups of pairwise sentences, based on their judgment id, which is unique per group
         for parallelsentence in parallelsentences:
@@ -110,11 +114,13 @@ class RankHandler(object):
                 if not rank:
                     new_attributes = parallelsentence.get_attributes()
                     new_attributes["judgement_id"] = judgement_id
+                    new_attributes["orig_rank"] = new_attributes["rank"]
                     new_attributes["rank"] = "-99"
                     pairwise_sentence = ParallelSentence(source, [system_a, system_b], None, new_attributes) 
                     pairwise_sentences.append(pairwise_sentence)
                 elif rank != "0" or allow_ties:
                     new_attributes = parallelsentence.get_attributes()
+                    new_attributes["orig_rank"] = new_attributes["rank"]
                     new_attributes["rank"] = rank 
                     new_attributes["judgement_id"] = judgement_id
                     pairwise_sentence = ParallelSentence(source, [system_a, system_b], None, new_attributes) 
