@@ -40,9 +40,18 @@ class ParallelSentence(object):
     
     def get_attribute_names (self):
         return self.attributes.keys()
+
     
     def get_attribute(self, name):
         return self.attributes[name]
+    
+    def get_target_attribute_values(self, attribute_name):
+        attribute_values = []
+        for target in self.tgt:
+            attribute_values.append(target.get_attribute(attribute_name))
+        return attribute_values
+            
+            
     
     def add_attributes (self, attributes):
         self.attributes.update( attributes )
