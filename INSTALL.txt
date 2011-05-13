@@ -17,10 +17,6 @@ No root access:
 - python setup.py install --user
 
 
-2. NLTK
--------
-sudo apt-get install python-nltk (in Ubuntu 10.04 or later) otherwise try with pip  
-
 
 Other platforms
 ===============
@@ -30,3 +26,19 @@ http://pypi.python.org/pypi/pip
 
 pip install orange
 
+
+Various other libraries
+-------
+sudo apt-get install python-nltk (in Ubuntu 10.04 or later) otherwise try with pip  
+
+(10.04)
+sudo apt-get remove python-numpy python-scipy (repositories provide only old versions)
+sudo apt-get install python python-dev gcc gfortran g++ libblas-dev libatlas-cpp-0.6-dev liblapack-dev libblas-dev libsuitesparse-dev   
+sudo pip install numpy
+sudo pip install scipy 
+
+
+wget http://launchpadlibrarian.net/11726755/pypy-lib_1.0.0-svn51091-1_all.deb
+wget https://launchpad.net/ubuntu/+source/pypy/1.0.0-svn51091-1/+build/503581/+files/pypy_1.0.0-svn51091-1_amd64.deb
+wget https://launchpad.net/ubuntu/+source/pypy/1.0.0-svn51091-1/+build/503581/+files/pypy-stackless_1.0.0-svn51091-1_amd64.deb
+dpkg -i 
