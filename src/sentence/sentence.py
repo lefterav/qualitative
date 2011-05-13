@@ -52,6 +52,10 @@ class SimpleSentence(object):
     
     def add_attributes(self, attributes):
         self.attributes.update( attributes )
+    
+    def rename_attribute(self, old_name, new_name):
+        self.attributes[new_name] = self.attributes[old_name]
+        del(self.attributes[old_name])
         
     def del_attribute(self, attribute):
         del(self.attributes[attribute])
