@@ -472,7 +472,7 @@ class Experiment:
         from classifier.ranker import Ranker
         
         for classifier in classifiers:
-            if classifier.name=="bayes":
+            if classifier.name == "bayes":
                 myclassifier =  classifier
         
         ranker =  Ranker(myclassifier, self.desired_attributes, self.meta_attributes)

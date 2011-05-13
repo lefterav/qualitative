@@ -365,6 +365,7 @@ class OrangeData:
         Utility function which classifies the test data with the given classifier
         """
         mydata = self.data
+        
         for i in range(len(mydata)):
             
         #for ex in mydata:

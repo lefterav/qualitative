@@ -6,6 +6,8 @@
 @author: Eleftherios Avramidis
 """
 
+
+
 class DataSet(object):
     """
     classdocs
@@ -89,7 +91,6 @@ class DataSet(object):
                     print ps1.get_translations()[1].get_string() , "\n",  ps2.get_translations()[1].get_string()
                     print ps1.get_translations()[1].get_attributes() , "\n",  ps2.get_translations()[1].get_attributes()
             
-        
-    
-        
+
+
         

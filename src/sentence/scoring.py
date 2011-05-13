@@ -1,0 +1,74 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+"""
+
+@author: Eleftherios Avramidis
+"""
+
+from dataset import DataSet
+from multirankeddataset import MultiRankedDataset
+from scipy.stats import spearmanr
+
+class SystemScoring(MultiRankedDataset):
+    """
+    classdocs
+    """
+    
+    def get_systems_scoring_from_segment_ranks(self, rank_attribute_name):
+        """
+        Provides a performance score for every system. The score is the percentage of times the system
+        performed better than all other systems or equally to the systems that performed better than all other systems
+        @param rank_attribute_name: the name of the target sentence attribute which contains the rank value, that we compare upon 
+        Smaller rank means better system.  
+        @type rank_attribute_name: string
+        @return A map of the system names and their performance percentage
+        """
+        systems_performance = {}
+        for parallelsentence in self.parallelsentences:
+            rank_per_system = {}
+            #first sort the ranks by system
+            for target in parallelsentence.get_translations():
+                system = target.get_attribute("system")
+                rank = int(target.get_attribute(rank_attribute_name))
+                rank_per_system[system] = rank
+            #then count the times a system performs as best
+            for system in rank_per_system:
+                if rank_per_system[system] == min(rank_per_system.values()):
+                    try:
+                        systems_performance[system] += 1
+                    except KeyError:
+                        systems_performance[system] = 1
+        #finally calculate the percentage that each system, scored as best
+        for system in systems_performance:
+            systems_performance[system] = 1.00 * systems_performance[system] / len(self.parallelsentences)
+        return systems_performance
+    
+    def get_spearman_correlation(self, rank_name_1, rank_name_2):
+        """
+        Calculates the system-level Spearman rank correlation given two sentence-level features, i.e. 
+        the human and the estimated rank of each parallelsentence 
+        @param rank_name_1: the name of the target sentence attribute containing a rank value
+        @type rank_name_1: string
+        @param rank_name_2: the name of the target sentence attribute containing a rank value
+        @type rank_name_2: string
+        @return the Spearman correlation rho and p value
+        """
+        systems_evaluation_1 = self.get_systems_scoring_from_segment_ranks(rank_name_1)
+        systems_evaluation_2 = self.get_systems_scoring_from_segment_ranks(rank_name_2)
+        rank_evaluation_1 = []
+        rank_evaluation_2 = []
+        for (system, rank_1) in systems_evaluation_1.items():
+            rank_evaluation_1.append(rank_1)
+            rank_2 = systems_evaluation_2[system]
+            rank_evaluation_2.append(rank_2)
+        print rank_evaluation_1, rank_evaluation_2
+        return spearmanr(rank_evaluation_1, rank_evaluation_2)
+        
+             
+        
+        
+        
+    
+        
+        

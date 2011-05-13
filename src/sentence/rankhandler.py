@@ -114,13 +114,13 @@ class RankHandler(object):
                 if not rank:
                     new_attributes = parallelsentence.get_attributes()
                     new_attributes["judgement_id"] = judgement_id
-                    new_attributes["orig_rank"] = new_attributes["rank"]
+                    #new_attributes["orig_rank"] = new_attributes["rank"]
                     new_attributes["rank"] = "-99"
                     pairwise_sentence = ParallelSentence(source, [system_a, system_b], None, new_attributes) 
                     pairwise_sentences.append(pairwise_sentence)
                 elif rank != "0" or allow_ties:
                     new_attributes = parallelsentence.get_attributes()
-                    new_attributes["orig_rank"] = new_attributes["rank"]
+                    #new_attributes["orig_rank"] = new_attributes["rank"]
                     new_attributes["rank"] = rank 
                     new_attributes["judgement_id"] = judgement_id
                     pairwise_sentence = ParallelSentence(source, [system_a, system_b], None, new_attributes) 
@@ -129,7 +129,7 @@ class RankHandler(object):
         for system in translations:
             #remove existing ranks
             try:
-                system.del_attribute("rank")
+                system.rename_attribute("rank", "orig_rank")
             except KeyError:
                 pass
         

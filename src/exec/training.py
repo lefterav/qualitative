@@ -12,6 +12,7 @@ from io.input.orangereader import OrangeData
 from io.input.xmlreader import XmlReader
 from sentence.rankhandler import RankHandler
 from sentence.dataset import DataSet
+from sentence.scoring import SystemScoring
 from featuregenerator.diff_generator import DiffGenerator
 import sys
 import ConfigParser
@@ -27,7 +28,7 @@ class Training(object):
         '''
         Constructor
         '''
-        self.classifiers = [BayesLearner(), SVMLearner(), TreeLearner(), LogRegLearner(), kNNLearner()]
+        self.classifiers = [BayesLearner()] #, SVMLearner(), TreeLearner(), LogRegLearner(), kNNLearner()]
         self.attribute_sets = []
         self.training_filenames = None
         self.test_filename = None
@@ -145,8 +146,13 @@ class Training(object):
                 #output.append(classifier.name)
                 classified_pairwise = test_data_pairwise.classify_with(classifier)
                 parallelsentences_multiclass = RankHandler().get_multiclass_from_pairwise_set(classified_pairwise.get_dataset(), self.allow_ties)
-                
-                
+                for ps in parallelsentences_multiclass:
+                    for tgt in ps.get_translations():
+                        print tgt.get_attribute("rank"), tgt.get_attribute("orig_rank")
+                scoringset = SystemScoring(parallelsentences_multiclass)
+                (rho, p) = scoringset.get_spearman_correlation("rank", "orig_rank")
+                output.append("\t")
+                output.append(str(rho))
                 
                 
                 #parallelsentences = classified_data.get_dataset().get_parallelsentences()
