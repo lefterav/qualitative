@@ -9,8 +9,9 @@
 from dataset import DataSet
 from multirankeddataset import MultiRankedDataset
 from scipy.stats import spearmanr
+from scipy.stats import kendalltau
 
-class SystemScoring(MultiRankedDataset):
+class Scoring(MultiRankedDataset):
     """
     classdocs
     """
@@ -48,9 +49,9 @@ class SystemScoring(MultiRankedDataset):
         """
         Calculates the system-level Spearman rank correlation given two sentence-level features, i.e. 
         the human and the estimated rank of each parallelsentence 
-        @param rank_name_1: the name of the target sentence attribute containing a rank value
+        @param rank_name_1: the name of the target sentence attribute containing the first rank value
         @type rank_name_1: string
-        @param rank_name_2: the name of the target sentence attribute containing a rank value
+        @param rank_name_2: the name of the target sentence attribute containing the second rank value
         @type rank_name_2: string
         @return the Spearman correlation rho and p value
         """
@@ -64,6 +65,25 @@ class SystemScoring(MultiRankedDataset):
             rank_evaluation_2.append(rank_2)
         print rank_evaluation_1, rank_evaluation_2
         return spearmanr(rank_evaluation_1, rank_evaluation_2)
+    
+    def get_kendall_tau(self, rank_name_1, rank_name_2):
+        segment_tau = 0.00
+        didnt = 0
+        for parallesentence in self.parallelsentences:
+            rank_vector_1 = parallesentence.get_target_attribute_values(rank_name_1)
+            rank_vector_2 = parallesentence.get_target_attribute_values(rank_name_2)
+            tau = kendalltau(rank_vector_1, rank_vector_2)[0]
+            if (tau >= -1 and tau <= 1):
+                segment_tau += tau
+            else:
+                didnt += 1
+        print "Didn't %s" % didnt
+        avg_tau = segment_tau / (len(self.parallelsentences) - didnt)
+        return avg_tau
+            
+            
+            
+            
         
              
         
