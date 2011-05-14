@@ -681,7 +681,7 @@ if __name__ == '__main__':
         sys.stderr.write("\n" )
         
         lmfile = sourcefile.replace("jcml", "lm.1.jcml")
-        exp.add_ngram_features_batch(sourcefile, lmfile, "http://134.96.187.4:8585", "en")
+        #exp.add_ngram_features_batch(sourcefile, lmfile, "http://134.96.187.4:8585", "en")
         
         print "parser features"
         bpfile = sourcefile.replace("jcml", "bp.2.jcml")
