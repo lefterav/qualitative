@@ -31,7 +31,7 @@ class Scoring(MultiRankedDataset):
             #first sort the ranks by system
             for target in parallelsentence.get_translations():
                 system = target.get_attribute("system")
-                rank = int(target.get_attribute(rank_attribute_name))
+                rank = int(float(target.get_attribute(rank_attribute_name)))
                 rank_per_system[system] = rank
             #then count the times a system performs as best
             for system in rank_per_system:

@@ -1,0 +1,99 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citename{Blatz \bgroup et al.\egroup
+  }2004]{Blatz04confidenceestimation}
+John Blatz, Erin Fitzgerald, George Foster, Simona Gandrabur, Cyril Goutte,
+  Alex Kulesza, Alberto Sanchis, and Nicola Ueffing.
+\newblock 2004.
+\newblock Confidence estimation for machine translation.
+\newblock In {\em IN M. ROLLINS (ED.), MENTAL IMAGERY}. Yale University Press.
+
+\bibitem[\protect\citename{Cleveland}1979]{cleveland1979robust}
+W.S. Cleveland.
+\newblock 1979.
+\newblock Robust locally weighted regression and smoothing scatterplots.
+\newblock {\em Journal of the American statistical association},
+  74(368):829--836.
+
+\bibitem[\protect\citename{Dem{\v{s}}ar \bgroup et al.\egroup
+  }2004]{demšar2004orange}
+J.~Dem{\v{s}}ar, B.~Zupan, G.~Leban, and T.~Curk.
+\newblock 2004.
+\newblock Orange: From experimental machine learning to interactive data
+  mining.
+\newblock {\em Knowledge discovery in databases: PKDD 2004}, pages 537--539.
+
+\bibitem[\protect\citename{Garrette and Klein}]{Garrette_anextensible}
+Dan Garrette and Ewan Klein.
+\newblock An extensible toolkit for computational semantics.
+
+\bibitem[\protect\citename{Kira and Rendell}1992]{kira1992feature}
+K.~Kira and L.A. Rendell.
+\newblock 1992.
+\newblock The feature selection problem: Traditional methods and a new
+  algorithm.
+\newblock In {\em Proceedings of the National Conference on Artificial
+  Intelligence}, pages 129--129. John Wiley \& Sons Ltd.
+
+\bibitem[\protect\citename{Kiss \bgroup et al.\egroup }]{Kiss_2006unsupervised}
+Tibor Kiss, Jan Strunk, Ruhr universität Bochum, and Ruhr universität Bochum.
+\newblock 2006) unsupervised multilingual sentence boundary detection.
+\newblock In {\em Proceedings of IICS-04, Guadalajara, Mexico and Springer LNCS
+  3473}, page 2006.
+
+\bibitem[\protect\citename{Kononenko}1994]{Kononenko94estimatingattributes:}
+Igor Kononenko.
+\newblock 1994.
+\newblock Estimating attributes: Analysis and extensions of relief.
+\newblock pages 171--182. Springer Verlag.
+
+\bibitem[\protect\citename{Petrov and Klein}2007]{Petrov07improvedinference}
+Slav Petrov and Dan Klein.
+\newblock 2007.
+\newblock Improved inference for unlexicalized parsing.
+
+\bibitem[\protect\citename{Petrov \bgroup et al.\egroup
+  }2006]{Petrov06learningaccurate}
+Slav Petrov, Leon Barrett, Romain Thibaux, and Dan Klein.
+\newblock 2006.
+\newblock Learning accurate, compact, and interpretable tree annotation.
+\newblock In {\em In ACL ’06}, pages 433--440.
+
+\bibitem[\protect\citename{Raybaud \bgroup et al.\egroup
+  }2009]{raybaud2009word}
+S.~Raybaud, C.~Lavecchia, D.~Langlois, and K.~Smaili.
+\newblock 2009.
+\newblock Word-and sentence-level confidence measures for machine translation.
+
+\bibitem[\protect\citename{Rosti \bgroup et al.\egroup
+  }2007]{Rosti07combiningoutputs}
+Antti-Veikko Rosti, Necip~Fazil Ayan, Bing Xiang, Spyros Matsoukas, Richard
+  Schwartz, and Bonnie~J. Dorr.
+\newblock 2007.
+\newblock Combining outputs from multiple machine translation systems.
+\newblock In {\em In Proceedings of the North American Chapter of the
+  Association for Computational Linguistics Human Language Technologies}, pages
+  228--235.
+
+\bibitem[\protect\citename{Specia \bgroup et al.\egroup }2009]{Specia09TWSS}
+Lucia Specia, Marco Turchi, Zhuoran Wang, John Shawe-Taylor, and Craig
+  Saunders.
+\newblock 2009.
+\newblock Improving the confidence of machine translation quality estimates.
+\newblock In {\em Machine Translation Summit XII}, Ottawa, Canada.
+
+\bibitem[\protect\citename{Stolcke}2002]{Stolcke02srilm—anextensible}
+Andreas Stolcke.
+\newblock 2002.
+\newblock Srilm—an extensible language modeling toolkit.
+\newblock In {\em In Proceedings of the 7th International Conference on Spoken
+  Language Processing (ICSLP 2002}, pages 901--904.
+
+\bibitem[\protect\citename{Ueffing and Ney}2005]{Ueffing05word-levelconfidence}
+Nicola Ueffing and Hermann Ney.
+\newblock 2005.
+\newblock Word-level confidence estimation for machine translation using
+  phrase-based translation models.
+\newblock In {\em Computational Linguistics}, pages 763--770.
+
+\end{thebibliography}

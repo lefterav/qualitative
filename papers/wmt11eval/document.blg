@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: document.aux
+The style file: acl.bst
+Database file #1: mybib.bib
+Warning--empty year in Kiss_2006unsupervised
+Warning--empty booktitle in Kononenko94estimatingattributes:
+Warning--empty journal in raybaud2009word
+You've used 14 entries,
+            2490 wiz_defined-function locations,
+            639 strings with 7357 characters,
+and the built_in function-call counts, 6641 in all, are:
+= -- 692
+> -- 269
+< -- 8
++ -- 94
+- -- 92
+* -- 456
+:= -- 1003
+add.period$ -- 54
+call.type$ -- 14
+change.case$ -- 102
+chr.to.int$ -- 14
+cite$ -- 17
+duplicate$ -- 299
+empty$ -- 508
+format.name$ -- 110
+if$ -- 1444
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 12
+newline$ -- 82
+num.names$ -- 42
+pop$ -- 146
+preamble$ -- 1
+purify$ -- 116
+quote$ -- 0
+skip$ -- 251
+stack$ -- 0
+substring$ -- 329
+swap$ -- 106
+text.length$ -- 8
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 112
+warning$ -- 3
+while$ -- 52
+width$ -- 18
+write$ -- 186
+(There were 3 warnings)
