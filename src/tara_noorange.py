@@ -62,76 +62,76 @@ class Experiment:
                                    ]
 #        desired_att_list = [
 #                            #===================================================
-#                             'tgt-1_berkeley-avg-confidence_ratio',
-#                             'tgt-1_length_ratio', 
-#                             'tgt-1_berkeley-avg-confidence', 
-#                             'tgt-2_berkeley-avg-confidence_ratio', 
-#                             'tgt-2_berkeley-best-parse-confidence_ratio', 
-#                             'tgt-2_parse-dot', 
-#                             'tgt-2_parse-VP', 
-#                             'tgt-2_length_ratio', 
-#                             'tgt-2_parse-comma', 
-#                             'tgt-1_parse-dot', 
-#                             'tgt-2_berkley-loglikelihood_ratio', 
-#                             'tgt-2_uni-prob', 'tgt-2_parse-VB', 
-#                             'tgt-1_parse-NN_ratio', 
-#                             'src_parse-dot', 
-#                             'tgt-1_length', 
-#                             'tgt-2_prob', 
-#                             'src_parse-comma', 
-#                             'src_parse-NP', 
-#                             'tgt-2_parse-VP_ratio', 
-#                             'tgt-1_parse-comma_ratio', 
-#                             'src_parse-NN', 
-#                             'tgt-1_berkeley-n_ratio', 
-#                             'tgt-2_parse-PP', 
-#                             'tgt-1_parse-PP_ratio', 
-#                             'tgt-2_parse-comma_ratio', 
-#                             'tgt-1_unk', 
-#                             'tgt-1_parse-NP', 
-#                             'tgt-1_berkeley-best-parse-confidence_ratio', 
-#                             'tgt-2_parse-NP_ratio', 
-#                             'tgt-1_berkeley-n', 
-#                             'tgt-1_tri-prob', 
-#                             'tgt-1_parse-NP_ratio', 
-#                             'src_length', 
-#                             'tgt-2_unk', 
-#                             'tgt-1_berkley-loglikelihood', 
-#                             'src_berkeley-best-parse-confidence', 
-#                             'tgt-2_berkley-loglikelihood', 
-#                             'src_berkley-loglikelihood',
-#                             'tgt-1_prob',
-#                             'tgt-2_parse-dot_ratio',
-#                             'tgt-2_berkeley-best-parse-confidence',
-#                             'src_parse-VVFIN',
-#                             'tgt-1_uni-prob',
-#                             'tgt-2_bi-prob',
-#                             'tgt-1_bi-prob',
-#                             'tgt-1_berkeley-best-parse-confidence',
-#                             'tgt-2_tri-prob',
-#                             'tgt-2_length',
-#                             'tgt-1_parse-NN',
-#                             'tgt-2_parse-NP',
-#                             'src_parse-VP',
-#                             'tgt-1_parse-PP',
-#                             'src_berkeley-n',
-#                             'tgt-1_parse-VP',
-#                             'tgt-2_parse-PP_ratio',
-#                             'tgt-1_berkley-loglikelihood_ratio',
-#                             'tgt-2_berkeley-n',
-#                             'tgt-2_berkeley-n_ratio',
-#                             'tgt-1_parse-VP_ratio',
-#                             'tgt-2_parse-NN_ratio',
-#                             'src_parse-PP',
-#                             'tgt-1_parse-dot_ratio',
-#                             'tgt-1_parse-VB',
-#                             'tgt-2_parse-NN',
-#                             'tgt-1_parse-comma',
-#                             'tgt-2_berkeley-avg-confidence',
-#                             'src_berkeley-avg-confidence' ]
-#                            #===================================================
-                            
-#        
+        self.desired_attributes = ['tgt-1_berkeley-avg-confidence_ratio',
+                             'tgt-1_length_ratio', 
+                             'tgt-1_berkeley-avg-confidence', 
+                             'tgt-2_berkeley-avg-confidence_ratio', 
+                             'tgt-2_berkeley-best-parse-confidence_ratio', 
+                             'tgt-2_parse-dot', 
+                             'tgt-2_parse-VP', 
+                             'tgt-2_length_ratio', 
+                             'tgt-2_parse-comma', 
+                             'tgt-1_parse-dot', 
+                             'tgt-2_berkley-loglikelihood_ratio', 
+                             'tgt-2_uni-prob', 'tgt-2_parse-VB', 
+                             'tgt-1_parse-NN_ratio', 
+                             'src_parse-dot', 
+                             'tgt-1_length', 
+                             'tgt-2_prob', 
+                             'src_parse-comma', 
+                             'src_parse-NP', 
+                             'tgt-2_parse-VP_ratio', 
+                             'tgt-1_parse-comma_ratio', 
+                             'src_parse-NN', 
+                             'tgt-1_berkeley-n_ratio', 
+                             'tgt-2_parse-PP', 
+                             'tgt-1_parse-PP_ratio', 
+                             'tgt-2_parse-comma_ratio', 
+                             'tgt-1_unk', 
+                             'tgt-1_parse-NP', 
+                             'tgt-1_berkeley-best-parse-confidence_ratio', 
+                             'tgt-2_parse-NP_ratio', 
+                             'tgt-1_berkeley-n', 
+                             'tgt-1_tri-prob', 
+                             'tgt-1_parse-NP_ratio', 
+                             'src_length', 
+                             'tgt-2_unk', 
+                             'tgt-1_berkley-loglikelihood', 
+                             'src_berkeley-best-parse-confidence', 
+                             'tgt-2_berkley-loglikelihood', 
+                             'src_berkley-loglikelihood',
+                             'tgt-1_prob',
+                             'tgt-2_parse-dot_ratio',
+                             'tgt-2_berkeley-best-parse-confidence',
+                             'src_parse-VVFIN',
+                             'tgt-1_uni-prob',
+                             'tgt-2_bi-prob',
+                             'tgt-1_bi-prob',
+                             'tgt-1_berkeley-best-parse-confidence',
+                             'tgt-2_tri-prob',
+                             'tgt-2_length',
+                             'tgt-1_parse-NN',
+                             'tgt-2_parse-NP',
+                             'src_parse-VP',
+                             'tgt-1_parse-PP',
+                             'src_berkeley-n',
+                             'tgt-1_parse-VP',
+                             'tgt-2_parse-PP_ratio',
+                             'tgt-1_berkley-loglikelihood_ratio',
+                             'tgt-2_berkeley-n',
+                             'tgt-2_berkeley-n_ratio',
+                             'tgt-1_parse-VP_ratio',
+                             'tgt-2_parse-NN_ratio',
+                             'src_parse-PP',
+                             'tgt-1_parse-dot_ratio',
+                             'tgt-1_parse-VB',
+                             'tgt-2_parse-NN',
+                             'tgt-1_parse-comma',
+                             'tgt-2_berkeley-avg-confidence',
+                             'src_berkeley-avg-confidence' ]
+                            #===================================================
+                           
+        
 #        for desire_att in desired_att_list:
 #            #if desire_att.endswith("prob"):
 #            self.desired_attributes[desire_att] = 'c'
@@ -423,13 +423,14 @@ class Experiment:
             print "Before feature subset selection (%d attributes):" %  len(data.get_data().domain.attributes)
             self.report_relevance(data.get_data())
             
-#            marg = 0.01
-#            filter = orngFSS.FilterRelief(margin=marg)
-#            ndata = filter(data.get_data())
-#            print "\nAfter feature subset selection with margin %5.3f (%d attributes):" % \
-#              (marg, len(ndata.domain.attributes))
-#            
-#            self.report_relevance(ndata)
+            margs = [0.1, 0.01, 0.001] 
+            for marg in margs:
+                filter = orngFSS.FilterRelief(margin=marg)
+                ndata = filter(data.get_data())
+                print "\nAfter feature subset selection with margin %5.3f (%d attributes):" % \
+                  (marg, len(ndata.domain.attributes))
+                
+                self.report_relevance(ndata)
 
             
             #train data
@@ -511,11 +512,11 @@ class Experiment:
         class_name = "rank"
         test_data = OrangeData(dataset, class_name, self.desired_attributes, self.meta_attributes)
 #        (acc, taukendal) = test_data.get_accuracy(classifiers)
-#        
+##        
 #        print "Classification accuracies:"
 #        for i in range(len(classifiers)):
 #            print classifiers[i].name, "\t", acc[i], taukendal[i]
-#        
+##        
 #        
         for classifier in classifiers:
             if classifier.name=="bayes":
@@ -721,7 +722,7 @@ if __name__ == '__main__':
 #        #exp.add_b_features_batch(bpfile, bpfile1, "http://localhost:8683", "de")
 #        
 #        print "final features"
-        exfile = sourcefile.replace("jcml", "ex.3.jcml")
+        exfile = sourcefile.replace("jcml", "if.jcml")
 #        exp.analyze_external_features(bpfile1, exfile) 
         
         print "classifiers"

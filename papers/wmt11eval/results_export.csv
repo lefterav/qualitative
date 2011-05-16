@@ -1,0 +1,17 @@
+ & naïve Bayes &  & knn & 
+unk,len,log_parse & 0.75 & 0.21 & 0.74 & 0.25
+unk,len_ratio,bigram & 0.61 & 0.21 & 0.74 & 0.21
+unk,len_ratio,ngram & 0.63 & 0.19 & 0.59 & 0.21
+ngram & 0.19 & 0.05 & 0.13 & 0.01
+unk,len_ratio,trigram & 0.67 & 0.20 & 0.76 & 0.21
+all & -0.06 & -0.04 & 0.98 & 0.98
+unk,len_ratio,n_parse,VP_ratio & 0.67 & 0.24 & 0.61 & 0.20
+unk,len_ratio,n_parse,VP_ratio,conf_parse-ratio & 0.72 & 0.20 & 0.80 & 0.25
+unk,len_ratio,n_parse,VP_ratio,log_parse & 0.81 & 0.26 & 0.75 & 0.23
+NPVP & 0.78 & 0.18 & 0.76 & 0.00
+NP  & 0.79 & 0.18 & 0.80 & 0.00
+unk,len_ratio,n_parse,NP_ratio,conf_parse-ratio & 0.75 & 0.21 & 0.78 & 0.23
+unk,len_ratio & 0.67 & 0.20 & 0.73 & 0.24
+unk,len_ratio,n_parse,VP_ratio,conf_parse-ratio(broken) & 0.77 & 0.20 & 0.75 & 0.24
+unk,len_ratio,n_parse,VP_ratio,conf_parse-ratio & 0.78 & 0.25 & 0.75 & 0.24
+unk,len_ratio,n_parse,VP_ratio,conf_avg-ratio & 0.75 & 0.21 & 0.78 & 0.23

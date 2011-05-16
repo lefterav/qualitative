@@ -28,7 +28,7 @@ class Training(object):
         '''
         Constructor
         '''
-        self.classifiers = [BayesLearner(), SVMLearner(), TreeLearner(), LogRegLearner(), kNNLearner()]
+        self.classifiers = [BayesLearner, SVMLearner, TreeLearner, LogRegLearner, kNNLearner]
         self.attribute_sets = []
         self.training_filenames = None
         self.test_filename = None
@@ -118,8 +118,12 @@ class Training(object):
             #iterate through the desired classifiers
             for learner in self.classifiers:
                 #learner = self.__get_learner__(classifier_name)
-                classifier = learner(training_data.get_data())
-                model[",".join(attribute_names)].append((attribute_names,classifier))
+                if isinstance(learner(), kNNLearner):
+                    print "kNN!"
+                    classifier = learner(training_data.get_data(), 20)
+                else:
+                    classifier = learner(training_data.get_data())
+                model[",".join(attribute_names)].append((attribute_names, classifier))
         return model
             
     
@@ -129,7 +133,7 @@ class Training(object):
         test_dataset_pairwise = self.read_xml_data([test_xml])
         output.append("\t")
         for classifier in self.classifiers:
-            output.append(classifier.__class__.__name__)
+            output.append(classifier().__class__.__name__)
             output.append("\t")
         output.append("\n")
         for attribute_names_string in model:
