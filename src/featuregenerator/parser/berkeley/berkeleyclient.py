@@ -97,12 +97,12 @@ class BerkeleyFeatureGenerator(FeatureGenerator):
         
         connected = False
         while not connected:
-            try:
-                features_batch = self.server.BParser.parse_batch(preprocessed_batch)
-                connected = True
-            except:
-                sys.stderr.write("Connection to server %s failed, trying again after a few seconds...\n" % self.url)
-                time.sleep(5)
+            #try:
+            features_batch = self.server.BParser.parse_batch(preprocessed_batch)
+            connected = True
+            #except TimeoutException: TODO: find a better way to handle timeouts
+            #    sys.stderr.write("Connection to server %s failed, trying again after a few seconds...\n" % self.url)
+            #    time.sleep(5)
         
         row_id = 0
 
