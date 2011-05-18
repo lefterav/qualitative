@@ -16,18 +16,19 @@
 \usepackage{url}
 \usepackage{cite}
 \usepackage{fixltx2e}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \setlength\titlebox{6.5cm}    % Expanding the titlebox
 
 \title{Evaluate with Confidence Estimation: Machine ranking of translation
-output using grammatical features}
+outputs using grammatical features}
 
 \author{
-  Names \\
-  German Research Center for Artificial Intelligence \\
-  %Affiliation / Address line 2 \\
-  %Affiliation / Address line 3 \\
-  {\tt emails@dfki.de} 
+  Eleftherios Avramidis, Maja Popovic, David Vilar, Aljoscha Burchardt \\
+  German Research Center for Artificial Intelligence (DFKI) \\
+  Language Technology (LT), Berlin, Germany \\
+  {\tt name.surname@dfki.de} 
   %\\\And
   %Second Author \\
   %Affiliation / Address line 1 \\
@@ -41,128 +42,108 @@ output using grammatical features}
 \begin{document}
 \maketitle
 \begin{abstract}
-We present an evaluation method which is able to rank multiple translation
-outputs with no reference translation, given only their source sentence. The
+We present a pilot study on an evaluation method which is able to rank 
+translation outputs with no reference translation, given only their source sentence. The
 system employs a statistical classifier trained upon existing human rankings, 
-using several features deriving from analysis of both the source and the target sentences. Experiments  on
-one language pair of the evaluation with various feature subsets showed 
-that the method has considerably good correlation to the human ranking 
-when using features obtained from a PCFG parser.
+using several features derived from analysis of both the source and the target
+sentences. Development experiments on one language pair showed that the method
+has considerably good correlation with human ranking when using features
+obtained from a PCFG parser.
   
 \end{abstract}
 
 \section{Introduction}
-Automatic evaluation metrics of Machine Translation have mainly relied on
+Automatic evaluation metrics for Machine Translation (MT) have mainly relied on
 analyzing both the MT output against (one or more) reference translations.
-Though, several paradigms in Machine Translation (MT) Research pose the need to
-estimate the quality through many translation outputs, when no reference translation is given (\textit{n}-best rescoring of SMT
-systems, system combination etc.). Such metrics have been
-known as \textit{confidence estimation metrics} and quite a few projects have
-suggested solutions on this direction. %TODO: add here summary from previous efforts
-With this paper, an effort is being made to align confidence estimation metrics
-with conventional MT metrics and allow further comparison.
+Though, several paradigms in Machine Translation Research pose the need to
+estimate the quality through many translation outputs, when no reference
+translation is given (\textit{n}-best rescoring of SMT systems, system
+combination etc.). Such metrics have been known as \textit{Confidence
+Estimation metrics} and quite a few projects have suggested solutions on this direction. With our submission to the Shared Task,
+we propose using Confidence Estimation metrics for MT evaluation. This way we
+allow such a metric to be directly compared with the conventional
+reference-aware MT metrics.
+%an effort is being made to include a confidence
+%estimation metric among other conventional MT metrics for the first time, in
+%order to allow its evaluation at the same level with the reference-aware
+%approaches.
 
-Additionally, human evaluation tasks run by Workshops on Machine
-Translation provide a big amount of human-annotated data
-with comparisons of the outputs of several systems. This amount of data,
-which has been freely available for further research, gives an opportunity for
-applying machine learning techniques an effort to model the
-human annotators' choices. Machine Learning methods over previously released evaluation data
-have been already used for tuning complex statistical evaluation metrics in the
-past. %TODO: example example example
-Here, we propose a solution of applying machine learning in order to build a
-classifier able to perform similar to the human ranking, by
-ranking several MT outputs, given analysis of possible qualitative criteria on
-both the source and the target side of every given sentence. In particular we
-examine the use of statistical features indicating the quality and the
-grammaticality of the output.
+Our approach suggests building a Confidence Estimation metric using
+already existing human judgments. This has been motivated by the existence
+of human-annotated data containing comparisons of the outputs of several
+systems, as a result of the evaluation tasks run by the Workshops on
+Statistical Machine Translation
+(\textsc{WMT})
+\cite{callisonburch-EtAl:2008:WMT,callisonburch-EtAl:2009:WMT-09,callisonburch-EtAl:2010:WMT}. This amount of data, which has been freely available for further research, gives
+an opportunity for applying machine learning techniques to model the human
+annotators' choices. Machine Learning methods over previously released 
+evaluation data have been already used for tuning complex
+statistical evaluation metrics (e.g. SVM-Rank in
+\cite{callisonburch-EtAl:2010:WMT}). %TODO: example example example
+Our proposition is similar, but works without reference translations. 
+We develop a solution of applying machine learning in order to build a
+statistical classifier that performs similar to the human ranking: it is trained
+to rank several MT outputs, given analysis of possible qualitative criteria on
+both the source and the target side of every given sentence. As qualitative
+criteria, we use statistical features indicating the quality and
+the grammaticality of the output.
 
 \section{Automatic ranking method}
 \subsection{From Confidence Estimation to ranking}
 Confidence estimation has been seen from the Natural Language Processing (NLP)
 perspective as a problem of binary classification in order to assess the
-correctness of an NLP's system output. Previous work focusing on Machine
+correctness of a NLP system output. Previous work focusing on Machine
 Translation includes statistical methods for estimating correctness scores or
 correctness probabilities, following a rich search over the spectrum of
 possible features
 \cite{Blatz04confidenceestimation,Ueffing05word-levelconfidence,Specia09TWSS,raybaud2009word,Rosti07combiningoutputs}.
 
-In this work we slightly transform the binary classification practice to fit the standard WMT human evaluation process. As human annotators have provided their evaluation in the form of ranking of five system outputs at a sentence level, we build our system with similar functionality, aiming to training from and evaluating against this data. Evaluation scores and results
-can be then calculated based on comparative analysis of the performance
-of each system.
+In this work we slightly transform the binary classification practice to fit
+the standard WMT human evaluation process. As human annotators have provided
+their evaluation in the form of ranking of five system outputs at a sentence
+level, we build our evaluation mechanism with similar functionality, aiming to
+training from and evaluating against this data. Evaluation scores and results
+can be then calculated based on comparative analysis of the performance of each
+system.
 
 \subsection{Internal pairwise decomposition\label{Internal pairwise
 decomposition} }
-While the system is trained and evaluated on a multi-class basis, as explained
-above, classifiers are expected to work in a binary level. The \textit{n}
-systems output for each sentence is therefore broken down to \(n \times n\)
-pairs, of all possible comparisons between two systems, on both directions (similar to the calculation of the Spearman correlation). After the classifier has made all
-the pairwise decisions, system entries are ordered based on how many times each
-of them won in the pairwise comparison. Note that this kind
-of decomposition allows for \textit{ties}, when there are equal times of
-winnings. Though, ties are ignored during the evaluation process (when they
-occur) so as to fit the evaluation standards of the shared task.
+We build one classifier over all input sentences. While the evaluation
+mechanism is trained and evaluated on a multi-class (ranking) basis as explained
+above, the classifier is expected to work on a binary level: we provide the
+features from the analysis of the two system outputs and the source, and the
+classifier should decide if the first system output is better than the second one or
+not. 
 
-\subsection{Feature selection}
-In order to obtain features indicating the quality of the MT output, analysis on
-both the source and the two target (MT-generated) sentences is performed. Features
-considered can be seen in the following categories, according to their origin:
+In order to accomplish such training, the \textit{n} systems' outputs for each
+sentence are broken down to \(n \times (n-1)\) pairs, of all possible
+comparisons between two system outputs, in both directions (similar to the
+calculation of the Spearman correlation).
+% If \( T = \{ t_1, \ldots, t_n\} \) the system outputs for one input sentence,
+% and \( R = \{ r_1, \ldots, r_n\} \) their respective ranks assigned by the human
+% evaluators, then the pairs would be
+% 
+% \[ \forall pair(t_i,t_j) where t_i, t_j \in T and t_i \neq t_j \]  
+For each pair, the classifier is trained with a class value \(c\), for the
+pairwise comparison of system outputs $t_i$ and $t_j$ with respective ranks
+\(r_i\) and \(r_j\), determined as:
 
-\begin{itemize}
-  \item \textbf{Sentence length:} Count of tokens for source and target
-  sentences, source/target length ratio. 
-  \item \textbf{Language model:} The smoothed \textit{n}-gram
-  probability of the entire target sentence for a language model of order 5,
-  along with bi-gram and tri-gram probabilities and a count of unknown words
-  \item \textbf{Parsing:} Processing features acquired from PCFG
-  parsing~\cite{Petrov06learningaccurate} for both source and side included
-  parse log likelihood, number of n-best trees, confidence for best parse,
-  average confidence of all trees. Source/target ratios were included.
-  \item \textbf{Shallow grammatical match:} We counted the occurences of
-  particular nodes tags on both the source and the target and calculated their ratio. In
-  particular, we counted NPs, VP, PPs, NNs and punctuation occurences.
-\end{itemize}
+\[
+c(r_i, r_j) = \left\{
+  \begin{array}{l l}
+    1 & \quad r_i < r_j \\
+    -1 & \quad r_i > r_j \\
+  \end{array} \right.
+\] 
 
-\subsection{Classifiers}
-The machine learning core of the system was built supporting two
-classification approaches. 
-\begin{itemize}
-  \item \textbf{Naive Bayes} allows prediction of a binary class, given the
-  assumption that the features are statistically independent. 
-  \[
-  p(C, F_1, \ldots, F_n) = \frac{1}{Z}p(C)\prod_{n}^{i=1}p(F_i|C)
-  \]
-  
-  \(p(C)\) is estimated by relative frequencies of the training pairwise
-  examples, while \(p(F_i|C)\) for our continuous features are
-  estimated with LOESS (locally weighted linear regression similar to
-  \cite{cleveland1979robust})
-  \item \textbf{k-nearest neighbour} (knn) algorithm allows classifying based
-  on the closest training examples in the feature space. 
-\end{itemize}
+At testing time, after the classifier has made all the pairwise decisions, those
+need to be converted back to ranks. System entries are ordered, according to how
+many times each of them won in the pairwise comparison, leading to rank lists
+similar to the ones provided by the humans. Note that this kind of
+decomposition allows for \textit{ties} when there are equal times of winnings. %Though, ties are ignored during the evaluation process (when they
+%occur) so as to fit the evaluation standards of the shared task.
 
-\section{Experiment}
-\subsection{Experiment setup}
-The classifiers for the task were learnt using the German-English
- of the \textsc{WMT} 2008 and 2010 testset (about 700 sentences). For testing,
- the classifiers were used to perform ranking on a test set of 184 sentences
- which was kept apart from the 2010 data so that it doesn't contain any ties
- among the human judgments. Ranking was perform wrapped into pre- and
- postprocessing mechanism to allow internal pairwise classification
- (as explained in \ref{Internal pairwise decomposition}).
- 
- Tokenization was performed with the \textsc{PUNKT} tokenizer \cite{Kiss_2006unsupervised,Garrette_anextensible}, while n-gram features were generated with the
- \textsc{SRILM} toolkit~\cite{Stolcke02srilm—anextensible}. The language model
- was relatively big and had been trained on lowercased monolingual training sets
- for the \textsc{WMT11} Shared Task, interpolated on the 2007 test set. As a PCFG parser, the Berkeley
- Parser \cite{Petrov07improvedinference} was preferred, due to the possibility
- of easily obtaining complex internal statistics, including \textit{n}-best
- trees. The machine learning algorithms were implemented with the Orange toolkit
- \cite{demšar2004orange}.
-   
- 
- 
-\begin{table*}[h]
+\begin{table*}[h!]
 \begin{center}
 \begin{tabular}{|l|rl|rl|}
 \hline
@@ -187,59 +168,134 @@ unk,len, n_parse,VP,log_{parse} & \textbf{0.81} & \textbf{0.26} & 0.75 & 0.23  \
 \hline
 \end{tabular}
 \end{center}
-\caption{\label{font-table} Spearman rho and kendal tau correlation coefficients
-achieved on automatic ranking }
+\caption{\label{font-table} Spearman rho and Kendall tau correlation
+coefficients achieved on automatic ranking}
 \end{table*}
 
+\subsection{Acquiring features\label{features}}
+In order to obtain features indicating the quality of the MT output,
+automatic NLP analysis tools are applied on both the source and the two target
+(MT-generated) sentences of every pairwise comparison. Features
+considered can be seen in the following categories, according to their origin:
+
+\begin{itemize}
+  \item \textbf{Sentence length:} Number of words of source and target
+  sentences, source-length / target-length ratio. 
+  \item \textbf{Target language model:} Language models provide statistics
+  concerning the correctness of the words' sequence on the target language. Such
+  language model features include:
+   \begin{itemize} 
+     \item the smoothed \textit{n}-gram probability of   the entire target
+     sentence for a language model of order 5, along with
+     \item uni-gram, bi-gram, tri-gram probabilities and a 
+     \item count of unknown words
+    \end{itemize}
+  \item \textbf{Parsing:} Processing features acquired from PCFG
+  parsing \cite{Petrov06learningaccurate} for both source and target side
+  include:
+  \begin{itemize}
+    \item parse log likelihood, 
+    \item number of n-best trees, 
+    \item confidence for the best parse,
+    \item average confidence of all trees.
+   \end{itemize}
+    Ratios of the above target features with their respective source features
+    were included.
+  \item \textbf{Shallow grammatical match:} The number of occurences of
+  particular node tags on both the source and the target was counted on
+  the PCFG parses. In particular, NPs, VPs, PPs, NNs and punctuation occurences
+  were counted. Then the ratio of the occurences of each tag in the target
+  sentence by its occurences on the source sentence was also calculated.
+\end{itemize}
+
+\subsection{Classifiers}
+The machine learning core of the system was built supporting two
+classification approaches. 
+\begin{itemize}
+  \item \textbf{Naive Bayes} allows prediction of a binary class, given the
+  assumption that the features are statistically independent. 
+  \[
+  p(C, F_1, \ldots, F_n) = p(C)\prod_{n}^{i=1}p(F_i|C)
+  \]
+  
+  \(p(C)\) is estimated by relative frequencies of the training pairwise
+  examples, while \(p(F_i|C)\) for our continuous features are
+  estimated with LOESS (locally weighted linear regression similar to
+  \cite{cleveland1979robust})
+  \item \textbf{k-nearest neighbour} (knn) algorithm allows classifying based
+  on the closest training examples in the feature space. 
+\end{itemize}
+
+
+
+
+
+\section{Experiment}
+\subsection{Experiment setup}
+The classifiers for the task were learnt using the German-English testset
+ of the \textsc{WMT} 2008 and 2010 (about 700
+ sentences)\footnote{data acquired from http://www.statmt.org/wmt11}. For
+ testing, the classifiers were used to perform ranking on a test set of 184
+ sentences which had been kept apart from the 2010 data, with the criterion that
+ they don't contain contradictions among the human judgments.
+ 
+ Tokenization was performed with the \textsc{PUNKT} tokenizer
+ \cite{Kiss_2006unsupervised,Garrette_anextensible}, while n-gram features were
+ generated with the \textsc{SRILM} toolkit \cite{Stolcke02srilm}.
+ The language model was relatively big and had been built upon all lowercased
+ monolingual training sets for the WMT 2011 Shared Task, interpolated on the
+ 2007 test set. As a PCFG parser, the Berkeley Parser
+ \cite{Petrov07improvedinference} was preferred, due to the possibility of
+ easily obtaining complex internal statistics, including \textit{n}-best trees.
+ Unfortunately, the time required for parsing leads to significant delays at
+ the overall processing. The machine learning algorithms were implemented with the Orange
+ toolkit \cite{demsar2004orange}.
+
 \subsection{Feature Selection}
-Although the analysis provided a lot of features, the classifiers that were
-available for testing would be expected to perform better given a small group of
-statistically independent features. Since exhaustive training/testing of all
-possibile feature subsets was not possible, we performed feature selection
-based on the Relieff method
+Although the automatic NLP tools provided a
+lot of features (section \ref{features}), the classifier methods we used, would
+be expected to perform better given a smaller group of statistically independent
+features. Since exhaustive training/testing of all possibile feature subsets 
+was not possible, we performed feature selection based on the Relieff method
 \cite{Kononenko94estimatingattributes:,kira1992feature}. Automatic Ranking was
-performed based on the most promising feature subsets. The results are
-examined below.
+performed based on the most promising feature subsets. The results are examined below.
 
 \subsection{Results}
-Statistical evaluation is performed on a low level after the classifier output
-has been converted to ranks, following the \textsc{WMT10} evaluation. We
-calculated two types of rank coefficients: averaged Kendall's tau on a segment
-level, and Spearman's rho on a system level, based on the percentage that the
-each system's translations performed better than or equal to the translations
+The performance of the classifier is measured after the classifier
+output has been converted back to rank lists, similar to the WMT 2010
+evaluation. We therefore calculated two types of rank coefficients: averaged
+Kendall's tau on a segment level, and Spearman's rho on a system level, based
+on the percentage that the each system's translations performed better than or equal to the translations
 of any other system.
 
 The results for the various combinations of features and classifiers are
 depicted on Table 1. Naive Bayes provides the best score on the test set, with
 $\rho = 0.81$ on a system level and $\tau = 0.26$, trained with features
-including the number of the unknown words, the length source/target radio, the
-VP count ratio and the parsing log likelihood source/target ratio. The number of
-unknown words particularly appears to be a strong indicator for the quality of
+including the number of the unknown words, the source-length by target-length
+ratio, the VP count ratio and the source-target ratio of the parsing
+log-likelihood. The number of unknown words particularly appears to be a strong indicator for the quality of
 the sentence. On the first part of the table we can also observe that language
-model features don't perform as well as the features deriving from the
+model features do not perform as well as the features deriving from the
 processing information delivered by the parser. On the second part of the table
 we compare the use of various grammatical combinations. Finally, the last part
-of contains the correlation obtained by various similar internal
-parsing-relaterd features.
-
-
+contains the correlation obtained by various similar internal parsing-related features.
 
 \section {Conclusion and Further work}
 The experiment presented in this article indicates that confidence metrics
 trained over human rankings can be possibly used for several tasks of
 evaluation, given particular conditions, where e.g. there is no reference
-translation given. Meanwhile, features obtained from a PCFG parser seem to be
+translation given. Features obtained from a PCFG parser seem to be
 leading to good correlations, given our test set. 
 
 Nevertheless this is still a small-scale experiment, given the restricted data
-size and the single language direction. The performance of the system on broader
-training and test sets will be evaluated in the future. Features
+size and the single translation direction. The performance of the system on
+broader training and test sets will be evaluated in the future. Feature
 selection is also expected to change if other language pairs are introduced,
 while more sophisticated machine learning algorithms may also leed to better
 results. 
 
 \section*{Acknowledgments}
-This work was done with the support of the TaraXÜ Project, financed by TSB 
+This work was done with the support of the TaraX\H{U } Project, financed by TSB 
 Technologiestiftung Berlin--Zukunftsfonds Berlin, co-financed by the European 
 Union--European fund for regional development.
 
