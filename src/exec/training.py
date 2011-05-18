@@ -46,6 +46,7 @@ class Training(object):
         self.test_filename = config.get("testing", "filename")
         self.class_name = config.get("training", "class_name")
         self.meta_attribute_names = config.get("training", "meta_attributes").split(",")
+        self.desired_classifiers = config.get("training", "classifiers").split(",")
         for (name, value) in config.items("attributes"):
             if name.startswith("set"):
                 self.add_attribute_set(value.split(","))
@@ -113,10 +114,12 @@ class Training(object):
         for attribute_names in self.attribute_sets:
             model[",".join(attribute_names)] = []
             #convert data with only desired atts in orange format
-            training_data = OrangeData(training_dataset, self.class_name, attribute_names, self.meta_attribute_names, False)
+            training_data = OrangeData(training_dataset, self.class_name, attribute_names, self.meta_attribute_names, True)
             
             #iterate through the desired classifiers
             for learner in self.classifiers:
+                if not learner().__class__.__name__ in self.desired_classifiers:
+                    continue
                 #learner = self.__get_learner__(classifier_name)
                 if isinstance(learner(), kNNLearner):
                     print "kNN!"
@@ -133,6 +136,8 @@ class Training(object):
         test_dataset_pairwise = self.read_xml_data([test_xml])
         output.append("\t")
         for classifier in self.classifiers:
+            if not classifier().__class__.__name__ in self.desired_classifiers:
+                continue
             output.append(classifier().__class__.__name__)
             output.append("\t")
         output.append("\n")
@@ -142,7 +147,7 @@ class Training(object):
             prev_attribute_names = []
             for (attribute_names, classifier) in  model[attribute_names_string]:
                 if attribute_names != prev_attribute_names:
-                    test_data_pairwise = OrangeData(test_dataset_pairwise, self.class_name, attribute_names, self.meta_attribute_names, False)
+                    test_data_pairwise = OrangeData(test_dataset_pairwise, self.class_name, attribute_names, self.meta_attribute_names, True)
                 prev_attribute_names = attribute_names
                 
                 #first pairwise scores with kendal tau

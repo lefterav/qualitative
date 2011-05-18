@@ -57,13 +57,17 @@ class Scoring(MultiRankedDataset):
         """
         systems_evaluation_1 = self.get_systems_scoring_from_segment_ranks(rank_name_1)
         systems_evaluation_2 = self.get_systems_scoring_from_segment_ranks(rank_name_2)
+        #print systems_evaluation_1
+        #print systems_evaluation_2
         rank_evaluation_1 = []
         rank_evaluation_2 = []
         for (system, rank_1) in systems_evaluation_1.items():
             rank_evaluation_1.append(rank_1)
             rank_2 = systems_evaluation_2[system]
             rank_evaluation_2.append(rank_2)
-        print rank_evaluation_1, rank_evaluation_2
+        #print "rank------" 
+        #print rank_evaluation_1
+        #print rank_evaluation_2
         return spearmanr(rank_evaluation_1, rank_evaluation_2)
     
     def get_kendall_tau(self, rank_name_1, rank_name_2):
@@ -72,12 +76,16 @@ class Scoring(MultiRankedDataset):
         for parallesentence in self.parallelsentences:
             rank_vector_1 = parallesentence.get_target_attribute_values(rank_name_1)
             rank_vector_2 = parallesentence.get_target_attribute_values(rank_name_2)
+            
+            print ";".join(rank_vector_1) , ";".join(rank_vector_2),
             tau = kendalltau(rank_vector_1, rank_vector_2)[0]
             if (tau >= -1 and tau <= 1):
                 segment_tau += tau
+                print tau
             else:
                 didnt += 1
-        print "Didn't %s" % didnt
+                print "-1"
+        #print "Didn't %s" % didnt
         avg_tau = segment_tau / (len(self.parallelsentences) - didnt)
         return avg_tau
             

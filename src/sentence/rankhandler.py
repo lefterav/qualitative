@@ -131,6 +131,7 @@ class RankHandler(object):
             try:
                 system.rename_attribute("rank", "orig_rank")
             except KeyError:
+                print "didn't rename rank attribute"
                 pass
         
         return pairwise_sentences
