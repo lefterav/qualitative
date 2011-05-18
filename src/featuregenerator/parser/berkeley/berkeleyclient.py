@@ -2,7 +2,9 @@ import xmlrpclib
 import time
 import sys
 from featuregenerator.featuregenerator import FeatureGenerator
- 
+import socket
+
+
 class BerkeleyFeatureGenerator(FeatureGenerator):
     '''
     classdocs
@@ -94,7 +96,7 @@ class BerkeleyFeatureGenerator(FeatureGenerator):
                 col_id += 1
             preprocessed_batch.append(preprocessed_row)
         
-        
+        socket.setdefaulttimeout(None) 
         connected = False
         while not connected:
             #try:
