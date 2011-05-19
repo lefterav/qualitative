@@ -378,7 +378,7 @@ def create_output_file_content(node, snt, snt_no, rank):
                 sChildren = ' children="'
                 for child_no in chList[0].get_children():
                     sChildren += 's%s_t%s_d1_p%s,' % (snt_no, \
-                                    Input.T_NUM, rank, str(child_no.iPhraseID))
+                                    Input.T_NUM, str(child_no.iPhraseID))
                 sChildren = '%s"' % (sChildren.strip(','))
     
             # Creates a phrase with node parameters
