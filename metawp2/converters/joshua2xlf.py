@@ -377,8 +377,8 @@ def create_output_file_content(node, snt, snt_no, rank):
             if len(chList[0].get_children()):
                 sChildren = ' children="'
                 for child_no in chList[0].get_children():
-                    sChildren += 's%s_t%s_d1_p%s,' % (snt_no, \
-                                    Input.T_NUM, str(child_no.iPhraseID))
+                    sChildren += 's%s_t%s_r%s_d1_p%s,' % (snt_no, \
+                                    Input.T_NUM, rank, str(child_no.iPhraseID))
                 sChildren = '%s"' % (sChildren.strip(','))
     
             # Creates a phrase with node parameters
@@ -410,9 +410,9 @@ def create_output_file_content(node, snt, snt_no, rank):
 def create_xlf_files():
     for (outputFileSnts, snt_no, rank) in XLF_FILES:
         # Prints output format of sentences to .xml file.
-        filenameSnts = '%s//t%s-%s-%s-s%.4d-r%.4d.xml' % (DIR_NAME, \
+        filenameSnts = '%s//t%s-%s-%s-s%.4d.4d.xml' % (DIR_NAME, \
                        Input.T_NUM, Input.SOURCE_LANG, Input.TARGET_LANG, \
-                       long(snt_no), long(rank))
+                       long(snt_no))
         f = open(filenameSnts, 'w')
         f.write(outputFileSnts)
         f.close()
@@ -498,6 +498,7 @@ for snt in content:
         snt_no = int(re.match(r"(\d+)", snt).group(1))
     except:
         continue
+    
     # Sets rank to 1 in case of new sentence.
     if snt_no > old_snt_no:
         rank = 1
