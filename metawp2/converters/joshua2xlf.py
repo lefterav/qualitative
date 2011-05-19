@@ -494,7 +494,10 @@ old_snt_no = -1
 for snt in content:
     
     # Gets a sentence number.
-    snt_no = int(re.match(r"(\d+)", snt).group(1))
+    try:
+        snt_no = int(re.match(r"(\d+)", snt).group(1))
+    except:
+        continue
     # Sets rank to 1 in case of new sentence.
     if snt_no > old_snt_no:
         rank = 1
