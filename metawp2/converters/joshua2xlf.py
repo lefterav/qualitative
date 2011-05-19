@@ -348,7 +348,7 @@ def create_output_file_content(node, snt, snt_no, rank):
         
         if Input.INFO_FILE:
             sXlf += '\n\t<metanet:derivation type="hiero_decoding" id="' \
-                    's%s_t1_d1">' % (snt_no)
+                    's%s_t1_r%s_d1">' % (snt_no, rank)
             sXlf += '\n\t<metanet:annotation type="added" value="%s" />' % \
                     I_NUMS[snt_no][0]
             sXlf += '\n\t<metanet:annotation type="merged" value="%s" />' % \
@@ -377,7 +377,7 @@ def create_output_file_content(node, snt, snt_no, rank):
             if len(chList[0].get_children()):
                 sChildren = ' children="'
                 for child_no in chList[0].get_children():
-                    sChildren += 's%s_t%s_r%s_d1_p%s,' % (snt_no, \
+                    sChildren += 's%s_t%s_d1_p%s,' % (snt_no, \
                                     Input.T_NUM, rank, str(child_no.iPhraseID))
                 sChildren = '%s"' % (sChildren.strip(','))
     
