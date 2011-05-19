@@ -348,7 +348,7 @@ def create_output_file_content(node, snt, snt_no, rank):
         
         if Input.INFO_FILE:
             sXlf += '\n\t<metanet:derivation type="hiero_decoding" id="' \
-                    's%s_t1_r%s_d1">' % (snt_no, rank)
+                    's%s_t1_d1">' % (snt_no)
             sXlf += '\n\t<metanet:annotation type="added" value="%s" />' % \
                     I_NUMS[snt_no][0]
             sXlf += '\n\t<metanet:annotation type="merged" value="%s" />' % \
