@@ -3,7 +3,7 @@
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 import srilm
 import sys
-import base64
+#import base64
 
 
 _baseclass = SimpleXMLRPCServer
@@ -40,19 +40,19 @@ class LM:
         return srilm.howManyNgrams(self.lm, type)
 
     def getUnigramProb(self, s):
-        s = base64.standard_b64decode(s)
+        s = codecs.encode(s, "utf-8")
         return srilm.getUnigramProb(self.lm, s)
 
     def getBigramProb(self, s):
-        s = base64.standard_b64decode(s)
+        s = codecs.encode(s, "utf-8")
         return srilm.getBigramProb(self.lm, s)
 
     def getTrigramProb(self, s):
-        s = base64.standard_b64decode(s)
+        s = codecs.encode(s, "utf-8")
         return srilm.getTrigramProb(self.lm, s)
 
     def getSentenceProb(self, s, n=None ):
-        s = base64.standard_b64decode(s)
+        s = codecs.encode(s, "utf-8")
         if not n:
             n = len(s.split(' '))
         return srilm.getSentenceProb(self.lm, s, n)
@@ -80,13 +80,14 @@ class LM:
         tri_probs = 1
         unk_tokens = []
         
-        for i in range(len(tokens)):
-            tokens[i] = base64.standard_b64decode(tokens[i])
+        #for i in range(len(tokens)):
+        #    tokens[i] = base64.standard_b64decode(tokens[i])
         
         #check for unknown words and collect unigram probabilities:
         for token in tokens:
             try: 
-                uni_prob = self.getUnigramProb(base64.standard_b64encode(token))
+                uni_prob = self.getUnigramProb(token)
+                #uni_prob = self.getUnigramProb(base64.standard_b64encode(token))
                 if uni_prob == -99:
                     unk_count += 1
                     unk_tokens.append(token)
@@ -103,7 +104,8 @@ class LM:
             token = tokens[pos:pos+2]
             if (token[0] not in unk_tokens) and (token[1] not in unk_tokens):
                 try:
-                    bi_prob = self.getBigramProb(base64.standard_b64encode(' '.join(token)))
+                    bi_prob = self.getBigramProb(' '.join(token))
+                    #bi_prob = self.getBigramProb(base64.standard_b64encode(' '.join(token)))
                     bi_probs += bi_prob
                 except:
                     sys.stderr.write("Failed to retrieve bigram probability for tokens: '%s'\n" % ' '.join(token)) 
@@ -114,13 +116,15 @@ class LM:
             token = tokens[pos:pos+3]
             if (token[0] not in unk_tokens) and (token[1] not in unk_tokens) and (token[2] not in unk_tokens):
                 try:
-                    tri_prob = self.getTrigramProb(base64.standard_b64encode(' '.join(token)))
+                    tri_prob = self.getTrigramProb(' '.join(token))
+                    #tri_prob = self.getTrigramProb(base64.standard_b64encode(' '.join(token)))
                     tri_probs += tri_prob
                 except:
                     sys.stderr.write("Failed to retrieve trigram probability for tokens: '%s'\n" % ' '.join(token)) 
         
         sent_string = " ".join(tokens)
-        prob = str(str (self.getSentenceProb(base64.standard_b64encode(sent_string), len(tokens))))
+        prob = str(self.getSentenceProb(sent_string), len(tokens))
+        #prob = str(str (self.getSentenceProb(base64.standard_b64encode(sent_string), len(tokens))))
         
         attributes = { 'unk' : str(unk_count),
                        'uni-prob' : str(uni_probs),
