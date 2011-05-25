@@ -124,7 +124,7 @@ class LM:
                     sys.stderr.write("Failed to retrieve trigram probability for tokens: '%s'\n" % ' '.join(token)) 
         
         sent_string = " ".join(tokens)
-        prob = str(self.getSentenceProb(sent_string), len(tokens))
+        prob = str(self.getSentenceProb(sent_string, len(tokens)))
         #prob = str(str (self.getSentenceProb(base64.standard_b64encode(sent_string), len(tokens))))
         
         attributes = { 'unk' : str(unk_count),
