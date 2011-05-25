@@ -3,6 +3,7 @@
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 import srilm
 import sys
+import codecs
 #import base64
 
 
