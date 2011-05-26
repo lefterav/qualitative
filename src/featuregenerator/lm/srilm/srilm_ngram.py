@@ -1,5 +1,5 @@
 import xmlrpclib 
-import base64
+#import base64
 from featuregenerator.featuregenerator import FeatureGenerator
 from nltk.tokenize.punkt import PunktWordTokenizer
 from sentence.parallelsentence import ParallelSentence
@@ -64,8 +64,8 @@ class SRILMngramGenerator(FeatureGenerator):
         else:
             tokenized_string = sent_string.split(' ')
         
-        for i in range(len(tokenized_string)):
-            tokenized_string[i] = base64.standard_b64encode(tokenized_string[i])
+        #for i in range(len(tokenized_string)):
+        #    tokenized_string[i] = base64.standard_b64encode(tokenized_string[i])
         
         return tokenized_string
     
@@ -81,7 +81,8 @@ class SRILMngramGenerator(FeatureGenerator):
         #check for unknown words and collecting unigram probabilities:
         for token in tokens:
             try: 
-                uni_prob = self.server.getUnigramProb(base64.standard_b64encode(token))
+                uni_prob = self.server.getUnigramProb(token)
+                #uni_prob = self.server.getUnigramProb(base64.standard_b64encode(token))
                 if uni_prob == -99:
                     unk_count += 1
                     unk_tokens.append(token)
@@ -98,7 +99,8 @@ class SRILMngramGenerator(FeatureGenerator):
             token = tokens[pos:pos+2]
             if (token[0] not in unk_tokens) and (token[1] not in unk_tokens):
                 try:
-                    bi_prob = self.server.getBigramProb(base64.standard_b64encode(' '.join(token)))
+                    bi_prob = self.server.getBigramProb(' '.join(token))
+                    #bi_prob = self.server.getBigramProb(base64.standard_b64encode(' '.join(token)))
                     bi_probs += bi_prob
                 except:
                     sys.stderr.write("Failed to retrieve bigram probability for tokens: '%s'\n" % ' '.join(token)) 
@@ -109,7 +111,7 @@ class SRILMngramGenerator(FeatureGenerator):
             token = tokens[pos:pos+3]
             if (token[0] not in unk_tokens) and (token[1] not in unk_tokens) and (token[2] not in unk_tokens):
                 try:
-                    tri_prob = self.server.getTrigramProb(base64.standard_b64encode(' '.join(token)))
+                    tri_prob = self.server.getTrigramProb(' '.join(token))
                     tri_probs += tri_prob
                 except:
                     sys.stderr.write("Failed to retrieve trigram probability for tokens: '%s'\n" % ' '.join(token)) 
@@ -130,7 +132,7 @@ class SRILMngramGenerator(FeatureGenerator):
         l = len(sent_string.split(" "))       
    
         #print l, sent_string
-        return str (self.server.getSentenceProb(base64.standard_b64encode(sent_string), l))
+        return str (self.server.getSentenceProb(sent_string, l))
         
     
     def add_features_batch(self, parallelsentences):
@@ -147,7 +149,7 @@ class SRILMngramGenerator(FeatureGenerator):
                     simplesentence = self.__prepare_sentence_b64__(simplesentence)
                     preprocessed_row.append(simplesentence)
                 else:
-                    simplesentence = [base64.standard_b64encode("DUMMY")]
+                    simplesentence = ["DUMMY"]
                     preprocessed_row.append(simplesentence)
                 col_id += 1
             preprocessed_batch.append(preprocessed_row)
