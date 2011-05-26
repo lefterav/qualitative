@@ -54,6 +54,8 @@ class TaraXUReader(object):
         @return: a list of ParallelSentence objects
         """
         judgedCorpus = self.xmlObject.getElementsByTagName('doc')
+        langsrc = judgedCorpus[0].attributes["source_language"].value
+        langtgt = judgedCorpus[0].attributes["target_language"].value
         if not start and not end:
             sentenceList = judgedCorpus[0].getElementsByTagName('sentence')
         else:
@@ -77,10 +79,13 @@ class TaraXUReader(object):
             
             #Extract the XML features and attach them to the ParallelSentenceObject
             attributes = self.__read_attributes__(xmlEntry)
-            
+            attributes["langsrc"] =  langsrc
+            attributes["langtgt"] =  langtgt
+                        
             #create a new Parallesentence with the given content
             curJudgedSentence = ParallelSentence(src, tgt, ref, attributes)
-        
+            
+            
             newssentences.append(curJudgedSentence)
         return newssentences
     
@@ -93,7 +98,8 @@ class TaraXUReader(object):
         attributes = {}
         attributeKeys = xmlEntry.attributes.keys()
         for attributeKey in attributeKeys:
-            attributes[attributeKey] = unescape(xmlEntry.attributes[attributeKey].value)                     
+            attributes[attributeKey] = unescape(xmlEntry.attributes[attributeKey].value)
+                        
         return attributes
         
     
