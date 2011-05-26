@@ -4,7 +4,9 @@ from SimpleXMLRPCServer import SimpleXMLRPCServer
 import srilm
 import sys
 import codecs
+from types import *
 #import base64
+import unicodedata
 
 
 _baseclass = SimpleXMLRPCServer
@@ -39,24 +41,42 @@ class LM:
 
     def howManyNgrams(self, type):
         return srilm.howManyNgrams(self.lm, type)
+        
+        
+    def normalize_encoding(self, s):
+        if type(s) is UnicodeType:
+            s = codecs.encode(s,"utf-8")
+        return s
+        
 
     def getUnigramProb(self, s):
-        s = codecs.encode(s, "utf-8")
-        return srilm.getUnigramProb(self.lm, s)
+        #print "unigram" ,s 
+        s = self.normalize_encoding(s)
+        #try:
+        prob = srilm.getUnigramProb(self.lm, s)
+        #except Exception, e:
+        #    print "exception occured"
+
+        #    print e
+
+        #    print type(s)
+        return prob
+        #return prob
 
     def getBigramProb(self, s):
-        s = codecs.encode(s, "utf-8")
+        s = self.normalize_encoding(s)
         return srilm.getBigramProb(self.lm, s)
 
     def getTrigramProb(self, s):
-        s = codecs.encode(s, "utf-8")
+        s = self.normalize_encoding(s)
         return srilm.getTrigramProb(self.lm, s)
 
     def getSentenceProb(self, s, n=None ):
-        s = codecs.encode(s, "utf-8")
+        s = self.normalize_encoding(s)
         if not n:
             n = len(s.split(' '))
-        return srilm.getSentenceProb(self.lm, s, n)
+        prob = srilm.getSentenceProb(self.lm, s, n)
+        return prob
 
     def getCorpusProb(self, filename):
         return srilm.getCorpusProb(self.lm, filename)
@@ -92,7 +112,7 @@ class LM:
                 if uni_prob == -99:
                     unk_count += 1
                     unk_tokens.append(token)
-                    sys.stderr.write("Unknown word: %s\n" % token)
+                    #sys.stderr.write("Unknown word: %s\n" % token)
                 else:
                     uni_probs += uni_prob
             except: 
