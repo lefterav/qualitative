@@ -7,6 +7,7 @@
 """
 
 from io.input.xmlreader import XmlReader
+from io.input.taraxureader import TaraXUReader
 #from io.input.orangereader import OrangeData
 from io.output.xmlwriter import XmlWriter
 
@@ -280,8 +281,11 @@ class Experiment:
     
     
     
-    def add_ngram_features_batch(self, filename, filename_out, server, language):
-        reader = XmlReader(filename)
+    def add_ngram_features_batch(self, filename, filename_out, server, language, format=None):
+        if format == "taraxu":
+            reader = TaraXUReader(filename)
+        else:
+            reader = XmlReader(filename)
         parallelsentences = reader.get_parallelsentences()
         reader = None
         from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
@@ -682,7 +686,7 @@ if __name__ == '__main__':
         sys.stderr.write("\n" )
         
         lmfile = sourcefile.replace("jcml", "lm.1.jcml")
-        #exp.add_ngram_features_batch(sourcefile, lmfile, "http://134.96.187.4:8585", "en")
+        exp.add_ngram_features_batch(sourcefile, lmfile, "http://134.96.187.4:8585", "en", "taraxu")
         
         print "parser features"
         bpfile = sourcefile.replace("jcml", "bp.2.jcml")
