@@ -84,7 +84,9 @@ class FeatureGenerator(object):
     def add_features_batch(self, parallelsentences):
         #Default function, if not overriden
         return self.add_features(DataSet(parallelsentences))
-        
+    
+    
+    #TODO: remove this, as it breaks architecture    
     def add_features_batch_xml(self, filename_in, filename_out):
         reader = XmlReader(filename_in)
         parallelsentences = reader.get_parallelsentences()
