@@ -46,8 +46,15 @@ class ParserMatches(FeatureGenerator):
             
     def add_features_tgt(self, simplesentence, parallelsentence):
         attributes = {}
-        tgt_parse = simplesentence.get_attribute("berkeley-tree")
-        src_parse = parallelsentence.get_source().get_attribute("berkeley-tree")
+        try:
+            tgt_parse = simplesentence.get_attribute("berkeley-tree")
+        except:
+            tgt_parse = ""
+        try:
+            src_parse = parallelsentence.get_source().get_attribute("berkeley-tree")
+        except:
+            src_parse = ""
+        
         if tgt_parse and src_parse:
             for (src_map, tgt_map) in self.mappings:
                 #src_label = self.__canonicalize__(src_map[0])
