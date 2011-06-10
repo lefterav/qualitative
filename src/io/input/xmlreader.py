@@ -21,9 +21,13 @@ class XmlReader(object):
     classdocs
     """
 
-    def __init__(self, inputFilename):
+    def __init__(self, input_filename, load = True):
         """
-        Constructor. Creates an XML object that handles the XML
+        Constructor. Creates an XML object that handles basic XML data
+        @param input_filename: the name of XML file 
+        @type input_filename: string
+        @param load: by turning this option to false, the instance will be initialized without loading everything into memory
+        @type load: boolean 
         """
         self.TAG_DOC = "jcml"
         self.TAG_SENT = "judgedsentence"
@@ -32,10 +36,25 @@ class XmlReader(object):
         self.TAG_REF = "ref"
         self.TAG_ANNOTATIONS = "annotations"
         self.TAG_ANNOTATION = "annotation"
-        self.xmlObject = parse(inputFilename)
+        self.input_filename = input_filename
+        if load:
+            self.load()
     
-        
+    def load(self):
+        """
+        Loads the data of the file into memory. It is useful if the Classes has been asked not to load the filename upon initialization
+        """
+        self.xmlObject = parse(self.input_filename)
+    
+    
     def get_dataset(self):
+        """
+        Returs the contents of the XML file into an object structure, which is represented by the DataSet object
+        Note that this will cause all the data of the XML file to be loaded into system memory at once. 
+        For big data sets this may not be optimal, so consider sentence-by-sentence reading with SAX (saxjcml.py)
+        @rtype: sentence.dataset.DataSet
+        @return: A data set containing all the data of the XML file
+        """
         return DataSet(self.get_parallelsentences(), self.get_attributes(), self.get_annotations())
     
     
@@ -84,8 +103,8 @@ class XmlReader(object):
         newssentences = [] 
         for xmlEntry in sentenceList:
             srcXML = xmlEntry.getElementsByTagName(self.TAG_SRC)
-            tgtXML = xmlEntry.getElementsByTagName('tgt')
-            refXML = xmlEntry.getElementsByTagName('ref')
+            tgtXML = xmlEntry.getElementsByTagName(self.TAG_TGT)
+            refXML = xmlEntry.getElementsByTagName(self.TAG_REF)
             
             src = SimpleSentence (unescape(srcXML[0].childNodes[0].nodeValue.strip()) , self.__read_attributes__(srcXML[0]) )
             

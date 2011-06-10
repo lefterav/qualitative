@@ -26,8 +26,8 @@ class DataSet(object):
         else:
             self.attribute_names_found = False
             self.attribute_names = []
-                    
-        
+
+    
     def get_parallelsentences(self):
         return self.parallelsentences
     

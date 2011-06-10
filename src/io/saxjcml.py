@@ -12,9 +12,9 @@ from sentence.parallelsentence import ParallelSentence
 
 class SaxJCMLProcessor(XMLGenerator):
     """
-        Handles the generation of features over an XML object formatted as JCML. 
-        It does processing every time a parallel sentence including its contents has been declared.
-        Processing of any other XML type should follow this example.
+    Handles the generation of features over an XML object formatted as JCML. 
+    It does processing every time a parallel sentence including its contents has been declared.
+    Processing of any other XML type should follow this example.
     """
     
     def __init__(self, out, feature_generators = []):
@@ -28,27 +28,41 @@ class SaxJCMLProcessor(XMLGenerator):
         self.is_simplesentence = False
         #the following variables function as a buffer, that gets filled as the elements are being parsed
         #when elements are ended, then objects are created
-        self.ps_attributes={} #attributes of the parallel sentence
-        self.ss_attributes={} #attributes of a simple sentence
+        self.ps_attributes = {} #attributes of the parallel sentence
+        self.ss_attributes = {} #attributes of a simple sentence
         
-        self.src=None
-        self.tgt=[]
-        self.ref=None
+        self.src = None
+        self.tgt = []
+        self.ref = None
         
-        self.ss_text=""
+        self.ss_text = ""
         
+        self.set_tags()
         
         self.feature_generators = feature_generators
         self._encoding = "utf-8"
         XMLGenerator._encoding = "utf-8"
         XMLGenerator._out = out
         
+    def set_tags(self):
+        """
+        Handles the basic tags used for reading the simple XML format. 
+        As tags are prone to changes, this can be done by changing values here, or overriding accordingly
+        """
+        self.TAG_DOC = "jcml"
+        self.TAG_SENT = "judgedsentence"
+        self.TAG_SRC = "src"
+        self.TAG_TGT = "tgt"
+        self.TAG_REF = "ref"
+        self.TAG_ANNOTATIONS = "annotations"
+        self.TAG_ANNOTATION = "annotation"
+        
     def startDocument(self):
         XMLGenerator.startDocument(self)
-        XMLGenerator.startElement(self, "jcml", {})
+        XMLGenerator.startElement(self, self.TAG_DOC, {})
 
     def endDocument(self):
-        XMLGenerator.endElement(self, "jcml")
+        XMLGenerator.endElement(self, self.TAG_DOC)
         XMLGenerator.endDocument(self)
     
     def startElement(self, name, attrs=[]):
@@ -59,7 +73,7 @@ class SaxJCMLProcessor(XMLGenerator):
         @param attrs: of the element type as a string and the attrs parameter holds an object of the Attributes interface containing the attributes of the element.
         @type attrs: Attributes
         """
-        if name == 'judgedsentence':
+        if name == self.TAG_SENT:
             
             #empty up string and attribute buffer
             self.ss_text = u""
@@ -69,7 +83,7 @@ class SaxJCMLProcessor(XMLGenerator):
                 self.ps_attributes[att_name] = attrs.getValue(att_name)
             self.is_parallelsentence = True
             
-        elif name in ['src', 'tgt', 'ref']:
+        elif name in [self.TAG_SRC, self.TAG_TGT, self.TAG_REF]:
             
             #empty up string and attribute buffer
             self.ss_text = u""
@@ -105,13 +119,13 @@ class SaxJCMLProcessor(XMLGenerator):
         
         #all of the elements have to be declared here
         #for each element, create the objects and clear "buffers"
-        if name == 'src':
+        if name == self.TAG_SRC:
             self.src = SimpleSentence(self.ss_text, self.ss_attributes)
             self.ss_text = u""
-        elif name =='tgt':
+        elif name == self.TAG_TGT:
             self.tgt.append(SimpleSentence(self.ss_text, self.ss_attributes))
             self.ss_text = u""
-        elif name == "judgedsentence":
+        elif name == self.TAG_SENT:
             #when the judged sentence gets closed, all previously inserted data have to be converted to objects 
             parallelsentence = ParallelSentence(self.src, self.tgt, self.ref, self.ps_attributes)
 
@@ -134,9 +148,9 @@ class SaxJCMLProcessor(XMLGenerator):
             XMLGenerator.startElement(self, name, parallelsentence.get_attributes())
                         
             XMLGenerator._write(self, "\n\t\t")
-            XMLGenerator.startElement(self, "src", src.get_attributes())
+            XMLGenerator.startElement(self, self.TAG_SRC, src.get_attributes())
             XMLGenerator.characters(self, src.get_string())
-            XMLGenerator.endElement(self, "src")
+            XMLGenerator.endElement(self, self.TAG_SRC)
             
             for tgt in parallelsentence.get_translations():
 #                for fg in self.feature_generators:
@@ -144,9 +158,9 @@ class SaxJCMLProcessor(XMLGenerator):
 #                    #tgt.add_attributes( fg.get_features_tgt(tgt, parallelsentence) )
 
                 XMLGenerator._write(self, "\n\t\t")
-                XMLGenerator.startElement(self, "tgt", tgt.get_attributes())
+                XMLGenerator.startElement(self, self.TAG_TGT, tgt.get_attributes())
                 XMLGenerator.characters(self, tgt.get_string())
-                XMLGenerator.endElement(self, "tgt")
+                XMLGenerator.endElement(self, self.TAG_TGT)
             
             XMLGenerator._write(self, "\n\t")
             XMLGenerator.endElement(self, name)
