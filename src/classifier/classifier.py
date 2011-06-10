@@ -7,7 +7,7 @@ import orngFSS
 
 class OrangeClassifier(object):
     """
-    classdocs
+    Base function encapsulated common functions for all classifier subclasses
     """
 
     def __call__(self, data):

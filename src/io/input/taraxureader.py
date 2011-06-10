@@ -39,7 +39,7 @@ class TaraXUReader(XmlReader):
         """
         @return: a list of ParallelSentence objects
         """
-        judgedCorpus = self.xmlObject.getElementsByTagName('doc')
+        judgedCorpus = self.xmlObject.getElementsByTagName(self.TAG_DOC)
         langsrc = judgedCorpus[0].attributes["source_language"].value
         langtgt = judgedCorpus[0].attributes["target_language"].value
         if not start and not end:
