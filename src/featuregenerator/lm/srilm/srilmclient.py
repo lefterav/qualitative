@@ -18,25 +18,27 @@ class SRILMFeatureGenerator(FeatureGenerator):
         self.tokenize = tokenize
         
     
-    def add_features_src(self, simplesentence, parallelsentence):
+    def get_features_src(self, simplesentence, parallelsentence):
+        attributes = {}
         src_lang = parallelsentence.get_attribute("langsrc")
         if src_lang == self.lang:
             sent_string = self.__prepare_sentence__(simplesentence)
             prob = self.__get_sentence_probability__(sent_string)
-            simplesentence.add_attribute("prob", prob)
+            attributes = {"prob": prob}
             #print "Got src probability %s" % str(prob)
         else:
             #print "Src lang didn't match"
             pass
-        return simplesentence
+        return attributes
 
-    def add_features_tgt(self, simplesentence, parallelsentence):
+    def get_features_tgt(self, simplesentence, parallelsentence):
+        attributes = {}
         tgt_lang = parallelsentence.get_attribute("langtgt")
         if tgt_lang == self.lang:
             sent_string = self.__prepare_sentence__(simplesentence)
             prob = self.__get_sentence_probability__(sent_string)
-            simplesentence.add_attribute("prob", prob)
-        return simplesentence        
+            attributes = {"prob": prob}
+        return attributes        
     
     
     def __prepare_sentence__(self, simplesentence):
@@ -57,10 +59,7 @@ class SRILMFeatureGenerator(FeatureGenerator):
         #print l, sent_string
         return str (self.server.getSentenceProb(base64.standard_b64encode(sent_string), l))
 
-    def add_features_batch(self, dataset):
-        
-        for parallelsentence in dataset.get_parallelsentences():
-            src = parallelsentence.get_source()
+
             
         
         

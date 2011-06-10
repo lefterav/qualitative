@@ -25,19 +25,42 @@ class XmlReader(object):
         """
         Constructor. Creates an XML object that handles the XML
         """
+        self.TAG_DOC = "jcml"
+        self.TAG_SENT = "judgedsentence"
+        self.TAG_SRC = "src"
+        self.TAG_TGT = "tgt"
+        self.TAG_REF = "ref"
+        self.TAG_ANNOTATIONS = "annotations"
+        self.TAG_ANNOTATION = "annotation"
         self.xmlObject = parse(inputFilename)
     
         
     def get_dataset(self):
-        return DataSet(self.get_parallelsentences(), self.get_attributes())
+        return DataSet(self.get_parallelsentences(), self.get_attributes(), self.get_annotations())
+    
+    
+    def get_annotations(self):
+        """
+        @return a list with the names of the annotation layers that the corpus has undergone
+        """
+        try:
+            annotations_xml_container = self.xmlObject.getElementsByTagName(self.TAG_ANNOTATIONS)
+            annotations_xml = annotations_xml_container[0].getElementsByTagName(self.TAG_ANNOTATION)
+            return [annotation_xml["name"] for annotation_xml in annotations_xml]
+        except:
+            print "File doesn't contain annotation information"
+            return []
+        
+        
+
     
     
     def get_attributes(self):
         """
         @return a list of the names of the attributes contained in the XML file
         """
-        judgedCorpus = self.xmlObject.getElementsByTagName('jcml')
-        sentenceList = judgedCorpus[0].getElementsByTagName('judgedsentence')
+        judgedCorpus = self.xmlObject.getElementsByTagName(self.TAG_DOC)
+        sentenceList = judgedCorpus[0].getElementsByTagName(self.TAG_SENT)
         attributesKeySet = set()
         
         for xmlEntry in sentenceList:
@@ -46,21 +69,21 @@ class XmlReader(object):
         return list(attributesKeySet)
     
     def length(self):
-        judgedCorpus = self.xmlObject.getElementsByTagName('jcml')
-        return len(judgedCorpus[0].getElementsByTagName('judgedsentence'))
+        judgedCorpus = self.xmlObject.getElementsByTagName(self.TAG_DOC)
+        return len(judgedCorpus[0].getElementsByTagName(self.TAG_SENT))
         
     def get_parallelsentences(self, start = None, end = None):
         """
         @return: a list of ParallelSentence objects
         """
-        judgedCorpus = self.xmlObject.getElementsByTagName('jcml')
+        judgedCorpus = self.xmlObject.getElementsByTagName(self.TAG_DOC)
         if not start and not end:
-            sentenceList = judgedCorpus[0].getElementsByTagName('judgedsentence')
+            sentenceList = judgedCorpus[0].getElementsByTagName(self.TAG_SENT)
         else:
-            sentenceList = judgedCorpus[0].getElementsByTagName('judgedsentence')[start:end]
+            sentenceList = judgedCorpus[0].getElementsByTagName(self.TAG_SENT)[start:end]
         newssentences = [] 
         for xmlEntry in sentenceList:
-            srcXML = xmlEntry.getElementsByTagName('src')
+            srcXML = xmlEntry.getElementsByTagName(self.TAG_SRC)
             tgtXML = xmlEntry.getElementsByTagName('tgt')
             refXML = xmlEntry.getElementsByTagName('ref')
             

@@ -17,7 +17,7 @@ class SaxJCMLProcessor(XMLGenerator):
         Processing of any other XML type should follow this example.
     """
     
-    def __init__(self,  out, feature_generators=[]):
+    def __init__(self, out, feature_generators = []):
         """
             @param out: file object to receive processed changes
             @param feature_generators: list of feature generators to be applied
@@ -26,7 +26,6 @@ class SaxJCMLProcessor(XMLGenerator):
         #flags that show the current focus of the parsing
         self.is_parallelsentence = False 
         self.is_simplesentence = False
-        
         #the following variables function as a buffer, that gets filled as the elements are being parsed
         #when elements are ended, then objects are created
         self.ps_attributes={} #attributes of the parallel sentence
@@ -107,7 +106,6 @@ class SaxJCMLProcessor(XMLGenerator):
         #all of the elements have to be declared here
         #for each element, create the objects and clear "buffers"
         if name == 'src':
-            
             self.src = SimpleSentence(self.ss_text, self.ss_attributes)
             self.ss_text = u""
         elif name =='tgt':
@@ -116,8 +114,7 @@ class SaxJCMLProcessor(XMLGenerator):
         elif name == "judgedsentence":
             #when the judged sentence gets closed, all previously inserted data have to be converted to objects 
             parallelsentence = ParallelSentence(self.src, self.tgt, self.ref, self.ps_attributes)
-            
-            
+
             #apply feature generators
             for fg in self.feature_generators:
                 parallelsentence = fg.add_features_parallelsentence(parallelsentence)
@@ -125,11 +122,11 @@ class SaxJCMLProcessor(XMLGenerator):
             
             #print parallelsentence
             src = self.src
-            #print src.get_string()
-            for fg in self.feature_generators:
-                src = fg.add_features_src(src, parallelsentence)
-                #src.add_attributes( fg.get_features_src(src, parallelsentence) )
-            parallelsentence.set_source(src)
+#            #print src.get_string()
+#            for fg in self.feature_generators:
+#                src = fg.add_features_src(src, parallelsentence)
+#                #src.add_attributes( fg.get_features_src(src, parallelsentence) )
+#            parallelsentence.set_source(src)
 
             #display modifications on output file
             XMLGenerator._write(self, "\n\t")
@@ -142,9 +139,9 @@ class SaxJCMLProcessor(XMLGenerator):
             XMLGenerator.endElement(self, "src")
             
             for tgt in parallelsentence.get_translations():
-                for fg in self.feature_generators:
-                    tgt = fg.add_features_tgt(tgt, parallelsentence)
-                    #tgt.add_attributes( fg.get_features_tgt(tgt, parallelsentence) )
+#                for fg in self.feature_generators:
+#                    tgt = fg.add_features_tgt(tgt, parallelsentence)
+#                    #tgt.add_attributes( fg.get_features_tgt(tgt, parallelsentence) )
 
                 XMLGenerator._write(self, "\n\t\t")
                 XMLGenerator.startElement(self, "tgt", tgt.get_attributes())

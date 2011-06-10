@@ -12,11 +12,10 @@ Created on 15 Οκτ 2010
 from xml.dom.minidom import parse
 from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence
-from sentence.dataset import DataSet
 from xml.sax.saxutils import unescape
- 
+from xmlreader import XmlReader
 
-class TaraXUReader(object):
+class TaraXUReader(XmlReader):
     """
     classdocs
     """
@@ -25,30 +24,17 @@ class TaraXUReader(object):
         """
         Constructor. Creates an XML object that handles the XML
         """
+        self.TAG_DOC = "doc"
+        self.TAG_SENT = "sentence"
+        self.TAG_SRC = "source"
+        self.TAG_TGT = "target"
+        self.TAG_REF = "reference"
+        self.TAG_ANNOTATIONS = "annotations"
+        self.TAG_ANNOTATION = "annotation"
         self.xmlObject = parse(inputFilename)
     
-        
-    def get_dataset(self):
-        return DataSet(self.get_parallelsentences(), self.get_attributes())
     
-    
-    def get_attributes(self):
-        """
-        @return a list of the names of the attributes contained in the XML file
-        """
-        judgedCorpus = self.xmlObject.getElementsByTagName('doc')
-        sentenceList = judgedCorpus[0].getElementsByTagName('sentence')
-        attributesKeySet = set()
-        
-        for xmlEntry in sentenceList:
-            for attributeKey in xmlEntry.attributes.keys():
-                attributesKeySet.add(attributeKey)            
-        return list(attributesKeySet)
-    
-    def length(self):
-        judgedCorpus = self.xmlObject.getElementsByTagName('doc')
-        return len(judgedCorpus[0].getElementsByTagName('sentence'))
-        
+
     def get_parallelsentences(self, start = None, end = None):
         """
         @return: a list of ParallelSentence objects
@@ -90,16 +76,6 @@ class TaraXUReader(object):
         return newssentences
     
     
-    
-    def __read_attributes__(self, xmlEntry):
-        """
-        @return: a dictionary of the attributes of the current sentence (name:value)
-        """
-        attributes = {}
-        attributeKeys = xmlEntry.attributes.keys()
-        for attributeKey in attributeKeys:
-            attributes[attributeKey] = unescape(xmlEntry.attributes[attributeKey].value)
-                        
-        return attributes
+
         
     

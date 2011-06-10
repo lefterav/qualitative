@@ -1,11 +1,11 @@
 import xmlrpclib 
 import time
 import sys
-from featuregenerator.featuregenerator import FeatureGenerator
+from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 import socket
 
 
-class BerkeleyFeatureGenerator(FeatureGenerator):
+class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
     '''
     classdocs
     '''
@@ -19,23 +19,9 @@ class BerkeleyFeatureGenerator(FeatureGenerator):
         self.url = url
         self.lang = lang
     
-    #TODO: see if scope of self.lang allows to move these 2 methods in featuregenerator class  
-    def add_features_src(self, simplesentence, parallelsentence):
-        src_lang = parallelsentence.get_attribute("langsrc")
-        if src_lang == self.lang:
-            atts = self.get_features_sentence(simplesentence, parallelsentence)
-            simplesentence.add_attributes(atts)
-        return simplesentence
 
-    def add_features_tgt(self, simplesentence, parallelsentence):
-        tgt_lang = parallelsentence.get_attribute("langtgt")
-        if tgt_lang == self.lang:
-            atts = self.get_features_sentence(simplesentence, parallelsentence)
-            simplesentence.add_attributes(atts)
-        return simplesentence      
-    
     #Warning: not language-aware function. Use the ones above
-    def get_features_sentence(self, simplesentence, parallelsentence):
+    def get_features_simplesentence(self, simplesentence, parallelsentence):
         sent_string = simplesentence.get_string()
         try:
             results = self.server.BParser.parse ( sent_string )
@@ -67,7 +53,7 @@ class BerkeleyFeatureGenerator(FeatureGenerator):
         else:
             avg_confidence = -float('inf')
         
-        attributes={}
+        attributes = {}
         attributes ["berkeley-n"] = str(n)
         attributes ["berkley-loglikelihood"] = str(results['loglikelihood'])
         attributes ["berkeley-best-parse-confidence"] = str(best_confidence)

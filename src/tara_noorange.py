@@ -23,7 +23,6 @@ from io.output.xmlwriter import XmlWriter
 
 from io.saxjcml import SaxJCMLProcessor
 from xml.sax import make_parser
-import codecs
 import orngFSS
 from sentence.rankhandler import RankHandler
 import sys
@@ -325,15 +324,16 @@ class Experiment:
         srilm_ngram_en = SRILMngramGenerator("http://134.96.187.4:8585", "en" )
         
         #Berkeley feature generator
-        berkeley_en = BerkeleyFeatureGenerator("http://localhost:8682", "en")
-        berkeley_de = BerkeleyFeatureGenerator("http://localhost:8683", "de")
+        berkeley_en = BerkeleyFeatureGenerator("http://134.96.187.4:8682", "en")
+        berkeley_de = BerkeleyFeatureGenerator("http://134.96.187.4:8683", "de")
         featuregenerators = [lfg, srilm_en, srilm_ngram_en, berkeley_en, berkeley_de]
         #proceed with parcing
         saxreader = SaxJCMLProcessor(output_input_file_object, featuregenerators)
         myparser = make_parser()
         myparser.setContentHandler(saxreader)
         myparser.parse(input_file_object)
-
+        input_file_object.close
+        output_input_file_object.close()
     
     def analyze_external_features(self, filename, filename_out):
         from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
@@ -357,6 +357,9 @@ class Experiment:
         myparser = make_parser()
         myparser.setContentHandler(saxreader)
         myparser.parse(input_file_object)
+        input_file_object.close
+        output_input_file_object.close()
+        
         
     def add_diff_features(self, filename, filename_out):
         from featuregenerator.diff_generator import DiffGenerator
@@ -427,14 +430,14 @@ class Experiment:
             print "Before feature subset selection (%d attributes):" %  len(data.get_data().domain.attributes)
             self.report_relevance(data.get_data())
             
-            margs = [0.1, 0.01, 0.001] 
-            for marg in margs:
-                filter = orngFSS.FilterRelief(margin=marg)
-                ndata = filter(data.get_data())
-                print "\nAfter feature subset selection with margin %5.3f (%d attributes):" % \
-                  (marg, len(ndata.domain.attributes))
-                
-                self.report_relevance(ndata)
+#            margs = [0.1, 0.01, 0.001] 
+#            for marg in margs:
+#                filter = orngFSS.FilterRelief(margin=marg)
+#                ndata = filter(data.get_data())
+#                print "\nAfter feature subset selection with margin %5.3f (%d attributes):" % \
+#                  (marg, len(ndata.domain.attributes))
+#                
+#                self.report_relevance(ndata)
 
             
             #train data
@@ -622,7 +625,7 @@ class Experiment:
         
 
 if __name__ == '__main__':
-    dir = getenv("HOME") + "/workspace/TaraXUscripts/data/multiclass"
+    dir = getenv("HOME") + "/workspace/TaraXUscripts/data/test"
     if len(sys.argv) ==  4:
         dir = sys.argv[3]
     #add_external_features()
@@ -678,23 +681,17 @@ if __name__ == '__main__':
     elif sys.argv[1] == "jcml2wmt":
         sourcefile = sys.argv[2]
         exp.jcml2wmt(sourcefile)
-        
-    
-    elif sys.argv[1] == "wmt11evalsax":
+  
+
+    elif sys.argv[1] == "wmt11fullsax":
         sourcefile = sys.argv[2]
-        sys.stderr.write("reading language model features" )
         sys.stderr.write("\n" )
-        
-        lmfile = sourcefile.replace("jcml", "lm.1.jcml")
-        exp.add_ngram_features_batch(sourcefile, lmfile, "http://134.96.187.4:8585", "en", "taraxu")
-        
-        print "parser features"
-        bpfile = sourcefile.replace("jcml", "bp.2.jcml")
-        exp.add_b_features_batch(lmfile, bpfile, "http://134.96.187.4:8682", "en")
         
         print "german parser features"
         bpfile1 = sourcefile.replace("jcml", "bp.2c.jcml")
-        exp.add_b_features_batch(bpfile, bpfile1, "http://134.96.187.4:8683", "de")
+        #exp.add_b_features_batch(bpfile, bpfile1, "http://134.96.187.4:8683", "de")
+        
+        exp.add_external_features(sourcefile, bpfile1)
         
         print "final features"
         exfile = sourcefile.replace("jcml", "ex.3.jcml")
@@ -702,7 +699,37 @@ if __name__ == '__main__':
         
         sourcefile = sys.argv[2]
         print "classifiers"
-        classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir, '%s/wmt10-train.partial.if.jcml' %dir ])
+        classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir]) #, '%s/wmt10-train.partial.if.jcml' %dir 
+        print "testing"
+        outfile = sourcefile.replace("jcml", "out.jcml")
+        exp.evaluate_sax(classifiers, exfile, outfile)
+        
+        exp.jcml2wmt(outfile)      
+    
+    elif sys.argv[1] == "wmt11evalsax":
+        sourcefile = sys.argv[2]
+        sys.stderr.write("reading language model features" )
+        sys.stderr.write("\n" )
+        
+        lmfile = sourcefile.replace("jcml", "lm.1.jcml")
+        #exp.add_ngram_features_batch(sourcefile, lmfile, "http://134.96.187.4:8585", "en", "taraxu")
+        
+        print "parser features"
+        bpfile = sourcefile.replace("jcml", "bp.2.jcml")
+        #exp.add_b_features_batch(lmfile, bpfile, "http://134.96.187.4:8682", "en")
+        #exp.add_b_features_batch(lmfile, bpfile, "http://localhost:8682", "en")
+        
+        print "german parser features"
+        bpfile1 = sourcefile.replace("jcml", "bp.2c.jcml")
+        #exp.add_b_features_batch(bpfile, bpfile1, "http://134.96.187.4:8683", "de")
+        
+        print "final features"
+        exfile = sourcefile.replace("jcml", "ex.3.jcml")
+        exp.analyze_external_features(bpfile1, exfile) 
+        
+        sourcefile = sys.argv[2]
+        print "classifiers"
+        classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir]) #, '%s/wmt10-train.partial.if.jcml' %dir 
         print "testing"
         outfile = sourcefile.replace("jcml", "out.jcml")
         exp.evaluate_sax(classifiers, exfile, outfile)
@@ -727,7 +754,7 @@ if __name__ == '__main__':
 #        
 #        print "final features"
         exfile = sourcefile.replace("jcml", "if.jcml")
-#        exp.analyze_external_features(bpfile1, exfile) 
+        exp.analyze_external_features(bpfile1, exfile) 
         
         print "classifiers"
         classifiers = exp.train_classifiers(['%s/wmt08.if.jcml' % dir, '%s/wmt10-train.partial.if.jcml' %dir ])

@@ -3,7 +3,7 @@
 '''
 Created on May 25, 2011
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 import xmlrpclib, socket, sys
 import base64

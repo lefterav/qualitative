@@ -4,11 +4,11 @@ Created on 22 March 2011
 @author: Eleftherios Avramidis
 '''
 
-from featuregenerator.featuregenerator import FeatureGenerator
+from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 
 
 
-class ParserMatches(FeatureGenerator):
+class ParserMatches(LanguageFeatureGenerator):
     '''
     classdocs
     '''
@@ -33,18 +33,20 @@ class ParserMatches(FeatureGenerator):
             match_count += treestring.count(parse_tag)
         return match_count
 
-    def add_features_src(self, simplesentence, parallelsentence):
+    def get_features_src(self, simplesentence, parallelsentence):
         attributes = {}
-        src_parse = simplesentence.get_attribute("berkeley-tree")
-        for (src_map, tgt_map) in self.mappings:
-            src_map_count = self.__count_nodetags__(src_parse, src_map)
-            src_label = self.__canonicalize__(src_map[0])
-            attributes["parse-%s" % src_label] = str(src_map_count)
-        simplesentence.add_attributes(attributes)
-        return simplesentence
+        try:
+            src_parse = simplesentence.get_attribute("berkeley-tree")
+            for (src_map, tgt_map) in self.mappings:
+                src_map_count = self.__count_nodetags__(src_parse, src_map)
+                src_label = self.__canonicalize__(src_map[0])
+                attributes["parse-%s" % src_label] = str(src_map_count)
+        except:
+            pass
+        return attributes
             
             
-    def add_features_tgt(self, simplesentence, parallelsentence):
+    def get_features_tgt(self, simplesentence, parallelsentence):
         attributes = {}
         try:
             tgt_parse = simplesentence.get_attribute("berkeley-tree")
@@ -66,8 +68,7 @@ class ParserMatches(FeatureGenerator):
 #                    attributes["parse-%s_ratio" % tgt_label] = str(1.0 * src_map_count / tgt_map_count)
 #                else:
 #                    attributes["parse-%s_ratio" % tgt_label] = str(float("Inf"))
-        simplesentence.add_attributes(attributes)
-        return simplesentence
+        return attributes
         
 
     def __canonicalize__(self, string):
