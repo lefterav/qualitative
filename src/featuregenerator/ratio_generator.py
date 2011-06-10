@@ -9,23 +9,16 @@ from nltk.tokenize.punkt import PunktWordTokenizer
 
 class RatioGenerator(FeatureGenerator):
     """
-    Computes tgt/source ratios for features with the same name
+    Computes the ratio of source features and target features, if they have the same name
     """
 
-
-    #def get_features_sentence(self, simplesentence, parallelsentence):
-        #length = len( simplesentence.get_string() )
-        #attributes = {}
-        
-        #attributes["length"] = str(length)
-        #return attributes
-        
-
     
-    def add_features_tgt(self, simplesentence, parallelsentence):
+    def get_features_tgt(self, simplesentence, parallelsentence):
         #get the length of the source
         tgt_attributes = simplesentence.get_attributes()
         src_attributes = parallelsentence.get_source().get_attributes()
+        
+        attributes = {}
         
         #if there are two features with the same name in bot src and target, calculate their ratio and add it
         for tgt_attribute_name in tgt_attributes.keys():
@@ -40,10 +33,10 @@ class RatioGenerator(FeatureGenerator):
                             ratio = float('inf')
                         else:
                             ratio = 1.0 * src_attribute_value / tgt_attribute_value
-                        simplesentence.add_attribute(new_attribute_name, str(ratio))
+                        attributes[new_attribute_name] = str(ratio)
                 except ValueError:
                     pass
                     
                     
-        return simplesentence
+        return attributes
         

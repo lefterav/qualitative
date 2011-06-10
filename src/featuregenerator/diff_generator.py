@@ -9,14 +9,15 @@ from nltk.tokenize.punkt import PunktWordTokenizer
 
 class DiffGenerator(FeatureGenerator):
     """
-    Computes tgt difference for numerical features with the same name
+    Operates on a ParallelSentence with two target sentences (pairwise). Computes subtraction of numerical features with the same name in the two target sentences
     """
 
 
     def get_features_parallelsentence(self, parallelsentence):
         """
-        Gets executed once per parallel sentence. Performs substraction of the respective numerical features of the 2 target sentences.
-        Features with the same name get substracted and the new feature gets added to the level of the parallel sentence.
+        Gets executed once per parallel sentence. Performs subtraction of the respective numerical features of the 2 target sentences.
+        Features with the same name get subtracted and the new feature gets added to the level of the parallel sentence. 
+        This is because the feature generation is being used on the last part of the generation process, upon pairwise comparison
         @param parallesentence: the object of the parallelsentence, already containing the simplesentences for the target translations
         @type parallelsentence: sentence.parallelsentence.ParallelSentence  
         """

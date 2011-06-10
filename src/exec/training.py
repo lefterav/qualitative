@@ -44,6 +44,10 @@ class Training(object):
     def __readconf__(self, config):
         self.training_filenames = config.get("training", "filenames").split(",")
         self.test_filename = config.get("testing", "filename")
+        try:
+            self.output_filename = config.get("testing", "output_filename_base")
+        except:
+            self.output_filename = None
         self.class_name = config.get("training", "class_name")
         self.meta_attribute_names = config.get("training", "meta_attributes").split(",")
         self.desired_classifiers = config.get("training", "classifiers").split(",")
@@ -130,6 +134,40 @@ class Training(object):
         return model
             
     
+    def rank_and_export(self, test_xml, filename_out, model):
+        output = []
+        test_dataset_pairwise = self.read_xml_data([test_xml])
+        output.append("\t")
+        for classifier in self.classifiers:
+            if not classifier().__class__.__name__ in self.desired_classifiers:
+                continue
+            output.append(classifier().__class__.__name__)
+            output.append("\t")
+        output.append("\n")
+        for attribute_names_string in model:
+            output.append(attribute_names_string.replace(",", "\n"))
+            output.append("\t")
+            prev_attribute_names = []
+            i = 0
+            for (attribute_names, classifier) in  model[attribute_names_string]:
+                i = i+1
+                if attribute_names != prev_attribute_names:
+                    test_data_pairwise = OrangeData(test_dataset_pairwise, self.class_name, attribute_names, self.meta_attribute_names, True)
+                prev_attribute_names = attribute_names
+                
+                #output.append(classifier.name)
+                classified_pairwise = test_data_pairwise.classify_with(classifier)
+                parallelsentences = RankHandler().get_multiclass_from_pairwise_set(classified_pairwise.get_dataset(), self.allow_ties)
+
+                from io.output.xmlwriter import XmlWriter
+                classified_xmlwriter = XmlWriter(parallelsentences)
+                classified_xmlwriter.write_to_file(filename_out + "xml")
+                from io.output.wmt11tabwriter import Wmt11TabWriter
+                classified_xmlwriter = Wmt11TabWriter(parallelsentences, "dfki_parseconf_%d" % i)
+                classified_xmlwriter.write_to_file(filename_out + "tab")
+                output.append("\n")
+                print "".join(output)
+    
     
     def rank_evaluate_and_print(self, test_xml, model):
         output = []
@@ -182,6 +220,9 @@ class Training(object):
         model = self.train_classifiers_attributes(self.training_filenames)
         self.rank_evaluate_and_print(self.test_filename, model)
     
+    def train_decode(self):
+        model = self.train_classifiers_attributes(self.training_filenames)
+        self.rank_and_export(self.test_filename, self.output_filename, model)
 
 if __name__ == "__main__":
     if len(sys.argv) < 1:
@@ -195,7 +236,8 @@ if __name__ == "__main__":
             print sys.argv[1]
             config.read(sys.argv[1])
             training = Training(config)
-            training.train_evaluate()
+            #training.train_evaluate()
+            training.train_decode()
         except IOError as (errno, strerror):
             print "configuration file error({0}): {1}".format(errno, strerror)
             sys.exit()

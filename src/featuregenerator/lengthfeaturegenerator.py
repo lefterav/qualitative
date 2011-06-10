@@ -2,37 +2,26 @@
 
 @author: Eleftherios Avramidis
 """
-from __future__ import division
 from featuregenerator import FeatureGenerator
 from nltk.tokenize.punkt import PunktWordTokenizer
 
 
 class LengthFeatureGenerator(FeatureGenerator):
     """
-    classdocs
+    Class that provides a feature generator able to count the number of the tokens in the given simplesentences 
     """
 
-
-    #def get_features_sentence(self, simplesentence, parallelsentence):
-        #length = len( simplesentence.get_string() )
-        #attributes = {}
-        
-        #attributes["length"] = str(length)
-        #return attributes
-        
-    def add_features_src(self, simplesentence, parallelsentence):
+            
+    def get_features_simplesentence(self, simplesentence, parallelsentence = None):
+        """
+        Uses NLTK toolkit in order to tokenize given simplesentence and provide a feature with the number of tokens
+        @param simplesentence: The SimpleSentence whose words are to be counted
+        @type simplesentence: sentence.sentence.SimpleSentence
+        @rtype: dict
+        @return: dictionary containing lenght attribute 
+        """
         sent_string = simplesentence.get_string().strip()
         length = len(PunktWordTokenizer().tokenize(sent_string)) #count tokens
-        simplesentence.add_attribute("length", str(length))
-        return simplesentence
-    
-    def add_features_tgt(self, simplesentence, parallelsentence):
-        #get the length of the source
-        sent_string = simplesentence.get_string().strip()
-        src_length = int(parallelsentence.get_source().get_attribute("length"))
-        tgt_length = len(PunktWordTokenizer().tokenize(sent_string))
-        length_ratio = src_length / tgt_length
-        simplesentence.add_attribute("length", str(tgt_length))
-        simplesentence.add_attribute("length_ratio", str(length_ratio))
-        return simplesentence
+        return {"length" : str(length)}
+        
         

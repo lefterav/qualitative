@@ -13,12 +13,13 @@ class DataSet(object):
     classdocs
     """
 
-    def __init__(self, parallelsentence_list, attributes_list=[]):
+    def __init__(self, parallelsentence_list, attributes_list = [], annotations = []):
         """
         Constructor
         """
         
-        self.parallelsentences = parallelsentence_list            
+        self.parallelsentences = parallelsentence_list
+        self.annotations = annotations    
         if attributes_list:
             self.attribute_names = attributes_list
             self.attribute_names_found = True
@@ -29,6 +30,9 @@ class DataSet(object):
         
     def get_parallelsentences(self):
         return self.parallelsentences
+    
+    def get_annotations(self):
+        return self.annotations
     
     def get_attribute_names(self):
         if not self.attribute_names_found: 

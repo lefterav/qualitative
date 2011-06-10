@@ -1,15 +1,14 @@
 import xmlrpclib 
 #import base64
-from featuregenerator.featuregenerator import FeatureGenerator
+from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 from nltk.tokenize.punkt import PunktWordTokenizer
-from sentence.parallelsentence import ParallelSentence
 import sys
 
 
 
 
 
-class SRILMngramGenerator(FeatureGenerator):
+class SRILMngramGenerator(LanguageFeatureGenerator):
     '''
     Gets all the words of a sentence through a SRILM language model and counts how many of them are unknown (unigram prob -99) 
     '''
@@ -24,18 +23,20 @@ class SRILMngramGenerator(FeatureGenerator):
         self.tokenize = tokenize
         
     
-    def add_features_src(self, simplesentence, parallelsentence):
+    def get_features_src(self, simplesentence, parallelsentence):
+        atts = {}
         src_lang = parallelsentence.get_attribute("langsrc")
         if src_lang == self.lang:
-            simplesentence = self.__process__(simplesentence)
+            atts = self.get_features_simplesentence(simplesentence)
 
-        return simplesentence
+        return atts
 
-    def add_features_tgt(self, simplesentence, parallelsentence):
+    def get_features_tgt(self, simplesentence, parallelsentence):
+        atts = {}
         tgt_lang = parallelsentence.get_attribute("langtgt")
         if tgt_lang == self.lang:
-            simplesentence = self.__process__(simplesentence)
-        return simplesentence        
+            atts = self.get_features_simplesentence(simplesentence)
+        return atts        
     
     
     def __prepare_sentence__(self, simplesentence):
@@ -70,7 +71,7 @@ class SRILMngramGenerator(FeatureGenerator):
         return tokenized_string
     
     
-    def __process__(self, simplesentence):
+    def get_features_simplesentence(self, simplesentence):
         (tokens,sent_string) = self.__prepare_sentence__(simplesentence)
         unk_count = 0
         uni_probs = 1
@@ -121,8 +122,7 @@ class SRILMngramGenerator(FeatureGenerator):
                        'bi-prob' : str(bi_probs),
                        'tri-prob' : str(tri_probs) }
         
-        simplesentence.add_attributes(attributes)
-        return simplesentence
+        return attributes
             
             
     

@@ -1,7 +1,7 @@
 '''
 Created on May 12, 2011
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 from dataset import DataSet

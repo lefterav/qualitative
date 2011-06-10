@@ -35,8 +35,8 @@ class Ranker(FeatureGenerator):
             pass
         
         dg = DiffGenerator()
-        for i in range(len(parallelsentences)):
-            parallelsentences[i] = dg.add_features_parallelsentence(parallelsentences[i])
+        
+        parallelsentences = [dg.add_features_parallelsentence(parallelsentence) for parallelsentence in parallelsentences]
         
         dataset = DataSet(parallelsentences)
         
@@ -47,6 +47,7 @@ class Ranker(FeatureGenerator):
         parallelsentences = classified_data.get_dataset().get_parallelsentences()
         parallelsentences = rankhandler.get_multiclass_from_pairwise_set(parallelsentences, allow_ties)
 
+        
         print "got %d multiclass after classification" % len(parallelsentences)
         
         return parallelsentences[0]      
