@@ -19,13 +19,16 @@ class SaxJCMLProcessor(XMLGenerator):
     
     def __init__(self, out, feature_generators = []):
         """
-            @param out: file object to receive processed changes
-            @param feature_generators: list of feature generators to be applied
+        @param out: file object to receive processed changes
+        @type out: file
+        @param feature_generators: list of feature generators to be applied
+        @type feature_generators: list
         """
         
         #flags that show the current focus of the parsing
         self.is_parallelsentence = False 
         self.is_simplesentence = False
+        self.passed_head = False  #annotations declaration can only be done before any sentence has been declared
         #the following variables function as a buffer, that gets filled as the elements are being parsed
         #when elements are ended, then objects are created
         self.ps_attributes = {} #attributes of the parallel sentence
@@ -34,6 +37,7 @@ class SaxJCMLProcessor(XMLGenerator):
         self.src = None
         self.tgt = []
         self.ref = None
+        self.annotations = []
         
         self.ss_text = ""
         
@@ -83,6 +87,23 @@ class SaxJCMLProcessor(XMLGenerator):
                 self.ps_attributes[att_name] = attrs.getValue(att_name)
             self.is_parallelsentence = True
             
+            #add the newly produced feature generators to the heading of the generated file
+            XMLGenerator.startElement(self, self.TAG_ANNOTATIONS, {})
+            if not self.passed_head:
+                for featuregenerator in self.feature_generators:
+                    atts = {"name" : featuregenerator.get_annotation_name()}
+
+
+
+                self.passed_head = True    
+        
+        if name == self.TAG_ANNOTATION:
+            if not self.passed_head:
+                self.annotations.append(attrs.getValue("name"))
+                XMLGenerator.startElement(self, name, attrs)
+            else:
+                print "Format error. Annotation must be declared in the beginning of the document"
+        
         elif name in [self.TAG_SRC, self.TAG_TGT, self.TAG_REF]:
             
             #empty up string and attribute buffer

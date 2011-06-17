@@ -159,6 +159,17 @@ class FeatureGenerator(object):
 
         return parallelsentences
     
+    def get_annotation_name(self):
+        """
+        Provides a name describing the set of features that each particular annotator added. 
+        If not overriden, generates a name out of the class name
+        @return the name of the annotation
+        @rtype string
+        """
+        name = self.__class__.__name__
+        if name.endswith("FeatureGenerator"):
+            name = name[0:len(name)-len("FeatureGenerator")].lower()
+        
     
     #TODO: remove this, as it breaks architecture    
     def add_features_batch_xml(self, filename_in, filename_out):

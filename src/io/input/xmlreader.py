@@ -37,6 +37,7 @@ class XmlReader(object):
         self.TAG_ANNOTATIONS = "annotations"
         self.TAG_ANNOTATION = "annotation"
         self.input_filename = input_filename
+        self.loaded = load
         if load:
             self.load()
     
