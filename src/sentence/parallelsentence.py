@@ -8,8 +8,6 @@
 """
 
 from copy import deepcopy
-from sentence import SimpleSentence
-import sys
 import re
 
 class ParallelSentence(object):
@@ -30,7 +28,7 @@ class ParallelSentence(object):
         @type attributes dict { String name , String value }
         @param the attributes that describe the parallel sentence
         """
-        self.src = source
+        self.src = source 
         self.tgt = translations
         self.ref = reference
         self.attributes = deepcopy (attributes)
@@ -40,7 +38,6 @@ class ParallelSentence(object):
     
     def get_attribute_names (self):
         return self.attributes.keys()
-
     
     def get_attribute(self, name):
         return self.attributes[name]
@@ -50,10 +47,8 @@ class ParallelSentence(object):
         for target in self.tgt:
             attribute_values.append(target.get_attribute(attribute_name))
         return attribute_values
-            
-            
-    
-    def add_attributes (self, attributes):
+
+    def add_attributes(self, attributes):
         self.attributes.update( attributes )
     
     def set_langsrc (self, langsrc):
@@ -145,4 +140,21 @@ class ParallelSentence(object):
         for item_key in listitems.keys():
             new_item_key = "_".join([prefix, item_key]) 
             newlistitems[new_item_key] = listitems[item_key]
-        return newlistitems              
+        return newlistitems
+    
+
+    def merge_parallelsentence(self, ps):
+        """
+        Merge attributes of target sentences that have a common system.
+        @param ps: Object of ParallelSentence() with one source sentence and more target sentences
+        @type ps: sentence.parallelsentence.ParallelSentence 
+        """
+        for tgtPS in ps.tgt:
+            system = tgtPS.get_attribute("system")
+            merged = False
+            for i in range(len(self.tgt)):
+                if self.tgt[i].attributes["system"] == system:
+                    self.tgt[i].merge_simplesentence(tgtPS.get_attributes())
+                    merged = True
+            if not merged:
+                print tgtPS.get_attributes(), "not merged - unknown system!"
