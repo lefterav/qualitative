@@ -24,7 +24,7 @@ class Ranker(FeatureGenerator):
         
     
 
-    def add_features_parallelsentence(self, parallelsentence):
+    def add_features_parallelsentence(self, parallelsentence, apply_diff = True):
         rankhandler = RankHandler()
         allow_ties = False
         parallelsentences = rankhandler.get_pairwise_from_multiclass_set([parallelsentence], allow_ties)
@@ -34,9 +34,10 @@ class Ranker(FeatureGenerator):
         except:
             pass
         
-        dg = DiffGenerator()
+        if apply_diff: 
+            dg = DiffGenerator()
         
-        parallelsentences = [dg.add_features_parallelsentence(parallelsentence) for parallelsentence in parallelsentences]
+            parallelsentences = [dg.add_features_parallelsentence(parallelsentence) for parallelsentence in parallelsentences]
         
         dataset = DataSet(parallelsentences)
         

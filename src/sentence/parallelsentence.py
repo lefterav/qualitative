@@ -93,10 +93,10 @@ class ParallelSentence(object):
             #prefixeditems = self.__prefix__( tgtitem.get_attributes(), tgtitem.get_attributes()["system"] )
             new_attributes.update( prefixeditems )
 
-            try:
-                new_attributes.update( self.__prefix__( self.ref.get_attributes(), "ref" ) )
-            except:
-                pass
+        try:
+            new_attributes.update( self.__prefix__( self.ref.get_attributes(), "ref" ) )
+        except:
+            pass
         return new_attributes
 
 
