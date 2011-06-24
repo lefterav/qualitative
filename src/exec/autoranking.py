@@ -19,12 +19,12 @@ import ConfigParser
 
  
 
-class Training(object):
+class AutoRankingExperiment(object):
     '''
     classdocs
     '''
 
-    def __init__(self, config = None):
+    def __init__(self, config = None, class_name = "rank"):
         '''
         Constructor
         '''
@@ -32,7 +32,7 @@ class Training(object):
         self.attribute_sets = []
         self.training_filenames = None
         self.test_filename = None
-        self.class_name = "rank"
+        self.class_name = class_name
         self.convert_pairwise = True
         self.allow_ties = False
         self.generate_diff = False
@@ -51,6 +51,8 @@ class Training(object):
         self.class_name = config.get("training", "class_name")
         self.meta_attribute_names = config.get("training", "meta_attributes").split(",")
         self.desired_classifiers = config.get("training", "classifiers").split(",")
+        if config.getboolean("training", "pairwise"):  #TODO: this does not work, don't set false
+            self.convert_pairwise = config.getboolean("training", "pairwise")
         for (name, value) in config.items("attributes"):
             if name.startswith("set"):
                 self.add_attribute_set(value.split(","))
@@ -235,9 +237,9 @@ if __name__ == "__main__":
         try:
             print sys.argv[1]
             config.read(sys.argv[1])
-            training = Training(config)
+            exp = AutoRankingExperiment(config)
             #training.train_evaluate()
-            training.train_decode()
+            exp.train_decode()
         except IOError as (errno, strerror):
             print "configuration file error({0}): {1}".format(errno, strerror)
             sys.exit()
