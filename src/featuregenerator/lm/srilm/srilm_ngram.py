@@ -135,11 +135,14 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
         return str (self.server.getSentenceProb(sent_string, l))
     
 
+    def xmlrpc_call(self, batch):
+        return self.server.getNgramFeatures_batch(batch)
+        
 
     
     def add_features_batch(self, parallelsentences):
-        function = self.server.getNgramFeatures_batch
-        return self.add_features_batch_xmlrpc(parallelsentences, function)
+        
+        return self.add_features_batch_xmlrpc(parallelsentences)
 #        batch = []
 #        preprocessed_batch = []
 #        for parallelsentence in parallelsentences:
