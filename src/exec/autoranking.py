@@ -51,7 +51,7 @@ class AutoRankingExperiment(object):
         self.class_name = config.get("training", "class_name")
         self.meta_attribute_names = config.get("training", "meta_attributes").split(",")
         self.desired_classifiers = config.get("training", "classifiers").split(",")
-        if config.getboolean("training", "pairwise"):  #TODO: this does not work, don't set false
+        if "pairwise" in config.items("training") :  #TODO: this does not work, don't set false
             self.convert_pairwise = config.getboolean("training", "pairwise")
         for (name, value) in config.items("attributes"):
             if name.startswith("set"):
@@ -109,6 +109,8 @@ class AutoRankingExperiment(object):
 
         return dataset
         
+        
+    
     def train_classifiers_attributes(self, training_xml_filenames):
         """
         Performs training of classifiers, uses them for ranking and evaluates the results on the fly
@@ -238,8 +240,8 @@ if __name__ == "__main__":
             print sys.argv[1]
             config.read(sys.argv[1])
             exp = AutoRankingExperiment(config)
-            #training.train_evaluate()
-            exp.train_decode()
+            exp.train_evaluate()
+            #exp.train_decode()
         except IOError as (errno, strerror):
             print "configuration file error({0}): {1}".format(errno, strerror)
             sys.exit()
