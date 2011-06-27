@@ -712,16 +712,16 @@ if __name__ == '__main__':
         sys.stderr.write("\n" )
         
         lmfile = sourcefile.replace("jcml", "lm.1.jcml")
-        #exp.add_ngram_features_batch(sourcefile, lmfile, "http://134.96.187.4:8585", "en", "taraxu")
+        exp.add_ngram_features_batch(sourcefile, lmfile, "http://134.96.187.4:8585", "en")
         
         print "parser features"
         bpfile = sourcefile.replace("jcml", "bp.2.jcml")
-        #exp.add_b_features_batch(lmfile, bpfile, "http://134.96.187.4:8682", "en")
+        exp.add_b_features_batch(lmfile, bpfile, "http://134.96.187.4:8682", "en")
         #exp.add_b_features_batch(lmfile, bpfile, "http://localhost:8682", "en")
         
         print "german parser features"
         bpfile1 = sourcefile.replace("jcml", "bp.2c.jcml")
-        #exp.add_b_features_batch(bpfile, bpfile1, "http://134.96.187.4:8683", "de")
+        exp.add_b_features_batch(bpfile, bpfile1, "http://134.96.187.4:8683", "de")
         
         print "final features"
         exfile = sourcefile.replace("jcml", "ex.3.jcml")
@@ -735,7 +735,7 @@ if __name__ == '__main__':
         exp.evaluate_sax(classifiers, exfile, outfile)
         
         exp.jcml2wmt(outfile)
-        
+  
     
     elif sys.argv[1] == "wmt11eval":
         sourcefile = sys.argv[2]
@@ -763,5 +763,32 @@ if __name__ == '__main__':
         outfile = sourcefile.replace("jcml", "out.jcml")
         exp.test_classifiers(classifiers, exfile, outfile)
     
+    elif sys.argv[1] == "prepare_set":
+        sourcefile = sys.argv[2]
+        step = int(sys.argv[3])
+        sys.stderr.write("reading language model features" )
+        sys.stderr.write("\n" )
+        
+        lmfile = sourcefile.replace("jcml", "lm.1.jcml")
+        if step < 2:
+            exp.add_ngram_features_batch(sourcefile, lmfile, "http://134.96.187.4:8585", "en")
+        
+        print "parser features"
+        bpfile = sourcefile.replace("jcml", "bp.2.jcml")
+        if step < 3:
+            exp.add_b_features_batch(lmfile, bpfile, "http://134.96.187.4:8682", "en")
+        #exp.add_b_features_batch(lmfile, bpfile, "http://localhost:8682", "en")
+        
+        print "german parser features"
+        bpfile1 = sourcefile.replace("jcml", "bp.2c.jcml")
+        if step < 4:
+            exp.add_b_features_batch(bpfile, bpfile1, "http://134.96.187.4:8683", "de")
+        
+        print "final features"
+        exfile = sourcefile.replace("jcml", "ex.3.jcml")
+        if step < 5:
+            exp.analyze_external_features(bpfile1, exfile) 
+        
+        
         
     #===========================================================================
