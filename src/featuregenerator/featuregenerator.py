@@ -184,12 +184,13 @@ class FeatureGenerator(object):
         return []
     
     def add_features_batch_xmlrpc(self, parallelsentences):
+        row_id = 0
+
         if parallelsentences[0].get_attribute("langsrc") == self.lang:
             batch = [[self.__prepare_sentence_b64__(parallelsentence.get_source())] for parallelsentence in parallelsentences]
 
             features_batch = self.xmlrpc_call(batch) #self.server.getNgramFeatures_batch(batch)
             
-            row_id = 0
             
             for row in features_batch:
                 parallelsentence = parallelsentences[row_id]
@@ -209,6 +210,7 @@ class FeatureGenerator(object):
             batch = [[self.__prepare_sentence_b64__(translation) for translation in parallelsentence.get_translations()] for parallelsentence in parallelsentences]
 
             features_batch = self.xmlrpc_call(batch) 
+            
             for row in features_batch:
                 parallelsentence = parallelsentences[row_id]
                 targets = parallelsentence.get_translations()
