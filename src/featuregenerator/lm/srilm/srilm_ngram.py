@@ -54,7 +54,7 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
         return (tokenized_string, sent_string)
     
     
-    def __prepare_sentence_b64__(self, simplesentence):
+    def prepare_sentence(self, simplesentence):
         sent_string = simplesentence.get_string().strip()
         if self.lowercase:
             sent_string = sent_string.lower()
@@ -153,7 +153,7 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
 #            col_id = 0
 #            for simplesentence in row:
 #                if (col_id == 0 and langsrc == self.lang) or (col_id > 0 and langtgt == self.lang):
-#                    simplesentence = self.__prepare_sentence_b64__(simplesentence)
+#                    simplesentence = self.prepare_sentence(simplesentence)
 #                    preprocessed_row.append(simplesentence)
 #                else:
 #                    simplesentence = ["DUMMY"]

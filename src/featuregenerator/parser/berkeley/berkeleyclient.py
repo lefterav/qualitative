@@ -75,6 +75,9 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
             #    time.sleep(5)
         return features_batch
     
+    def prepare_sentence(self, simplesentence):
+        return simplesentence.get_string()
+    
     def add_features_batch(self, parallelsentences):
         return self.add_features_batch_xmlrpc(parallelsentences)
 #        batch = []
