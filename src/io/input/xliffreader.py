@@ -13,7 +13,7 @@ from sentence.dataset import DataSet
 from xml.sax.saxutils import unescape
  
 
-class XmlReader(object):
+class XliffReader(object):
     """
     classdocs
     """
