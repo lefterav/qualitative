@@ -62,9 +62,10 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         return attributes
     
     
-    def send_request(self, batch):
+    def xmlrpc_call(self, batch):
         socket.setdefaulttimeout(None) 
         connected = False
+        features_batch = []
         while not connected:
             #try:
             features_batch = self.server.BParser.parse_batch(batch)
@@ -75,8 +76,7 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         return features_batch
     
     def add_features_batch(self, parallelsentences):
-        function = self.send_request
-        return self.add_features_batch_xmlrpc(parallelsentences, function)
+        return self.add_features_batch_xmlrpc(parallelsentences)
 #        batch = []
 #        preprocessed_batch = []
 #        for parallelsentence in parallelsentences:

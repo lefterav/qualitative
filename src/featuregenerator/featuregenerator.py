@@ -179,11 +179,15 @@ class FeatureGenerator(object):
         reader = None
         writer = XmlWriter(parallelsentences)
         writer.write_to_file(filename_out)
-        
-    def add_features_batch_xmlrpc(self, parallelsentences, function):
+    
+    def xmlrpc_call(self, batch):
+        return []
+    
+    def add_features_batch_xmlrpc(self, parallelsentences):
         if parallelsentences[0].get_attribute("langsrc") == self.lang:
             batch = [[self.__prepare_sentence_b64__(parallelsentence.get_source())] for parallelsentence in parallelsentences]
-            features_batch = function(batch) #self.server.getNgramFeatures_batch(batch)
+
+            features_batch = self.xmlrpc_call(batch) #self.server.getNgramFeatures_batch(batch)
             
             row_id = 0
             
