@@ -125,7 +125,7 @@ class XmlReader(object):
             if not "langsrc" in attributes:
                 attributes["langsrc"] = "de"
             
-            if not "langsrc" in attributes:
+            if not "langtgt" in attributes:
                 attributes["langtgt"] = "en"
         
             
