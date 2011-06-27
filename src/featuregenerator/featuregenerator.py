@@ -187,7 +187,7 @@ class FeatureGenerator(object):
         row_id = 0
 
         if parallelsentences[0].get_attribute("langsrc") == self.lang:
-            batch = [[self.__prepare_sentence_b64__(parallelsentence.get_source())] for parallelsentence in parallelsentences]
+            batch = [[self.prepare_sentence(parallelsentence.get_source())] for parallelsentence in parallelsentences]
 
             features_batch = self.xmlrpc_call(batch) #self.server.getNgramFeatures_batch(batch)
             
@@ -207,7 +207,7 @@ class FeatureGenerator(object):
                 parallelsentences[row_id] = parallelsentence
                 row_id += 1
         elif  parallelsentences[0].get_attribute("langtgt") == self.lang:
-            batch = [[self.__prepare_sentence_b64__(translation) for translation in parallelsentence.get_translations()] for parallelsentence in parallelsentences]
+            batch = [[self.prepare_sentence(translation) for translation in parallelsentence.get_translations()] for parallelsentence in parallelsentences]
 
             features_batch = self.xmlrpc_call(batch) 
             
