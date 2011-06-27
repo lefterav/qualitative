@@ -206,6 +206,9 @@ class FeatureGenerator(object):
                 parallelsentences[row_id] = parallelsentence
                 row_id += 1
         elif  parallelsentences[0].get_attribute("langtgt") == self.lang:
+            batch = [[self.__prepare_sentence_b64__(translation) for translation in parallelsentence.get_translations()] for parallelsentence in parallelsentences]
+
+            features_batch = self.xmlrpc_call(batch) 
             for row in features_batch:
                 parallelsentence = parallelsentences[row_id]
                 targets = parallelsentence.get_translations()
@@ -218,7 +221,7 @@ class FeatureGenerator(object):
                                             
                     column_id += 1
                 
-                parallelsentence.set_source(src)
+                #parallelsentence.set_source(src)
                 parallelsentence.set_translations(targets)
                 parallelsentences[row_id] = parallelsentence
                 row_id += 1
