@@ -121,6 +121,14 @@ class XmlReader(object):
             #Extract the XML features and attach them to the ParallelSentenceObject
             attributes = self.__read_attributes__(xmlEntry)
             
+            #TODO: fix this language by getting from other parts of the sentence
+            if not "langsrc" in attributes:
+                attributes["langsrc"] = "de"
+            
+            if not "langsrc" in attributes:
+                attributes["langtgt"] = "en"
+        
+            
             #create a new Parallesentence with the given content
             curJudgedSentence = ParallelSentence(src, tgt, ref, attributes)
         
