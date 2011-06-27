@@ -180,4 +180,43 @@ class FeatureGenerator(object):
         writer = XmlWriter(parallelsentences)
         writer.write_to_file(filename_out)
         
+    def add_features_batch_xmlrpc(self, parallelsentences, function):
+        if parallelsentences[0].get_attribute("langsrc") == self.lang:
+            batch = [[self.__prepare_sentence_b64__(parallelsentence.get_source())] for parallelsentence in parallelsentences]
+            features_batch = function(batch) #self.server.getNgramFeatures_batch(batch)
+            
+            row_id = 0
+            
+            for row in features_batch:
+                parallelsentence = parallelsentences[row_id]
+                src = parallelsentence.get_source()
+                
+                #dig in the batch to retrieve features
+                
+                for feature_set in row:
+                    for key in feature_set:
+                        src.add_attribute(key, feature_set[key])
+                        
+                parallelsentence.set_source(src)
+                #parallelsentence.set_translations(targets)
+                parallelsentences[row_id] = parallelsentence
+                row_id += 1
+        elif  parallelsentences[0].get_attribute("langtgt") == self.lang:
+            for row in features_batch:
+                parallelsentence = parallelsentences[row_id]
+                targets = parallelsentence.get_translations()
+                
+                column_id = 0
+                #dig in the batch to retrieve features
+                for feature_set in row:
+                    for key in feature_set:
+                        targets[column_id].add_attribute(key, feature_set[key])
+                                            
+                    column_id += 1
+                
+                parallelsentence.set_source(src)
+                parallelsentence.set_translations(targets)
+                parallelsentences[row_id] = parallelsentence
+                row_id += 1
+        return parallelsentences
         
