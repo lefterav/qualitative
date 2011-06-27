@@ -1,16 +1,15 @@
 [training]
-filenames=/home/elav01/workspace/TaraXUscripts/data/multiclass/wmt08.if.jcml
-#,/home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-train.partial.if.jcml
+filenames=/home/elav01/workspace/TaraXUscripts/data/multiclass/wmt08.if.jcml,/home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-train.partial.if.jcml
 class_name=rank
 meta_attributes=id,testset,judge_id,segment_id,tgt-1_berkeley-tree,tgt-2_berkeley-tree,src_berkeley-tree,langsrc,langtgt,tgt-1_system,tgt-2_system,document_id
 #classifiers=BayesLearner,SVMLearner,TreeLearner,LogRegLearnerClass,kNNLearner
-classifiers=kNNLearner
+classifiers=BayesLearner,kNNLearner
 
 [testing]
 filename=/home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-test.if.jcml
 
 [attributes]
-#set0=tgt-1_prob,tgt-2_prob
+set0=tgt-1_prob,tgt-2_prob
 #set1=tgt-1_unk,tgt-2_unk,tgt-1_length_ratio,tgt-2_length_ratio
 #set2=tgt-1_unk,tgt-2_unk,tgt-1_length_ratio,tgt-2_length_ratio,tgt-1_prob,tgt-2_prob
 #set3=tgt-1_unk,tgt-2_unk,tgt-1_length_ratio,tgt-2_length_ratio,tgt-1_bi-prob,tgt-2_bi-prob
@@ -22,4 +21,9 @@ filename=/home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-test.if.jcml
 #set9=tgt-1_unk,tgt-2_unk,tgt-1_length_ratio,tgt-2_length_ratio,tgt-1_berkeley-n_ratio,tgt-2_berkeley-n_ratio,tgt-1_parse-VP_ratio,tgt-2_parse-VP_ratio,tgt-1_prob,tgt-2_prob
 #set10=tgt-1_unk,tgt-2_unk,tgt-1_length_ratio,tgt-2_length_ratio,tgt-1_berkeley-n_ratio,tgt-2_berkeley-n_ratio,tgt-1_parse-NP_ratio,tgt-2_parse-NP_ratio,tgt-1_berkley-loglikelihood_ratio,tgt-2_berkley-loglikelihood_ratio
 #set11=tgt-1_unk,tgt-2_unk,tgt-1_length_ratio,tgt-2_length_ratio,tgt-1_berkeley-n_ratio,tgt-2_berkeley-n_ratio,tgt-1_parse-VP_ratio,tgt-2_parse-VP_ratio,tgt-1_parse-NP_ratio,tgt-2_parse-NP_ratio,tgt-1_berkley-loglikelihood_ratio,tgt-2_berkley-loglikelihood_ratio
-set13=tgt-1_berkeley-avg-confidence_ratio,tgt-1_length_ratio,tgt-1_berkeley-tree,tgt-1_berkeley-avg-confidence,tgt-2_berkeley-avg-confidence_ratio,tgt-2_berkeley-best-parse-confidence_ratio,tgt-2_parse-dot,src_parse-PP,tgt-2_parse-VP,rank,tgt-2_length_ratio,tgt-2_parse-comma,tgt-1_parse-dot,tgt-2_berkley-loglikelihood_ratio,tgt-2_uni-prob,tgt-2_parse-VB,tgt-1_parse-NN_ratio,src_parse-dot,tgt-1_length,testset,tgt-2_prob,tgt-2_parse-NP,src_parse-comma,tgt-2_parse-VP_ratio,tgt-1_parse-NN,tgt-2_orig_rank,src_parse-NN,tgt-1_orig_rank,tgt-1_berkeley-n_ratio,tgt-2_parse-PP,tgt-1_parse-PP_ratio,tgt-2_parse-comma_ratio,tgt-1_unk,tgt-1_parse-NP,tgt-1_berkeley-best-parse-confidence_ratio,tgt-2_parse-NP_ratio,tgt-1_berkeley-n,tgt-1_tri-prob,tgt-1_parse-NP_ratio,src_length,tgt-2_unk,tgt-1_berkley-loglikelihood,src_berkeley-best-parse-confidence,tgt-2_berkley-loglikelihood,src_berkley-loglikelihood,tgt-1_prob,tgt-2_parse-dot_ratio,tgt-2_berkeley-best-parse-confidence,src_parse-VVFIN,tgt-1_uni-prob,tgt-2_bi-prob,tgt-1_bi-prob,tgt-1_berkeley-best-parse-confidence,tgt-2_tri-prob,tgt-2_length,document_id,tgt-1_parse-comma_ratio,src_parse-VP,tgt-1_parse-PP,src_berkeley-n,src_berkeley-tree,segment_id,tgt-1_parse-VP,tgt-1_system,src_berkeley-avg-confidence,tgt-2_parse-PP_ratio,tgt-1_berkley-loglikelihood_ratio,tgt-2_berkeley-n,tgt-2_berkeley-tree,tgt-2_berkeley-n_ratio,tgt-1_parse-VP_ratio,tgt-2_system,tgt-2_parse-NN_ratio,src_parse-NP,tgt-1_parse-dot_ratio,tgt-1_parse-VB,tgt-2_parse-NN,tgt-1_parse-comma,tgt-2_berkeley-avg-confidence
+#set13=tgt-1_berkeley-avg-confidence_ratio,tgt-1_length_ratio,tgt-1_berkeley-tree,tgt-1_berkeley-avg-confidence,tgt-2_berkeley-avg-confidence_ratio,tgt-2_berkeley-best-parse-confidence_ratio,tgt-2_parse-dot,src_parse-PP,tgt-2_parse-VP,rank,tgt-2_length_ratio,tgt-2_parse-comma,tgt-1_parse-dot,tgt-2_berkley-loglikelihood_ratio,tgt-2_uni-prob,tgt-2_parse-VB,tgt-1_parse-NN_ratio,src_parse-dot,tgt-1_length,testset,tgt-2_prob,tgt-2_parse-NP,src_parse-comma,tgt-2_parse-VP_ratio,tgt-1_parse-NN,tgt-2_orig_rank,src_parse-NN,tgt-1_orig_rank,tgt-1_berkeley-n_ratio,tgt-2_parse-PP,tgt-1_parse-PP_ratio,tgt-2_parse-comma_ratio,tgt-1_unk,tgt-1_parse-NP,tgt-1_berkeley-best-parse-confidence_ratio,tgt-2_parse-NP_ratio,tgt-1_berkeley-n,tgt-1_tri-prob,tgt-1_parse-NP_ratio,src_length,tgt-2_unk,tgt-1_berkley-loglikelihood,src_berkeley-best-parse-confidence,tgt-2_berkley-loglikelihood,src_berkley-loglikelihood,tgt-1_prob,tgt-2_parse-dot_ratio,tgt-2_berkeley-best-parse-confidence,src_parse-VVFIN,tgt-1_uni-prob,tgt-2_bi-prob,tgt-1_bi-prob,tgt-1_berkeley-best-parse-confidence,tgt-2_tri-prob,tgt-2_length,document_id,tgt-1_parse-comma_ratio,src_parse-VP,tgt-1_parse-PP,src_berkeley-n,src_berkeley-tree,segment_id,tgt-1_parse-VP,tgt-1_system,src_berkeley-avg-confidence,tgt-2_parse-PP_ratio,tgt-1_berkley-loglikelihood_ratio,tgt-2_berkeley-n,tgt-2_berkeley-tree,tgt-2_berkeley-n_ratio,tgt-1_parse-VP_ratio,tgt-2_system,tgt-2_parse-NN_ratio,src_parse-NP,tgt-1_parse-dot_ratio,tgt-1_parse-VB,tgt-2_parse-NN,tgt-1_parse-comma,tgt-2_berkeley-avg-confidence
+#set14=tgt-1_unk,tgt-2_unk,tgt-1_length_ratio,tgt-2_length_ratio,tgt-1_berkeley-n_ratio,tgt-2_berkeley-n_ratio,tgt-1_parse-NP_ratio,tgt-2_parse-NP_ratio,tgt-1_berkeley-best-parse-confidence_ratio,tgt-2_berkeley-best-parse-confidence_ratio
+#set15=tgt-1_unk,tgt-2_unk,tgt-1_length_ratio,tgt-2_length_ratio,tgt-1_berkeley-n_ratio,tgt-2_berkeley-n_ratio,tgt-1_parse-VP_ratio,tgt-2_parse-VP_ratio,tgt-1_parse-NP_ratio,tgt-2_parse-NP_ratio,tgt-1_berkeley-best-parse-confidence_ratio,tgt-2_berkeley-best-parse-confidence_ratio
+set16=tgt-1_unk,tgt-2_unk,tgt-1_length_ratio,tgt-2_length_ratio,tgt-1_berkeley-n_ratio,tgt-2_berkeley-n_ratio,tgt-1_parse-NP_ratio,tgt-2_parse-NP_ratio,tgt-1_berkeley-berkeley-avg-confidence_ratio,tgt-2_berkeley-avg-confidence_ratio
+set17=tgt-1_unk,tgt-2_unk,tgt-1_length_ratio,tgt-2_length_ratio,tgt-1_berkeley-n_ratio,tgt-2_berkeley-n_ratio,tgt-1_parse-VP_ratio,tgt-2_parse-VP_ratio,tgt-1_parse-NP_ratio,tgt-2_parse-NP_ratio,tgt-1_berkeley-avg-confidence_ratio,tgt-2_berkeley-avg-confidence_ratio
+
