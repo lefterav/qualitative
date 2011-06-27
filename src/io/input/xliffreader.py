@@ -18,6 +18,7 @@ class XmlReader(object):
     classdocs
     """
 
+
     def __init__(self, input_filename, load = True):
         """
         Constructor. Creates an XML object that handles basic XML data
@@ -37,6 +38,7 @@ class XmlReader(object):
         self.loaded = load
         if load:
             self.load()
+    
     
     def load(self):
         """
@@ -68,9 +70,6 @@ class XmlReader(object):
             print "File doesn't contain annotation information"
             return []
         
-        
-
-    
     
     def get_attributes(self):
         """
@@ -85,49 +84,78 @@ class XmlReader(object):
                 attributesKeySet.add(attributeKey)            
         return list(attributesKeySet)
     
+    
     def length(self):
         judgedCorpus = self.xmlObject.getElementsByTagName(self.TAG_DOC)
         return len(judgedCorpus[0].getElementsByTagName(self.TAG_SENT))
         
+        
     def get_parallelsentences(self):
         """
-        @return: an object of ParallelSentence
+        @return: a list of ParallelSentence objects
         """
-        xmlObject = parse(self.input_filename) # get xml.dom.Node 
-        transUnits = xmlObject.getElementsByTagName('trans-unit') # get a list of xml.dom.Node.Elements
+        xmlObject = parse(self.input_filename)
+        
+        # get a nodeList of trans-units elements
+        transUnits = xmlObject.getElementsByTagName('trans-unit')
         for transUnit in transUnits:
-            print transUnit.tagName
-            altTranss = transUnit.getElementsByTagName('alt-trans') # get all alt-trans tags in 1 transUnit
+            # get a nodeList of alt-trans elements
+            altTranss = transUnit.getElementsByTagName('alt-trans')
             
-            src = SimpleSentence(transUnit.getElementsByTagName('source')[0].childNodes[0].nodeValue)
-            
+            # trans-unit source
+            src = ''
+            for transunit_src in transUnit.childNodes:
+                if transunit_src.nodeName == 'source':
+                    src = SimpleSentence(unescape(transunit_src.childNodes[0].nodeValue))
+
+            # save attributes from desired alt-trans nodes into tgt_list
             tgt_list = []
-            # save target string from all alt-trans tags into tgt_list
             for altTrans in altTranss:
-                tgt = SimpleSentence(altTrans.getElementsByTagName('target')[0].childNodes[0].nodeValue)
-                
-                # alttrans_tool_id parsing
+                # alt-trans target
+                tgt = '' 
+                for transunit_tgt in altTrans.childNodes:
+                    if transunit_tgt.nodeName == 'target':
+                        tgt = SimpleSentence(unescape(transunit_tgt.childNodes[0].nodeValue))
+
+                # alt-trans_tool_id parsing
                 tgt.add_attribute('system', altTrans.getAttribute('tool-id'))
                 
-                # alttrans_score parsing 
+                # alt-trans_score parsing 
                 alttrans_scores = altTrans.getElementsByTagName("metanet:scores")
                 for alttrans_score in alttrans_scores:
                     if alttrans_score in altTrans.childNodes:
                         for elem in alttrans_score.getElementsByTagName("metanet:score"):
-                            tgt.add_attribute(elem.getAttribute('type'), elem.getAttribute('value'))
+                            tgt.add_attribute(elem.getAttribute('type'), \
+                                              elem.getAttribute('value'))
                 
-                # alttrans_annotation parsing
+                # alt-trans_annotation parsing
                 alttrans_annotations = altTrans.getElementsByTagName("metanet:derivation")
                 for alttrans_annotation in alttrans_annotations:
                     if alttrans_annotation in altTrans.childNodes:
                         for elem in alttrans_annotation.getElementsByTagName("metanet:annotation"):
                             if elem in alttrans_annotation.childNodes:
-                                tgt.add_attribute(elem.getAttribute('type'), elem.getAttribute('value'))
-
+                                tgt.add_attribute(elem.getAttribute('type'), \
+                                                  elem.getAttribute('value'))
+                            
+                # alt-trans_OOV_words
+                alttrans_annotations = altTrans.getElementsByTagName("metanet:annotation")
+                OOV_count = 0
+                for alttrans_annotation in alttrans_annotations:
+                    if alttrans_annotation.getAttribute('type') == 'oov' \
+                     or alttrans_annotation.getAttribute('type') == 'OOV':
+                        OOV_count += int(alttrans_annotation.getAttribute('value'))
+                tgt.add_attribute('OOV_count', str(OOV_count))
+                
                 # add a target with new attributes to the list
                 tgt_list.append(tgt)
+                
+            # trans-unit reference
+            ref = ''
+            for transunit_ref in transUnit.childNodes:
+                if transunit_ref.nodeName == 'target':
+                    ref = SimpleSentence(unescape(transunit_ref.childNodes[0].nodeValue))
             
-            ref = SimpleSentence(transUnit.getElementsByTagName('target')[0].childNodes[0].nodeValue)
+            # create an object of parallel sentence
             ps = ParallelSentence(src, tgt_list, ref)
                 
         xmlObject.unlink() # deallocate memory
