@@ -139,7 +139,7 @@ class XmlReader(object):
     
     def __read_attributes__(self, xmlEntry):
         """
-        @return: a dictionary of the attributes of the current sentence (name:value)
+        @return: a dictionary of the attributes of the current sentence {name:value}
         """
         attributes = {}
         attributeKeys = xmlEntry.attributes.keys()
