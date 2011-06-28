@@ -21,19 +21,12 @@ class XliffReader(object):
 
     def __init__(self, input_filename, load = True):
         """
-        Constructor. Creates an XML object that handles basic XML data
+        Constructor. Creates an XML object that handles META-NET XLIFF data
         @param input_filename: the name of XML file 
         @type input_filename: string
         @param load: by turning this option to false, the instance will be initialized without loading everything into memory
         @type load: boolean 
         """
-        self.TAG_DOC = "jcml"
-        self.TAG_SENT = "judgedsentence"
-        self.TAG_SRC = "src"
-        self.TAG_TGT = "tgt"
-        self.TAG_REF = "ref"
-        self.TAG_ANNOTATIONS = "annotations"
-        self.TAG_ANNOTATION = "annotation"
         self.input_filename = input_filename
         self.loaded = load
         if load:
@@ -55,21 +48,8 @@ class XliffReader(object):
         @rtype: sentence.dataset.DataSet
         @return: A data set containing all the data of the XML file
         """
-        return DataSet(self.get_parallelsentences(), self.get_attributes(), self.get_annotations())
+        return DataSet(self.get_parallelsentences(), self.get_attributes())
     
-    
-    def get_annotations(self):
-        """
-        @return a list with the names of the annotation layers that the corpus has undergone
-        """
-        try:
-            annotations_xml_container = self.xmlObject.getElementsByTagName(self.TAG_ANNOTATIONS)
-            annotations_xml = annotations_xml_container[0].getElementsByTagName(self.TAG_ANNOTATION)
-            return [annotation_xml["name"] for annotation_xml in annotations_xml]
-        except:
-            print "File doesn't contain annotation information"
-            return []
-        
     
     def get_attributes(self):
         """
@@ -86,15 +66,14 @@ class XliffReader(object):
     
     
     def length(self):
-        judgedCorpus = self.xmlObject.getElementsByTagName(self.TAG_DOC)
-        return len(judgedCorpus[0].getElementsByTagName(self.TAG_SENT))
+        return len(self.xmlObject.getElementsByTagName('trans-unit'))
         
         
     def get_parallelsentences(self):
         """
         @return: a list of ParallelSentence objects
         """
-        xmlObject = parse(self.input_filename)
+        xmlObject = self.xmlObject
         
         # get a nodeList of trans-units elements
         transUnits = xmlObject.getElementsByTagName('trans-unit')
@@ -158,10 +137,12 @@ class XliffReader(object):
             # create an object of parallel sentence
             ps = ParallelSentence(src, tgt_list, ref)
                 
-        xmlObject.unlink() # deallocate memory
+        #xmlObject.unlink() # deallocate memory
         
         return ps
-
+    
+    def unload(self):
+        self.xmlObject.unlink()
     
     def __read_attributes__(self, xmlEntry):
         """
