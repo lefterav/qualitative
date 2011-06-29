@@ -202,14 +202,14 @@ class AutoRankingExperiment(object):
 #                        print "%s\t%s" % (tgt.get_attribute("rank"), tgt.get_attribute("orig_rank")),
 #                    print
                 scoringset = Scoring(parallelsentences_multiclass)
-                (rho, p) = scoringset.get_spearman_correlation("rank", "orig_rank")
-                output.append("\t")
-                output.append(str(rho))
-                
-                kendalltau = scoringset.get_kendall_tau("rank", "orig_rank")
-                output.append("\t")
-                output.append(str(kendalltau))
-                
+#                (rho, p) = scoringset.get_spearman_correlation("rank", "orig_rank")
+#                output.append("\t")
+#                output.append(str(rho))
+#                
+#                kendalltau = scoringset.get_kendall_tau("rank", "orig_rank")
+#                output.append("\t")
+#                output.append(str(kendalltau))
+#                
                 #parallelsentences = classified_data.get_dataset().get_parallelsentences()
                 output.append("\t")
                 #output.append(str(acc))
