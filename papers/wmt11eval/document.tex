@@ -14,7 +14,7 @@
 \usepackage{amsmath}
 \usepackage{multirow}
 \usepackage{url}
-\usepackage{cite}
+%\usepackage{cite}
 \usepackage{fixltx2e}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -24,18 +24,18 @@
 \title{Evaluate with Confidence Estimation: Machine ranking of translation
 outputs using grammatical features}
 
-\author{
-  Eleftherios Avramidis, Maja Popovic, David Vilar, Aljoscha Burchardt \\
-  German Research Center for Artificial Intelligence (DFKI) \\
-  Language Technology (LT), Berlin, Germany \\
-  {\tt name.surname@dfki.de} 
+%\author{
+ % Eleftherios Avramidis, Maja Popovic, David Vilar, Aljoscha Burchardt \\
+ % German Research Center for Artificial Intelligence (DFKI) \\
+ % Language Technology (LT), Berlin, Germany \\
+ % {\tt name.surname@dfki.de} 
   %\\\And
   %Second Author \\
   %Affiliation / Address line 1 \\
   %Affiliation / Address line 2 \\
   %Affiliation / Address line 3 \\
   %{\tt email@domain} \\
-  }
+ % }
 
 \date{}
 
@@ -60,9 +60,8 @@ estimate the quality through many translation outputs, when no reference
 translation is given (\textit{n}-best rescoring of SMT systems, system
 combination etc.). Such metrics have been known as \textit{Confidence
 Estimation metrics} and quite a few projects have suggested solutions on this direction. With our submission to the Shared Task,
-we propose using Confidence Estimation metrics for MT evaluation. This way we
-allow such a metric to be directly compared with the conventional
-reference-aware MT metrics.
+we allow Confidence Estimation metrics to be directly compared
+with the conventional reference-aware MT metrics.
 %an effort is being made to include a confidence
 %estimation metric among other conventional MT metrics for the first time, in
 %order to allow its evaluation at the same level with the reference-aware
@@ -74,7 +73,8 @@ of human-annotated data containing comparisons of the outputs of several
 systems, as a result of the evaluation tasks run by the Workshops on
 Statistical Machine Translation
 (\textsc{WMT})
-\cite{callisonburch-EtAl:2008:WMT,callisonburch-EtAl:2009:WMT-09,callisonburch-EtAl:2010:WMT}. This amount of data, which has been freely available for further research, gives
+\cite{callisonburch-EtAl:2008:WMT,callisonburch-EtAl:2009:WMT-09,callisonburch-EtAl:2010:WMT}. 
+This amount of data, which has been freely available for further research, gives
 an opportunity for applying machine learning techniques to model the human
 annotators' choices. Machine Learning methods over previously released 
 evaluation data have been already used for tuning complex
@@ -152,19 +152,23 @@ features & \multicolumn{2}{c|}{ naive Bayes } &  \multicolumn{2}{c|}{ knn }  \\
 & rho & tau & rho & tau \\
 \hline
 ngram & 0.19 & 0.05 & 0.13 & 0.01  \\
-unk,len & 0.67 & 0.20 & 0.73 & 0.24  \\
-unk,len, bigram & 0.61 & 0.21 & 0.74 & 0.21 \\
-unk,len, ngram & 0.63 & 0.19 & 0.59 & 0.21  \\
-unk,len, trigram & 0.67 & 0.20 & 0.76 & 0.21  \\
-unk,len, log_{parse} & 0.75 & 0.21 & 0.74 & 0.25 \\
+unk, len & 0.67 & 0.20 & 0.73 & 0.24  \\
+unk, len, bigram & 0.61 & 0.21 & 0.74 & 0.21 \\
+unk, len, ngram & 0.63 & 0.19 & 0.59 & 0.21  \\
+unk, len, trigram & 0.67 & 0.20 & 0.76 & 0.21  \\
+unk, len, log_{parse} & 0.75 & 0.21 & 0.74 & 0.25 \\
 \hline
-unk,len, n_parse,VP & 0.67 & 0.24 & 0.61 & 0.20  \\
-unk,len, n_parse,VP,conf_{bestparse} & 0.72 & 0.20 & 0.80 & 0.25  \\
-unk,len, n_parse,NP,conf_{bestparse} & 0.75 & 0.21 & 0.78 & 0.23  \\
+unk, len, n_{parse}, $VP$ & 0.67 & 0.24 & 0.61 & 0.20  \\
+%unk, len, n_{parse}, $VP, conf_{bestparse}$ & 0.72 & 0.20 & 0.80 & 0.25  \\
+unk, len, n_{parse}, $VP, conf_{bestparse}$ & 0.78 & 0.25 & 0.75 & 0.24 \\
+%unk, len, n_{parse}, $NP, conf_{bestparse}$ & 0.75 & 0.21 & 0.78 & 0.23  \\
+unk, len, n_{parse}, $NP, conf_{bestparse}$ & 0.78 & 0.23 & 0.74 & 0.23  \\
 \hline
-unk,len, n_parse,VP,conf_{avg} & 0.75 & 0.21 & 0.78 & 0.23 \\
-unk,len, n_parse,VP,conf_{bestparse} & 0.78 & 0.25 & 0.75 & 0.24 \\
-unk,len, n_parse,VP,log_{parse} & \textbf{0.81} & \textbf{0.26} & 0.75 & 0.23  \\
+unk, len, n_{parse}, $VP, conf_{avg}$ & 0.75 & 0.21 & 0.78 & 0.23 \\
+unk, len, n_{parse}, $VP, conf_{bestparse}$ & 0.78 & 0.25 & 0.75 & 0.24 \\
+unk, len, n_{parse}, $VP, log_{parse}$ & \textbf{0.81} & \textbf{0.26} & 0.75 &
+0.23
+\\
 \hline
 \end{tabular}
 \end{center}
@@ -237,7 +241,10 @@ The classifiers for the task were learnt using the German-English testset
  sentences)\footnote{data acquired from http://www.statmt.org/wmt11}. For
  testing, the classifiers were used to perform ranking on a test set of 184
  sentences which had been kept apart from the 2010 data, with the criterion that
- they don't contain contradictions among the human judgments.
+ they do not contain contradictions among human judgments. It is due to this
+ strict criterion, considered essential for the credibility of the pilot study,
+ that our results are not comparable with other metrics evaluated against full
+ test sets in previous years.
  
  Tokenization was performed with the \textsc{PUNKT} tokenizer
  \cite{Kiss_2006unsupervised,Garrette_anextensible}, while n-gram features were
@@ -291,7 +298,7 @@ Nevertheless this is still a small-scale experiment, given the restricted data
 size and the single translation direction. The performance of the system on
 broader training and test sets will be evaluated in the future. Feature
 selection is also expected to change if other language pairs are introduced,
-while more sophisticated machine learning algorithms may also leed to better
+while more sophisticated machine learning algorithms may also lead to better
 results. 
 
 \section*{Acknowledgments}
@@ -300,7 +307,7 @@ Project\footnote{http://taraxu.dfki.de},
 financed by TSB Technologiestiftung Berlin--Zukunftsfonds Berlin, co-financed
 by the European Union--European fund for regional development.
 
-\bibliographystyle{acl} 
+\bibliographystyle{acl08} 
 \bibliography{mybib} 
 
 % \begin{thebibliography}{}
