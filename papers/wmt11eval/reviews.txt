@@ -1,0 +1,150 @@
+Dear Mr. Eleftherios Avramidis:
+
+On behalf of the WMT2011 Program Committee, we are delighted to inform
+you that your submission 
+
+     Evaluate with Confidence Estimation: Machine ranking
+           of translation outputs using grammatical features
+
+has been accepted for poster presentation at the workshop.
+
+The Program Committee worked very hard to thoroughly review
+all the submitted papers.  Please repay their efforts, by 
+following their suggestions when you revise your paper.
+
+The page limit for full-paper research submissions is 6 pages plus
+any number of pages for references.
+
+To upload your final manuscript, please visit the following 
+site:
+
+	https://www.softconf.com/emnlp/WMT11/
+
+and, on the left-hand side of the page, enter the passcode associated
+with your submission. Your passcode is:
+
+     24X-A3P8A4J9C4
+
+Alternatively, you can click on the following URL, which will take you 
+directly to a form to submit your final paper:
+
+     https://www.softconf.com/emnlp/WMT11/cgi-bin/scmd.cgi?scmd=aLogin&passcode=24X-A3P8A4J9C4
+
+The reviews and comments are attached below.  Again, try to follow
+their advice when you revise your paper. 
+
+The deadline for submitting the camera ready version of your
+submission is: Friday, July 1, 2011.
+
+Please note that publication of your submission in the proceedings
+requires that one of the authors registers for the workshop to present
+the work.
+
+Congratulations and see you in Edinburgh,
+
+Chris Callison-Burch, Philipp Koehn, Christof Monz, and Omar Zaidan
+
+
+============================================================================ 
+WMT 2011 Reviews for Submission #24
+============================================================================ 
+
+Title: Evaluate with Confidence Estimation: Machine ranking of translation outputs using grammatical features
+
+Authors: Eleftherios Avramidis, Maja Popovic, David Vilar and Aljoscha Burchardt
+============================================================================
+                            REVIEWER #1
+============================================================================ 
+
+
+---------------------------------------------------------------------------
+Reviewer's Scores
+---------------------------------------------------------------------------
+
+                               Relevance: 5
+                   Technical Correctness: 4
+                    Presentation/Clarity: 5
+                Comparison to Other Work: 2
+                  Overall Recommendation: 3
+                              Confidence: 5
+
+
+---------------------------------------------------------------------------
+Comments
+---------------------------------------------------------------------------
+
+The authors present a method for evaluating the quality of MT outputs using a
+confidence measure without access to reference translations. The contribution
+of this paper over other current work in this area is the addition of
+grammatical features. Overall, this paper is well-written.
+
+However, this paper lacks any substantive comparison to related work. This is a
+shame since the the authors used the WMT 2010 test set, which has correlations
+with human judgements readily available in the literature. A more
+time-consuming, but welcome comparison would have been with Specia's work in
+confidence estimation for MT, which has so far not involved any grammatical
+features.
+
+One concern I have with confidence estimation as MT evaluation is the increased
+risk of systems gaming such metrics. That is, could a system output a
+well-formed target language sentence, vaguely related to the source sentence
+and still get a good score according to this metric? In general, this paper
+would benefit from a discussion of the pros and cons of this method as well as
+appropriate and inappropriate use cases.
+
+Some omissions:
+* In addition to Specia's MT Summit paper, the authors should also cite
+Specia's more recent work: Specia, L., Raj, D. and Turchi, M. (2010). Machine
+translation evaluation versus quality estimation. Machine Translation, Volume
+24, Issue 1, Page 39-50, Springer, Netherlands.
+
+Some detailed comments:
+* In table 1: "arse" should also be in the subscript. i.e. $n_{parse}$ or
+$n_{\text{parse}}$
+* In section 3.1: The footnote 1 should come before the period.
+* Section 4: "leed" should be "lead" [to better results]
+
+============================================================================
+                            REVIEWER #2
+============================================================================ 
+
+
+---------------------------------------------------------------------------
+Reviewer's Scores
+---------------------------------------------------------------------------
+
+                               Relevance: 6
+                   Technical Correctness: 2
+                    Presentation/Clarity: 4
+                Comparison to Other Work: 2
+                  Overall Recommendation: 5
+                              Confidence: 5
+
+
+---------------------------------------------------------------------------
+Comments
+---------------------------------------------------------------------------
+
+The paper presents an approach to rank machine translation outputs without
+reference translation and evaluates it by computing its correlation with human
+judgments.
+
+The paper is clearly written, but as it says it is a work in progress. 
+Some points:
+1- Since the paper lacks literature review, it is not entirely clear what is
+the main difference between this work and other confidence estimation works.
+
+2- In Table 1 runs 8 and 11 have identical features (as it seems) with
+completely different results, which makes one wonder how accurate these
+results are.
+
+3- There is no discussion of the results or error analysis to explain for
+example, why Naive Bayes performs better than a superior classifier such as
+kNN, or why the n-gram features are performing poorly. In addition, it would be
+better to have a simple baseline to compare the results and see the
+contribution of each feature. 
+
+4- In terms of style, the headings are not consistent. A few of them are
+capitalised and some are not. The paper needs a quick revision to fix a
+few typos and style errors such as "n_parse" in Table 1, leed in the last
+sentence and so on.
