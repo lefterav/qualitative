@@ -122,7 +122,7 @@ class AutoRankingExperiment(object):
         for attribute_names in self.attribute_sets:
             model[",".join(attribute_names)] = []
             #convert data with only desired atts in orange format
-            training_data = OrangeData(training_dataset, self.class_name, attribute_names, self.meta_attribute_names, True)
+            training_data = OrangeData(training_dataset, self.class_name, attribute_names, self.meta_attribute_names)
             
             #iterate through the desired classifiers
             for learner in self.classifiers:
@@ -227,6 +227,16 @@ class AutoRankingExperiment(object):
     def train_decode(self):
         model = self.train_classifiers_attributes(self.training_filenames)
         self.rank_and_export(self.test_filename, self.output_filename, model)
+        
+    def print_system_score(self, filename, rank_attribute):
+        self.convert_pairwise = False
+        test_dataset = self.read_xml_data([filename])
+        scoringset = Scoring(test_dataset.get_parallelsentences())
+        systemscores = scoringset.get_systems_scoring_from_segment_ranks(rank_attribute)
+        for system_name in systemscores:
+            print system_name, systemscores[system_name]
+            
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 1:
