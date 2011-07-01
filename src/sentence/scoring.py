@@ -88,6 +88,8 @@ class Scoring(MultiRankedDataset):
         #print "Didn't %s" % didnt
         avg_tau = segment_tau / (len(self.parallelsentences) - didnt)
         return avg_tau
+    
+
             
             
             

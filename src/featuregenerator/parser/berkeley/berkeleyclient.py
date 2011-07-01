@@ -7,7 +7,7 @@ import socket
 
 class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
     '''
-    classdocs
+    Handles the connection with a Berkeley Server 
     '''
 
 
