@@ -187,7 +187,7 @@ class SaxWMTexporter(XMLGenerator):
                 XMLGenerator.characters(self, tgt.get_string())
                 XMLGenerator.endElement(self, self.TAG_TGT)
                 
-                tab_entry = "%s/t%s/t%s/t%s/t%s/t%s" % (self.metric_name, self.lang_pair, self.test_set, tgt.get_attribute("system"), parallelsentence.get_attribute("id"), tgt.get_attribute("rank")) 
+                tab_entry = "%s\t%s\t%s\t%s\t%s\t%s\n" % (self.metric_name, self.lang_pair, self.test_set, tgt.get_attribute("system"), parallelsentence.get_attribute("id"), tgt.get_attribute("rank")) 
                 self.tab_file.write(tab_entry)
                 
             
