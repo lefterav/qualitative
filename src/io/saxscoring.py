@@ -6,7 +6,6 @@
 """
 
 
-from xml.sax.saxutils import XMLGenerator
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 from xml.sax import handler
@@ -64,12 +63,10 @@ class SaxSystemScoring(handler.ContentHandler):
         self.TAG_ANNOTATION = "annotation"
         
     def startDocument(self):
-        XMLGenerator.startDocument(self)
-        XMLGenerator.startElement(self, self.TAG_DOC, {})
+        pass
 
     def endDocument(self):
-        XMLGenerator.endElement(self, self.TAG_DOC)
-        XMLGenerator.endDocument(self)
+        pass
     
     def startElement(self, name, attrs=[]):
         """
