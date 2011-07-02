@@ -66,7 +66,12 @@ class SaxSystemScoring(handler.ContentHandler):
         pass
 
     def endDocument(self):
-        pass
+        outfile = open(self.outfilename, 'w')
+        for system in self.systems_performance:
+            self.systems_performance[system] = 1.00 * self.systems_performance[system] / self.parallelsentences
+            entry = "dfki_parseconf\tde-en\t%s\t%s\t%01.4f\n" % (self.testset, system, self.systems_performance[system])
+            outfile.write(entry)
+        outfile.close()
     
     def startElement(self, name, attrs=[]):
         """
@@ -159,13 +164,7 @@ class SaxSystemScoring(handler.ContentHandler):
                         self.systems_performance[system] += 1
                     except KeyError:
                         self.systems_performance[system] = 1
-        elif name == self.TAG_DOC:
-            outfile = open(self.outfilename, 'w')
-            for system in self.systems_performance:
-                self.systems_performance[system] = 1.00 * self.systems_performance[system] / self.parallelsentences
-                entry = "dfki_parseconf\tde-en\t%s\t%s\t%01.4f\n" % (self.testset, system, self.systemscores[system])
-                outfile.write(entry)
-            outfile.close()
+            
 
                 
         
