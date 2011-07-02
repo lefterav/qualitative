@@ -91,7 +91,7 @@ class SaxSystemScoring(handler.ContentHandler):
             
 
 
-                self.passed_head = True    
+            
         
         if name == self.TAG_ANNOTATION:
             if not self.passed_head:
