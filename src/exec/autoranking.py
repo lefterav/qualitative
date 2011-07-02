@@ -259,9 +259,9 @@ class AutoRankingExperiment(object):
         test_dataset = self.read_xml_data([filename])
         scoringset = Scoring(test_dataset.get_parallelsentences())
         systemscores = scoringset.get_systems_scoring_from_segment_ranks(rank_attribute)
-        for system_name in systemscores:
-            print system_name, systemscores[system_name]
-            
+        
+        entry = ["dfki_parseconf\tde-en\twmt11combo\t%s\t%%01.4f\n" % (system_name, systemscores[system_name]) for system_name in systemscores ]
+        return entry    
 
 
 if __name__ == "__main__":
