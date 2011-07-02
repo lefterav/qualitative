@@ -172,7 +172,7 @@ class AutoRankingExperiment(object):
                 output.append("\n")
                 print "".join(output)
     
-    def rank_sax_and_export(self, test_xml, filename_out, model):
+    def rank_sax_and_export(self, test_xml, filename_out, model, tab_filename, metric_name, lang_pair, test_set):
         for classifier in self.classifiers:
             if not classifier().__class__.__name__ in self.desired_classifiers:
                 continue
@@ -189,7 +189,7 @@ class AutoRankingExperiment(object):
                 
                 ranker =  Ranker(classifier, attribute_names, self.meta_attributes)
                 #proceed with parcing
-                saxreader = SaxWMTexporter(output_file_object, [ranker])
+                saxreader = SaxWMTexporter(output_file_object, [ranker], tab_filename, metric_name, lang_pair, test_set)
                 myparser = make_parser()
                 myparser.setContentHandler(saxreader)
                 myparser.parse(input_file_object)
