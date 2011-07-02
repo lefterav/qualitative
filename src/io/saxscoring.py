@@ -88,10 +88,7 @@ class SaxSystemScoring(handler.ContentHandler):
             
             #add the newly produced feature generators to the heading of the generated file
             
-            if not self.passed_head:
-                for featuregenerator in self.feature_generators:
-                    atts = {"name" : featuregenerator.get_annotation_name()}
-
+            
 
 
                 self.passed_head = True    
