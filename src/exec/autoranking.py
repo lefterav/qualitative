@@ -172,6 +172,32 @@ class AutoRankingExperiment(object):
                 output.append("\n")
                 print "".join(output)
     
+    def rank_sax_and_export(self, test_xml, filename_out, model):
+        for classifier in self.classifiers:
+            if not classifier().__class__.__name__ in self.desired_classifiers:
+                continue
+
+        for attribute_names_string in model:
+            #prev_attribute_names = []
+            for (attribute_names, classifier) in  model[attribute_names_string]:
+                input_file_object = open(test_xml, 'r')
+                output_file_object = open(filename_out, 'w')
+            
+                from classifier.ranker import Ranker
+                from io.saxwmt11eval import SaxWMTexporter
+                from xml.sax import make_parser
+                
+                ranker =  Ranker(classifier, attribute_names, self.meta_attributes)
+                #proceed with parcing
+                saxreader = SaxWMTexporter(output_file_object, [ranker])
+                myparser = make_parser()
+                myparser.setContentHandler(saxreader)
+                myparser.parse(input_file_object)
+                input_file_object.close()
+                output_file_object.close()
+                
+                
+    
     
     def rank_evaluate_and_print(self, test_xml, model):
         output = []
