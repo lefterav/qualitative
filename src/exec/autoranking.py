@@ -187,7 +187,7 @@ class AutoRankingExperiment(object):
                 from io.saxwmt11eval import SaxWMTexporter
                 from xml.sax import make_parser
                 
-                ranker =  Ranker(classifier, attribute_names, self.meta_attributes)
+                ranker =  Ranker(classifier, attribute_names, self.meta_attribute_names)
                 #proceed with parcing
                 saxreader = SaxWMTexporter(output_file_object, [ranker], tab_filename, metric_name, lang_pair, test_set)
                 myparser = make_parser()
