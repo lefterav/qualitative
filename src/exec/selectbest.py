@@ -10,6 +10,7 @@ from orngLR import LogRegLearner
 from orange import kNNLearner
 from io.input.orangereader import OrangeData
 from io.input.xmlreader import XmlReader
+from io.input.xliffreader import XliffReader
 from sentence.rankhandler import RankHandler
 from sentence.dataset import DataSet
 from sentence.scoring import Scoring
@@ -92,7 +93,12 @@ class SelectBestExperiment(object):
         
         for filename in filenames:
             print "Reading XML %s " % filename
-            parallelsentences = XmlReader(filename).get_parallelsentences()
+            parallelsentences = []
+            if filename.endswith("jcml"):
+                parallelsentences = XmlReader(filename).get_parallelsentences()
+            elif filename.endswith("xlf"):
+                parallelsentences = XliffReader(filename).get_parallelsentences()
+                
             for fg in self.featuregenerators:
                 parallelsentences = fg.add_features_batch(parallelsentences)
             
@@ -124,7 +130,7 @@ class SelectBestExperiment(object):
         for attribute_names in self.attribute_sets:
             model[",".join(attribute_names)] = []
             #convert data with only desired atts in orange format
-            training_data = OrangeData(training_dataset, self.class_name, attribute_names, self.meta_attribute_names, True)
+            training_data = OrangeData(training_dataset, self.class_name, attribute_names, self.meta_attribute_names)
             
             #iterate through the desired classifiers
             for learner in self.classifiers:
@@ -158,7 +164,7 @@ class SelectBestExperiment(object):
             for (attribute_names, classifier) in  model[attribute_names_string]:
                 i = i+1
                 if attribute_names != prev_attribute_names:
-                    test_data_classifiable = OrangeData(test_dataset_classifiable, self.class_name, attribute_names, self.meta_attribute_names, True)
+                    test_data_classifiable = OrangeData(test_dataset_classifiable, self.class_name, attribute_names, self.meta_attribute_names)
                 prev_attribute_names = attribute_names
                 
                 #output.append(classifier.name)
@@ -191,7 +197,7 @@ class SelectBestExperiment(object):
             prev_attribute_names = []
             for (attribute_names, classifier) in  model[attribute_names_string]:
                 if attribute_names != prev_attribute_names:
-                    test_data_classifiable = OrangeData(test_dataset_classifiable, self.class_name, attribute_names, self.meta_attribute_names, True)
+                    test_data_classifiable = OrangeData(test_dataset_classifiable, self.class_name, attribute_names, self.meta_attribute_names)
                 prev_attribute_names = attribute_names
                 
                 #first pairwise scores with kendal tau
@@ -209,7 +215,7 @@ class SelectBestExperiment(object):
                 #scoringset = Scoring(parallelsentences_multiclass)
                 #(rho, p) = scoringset.get_spearman_correlation("rank", "orig_rank")
                 output.append("\t")
-                #output.append(str(rho))
+                output.append(str(acc))
                 
                 #kendalltau = scoringset.get_kendall_tau("rank", "orig_rank")
                 #output.append("\t")
