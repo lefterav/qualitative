@@ -78,7 +78,90 @@ class XliffReader(object):
                     weights.append(('%s-%s-%s' % ('global', elem.getAttribute('type'), tool_id), \
                                     elem.getAttribute('value')))
         return weights
+    
+    
+    def __get_parallelsentence__(self, transUnit):
+        """
         
+        """ 
+        
+        # get a nodeList of alt-trans elements
+        altTranss = transUnit.getElementsByTagName('alt-trans')
+        
+        # trans-unit source
+        src = ''
+        for transunit_src in transUnit.childNodes:
+            if transunit_src.nodeName == 'source':
+                src = SimpleSentence(unescape(transunit_src.childNodes[0].nodeValue))
+
+        # save attributes from desired alt-trans nodes into tgt_list
+        tgt_list = []
+        for altTrans in altTranss:
+            # alt-trans target
+            tgt = '' 
+            for transunit_tgt in altTrans.childNodes:
+                if transunit_tgt.nodeName == 'target':
+                    tgt = SimpleSentence(unescape(transunit_tgt.childNodes[0].nodeValue))
+
+            # alt-trans_tool_id parsing
+            tool_id = altTrans.getAttribute('tool-id')
+            tgt.add_attribute('tool_id', tool_id)
+            
+            # add global weights for particular tool id
+            for weight in self.get_weights(tool_id):
+                tgt.add_attribute(weight[0], weight[1])
+            
+            # alt-trans_score parsing 
+            alttrans_scores = altTrans.getElementsByTagName("metanet:scores")
+            for alttrans_score in alttrans_scores:
+                if alttrans_score in altTrans.childNodes:
+                    for elem in alttrans_score.getElementsByTagName("metanet:score"):
+                        tgt.add_attribute('%s-%s' % (tool_id, elem.getAttribute('type')), \
+                                          elem.getAttribute('value'))
+            
+            # alt-trans_annotation parsing
+            alttrans_annotations = altTrans.getElementsByTagName("metanet:derivation")
+            for alttrans_annotation in alttrans_annotations:
+                if alttrans_annotation in altTrans.childNodes:
+                    for elem in alttrans_annotation.getElementsByTagName("metanet:annotation"):
+                        if elem in alttrans_annotation.childNodes:
+                            tgt.add_attribute('%s-%s' % (tool_id, elem.getAttribute('type')), \
+                                              elem.getAttribute('value'))
+                        
+            # alt-trans_OOV_words
+            alttrans_annotations = altTrans.getElementsByTagName("metanet:annotation")
+            OOV_count = 0
+            for alttrans_annotation in alttrans_annotations:
+                if alttrans_annotation.getAttribute('type') == 'oov' \
+                 or alttrans_annotation.getAttribute('type') == 'OOV':
+                    OOV_count += int(alttrans_annotation.getAttribute('value'))
+            tgt.add_attribute('%s-%s' % (tool_id, 'OOV_count'), str(OOV_count))
+            
+            # alt-trans token_count parsing
+            token_count = {}
+            for token in altTrans.getElementsByTagName('metanet:token'):
+                d = token.getAttribute('id').partition('_d')[2].partition('_')[0]
+                if d not in token_count:
+                    token_count[d] = 1
+                else:
+                    token_count[d] = int(token_count[d]) + 1
+            for d_count in token_count:
+                tgt.add_attribute('%s-%s%s-%s' % (tool_id, 'd', d_count, \
+                                      'token-count'), token_count[d_count])
+            
+            # add a target with new attributes to the list
+            tgt_list.append(tgt)
+            
+        # trans-unit reference
+        ref = ''
+        for transunit_ref in transUnit.childNodes:
+            if transunit_ref.nodeName == 'target':
+                ref = SimpleSentence(unescape(transunit_ref.childNodes[0].nodeValue))
+        # create an object of parallel sentence
+        ps = ParallelSentence(src, tgt_list, ref)
+    
+        return ps
+    
         
     def get_parallelsentences(self):
         """
@@ -88,85 +171,10 @@ class XliffReader(object):
         
         # get a nodeList of trans-units elements
         transUnits = xmlObject.getElementsByTagName('trans-unit')
-        for transUnit in transUnits:
-            # get a nodeList of alt-trans elements
-            altTranss = transUnit.getElementsByTagName('alt-trans')
-            
-            # trans-unit source
-            src = ''
-            for transunit_src in transUnit.childNodes:
-                if transunit_src.nodeName == 'source':
-                    src = SimpleSentence(unescape(transunit_src.childNodes[0].nodeValue))
-
-            # save attributes from desired alt-trans nodes into tgt_list
-            tgt_list = []
-            for altTrans in altTranss:
-                # alt-trans target
-                tgt = '' 
-                for transunit_tgt in altTrans.childNodes:
-                    if transunit_tgt.nodeName == 'target':
-                        tgt = SimpleSentence(unescape(transunit_tgt.childNodes[0].nodeValue))
-
-                # alt-trans_tool_id parsing
-                tool_id = altTrans.getAttribute('tool-id')
-                tgt.add_attribute('tool_id', tool_id)
-                
-                # add global weights for particular tool id
-                for weight in self.get_weights(tool_id):
-                    tgt.add_attribute(weight[0], weight[1])
-                
-                # alt-trans_score parsing 
-                alttrans_scores = altTrans.getElementsByTagName("metanet:scores")
-                for alttrans_score in alttrans_scores:
-                    if alttrans_score in altTrans.childNodes:
-                        for elem in alttrans_score.getElementsByTagName("metanet:score"):
-                            tgt.add_attribute('%s-%s' % (tool_id, elem.getAttribute('type')), \
-                                              elem.getAttribute('value'))
-                
-                # alt-trans_annotation parsing
-                alttrans_annotations = altTrans.getElementsByTagName("metanet:derivation")
-                for alttrans_annotation in alttrans_annotations:
-                    if alttrans_annotation in altTrans.childNodes:
-                        for elem in alttrans_annotation.getElementsByTagName("metanet:annotation"):
-                            if elem in alttrans_annotation.childNodes:
-                                tgt.add_attribute('%s-%s' % (tool_id, elem.getAttribute('type')), \
-                                                  elem.getAttribute('value'))
-                            
-                # alt-trans_OOV_words
-                alttrans_annotations = altTrans.getElementsByTagName("metanet:annotation")
-                OOV_count = 0
-                for alttrans_annotation in alttrans_annotations:
-                    if alttrans_annotation.getAttribute('type') == 'oov' \
-                     or alttrans_annotation.getAttribute('type') == 'OOV':
-                        OOV_count += int(alttrans_annotation.getAttribute('value'))
-                tgt.add_attribute('%s-%s' % (tool_id, 'OOV_count'), str(OOV_count))
-                
-                # alt-trans token_count parsing
-                token_count = {}
-                for token in altTrans.getElementsByTagName('metanet:token'):
-                    d = token.getAttribute('id').partition('_d')[2].partition('_')[0]
-                    if d not in token_count:
-                        token_count[d] = 1
-                    else:
-                        token_count[d] = int(token_count[d]) + 1
-                for d_count in token_count:
-                    tgt.add_attribute('%s-%s%s-%s' % (tool_id, 'd', d_count, \
-                                          'token-count'), token_count[d_count])
-                
-                # add a target with new attributes to the list
-                tgt_list.append(tgt)
-                
-            # trans-unit reference
-            ref = ''
-            for transunit_ref in transUnit.childNodes:
-                if transunit_ref.nodeName == 'target':
-                    ref = SimpleSentence(unescape(transunit_ref.childNodes[0].nodeValue))
-            # create an object of parallel sentence
-            ps = ParallelSentence(src, tgt_list, ref)
+        return [self.__get_parallelsentence__(transUnit) for transUnit in transUnits]
                 
         #xmlObject.unlink() # deallocate memory
         
-        return ps
     
 
     def unload(self):
