@@ -10,12 +10,14 @@ from orngLR import LogRegLearner
 from orange import kNNLearner
 from io.input.orangereader import OrangeData
 from io.input.xmlreader import XmlReader
+from io.output.xmlwriter import XmlWriter
 from io.input.xliffreader import XliffReader
 from sentence.rankhandler import RankHandler
 from sentence.dataset import DataSet
 from sentence.scoring import Scoring
 from featuregenerator.diff_generator import DiffGenerator
 import sys
+import os
 import ConfigParser
 
  
@@ -95,20 +97,33 @@ class SelectBestExperiment(object):
             print "Reading XML %s " % filename
             parallelsentences = []
             if filename.endswith("jcml"):
-                parallelsentences = XmlReader(filename).get_parallelsentences()
+                reader = XmlReader
+                suffix = "jcml"
             elif filename.endswith("xlf"):
-                parallelsentences = XliffReader(filename).get_parallelsentences()
+                reader = XliffReader
+                suffix = "xlf"
+            
+            cache_filename = filename.replace(suffix, "prep.jcml")
+            #re-process only if cached prepare file is missing
+            if not os.path.exists(cache_filename):
+                parallelsentences = reader(filename).get_parallelsentences()
+                            
+                for fg in self.featuregenerators:
+                    parallelsentences = fg.add_features_batch(parallelsentences)
                 
-            for fg in self.featuregenerators:
-                parallelsentences = fg.add_features_batch(parallelsentences)
+                if self.convert_pairwise:
+                    parallelsentences = RankHandler().get_pairwise_from_multiclass_set(parallelsentences, self.allow_ties)
+    
+                if self.generate_diff:                 
+                    parallelsentences = DiffGenerator().add_features_batch(parallelsentences)
+                    
+                cur_dataset = DataSet(parallelsentences)
+                XmlWriter(cur_dataset).write_to_file(cache_filename)
             
-            if self.convert_pairwise:
-                parallelsentences = RankHandler().get_pairwise_from_multiclass_set(parallelsentences, self.allow_ties)
-
-            if self.generate_diff:                 
-                parallelsentences = DiffGenerator().add_features_batch(parallelsentences)
+            else:
+                cur_dataset = reader(cache_filename).get_dataset()
             
-            cur_dataset = DataSet(parallelsentences)
+            
             
             if not dataset:
                 dataset = cur_dataset
@@ -238,6 +253,7 @@ class SelectBestExperiment(object):
     def train_decode(self):
         model = self.train_classifiers_attributes(self.training_filenames)
         self.rank_and_export(self.test_filename, self.output_filename, model)
+        
         
     def selectbest_train_evaluate(self): 
         #TODO: move creation of LengthFeatureGenerators in a way
