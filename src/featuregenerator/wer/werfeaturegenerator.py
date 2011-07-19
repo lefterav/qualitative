@@ -27,8 +27,8 @@ class WERFeatureGenerator(FeatureGenerator):
         target_untokenized = target.get_string()
         ref_untokenized = parallelsentence.get_reference().get_string()
         ref_tokens = PunktWordTokenizer().tokenize(ref_untokenized)
-        print ref_untokenized
-        print target_untokenized
+        #print ref_untokenized
+        #print target_untokenized
         
         target_tokens    =  " ".join(PunktWordTokenizer().tokenize(target_untokenized))
         wer_value = wer(target_tokens, [ref_tokens])
