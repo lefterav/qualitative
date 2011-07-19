@@ -80,7 +80,7 @@ class XliffReader(object):
         return weights
     
     
-    def __get_parallelsentence__(self, transUnit):
+    def get_parallelsentence(self, transUnit):
         """
         
         """ 
@@ -159,7 +159,7 @@ class XliffReader(object):
                 ref = SimpleSentence(unescape(transunit_ref.childNodes[0].nodeValue))
         # create an object of parallel sentence
         ps = ParallelSentence(src, tgt_list, ref)
-    
+        print "."
         return ps
     
         
@@ -170,8 +170,7 @@ class XliffReader(object):
         xmlObject = self.xmlObject
         
         # get a nodeList of trans-units elements
-        transUnits = xmlObject.getElementsByTagName('trans-unit')
-        return [self.__get_parallelsentence__(transUnit) for transUnit in transUnits]
+        return [self.get_parallelsentence(transUnit) for transUnit in xmlObject.getElementsByTagName('trans-unit')]
                 
         #xmlObject.unlink() # deallocate memory
         
