@@ -10,6 +10,7 @@
 from copy import deepcopy
 import re
 
+
 class ParallelSentence(object):
     """
     classdocs
@@ -158,3 +159,35 @@ class ParallelSentence(object):
                     merged = True
             if not merged:
                 print tgtPS.get_attributes(), "not merged - unknown system!"
+
+
+    def get_pairwise_parallelsentences(self):
+        """
+        Create a set of all available parallel sentence pairs (in tgt) from one ParallelSentence object.
+        @param ps: Object of ParallelSetnece() with one source sentence and more target sentences
+        @type ps: sentence.parallelsentence.ParallelSentence
+        @return p: set of parallel sentence pairs from one PS object
+        @type p: a list of PairwiseParallelSentence() objects
+        """
+        from pairwiseparallelsentence import PairwiseParallelSentence
+        from pairwiseparallelsentenceset import PairwiseParallelSentenceSet
+        
+        systems = []
+        targets = []
+        systems_list = []
+        targets_list = []
+        for targetA in self.get_translations():
+            system_nameA = targetA.get_attribute('system')
+            for system_nameB in systems_list:
+                systems.append((system_nameA, system_nameB))
+                systems.append((system_nameB, system_nameA))
+            for targetB in targets_list:
+                targets.append((targetA, targetB))
+                targets.append((targetB, targetA))
+            systems_list.append(system_nameA)
+            targets_list.append(targetA)
+
+        pps_list = [PairwiseParallelSentence(self.get_source(), targets[i], \
+                systems[i], self.get_reference()) for i in range(len(systems))]
+        p = PairwiseParallelSentenceSet(pps_list)
+        return p
