@@ -44,7 +44,7 @@ class XmlWriter(object):
             
             #add attributes of parallel sentence
             for attribute_key in ps.get_attributes().keys():
-                parallelsentence_xml.setAttribute( attribute_key , ps.get_attribute( attribute_key ) )
+                parallelsentence_xml.setAttribute( attribute_key , str(ps.get_attribute(attribute_key)) )
             
             #add source as a child of parallel sentence
             src_xml = self.__create_xml_sentence__(doc_xml, ps.get_source(), "src")
