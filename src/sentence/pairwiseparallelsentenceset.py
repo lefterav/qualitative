@@ -25,4 +25,7 @@ class PairwiseParallelSentenceSet():
         @return:  
         @return type: PairwiseParallelSentence object
         """
-        return self.pps_dict[system_names]
+        try:
+            return self.pps_dict[system_names]
+        except:
+            print "At least one of system names is missing in xml file."
