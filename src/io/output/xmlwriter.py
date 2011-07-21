@@ -64,7 +64,7 @@ class XmlWriter(object):
             jcml.appendChild(parallelsentence_xml)
             
             #print ">", i
-            i +=1
+            i += 1
             
         doc_xml.appendChild(jcml)
         self.object_xml = doc_xml
