@@ -80,6 +80,23 @@ class XliffReader(object):
         return weights
     
     
+    def get_system_name(self, tool_id):
+        """
+        Finds a system name of given tool id
+        @param tool_id: tool-id
+        @type tool_id: string
+        @return system_name: name of system
+        @type system_name: string 
+        """
+        system_name = ''
+        tools = self.xmlObject.getElementsByTagName('tool')
+        for tool in tools:
+            if tool.getAttribute('tool-id') == tool_id:
+                system_name = tool.getAttribute('tool-name') 
+                break
+        return system_name
+        
+        
     def get_parallelsentence(self, transUnit):
         """
         
@@ -106,6 +123,10 @@ class XliffReader(object):
             # alt-trans_tool_id parsing
             tool_id = altTrans.getAttribute('tool-id')
             tgt.add_attribute('tool_id', tool_id)
+            
+            # system name
+            system_name = self.get_system_name(tool_id)
+            tgt.add_attribute('system', system_name)
             
             # add global weights for particular tool id
             for weight in self.get_weights(tool_id):
