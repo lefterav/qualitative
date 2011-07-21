@@ -145,7 +145,7 @@ class SelectBestExperiment(object):
         for attribute_names in self.attribute_sets:
             model[",".join(attribute_names)] = []
             #convert data with only desired atts in orange format
-            training_data = OrangeData(training_dataset, self.class_name, attribute_names, self.meta_attribute_names)
+            training_data = OrangeData(training_dataset, self.class_name, attribute_names, self.meta_attribute_names, True)
             
             #iterate through the desired classifiers
             for learner in self.classifiers:
@@ -179,7 +179,7 @@ class SelectBestExperiment(object):
             for (attribute_names, classifier) in  model[attribute_names_string]:
                 i = i+1
                 if attribute_names != prev_attribute_names:
-                    test_data_classifiable = OrangeData(test_dataset_classifiable, self.class_name, attribute_names, self.meta_attribute_names)
+                    test_data_classifiable = OrangeData(test_dataset_classifiable, self.class_name, attribute_names, self.meta_attribute_names, True)
                 prev_attribute_names = attribute_names
                 
                 #output.append(classifier.name)
