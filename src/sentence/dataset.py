@@ -63,7 +63,33 @@ class DataSet(object):
         new_attribute_names = set(add_dataset.get_attribute_names())
         merged_attribute_names = existing_attribute_names.union(new_attribute_names)
         self.attribute_names = list(merged_attribute_names)
+    
+    def merge_dataset(self, dataset_for_merging_with, attribute_replacements = {"rank": "predicted_rank"}, merging_attributes = ["id"]):
+        """
+        It takes a dataset which contains the same parallelsentences, but with different attributes.
+        Incoming parallel sentences are matched with the existing parallel sentences based on the "merging attribute". 
+        Incoming attributes can be renamed, so that they don't replace existing attributes.
+        @param dataset_for_merging_with: the data set whose contents are to be merged with the current data set
+        @type dataset_for_merging_with: DataSet
+        @param attribute_replacements: listing the attribute renamings that need to take place to the incoming attributes, before the are merged
+        @type attribute_replacements: list of tuples
+        @param merging_attributes: the names of the attributes that signify that two parallelsentences are the same, though with possibly different attributes
+        @type merging_attributes: list of strings  
+        """
+        incoming_parallelsentences_indexed = {}        
+        incoming_parallelsentences = dataset_for_merging_with.get_parallelsentences()
+        for incoming_ps in incoming_parallelsentences:
+            key = "||".join([incoming_ps.get_attribute(att) for att in merging_attributes]) #hopefully this runs always in the same order
+            incoming_parallelsentences_indexed[key] = incoming_ps
+            
         
+        for i in range(len(self.parallelsentences)):
+            key = "||".join([self.parallelsentences[i].get_attribute(att) for att in merging_attributes]) #hopefully this runs always in the same order
+            incoming_ps = incoming_parallelsentences_indexed[key]
+            self.parallelsentences[i].merge_parallelsentence(incoming_ps, attribute_replacements)
+            
+            
+            
             
     
     """

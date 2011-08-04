@@ -14,9 +14,10 @@ from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence
 from sentence.dataset import DataSet
 from xml.sax.saxutils import unescape
- 
+from io.input.genericreader import GenericReader
 
-class XmlReader(object):
+
+class XmlReader(GenericReader):
     """
     classdocs
     """
@@ -48,29 +49,30 @@ class XmlReader(object):
         self.xmlObject = parse(self.input_filename)
     
     
-    def get_dataset(self):
-        """
-        Returs the contents of the XML file into an object structure, which is represented by the DataSet object
-        Note that this will cause all the data of the XML file to be loaded into system memory at once. 
-        For big data sets this may not be optimal, so consider sentence-by-sentence reading with SAX (saxjcml.py)
-        @rtype: sentence.dataset.DataSet
-        @return: A data set containing all the data of the XML file
-        """
-        return DataSet(self.get_parallelsentences(), self.get_attributes(), self.get_annotations())
+#    def get_dataset(self):
+#        """
+#        Returs the contents of the XML file into an object structure, which is represented by the DataSet object
+#        Note that this will cause all the data of the XML file to be loaded into system memory at once. 
+#        For big data sets this may not be optimal, so consider sentence-by-sentence reading with SAX (saxjcml.py)
+#        @rtype: sentence.dataset.DataSet
+#        @return: A data set containing all the data of the XML file
+#        """
+#        #return DataSet(self.get_parallelsentences(), self.get_attributes(), self.get_annotations())
+#        return DataSet(self.get_parallelsentences())
     
     
-    def get_annotations(self):
-        """
-        @return a list with the names of the annotation layers that the corpus has undergone
-        """
-        try:
-            annotations_xml_container = self.xmlObject.getElementsByTagName(self.TAG_ANNOTATIONS)
-            annotations_xml = annotations_xml_container[0].getElementsByTagName(self.TAG_ANNOTATION)
-            return [annotation_xml["name"] for annotation_xml in annotations_xml]
-        except:
-            print "File doesn't contain annotation information"
-            return []
-        
+#    def get_annotations(self):
+#        """
+#        @return a list with the names of the annotation layers that the corpus has undergone
+#        """
+#        try:
+#            annotations_xml_container = self.xmlObject.getElementsByTagName(self.TAG_ANNOTATIONS)
+#            annotations_xml = annotations_xml_container[0].getElementsByTagName(self.TAG_ANNOTATION)
+#            return [annotation_xml["name"] for annotation_xml in annotations_xml]
+#        except:
+#            print "File doesn't contain annotation information"
+#            return []
+#        
         
 
     
