@@ -146,19 +146,34 @@ class ParallelSentence(object):
 
     def merge_parallelsentence(self, ps):
         """
-        Merge attributes of target sentences that have a common system.
+        Augment the parallelsentence with another parallesentence. 
+        Merges attributes of source, target and reference sentences and adds target sentences whose system doesn't exist. 
+        attributes of target sentences that have a common system.
         @param ps: Object of ParallelSentence() with one source sentence and more target sentences
         @type ps: sentence.parallelsentence.ParallelSentence 
         """
-        for tgtPS in ps.tgt:
+        
+        #merge attributes on the ParallelSentence level
+        self.attributes.update(ps.get_attributes())
+        
+        #merge source sentence
+        self.src.merge_simplesentence(ps.get_source())
+        
+        #merge reference translation
+        self.ref.merge_simplesentence(ps.get_reference())
+        
+        #loop over the contained target sentences. Merge those with same system attribute and append those missing
+        for tgtPS in ps.get_target():
             system = tgtPS.get_attribute("system")
             merged = False
             for i in range(len(self.tgt)):
                 if self.tgt[i].attributes["system"] == system:
-                    self.tgt[i].merge_simplesentence(tgtPS.get_attributes())
+                    self.tgt[i].merge_simplesentence(tgtPS)
                     merged = True
             if not merged:
-                print tgtPS.get_attributes(), "not merged - unknown system!"
+                #print tgtPS.get_attributes(), "not merged - unknown system!"
+                print "Target sentence was missing. Adding..."
+                self.tgt.append(tgtPS)
 
 
     def get_pairwise_parallelsentences(self):
@@ -187,7 +202,7 @@ class ParallelSentence(object):
             systems_list.append(system_nameA)
             targets_list.append(targetA)
 
-        pps_list = [PairwiseParallelSentence(self.get_source(), targets[i], \
-                systems[i], self.get_reference()) for i in range(len(systems))]
+        pps_list = [PairwiseParallelSentence(self.get_source(), targets[i], systems[i], self.get_reference()) \
+                        for i in range(len(systems))]
         p = PairwiseParallelSentenceSet(pps_list)
         return p

@@ -13,6 +13,9 @@ from copy import deepcopy
 
 
 class PairwiseParallelSentence(ParallelSentence):
+    """
+    A pairwise parallel sentence, is a parallel sentence that contains output produced by only two systems.  
+    """
 
     def __init__(self, source, translations, systems, reference=None, attributes={}):
         """
