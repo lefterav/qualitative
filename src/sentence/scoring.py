@@ -70,6 +70,53 @@ class Scoring(MultiRankedDataset):
         #print rank_evaluation_2
         return spearmanr(rank_evaluation_1, rank_evaluation_2)
     
+    def get_kendall_tau_vector(self, rank_name_1, rank_name_2):
+        taus = []
+        pis = []
+        for parallesentence in self.parallelsentences:
+            rank_vector_1 = parallesentence.get_target_attribute_values(rank_name_1)
+            rank_vector_2 = parallesentence.get_target_attribute_values(rank_name_2)
+            
+            fullscore = kendalltau(rank_vector_1, rank_vector_2)
+            tau = fullscore[0]
+            pi = fullscore[1]
+            taus.append(tau)
+            pis.append(pi)
+        return taus, pis
+    
+    def get_kendall_tau_avg(self, rank_name_1, rank_name_2):
+        taus, pis = self.get_kendall_tau_vector(rank_name_1, rank_name_2)
+        avg = sum(taus)/len(taus)
+        pi = min(pis)
+        return avg, pi
+    
+    def get_kendall_tau_freq(self, rank_name_1, rank_name_2):
+        taus = self.get_kendall_tau_vector(rank_name_1, rank_name_2)[0]
+        frequency = {}
+        for tau in taus:
+            try:
+                frequency[tau] += 1
+            except KeyError:
+                frequency[tau] = 0
+        return frequency 
+            
+    def selectbest_accuracy(self, rank_name_1, rank_name_2):
+        success = 0.00
+        for parallesentence in self.parallelsentences:
+            rank_vector_1 = parallesentence.get_target_attribute_values(rank_name_1)
+            rank_vector_2 = parallesentence.get_target_attribute_values(rank_name_2)
+            try:
+                if rank_vector_1.index('1') == rank_vector_2.index('1'):
+                    success += 1
+            except:
+                pass
+        return success/len(self.parallelsentences)
+                
+
+    
+    """
+    @todo: clean references and delete
+    """
     def get_kendall_tau(self, rank_name_1, rank_name_2):
         segment_tau = 0.00
         didnt = 0
@@ -77,7 +124,10 @@ class Scoring(MultiRankedDataset):
             rank_vector_1 = parallesentence.get_target_attribute_values(rank_name_1)
             rank_vector_2 = parallesentence.get_target_attribute_values(rank_name_2)
             
-            print ";".join(rank_vector_1) , ";".join(rank_vector_2),
+            print "\t".join(rank_vector_1), 
+            print "\t",
+            print "\t".join(rank_vector_2),
+            print "\t",
             tau = kendalltau(rank_vector_1, rank_vector_2)[0]
             if (tau >= -1 and tau <= 1):
                 segment_tau += tau

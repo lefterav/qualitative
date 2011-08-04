@@ -11,11 +11,12 @@ from xml.dom.minidom import parse
 from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence
 from xml.sax.saxutils import unescape
+from io.input.genericreader import GenericReader
  
 
-class RankReader(object):
+class RankReader(GenericReader):
     """
-    classdocs
+    Reader able to parse the ranking results from taraxu 1st evaluation round, as exported by cfedermann
     """
 
     def __init__(self, input_filename, load = True):
@@ -41,8 +42,10 @@ class RankReader(object):
 
     def unload(self):
         self.xmlObject.unlink()
+        
+    
 
-    def get_rankings(self):
+    def get_parallelsentences(self):
         """
         This function parses a ranking xml file and returns a list of parallel
         sentence objects.
@@ -60,12 +63,15 @@ class RankReader(object):
                     src = SimpleSentence(unescape(rank_child.childNodes[0].nodeValue))
                 elif rank_child.nodeName != '#text':                    
                     tgt = SimpleSentence(unescape(rank_child.childNodes[0].nodeValue))
+                    for attribute_name in rank_child.attributes.keys():
+                        attribute_value = rank_child.getAttribute(attribute_name)
+                        tgt.add_attribute(attribute_name, attribute_value)
                     tgt.add_attribute('system', rank_child.getAttribute('name'))
-                    tgt.add_attribute('rank', rank_child.getAttribute('rank'))
+#                   tgt.add_attribute('rank', rank_child.getAttribute('rank'))
                     tgt_list.append(tgt)
             
             ps = ParallelSentence(src, tgt_list)
-            ps.add_attributes({'sentence-id': stc_id})
+            ps.add_attributes({'id': stc_id})
             ps_list.append(ps)
         return ps_list
         

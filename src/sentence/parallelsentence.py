@@ -17,7 +17,7 @@ class ParallelSentence(object):
     """
     
 
-    def __init__(self, source, translations, reference=None, attributes={}):
+    def __init__(self, source, translations, reference = None, attributes = {}):
         """
         Constructor
         @type source SimpleSentence
@@ -144,7 +144,7 @@ class ParallelSentence(object):
         return newlistitems
     
 
-    def merge_parallelsentence(self, ps):
+    def merge_parallelsentence(self, ps, attribute_replacements = {}):
         """
         Augment the parallelsentence with another parallesentence. 
         Merges attributes of source, target and reference sentences and adds target sentences whose system doesn't exist. 
@@ -153,22 +153,33 @@ class ParallelSentence(object):
         @type ps: sentence.parallelsentence.ParallelSentence 
         """
         
-        #merge attributes on the ParallelSentence level
-        self.attributes.update(ps.get_attributes())
+        #merge attributes on the ParallelSentence level and do the replacements
+        incoming_attributes = ps.get_attributes()
+        for incoming_attribute in incoming_attributes:
+            if incoming_attribute in attribute_replacements:
+                new_key = attribute_replacements[incoming_attribute]
+                new_value = incoming_attributes[incoming_attribute]
+                incoming_attributes[new_key] = new_value
+                del(incoming_attributes[incoming_attribute])            
+        
+        self.attributes.update(incoming_attributes)
         
         #merge source sentence
-        self.src.merge_simplesentence(ps.get_source())
+        self.src.merge_simplesentence(ps.get_source(), attribute_replacements)
         
         #merge reference translation
-        self.ref.merge_simplesentence(ps.get_reference())
+        try:
+            self.ref.merge_simplesentence(ps.get_reference(), attribute_replacements)
+        except:
+            pass
         
         #loop over the contained target sentences. Merge those with same system attribute and append those missing
-        for tgtPS in ps.get_target():
+        for tgtPS in ps.get_translations():
             system = tgtPS.get_attribute("system")
             merged = False
             for i in range(len(self.tgt)):
                 if self.tgt[i].attributes["system"] == system:
-                    self.tgt[i].merge_simplesentence(tgtPS)
+                    self.tgt[i].merge_simplesentence(tgtPS, attribute_replacements)
                     merged = True
             if not merged:
                 #print tgtPS.get_attributes(), "not merged - unknown system!"

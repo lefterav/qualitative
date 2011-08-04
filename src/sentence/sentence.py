@@ -63,10 +63,19 @@ class SimpleSentence(object):
     def __str__(self):
         return self.string + ": " + str(self.attributes)
     
-    def merge_simplesentence(self, ss):
+    def merge_simplesentence(self, ss, attribute_replacements = {}):
         """
         Add the attributes to the object SimpleSentence().
         @param attr: attributes of a simple sentence
         @type attr: dict 
         """
-        self.add_attributes(ss.get_attributes())
+        
+        incoming_attributes = ss.get_attributes()
+        for incoming_attribute in incoming_attributes:
+            if incoming_attribute in attribute_replacements:
+                new_key = attribute_replacements[incoming_attribute]
+                new_value = incoming_attributes[incoming_attribute]
+                incoming_attributes[new_key] = new_value
+                del(incoming_attributes[incoming_attribute])     
+        
+        self.attributes.update(incoming_attributes)
