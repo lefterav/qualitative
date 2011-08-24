@@ -10,36 +10,12 @@ from io.input.rankreader import RankReader
 class InterAnnotatorAgreement(object):
     
     
-    def index_by_sentence_id(self, parallelsentences):
-        """
-        Produces a dictionary out of a parallelsentences list. The key of the dictionary is the sentence_id
-        @param parallesentences The list of the parallelsentences to be indexed by sentence id
-        @type [Parallelsentence]
-        @return: a dictionary indexing the sentences
-        @rtype: dict
-        """
-        dict = {}
-        for parallelsentence in parallelsentences:
-            key = parallelsentence.get_attribute("sentence_id")
-            dict[key] = parallelsentence
-        return dict
-    
-    def get_sentence_ids(self, dict):
-        """
-        Retrieves the sentence ids appearing into many different judgment files and delivers them into one list
-        """
-        sentence_ids = set()
-        for indexed_judgment in dict:
-            sentence_ids.union(set(indexed_judgment.keys()))
-        return list(sentence_ids)
-    
-    
-    def get_system_pairs(self, s):
+    def get_combination_pairs(self, s):
         return [(s[i], s[j]) for i in range(len(s)) for j in range(i+1, len(s))]
                 
         
     
-    def get_cohen_kappa(self, systems, ranking_files):
+    def get_pi(self, systems, ranking_files):
         """
         This function compares ranking difference between many ranking files and
         count from that a coefficient similar to Scott's pi. Further information about
@@ -55,88 +31,74 @@ class InterAnnotatorAgreement(object):
         """
         
         #create a list with parallelsentences indexed by sentence id, one dict for each judge
-        indexed_judgements = [self.index_by_sentence_id(RankReader(ranking_file).get_parallelsentences()) for ranking_file in ranking_files]
-        sentence_ids = self.get_sentence_ids(indexed_judgements)
         
-
-        equal_all = 0.000
-        better_all = 0.000
-        worse_all = 0.000
-        total = 0.000
         
-        equals_single = 0.000
-        better_single = 0.000
-        worse_single = 0.000
+        datasets = [RankReader(ranking_file).get_dataset() for ranking_file in ranking_files]
+        dataset = datasets[0]
+        for i in range(1, len(datasets)):
+            dataset.merge_dataset(datasets[i], {'rank' : 'rank_%d' % i }, ["sentence_id"])
         
-        agreement = 0.000
-    
-        #iterate throug all the sentences       
-        for sentence_id in sentence_ids:
-            pairwise_parallelsentences_per_judge = [indexed_file[sentence_id].get_pairwise_parallelsentences() for indexed_file in indexed_judgements]
-            #break that into pairwise comparisons for every pair of system names 
-            for system_pair in self.get_system_pairs(systems):
+        agreements = 0.00
+        pairwise_rankings = 0.00
+        equals = 0.00
+        better = 0.00
+        worse = 0.00
+        rankings = 0.00
+        
+        #first get each sentence
+        for ps in dataset.get_parallelsentences():
+            pairwise_ps_set = ps.get_pairwise_parallelsentences()
+            system_pairs = self.get_combination_pairs(systems)
+            #then do comparisons per system pair
+            for system_pair in system_pairs:
+                pairwise_ps = pairwise_ps_set.get_pairwise_parallelsentence(system_pair)
+                tgt1 = pairwise_ps.get_translations[0]
+                tgt2 = pairwise_ps.get_translations[0]
                 
-                if len(pairwise_parallelsentences_per_judge) < 2:
-                    print "Error: cannot measure agreement, when having less than two judgments for this comparison with sentence_id = %s and systems = (%s, %s) " % (sentence_id, system_pair[0], system_pair[1]) 
+                rank_names = ['rank_%d' % i for i in range(1,len(datasets))].append('rank')
+                rank_name_pairs = self.get_combination_pairs(rank_names)
                 
-                #set a default value of True and change to False into the loop of judgments, when there is a disagreement
-                equals = True
-                better = True
-                worse = True
-                total += 1
-                annotated = 0
-
-                
-                #this will loop over the different judgments for the comparison of the current 2 output pairs
-                for pairwise_ps in pairwise_parallelsentences_per_judge:
-                    ps = pairwise_ps.get_pairwise_parallelsentence(system_pair) 
-                    rank1 = ps.get_translations()[0].get_attribute('rank')
-                    rank2 = ps.get_translations()[1].get_attribute('rank')
-                
-                    if rank1 != rank2: 
-                        equals = False
-                    if not (rank1 > rank2):
-                        better = False
-                    if not (rank1 < rank2):
-                        worse = False
+                #then compare the judgments of all annotators, in pairs as well
+                for (rank_name_1, rank_name_2) in rank_name_pairs:  
                     
-                    annotated += 1
+                    tgt1_rank1 = tgt1.get_attribute(rank_name_1)
+                    tgt2_rank1 = tgt2.get_attribute(rank_name_1)
                     
-                    if rank1 ==  rank2:
-                        equals_single += 1
-                    elif rank1 > rank2:
-                        better_single += 1
-                    elif rank1 < rank2:
-                        worse_single += 1
+                    tgt1_rank2 = tgt1.get_attribute(rank_name_2)
+                    tgt2_rank2 = tgt2.get_attribute(rank_name_2)
                     
-                        
-                        
+                    pairwise_rankings += 1
+                    
+                    if (tgt1_rank1 == tgt2_rank1 and tgt1_rank2 == tgt2_rank2) or \
+                      (tgt1_rank1 > tgt2_rank1 and tgt1_rank2 > tgt2_rank2) or \
+                      (tgt1_rank1 < tgt2_rank1 and tgt1_rank2 < tgt2_rank2):
+                        agreements += 1
                 
-                #if all judges had the same verdict for all pairwise comparisons
-                if equals or better or worse:
-                    agreement += 1
-                #count occurences for every comparison option
-                if equals:
-                    equal_all += 1
-                elif better:
-                    better_all += 1
-                elif worse:
-                    worse_all += 1
-                    
+                for rank_name in rank_names:
+                    tgt1_rank = tgt1.get_attribute(rank_name)
+                    tgt2_rank = tgt2.get_attribute(rank_name_1)
+                    rankings += 1
+                    if tgt1_rank == tgt2_rank:
+                        equals += 1
+                    elif tgt1_rank < tgt2_rank:
+                        worse += 1
+                    elif tgt1_rank > tgt2_rank:
+                        better += 1
+            
         
-        #strict per-sentence agreement Scott's pi
-        p_A = agreement / total
         
+        
+        p_A = agreements / pairwise_rankings
+                
         
         #p(E) = P(A>B)^2 + P(A=B)^2 + P(A<B)^2
-        p_equal = equal_all / total
-        p_better = better_all / total
-        p_worse = worse_all / total
+        p_equal = equals / rankings
+        p_better = better / rankings
+        p_worse = worse / rankings
         p_E = p_equal^2 + p_better^2 + p_worse^2       
         
         scott_pi = (p_A - p_E) / (1 - p_E)
         
-        #loose per-sentence agreement Fleiss' kappa
         
         
         return scott_pi
