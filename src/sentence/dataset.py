@@ -87,7 +87,7 @@ class DataSet(object):
             key = "||".join([self.parallelsentences[i].get_attribute(att) for att in merging_attributes]) #hopefully this runs always in the same order
             incoming_ps = incoming_parallelsentences_indexed[key]
             self.parallelsentences[i].merge_parallelsentence(incoming_ps, attribute_replacements)
-            
+           
             
             
             
