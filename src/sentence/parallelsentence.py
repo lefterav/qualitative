@@ -187,7 +187,7 @@ class ParallelSentence(object):
                 self.tgt.append(tgtPS)
 
 
-    def get_pairwise_parallelsentences(self):
+    def get_pairwise_parallelsentences(self, directed = False):
         """
         Create a set of all available parallel sentence pairs (in tgt) from one ParallelSentence object.
         @param ps: Object of ParallelSetnece() with one source sentence and more target sentences
@@ -206,10 +206,12 @@ class ParallelSentence(object):
             system_nameA = targetA.get_attribute('system')
             for system_nameB in systems_list:
                 systems.append((system_nameA, system_nameB))
-                systems.append((system_nameB, system_nameA))
+                if not directed:
+                    systems.append((system_nameB, system_nameA))
             for targetB in targets_list:
                 targets.append((targetA, targetB))
-                targets.append((targetB, targetA))
+                if not directed:
+                    targets.append((targetB, targetA))
             systems_list.append(system_nameA)
             targets_list.append(targetA)
 
