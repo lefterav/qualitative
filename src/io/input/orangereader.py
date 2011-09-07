@@ -7,7 +7,6 @@
 @author: Eleftherios Avramidis
 """
 
-import codecs
 import os
 import sys
 import orange, orngTest, orngStat, orngTree  
@@ -28,7 +27,7 @@ class OrangeData:
             self.data = dataSet
             
         elif isinstance ( dataSet , sentence.dataset.DataSet ):
-                       
+            
             #get the data in Orange file format
             fileData = self.__getOrangeFormat__(dataSet, class_name, desired_attributes, meta_attributes)
             
@@ -55,8 +54,6 @@ class OrangeData:
         attribute_names = set() #set containing the attribute names
         new_data = [] #list containing the data, one parallelsentence per entry
         
-        
-        
         for item in data:
             sentence_attributes = {}
             
@@ -71,7 +68,8 @@ class OrangeData:
             metas = item.getmetas()
             
             src = SimpleSentence()
-            tgt = [SimpleSentence(), SimpleSentence()] #TODO: this will break if more than two SimpleSentences()
+            tgt_dic = {}  #TODO: this will break if more than two SimpleSentences()
+            tgt = []
             ref = SimpleSentence()
             
             #then get metas
@@ -88,7 +86,7 @@ class OrangeData:
                 elif (attribute_name.startswith('tgt') and attribute_name.find('_') == -1):
                     tag, index = attribute_name.split( "-")
                     #assume they appear the right order
-                    tgt[int(index)-1] = SimpleSentence(metas[key].value)
+                    tgt_dic[int(index)-1] = SimpleSentence(metas[key].value)
                     #tgt.append( SimpleSentence ( metas[key].value ) )
                     
                 else:
@@ -101,6 +99,10 @@ class OrangeData:
             #print src
             #print "Target", tgt
             #print ref
+            
+            for index in range(len(tgt_dic.keys())):
+                tgt.append(tgt_dic[index])
+            
             new_parallelsentence = ParallelSentence(src, tgt, ref, sentence_attributes)
             new_parallelsentence.recover_attributes()
             new_data.append(new_parallelsentence)
@@ -176,8 +178,8 @@ class OrangeData:
     
     def __writeTempFile__(self, data):
         
-        tmpFileName = mktemp(dir='.', suffix='.tab')
-        file_object = codecs.open(tmpFileName, 'w', 'utf-8')
+        tmpFileName = mktemp(dir=u'.', suffix=u'.tab')
+        file_object = open(tmpFileName, 'w')
         file_object.write(data)
         file_object.close()  
         
@@ -185,15 +187,13 @@ class OrangeData:
         
     
     def __get_orange_header__(self, dataset, class_name, attribute_names, desired_attributes=[], meta_attributes=[]):
-    
-                #first construct the lines for the declaration
+
+        #first construct the lines for the declaration
         line_1 = "" #line for the name of the arguments
         line_2 = "" #line for the type of the arguments
         line_3 = "" #line for the definition of the class 
         print "Getting attributes"
         
-        
-        print attribute_names
         if desired_attributes == []:
             desired_attributes = attribute_names
         
@@ -212,9 +212,7 @@ class OrangeData:
             if attribute_name == class_name:
                 line_2 += "d\t"
             elif attribute_name in desired_attributes and attribute_name not in meta_attributes:
-                #line_2 += "%s\t" % desired_attributes[attribute_name]
                 line_2 += "c\t"
-
             else:
                 line_2 += "d\t"
 
@@ -253,14 +251,13 @@ class OrangeData:
     def __getOrangeFormat__(self, dataset, class_name, desired_attributes=[], meta_attributes=[]):
         sys.stderr.write("retrieving attribute names\n")
         attribute_names = dataset.get_all_attribute_names()
-        
+
         sys.stderr.write("processing orange header\n") 
         output = self.__get_orange_header__(dataset, class_name, attribute_names, desired_attributes, meta_attributes)
-        
         sys.stderr.write("processing content\n")
 
         outputlines = []
-
+ 
         for psentence in dataset.get_parallelsentences():
             #sys.stderr.write("getting nested attributes\n")
             nested_attributes = psentence.get_nested_attributes()
@@ -287,7 +284,6 @@ class OrangeData:
         output += "".join(outputlines)
         return output
     
-
     
     def split_data(self, percentage):
         size =  len (self.data)
@@ -304,8 +300,7 @@ class OrangeData:
         
         return [trainingSet, testSet] 
     
-     
-    
+         
     def cross_validation(self):
         
         data = self.data
@@ -345,13 +340,13 @@ class OrangeData:
                 )
 
         scores = [eval("orngStat."+s[1]) for s in stat]
-        print
         print "Learner  " + "".join(["%-7s" % s[0] for s in stat])
         for (i, l) in enumerate(learners):
             print "%-8s " % l.name + "".join(["%5.3f  " % s[i] for s in scores])
     
         return None
-    
+
+
     def get_SVM(self):
         l=orange.SVMLearner() 
         l.svm_type=orange.SVMLearner.Nu_SVC 
@@ -395,15 +390,3 @@ class OrangeData:
             wrong[i] = (correct[i] - wrong[i]) / len(self.data)
             correct[i] = correct[i] / len(self.data)
         return (correct, wrong)
-    
-        
-    
-    
-    
-    
-    
-    
-            
-
-        
-        
