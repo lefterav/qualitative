@@ -11,16 +11,17 @@ from xml.sax.handler import ContentHandler
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 from input.xmlreader import XmlReader
+import os
 
 
 class SaxJcmlOrangeHeader(ContentHandler):
     
     
-    def __init__ (self, o_file, dataset, class_name, desired_attributes, meta_attributes):
+    def __init__ (self, o_file, class_name, desired_attributes, meta_attributes):
         """
         @param oFile: file object to receive processed changes
         @type oFile: file object
-        @param attributeNames: a list of attribute names
+        @param attributeNames: a list of all attribute names
         @type attributeNames: list of strings
         """
         self.o_file = o_file
@@ -29,6 +30,7 @@ class SaxJcmlOrangeHeader(ContentHandler):
         self.class_name = class_name
         
         self.attribute_names = set()
+        self.number_of_targets = 0
         
         self.TAG_SENT = 'judgedsentence'
         self.TAG_SRC = 'src'
@@ -43,56 +45,7 @@ class SaxJcmlOrangeHeader(ContentHandler):
 
         self.ss_text = ''
         self.ss_attributes = {}
-        self.ps_attributes = {}
-    
-        # first construct the lines for the declaration
-        line_1 = '' # line for the name of the arguments
-        line_2 = '' # line for the type of the arguments
-        line_3 = '' # line for the definition of the class
-
-        
-        # prepare heading
-        for attribute_name in desired_attributes:
-            # line 1 holds just the names
-            line_1 += attribute_name +"\t"
-            
-            #TODO: find a way to define continuous and discrete arg
-            # line 2 holds the class type
-            if attribute_name == class_name:
-                line_2 += "d\t"
-            elif attribute_name not in meta_attributes:
-                line_2 += "c\t"
-            else:
-                line_2 += "d\t"
-
-            # line 3 defines the class and the metadata
-            if attribute_name == class_name:
-                line_3 = line_3 + "c"
-            elif attribute_name in meta_attributes:
-                line_3 = line_3 + "m"
-            line_3 = line_3 + "\t"
-
-        # src
-        line_1 += "src\t"
-        line_2 += "string\t"
-        line_3 += "m\t"
-        #target
-
-        for i in range(len(dataset.get_parallelsentences()[0].get_translations())):
-            line_1 += "tgt-" + str(i+1) + "\t"
-            line_2 += "string\t"
-            line_3 += "m\t"
-        #ref
-        line_1 += "ref\t"
-        line_2 += "string\t"
-        line_3 += "m\t"
-        
-        #break the line in the end
-        line_1 = line_1 + "\n"
-        line_2 = line_2 + "\n"
-        line_3 = line_3 + "\n"
-        output = line_1 + line_2 + line_3
-        o_file.write(output)
+        self.ps_attributes = {} 
         
 
     def startElement(self, name, attrs):
@@ -106,7 +59,7 @@ class SaxJcmlOrangeHeader(ContentHandler):
         @type attrs: attributes
         """
         if name in [self.TAG_SRC, self.TAG_TGT]:
-            self.ss_text = u""
+            self.ss_text = ''
             self.ss_attributes = {}
             for att_name in attrs.getNames():
                 self.ss_attributes[att_name] = attrs.getValue(att_name)
@@ -134,29 +87,87 @@ class SaxJcmlOrangeHeader(ContentHandler):
     def endElement(self, name):
         if name == self.TAG_SRC:
             self.src = SimpleSentence(self.ss_text, self.ss_attributes)
-            self.ss_text = u''
+            self.ss_text = ''
         elif name == self.TAG_TGT:
             self.tgt.append(SimpleSentence(self.ss_text, self.ss_attributes))
         elif name == self.TAG_SENT:
+            if len(self.tgt) > self.number_of_targets:
+                self.number_of_targets = len(self.tgt)
             ps = ParallelSentence(self.src, self.tgt, self.ref, self.ps_attributes)
-            self.src = u''
+            self.src = ''
             self.tgt = []
-            self.ref = u''
+            self.ref = ''
             self.ps_attributes = {}
-            [self.attribute_names.add(attribute) for attribute in ps.get_nested_attributes().keys()]
+            [self.attribute_names.add(str(attribute)) for attribute in ps.get_nested_attributes().keys()]
             
             
     def endDocument(self):
-            # check if the desired attributes are in attribute names that we got from input file
-            if set(self.desired_attributes) - self.attribute_names:
-                print 'Following desired attributes werent found in input file:'
-                print set(self.desired_attributes) - self.attribute_names, '\n'
+        # check if the desired attributes are in attribute names that we got from input file
+        if set(self.desired_attributes) - self.attribute_names:
+            print 'Following desired attributes werent found in input file:'
+            print set(self.desired_attributes) - self.attribute_names, '\n'
+        
+        # first construct the lines for the declaration
+        line_1 = '' # line for the name of the arguments
+        line_2 = '' # line for the type of the arguments
+        line_3 = '' # line for the definition of the class
+
+        if self.desired_attributes == []:
+            self.desired_attributes = self.attribute_names
+            
+        # prepare heading
+        for attribute_name in self.attribute_names:
+            # line 1 holds just the names
+            line_1 += attribute_name +"\t"
+            
+            #TODO: find a way to define continuous and discrete arg
+            # line 2 holds the class type
+            if attribute_name == class_name:
+                line_2 += "d\t"
+            elif attribute_name in self.desired_attributes and attribute_name not in self.meta_attributes:
+                line_2 += "c\t"
+            else:
+                line_2 += "d\t"
+
+            # line 3 defines the class and the metadata
+            if attribute_name == class_name:
+                line_3 = line_3 + "c"
+            elif attribute_name not in self.desired_attributes or attribute_name in self.meta_attributes:
+                line_3 = line_3 + "m"
+            line_3 = line_3 + "\t"
+
+        # src
+        line_1 += "src\t"
+        line_2 += "string\t"
+        line_3 += "m\t"
+        #target
+
+        for i in range(self.number_of_targets):
+            line_1 += "tgt-" + str(i+1) + "\t"
+            line_2 += "string\t"
+            line_3 += "m\t"
+        #ref
+        line_1 += "ref\t"
+        line_2 += "string\t"
+        line_3 += "m\t"
+        
+        #break the line in the end
+        line_1 = line_1 + "\n"
+        line_2 = line_2 + "\n"
+        line_3 = line_3 + "\n"
+        output = line_1 + line_2 + line_3
+        self.o_file.write(output)
+        
+        # creating a temp file with attribute names for class SaxJcml2OrangeContent
+        f = open('attribute_names.dat', 'w')
+        [f.write(attribute_name + '\n') for attribute_name in self.attribute_names] 
+        f.close()
 
 
 class SaxJcml2OrangeContent(ContentHandler):
 
 
-    def __init__ (self, o_file, class_name, desired_attributes, meta_attributes):
+    def __init__ (self, o_file, class_name, meta_attributes):
         """
         @param oFile: file object to receive processed changes
         @type oFile: file object
@@ -166,9 +177,13 @@ class SaxJcml2OrangeContent(ContentHandler):
         self.o_file = o_file
         self.is_simple_sentence = False
         self.set_tags()
-        self.desired_attributes = desired_attributes
+        # reading  a temp file with attribute names for class SaxJcml2OrangeContent
+        f = open('attribute_names.dat', 'r')
+        self.attribute_names = f.read().strip().split('\n')
+        f.close()
+        os.remove('attribute_names.dat')
 
-
+    
     def set_tags(self):
         """
         Handles the basic tags used for reading the simple XML format. 
@@ -201,7 +216,7 @@ class SaxJcml2OrangeContent(ContentHandler):
         @type attrs: attributes
         """
         if name in [self.TAG_SRC, self.TAG_TGT]:
-            self.ss_text = u""
+            self.ss_text = ''
             self.ss_attributes = {}
             for att_name in attrs.getNames():
                 self.ss_attributes[att_name] = attrs.getValue(att_name)
@@ -234,104 +249,82 @@ class SaxJcml2OrangeContent(ContentHandler):
         """
         if name == self.TAG_SRC:
             self.src = SimpleSentence(self.ss_text, self.ss_attributes)
-            self.ss_text = u''
+            self.ss_text = ''
         elif name == self.TAG_TGT:
             self.tgt.append(SimpleSentence(self.ss_text, self.ss_attributes))
-            self.ss_text = u''
+            self.ss_text = ''
         elif name == self.TAG_SENT:
             ps = ParallelSentence(self.src, self.tgt, self.ref, self.ps_attributes)
-            self.src = u''
+            self.src = ''
             self.tgt = []
-            self.ref = u''
+            self.ref = ''
             self.ps_attributes = {}
 
             # print source and target sentence
-            for attribute_name in self.desired_attributes:
+            for attribute_name in self.attribute_names:
                 if attribute_name in ps.get_nested_attributes().keys():
                     # print attribute names
                     self.o_file.write('%s\t' % ps.get_nested_attributes()[attribute_name])
+                else:
+                    # even if attribute value exists or not, we have to tab
+                    self.o_file.write('\t')
             
             # print source sentence
             self.o_file.write('%s\t' % ps.get_source().get_string())
             # print target sentences
             [self.o_file.write('%s\t' % tgt.get_string()) for tgt in ps.get_translations()]
-            # split parallel sentences by a newline
-            self.o_file.write('\n')
+            # split parallel sentences by an additional tab and by a newline
+            self.o_file.write('\t\n')
 
-class OrangeTest():
-    
-    def __init__ (self, dataset, class_name, desired_attributes, meta_attributes):
-        import orange
-        from io.input.orangereader import OrangeData 
-        data = orange.ExampleTable('ojcml.tab')
-        wrapped_data = OrangeData(data)
-        new_dataset = wrapped_data.get_dataset() # new_dataset is a list of ps got from output file
-        
-        new_dataset.compare(dataset)
-        print dataset == new_dataset # compare input set and output set
-        
-        #orangedata = OrangeData(dataset, class_name, desired_attributes, meta_attributes, True)
+"""
+def Compare(sax, orange):
+    print len(sax.split('\t')) == len(orange.split('\t'))
+    print set(sax.split('\t')) == set(orange.split('\t'))
+    print set(sax.split('\t')) - set(orange.split('\t'))
+    print set(orange.split('\t')) - set(sax.split('\t'))
 
-        #print new_dataset == orangedata.get_dataset()
-        
-        
-    
+a = open('ojcml.tab', 'r')
+sax = a.read()
+a.close()
 
+b = open('tmpiuZu2L.tab', 'r')
+orange = b.read()
+b.close()
+Compare(sax, orange)
+
+import sys
+sys.exit()
+"""
 
 input_filename = 'wmt08.if.partial.jcml'
 output_filename = 'ojcml.tab'
-desired_attributes = ['tgt-1_berkeley-avg-confidence_ratio', 'tgt-1_length_ratio', 'tgt-1_berkeley-tree', 'tgt-1_parse-NN',\
-                      'tgt-1_berkeley-avg-confidence', 'tgt-2_berkeley-avg-confidence_ratio', 'tgt-2_berkeley-best-parse-confidence_ratio',\
-                      'tgt-2_parse-dot', 'tgt-2_parse-VP', 'tgt-1_rank', 'tgt-2_length_ratio', 'tgt-2_parse-comma', 'tgt-1_parse-dot',\
-                      'tgt-2_berkley-loglikelihood_ratio', 'tgt-2_uni-prob', 'id', 'tgt-2_parse-VB', 'tgt-1_parse-NN_ratio',\
-                      'src_parse-dot', 'tgt-1_length', 'src_parse-PP', 'tgt-2_prob', 'langsrc', 'src_parse-comma',\
-                      'tgt-2_parse-VP_ratio', 'tgt-1_parse-comma_ratio', 'tgt-2_orig_rank', 'src_parse-NN', 'tgt-1_orig_rank',\
-                      'tgt-1_berkeley-n_ratio', 'tgt-2_parse-PP', 'tgt-1_parse-PP_ratio', 'tgt-2_parse-comma_ratio', 'tgt-1_unk',\
-                      'tgt-1_parse-NP', 'tgt-2_berkeley-avg-confidence', 'tgt-1_berkeley-best-parse-confidence_ratio',\
-                      'tgt-2_parse-NP_ratio', 'tgt-1_berkeley-n', 'tgt-1_tri-prob', 'tgt-1_parse-NP_ratio', 'src_length',\
-                      'tgt-2_unk', 'tgt-1_berkley-loglikelihood', 'src_berkeley-best-parse-confidence', 'tgt-2_berkley-loglikelihood',\
-                      'src_berkley-loglikelihood', 'tgt-1_prob', 'tgt-2_parse-dot_ratio', 'tgt-2_berkeley-best-parse-confidence',\
-                      'tgt-1_uni-prob', 'judgement_id', 'tgt-2_bi-prob', 'tgt-1_bi-prob', 'tgt-1_berkeley-best-parse-confidence',\
-                      'tgt-2_tri-prob', 'tgt-2_length', 'document_id', 'tgt-2_parse-NP', 'src_parse-VP', 'tgt-1_parse-PP',\
-                      'src_berkeley-n', 'tgt-2_berkeley-tree', 'segment_id', 'tgt-1_parse-VP', 'tgt-1_system', 'tgt-2_parse-PP_ratio',\
-                      'tgt-1_berkley-loglikelihood_ratio', 'tgt-2_berkeley-n', 'tgt-2_berkeley-n_ratio', 'src_berkeley-tree',\
-                      'tgt-1_parse-VP_ratio', 'tgt-2_system', 'tgt-2_parse-NN_ratio', 'src_parse-NP', 'tgt-1_parse-dot_ratio',\
-                      'src_parse-VVFIN', 'src_berkeley-avg-confidence', 'tgt-2_parse-NN', 'tgt-1_parse-comma', 'tgt-1_parse-VB',\
-                      'langtgt', 'judge_id', 'src', 'tgt-1', 'tgt-2', 'ref']
-
-meta_attributes = ['tgt-1_berkeley-avg-confidence_ratio', 'tgt-1_length_ratio', 'tgt-1_berkeley-tree', 'tgt-1_parse-NN',\
-                      'tgt-1_berkeley-avg-confidence', 'tgt-2_berkeley-avg-confidence_ratio', 'tgt-2_berkeley-best-parse-confidence_ratio',\
-                      'tgt-2_parse-dot', 'tgt-2_parse-VP', 'tgt-1_rank', 'tgt-2_length_ratio', 'tgt-2_parse-comma', 'tgt-1_parse-dot',\
-                      'tgt-2_berkley-loglikelihood_ratio', 'tgt-2_uni-prob', 'id', 'tgt-2_parse-VB', 'tgt-1_parse-NN_ratio',\
-                      'src_parse-dot', 'tgt-1_length', 'src_parse-PP', 'tgt-2_prob', 'langsrc', 'src_parse-comma',\
-                      'tgt-2_parse-VP_ratio', 'tgt-1_parse-comma_ratio', 'tgt-2_orig_rank', 'src_parse-NN', 'tgt-1_orig_rank',\
-                      'tgt-1_berkeley-n_ratio', 'tgt-2_parse-PP', 'tgt-1_parse-PP_ratio', 'tgt-2_parse-comma_ratio', 'tgt-1_unk',\
-                      'tgt-1_parse-NP', 'tgt-2_berkeley-avg-confidence', 'tgt-1_berkeley-best-parse-confidence_ratio',\
-                      'tgt-2_parse-NP_ratio', 'tgt-1_berkeley-n', 'tgt-1_tri-prob', 'tgt-1_parse-NP_ratio', 'src_length',\
-                      'tgt-2_unk', 'tgt-1_berkley-loglikelihood', 'src_berkeley-best-parse-confidence', 'tgt-2_berkley-loglikelihood',\
-                      'src_berkley-loglikelihood', 'tgt-1_prob', 'tgt-2_parse-dot_ratio', 'tgt-2_berkeley-best-parse-confidence',\
-                      'tgt-1_uni-prob', 'judgement_id', 'tgt-2_bi-prob', 'tgt-1_bi-prob', 'tgt-1_berkeley-best-parse-confidence',\
-                      'tgt-2_tri-prob', 'tgt-2_length', 'document_id', 'tgt-2_parse-NP', 'src_parse-VP', 'tgt-1_parse-PP',\
-                      'src_berkeley-n', 'tgt-2_berkeley-tree', 'segment_id', 'tgt-1_parse-VP', 'tgt-1_system', 'tgt-2_parse-PP_ratio',\
-                      'tgt-1_berkley-loglikelihood_ratio', 'tgt-2_berkeley-n', 'tgt-2_berkeley-n_ratio', 'src_berkeley-tree',\
-                      'tgt-1_parse-VP_ratio', 'tgt-2_system', 'tgt-2_parse-NN_ratio', 'src_parse-NP', 'tgt-1_parse-dot_ratio',\
-                      'src_parse-VVFIN', 'src_berkeley-avg-confidence', 'tgt-2_parse-NN', 'tgt-1_parse-comma', 'tgt-1_parse-VB',\
-                      'langtgt', 'judge_id']
+#desired_attributes = []
+desired_attributes = ['tgt-1_berkeley-avg-confidence_ratio', 'tgt-1_length_ratio', 'tgt-1_berkeley-tree', 'tgt-1_parse-NN']
+#meta_attributes = []
+meta_attributes = ['langsrc', 'tgt-1_system', 'tgt-2_system', 'tgt-3_system', 'tgt-4_system', 'tgt-5_system', 'tgt-1_berkeley-tree',\
+                   'tgt-2_berkeley-tree', 'tgt-3_berkeley-tree', 'tgt-4_berkeley-tree', 'tgt-5_berkeley-tree', 'testset',\
+                   'src_berkeley-tree', 'langtgt']
 
 class_name = 'tgt-1_rank'
-dataset = XmlReader(input_filename)
+dataset = XmlReader(input_filename).get_dataset()
 object_file = open(output_filename, 'w')
 
+# DESIRED METHOD OF GETTING ORANGEFILE:
+# get orange header from file.xml
 parser = make_parser()
-curHandler1 = SaxJcmlOrangeHeader(object_file, dataset, class_name, desired_attributes, meta_attributes)
+curHandler1 = SaxJcmlOrangeHeader(object_file, class_name, desired_attributes, meta_attributes)
 parser.setContentHandler(curHandler1)
 parser.parse(open(input_filename))
 
+# get orange content from file.xml
 parser = make_parser()
-curHandler2 = SaxJcml2OrangeContent(object_file, class_name, desired_attributes, meta_attributes)
+curHandler2 = SaxJcml2OrangeContent(object_file, class_name, meta_attributes)
 parser.setContentHandler(curHandler2)
 parser.parse(open(input_filename))
-
-OrangeTest(dataset, class_name, desired_attributes, meta_attributes)
-
 object_file.close()
+
+# TEST METHOD FOR GETTING ORANGEFILE:
+import orange
+from io.input.orangereader import OrangeData
+wrapped_data = OrangeData(dataset, class_name, desired_attributes, meta_attributes, True)
+new_dataset = wrapped_data.get_dataset()
