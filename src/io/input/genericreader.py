@@ -27,6 +27,8 @@ class GenericReader(object):
         if load:
             self.load()
     
+
+    
     def load(self):
         raise NotImplementedError( "Should have implemented this" )
 

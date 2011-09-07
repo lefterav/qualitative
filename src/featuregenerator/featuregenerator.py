@@ -10,7 +10,7 @@ from io.output.xmlwriter import XmlWriter
 #from abc import ABCMeta
 from sys import stderr
 
-class FeatureGenerator(object):
+class FeatureGenerator():
     """
     A base feature generator class, with no particular functioning. 
         It just provides basic feature generator functions to be inherited (or overwritten) by specific feature generators.
@@ -228,4 +228,7 @@ class FeatureGenerator(object):
                 parallelsentences[row_id] = parallelsentence
                 row_id += 1
         return parallelsentences
+    
+    def process_dataset(self, dataset):
+        return self.add_features_dataset(dataset)
         

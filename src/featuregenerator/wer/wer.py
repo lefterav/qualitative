@@ -2,6 +2,7 @@
 
 import sys
 import gzip
+from nltk.tokenize.punkt import PunktWordTokenizer
 
 
 sent = False
@@ -15,6 +16,11 @@ class levNode:
 
 
 def wer(hypWords, refs):
+    
+    if isinstance(hypWords, str):
+        hypWords = PunktWordTokenizer().tokenize(hypWords)
+    if isinstance(refs, str):
+        refs = PunktWordTokenizer().tokenize(refs)
     
     totalHypLength = 0.0
     totalRefLength = 0.0
@@ -220,7 +226,7 @@ def wer(hypWords, refs):
 
     
 
-    sys.stdout.write(str(nsent)+"::Wer: "+str("%.4f" % minWer)+"\n")
+    #sys.stdout.write(str(nsent)+"::Wer: "+str("%.4f" % minWer)+"\n")
     return minWer
 
                  
