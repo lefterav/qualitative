@@ -26,8 +26,9 @@ from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 import os
 import re
+import sys
 
-def fix( rankingfile, posteditingfile, fixedfile, newpath):
+def fix( rankingfile, posteditingfile, fixedfile):
     #read the files into the memory
     rankingset = RankReader(rankingfile).get_dataset()
     editedset = PosteditingReader(posteditingfile).get_dataset()
@@ -136,19 +137,24 @@ def fix_dirs(dirs):
     
     #separate files for the same datasets must be matched based on their name 
     for editingfile in editingfiles:
-        (path, task_id, set_name) = re.findall("(.*)(\d*-\d*)-(.*)-editing.xml", editingfile)[0]
-        for rankingfile in rankingfiles:
-            if re.match(".*\d*-\d*-%s-ranking.xml" % set_name, rankingfile):
-                #also suggest the name for the output file
-                fixedfile = "%s%s-%s-editing.fixed.xml" % (newpath, task_id, set_name)
-                filenames.append((rankingfile, editingfile, fixedfile))
-                break 
-    
+        try:
+            (path, task_id, set_name) = re.findall("(.*)(\d*-\d*)-(.*)-editing.xml", editingfile)[0]
+            for rankingfile in rankingfiles:
+                if re.match(".*\d*-\d*-%s-ranking.xml" % set_name, rankingfile):
+                    #also suggest the name for the output file
+                    fixedfile = "%s%s-%s-editing.fixed.xml" % (path, task_id, set_name)
+                    filenames.append((rankingfile, editingfile, fixedfile))
+                    break
+        except:
+            pass
+        
     for (rankingfile, editingfile, fixedfile) in filenames:
         fix(rankingfile, editingfile, fixedfile)
         
         
-        
+
+filenames = [arg for arg in sys.argv[1:]]
+fix_dirs(filenames)
     
     
     
@@ -158,7 +164,7 @@ def fix_dirs(dirs):
 
 #    fix(rankingfile, editingfile)  
 
-                   
+
                 
                     
                        
