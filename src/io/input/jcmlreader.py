@@ -17,7 +17,7 @@ from xml.sax.saxutils import unescape
 from io.input.genericxmlreader import GenericXmlReader
 from io.dataformat.jcmlformat import JcmlFormat
 
-class XmlReader(GenericXmlReader):
+class JcmlReader(GenericXmlReader):
     """
     classdocs
     """

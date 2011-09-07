@@ -10,7 +10,7 @@ from xml.sax.saxutils import XMLGenerator
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 
-class SaxJCMLProcessor(XMLGenerator):
+class SaxProcessor(XMLGenerator):
     """
     Handles the generation of features over an XML object formatted as JCML. 
     It does processing every time a parallel sentence including its contents has been declared.
@@ -21,6 +21,7 @@ class SaxJCMLProcessor(XMLGenerator):
         """
         @param out: file object to receive processed changes
         @type out: file
+        @param reader: an implementation of FileReader
         @param feature_generators: list of feature generators to be applied
         @type feature_generators: list
         """
@@ -33,6 +34,9 @@ class SaxJCMLProcessor(XMLGenerator):
         #when elements are ended, then objects are created
         self.ps_attributes = {} #attributes of the parallel sentence
         self.ss_attributes = {} #attributes of a simple sentence
+        
+        self.IN_TAG = self.inputformat.get_tags()
+        self.OUT_TAG = self.outputformat.get_tags()
         
         self.src = None
         self.tgt = []
@@ -48,25 +52,13 @@ class SaxJCMLProcessor(XMLGenerator):
         XMLGenerator._encoding = "utf-8"
         XMLGenerator._out = out
         
-    def set_tags(self):
-        """
-        Handles the basic tags used for reading the simple XML format. 
-        As tags are prone to changes, this can be done by changing values here, or overriding accordingly
-        """
-        self.TAG_DOC = "jcml"
-        self.TAG_SENT = "judgedsentence"
-        self.TAG_SRC = "src"
-        self.TAG_TGT = "tgt"
-        self.TAG_REF = "ref"
-        self.TAG_ANNOTATIONS = "annotations"
-        self.TAG_ANNOTATION = "annotation"
         
     def startDocument(self):
         XMLGenerator.startDocument(self)
-        XMLGenerator.startElement(self, self.TAG_DOC, {})
+        XMLGenerator.startElement(self, self.OUT_TAG["doc"], {})
 
     def endDocument(self):
-        XMLGenerator.endElement(self, self.TAG_DOC)
+        XMLGenerator.endElement(self, self.OUT_TAG["doc"])
         XMLGenerator.endDocument(self)
     
     def startElement(self, name, attrs=[]):
@@ -77,7 +69,7 @@ class SaxJCMLProcessor(XMLGenerator):
         @param attrs: of the element type as a string and the attrs parameter holds an object of the Attributes interface containing the attributes of the element.
         @type attrs: Attributes
         """
-        if name == self.TAG_SENT:
+        if name == self.IN_TAG["sent"]:
             
             #empty up string and attribute buffer
             self.ss_text = u""
@@ -88,7 +80,7 @@ class SaxJCMLProcessor(XMLGenerator):
             self.is_parallelsentence = True
             
             #add the newly produced feature generators to the heading of the generated file
-#            XMLGenerator.startElement(self, self.TAG_ANNOTATIONS, {})
+#            XMLGenerator.startElement(self, self.OUT_TAG["annotations"] , {})
 #            if not self.passed_head:
 #                for featuregenerator in self.feature_generators:
 #                    atts = {"name" : featuregenerator.get_annotation_name()}
@@ -97,14 +89,14 @@ class SaxJCMLProcessor(XMLGenerator):
 #
 #                self.passed_head = True    
 #        
-#        if name == self.TAG_ANNOTATION:
+#        if name == self.IN_TAG_ANNOTATION:
 #            if not self.passed_head:
 #                self.annotations.append(attrs.getValue("name"))
 #                #XMLGenerator.startElement(self, name, attrs)
 #            else:
 #                print "Format error. Annotation must be declared in the beginning of the document"
         
-        elif name in [self.TAG_SRC, self.TAG_TGT, self.TAG_REF]:
+        elif name in [self.IN_TAG["src"], self.IN_TAG["tgt"], self.IN_TAG["ref"] ]:
             
             #empty up string and attribute buffer
             self.ss_text = u""
@@ -140,13 +132,13 @@ class SaxJCMLProcessor(XMLGenerator):
         
         #all of the elements have to be declared here
         #for each element, create the objects and clear "buffers"
-        if name == self.TAG_SRC:
+        if name == self.IN_TAG["src"]:
             self.src = SimpleSentence(self.ss_text, self.ss_attributes)
             self.ss_text = u""
-        elif name == self.TAG_TGT:
+        elif name == self.IN_TAG["tgt"]:
             self.tgt.append(SimpleSentence(self.ss_text, self.ss_attributes))
             self.ss_text = u""
-        elif name == self.TAG_SENT:
+        elif name == self.IN_TAG["sent"]:
             #when the judged sentence gets closed, all previously inserted data have to be converted to objects 
             parallelsentence = ParallelSentence(self.src, self.tgt, self.ref, self.ps_attributes)
 
@@ -169,9 +161,9 @@ class SaxJCMLProcessor(XMLGenerator):
             XMLGenerator.startElement(self, name, parallelsentence.get_attributes())
                         
             XMLGenerator._write(self, "\n\t\t")
-            XMLGenerator.startElement(self, self.TAG_SRC, src.get_attributes())
+            XMLGenerator.startElement(self, self.OUT_TAG["src"], src.get_attributes())
             XMLGenerator.characters(self, src.get_string())
-            XMLGenerator.endElement(self, self.TAG_SRC)
+            XMLGenerator.endElement(self, self.OUT_TAG["src"])
             
             for tgt in parallelsentence.get_translations():
 #                for fg in self.feature_generators:
@@ -179,9 +171,9 @@ class SaxJCMLProcessor(XMLGenerator):
 #                    #tgt.add_attributes( fg.get_features_tgt(tgt, parallelsentence) )
 
                 XMLGenerator._write(self, "\n\t\t")
-                XMLGenerator.startElement(self, self.TAG_TGT, tgt.get_attributes())
+                XMLGenerator.startElement(self, self.OUT_TAG["tgt"], tgt.get_attributes())
                 XMLGenerator.characters(self, tgt.get_string())
-                XMLGenerator.endElement(self, self.TAG_TGT)
+                XMLGenerator.endElement(self, self.OUT_TAG["tgt"])
             
             XMLGenerator._write(self, "\n\t")
             XMLGenerator.endElement(self, name)

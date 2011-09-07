@@ -22,7 +22,7 @@ class InterAnnotatorAgreement(object):
                 
         
     
-    def get_pi(self, systems, ranking_files):
+    def get_pi(self, systems, ranking_files, reader = RankReader):
         """
         This function compares ranking difference between many ranking files and
         count from that a coefficient similar to Scott's pi. Further information about
@@ -39,7 +39,7 @@ class InterAnnotatorAgreement(object):
         
         #create a list with parallelsentences indexed by sentence id, one dict for each judge
         
-        datasets = [RankReader(ranking_file).get_dataset() for ranking_file in ranking_files]
+        datasets = [reader(ranking_file).get_dataset() for ranking_file in ranking_files]
         dataset = datasets[0]
         for i in range(1, len(datasets)):
             dataset.merge_dataset(datasets[i], {'rank' : 'rank_%d' % i }, ["id"])

@@ -14,7 +14,7 @@ from xml.sax.saxutils import unescape
 from io.input.genericreader import GenericReader
  
 
-class RankReader(GenericReader):
+class PosteditingReader(GenericReader):
     """
     Reader able to parse the ranking results from taraxu 1st evaluation round, as exported by cfedermann
     """
@@ -52,31 +52,39 @@ class RankReader(GenericReader):
         @return ps_list: list of tuples in format (ranking-item_id, ParallelSentence)
         @type ps_list: list of tuples
         """
-        r_items = self.xmlObject.getElementsByTagName('ranking-item')
+        r_items = self.xmlObject.getElementsByTagName('editing-item')
         ps_list = []
         for r_item in r_items:
             stc_id = r_item.getAttribute('sentence_id')
+            id = r_item.getAttribute('id')
             src = ''
             tgt_list = []
-            
-           
             for rank_child in r_item.childNodes:
                 if rank_child.nodeName == 'source':
                     src = SimpleSentence(unescape(rank_child.childNodes[0].nodeValue))
+                elif rank_child.nodeName == 'post-edited':
+                    tgt = SimpleSentence(unescape(rank_child.childNodes[0].nodeValue))
+                    tgt.add_attribute('system', 'post-edited')
+                    tgt_list.append(tgt)
                 elif rank_child.nodeName != '#text':                    
                     tgt = SimpleSentence(unescape(rank_child.childNodes[0].nodeValue))
                     for attribute_name in rank_child.attributes.keys():
                         attribute_value = rank_child.getAttribute(attribute_name)
                         tgt.add_attribute(attribute_name, attribute_value)
                     tgt.add_attribute('system', rank_child.getAttribute('name'))
+                    tgt.add_attribute('origin','post-editing')
 #                   tgt.add_attribute('rank', rank_child.getAttribute('rank'))
                     tgt_list.append(tgt)
             
+            
+            ps_attributes = {}
+            for attributeKey in r_item.attributes.keys():
+                ps_attributes[attributeKey] = unescape(r_item.attributes[attributeKey].value)            
+                                
+            
             ps = ParallelSentence(src, tgt_list)
-            #TODO: this was old, may have to change the attribute key. Commented because overlapping with other features
-#            if not ps.get_attributes().has_key("id"): 
-#                ps.add_attributes({'id': stc_id})
             ps.add_attributes({'sentence_id': stc_id})
+            ps.add_attributes({'id': id})
             ps_list.append(ps)
         return ps_list
         
