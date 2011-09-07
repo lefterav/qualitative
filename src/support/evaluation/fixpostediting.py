@@ -111,6 +111,7 @@ def fix( rankingfile, posteditingfile, fixedfile):
 #        
 #        print min_lev_diff
     print uncertain_decisions , "uncertain decisions"
+    print "writing to file", fixedfile
     PosteditingWriter(fixed_parallelsentences).write_to_file(fixedfile)
     
             
@@ -138,7 +139,7 @@ def fix_dirs(dirs):
     #separate files for the same datasets must be matched based on their name 
     for editingfile in editingfiles:
         try:
-            (path, task_id, set_name) = re.findall("(.*)(\d*-\d*)-(.*)-editing.xml", editingfile)[0]
+            (path, task_id, set_name) = re.findall("(.*)(\d*-\[[A-Z\d]*\])\s(.*)-editing.xml", editingfile)[0]
             for rankingfile in rankingfiles:
                 if re.match(".*\d*-\d*-%s-ranking.xml" % set_name, rankingfile):
                     #also suggest the name for the output file
@@ -146,6 +147,7 @@ def fix_dirs(dirs):
                     filenames.append((rankingfile, editingfile, fixedfile))
                     break
         except:
+            print editingfile
             pass
         
     for (rankingfile, editingfile, fixedfile) in filenames:
