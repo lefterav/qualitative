@@ -22,7 +22,6 @@ from sentence.dataset import DataSet
 
 from io.saxjcml import SaxJCMLProcessor
 from xml.sax import make_parser
-import orngFSS
 from sentence.rankhandler import RankHandler
 import sys
 
@@ -470,6 +469,8 @@ class Experiment:
         return [bayes]
         
     def report_relevance(self, data):
+        import orngFSS
+
         m = orngFSS.attMeasure(data)
         sorted(m)
         for i in m:
