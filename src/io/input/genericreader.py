@@ -4,7 +4,7 @@ Created on Aug 4, 2011
 @author: elav01
 '''
 
-from abc import ABCMeta
+
 from sentence.dataset import DataSet
 
 
