@@ -12,7 +12,7 @@ class PosteditingWriter(object):
     """
 
 
-    def __init__(self, data):
+    def __init__(self, data, doc_attributes={}):
         """
         Constructor
         """
@@ -20,13 +20,13 @@ class PosteditingWriter(object):
             self.object_xml = data
         elif isinstance(data, list):
             self.object_xml = None
-            self.convert_to_xml(data)
+            self.convert_to_xml(data, doc_attributes)
         else:
             self.object_xml = None
-            self.convert_to_xml(data.get_parallelsentences())
+            self.convert_to_xml(data.get_parallelsentences(), doc_attributes)
             
         
-    def convert_to_xml(self, parallelsentences):
+    def convert_to_xml(self, parallelsentences, doc_attributes={}):
         """
         Creates an XML for the document an populates that with the (parallel) sentences of the given object.
         Resulting XML object gets stored as a variable.
@@ -35,6 +35,9 @@ class PosteditingWriter(object):
         doc_xml = minidom.Document( )
         jcml = doc_xml.createElement("editing-task")
         
+        for attribute_key in doc_attributes.keys():
+            jcml.setAttribute(attribute_key, escape(str(doc_attributes[attribute_key])))    
+             
         i=0
         
         
