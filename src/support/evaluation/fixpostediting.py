@@ -34,8 +34,9 @@ def fix( rankingfile, posteditingfile, fixedfile):
     editedset = PosteditingReader(posteditingfile).get_dataset()
     
     #editing set contains only text from one erroneously stored system
-    #so by merging based on the sentence id, we get the rest of the sentences
+    #so by merging based on the sentence id, we get the rest of the sentences:
     editedset.merge_dataset(rankingset, {}, ["sentence_id"])
+
     rankingset = None
     
     fixed_parallelsentences = []
@@ -87,6 +88,8 @@ def fix( rankingfile, posteditingfile, fixedfile):
                 lev_diffs.append(int(system_output.get_attribute('lev')) - min_lev_value)
                 
         
+        if not lev_diffs:
+            lev_diffs = [0]
         #this will show the certainty
         min_lev_diff = min(lev_diffs)
         
@@ -97,8 +100,11 @@ def fix( rankingfile, posteditingfile, fixedfile):
         ps_attributes["lev-diff"] = min_lev_diff
         fixed_parallelsentence = ParallelSentence(ps.get_source(), best_system_outputs, postedited_sentence, ps_attributes) 
         fixed_parallelsentences.append(fixed_parallelsentence)
-        if best_system_outputs > 1 : 
+        
+        
+        if len(best_system_outputs) > 1 : 
             uncertain_decisions += 1
+        
         
         
 #        print "post:" , postedited_string
@@ -110,9 +116,11 @@ def fix( rankingfile, posteditingfile, fixedfile):
 #            print "[%f][%s]: %s" % ( system_output.get_attribute("lev"), system_output.get_attribute("system"), system_output.get_string())
 #        
 #        print min_lev_diff
+
+    testset_atts = {"uncertain-lev-choices" : uncertain_decisions }
     print uncertain_decisions , "uncertain decisions"
     print "writing to file", fixedfile
-    PosteditingWriter(fixed_parallelsentences).write_to_file(fixedfile)
+    PosteditingWriter(fixed_parallelsentences, testset_atts).write_to_file(fixedfile)
     
             
 
@@ -131,7 +139,7 @@ def fix_dirs(dirs):
     for filename in files:
         if filename.endswith('ranking.xml'):
             rankingfiles.append(filename)
-        if filename.endswith('editing.xml'):
+        elif filename.endswith('editing.xml'):
             editingfiles.append(filename)
     
     filenames = []
@@ -139,16 +147,30 @@ def fix_dirs(dirs):
     #separate files for the same datasets must be matched based on their name 
     for editingfile in editingfiles:
         try:
-            (path, task_id, set_name) = re.findall("(.*)(\d*-\[[A-Z\d]*\])\s(.*)-editing.xml", editingfile)[0]
+            (path, task_id, subtask, set_name) = re.findall("(.*)/(\d+)-(\[[0-9A-KM-Z]+\])\s(.*)-editing.xml", editingfile)[0]
+            found = False
             for rankingfile in rankingfiles:
-                if re.match(".*\d*-\d*-%s-ranking.xml" % set_name, rankingfile):
+                try:
+                    (r_path, r_task_id, r_subtask, r_set_name) = re.findall("(.*)/(\d+)-(\[\d+\])\s(.*)-ranking.xml", rankingfile)[0]
+                except:
+                    continue
+                
+                if r_set_name == set_name: 
+                    
                     #also suggest the name for the output file
-                    fixedfile = "%s%s-%s-editing.fixed.xml" % (path, task_id, set_name)
+                    print "matched!"
+                    fixedfile = "%s/%s-[L] %s-editing.xml" % (path, task_id, set_name)
                     filenames.append((rankingfile, editingfile, fixedfile))
+                    found = True
                     break
+            if not found :
+                print "Didn't find a match for " , editingfile
         except:
-            print editingfile
+            print "error matching" , editingfile
             pass
+    
+    if len(filenames) < len(editingfiles):
+        print "Didn't match everythin", len(filenames) , len(editingfiles)
         
     for (rankingfile, editingfile, fixedfile) in filenames:
         fix(rankingfile, editingfile, fixedfile)
