@@ -24,7 +24,7 @@ class XmlReader(GenericXmlReader):
 
     
     def get_tags(self):
-        TAG = JcmlFormat.get_tags()
+        TAG = JcmlFormat().get_tags()
         return TAG
         
     
