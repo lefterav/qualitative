@@ -33,12 +33,12 @@ if __name__ == '__main__':
         print "writing"
         XmlWriter(dataset).write_to_file(jcmlfilename)
     
-    bpfile_en = sourcefilename.replace("jcml", "bp.en.jcml")
+    bpfile_en = jcmlfilename.replace("jcml", "bp.en.jcml")
     if step == 1:
         print "English parser features"
         exp.add_b_features_batch(jcmlfilename, bpfile_en, "http://blade-1.dfki.uni-sb.de:8682", "en")
 
-    bpfile_fr = sourcefilename.replace("jcml", "bp.fr.jcml")
+    bpfile_fr = jcmlfilename.replace("jcml", "bp.fr.jcml")
     if step == 2:
         print "French parser features"
         exp.add_b_features_batch(jcmlfilename, bpfile_fr, "http://blade-1.dfki.uni-sb.de:8683", "fr")
