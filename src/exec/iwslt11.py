@@ -28,7 +28,7 @@ if __name__ == '__main__':
     
     if step == 0:
         
-        targetfiles = ["%s,%s" % (targetdir, filename) for filename in os.listdir (targetdir) if filename.endswith(extension)]
+        targetfiles = ["%s/%s" % (targetdir, filename) for filename in os.listdir (targetdir) if filename.endswith(extension)]
         dataset = LineReader(sourcefilename, targetfiles, langpair, testset, pattern_name).get_dataset()
         print "writing"
         XmlWriter(dataset).write_to_file(jcmlfilename)
