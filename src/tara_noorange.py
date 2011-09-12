@@ -17,8 +17,7 @@ import pickle
 
 from sentence.dataset import DataSet
 
-from io.input.orangereader import OrangeData
-from io.output.xmlwriter import XmlWriter
+
 
 
 from io.saxjcml import SaxJCMLProcessor
@@ -167,6 +166,9 @@ class Experiment:
 #                            }
     
     def split_corpus(self, filename, filename_train, filename_test, proportion=0.1):
+        
+        from io.input.orangereader import OrangeData
+        
         #filename = os.getenv("HOME") + "/taraxu_data/wmt08-humaneval-data/wmt08_human_binary.jcml"
         class_name = "rank"
         
@@ -377,6 +379,7 @@ class Experiment:
         
     
     def train_classifiers(self, filenames):
+        from io.input.orangereader import OrangeData
         from classifier.bayes import Bayes
         from classifier.tree import TreeLearner
         from classifier.svm import SVM
@@ -495,6 +498,7 @@ class Experiment:
     
     
     def test_classifiers(self, classifiers, filename, filename_out):
+        from io.input.orangereader import OrangeData
         from classifier.bayes import Bayes
         from classifier.tree import TreeLearner
         from classifier.svm import SVM
