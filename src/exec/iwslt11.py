@@ -11,7 +11,7 @@ import sys
 import re
 
 if __name__ == '__main__':
-    step = int(sys.argv[0])
+    step = int(sys.argv[1])
     mydir = "/share/taraxu/selection-mechanism/iwslt11"
     targetdir = "/share/taraxu/vilar/iwslt11/ibm1/hyps"
     extension = ".hyp"
