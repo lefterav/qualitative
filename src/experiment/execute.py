@@ -19,33 +19,41 @@ if __name__ == '__main__':
     tgt_berkeleyserver = ""
     
     
+    experiment = Experiment()
+    experiment.input = "/home/elav01/taraxu_data/tmp.exp/wmt09.jcml"
     
-    training = Phase()
-    training.name = "training"
     
-    tgt_ngram = SerialTask()
-    tgt_ngram.name = "tgt_ngram"
-    from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
-    tgt_ngram.processors = [SRILMngramGenerator(tgt_srilmserver, tgt_language)]
+    #===========================================================================
+    # Preprocessing
+    #===========================================================================
+    preprocessing = Phase()
+    preprocessing.name = "generating primary features"
+#    tgt_ngram = SerialTask()
+#    tgt_ngram.name = "tgt_ngram"
+#    from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
+#    tgt_ngram.processors = [SRILMngramGenerator(tgt_srilmserver, tgt_language)]
     
-    src_berkeley = SerialTask()
-    src_berkeley = "src_berkeley"
-    from featuregenerator.parser.berkeley.berkeleyclient import BerkeleyFeatureGenerator        
-    src_berkeley.processors = [BerkeleyFeatureGenerator(src_berkeleyserver, src_language)]
-    
-    tgt_berkeley = SerialTask()
-    tgt_berkeley = "tgt_berkeley"
-    tgt_berkeley.processors = [BerkeleyFeatureGenerator(tgt_berkeleyserver, tgt_language)]
-    
+#    src_berkeley = SerialTask()
+#    src_berkeley.name = "src_berkeley"
+#    from featuregenerator.parser.berkeley.berkeleyclient import BerkeleyFeatureGenerator        
+#    src_berkeley.processors = [BerkeleyFeatureGenerator(src_berkeleyserver, src_language)]
+#    
+#    tgt_berkeley = SerialTask()
+#    tgt_berkeley.name = "tgt_berkeley"
+#    tgt_berkeley.processors = [BerkeleyFeatureGenerator(tgt_berkeleyserver, tgt_language)]
+#    
     analyzefeatures = SerialTask()
     analyzefeatures.name = "analyze_features"
-    analyzefeatures.required = [src_berkeley, tgt_berkeley]
+    #analyzefeatures.required = [src_berkeley, tgt_berkeley]
     
     from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
     from featuregenerator.parser.berkeley.parsermatches import ParserMatches
     from featuregenerator.ratio_generator import RatioGenerator
 
-    analyzefeatures.processors = [LengthFeatureGenerator(), ParserMatches(), RatioGenerator()]
+    analyzefeatures.processors = [LengthFeatureGenerator()]
 
    
-    training.tasks = [tgt_ngram, src_berkeley, tgt_berkeley, analyzefeatures]   
+    preprocessing.tasks = [analyzefeatures]   
+    
+    experiment.phases = [preprocessing]
+    experiment.run()

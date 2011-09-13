@@ -18,6 +18,7 @@ class Task(object):
     input = ""
     output = ""
     completed = False
+    file_extension = ""
 
     name = ""
     processors = []
@@ -26,10 +27,21 @@ class Task(object):
     
     def __init__(self, processors = []):
         self.processors = processors
+        
 #        for processor in processors:
 #            self.required.extend(processor.required())
 #            self.offered.extend(processor.offered())
+
+
     
+    def is_ready(self):
+        is_ready = True
+        for requirement in self.required:
+            if not requirement.completed:
+                is_ready = False
+        return is_ready
+    
+
     
 
 
@@ -43,14 +55,16 @@ class SerialTask(Task):
     
 
     def run(self):
+        self.output = self.input.replace("jcml", "%s.jcml"%self.file_extension) 
         input_file_object = open(self.input, 'r')
         output_file_object = open(self.output, 'w')
-        saxreader = (output_file_object, self.processors)
+        saxreader = self.saxprocessor(output_file_object, self.processors)
         myparser = make_parser()
         myparser.setContentHandler(saxreader)
         myparser.parse(input_file_object)
         input_file_object.close()
         output_file_object.close()
+        self.completed = True
         #raise Exception("Unimplemented abstract method")
         
 
@@ -66,6 +80,7 @@ class AccumulativeTask(Task):
     writer = XmlWriter   
     
     def run(self):
+        self.output = self.input.replace("jcml", "%s.jcml"%self.file_extension) 
         #initialize all-in-once reader and writer
         filereader = self.reader(self.input)
         dataset = filereader.get_dataset()
@@ -75,15 +90,17 @@ class AccumulativeTask(Task):
         if self.output:
             filewriter = self.writer(dataset)
             filewriter.write_to_file(self.output)
-
+        self.completed = True
 
 class GenerativeTask(Task):
     reader = JcmlReader
     
     def run(self):
+        self.output = self.input.replace("jcml", "%s.jcml"%self.file_extension) 
         filereader = self.reader(self.input)
         dataset = filereader.get_dataset()
         results = [processor.process_dataset(dataset) for processor in self.processors]
+        self.completed = True
         return results
     
     
