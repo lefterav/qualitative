@@ -54,7 +54,7 @@ if __name__ == '__main__':
         lmfile_en = jcmlfilename.replace("jcml", "lm.en.jcml")
         if step == 4:
             print "English LM features"
-            exp.add_ngram_features_batch(jcmlfilename, lmfile_en, "http://percival.dfki.uni-sb.de:8586", "en")
+            exp.add_ngram_features_batch(jcmlfilename, lmfile_en, "http://percival.dfki.uni-sb.de:8584", "en")
         merged_jcml = jcmlfilename.replace("jcml", "ef.jcml")
         if step == 10:
             print "Getting things together"
