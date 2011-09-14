@@ -281,7 +281,7 @@ class Experiment:
     
     
     
-    def add_ngram_features_batch(self, filename, filename_out, server, language, format=None):
+    def add_ngram_features_batch(self, filename, filename_out, server, language, format=None, lowercase=True, tokenize = True):
         if format == "taraxu":
             reader = TaraXUReader(filename)
         else:
@@ -289,7 +289,7 @@ class Experiment:
         parallelsentences = reader.get_parallelsentences()
         reader = None
         from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
-        srilm_ngram_en = SRILMngramGenerator(server, language)
+        srilm_ngram_en = SRILMngramGenerator(server, language, lowercase, tokenize)
         processed_parallelsentences = srilm_ngram_en.add_features_batch(parallelsentences)
         writer = XmlWriter(processed_parallelsentences)
         writer.write_to_file(filename_out)
