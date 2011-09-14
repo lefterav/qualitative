@@ -64,7 +64,7 @@ if __name__ == '__main__':
             for appended_file in tobermerged[1:]:
                 appended_dataset = JcmlReader(appended_file).get_dataset()
                 original_dataset.merge_dataset(appended_dataset)
-            XmlWriter(appended_dataset).write_to_file(merged_jcml)
+            XmlWriter(original_dataset).write_to_file(merged_jcml)
                 
         exfile = jcmlfilename.replace("jcml", "if.jcml")
         if step == 11:
@@ -73,6 +73,5 @@ if __name__ == '__main__':
             exp.analyze_external_features(merged_jcml, exfile) 
     
 
-    
     
     
