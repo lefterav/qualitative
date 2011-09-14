@@ -20,8 +20,9 @@ class Phase(object):
         '''
     
     def run(self):
+        
 #        raise Exception("Unimplemented abstract method")
-        torun = [self.tasks[i] for i in range(len(self.tasks)) if self.tasks[i].is_ready()]
+        torun = [task for task in self.tasks if task.is_ready() and not task.completed]
         
         while torun:
             for task in torun:
@@ -29,7 +30,7 @@ class Phase(object):
                 task.input = self.input
                 task.run()
                 self.output = task.output
-            torun = [self.tasks[i] for i in range(len(self.tasks)) if self.tasks[i].is_ready()]
+            torun = [task for task in self.tasks if task.is_ready() and not task.completed]
             
         self.completed = True
             

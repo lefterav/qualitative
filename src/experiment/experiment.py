@@ -21,11 +21,11 @@ class Experiment(object):
 
     def run(self):  
         output = self.input
-        for i in range (len(self.phases)):
+        for phase in self.phases:
 #        for phase in self.phases:
-            self.phases[i].input = output
-            self.phases[i].run()
-            output = self.phases[i].output
+            phase.input = output
+            phase.run()
+            output = phase.output
         
         self.completed = True
         

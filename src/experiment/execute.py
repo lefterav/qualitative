@@ -44,6 +44,7 @@ if __name__ == '__main__':
 #    
     analyzefeatures = SerialTask()
     analyzefeatures.name = "analyze_features"
+    analyzefeatures.file_extension = "ef"
     #analyzefeatures.required = [src_berkeley, tgt_berkeley]
     
     from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
