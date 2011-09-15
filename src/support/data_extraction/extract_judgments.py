@@ -31,7 +31,12 @@ class WMTEvalReader:
         fieldnames = config.get("format","fieldnames").split(',')
         csvfilename = "%s/%s" % (config.get("data", "path"), config.get("data", "filename"))
         csvfile = open(csvfilename, 'r')
-        self.reader =  csv.DictReader(csvfile, fieldnames, None, None, config.get("format","dialect"))
+        try:
+            dialect = config.get("format","dialect")
+        except:
+            dialect = "excel"
+
+        self.reader =  csv.DictReader(csvfile, fieldnames, None, None, dialect)
         self.systems_num = config.getint("format","systems_num")
         
 
@@ -121,7 +126,11 @@ class WMTEvalReader:
         system_indexing_base = self.config.getint("format","system_indexing_base")
         for i in range(system_indexing_base, self.systems_num + system_indexing_base):
             system_id = row["system%dId" % i]
-            if system_id: #avoid rows with less than n systems
+            try:
+                filtered_system_ids = self.config.options("filter_systems")
+            except:
+                filtered_system_ids = []
+            if system_id and system_id not in filtered_system_ids: #avoid rows with less than n systems
                 attributes = {"system": system_id, 
                           "rank": row["system%drank" % i] }
                 translation_string = self.extract_translation(system_id, row["srclang"], row["trglang"], row["srcIndex"], row["testset"])
@@ -191,6 +200,7 @@ class WMTEvalReader:
                 system_names.append(row["system%dId" % i] )
             except:
                 sys.stderr.write("Could not parse system Id %d\n" % i)
+        return system_names
         
             
     def get_task_data(self, row):
