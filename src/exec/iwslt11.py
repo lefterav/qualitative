@@ -14,7 +14,7 @@ import re
 if __name__ == '__main__':
     step_start = int(sys.argv[2])
     step_end = int(sys.argv[3])
-    mydir = "/share/taraxu/selection-mechanism/iwslt11"
+    mydir = "/share/taraxu/selection-mechanism/iwslt11/"
     targetdir = "/share/taraxu/vilar/iwslt11/ibm1/hyps"
     extension = ".hyp"
     
@@ -25,7 +25,10 @@ if __name__ == '__main__':
     sourcefilename = sys.argv[1] 
     #"/share/taraxu/vilar/iwslt11/data/preproc/devsets/IWSLT11.TALK.tst2010.en-fr.en.fc"
     sourcefilenamename_nopath = re.findall("([^/]*)$", sourcefilename)[0]
-    jcmlfilename = "%s/%s.jcml" % (mydir, sourcefilenamename_nopath)
+    if not sourcefilenamename_nopath.endswith("jcml"):
+        jcmlfilename = "%s/%s.jcml" % (mydir, sourcefilenamename_nopath)
+    else:
+        jcmlfilename = sourcefilename
     
     exp = Experiment()
     
