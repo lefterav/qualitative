@@ -61,14 +61,17 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
     
     def prepare_sentence(self, simplesentence):
         sent_string = simplesentence.get_string().strip()
-        if self.lowercase:
-            sent_string = sent_string.lower()
-        if self.tokenize:
-            sent_string = sent_string.replace('%',' %') #TODO: this is an issue
-            tokenized_string = PunktWordTokenizer().tokenize(sent_string)
-            sent_string = ' '.join(tokenized_string)
+        if self.freqcaser:
+            tokenized_string = self.freqcaser.freqcase(sent_string)
         else:
-            tokenized_string = sent_string.split(' ')
+            if self.lowercase:
+                sent_string = sent_string.lower()
+            if self.tokenize:
+                sent_string = sent_string.replace('%',' %') #TODO: this is an issue
+                tokenized_string = PunktWordTokenizer().tokenize(sent_string)
+                sent_string = ' '.join(tokenized_string)
+            else:
+                tokenized_string = sent_string.split(' ')
         
         #for i in range(len(tokenized_string)):
         #    tokenized_string[i] = base64.standard_b64encode(tokenized_string[i])
