@@ -1,3 +1,7 @@
+'''
+@author: Eleftherios Avramidis
+'''
+
 import csv
 import ConfigParser
 import os
