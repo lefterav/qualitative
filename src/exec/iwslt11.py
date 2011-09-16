@@ -75,7 +75,7 @@ if __name__ == '__main__':
             print "final features"
             
             exp.analyze_external_features(merged_jcml, exfile, ("en", "fr")) 
-    
+print "Done!" 
 
     
     
