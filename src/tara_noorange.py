@@ -336,7 +336,7 @@ class Experiment:
         input_file_object.close
         output_input_file_object.close()
     
-    def analyze_external_features(self, filename, filename_out):
+    def analyze_external_features(self, filename, filename_out, langpair = ("de","en")):
         from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
         from featuregenerator.parser.berkeley.parsermatches import ParserMatches
 #        from featuregenerator.lm.srilm.srilmclient import SRILMFeatureGenerator
@@ -349,7 +349,7 @@ class Experiment:
                 
         #srilm_de = SRILMFeatureGenerator("http://134.96.187.4:8586", "de" )
         #srilm_ngram_de = SRILMngramGenerator("http://134.96.187.4:8585", "de" )
-        parsematches = ParserMatches()
+        parsematches = ParserMatches(langpair)
         ratio_generator = RatioGenerator()
         lfg = LengthFeatureGenerator()  
         featuregenerators = [lfg, parsematches, ratio_generator]

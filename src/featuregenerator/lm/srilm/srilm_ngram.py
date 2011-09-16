@@ -3,7 +3,7 @@ import xmlrpclib
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 from nltk.tokenize.punkt import PunktWordTokenizer
 import sys
-
+from util.freqcaser import FreqCaser
 
 
 
@@ -13,7 +13,7 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
     Gets all the words of a sentence through a SRILM language model and counts how many of them are unknown (unigram prob -99) 
     '''
     
-    def __init__(self, url, lang="en", lowercase=True, tokenize=True):
+    def __init__(self, url, lang="en", lowercase=True, tokenize=True, freqcase_file=False):
         '''
         Define connection with the server
         '''
@@ -21,7 +21,9 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
         self.lang = lang
         self.lowercase = lowercase
         self.tokenize = tokenize
-        
+        self.freqcaser = None
+        if freqcase_file:
+            self.freqcaser = FreqCaser(freqcase_file)
     
     def get_features_src(self, simplesentence, parallelsentence):
         atts = {}
@@ -41,14 +43,17 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
     
     def __prepare_sentence__(self, simplesentence):
         sent_string = simplesentence.get_string().strip()
-        if self.lowercase:
-            sent_string = sent_string.lower()
-        if self.tokenize:
-            sent_string = sent_string.replace('%',' %') #TODO: this is an issue
-            tokenized_string = PunktWordTokenizer().tokenize(sent_string)
-            sent_string = ' '.join(tokenized_string)
+        if self.freqcaser:
+            tokenized_string = self.freqcaser.freqcase(sent_string)
         else:
-            tokenized_string = sent_string.split(' ')
+            if self.lowercase:
+                sent_string = sent_string.lower()
+            if self.tokenize:
+                sent_string = sent_string.replace('%',' %') #TODO: this is an issue
+                tokenized_string = PunktWordTokenizer().tokenize(sent_string)
+                sent_string = ' '.join(tokenized_string)
+            else:
+                tokenized_string = sent_string.split(' ')
             
         
         return (tokenized_string, sent_string)

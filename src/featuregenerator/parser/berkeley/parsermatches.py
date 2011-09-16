@@ -12,19 +12,30 @@ class ParserMatches(LanguageFeatureGenerator):
     '''
     classdocs
     '''
-    mappings=[(["NP"], ["NP"]),
+    mapping = {}
+    mapping[("de,en")] = [(["NP"], ["NP"]),
               (["VP", "VZ"], ["VP"]),
               (["VVFIN", "VAFIN",  "VMFIN", "VAINF", "VVINF" ,"VVPP" ], ["VB", "VBZ", "VBP", "VBN", "VBG" ]),
               (["NN", "NE"], ["NN", "NNP", "NNS"]),
               (["PP"], ["PP"]),
               (["$."], ["."]),
               (["$,"], [","])]
+    
+    mapping[("en,fr")] = [(["NP"], ["NP"]),
+              (["VP"], ["VN", "VP", "VPinf", ]),
+              (["VB", "VBZ", "VBP", "VBN", "VBG" ], ["V"]),
+              (["NN", "NNP", "NNS"], ["N"] ),
+              (["PP"], ["PP"]),
+              (["$."], ["."]),
+              (["$,"], [","])]
+    
 
 
-    def __init__(self, params=[]):
+    def __init__(self, langpair=("de,en")):
         '''
         Constructor
         '''
+        self.mappings = self.mapping(langpair)
     
     def __count_nodetags__(self, treestring="", taglist=[]):
         match_count = 0
