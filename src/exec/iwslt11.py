@@ -41,25 +41,25 @@ if __name__ == '__main__':
             XmlWriter(dataset).write_to_file(jcmlfilename)
         
         bpfile_en = jcmlfilename.replace("jcml", "bp.en.jcml")
-        if step == 1:
+        if step == 10:
             print "English parser features"
             exp.add_b_features_batch(jcmlfilename, bpfile_en, "http://blade-1.dfki.uni-sb.de:8682", "en")
     
         bpfile_fr = jcmlfilename.replace("jcml", "bp.fr.jcml")
-        if step == 2:
+        if step == 20:
             print "French parser features"
             exp.add_b_features_batch(jcmlfilename, bpfile_fr, "http://blade-1.dfki.uni-sb.de:8683", "fr")
             
         lmfile_fr = jcmlfilename.replace("jcml", "lm.fr.jcml") 
-        if step == 3:
+        if step == 30:
             print "French LM features"
-            exp.add_ngram_features_batch(jcmlfilename, lmfile_fr, "http://percival.dfki.uni-sb.de:8585", "fr", None, False)
+            exp.add_ngram_features_batch(jcmlfilename, lmfile_fr, "http://percival.dfki.uni-sb.de:8585", "fr", None, False, )
         lmfile_en = jcmlfilename.replace("jcml", "lm.en.jcml")
-        if step == 4:
+        if step == 40:
             print "English LM features"
             exp.add_ngram_features_batch(jcmlfilename, lmfile_en, "http://percival.dfki.uni-sb.de:8584", "en")
         merged_jcml = jcmlfilename.replace("jcml", "ef.jcml")
-        if step == 10:
+        if step == 100:
             print "Getting things together"
             tobermerged = [bpfile_en, bpfile_fr, lmfile_fr, lmfile_en]
             original_file = tobermerged[0]
@@ -70,7 +70,7 @@ if __name__ == '__main__':
             XmlWriter(original_dataset).write_to_file(merged_jcml)
                 
         exfile = jcmlfilename.replace("jcml", "if.jcml")
-        if step == 11:
+        if step == 110:
             print "final features"
             
             exp.analyze_external_features(merged_jcml, exfile) 
