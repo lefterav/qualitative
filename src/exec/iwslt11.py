@@ -53,7 +53,8 @@ if __name__ == '__main__':
         lmfile_fr = jcmlfilename.replace("jcml", "lm.fr.jcml") 
         if step == 30:
             print "French LM features"
-            exp.add_ngram_features_batch(jcmlfilename, lmfile_fr, "http://percival.dfki.uni-sb.de:8585", "fr", None, False, )
+            freqcase_file = "/share/taraxu/vilar/iwslt11/data/preproc/un.en-fr/training.fr"
+            exp.add_ngram_features_batch(jcmlfilename, lmfile_fr, "http://percival.dfki.uni-sb.de:8585", "fr", None, False, freqcase_file)
         lmfile_en = jcmlfilename.replace("jcml", "lm.en.jcml")
         if step == 40:
             print "English LM features"
