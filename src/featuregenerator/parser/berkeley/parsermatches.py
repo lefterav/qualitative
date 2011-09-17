@@ -22,7 +22,7 @@ class ParserMatches(LanguageFeatureGenerator):
               (["$,"], [","])]
     
     mapping[("en","fr")] = [(["S"], ["SENT", "Sint"]),
-              (["SBAR"], ["Srel", "Ssub"])
+              (["SBAR"], ["Srel", "Ssub"]),
               (["NP"], ["NP"]),
               (["VP"], [ "VP", "VN", "VPinf", ]),
               (["VB", "VBZ", "VBP", "VBN", "VBG" ], ["V"]),
@@ -57,6 +57,7 @@ class ParserMatches(LanguageFeatureGenerator):
             src_map_count = self.__count_nodetags__(src_parse, src_map)
             src_label = self.__canonicalize__(src_map[0])
             attributes["parse-%s" % src_label] = str(src_map_count)
+            print "adding attribute" , "parse-%s" % src_label , "=" ,str(src_map_count)
     
         return attributes
             
