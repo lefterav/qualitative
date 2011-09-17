@@ -67,7 +67,7 @@ if __name__ == '__main__':
             original_dataset = JcmlReader(original_file).get_dataset()
             for appended_file in tobermerged[1:]:
                 appended_dataset = JcmlReader(appended_file).get_dataset()
-                original_dataset.merge_dataset(appended_dataset)
+                original_dataset.merge_dataset_symmetrical(appended_dataset)
             XmlWriter(original_dataset).write_to_file(merged_jcml)
                 
         exfile = jcmlfilename.replace("jcml", "if.jcml")
