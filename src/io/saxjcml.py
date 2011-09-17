@@ -156,7 +156,7 @@ class SaxJCMLProcessor(XMLGenerator):
                 #parallelsentence.add_attributes( fg.get_features_parallelsentence(parallelsentence) )
             
             #print parallelsentence
-            src = self.src
+            src = parallelsentence.get_source()
 #            #print src.get_string()
 #            for fg in self.feature_generators:
 #                src = fg.add_features_src(src, parallelsentence)
