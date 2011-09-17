@@ -95,7 +95,7 @@ class DataSet(object):
     
     def merge_dataset_symmetrical(self, dataset_for_merging_with, attribute_replacements = {"rank": "predicted_rank"}):
         incoming_parallelsentences = dataset_for_merging_with.get_parallelsentences()
-        if len(self.ps) != len(incoming_parallelsentences):
+        if len(self.parallelsentences) != len(incoming_parallelsentences):
             print "error, datasets not symmetrical"
         else:
             for i in range(len(self.parallelsentences)):
