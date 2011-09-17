@@ -91,7 +91,17 @@ class DataSet(object):
             except:
                 print "Didn't find key while merging"
                 pass
-           
+            
+    
+    def merge_dataset_symmetrical(self, dataset_for_merging_with, attribute_replacements = {"rank": "predicted_rank"}):
+        incoming_parallelsentences = dataset_for_merging_with.get_parallelsentences()
+        if len(self.ps) != len(incoming_parallelsentences):
+            print "error, datasets not symmetrical"
+        else:
+            for i in range(len(self.parallelsentences)):
+                incoming_ps = incoming_parallelsentences[i]
+                self.parallelsentences[i].merge_parallelsentence(incoming_ps, attribute_replacements)
+               
             
             
             

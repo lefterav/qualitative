@@ -22,7 +22,7 @@ class ParserMatches(LanguageFeatureGenerator):
               (["$,"], [","])]
     
     mapping[("en","fr")] = [(["NP"], ["NP"]),
-              (["VP"], ["VN", "VP", "VPinf", ]),
+              (["VP"], [ "VP", "VN", "VPinf", ]),
               (["VB", "VBZ", "VBP", "VBN", "VBG" ], ["V"]),
               (["NN", "NNP", "NNS"], ["N"] ),
               (["PP"], ["PP"]),
@@ -73,7 +73,7 @@ class ParserMatches(LanguageFeatureGenerator):
                 #src_label = self.__canonicalize__(src_map[0])
                 #src_map_count = int(parallelsentence.get_source().get_attribute("parse-%s" % src_label))
                 tgt_map_count = self.__count_nodetags__(tgt_parse, tgt_map)
-                tgt_label = self.__canonicalize__(tgt_map[0])
+                tgt_label = self.__canonicalize__(src_map[0])
                 attributes["parse-%s" % tgt_label] = str(tgt_map_count)
 #                if tgt_map_count != 0:
 #                    attributes["parse-%s_ratio" % tgt_label] = str(1.0 * src_map_count / tgt_map_count)
