@@ -21,7 +21,9 @@ class ParserMatches(LanguageFeatureGenerator):
               (["$."], ["."]),
               (["$,"], [","])]
     
-    mapping[("en","fr")] = [(["NP"], ["NP"]),
+    mapping[("en","fr")] = [(["S"], ["SENT", "Sint"]),
+              (["SBAR"], ["Srel", "Ssub"])
+              (["NP"], ["NP"]),
               (["VP"], [ "VP", "VN", "VPinf", ]),
               (["VB", "VBZ", "VBP", "VBN", "VBG" ], ["V"]),
               (["NN", "NNP", "NNS"], ["N"] ),
@@ -48,12 +50,14 @@ class ParserMatches(LanguageFeatureGenerator):
         attributes = {}
         try:
             src_parse = simplesentence.get_attribute("berkeley-tree")
-            for (src_map, tgt_map) in self.mappings:
-                src_map_count = self.__count_nodetags__(src_parse, src_map)
-                src_label = self.__canonicalize__(src_map[0])
-                attributes["parse-%s" % src_label] = str(src_map_count)
         except:
-            pass
+            print "error reading berkeley tree"
+            return {}
+        for (src_map, tgt_map) in self.mappings:
+            src_map_count = self.__count_nodetags__(src_parse, src_map)
+            src_label = self.__canonicalize__(src_map[0])
+            attributes["parse-%s" % src_label] = str(src_map_count)
+    
         return attributes
             
             
