@@ -99,7 +99,7 @@ class FeatureGenerator():
         Features that describe source or target sentence etc should be added in functions get_features_src and get_features_tgt declared below. 
         Implementation here provides an empty dictionary, in case subclassed feature generator doesn't provide any features.
         """
-        stderr.write("Featuregenerator of type %s doesn't provide global ParallelSentence features\n" % self.__class__.__name__)
+        #stderr.write("Featuregenerator of type %s doesn't provide global ParallelSentence features\n" % self.__class__.__name__)
         return {}
     
     def get_features_src(self, simplesentence, parallelsentence):
@@ -139,7 +139,7 @@ class FeatureGenerator():
         """
         parallelsentences = dataset.get_parallelsentences()
         #parallelsentences = [self.add_features_parallelsentence(parallelsentence) for parallelsentence in parallelsentences]
-        self.add_features_batch(parallelsentences)
+        parallelsentences = self.add_features_batch(parallelsentences)
         print ".",
         return DataSet(parallelsentences)
     

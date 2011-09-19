@@ -7,6 +7,7 @@ from io.input.linereader import LineReader
 from io.input.jcmlreader import JcmlReader
 from io.output.xmlwriter import XmlWriter
 from tara_noorange import Experiment
+from featuregenerator.ibm1featuregenerator import Ibm1FeatureGenerator
 import os
 import sys
 import re
@@ -14,8 +15,9 @@ import re
 if __name__ == '__main__':
     step_start = int(sys.argv[2])
     step_end = int(sys.argv[3])
-    mydir = "/share/taraxu/selection-mechanism/iwslt11/"
-    targetdir = "/share/taraxu/vilar/iwslt11/ibm1/hyps"
+    mydir = "/home/elav01/taraxu_data/tmp"
+    #mydir = "/share/taraxu/selection-mechanism/iwslt11/"
+    targetdir = "/share/taraxu/vilar/iwslt11/splitHyps/hyps"
     extension = ".hyp"
     
     testset = "iwslt-tst2010"
@@ -59,10 +61,17 @@ if __name__ == '__main__':
         if step == 40:
             print "English LM features"
             exp.add_ngram_features_batch(jcmlfilename, lmfile_en, "http://percival.dfki.uni-sb.de:8584", "en")
+        ibm1file = jcmlfilename.replace("jcml", "ibm.jcml")
+        if step == 50:
+            print "IBM Model 1 features"
+            ibm1lexicon = "/home/lefterav/taraxu_data/tmp/parallel-TED.tags.lexicon"
+            dataset = JcmlReader(jcmlfilename).get_dataset()
+            dataset = Ibm1FeatureGenerator(ibm1lexicon).add_features_dataset(dataset)
+            XmlWriter(dataset).write_to_file(ibm1file)
         merged_jcml = jcmlfilename.replace("jcml", "ef.jcml")
         if step == 100:
             print "Getting things together"
-            tobermerged = [bpfile_en, bpfile_fr, lmfile_fr, lmfile_en]
+            tobermerged = [bpfile_en, bpfile_fr, lmfile_fr, lmfile_en, ibm1file]
             original_file = tobermerged[0]
             original_dataset = JcmlReader(original_file).get_dataset()
             for appended_file in tobermerged[1:]:
