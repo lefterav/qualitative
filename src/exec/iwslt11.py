@@ -45,12 +45,12 @@ if __name__ == '__main__':
         bpfile_en = jcmlfilename.replace("jcml", "bp.en.jcml")
         if step == 10:
             print "English parser features"
-            exp.add_b_features_batch(jcmlfilename, bpfile_en, "http://blade-1.dfki.uni-sb.de:8682", "en")
+            exp.add_b_features_batch(jcmlfilename, bpfile_en, "http://percival.dfki.uni-sb.de:8682", "en")
     
         bpfile_fr = jcmlfilename.replace("jcml", "bp.fr.jcml")
         if step == 20:
             print "French parser features"
-            exp.add_b_features_batch(jcmlfilename, bpfile_fr, "http://blade-1.dfki.uni-sb.de:8683", "fr")
+            exp.add_b_features_batch(jcmlfilename, bpfile_fr, "http://percival.dfki.uni-sb.de:8683", "fr")
             
         lmfile_fr = jcmlfilename.replace("jcml", "lm.fr.jcml") 
         if step == 30:
@@ -64,7 +64,7 @@ if __name__ == '__main__':
         ibm1file = jcmlfilename.replace("jcml", "ibm.jcml")
         if step == 50:
             print "IBM Model 1 features"
-            ibm1lexicon = "/home/lefterav/taraxu_data/tmp/parallel-TED.tags.lexicon"
+            ibm1lexicon = "/share/taraxu/vilar/iwslt11/ibm1/parallel-TED.tags.lexicon"
             dataset = JcmlReader(jcmlfilename).get_dataset()
             dataset = Ibm1FeatureGenerator(ibm1lexicon).add_features_dataset(dataset)
             XmlWriter(dataset).write_to_file(ibm1file)
