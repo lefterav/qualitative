@@ -11,8 +11,8 @@ clear, we also include Levenshtein difference (lev-dif) with the next possible
 system. I.e. lev-dif of 1 may have led to a slightly uncertain selection.
 
 USAGE: 
-from ... import fix_dirs
-fix_dirs(["/path/to/directory1", "/path/to/directory2" ])
+export PYTHONPATH=:/home/elav01/tools/TaraXUscripts/src:/home/elav01/tools/TaraXUscripts/src
+/home/elav01/tools/TaraXUscripts/src/support/evaluation/fixpostediting.py /share/taraxu/jul11-r1-results/editing /share/taraxu/jul11-r1-results/ranking
 
 specify the directories where ranking.xml and editing.xml files reside. 
 
