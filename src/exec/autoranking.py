@@ -236,10 +236,15 @@ class AutoRankingExperiment(object):
                 output.append("\t")
                 output.append(str(kendalltau))
                 
+                bestfound = scoringset.selectbest_accuracy("rank", "orig_rank") 
+                
                 #parallelsentences = classified_data.get_dataset().get_parallelsentences()
                 output.append("\t")
                 #output.append(str(acc))
                 output.append(str(taukendal[0]))
+                output.append("\t")
+                output.append(str(bestfound))
+                
                 output.append(" | ")
             output.append("\n")
         print "".join(output)
