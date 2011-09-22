@@ -22,26 +22,28 @@ class OrangeData:
         Handles the conversion of the generic data objects to a format handled by Orange library
     """
     
-    def __init__ (self, dataSet, class_name="", desired_attributes=[], meta_attributes=[], keep_temp=False):
+    def __init__ (self, dataSet, class_name="", desired_attributes=[], meta_attributes=[], chosen_orangefilename=False, avoidstrings=False):
         if isinstance ( dataSet , orange.ExampleTable ):
             self.data = dataSet
             
         elif isinstance ( dataSet , sentence.dataset.DataSet ):
-            
+            self.avoidstrings = avoidstrings #this is to prevent buggy utf8 exporting when non-ascii characters contained in strings
+            print "desired attributes" , desired_attributes
+            print "meta attributes" , meta_attributes
             #get the data in Orange file format
             fileData = self.__getOrangeFormat__(dataSet, class_name, desired_attributes, meta_attributes)
             
             #write the data in a temporary file
             #not secure but we trust our hard disk
-            tmpFileName = self.__writeTempFile__(fileData)
+            orangefilename = self.__writeTempFile__(fileData, chosen_orangefilename)
 
             #load the data
             print "Feeding file to Orange"
-            self.data = orange.ExampleTable(tmpFileName)
-            print "Loaded ", len(self.data) , " sentences from file " , tmpFileName
+            self.data = orange.ExampleTable(orangefilename)
+            print "Loaded ", len(self.data) , " sentences from file " , orangefilename
             #get rid of the temp file
-            if not keep_temp:
-                os.unlink(tmpFileName)
+            if not chosen_orangefilename:
+                os.unlink(orangefilename)
         return None
     
     
@@ -176,14 +178,14 @@ class OrangeData:
         
 
     
-    def __writeTempFile__(self, data):
-        
-        tmpFileName = mktemp(dir=u'.', suffix=u'.tab')
-        file_object = open(tmpFileName, 'w')
+    def __writeTempFile__(self, data, orangefilename):
+        if not orangefilename:
+            orangefilename = mktemp(dir=u'.', suffix=u'.tab')
+        file_object = open(orangefilename, 'w')
         file_object.write(data)
         file_object.close()  
         
-        return tmpFileName
+        return orangefilename
         
     
     def __get_orange_header__(self, dataset, class_name, attribute_names, desired_attributes=[], meta_attributes=[]):
@@ -197,6 +199,7 @@ class OrangeData:
         if desired_attributes == []:
             desired_attributes = attribute_names
         
+        
         #if no desired attribute define, get all of them
         #if not desired_attributes:
         #    desired_attributes =  attribute_names
@@ -205,6 +208,7 @@ class OrangeData:
         #prepare heading
         for attribute_name in attribute_names :
             #line 1 holds just the names
+            attribute_name = str(attribute_name)
             line_1 += attribute_name +"\t"
             
             #TODO: find a way to define continuous and discrete arg
@@ -221,6 +225,7 @@ class OrangeData:
             if attribute_name == class_name:
                 line_3 = line_3 + "c"
             elif attribute_name not in desired_attributes or attribute_name in meta_attributes:
+                print attribute_name , "= meta"
                 line_3 = line_3 + "m"
             line_3 = line_3 + "\t"
         

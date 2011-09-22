@@ -5,6 +5,7 @@ Created on May 6, 2011
 '''
 from orange import BayesLearner
 from orange import SVMLearner
+from orngSVM import SVMLearnerEasy
 from orngTree import TreeLearner
 from orngLR import LogRegLearner
 from orange import kNNLearner
@@ -28,7 +29,7 @@ class AutoRankingExperiment(object):
         '''
         Constructor
         '''
-        self.classifiers = [BayesLearner, SVMLearner, TreeLearner, LogRegLearner, kNNLearner]
+        self.classifiers = [BayesLearner, SVMLearnerEasy, TreeLearner, LogRegLearner, kNNLearner]
         self.attribute_sets = []
         self.training_filenames = None
         self.test_filename = None
@@ -49,6 +50,10 @@ class AutoRankingExperiment(object):
         except:
             self.output_filename = None
         self.class_name = config.get("training", "class_name")
+        try:
+            self.orangefile = config.get("training", "orange_files_dir")
+        except:
+            self.orangefile = "."
         self.meta_attribute_names = config.get("training", "meta_attributes").split(",")
         self.desired_classifiers = config.get("training", "classifiers").split(",")
         if "pairwise" in config.items("training") :  #TODO: this does not work, don't set false
@@ -109,6 +114,24 @@ class AutoRankingExperiment(object):
 
         return dataset
         
+    def get_files(self, training_xml_filenames, test_xml_filename):
+        training_dataset = self.read_xml_data(training_xml_filenames)
+        test_dataset_pairwise = self.read_xml_data([test_xml_filename])
+        attset = 0
+
+        for attribute_names in self.attribute_sets:
+            attset += 1
+            orangefilename = "%s/training-attset%d.tab" % (self.orangefile, attset)
+            OrangeData(training_dataset, self.class_name, [], self.meta_attribute_names, orangefilename)
+            print "training data" , orangefilename
+            
+            orangefilename = "%s/test-attset%d.tab" % (self.orangefile, attset)
+            OrangeData(test_dataset_pairwise, self.class_name, [], self.meta_attribute_names, orangefilename)
+
+        
+
+        
+
         
     
     def train_classifiers_attributes(self, training_xml_filenames):
@@ -119,10 +142,13 @@ class AutoRankingExperiment(object):
         """
         model = {}
         training_dataset = self.read_xml_data(training_xml_filenames)
+        attset = 0
         for attribute_names in self.attribute_sets:
             model[",".join(attribute_names)] = []
             #convert data with only desired atts in orange format
-            training_data = OrangeData(training_dataset, self.class_name, attribute_names, self.meta_attribute_names)
+            attset+=1
+            orangefilename = "%s/training-attset%d.tab" % (self.orangefile, attset)
+            training_data = OrangeData(training_dataset, self.class_name, attribute_names, self.meta_attribute_names, orangefilename)
             
             #iterate through the desired classifiers
             for learner in self.classifiers:
@@ -148,17 +174,21 @@ class AutoRankingExperiment(object):
             output.append(classifier().__class__.__name__)
             output.append("\t")
         output.append("\n")
+        attset = 0
         for attribute_names_string in model:
             output.append(attribute_names_string.replace(",", "\n"))
             output.append("\t")
             prev_attribute_names = []
             i = 0
+            
             for (attribute_names, classifier) in  model[attribute_names_string]:
                 i = i+1
                 if attribute_names != prev_attribute_names:
-                    test_data_pairwise = OrangeData(test_dataset_pairwise, self.class_name, attribute_names, self.meta_attribute_names, True)
+                    attset += 1
+                    orangefilename = "%s/test-attset%d.tab" % (self.orangefile, attset)
+                    test_data_pairwise = OrangeData(test_dataset_pairwise, self.class_name, attribute_names, self.meta_attribute_names, orangefilename)
                 prev_attribute_names = attribute_names
-                
+                config
                 #output.append(classifier.name)
                 classified_pairwise = test_data_pairwise.classify_with(classifier)
                 parallelsentences = RankHandler().get_multiclass_from_pairwise_set(classified_pairwise.get_dataset(), self.allow_ties)
@@ -209,13 +239,16 @@ class AutoRankingExperiment(object):
             output.append(classifier().__class__.__name__)
             output.append("\t")
         output.append("\n")
+        attset = 0
         for attribute_names_string in model:
             output.append(attribute_names_string.replace(",", "\n"))
             output.append("\t")
             prev_attribute_names = []
             for (attribute_names, classifier) in  model[attribute_names_string]:
                 if attribute_names != prev_attribute_names:
-                    test_data_pairwise = OrangeData(test_dataset_pairwise, self.class_name, attribute_names, self.meta_attribute_names, True)
+                    attset += 1
+                    orangefilename = "%s/test-attset%d.tab" % (self.orangefile, attset)
+                    test_data_pairwise = OrangeData(test_dataset_pairwise, self.class_name, attribute_names, self.meta_attribute_names, orangefilename)
                 prev_attribute_names = attribute_names
                 
                 #first pairwise scores with kendal tau
