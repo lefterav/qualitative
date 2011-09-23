@@ -17,7 +17,7 @@ class SaxBestRank2SimpleFile(XMLGenerator):
     Processing of any other XML type should follow this example.
     """
     
-    def __init__(self, out, feature_generators, tab_filename, metric_name, lang_pair, test_set):
+    def __init__(self, out, feature_generators, tab_filename):
         """
         @param out: file object to receive processed changes
         @type out: file
@@ -26,9 +26,7 @@ class SaxBestRank2SimpleFile(XMLGenerator):
         """
         
         self.tab_file = open(tab_filename, 'w')
-        self.metric_name = metric_name
-        self.lang_pair = lang_pair
-        self.test_set = test_set
+
         #flags that show the current focus of the parsing
         self.is_parallelsentence = False 
         self.is_simplesentence = False
@@ -72,6 +70,7 @@ class SaxBestRank2SimpleFile(XMLGenerator):
     def endDocument(self):
         XMLGenerator.endElement(self, self.TAG_DOC)
         XMLGenerator.endDocument(self)
+        self.tab_file.close()
     
     def startElement(self, name, attrs=[]):
         """
@@ -177,6 +176,9 @@ class SaxBestRank2SimpleFile(XMLGenerator):
             XMLGenerator.characters(self, src.get_string())
             XMLGenerator.endElement(self, self.TAG_SRC)
             
+            found_best = False
+            tab_entry = "\n"
+
             for tgt in parallelsentence.get_translations():
 #                for fg in self.feature_generators:
 #                    tgt = fg.add_features_tgt(tgt, parallelsentence)
@@ -187,13 +189,17 @@ class SaxBestRank2SimpleFile(XMLGenerator):
                 XMLGenerator.characters(self, tgt.get_string())
                 XMLGenerator.endElement(self, self.TAG_TGT)
                 
-                tab_entry = "\n"
-                for target_sentence in parallelsentence.get_translations():
-                    if target_sentence.get_attribute("rank") == '1':
-                        tab_entry = "%s\n" % target_sentence.get_string()
-                        break 
-                self.tab_file.write(tab_entry)
+
+                if int(tgt.get_attribute("rank")) == 1 and not found_best:
+                    string = tgt.get_string()
+                    tab_entry = "%s\n" % string
+                    found_best = True 
+
+
+
                 
-            
+            if not found_best:
+                print "ERROR: didn't find best ranked sentence"
             XMLGenerator._write(self, "\n\t")
             XMLGenerator.endElement(self, name)
+            self.tab_file.write(tab_entry)

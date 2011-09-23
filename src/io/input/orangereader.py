@@ -225,7 +225,7 @@ class OrangeData:
             if attribute_name == class_name:
                 line_3 = line_3 + "c"
             elif attribute_name not in desired_attributes or attribute_name in meta_attributes:
-                print attribute_name , "= meta"
+                #print attribute_name , "= meta"
                 line_3 = line_3 + "m"
             line_3 = line_3 + "\t"
         
