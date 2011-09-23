@@ -106,8 +106,8 @@ class Scoring(MultiRankedDataset):
             estimated_rank_vector = parallesentence.get_target_attribute_values(estimated_rank_name)
             original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
             for i in range(len(estimated_rank_vector)):
-                if estimated_rank_vector[i] == 1:
-                    if original_rank_vector[i] == 1:
+                if estimated_rank_vector[i] == '1':
+                    if original_rank_vector[i] == '1':
                         success += 1
                     break
         return success/len(self.parallelsentences)
