@@ -128,7 +128,10 @@ class Scoring(MultiRankedDataset):
             print "\t",
             print "\t".join(rank_vector_2),
             print "\t",
-            tau = kendalltau(rank_vector_1, rank_vector_2)[0]
+            try:
+                tau = kendalltau(rank_vector_1, rank_vector_2)[0]
+            except:
+                tau = -1.00
             if (tau >= -1 and tau <= 1):
                 segment_tau += tau
                 print tau
