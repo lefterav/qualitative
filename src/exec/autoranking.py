@@ -35,7 +35,7 @@ class AutoRankingExperiment(object):
         self.test_filename = None
         self.class_name = class_name
         self.convert_pairwise = True
-        self.allow_ties = False
+        #self.allow_ties = False
         self.generate_diff = False
         
         if config:
@@ -56,6 +56,14 @@ class AutoRankingExperiment(object):
             self.orangefile = "."
         self.meta_attribute_names = config.get("training", "meta_attributes").split(",")
         self.desired_classifiers = config.get("training", "classifiers").split(",")
+        try:
+            self.allow_ties = config.getboolean("training", "allow_ties")
+        except:
+            self.allow_ties = False
+        try:
+            self.exponential = config.getboolean("training", "exponential")
+        except:
+            self.exponential = True
         if "pairwise" in config.items("training") :  #TODO: this does not work, don't set false
             self.convert_pairwise = config.getboolean("training", "pairwise")
         for (name, value) in config.items("attributes"):
@@ -191,7 +199,7 @@ class AutoRankingExperiment(object):
                 config
                 #output.append(classifier.name)
                 classified_pairwise = test_data_pairwise.classify_with(classifier)
-                parallelsentences = RankHandler().get_multiclass_from_pairwise_set(classified_pairwise.get_dataset(), self.allow_ties)
+                parallelsentences = RankHandler().get_multiclass_from_pairwise_set(classified_pairwise.get_dataset(), self.allow_ties, self.exponential)
 
                 from io.output.xmlwriter import XmlWriter
                 classified_xmlwriter = XmlWriter(parallelsentences)
@@ -226,7 +234,30 @@ class AutoRankingExperiment(object):
                 input_file_object.close()
                 output_file_object.close()
                 
+
+    def rank_sax_and_exportbest(self, test_xml, filename_out, model, tab_filename, metric_name, lang_pair, test_set):
+        for classifier in self.classifiers:
+            if not classifier().__class__.__name__ in self.desired_classifiers:
+                continue
+
+        for attribute_names_string in model:
+            #prev_attribute_names = []
+            for (attribute_names, classifier) in  model[attribute_names_string]:
+                input_file_object = open(test_xml, 'r')
+                output_file_object = open(filename_out, 'w')
+            
+                from classifier.ranker import Ranker
+                from io.sax_bestrank2simplefile import SaxBestRank2SimpleFile
+                from xml.sax import make_parser
                 
+                ranker =  Ranker(classifier, attribute_names, self.meta_attribute_names)
+                #proceed with parcing
+                saxreader = SaxBestRank2SimpleFile(output_file_object, [ranker], tab_filename, metric_name, lang_pair, test_set)
+                myparser = make_parser()
+                myparser.setContentHandler(saxreader)
+                myparser.parse(input_file_object)
+                input_file_object.close()
+                output_file_object.close()
     
     
     def rank_evaluate_and_print(self, test_xml, model):
@@ -255,7 +286,7 @@ class AutoRankingExperiment(object):
                 (acc, taukendal) = test_data_pairwise.get_accuracy([classifier])
                 #output.append(classifier.name)
                 classified_pairwise = test_data_pairwise.classify_with(classifier)
-                parallelsentences_multiclass = RankHandler().get_multiclass_from_pairwise_set(classified_pairwise.get_dataset(), self.allow_ties)
+                parallelsentences_multiclass = RankHandler().get_multiclass_from_pairwise_set(classified_pairwise.get_dataset(), self.allow_ties, self.exponential)
 #                for ps in parallelsentences_multiclass:
 #                    for tgt in ps.get_translations():
 #                        print "%s\t%s" % (tgt.get_attribute("rank"), tgt.get_attribute("orig_rank")),
@@ -292,6 +323,12 @@ class AutoRankingExperiment(object):
         model = self.train_classifiers_attributes(self.training_filenames)
         self.rank_and_export(self.test_filename, self.output_filename, model)
         
+        
+    def train_decodebest(self):
+        model = self.train_classifiers_attributes(self.training_filenames)
+        self.rank_and_exportbest(self.test_filename, self.output_filename, model)
+        
+        
     def print_system_score(self, filename, rank_attribute):
         self.convert_pairwise = False
         test_dataset = self.read_xml_data([filename])
@@ -316,6 +353,7 @@ if __name__ == "__main__":
             exp = AutoRankingExperiment(config)
             exp.train_evaluate()
             #exp.train_decode()
+            #exp.train_decodebest()
         except IOError as (errno, strerror):
             print "configuration file error({0}): {1}".format(errno, strerror)
             sys.exit()
