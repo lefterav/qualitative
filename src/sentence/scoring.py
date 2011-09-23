@@ -100,16 +100,15 @@ class Scoring(MultiRankedDataset):
                 frequency[tau] = 0
         return frequency 
             
-    def selectbest_accuracy(self, rank_name_1, rank_name_2):
+    def selectbest_accuracy(self, estimated_rank_name, original_rank_name):
         success = 0.00
         for parallesentence in self.parallelsentences:
-            rank_vector_1 = parallesentence.get_target_attribute_values(rank_name_1)
-            rank_vector_2 = parallesentence.get_target_attribute_values(rank_name_2)
-            try:
-                if rank_vector_1.index('1') == rank_vector_2.index('1'):
+            estimated_rank_vector = parallesentence.get_target_attribute_values(estimated_rank_name)
+            original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
+            for i in range(len(estimated_rank_vector)):
+                if estimated_rank_vector[i] == 1 and original_rank_vector[i] == 1:
                     success += 1
-            except:
-                pass
+                    break
         return success/len(self.parallelsentences)
                 
 

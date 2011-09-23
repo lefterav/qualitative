@@ -92,7 +92,7 @@ class RankHandler(object):
             
         
     
-    def get_pairwise_from_multiclass_sentence(self, parallelsentence, judgement_id, allow_ties = False):
+    def get_pairwise_from_multiclass_sentence(self, parallelsentence, judgement_id, allow_ties = False, exponential = True):
         """
         Converts a the ranked system translations of one sentence into many sentences containing one translation pair each,
         so that system output can be compared in a pairwise manner. 
@@ -105,10 +105,13 @@ class RankHandler(object):
         source = parallelsentence.get_source()
         translations = parallelsentence.get_translations()
         pairwise_sentences = []
+        systems_parsed = []
     
         for system_a  in translations:
             for system_b in translations:
                 if system_a == system_b:
+                    continue
+                if system_b in systems_parsed and not exponential:
                     continue
                 rank = self.__normalize_rank__(system_a, system_b)
                 if not rank:
@@ -137,7 +140,7 @@ class RankHandler(object):
         return pairwise_sentences
                 
     
-    def get_pairwise_from_multiclass_set(self, parallelsentences, allow_ties = False):
+    def get_pairwise_from_multiclass_set(self, parallelsentences, allow_ties = False, exponential = True):
         pairwise_parallelsentences = []
         j = 0
         for parallelsentence in parallelsentences: 
