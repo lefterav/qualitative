@@ -80,7 +80,7 @@ class SaxJCMLProcessor(XMLGenerator):
         if name == self.TAG_SENT:
             
             #empty up string and attribute buffer
-            self.ss_text = u""
+            self.ss_text = ""
             self.ps_attributes = {}
             self.tgt = []
             for att_name in attrs.getNames():
@@ -107,7 +107,7 @@ class SaxJCMLProcessor(XMLGenerator):
         elif name in [self.TAG_SRC, self.TAG_TGT, self.TAG_REF]:
             
             #empty up string and attribute buffer
-            self.ss_text = u""
+            self.ss_text = ""
             self.ss_attributes = {}
             for att_name in attrs.getNames():
                 self.ss_attributes[att_name] = attrs.getValue(att_name)
@@ -122,7 +122,7 @@ class SaxJCMLProcessor(XMLGenerator):
         @type ch: str 
         """
         if self.is_simplesentence :
-            self.ss_text = u"%s%s" % (self.ss_text, ch)
+            self.ss_text = "%s%s" % (self.ss_text, ch)
             
     
     def endElement(self, name):
@@ -142,10 +142,10 @@ class SaxJCMLProcessor(XMLGenerator):
         #for each element, create the objects and clear "buffers"
         if name == self.TAG_SRC:
             self.src = SimpleSentence(self.ss_text, self.ss_attributes)
-            self.ss_text = u""
+            self.ss_text = ""
         elif name == self.TAG_TGT:
             self.tgt.append(SimpleSentence(self.ss_text, self.ss_attributes))
-            self.ss_text = u""
+            self.ss_text = ""
         elif name == self.TAG_SENT:
             #when the judged sentence gets closed, all previously inserted data have to be converted to objects 
             parallelsentence = ParallelSentence(self.src, self.tgt, self.ref, self.ps_attributes)

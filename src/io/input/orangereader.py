@@ -44,7 +44,7 @@ class OrangeData:
             #get rid of the temp file
             if not chosen_orangefilename:
                 os.unlink(orangefilename)
-        return None
+        
     
     
     def get_data(self):
@@ -182,7 +182,7 @@ class OrangeData:
         if not orangefilename:
             orangefilename = mktemp(dir=u'.', suffix=u'.tab')
         file_object = open(orangefilename, 'w')
-        file_object.write(data)
+        file_object.write(str(data))
         file_object.close()  
         
         return orangefilename
