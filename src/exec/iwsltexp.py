@@ -4,8 +4,6 @@ Created on May 6, 2011
 @author: Eleftherios Avramidis
 '''
 from orange import BayesLearner
-from orange import SVMClassifier
-from orange import SVMLearner
 from orngSVM import SVMLearnerEasy
 from orngTree import TreeLearner
 from orngLR import LogRegLearner
@@ -15,13 +13,13 @@ from io.input.xmlreader import XmlReader
 from sentence.rankhandler import RankHandler
 from sentence.dataset import DataSet
 from sentence.scoring import Scoring
-from featuregenerator.diff_generator import DiffGenerator
+#from featuregenerator.diff_generator import DiffGenerator
 import sys
 import ConfigParser
 
  
 
-class AutoRankingExperiment(object):
+class MachineRanking(object):
     '''
     classdocs
     '''
@@ -30,7 +28,7 @@ class AutoRankingExperiment(object):
         '''
         Constructor
         '''
-        self.classifiers = [SVMLearnerEasy] #BayesLearner, , SVMClassifier, TreeLearner, LogRegLearner, kNNLearner]
+        #self.classifiers = [BayesLearner, SVMLearnerEasy, TreeLearner, LogRegLearner, kNNLearner]
         self.attribute_sets = []
         self.training_filenames = None
         self.test_filename = None
@@ -41,7 +39,11 @@ class AutoRankingExperiment(object):
         
         if config:
             self.__readconf__(config)
-            
+
+    def train_evaluate(self):
+        model = self.train_classifiers_attributes(self.training_filenames)
+        self.rank_evaluate_and_print(self.test_filename, model)
+                
     
     def __readconf__(self, config):
         self.training_filenames = config.get("training", "filenames").split(",")
@@ -171,96 +173,7 @@ class AutoRankingExperiment(object):
                     classifier = learner(training_data.get_data())
                 model[",".join(attribute_names)].append((attribute_names, classifier))
         return model
-            
-    
-    def rank_and_export(self, test_xml, filename_out, model):
-        output = []
-        test_dataset_pairwise = self.read_xml_data([test_xml])
-        output.append("\t")
-        for classifier in self.classifiers:
-            if not classifier().__class__.__name__ in self.desired_classifiers:
-                continue
-            output.append(classifier().__class__.__name__)
-            output.append("\t")
-        output.append("\n")
-        attset = 0
-        for attribute_names_string in model:
-            output.append(attribute_names_string.replace(",", "\n"))
-            output.append("\t")
-            prev_attribute_names = []
-            i = 0
-            
-            for (attribute_names, classifier) in  model[attribute_names_string]:
-                i = i+1
-                if attribute_names != prev_attribute_names:
-                    attset += 1
-                    orangefilename = "%s/test-attset%d.tab" % (self.orangefile, attset)
-                    test_data_pairwise = OrangeData(test_dataset_pairwise, self.class_name, attribute_names, self.meta_attribute_names, orangefilename)
-                prev_attribute_names = attribute_names
-                config
-                #output.append(classifier.name)
-                classified_pairwise = test_data_pairwise.classify_with(classifier)
-                parallelsentences = RankHandler().get_multiclass_from_pairwise_set(classified_pairwise.get_dataset(), self.allow_ties)
 
-                from io.output.xmlwriter import XmlWriter
-                classified_xmlwriter = XmlWriter(parallelsentences)
-                classified_xmlwriter.write_to_file(filename_out + "xml")
-                from io.output.wmt11tabwriter import Wmt11TabWriter
-                classified_xmlwriter = Wmt11TabWriter(parallelsentences, "dfki_parseconf_%d" % i)
-                classified_xmlwriter.write_to_file(filename_out + "tab")
-                output.append("\n")
-                print "".join(output)
-    
-    def rank_sax_and_export(self, test_xml, filename_out, model, tab_filename, metric_name, lang_pair, test_set):
-        for classifier in self.classifiers:
-            if not classifier().__class__.__name__ in self.desired_classifiers:
-                continue
-
-        for attribute_names_string in model:
-            #prev_attribute_names = []
-            for (attribute_names, classifier) in  model[attribute_names_string]:
-                input_file_object = open(test_xml, 'r')
-                output_file_object = open(filename_out, 'w')
-            
-                from classifier.ranker import Ranker
-                from io.saxwmt11eval import SaxWMTexporter
-                from xml.sax import make_parser
-                
-                ranker =  Ranker(classifier, attribute_names, self.meta_attribute_names)
-                #proceed with parcing
-                saxreader = SaxWMTexporter(output_file_object, [ranker], tab_filename, metric_name, lang_pair, test_set)
-                myparser = make_parser()
-                myparser.setContentHandler(saxreader)
-                myparser.parse(input_file_object)
-                input_file_object.close()
-                output_file_object.close()
-                
-
-    def rank_sax_and_exportbest(self, test_xml, filename_out, model, tab_filename):
-        for classifier in self.classifiers:
-            if not classifier().__class__.__name__ in self.desired_classifiers:
-                continue
-
-        for attribute_names_string in model:
-            #prev_attribute_names = []
-            for (attribute_names, classifier) in  model[attribute_names_string]:
-                input_file_object = open(test_xml, 'r')
-                output_file_object = open(filename_out, 'w')
-            
-                from classifier.ranker import Ranker
-                from io.sax_bestrank2simplefile import SaxBestRank2SimpleFile
-                from xml.sax import make_parser
-                
-                ranker =  Ranker(classifier, attribute_names, self.meta_attribute_names)
-                #proceed with parcing
-                saxreader = SaxBestRank2SimpleFile(output_file_object, [ranker], tab_filename)
-                myparser = make_parser()
-                myparser.setContentHandler(saxreader)
-                myparser.parse(input_file_object)
-                input_file_object.close()
-                output_file_object.close()
-    
-    
     def rank_evaluate_and_print(self, test_xml, model):
         output = []
         test_dataset_pairwise = self.read_xml_data([test_xml])
@@ -313,31 +226,10 @@ class AutoRankingExperiment(object):
                 output.append(" | ")
             output.append("\n")
         print "".join(output)
-            
-            
                 
-    def train_evaluate(self):
-        model = self.train_classifiers_attributes(self.training_filenames)
-        self.rank_evaluate_and_print(self.test_filename, model)
-    
-    def train_decode(self):
-        model = self.train_classifiers_attributes(self.training_filenames)
-        self.rank_and_export(self.test_filename, self.output_filename, model)
-        
-        
-    def train_decodebest(self):
-        model = self.train_classifiers_attributes(self.training_filenames)
-        self.rank_sax_and_exportbest(self.test_filename, self.output_filename, model, self.output_filename+".tab")
-        
-        
-    def print_system_score(self, filename, rank_attribute):
-        self.convert_pairwise = False
-        test_dataset = self.read_xml_data([filename])
-        scoringset = Scoring(test_dataset.get_parallelsentences())
-        systemscores = scoringset.get_systems_scoring_from_segment_ranks(rank_attribute)
-        
-        entry = ["dfki_parseconf\tde-en\twmt11combo\t%s\t%%01.4f\n" % (system_name, systemscores[system_name]) for system_name in systemscores ]
-        return entry    
+                
+
+  
 
 
 if __name__ == "__main__":
@@ -351,10 +243,10 @@ if __name__ == "__main__":
         try:
             print sys.argv[1]
             config.read(sys.argv[1])
-            exp = AutoRankingExperiment(config)
-            #exp.train_evaluate()
+            exp = MachineRanking(config)
+            exp.train_evaluate()
             #exp.train_decode()
-            exp.train_decodebest()
+            #exp.train_decodebest()
         except IOError as (errno, strerror):
             print "configuration file error({0}): {1}".format(errno, strerror)
             sys.exit()
