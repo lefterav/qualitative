@@ -72,7 +72,10 @@ class XmlWriter(object):
         
     def write_to_file(self, filename):
         file_object = open(filename, 'w')
-        file_object.write(self.object_xml.toprettyxml("\t","\n")) #removed ,"utf-8"
+        try:
+            file_object.write(self.object_xml.toprettyxml("\t","\n")) #removed ,"utf-8"
+        except:
+            file_object.write(self.object_xml.toprettyxml("\t","\n","utf-8"))            
         file_object.close()  
            
         
