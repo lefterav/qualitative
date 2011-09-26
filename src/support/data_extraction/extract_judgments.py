@@ -7,6 +7,7 @@ import ConfigParser
 import os
 import sys
 import codecs
+import subprocess
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 from io.output.xmlwriter import XmlWriter
@@ -42,6 +43,16 @@ class WMTEvalReader:
 
         self.reader =  csv.DictReader(csvfile, fieldnames, None, None, dialect)
         self.systems_num = config.getint("format","systems_num")
+        
+        self.tokenize_source = False
+        self.tokenize_target = False
+        
+        try:
+            self.tokenizer = self.config.get("preprocessing", "tokenizer")
+            self.tokenize_source = self.config.getboolean("preprocessing", "tokenize_source") 
+            self.tokenize_target = self.config.getboolean("preprocessing", "tokenize_target")
+        except:
+            pass
         
 
        
@@ -157,23 +168,28 @@ class WMTEvalReader:
         if system != '_ref':
             pattern_submissions = self.config.get('data', 'pattern_submissions')
             filename = pattern_submissions % fieldmap
-            try:
+#            try:
                 #print "trying to access %s" % (pattern_submissions % fieldmap)
-                file = codecs.open(filename, 'r', 'utf-8')
-            except:
-                sys.stderr.write("error opening %s for system %s, on language pair %s and testset %s, please filter it out through config file to proceed\n" % (filename, system, langpair, testset))
-                return ""
+                
+            file = open(filename, 'r')
+            file = self.tokenize_file(file, trglang)
+#            except:
+#                sys.stderr.write("error opening %s for system %s, on language pair %s and testset %s, please filter it out through config file to proceed\n" % (filename, system, langpair, testset))
+#                return ""
                 #sys.exit() 
             translations = list(enumerate(file))
             for (index, sentence) in translations:
                 if (index + sentence_indexing_base) == sentence_index:
                     result = sentence
                     break
+                
+            file.close()
         else:
             result = self.extract_source(trglang, None, sentence_index)
-
+        
         return result
 
+        
     
     def extract_source(self, srclang, testset, sentence_index ):
         path = self.config.get("data","path")
@@ -185,16 +201,32 @@ class WMTEvalReader:
                           "srclang": srclang,
                           "testset": testset}
         full_filename = pattern_sourceref % pattern_fields
-        translations = list(enumerate(codecs.open(full_filename, 'r', 'utf-8')))
+        file = open(full_filename, 'r')
+        file = self.tokenize_file(file, srclang)
+        translations = list(enumerate(file))
         result = ''
         for (index, sentence) in translations:
             if (index + sentence_indexing_base) == sentence_index:
                 result = sentence
                 break
         if result =='':
-            print "Cannot resolve sentence [%d] in file %s" % (sentence_index, full_filename)
+            print "Cannot resolve sentence [%d] in file %s" % (sentence_index, file.name)
+        file.close()
         return result
     
+    def tokenize_file(self, file, lang):
+        if self.tokenize_target:
+            try:
+                return open(file.name + ".tok", 'r')
+            except:     
+#                file = subprocess.Popen([self.tokenizer, '-l', lang]).communicate(file)    
+                file2 = open(file.name + ".tok", 'w')
+                subprocess.check_call([self.tokenizer, '-l', lang], stdin=file, stdout=file2)
+                file.close()
+                file2.close()
+                return open(file.name + ".tok", 'r')
+        else:
+            return file
     
     def get_system_names(self, row):
         system_names=[]

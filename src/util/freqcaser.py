@@ -2,7 +2,7 @@
 '''
 Created on Sep 16, 2011
 
-@author: Eleftherios Avramidis, David Vilar
+@author: David Vilar
 '''
 import gzip
 import sys

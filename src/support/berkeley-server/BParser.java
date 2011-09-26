@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -58,13 +59,23 @@ public class BParser {
 		    parser = new CoarseToFineNBestParser(grammar, lexicon, kbest ,threshold,-1, false , false , false , false, false, false, true);
 		    parser.binarization = pData.getBinarization();
 		    tokenizer = new PTBLineLexer();
+
 		}
 		
 		public Map<String, Object> parse (String line){
+			return this.parse(line, false);
+		}
+		
+		
+		public Map<String, Object> parse (String line, Boolean tokenize){
 			System.out.println("Parsing... " +line);
 			try {
 				System.out.println ("parsing first string");
-				List<String>  sentence = tokenizer.tokenizeLine(line);
+				
+				List<String> sentence;
+				
+				if (!tokenize) sentence = Arrays.asList(line.split(" "));
+				  else sentence = tokenizer.tokenizeLine(line);
 						
 				if (sentence.size()>=80)  
 	    			System.err.println("Skipping sentence with "+sentence.size()+" words since it is too long."); 

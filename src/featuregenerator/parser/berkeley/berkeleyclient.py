@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import xmlrpclib 
 import time
 import sys
@@ -144,7 +145,7 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
     
     def parse(self, string):
 
-        results = self.s.bParser.parse ( string )
+        results = self.server.BParser.parse ( string )
         loglikelihood = results['loglikelihood']
         nbestList = results['nbest']
         n = len(nbestList)
@@ -172,3 +173,5 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         print "berkeley-best-parse-tree" , best_parse
         
     
+b = BerkeleyFeatureGenerator("http://percival.sb.dfki.de:8683", "fr")
+b.parse("C' est notre travail pour continuer à soutenir Lettonie avec l' intégration de la population russe.")
