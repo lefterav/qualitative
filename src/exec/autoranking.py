@@ -30,7 +30,7 @@ class AutoRankingExperiment(object):
         '''
         Constructor
         '''
-        self.classifiers = [SVMLearnerEasy] #BayesLearner, , SVMClassifier, TreeLearner, LogRegLearner, kNNLearner]
+        self.classifiers = [SVMLearnerEasy, BayesLearner] #, , SVMClassifier, TreeLearner, LogRegLearner, kNNLearner]
         self.attribute_sets = []
         self.training_filenames = None
         self.test_filename = None
@@ -49,7 +49,7 @@ class AutoRankingExperiment(object):
         try:
             self.output_filename = config.get("testing", "output_filename_base")
         except:
-            self.output_filename = None
+            self.output_filename = ""
         self.class_name = config.get("training", "class_name")
         try:
             self.orangefile = config.get("training", "orange_files_dir")
@@ -100,7 +100,7 @@ class AutoRankingExperiment(object):
         self.attribute_sets.append(attribute_names)
         
     def read_xml_data(self, filenames):
-        dataset = None
+        allparallelsentences = []
         
         for filename in filenames:
             print "Reading XML %s " % filename
@@ -112,16 +112,19 @@ class AutoRankingExperiment(object):
             if self.generate_diff:                 
                 parallelsentences = DiffGenerator().add_features_batch(parallelsentences)
             
-            cur_dataset = DataSet(parallelsentences)
+            allparallelsentences.extend(parallelsentences)
             
-            if not dataset:
-                dataset = cur_dataset
-            else:
-                dataset.append_dataset(cur_dataset)
-                
+#            cur_dataset = DataSet(parallelsentences)
+#            
+#            if not dataset:
+#                dataset = cur_dataset
+#            else:
+#                dataset.append_dataset(cur_dataset)
+        RankHandler().merge_overlapping_pairwise_set(allparallelsentences)
+           
         #TODO: get list of attributes directly from feature generators
 
-        return dataset
+        return DataSet(allparallelsentences)
         
     def get_files(self, training_xml_filenames, test_xml_filename):
         training_dataset = self.read_xml_data(training_xml_filenames)
@@ -352,9 +355,9 @@ if __name__ == "__main__":
             print sys.argv[1]
             config.read(sys.argv[1])
             exp = AutoRankingExperiment(config)
-            #exp.train_evaluate()
+            exp.train_evaluate()
             #exp.train_decode()
-            exp.train_decodebest()
+            #exp.train_decodebest()
         except IOError as (errno, strerror):
             print "configuration file error({0}): {1}".format(errno, strerror)
             sys.exit()
