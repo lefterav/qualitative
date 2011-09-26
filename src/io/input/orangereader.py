@@ -182,7 +182,12 @@ class OrangeData:
         if not orangefilename:
             orangefilename = mktemp(dir=u'.', suffix=u'.tab')
         file_object = open(orangefilename, 'w')
-        file_object.write(data.encode('utf8'))
+        if type(data) is unicode:
+            file_object.write(data.encode('utf8'))
+        elif type(data) is str:
+            file_object.write(data)
+        else:
+            file_object.write(str(data))
         file_object.close()  
         
         return orangefilename

@@ -150,9 +150,82 @@ class RankHandler(object):
             else:
                 judgement_id = str(j)
             pairwise_parallelsentences.extend( self.get_pairwise_from_multiclass_sentence(parallelsentence, judgement_id, allow_ties) )
+        #pairwise_parallelsentences = self.merge_overlapping_pairwise_set(pairwise_parallelsentences)
         return pairwise_parallelsentences
-            
     
+    
+    
+    
+    
+    def merge_overlapping_pairwise_set(self, parallelsentences):
+        sets = {}
+        merged_parallelsentences = []
+        merged = 0
+        
+        #first sort everything into dicts, to make searching easier
+        for ps in parallelsentences:
+            sentence_id = ps.get_attribute("id")
+            try:
+                set_id = ps.get_attribute("testset")
+            except:
+                set_id = ps.get_attribute("document_id")
+                
+            if sets.has_key(set_id):
+                if sets[set_id].has_key(sentence_id):
+                    sets[set_id][sentence_id].append(ps)
+                else:
+                    sets[set_id][sentence_id] = [ps]
+            else:
+                sets[set_id] = {sentence_id : [ps]}
+        
+        
+        
+        for set_id in sets:
+            sset = sets[set_id]
+
+            for sentence_id in sorted(sset.keys(), key=int):
+                pslist = sset[sentence_id]
+                
+                system_pairs = set([(ps.get_translations()[0].get_attribute("system"), ps.get_translations()[1].get_attribute("system")) for ps in pslist])
+                for (system_a, system_b) in system_pairs:
+                    rank = 0
+                    j = 0
+                    mod = 0
+                    for ps in pslist:
+                        
+                        if ps.get_translations()[0].get_attribute("system") == system_a \
+                            and ps.get_translations()[1].get_attribute("system") == system_b:
+                                rank += int(ps.get_attribute("rank")) * self.__annotator_weight__(ps)
+                                mod += 1
+                                i = j
+                        j += 1
+                    if rank > 0:
+                        final_rank = 1
+                    elif rank < 0:
+                        final_rank = -1
+                    
+                    if mod > 1:
+                        merged += 1
+                        #print sentence_id, (system_a, system_b)
+                    
+                    src = pslist[i].get_source()
+                    tgt = pslist[i].get_translations()
+                    ref = pslist[i].get_reference()
+                    atts = pslist[i].get_attributes()
+                    atts["rank"] = str(final_rank)
+                    new_ps = ParallelSentence(src, tgt, ref, atts)
+                    merged_parallelsentences.append(new_ps)
+        print "merged %d out of %d" % (merged, len(parallelsentences))
+        return merged_parallelsentences
+            
+            
+            
+            
+        
+    def __annotator_weight__(self, ps):
+        return 1
+            
+        
     
     
     def __normalize_rank__(self, system_a, system_b):

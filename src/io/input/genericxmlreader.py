@@ -107,17 +107,17 @@ class GenericXmlReader(GenericReader):
         newssentences = [] 
         for xmlEntry in sentenceList:
             srcXML = xmlEntry.getElementsByTagName(self.TAG["src"])
-            tgtXML = xmlEntry.getElementsByTagName(self.TAG["tgt"])
+            tgtXMLentries = xmlEntry.getElementsByTagName(self.TAG["tgt"])
             refXML = xmlEntry.getElementsByTagName(self.TAG["ref"])
             
-            src = SimpleSentence (unescape(srcXML[0].childNodes[0].nodeValue.strip()) , self.__read_attributes__(srcXML[0]) )
+            src = self.__read_simplesentence__(srcXML[0])
             
             #Create a list of SimpleSentence objects out of the object
-            tgt = map( lambda x: SimpleSentence(unescape(x.childNodes[0].nodeValue.strip()), self.__read_attributes__(x) )  , tgtXML ) 
+            tgt = map(lambda tgtXML: self.__read_simplesentence__(tgtXML), tgtXMLentries) 
             
             ref = SimpleSentence()
             try:    
-                ref = SimpleSentence (unescape(refXML[0].childNodes[0].nodeValue.strip()) ,  self.__read_attributes__(refXML[0]))
+                ref = self.__read_simplesentence__(refXML[0])
             except LookupError:
                 pass
             
@@ -138,7 +138,11 @@ class GenericXmlReader(GenericReader):
             newssentences.append(curJudgedSentence)
         return newssentences
     
+    def __read_simplesentence__(self, xmlEntry):
+        return SimpleSentence(self.__read_string__(xmlEntry), self.__read_attributes__(xmlEntry))
     
+    def __read_string__(self, xmlEntry):
+        return unescape(xmlEntry.childNodes[0].nodeValue.strip()).encode('utf8')
     
     def __read_attributes__(self, xmlEntry):
         """
@@ -147,7 +151,8 @@ class GenericXmlReader(GenericReader):
         attributes = {}
         attributeKeys = xmlEntry.attributes.keys()
         for attributeKey in attributeKeys:
-            attributes[attributeKey] = unescape(xmlEntry.attributes[attributeKey].value)                     
+            myAttributeKey = attributeKey.encode('utf8')
+            attributes[myAttributeKey] = unescape(xmlEntry.attributes[attributeKey].value).encode('utf8')                     
         return attributes
         
     
