@@ -96,10 +96,15 @@ public class BParser {
 		}
 		
 		public Map<String, String> getParseFeatures(String line){
+			return this.getParseFeatures(line, false)
+		}
+		
+		public Map<String, String> getParseFeatures(String line, Boolean tokenize){
 			System.out.println("Parsing... " +line);
 			try {
 				System.out.println ("parsing first string");
-				List<String>  sentence = tokenizer.tokenizeLine(line);
+				if (!tokenize) sentence = Arrays.asList(line.split(" "));
+				  else sentence = tokenizer.tokenizeLine(line);
 						
 				if (sentence.size()>=80)  
 	    			System.err.println("Skipping sentence with "+sentence.size()+" words since it is too long."); 
