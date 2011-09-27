@@ -10,7 +10,7 @@ from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
-from input.xmlreader import XmlReader
+from io.input.xmlreader import XmlReader
 import os
 
 
