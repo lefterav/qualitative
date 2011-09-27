@@ -76,7 +76,7 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
         #for i in range(len(tokenized_string)):
         #    tokenized_string[i] = base64.standard_b64encode(tokenized_string[i])
         
-        return tokenized_string
+        return unicode(tokenized_string)
     
     
     def get_features_simplesentence(self, simplesentence):

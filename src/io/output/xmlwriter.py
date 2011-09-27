@@ -44,7 +44,7 @@ class XmlWriter(object):
             
             #add attributes of parallel sentence
             for attribute_key in ps.get_attributes().keys():
-                parallelsentence_xml.setAttribute( attribute_key , str(ps.get_attribute(attribute_key)) )
+                parallelsentence_xml.setAttribute( attribute_key.decode('utf-8') , ps.get_attribute(attribute_key).decode('utf-8') )
             
             #add source as a child of parallel sentence
             src_xml = self.__create_xml_sentence__(doc_xml, ps.get_source(), "src")
@@ -75,7 +75,7 @@ class XmlWriter(object):
         try:
             file_object.write(self.object_xml.toprettyxml("\t","\n")) #removed ,"utf-8"
         except:
-            file_object.write(self.object_xml.toprettyxml("\t","\n","utf-8"))            
+            file_object.write(self.object_xml.toprettyxml("\t","\n", "utf-8"))            
         file_object.close()  
            
         
@@ -90,7 +90,7 @@ class XmlWriter(object):
 
         for attribute_key in sentence.get_attributes().keys():
             sentence_xml.setAttribute(attribute_key, escape(sentence.get_attribute(attribute_key)))       
-        textnode = escape(sentence.get_string().strip())     
+        textnode = escape(sentence.get_string().strip()).decode('utf-8')     
         sentence_xml.appendChild(doc_xml.createTextNode(textnode))
         
         return sentence_xml
