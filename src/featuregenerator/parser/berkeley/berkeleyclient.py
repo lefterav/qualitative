@@ -173,5 +173,5 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         print "berkeley-best-parse-tree" , best_parse
         
     
-b = BerkeleyFeatureGenerator("http://percival.sb.dfki.de:8683", "fr")
-b.parse("C' est notre travail pour continuer à soutenir Lettonie avec l' intégration de la population russe.")
+#b = BerkeleyFeatureGenerator("http://percival.sb.dfki.de:8683", "fr")
+#b.parse("C' est notre travail pour continuer à soutenir Lettonie avec l' intégration de la population russe.")
