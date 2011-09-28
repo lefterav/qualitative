@@ -96,13 +96,15 @@ public class BParser {
 		}
 		
 		public Map<String, String> getParseFeatures(String line){
-			return this.getParseFeatures(line, false)
+			return this.getParseFeatures(line, false);
 		}
 		
 		public Map<String, String> getParseFeatures(String line, Boolean tokenize){
 			System.out.println("Parsing... " +line);
 			try {
 				System.out.println ("parsing first string");
+				List<String> sentence;
+				
 				if (!tokenize) sentence = Arrays.asList(line.split(" "));
 				  else sentence = tokenizer.tokenizeLine(line);
 						
@@ -133,7 +135,7 @@ public class BParser {
 			for (Tree<String> parsedTree : parseTrees){
 				
 				if (! parsedTree.getChildren().isEmpty() ){
-					parsedTree = TreeAnnotations.unAnnotateTree(parsedTree);
+					parsedTree = TreeAnnotations.unAnnotateTree(parsedTree, false);
 					double confidence = parser.getLogLikelihood(parsedTree);
 					sumConfidence += confidence;
 					if (confidence > bestConfidence){
@@ -203,7 +205,7 @@ public class BParser {
 			for (Tree<String> parsedTree : parseTrees){
 				Map<String,String> scoredTree =  new HashMap<String,String>();
 				if (! parsedTree.getChildren().isEmpty() ){
-					parsedTree = TreeAnnotations.unAnnotateTree(parsedTree);
+					parsedTree = TreeAnnotations.unAnnotateTree(parsedTree, false);
 					scoredTree.put("confidence",   Double.toString(parser.getLogLikelihood(parsedTree)) );
 					scoredTree.put("tree", parsedTree.getChildren().get(0)+" )");
 				}
