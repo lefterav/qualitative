@@ -11,7 +11,6 @@
     <property name="target" value="1.6"/>
     <property name="source" value="1.6"/>
     <path id="berkeleyParser.classpath">
-        <pathelement location="bin"/>
         <pathelement location="lib/commons-logging-1.1.jar"/>
         <pathelement location="lib/servlet-api-5.5.15.jar"/>
         <pathelement location="lib/ws-commons-util-1.0.2.jar"/>
@@ -23,7 +22,7 @@
     <target name="init">
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
-            <fileset dir=".">
+            <fileset dir="src">
                 <exclude name="**/*.launch"/>
                 <exclude name="**/*.java"/>
             </fileset>
@@ -38,7 +37,7 @@
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
-            <src path="."/>
+            <src path="src"/>
             <classpath refid="berkeleyParser.classpath"/>
         </javac>
     </target>
