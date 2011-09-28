@@ -89,7 +89,10 @@ class XmlWriter(object):
         sentence_xml = doc_xml.createElement(tag)
 
         for attribute_key in sentence.get_attributes().keys():
-            sentence_xml.setAttribute(attribute_key, escape(sentence.get_attribute(attribute_key)))       
+            try:
+                sentence_xml.setAttribute(attribute_key.decode('utf-8'), escape(sentence.get_attribute(attribute_key).decode('utf-8')))
+            except:    
+                sentence_xml.setAttribute(attribute_key, escape(sentence.get_attribute(attribute_key)))
         textnode = escape(sentence.get_string().strip()).decode('utf-8')     
         sentence_xml.appendChild(doc_xml.createTextNode(textnode))
         
