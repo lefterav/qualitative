@@ -17,12 +17,13 @@
         <pathelement location="lib/ws-commons-util-1.0.2.jar"/>
         <pathelement location="lib/xmlrpc-client-3.1.3.jar"/>
         <pathelement location="lib/xmlrpc-common-3.1.3.jar"/>
+        <pathelement location="lib/BerkeleyParser.jar"/>
         <pathelement location="lib/xmlrpc-server-3.1.3.jar"/>
-    </path>
+</path>
     <target name="init">
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
-            <fileset dir="src">
+            <fileset dir=".">
                 <exclude name="**/*.launch"/>
                 <exclude name="**/*.java"/>
             </fileset>
@@ -37,7 +38,7 @@
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
-            <src path="src"/>
+            <src path="."/>
             <classpath refid="berkeleyParser.classpath"/>
         </javac>
     </target>
@@ -54,17 +55,5 @@
     <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
-    </target>
-    <target name="BerkeleyParserXMLRPCserver">
-        <java classname="BerkeleyParserXMLRPCserver" failonerror="true" fork="yes">
-            <arg line="8682 /home/lefterav/tools/berkeley/eng_sm6.gr"/>
-            <classpath refid="berkeleyParser.classpath"/>
-        </java>
-    </target>
-    <target name="BerkeleyParserXMLRPCserver German">
-        <java classname="BerkeleyParserXMLRPCserver" failonerror="true" fork="yes">
-            <arg line="8683 /home/lefterav/tools/berkeley/ger_sm5.gr"/>
-            <classpath refid="berkeleyParser.classpath"/>
-        </java>
     </target>
 </project>
