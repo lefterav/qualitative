@@ -16,7 +16,7 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         '''
         Constructor
         '''
-        self.server = xmlrpclib.Server(url)
+        self.server = xmlrpclib.ServerProxy(url)
         self.url = url
         self.lang = lang
     
@@ -71,8 +71,10 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
             try:
                 features_batch = self.server.BParser.parse_batch(batch)
                 connected = True
-            except:
-                print "connection failed, sleeping for 5 sec"
+            except xmlrpclib.Fault, err:
+                print "Fault code: %d" % err.faultCode
+                print "Fault string: %s" % err.faultString
+                print "\nconnection failed, sleeping for 5 sec"
                 time.sleep(5)
             #except TimeoutException: TODO: find a better way to handle timeouts
             #    sys.stderr.write("Connection to server %s failed, trying again after a few seconds...\n" % self.url)
