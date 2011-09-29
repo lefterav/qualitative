@@ -65,6 +65,10 @@ class AutoRankingExperiment(object):
             self.exponential = config.getboolean("training", "exponential")
         except:
             self.exponential = True
+        try:
+            self.merge_overlapping = config.getboolean("training", "merge_overlapping")
+        except:
+            self.merge_overlapping = True
         if "pairwise" in config.items("training") :  #TODO: this does not work, don't set false
             self.convert_pairwise = config.getboolean("training", "pairwise")
         for (name, value) in config.items("attributes"):
@@ -120,7 +124,7 @@ class AutoRankingExperiment(object):
 #                dataset = cur_dataset
 #            else:
 #                dataset.append_dataset(cur_dataset)
-        RankHandler().merge_overlapping_pairwise_set(allparallelsentences)
+        allparallelsentences = RankHandler().merge_overlapping_pairwise_set(allparallelsentences)
            
         #TODO: get list of attributes directly from feature generators
 
@@ -304,18 +308,19 @@ class AutoRankingExperiment(object):
                 output.append("\t")
                 output.append(str(kendalltau))
                 
-                bestfound = scoringset.selectbest_accuracy("rank", "orig_rank") 
+                accuracy, precision = scoringset.selectbest_accuracy("rank", "orig_rank") 
                 
                 #parallelsentences = classified_data.get_dataset().get_parallelsentences()
                 output.append("\t")
                 #output.append(str(acc))
                 output.append(str(taukendal[0]))
                 output.append("\t")
-                output.append(str(bestfound))
+                output.append(str(accuracy))
+                output.append(str(precision))
                 
                 output.append(" | ")
             output.append("\n")
-        print "".join(output)
+        print " ".join(output)
             
             
                 
