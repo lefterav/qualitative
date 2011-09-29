@@ -54,7 +54,7 @@ class RankHandler(object):
                 if translation2.get_attribute("system") in rank_per_system:
                     rank_per_system[translation2.get_attribute("system")] -= rank
                 else:
-                    rank_per_system[translation2.get_attribute("system")] = rank
+                    rank_per_system[translation2.get_attribute("system")] = -1 * rank
                     tranlsations_per_system[translation2.get_attribute("system")] = translation2
             
             i = 0

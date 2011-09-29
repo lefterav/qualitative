@@ -101,16 +101,36 @@ class Scoring(MultiRankedDataset):
         return frequency 
             
     def selectbest_accuracy(self, estimated_rank_name, original_rank_name):
-        success = 0.00
+        truepositive_withfirsteffort = 0.00
+        truepositive_withanyeffort = 0.00
+        pairwise_comparisons = 0.00
         for parallesentence in self.parallelsentences:
             estimated_rank_vector = parallesentence.get_target_attribute_values(estimated_rank_name)
             original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
+            
+            true_positive = 0.00
+            false_positive = 0.00
+            alreadyfoundfirst = False
+            
             for i in range(len(estimated_rank_vector)):
-                if estimated_rank_vector[i] == '1':
-                    if original_rank_vector[i] == '1':
-                        success += 1
-                    break
-        return success/len(self.parallelsentences)
+                if int(estimated_rank_vector[i]) == 1:
+                    pairwise_comparisons += 1
+                    if int(original_rank_vector[i]) == 1:
+                        true_positive += 1
+                        if not alreadyfoundfirst:
+                            truepositive_withfirsteffort +=1
+                    else:
+                        false_positive += 1
+                    alreadyfoundfirst = True
+            if true_positive > 0 : 
+                truepositive_withanyeffort +=1
+            
+
+                    
+        accuracy_firsteffort = truepositive_withfirsteffort/len(self.parallelsentences)
+        accuracy_anyeffort = truepositive_withanyeffort / len(self.parallelsentences)
+        return (accuracy_firsteffort, accuracy_anyeffort)
+        
                 
 
     
