@@ -360,9 +360,19 @@ if __name__ == "__main__":
             print sys.argv[1]
             config.read(sys.argv[1])
             exp = AutoRankingExperiment(config)
-            exp.train_evaluate()
-            #exp.train_decode()
-            #exp.train_decodebest()
+            
+            
+            try:
+                mode = config.get("testing", "moed")
+            except:
+                mode = "evaluate"
+                
+            if mode == "evaluate":
+                exp.train_evaluate()
+            elif mode == "decode":
+                exp.train_decode()
+            elif mode == "decodebest":
+                exp.train_decodebest()
         except IOError as (errno, strerror):
             print "configuration file error({0}): {1}".format(errno, strerror)
             sys.exit()
