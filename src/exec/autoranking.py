@@ -372,6 +372,7 @@ if __name__ == "__main__":
             elif mode == "decode":
                 exp.train_decode()
             elif mode == "decodebest":
+                print "Decoding only for best"
                 exp.train_decodebest()
         except IOError as (errno, strerror):
             print "configuration file error({0}): {1}".format(errno, strerror)
