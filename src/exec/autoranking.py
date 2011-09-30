@@ -103,7 +103,7 @@ class AutoRankingExperiment(object):
         """
         self.attribute_sets.append(attribute_names)
         
-    def read_xml_data(self, filenames):
+    def read_xml_data(self, filenames, allow_ties = False):
         allparallelsentences = []
         
         for filename in filenames:
@@ -111,7 +111,7 @@ class AutoRankingExperiment(object):
             parallelsentences = XmlReader(filename).get_parallelsentences()
             
             if self.convert_pairwise:
-                parallelsentences = RankHandler().get_pairwise_from_multiclass_set(parallelsentences, self.allow_ties, self.exponential)
+                parallelsentences = RankHandler().get_pairwise_from_multiclass_set(parallelsentences, allow_ties, self.exponential)
 
             if self.generate_diff:                 
                 parallelsentences = DiffGenerator().add_features_batch(parallelsentences)
@@ -270,7 +270,7 @@ class AutoRankingExperiment(object):
     
     def rank_evaluate_and_print(self, test_xml, model):
         output = []
-        test_dataset_pairwise = self.read_xml_data([test_xml])
+        test_dataset_pairwise = self.read_xml_data([test_xml]) #, True)
         output.append("\t")
         for classifier in self.classifiers:
             if not classifier().__class__.__name__ in self.desired_classifiers:
