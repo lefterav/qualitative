@@ -376,6 +376,7 @@ class OrangeData:
         #for ex in mydata:
             try:
                 new_value = classifier(mydata[i])
+                #new_value, prob  = classifier(mydata[i], orange.Classifier.GetBoth)
             except:
                 print "couldn't apply classifier"
                 new_value = "0"
