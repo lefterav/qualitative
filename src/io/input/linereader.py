@@ -28,7 +28,7 @@ class LineReader(GenericReader):
     def get_parallelsentences(self):
         
         parallelsentences = []
-        source_file = codecs.open(self.source_filename, 'r', 'utf-8')
+        source_file = open(self.source_filename, 'r')
 
         submissions = []           
         
@@ -37,7 +37,7 @@ class LineReader(GenericReader):
                 system_name = filename
             else:
                 system_name = re.findall(self.pattern_name, filename)[0]
-            submission_file = codecs.open(filename, 'r', 'utf-8')
+            submission_file = open(filename, 'r')
             submissions.append((submission_file, system_name))
         
         k = 0
