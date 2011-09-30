@@ -75,16 +75,16 @@ class RankHandler(object):
 #                    rank_per_system[best_ranked_system] += new_rank
 #                print "second pass best rank" , rank_per_system
 #            
-#            for system in sorted(rank_per_system, key=lambda system: rank_per_system[system]):                
-#                if rank_per_system[system] != prev_rank:
-#                    i += 1
-#                    
-#                #print "system: %s\t%d -> %d" % (system, rank_per_system[system] , i)
+            for system in sorted(rank_per_system, key=lambda system: rank_per_system[system]):                
+                if rank_per_system[system] != prev_rank:
+                    i += 1
+                    
+                #print "system: %s\t%d -> %d" % (system, rank_per_system[system] , i)
 #                print i, system,
-#                prev_rank = rank_per_system[system]
-#                translation = tranlsations_per_system[system]
-#                translation.add_attribute("rank", str(i))
-#                translations_new_rank.append(translation)
+                prev_rank = rank_per_system[system]
+                translation = tranlsations_per_system[system]
+                translation.add_attribute("rank", str(i))
+                translations_new_rank.append(translation)
             
 #            print
             src = pairwise_sentences[0].get_source()
