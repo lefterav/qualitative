@@ -363,7 +363,7 @@ if __name__ == "__main__":
             
             
             try:
-                mode = config.get("testing", "moed")
+                mode = config.get("testing", "mode")
             except:
                 mode = "evaluate"
                 
