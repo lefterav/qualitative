@@ -270,7 +270,7 @@ class AutoRankingExperiment(object):
     
     def rank_evaluate_and_print(self, test_xml, model):
         output = []
-        test_dataset_pairwise = self.read_xml_data([test_xml]) #, True)
+        test_dataset_pairwise = self.read_xml_data([test_xml], True)
         output.append("\t")
         for classifier in self.classifiers:
             if not classifier().__class__.__name__ in self.desired_classifiers:
