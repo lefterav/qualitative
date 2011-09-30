@@ -60,15 +60,33 @@ class RankHandler(object):
             i = 0
             prev_rank = None
             translations_new_rank = []
+            print rank_per_system
+            
+            best_rank = min(rank_per_system.values())
+            best_ranked_systems = [system for system in rank_per_system if rank_per_system[system] == best_rank ]
+            print "best_ranked systems", best_ranked_systems
+            best_ranked_pairwise = [ps for ps in pairwise_sentences if (ps.get_translations()[0].get_attribute("system") in best_ranked_systems) and (ps.get_translations()[1].get_attribute("system") in best_ranked_systems)]
+            print "best_ranked_pairwise", best_ranked_pairwise
+            if len(best_ranked_pairwise) > 0:
+                for best_ranked_system in best_ranked_systems:
+                    pos_comparisons = [int(ps.get_attribute("rank")) for ps in best_ranked_pairwise if ps.get_translations()[0].get_attribute("system") == best_ranked_system ]
+                    neg_comparisons = [int(ps.get_attribute("rank")) for ps in best_ranked_pairwise if ps.get_translations()[1].get_attribute("system") == best_ranked_system ]
+                    new_rank = 0.50 * (sum(pos_comparisons) - sum(neg_comparisons)) / (len(pos_comparisons) + len(neg_comparisons) + 0.01)
+                    rank_per_system[best_ranked_system] += new_rank
+                print "second pass best rank" , rank_per_system
+            
             for system in sorted(rank_per_system, key=lambda system: rank_per_system[system]):                
                 if rank_per_system[system] != prev_rank:
                     i += 1
+                    
                 #print "system: %s\t%d -> %d" % (system, rank_per_system[system] , i)
+                print i, system,
                 prev_rank = rank_per_system[system]
                 translation = tranlsations_per_system[system]
                 translation.add_attribute("rank", str(i))
                 translations_new_rank.append(translation)
             
+            print
             src = pairwise_sentences[0].get_source()
             attributes = pairwise_sentences[0].get_attributes()
             del attributes["rank"]
