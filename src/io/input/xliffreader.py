@@ -139,7 +139,7 @@ class XliffReader(object):
             for alttrans_score in alttrans_scores:
                 if alttrans_score in altTrans.childNodes:
                     for elem in alttrans_score.getElementsByTagName("metanet:score"):
-                        tgt.add_attribute('score_%s-%s' % (tool_id, elem.getAttribute('type')), \
+                        tgt.add_attribute('sc_%s-%s' % (tool_id, elem.getAttribute('type')), \
                                           elem.getAttribute('value'))
             
             # alt-trans_annotation parsing
@@ -148,8 +148,30 @@ class XliffReader(object):
                 if alttrans_annotation in altTrans.childNodes:
                     for elem in alttrans_annotation.getElementsByTagName("metanet:annotation"):
                         if elem in alttrans_annotation.childNodes:
-                            tgt.add_attribute('annotation_%s-%s' % (tool_id, elem.getAttribute('type')), \
+                            tgt.add_attribute('an_%s-%s' % (tool_id, elem.getAttribute('type')), \
                                               elem.getAttribute('value'))
+            
+            
+            phrases = altTrans.getElementsByTagName("metanet:phrase")
+            
+            if phrases:
+                tgt.add_attribute("phrases", str(len(phrases)))
+            
+            phrase_id = 0
+            for phrase in phrases:
+                scoresets = phrase.getElementsByTagName("metanet:scores")
+                phrase_id += 1
+                if scoresets:
+                    scoreset = scoresets[0]
+                    for score in scoreset.getElementsByTagName("metanet:score"):
+                        if score.getAttribute('value'):
+                            value = score.getAttribute('value')
+                        else:
+                            value = score.firstChild.nodeValue
+                        tgt.add_attribute('ds_%s-%s-%d' % (tool_id, score.getAttribute('type'), phrase_id), value)
+                    
+                
+                
                         
             # alt-trans_OOV_words
             alttrans_annotations = altTrans.getElementsByTagName("metanet:annotation")
@@ -162,7 +184,9 @@ class XliffReader(object):
             
             # alt-trans token_count parsing
             token_count = {}
-            for token in altTrans.getElementsByTagName('metanet:token'):
+            tokens = altTrans.getElementsByTagName('metanet:token')
+            
+            for token in tokens:
                 d = token.getAttribute('id').partition('_d')[2].partition('_')[0]
                 if d not in token_count:
                     token_count[d] = 1
