@@ -4,22 +4,27 @@ Created on 04 Οκτ 2011
 @author: lefterav
 '''
 
-from orngSVM import SVMLearner
+from orngSVM import SVMLearner, exampleTableToSVMFormat
 
 class SVMEasy(SVMLearner):
     '''
     classdocs
     '''
 
-    def learnClassifier(self, examples):
-        examples = continuize
-        
+    def continuize(self, examples):
         transformer=orange.DomainContinuizer()
         transformer.multinomialTreatment=orange.DomainContinuizer.NValues
         transformer.continuousTreatment=orange.DomainContinuizer.NormalizeBySpan
         transformer.classTreatment=orange.DomainContinuizer.Ignore
         newdomain=transformer(examples)
         newexamples=examples.translate(newdomain)
+        return newexamples
+
+    def learnClassifier(self, examples):
+         
+        newexamples = self.continuize(examples)
+        
+        
         #print newexamples[0]
         params={}
         parameters = []
@@ -39,5 +44,5 @@ class SVMEasy(SVMLearner):
         tunedLearner = orngWrap.TuneMParameters(object=self.learner, parameters=parameters, folds=self.folds)
         
         return SVMClassifierClassEasyWrapper(tunedLearner(newexamples, verbose=self.verbose), newdomain, examples)
-    '''
+    
         
