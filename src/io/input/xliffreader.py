@@ -54,7 +54,7 @@ class XliffReader(object):
         @rtype: sentence.dataset.DataSet
         @return: A data set containing all the data of the XML file
         """
-        return DataSet(self.get_parallelsentences(), self.get_attributes())
+        return DataSet(self.get_parallelsentences())
 
     
     def length(self):
@@ -110,6 +110,7 @@ class XliffReader(object):
         for transunit_src in transUnit.childNodes:
             if transunit_src.nodeName == 'source':
                 src = SimpleSentence(unescape(transunit_src.childNodes[0].nodeValue))
+                break
 
         # save attributes from desired alt-trans nodes into tgt_list
         tgt_list = []
@@ -119,6 +120,7 @@ class XliffReader(object):
             for transunit_tgt in altTrans.childNodes:
                 if transunit_tgt.nodeName == 'target':
                     tgt = SimpleSentence(unescape(transunit_tgt.childNodes[0].nodeValue))
+                    break
 
             # alt-trans_tool_id parsing
             tool_id = altTrans.getAttribute('tool-id')
@@ -137,7 +139,7 @@ class XliffReader(object):
             for alttrans_score in alttrans_scores:
                 if alttrans_score in altTrans.childNodes:
                     for elem in alttrans_score.getElementsByTagName("metanet:score"):
-                        tgt.add_attribute('%s-%s' % (tool_id, elem.getAttribute('type')), \
+                        tgt.add_attribute('score_%s-%s' % (tool_id, elem.getAttribute('type')), \
                                           elem.getAttribute('value'))
             
             # alt-trans_annotation parsing
@@ -146,7 +148,7 @@ class XliffReader(object):
                 if alttrans_annotation in altTrans.childNodes:
                     for elem in alttrans_annotation.getElementsByTagName("metanet:annotation"):
                         if elem in alttrans_annotation.childNodes:
-                            tgt.add_attribute('%s-%s' % (tool_id, elem.getAttribute('type')), \
+                            tgt.add_attribute('annotation_%s-%s' % (tool_id, elem.getAttribute('type')), \
                                               elem.getAttribute('value'))
                         
             # alt-trans_OOV_words
@@ -178,6 +180,7 @@ class XliffReader(object):
         for transunit_ref in transUnit.childNodes:
             if transunit_ref.nodeName == 'target':
                 ref = SimpleSentence(unescape(transunit_ref.childNodes[0].nodeValue))
+                break
         # create an object of parallel sentence
         ps = ParallelSentence(src, tgt_list, ref)
         print "."
