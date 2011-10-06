@@ -6,33 +6,20 @@ Created on Jun 27, 2011
 @author: jogin
 '''
 
-
+import string
 from xml.dom.minidom import parse
 from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence
 from sentence.dataset import DataSet
 from xml.sax.saxutils import unescape
- 
+from io.input.genericxmlreader import GenericXmlReader
 
-class XliffReader(object):
+class XliffReader(GenericXmlReader):
     """
     classdocs
     """
 
 
-    def __init__(self, input_filename, load = True):
-        """
-        Constructor. Creates an XML object that handles META-NET XLIFF data
-        @param input_filename: the name of XML file 
-        @type input_filename: string
-        @param load: by turning this option to false, the instance will be 
-                     initialized without loading everything into memory
-        @type load: boolean 
-        """
-        self.input_filename = input_filename
-        self.loaded = load
-        if load:
-            self.load()
     
     
     def load(self):
@@ -124,11 +111,12 @@ class XliffReader(object):
 
             # alt-trans_tool_id parsing
             tool_id = altTrans.getAttribute('tool-id')
-            tgt.add_attribute('tool_id', tool_id)
+            #tgt.add_attribute('tool_id', tool_id)
             
             # system name
-            system_name = self.get_system_name(tool_id)
-            tgt.add_attribute('system', system_name)
+            #system_name = self.get_system_name(tool_id)
+            #tgt.add_attribute('system', system_name)
+            tgt.add_attribute('system', tool_id)
             
             # add global weights for particular tool id
             for weight in self.get_weights(tool_id):
@@ -139,7 +127,7 @@ class XliffReader(object):
             for alttrans_score in alttrans_scores:
                 if alttrans_score in altTrans.childNodes:
                     for elem in alttrans_score.getElementsByTagName("metanet:score"):
-                        tgt.add_attribute('sc_%s-%s' % (tool_id, elem.getAttribute('type')), \
+                        tgt.add_attribute('sc_%s-%s' % (tool_id, elem.getAttribute('type').replace(' ', '-')), \
                                           elem.getAttribute('value'))
             
             # alt-trans_annotation parsing
@@ -148,7 +136,7 @@ class XliffReader(object):
                 if alttrans_annotation in altTrans.childNodes:
                     for elem in alttrans_annotation.getElementsByTagName("metanet:annotation"):
                         if elem in alttrans_annotation.childNodes:
-                            tgt.add_attribute('an_%s-%s' % (tool_id, elem.getAttribute('type')), \
+                            tgt.add_attribute('an_%s-%s' % (tool_id, elem.getAttribute('type').replace(' ', '-')), \
                                               elem.getAttribute('value'))
             
             
@@ -167,8 +155,8 @@ class XliffReader(object):
                         if score.getAttribute('value'):
                             value = score.getAttribute('value')
                         else:
-                            value = score.firstChild.nodeValue
-                        tgt.add_attribute('ds_%s-%s-%d' % (tool_id, score.getAttribute('type'), phrase_id), value)
+                            value = string.strip(score.firstChild.nodeValue, "\n ")
+                        tgt.add_attribute('ds_%s-%s-%d' % (tool_id, score.getAttribute('type').replace(' ', '-'), phrase_id), value)
                     
                 
                 
