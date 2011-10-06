@@ -20,6 +20,7 @@ class SaxWrapper(ContentHandler):
     """
     Abstract SAX wrapper to facilitate use of older minidom processors.
     """
+    i = 0
     
     def __init__(self, element_focus, reader = GenericReader, writer = GenericWriter, filename_out = ""):
         """
@@ -109,6 +110,8 @@ class SaxWrapper(ContentHandler):
                 parallelsentence = reader.get_parallelsentences()[0]
                 #parallelsentence_xmlstring = self.writer().get_parallelsentence_string(parallelsentence)
                 #self.finalgenerator._write(parallelsentence_xmlstring)
+                self.i += 1
+                print self.i
                 self.parallelsentences.append(parallelsentence)
                 self.stringbuffer.close()
                 self.stringbuffer = None
