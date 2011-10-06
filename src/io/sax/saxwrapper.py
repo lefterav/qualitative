@@ -104,7 +104,7 @@ class SaxWrapper(ContentHandler):
                 self.stringbuffer.flush()
                 #self.reader = GenericReader
                 string = self.stringbuffer.getvalue()
-                print string
+                
                 reader = self.reader(string, True, True)
                 parallelsentence = reader.get_parallelsentences()[0]
                 #parallelsentence_xmlstring = self.writer().get_parallelsentence_string(parallelsentence)
