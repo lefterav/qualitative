@@ -4,6 +4,8 @@ from io.sax.saxwrapper import SaxWrapper
 from sys import argv
 from xml import sax
 
+
+
 input_filename = argv[1]
 output_filename = argv[2]
 #dataset = XliffReader(input_filename).get_dataset()
@@ -12,4 +14,6 @@ saxwrapper = SaxWrapper("trans-unit", reader = XliffReader, writer = XmlWriter, 
 source = open(input_filename)
 sax.parse(source, saxwrapper)
 source.close()
+
+
 

@@ -25,6 +25,7 @@ class SaxWrapper(ContentHandler):
     def __init__(self, element_focus, reader = GenericReader, writer = GenericWriter, filename_out = ""):
         """
         """
+        
         self.element_focus = element_focus
         self.recording = False
         self.buffer_generator = None
@@ -35,7 +36,6 @@ class SaxWrapper(ContentHandler):
         self.parallelsentences = []
         self.filename_out = filename_out
         self.tobeparsedonce = []
-        self.filename_out = filename_out
         #self.file_out = open(filename_out, 'w')
         #self.finalgenerator = XMLGenerator(self.file_out, encoding="utf8")
     
@@ -49,7 +49,7 @@ class SaxWrapper(ContentHandler):
         @type attrs: Attributes
         """
         
-            
+        
         if name == self.element_focus:
             self.recording = True
             self.stringbuffer = StringIO.StringIO()
@@ -87,6 +87,7 @@ class SaxWrapper(ContentHandler):
         @param attrs: of the element type as a string and the attrs parameter holds an object of the Attributes interface containing the attributes of the element.
         @type attrs: Attributes
         """
+        
         if not self.recording:
             #self.finalgenerator.endElement(name)
             self.tobeparsedonce.pop()

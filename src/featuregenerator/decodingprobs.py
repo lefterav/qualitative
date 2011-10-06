@@ -5,6 +5,7 @@ Created on 05.10.2011
 '''
 import re
 import numpy
+from copy import deepcopy
 
 class DecodingProbsProcessor(object):
     '''
@@ -17,8 +18,9 @@ class DecodingProbsProcessor(object):
         Constructor
         '''
     
-    def get_features_tgt(self, simplesentence, parallelsentence):
+    def add_features_tgt(self, simplesentence, parallelsentence):
         
+        simplesentence = deepcopy(simplesentence)
         logp_list = {}
         
         #this is currently for joshua:
@@ -69,8 +71,9 @@ class DecodingProbsProcessor(object):
                 std = numpy.std(probs)
                 var = numpy.var(probs)
                 #TODO: make the names nice, get everything into separate functions and then place them nicely into a dict
-            
-                     
+        
+        myattributes = {}
+        simplesentence.attributes = myattributes    
             
                 
         return None
