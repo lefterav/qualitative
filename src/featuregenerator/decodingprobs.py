@@ -26,6 +26,7 @@ class DecodingProbsProcessor(object):
         # after sorting them, and calculate mean, std and var
         tool_id = simplesentence.get_attributes("tool_id")
         if (tool_id == "t1"):
+            self.analyze_probs_joshua()
             for attribute in simplesentence.get_attributes():
                 if attribute.startswith("ds_t1-translogp"):
                     (feature_id, phrase_id) = re.findall("ds_t1-translogp(\d*)-(\d*)", attribute)

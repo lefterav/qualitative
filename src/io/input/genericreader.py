@@ -8,10 +8,12 @@ Created on Aug 4, 2011
 from sentence.dataset import DataSet
 
 
-class GenericReader(object):
+class GenericReader:
     '''
     classdocs
     '''
+    
+
     
     def __init__(self, input_filename, load = True):
         """
@@ -37,7 +39,10 @@ class GenericReader(object):
     def unload(self):
         raise NotImplementedError( "Should have implemented this" )
 
-            
+    
+    
+    def get_parallelsentence(self, XMLEntry):   
+        raise NotImplementedError( "Should have implemented this" )
 
     def get_dataset(self):
         """

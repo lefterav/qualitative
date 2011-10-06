@@ -5,28 +5,42 @@
 from xml.dom import minidom
 from sentence.parallelsentence import ParallelSentence
 from xml.sax.saxutils import escape
-
-class XmlWriter(object):
-    """
-    classdocs
-    """
+from sentence.dataset import DataSet
 
 
+class GenericWriter(object):
     def __init__(self, data):
+        raise NotImplementedError( "Should have implemented this" )
+    
+    def write_to_file(self, filename):
+        raise NotImplementedError( "Should have implemented this" ) 
+    
+    def get_parallelsentence_string(self, ps):
+        raise NotImplementedError( "Should have implemented this" ) 
+    
+
+class GenericXMLWriter(GenericWriter):
+    def __init__(self, data = None):
         """
         Constructor
         """
-        if isinstance (data , minidom.Document):
+        if isinstance (data, minidom.Document):
             self.object_xml = data
         elif isinstance(data, list):
-            self.object_xml = None
-            self.convert_to_xml(data)
+            self.object_xml = self.get_document_xml(data)
+        elif isinstance(data, DataSet):
+            self.object_xml = self.get_document_xml(data.get_parallelsentences())
         else:
-            self.object_xml = None
-            self.convert_to_xml(data.get_parallelsentences())
-            
-        
-    def convert_to_xml(self, parallelsentences):
+            pass
+    
+    def get_parallelsentence_xml(self, ps):
+        raise NotImplementedError( "Should have implemented this" ) 
+      
+    
+    def get_parallelsentence_string(self, ps):
+        return self.get_parallelsentence_xml(ps).toprettyxml("\t","\n", "utf-8")
+    
+    def get_document_xml(self, parallelsentences):
         """
         Creates an XML for the document an populates that with the (parallel) sentences of the given object.
         Resulting XML object gets stored as a variable.
@@ -39,37 +53,16 @@ class XmlWriter(object):
         
         
         for ps in parallelsentences:
-            
-            parallelsentence_xml = doc_xml.createElement("judgedsentence")
-            
-            #add attributes of parallel sentence
-            for attribute_key in ps.get_attributes().keys():
-                parallelsentence_xml.setAttribute( attribute_key.decode('utf-8') , ps.get_attribute(attribute_key).decode('utf-8') )
-            
-            #add source as a child of parallel sentence
-            src_xml = self.__create_xml_sentence__(doc_xml, ps.get_source(), "src")
-            parallelsentence_xml.appendChild( src_xml )
-
-            #add translations
-            for tgt in ps.get_translations():
-                tgt_xml = self.__create_xml_sentence__(doc_xml, tgt, "tgt")
-                parallelsentence_xml.appendChild( tgt_xml )
-
-            #add reference as a child of parallel sentence
-            if ps.get_reference():
-                ref_xml = self.__create_xml_sentence__(doc_xml, ps.get_reference(), "ref")
-                parallelsentence_xml.appendChild( ref_xml )
-
-            #append the newly populated parallel sentence to the document
+            parallelsentence_xml = self.get_parallelsentence_xml(ps, doc_xml)
             jcml.appendChild(parallelsentence_xml)
             
             #print ">", i
             i += 1
-            
+        
         doc_xml.appendChild(jcml)
-        self.object_xml = doc_xml
-        
-        
+        return doc_xml
+    
+    
     def write_to_file(self, filename):
         file_object = open(filename, 'w')
         try:
@@ -77,6 +70,49 @@ class XmlWriter(object):
         except:
             file_object.write(self.object_xml.toprettyxml("\t","\n", "utf-8"))            
         file_object.close()  
+        
+    
+
+
+class XmlWriter(GenericXMLWriter):
+    """
+    classdocs
+    """
+
+
+    
+                
+    
+    
+
+    def get_parallelsentence_xml(self, ps, doc_xml = minidom.Document()):
+        parallelsentence_xml = doc_xml.createElement("judgedsentence")
+        
+        #add attributes of parallel sentence
+        for attribute_key in ps.get_attributes().keys():
+            parallelsentence_xml.setAttribute(attribute_key.decode('utf-8') , ps.get_attribute(attribute_key).decode('utf-8'))
+        
+        #add source as a child of parallel sentence
+        src_xml = self.__create_xml_sentence__(doc_xml, ps.get_source(), "src")
+        parallelsentence_xml.appendChild(src_xml)
+
+        #add translations
+        for tgt in ps.get_translations():
+            tgt_xml = self.__create_xml_sentence__(doc_xml, tgt, "tgt")
+            parallelsentence_xml.appendChild(tgt_xml)
+
+        #add reference as a child of parallel sentence
+        if ps.get_reference():
+            ref_xml = self.__create_xml_sentence__(doc_xml, ps.get_reference(), "ref")
+            parallelsentence_xml.appendChild(ref_xml)
+
+            #append the newly populated parallel sentence to the document
+        return parallelsentence_xml
+            
+
+        
+        
+
            
         
         
