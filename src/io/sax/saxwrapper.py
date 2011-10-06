@@ -37,7 +37,7 @@ class SaxWrapper(ContentHandler):
         self.filename_out = filename_out
         self.tobeparsedonce = []
         #self.file_out = open(filename_out, 'w')
-        #self.finalgenerator = XMLGenerator(self.file_out, encoding="utf8")
+        #self.finalgenerator = XMLGenerator(self.file_out, encoding="utf-8")
     
     
     def startElement(self, name, attrs=[]):
@@ -53,7 +53,7 @@ class SaxWrapper(ContentHandler):
         if name == self.element_focus:
             self.recording = True
             self.stringbuffer = StringIO.StringIO()
-            self.buffer_generator = XMLGenerator(self.stringbuffer, encoding="utf8")
+            self.buffer_generator = XMLGenerator(self.stringbuffer, encoding="utf-8")
             for (element_name, element_attrs) in self.tobeparsedonce:
                 self.buffer_generator.startElement(element_name, element_attrs)
         if self.recording:

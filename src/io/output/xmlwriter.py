@@ -38,7 +38,7 @@ class GenericXMLWriter(GenericWriter):
       
     
     def get_parallelsentence_string(self, ps):
-        return self.get_parallelsentence_xml(ps).toprettyxml("\t","\n", "utf8")
+        return self.get_parallelsentence_xml(ps).toprettyxml("\t","\n", "utf-8")
     
     def get_document_xml(self, parallelsentences):
         """
@@ -66,9 +66,9 @@ class GenericXMLWriter(GenericWriter):
     def write_to_file(self, filename):
         file_object = open(filename, 'w')
         try:
-            file_object.write(self.object_xml.toprettyxml("\t","\n")) #removed ,"utf8"
+            file_object.write(self.object_xml.toprettyxml("\t","\n")) #removed ,"utf-8"
         except:
-            file_object.write(self.object_xml.toprettyxml("\t","\n", "utf8"))            
+            file_object.write(self.object_xml.toprettyxml("\t","\n", "utf-8"))            
         file_object.close()  
         
     
@@ -91,7 +91,7 @@ class XmlWriter(GenericXMLWriter):
         #add attributes of parallel sentence
         for attribute_key in ps.get_attributes().keys():
             try:
-                parallelsentence_xml.setAttribute(attribute_key.decode('utf8') , ps.get_attribute(attribute_key).decode('utf8'))
+                parallelsentence_xml.setAttribute(attribute_key.decode('utf-8') , ps.get_attribute(attribute_key).decode('utf-8'))
             except:
                 parallelsentence_xml.setAttribute(attribute_key, ps.get_attribute(attribute_key))
         
@@ -129,11 +129,11 @@ class XmlWriter(GenericXMLWriter):
 
         for attribute_key in sentence.get_attributes().keys():
             try:
-                sentence_xml.setAttribute(attribute_key.decode('utf8'), escape(str(sentence.get_attribute(attribute_key)).decode('utf8')))
+                sentence_xml.setAttribute(attribute_key.decode('utf-8'), escape(str(sentence.get_attribute(attribute_key)).decode('utf-8')))
             except UnicodeEncodeError:    
                 sentence_xml.setAttribute(attribute_key, escape(str(sentence.get_attribute(attribute_key))))
         try:
-            textnode = escape(sentence.get_string().strip()).decode('utf8')
+            textnode = escape(sentence.get_string().strip()).decode('utf-8')
         except UnicodeEncodeError:
             textnode = escape(sentence.get_string().strip())
         sentence_xml.appendChild(doc_xml.createTextNode(textnode))
