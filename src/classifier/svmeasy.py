@@ -1,16 +1,23 @@
 '''
-Created on 04 Οκτ 2011
 
 @author: lefterav
 '''
 
-from orngSVM import SVMLearner, exampleTableToSVMFormat
+from orngSVM import SVMLearner, SVMClassifierClassEasyWrapper
+import orange
+import orngWrap
 
 class SVMEasy(SVMLearner):
     '''
     classdocs
     '''
-
+    def __init__(self, **kwds):
+        self.folds=4
+        self.verbose=0
+        SVMLearner.__init__(self, **kwds)
+        self.learner = SVMLearner(**kwds)
+        
+    
     def continuize(self, examples):
         transformer=orange.DomainContinuizer()
         transformer.multinomialTreatment=orange.DomainContinuizer.NValues
@@ -18,14 +25,20 @@ class SVMEasy(SVMLearner):
         transformer.classTreatment=orange.DomainContinuizer.Ignore
         newdomain=transformer(examples)
         newexamples=examples.translate(newdomain)
-        return newexamples
+        return newdomain, newexamples
 
     def learnClassifier(self, examples):
-         
-        newexamples = self.continuize(examples)
-        
+        print "continuizing data"
+        newdomain, newexamples = self.continuize(examples)
+        newexamples.save("continuized_examples.tab")
+        self.verbose = True
+        print "tuning classifier"
+        newdomain = newexamples.domain
+        classifier = self.tuneClassifier(newexamples, newdomain, examples)
+        return classifier
         
         #print newexamples[0]
+    def tuneClassifier(self, newexamples, newdomain, examples):
         params={}
         parameters = []
         self.learner.normalization = False ## Normalization already done
