@@ -9,12 +9,12 @@ Created on 15 Οκτ 2010
 """
 
 
-from xml.dom.minidom import parse
+from xml.dom import minidom
 from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence
 from xml.sax.saxutils import unescape
 from io.input.genericreader import GenericReader
-
+import StringIO
 
 class GenericXmlReader(GenericReader):
     """
@@ -22,7 +22,7 @@ class GenericXmlReader(GenericReader):
     """
 
     
-    def __init__(self, input_filename, load = True):
+    def __init__(self, input_filename, load = True, stringmode = False):
         """
         Constructor. Creates an XML object that handles ranking file data
         @param input_filename: the name of XML file
@@ -31,23 +31,30 @@ class GenericXmlReader(GenericReader):
                      initialized without loading everything into memory
         @type load: boolean 
         """
+        
         self.input_filename = input_filename
         self.loaded = load
         self.TAG = self.get_tags()
         if load:
-            self.load()
+            if stringmode:
+                self.load_str(input_filename)
+            else:
+                self.load()
             
             
     def get_tags(self):
-        raise NotImplementedError( "Should have implemented this" )
+        return {}
  
+    
+    def load_str(self, input):
+        self.xmlObject = minidom.parseString(input)
     
     
     def load(self):
         """
         Loads the data of the file into memory. It is useful if the Classes has been asked not to load the filename upon initialization
         """
-        self.xmlObject = parse(self.input_filename)
+        self.xmlObject = minidom.parse(self.input_filename)
     
     
 #    def get_dataset(self):
@@ -86,14 +93,47 @@ class GenericXmlReader(GenericReader):
         sentenceList = judgedCorpus[0].getElementsByTagName(self.TAG["sent"])
         attributesKeySet = set()
         
-        for xmlEntry in sentenceList:
-            for attributeKey in xmlEntry.attributes.keys():
+        for xml_entry in sentenceList:
+            for attributeKey in xml_entry.attributes.keys():
                 attributesKeySet.add(attributeKey)            
         return list(attributesKeySet)
     
     def length(self):
         judgedCorpus = self.xmlObject.getElementsByTagName(self.TAG["doc"])
         return len(judgedCorpus[0].getElementsByTagName(self.TAG["sent"]))
+    
+    
+    def get_parallelsentence(self, xml_entry):
+        
+        srcXML = xml_entry.getElementsByTagName(self.TAG["src"])
+        tgtXMLentries = xml_entry.getElementsByTagName(self.TAG["tgt"])
+        refXML = xml_entry.getElementsByTagName(self.TAG["ref"])
+        
+        src = self.__read_simplesentence__(srcXML[0])
+        
+        #Create a list of SimpleSentence objects out of the object
+        tgt = map(lambda tgtXML: self.__read_simplesentence__(tgtXML), tgtXMLentries) 
+        
+        ref = SimpleSentence()
+        try:    
+            ref = self.__read_simplesentence__(refXML[0])
+        except LookupError:
+            pass
+        
+        #Extract the XML features and attach them to the ParallelSentenceObject
+        attributes = self.__read_attributes__(xml_entry)
+        
+        #TODO: fix this language by getting from other parts of the sentence
+        if not self.TAG["langsrc"]  in attributes:
+            attributes[self.TAG["langsrc"] ] = self.TAG["default_langsrc"] 
+        
+        if not self.TAG["langtgt"]  in attributes:
+            attributes[self.TAG["langtgt"] ] = self.TAG["default_langtgt"] 
+    
+        
+        #create a new Parallesentence with the given content
+        curJudgedSentence = ParallelSentence(src, tgt, ref, attributes)
+        return curJudgedSentence
         
     def get_parallelsentences(self, start = None, end = None):
         """
@@ -105,54 +145,26 @@ class GenericXmlReader(GenericReader):
         else:
             sentenceList = judgedCorpus[0].getElementsByTagName(self.TAG["sent"])[start:end]
         newssentences = [] 
-        for xmlEntry in sentenceList:
-            srcXML = xmlEntry.getElementsByTagName(self.TAG["src"])
-            tgtXMLentries = xmlEntry.getElementsByTagName(self.TAG["tgt"])
-            refXML = xmlEntry.getElementsByTagName(self.TAG["ref"])
-            
-            src = self.__read_simplesentence__(srcXML[0])
-            
-            #Create a list of SimpleSentence objects out of the object
-            tgt = map(lambda tgtXML: self.__read_simplesentence__(tgtXML), tgtXMLentries) 
-            
-            ref = SimpleSentence()
-            try:    
-                ref = self.__read_simplesentence__(refXML[0])
-            except LookupError:
-                pass
-            
-            #Extract the XML features and attach them to the ParallelSentenceObject
-            attributes = self.__read_attributes__(xmlEntry)
-            
-            #TODO: fix this language by getting from other parts of the sentence
-            if not self.TAG["langsrc"]  in attributes:
-                attributes[self.TAG["langsrc"] ] = self.TAG["default_langsrc"] 
-            
-            if not self.TAG["langtgt"]  in attributes:
-                attributes[self.TAG["langtgt"] ] = self.TAG["default_langtgt"] 
-        
-            
-            #create a new Parallesentence with the given content
-            curJudgedSentence = ParallelSentence(src, tgt, ref, attributes)
-        
+        for xml_entry in sentenceList:
+            curJudgedSentence = self.get_parallelsentence(xml_entry)
             newssentences.append(curJudgedSentence)
         return newssentences
     
-    def __read_simplesentence__(self, xmlEntry):
-        return SimpleSentence(self.__read_string__(xmlEntry), self.__read_attributes__(xmlEntry))
+    def __read_simplesentence__(self, xml_entry):
+        return SimpleSentence(self.__read_string__(xml_entry), self.__read_attributes__(xml_entry))
     
-    def __read_string__(self, xmlEntry):
-        return unescape(xmlEntry.childNodes[0].nodeValue.strip()).encode('utf8')
+    def __read_string__(self, xml_entry):
+        return unescape(xml_entry.childNodes[0].nodeValue.strip()).encode('utf8')
     
-    def __read_attributes__(self, xmlEntry):
+    def __read_attributes__(self, xml_entry):
         """
         @return: a dictionary of the attributes of the current sentence {name:value}
         """
         attributes = {}
-        attributeKeys = xmlEntry.attributes.keys()
+        attributeKeys = xml_entry.attributes.keys()
         for attributeKey in attributeKeys:
             myAttributeKey = attributeKey.encode('utf8')
-            attributes[myAttributeKey] = unescape(xmlEntry.attributes[attributeKey].value).encode('utf8')                     
+            attributes[myAttributeKey] = unescape(xml_entry.attributes[attributeKey].value).encode('utf8')                     
         return attributes
         
     
