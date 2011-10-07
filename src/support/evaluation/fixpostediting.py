@@ -21,7 +21,7 @@ specify the directories where ranking.xml and editing.xml files reside.
 from io.input.rankreader import RankReader
 from io.input.posteditingreader import PosteditingReader
 from io.output.posteditingwriter import PosteditingWriter
-from support.evaluation.levenshtein import levenshtein_tok
+from featuregenerator.levenshtein.levenshtein import levenshtein_tok
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 import os
