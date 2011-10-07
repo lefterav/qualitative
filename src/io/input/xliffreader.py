@@ -131,19 +131,38 @@ class XliffReader(GenericXmlReader):
                                           elem.getAttribute('value'))
             
             # alt-trans_annotation parsing
-            alttrans_annotations = altTrans.getElementsByTagName("metanet:derivation")
-            for alttrans_annotation in alttrans_annotations:
-                if alttrans_annotation in altTrans.childNodes:
-                    for elem in alttrans_annotation.getElementsByTagName("metanet:annotation"):
-                        if elem in alttrans_annotation.childNodes:
-                            tgt.add_attribute('an_%s-%s' % (tool_id, elem.getAttribute('type').replace(' ', '-')), \
-                                              elem.getAttribute('value'))
+            alttrans_derivations = altTrans.getElementsByTagName("metanet:derivation")
+            for alttrans_derivation in alttrans_derivations:
+                derivation_id = alttrans_derivation.getAttribute("id")
+#                tgt.add_attribute("an_%s-tokens" % derivation_id, len(alttrans_derivation.getElementsByTagName("metanet:token")))
+                labels_count = {}
+                if alttrans_derivation in altTrans.childNodes:
+                    for elem in alttrans_derivation.getElementsByTagName("metanet:annotation"):
+                        ann_type = elem.getAttribute('type')
+                        value = elem.getAttribute('value')
+                        if elem in alttrans_derivation.childNodes:
+                            tgt.add_attribute('an_%s-%s-%s' % (tool_id, derivation_id, ann_type.replace(' ', '-')), value)
+                            
+                        #count node types from Lucy parser 
+                        elif ann_type == "cat":
+                            if labels_count.has_key(value):
+                                labels_count[value] += 1
+                            else:
+                                labels_count[value] = 1
+                #label counts collected
+                for label in labels_count:
+                    att_name = "%s-cat-%s" % (derivation_id, label) 
+                    tgt.add_attribute(att_name, labels_count[label]) 
+                            
+                            
+            
+            
             
             
             phrases = altTrans.getElementsByTagName("metanet:phrase")
             
             if phrases:
-                tgt.add_attribute("phrases", str(len(phrases)))
+                tgt.add_attribute("phrases_count", str(len(phrases)))
             
             phrase_id = 0
             for phrase in phrases:
