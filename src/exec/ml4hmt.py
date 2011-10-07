@@ -89,7 +89,7 @@ if __name__ == '__main__':
         if step == 110:
             print "final features"
             
-            analyze_external_features(merged_jcml, exfile, ("en", "fr")) 
+            analyze_external_features(merged_jcml, exfile) 
         
 print "Done!" 
 
