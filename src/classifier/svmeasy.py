@@ -6,6 +6,7 @@
 from orngSVM import SVMLearner, SVMClassifierClassEasyWrapper
 import orange
 import orngWrap
+import cPickle as pickle
 
 class SVMEasy(SVMLearner):
     '''
@@ -20,8 +21,10 @@ class SVMEasy(SVMLearner):
     
     def continuize(self, examples):
         transformer=orange.DomainContinuizer()
-        transformer.multinomialTreatment=orange.DomainContinuizer.NValues
-        transformer.continuousTreatment=orange.DomainContinuizer.NormalizeBySpan
+        #transformer.multinomialTreatment=orange.DomainContinuizer.NValues
+        #transformer.continuousTreatment=orange.DomainContinuizer.NormalizeBySpan
+        transformer.multinomialTreatment=orange.DomainContinuizer.Ignore
+        transformer.continuousTreatment=orange.DomainContinuizer.Ignore
         transformer.classTreatment=orange.DomainContinuizer.Ignore
         newdomain=transformer(examples)
         newexamples=examples.translate(newdomain)
@@ -34,7 +37,15 @@ class SVMEasy(SVMLearner):
         self.verbose = True
         print "tuning classifier"
         newdomain = newexamples.domain
-        classifier = self.tuneClassifier(newexamples, newdomain, examples)
+        classifier, fittedParameters = self.tuneClassifier(newexamples, newdomain, examples)
+        
+        paramfile = open("svm.params", 'w')
+        print fittedParameters
+        for param in fittedParameters:
+            paramfile.write(str(param))
+            paramfile.write("\n")
+        
+        paramfile.close()
         return classifier
         
         #print newexamples[0]
@@ -54,8 +65,27 @@ class SVMEasy(SVMLearner):
             parameters.append(("C", [2**a for a in  range(-5,15,2)]))
         if self.kernel_type==2:
             parameters.append(("gamma", [2**a for a in range(-5,5,2)]+[0]))
+        parameters = [("nu", [1/10.0]) , ("C", [2,3]), ("gamma", [2])]
         tunedLearner = orngWrap.TuneMParameters(object=self.learner, parameters=parameters, folds=self.folds)
-        
-        return SVMClassifierClassEasyWrapper(tunedLearner(newexamples, verbose=self.verbose), newdomain, examples)
-    
+        appliedTunedLearner = tunedLearner(newexamples, verbose=self.verbose)
+             
+        return SVMClassifierClassEasyWrapper(appliedTunedLearner, newdomain, examples), appliedTunedLearner.fittedParameters
+
+examples = orange.ExampleTable("/home/elav01/training-attset1.tab")
+svmlearner = SVMEasy(examples)
+
+testexamples = orange.ExampleTable("/home/elav01/test-attset1.tab")
+print svmlearner(testexamples[1])
+
+objectfile = open("/home/elav01/svmeasy.pickle", 'w')
+pickle.dump(svmlearner, objectfile)
+objectfile.close()
+
+#objectfile = open("/home/elav01/svmeasy.pickle", 'r')
+#recovered_svmlearner = pickle.load(objectfile)
+#objectfile.close()
+#print recovered_svmlearner(testexamples[1])
+
+
+
         
