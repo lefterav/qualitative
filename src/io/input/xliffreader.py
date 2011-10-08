@@ -91,6 +91,7 @@ class XliffReader(GenericXmlReader):
         
         # get a nodeList of alt-trans elements
         altTranss = transUnit.getElementsByTagName('alt-trans')
+        sentence_id = transUnit.getAttribute("id")
         
         # trans-unit source
         src = ''
@@ -213,7 +214,7 @@ class XliffReader(GenericXmlReader):
                 ref = SimpleSentence(unescape(transunit_ref.childNodes[0].nodeValue))
                 break
         # create an object of parallel sentence
-        ps = ParallelSentence(src, tgt_list, ref)
+        ps = ParallelSentence(src, tgt_list, ref, {"id" : sentence_id})
         print "."
         return ps
     
