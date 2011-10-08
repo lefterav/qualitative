@@ -16,11 +16,12 @@ from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenera
 from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
 from featuregenerator.bleu.bleugenerator import BleuGenerator
 from featuregenerator.attribute_rank import AttributeRankGenerator
+from featuregenerator.parser.berkeley.parsermatches import ParserMatches
 
-def analyze_external_features(infilename, outfilename):
+def analyze_external_features(infilename, outfilename, langpair=""):
     #LevenshteinGenerator(),
     #BleuGenerator()
-    featuregenerators = [ LengthFeatureGenerator(), AttributeRankGenerator('bleu'), AttributeRankGenerator('lev')]
+    featuregenerators = [ LengthFeatureGenerator(), ParserMatches(langpair) , AttributeRankGenerator('bleu'), AttributeRankGenerator('lev')]
     outfile = open(outfilename, 'w')
     infile = open(infilename, 'r')
     saxreader = SaxJCMLProcessor(outfile, featuregenerators)
@@ -53,10 +54,10 @@ if __name__ == '__main__':
             print "English parser features"
             exp.add_b_features_batch(jcmlfilename, bpfile_en, "http://percival.sb.dfki.de:8682", "en")
     
-#        bpfile_es = jcmlfilename.replace(".jcml", ".bp.es.jcml")
-#        if step == 20:
-#            print "Spanish parser features"
-#            exp.add_b_features_batch(jcmlfilename, bpfile_es, "http://percival.sb.dfki.de:8683", "es")
+        bpfile_es = jcmlfilename.replace(".jcml", ".bp.es.jcml")
+        if step == 20:
+            print "Spanish parser features"
+            exp.add_b_features_batch(jcmlfilename, bpfile_es, "http://percival.sb.dfki.de:8685", "es")
             
 #        lmfile_fr = jcmlfilename.replace(".jcml", ".lm.fr.jcml") 
 #        if step == 30:
@@ -89,7 +90,7 @@ if __name__ == '__main__':
         if step == 110:
             print "final features"
             
-            analyze_external_features(merged_jcml, exfile) 
+            analyze_external_features(merged_jcml, exfile, langpair) 
         
 print "Done!" 
 
