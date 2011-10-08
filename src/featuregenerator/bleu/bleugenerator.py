@@ -10,6 +10,7 @@ from tempfile import mktemp
 
 from os import unlink 
 import subprocess
+import sys
 
 class BleuGenerator(FeatureGenerator):
     '''
@@ -48,15 +49,15 @@ class BleuGenerator(FeatureGenerator):
         ofilename = mktemp(dir=u'/tmp/', suffix=u'.out.txt')
         ofile = open(ofilename, 'w')
         
-        
-        subprocess.call(["./bleu", "-r", rfilename, "-s" , "-S", tfilename], stdout = ofile)
+        path = [path for path in sys.path if path.endswith("src")][0]
+        bleupath = "%s/featuregenerator/bleu/bleu" % path
+        subprocess.call([bleupath, "-r", rfilename, "-s" , "-S", tfilename], stdout = ofile)
         
         ofile.close()
         ofile = open(ofilename, 'r')
         output = float(ofile.readline())
         
         return output
-    
 
         
         
