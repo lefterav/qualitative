@@ -154,7 +154,7 @@ class GenericXmlReader(GenericReader):
         return SimpleSentence(self.__read_string__(xml_entry), self.__read_attributes__(xml_entry))
     
     def __read_string__(self, xml_entry):
-        return unescape(xml_entry.childNodes[0].nodeValue.strip()).encode('utf8')
+        return unescape(xml_entry.childNodes[0].nodeValue.strip()) #.encode('utf8')
     
     def __read_attributes__(self, xml_entry):
         """
@@ -163,8 +163,8 @@ class GenericXmlReader(GenericReader):
         attributes = {}
         attributeKeys = xml_entry.attributes.keys()
         for attributeKey in attributeKeys:
-            myAttributeKey = attributeKey.encode('utf8')
-            attributes[myAttributeKey] = unescape(xml_entry.attributes[attributeKey].value).encode('utf8')                     
+            myAttributeKey = attributeKey #.encode('utf8')
+            attributes[myAttributeKey] = unescape(xml_entry.attributes[attributeKey].value) #.encode('utf8')                     
         return attributes
         
     

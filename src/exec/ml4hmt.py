@@ -86,7 +86,7 @@ if __name__ == '__main__':
         merged_jcml = jcmlfilename.replace(".jcml", ".ef.jcml")
         if step == 100:
             print "Getting things together"
-            tobermerged = [bpfile_en, lmfile_en]
+            tobermerged = [bpfile_en, bpfile_es, lmfile_en]
             original_file = tobermerged[0]
             original_dataset = JcmlReader(original_file).get_dataset()
             for appended_file in tobermerged[1:]:

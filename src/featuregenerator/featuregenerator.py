@@ -201,6 +201,7 @@ class FeatureGenerator():
                 for feature_set in row:
                     for key in feature_set:
                         src.add_attribute(key, feature_set[key])
+                        #print "type" , feature_set[key], type(feature_set[key])
                         
                 parallelsentence.set_source(src)
                 #parallelsentence.set_translations(targets)
