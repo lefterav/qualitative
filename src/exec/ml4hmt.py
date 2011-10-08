@@ -17,6 +17,7 @@ from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenera
 from featuregenerator.bleu.bleugenerator import BleuGenerator
 from featuregenerator.attribute_rank import AttributeRankGenerator
 from featuregenerator.parser.berkeley.parsermatches import ParserMatches
+from featuregenerator.decodingprobs import DecodingProbsAnalyzer
 
 def analyze_external_features(infilename, outfilename, langpair=""):
     #LevenshteinGenerator(),
@@ -24,9 +25,10 @@ def analyze_external_features(infilename, outfilename, langpair=""):
     langpair = tuple(langpair.split('-'))
     featuregenerators = [LengthFeatureGenerator(), 
                          ParserMatches(langpair), 
+                         DecodingProbsAnalyzer(),
                          LevenshteinGenerator(), 
-                         #BleuGenerator(), 
-                         #AttributeRankGenerator('bleu'), 
+                         BleuGenerator(), 
+                         AttributeRankGenerator('bleu'), 
                          AttributeRankGenerator('lev')]
     outfile = open(outfilename, 'w')
     infile = open(infilename, 'r')
@@ -63,7 +65,7 @@ if __name__ == '__main__':
         bpfile_es = jcmlfilename.replace(".jcml", ".bp.es.jcml")
         if step == 20:
             print "Spanish parser features"
-            exp.add_b_features_batch(jcmlfilename, bpfile_es, "http://percival.sb.dfki.de:8685", "es")
+            exp.add_b_features_batch(jcmlfilename, bpfile_es, "http://percival.sb.dfki.de:21115", "es")
             
 #        lmfile_fr = jcmlfilename.replace(".jcml", ".lm.fr.jcml") 
 #        if step == 30:

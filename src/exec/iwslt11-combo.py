@@ -18,7 +18,7 @@ if __name__ == '__main__':
     mydir = "/home/elav01/iwslt11/test-combo"
     #mydir = "/share/taraxu/selection-mechanism/iwslt11/"
     targetdir = "/home/elav01/iwslt11/test-combo"
-    extension = ".txt"
+    extension = ".txt.fc"
     
     testset = "iwslt-tst2011-combo"
     pattern_name = "tst2011.MT_EF.system([0-9]*)"
