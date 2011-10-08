@@ -139,10 +139,10 @@ class XliffReader(GenericXmlReader):
                 labels_count = {}
                 if alttrans_derivation in altTrans.childNodes:
                     for elem in alttrans_derivation.getElementsByTagName("metanet:annotation"):
-                        ann_type = elem.getAttribute('type')
-                        value = elem.getAttribute('value')
+                        ann_type = elem.getAttribute('type').replace(' ', '-')
+                        value = elem.getAttribute('value').replace("$", "SS")
                         if elem in alttrans_derivation.childNodes:
-                            tgt.add_attribute('an_%s-%s-%s' % (tool_id, derivation_id, ann_type.replace(' ', '-')), value)
+                            tgt.add_attribute('an_%s-%s-%s' % (tool_id, derivation_id, ann_type), value)
                             
                         #count node types from Lucy parser 
                         elif ann_type == "cat":
