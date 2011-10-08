@@ -36,6 +36,13 @@ class ParserMatches(LanguageFeatureGenerator):
               (["."], ["."]),
               ([","], [","])]
 
+    mapping[("es","en")] = [(["sn"], ["NP"]),
+              (["S"], ["VP"]),
+              (["v" ], ["VB", "VBZ", "VBP", "VBN", "VBG" ]),
+              (["n"], ["NN", "NNP", "NNS"]),
+              (["sp"], ["PP"]),
+              (["pu"], ["."]),
+              ([","], [","])]
 
 
     def __init__(self, langpair=("de","en")):
