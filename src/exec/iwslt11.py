@@ -15,12 +15,15 @@ import re
 if __name__ == '__main__':
     step_start = int(sys.argv[2])
     step_end = int(sys.argv[3])
-    mydir = "/home/elav01/taraxu_data/tmp"
-    #mydir = "/share/taraxu/selection-mechanism/iwslt11/"
-    targetdir = "/share/taraxu/vilar/iwslt11/splitHyps/hyps"
+    #mydir = "/home/elav01/taraxu_data/tmp"
+    mydir = "/share/taraxu/selection-mechanism/iwslt11/test"
+    #targetdir = "/share/taraxu/vilar/iwslt11/splitHyps/hyps"
+    targetdir = "/share/taraxu/vilar/iwslt11/rescoring/testHyps"
     extension = ".hyp"
     
-    testset = "iwslt-tst2010"
+
+    #testset = "iwslt-tst2010"
+    testset = "iwslt-tst2011"
     pattern_name = "([^/]*)_IWSLT11"
     langpair = "en-fr"
     
