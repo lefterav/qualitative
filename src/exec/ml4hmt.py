@@ -60,12 +60,12 @@ if __name__ == '__main__':
         bpfile_en = jcmlfilename.replace(".jcml", ".bp.en.jcml")
         if step == 10:
             print "English parser features"
-            exp.add_b_features_batch(jcmlfilename, bpfile_en, "http://percival.sb.dfki.de:8682", "en")
+            exp.add_b_features_batch(jcmlfilename, bpfile_en, "http://percival.sb.dfki.de:8682", "en", False)
     
         bpfile_es = jcmlfilename.replace(".jcml", ".bp.es.jcml")
         if step == 20:
             print "Spanish parser features"
-            exp.add_b_features_batch(jcmlfilename, bpfile_es, "http://percival.sb.dfki.de:21115", "es")
+            exp.add_b_features_batch(jcmlfilename, bpfile_es, "http://percival.sb.dfki.de:21115", "es", True)
             
 #        lmfile_fr = jcmlfilename.replace(".jcml", ".lm.fr.jcml") 
 #        if step == 30:

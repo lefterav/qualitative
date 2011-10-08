@@ -295,13 +295,13 @@ class Experiment:
         writer.write_to_file(filename_out)
         
 
-    def add_b_features_batch(self, filename, filename_out, server, language):
+    def add_b_features_batch(self, filename, filename_out, server, language, tokenize = False):
         reader = XmlReader(filename)
         parallelsentences = reader.get_parallelsentences()
         reader = None
         from featuregenerator.parser.berkeley.berkeleyclient import BerkeleyFeatureGenerator
-        parser_en = BerkeleyFeatureGenerator(server, language)
-        parallesentences = parser_en.add_features_batch(parallelsentences);
+        parser = BerkeleyFeatureGenerator(server, language, tokenize)
+        parallesentences = parser.add_features_batch(parallelsentences);
         
         writer = XmlWriter(parallesentences)
         writer.write_to_file(filename_out)
