@@ -4,7 +4,7 @@ import time
 import sys
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 import socket
-
+from nltk import PunktWordTokenizer
 
 class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
     '''
@@ -12,14 +12,14 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
     '''
 
 
-    def __init__(self, url, lang=""):
+    def __init__(self, url, lang="", tokenize = False):
         '''
         Constructor
         '''
         self.server = xmlrpclib.ServerProxy(url)
         self.url = url
         self.lang = lang
-    
+        self.tokenize = tokenize
 
     #Warning: not language-aware function. Use the ones above
     def get_features_simplesentence(self, simplesentence, parallelsentence):
@@ -82,7 +82,11 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         return features_batch
     
     def prepare_sentence(self, simplesentence):
-        return simplesentence.get_string()
+        
+        string =  simplesentence.get_string()
+        if self.tokenize:
+            string = PunktWordTokenizer().tokenize(string) 
+        return string
     
     def add_features_batch(self, parallelsentences):
         return self.add_features_batch_xmlrpc(parallelsentences)
