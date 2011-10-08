@@ -19,7 +19,7 @@ class JcmlFormat(GenericFormat):
                     "annotation" : "annotation" ,
                     "langsrc" : "langsrc", 
                     "langtgt" : "langtgt",
-                    "default_langsrc" : "de",
+                    "default_langsrc" : "es",
                     "default_langtgt" : "en",
                     }
     
