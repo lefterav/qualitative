@@ -12,8 +12,8 @@ from io.saxjcml import SaxJCMLProcessor
 from io.output.xmlwriter import XmlWriter
 from tara_noorange import Experiment
 from featuregenerator.ibm1featuregenerator import Ibm1FeatureGenerator
-from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenerator
 from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
+from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenerator
 from featuregenerator.bleu.bleugenerator import BleuGenerator
 from featuregenerator.attribute_rank import AttributeRankGenerator
 from featuregenerator.parser.berkeley.parsermatches import ParserMatches
@@ -21,7 +21,13 @@ from featuregenerator.parser.berkeley.parsermatches import ParserMatches
 def analyze_external_features(infilename, outfilename, langpair=""):
     #LevenshteinGenerator(),
     #BleuGenerator()
-    featuregenerators = [ LengthFeatureGenerator(), ParserMatches(langpair) , AttributeRankGenerator('bleu'), AttributeRankGenerator('lev')]
+    langpair = tuple(langpair.split('-'))
+    featuregenerators = [LengthFeatureGenerator(), 
+                         ParserMatches(langpair), 
+                         LevenshteinGenerator(), 
+                         #BleuGenerator(), 
+                         #AttributeRankGenerator('bleu'), 
+                         AttributeRankGenerator('lev')]
     outfile = open(outfilename, 'w')
     infile = open(infilename, 'r')
     saxreader = SaxJCMLProcessor(outfile, featuregenerators)

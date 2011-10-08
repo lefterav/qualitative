@@ -143,6 +143,9 @@ class SaxJCMLProcessor(XMLGenerator):
         if name == self.TAG_SRC:
             self.src = SimpleSentence(self.ss_text, self.ss_attributes)
             self.ss_text = ""
+        elif name == self.TAG_REF:
+            self.ref = SimpleSentence(self.ss_text, self.ss_attributes)
+            self.ss_text = ""
         elif name == self.TAG_TGT:
             self.tgt.append(SimpleSentence(self.ss_text, self.ss_attributes))
             self.ss_text = ""
@@ -183,5 +186,14 @@ class SaxJCMLProcessor(XMLGenerator):
                 XMLGenerator.characters(self, tgt.get_string())
                 XMLGenerator.endElement(self, self.TAG_TGT)
             
+            
+            ref = parallelsentence.get_reference()
+            
+            XMLGenerator._write(self, "\n\t\t")
+            XMLGenerator.startElement(self, self.TAG_REF, ref.get_attributes())
+            XMLGenerator.characters(self, ref.get_string())
+            XMLGenerator.endElement(self, self.TAG_REF)
+            
             XMLGenerator._write(self, "\n\t")
+
             XMLGenerator.endElement(self, name)

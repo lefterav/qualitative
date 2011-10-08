@@ -11,9 +11,13 @@ class AttributeRankGenerator(FeatureGenerator):
     This "clean" ranking starts from zero and has a maximum ranking difference of 1 
     '''
 
-    def __init__(self, critical_attribute, new_attribute_name):
+    def __init__(self, critical_attribute, new_attribute_name = None):
         self.critical_attribute = critical_attribute
         self.new_attribute_name = new_attribute_name
+        if not new_attribute_name:
+            self.new_attribute_name = "%s-rank" % critical_attribute
+        
+        
         
     def add_features_parallelsentence(self, ps):
         values = [float(tgt.get_attribute(self.critical_attribute)) for tgt in ps.get_translations()]
@@ -23,7 +27,7 @@ class AttributeRankGenerator(FeatureGenerator):
         for translation in ps.get_translations():
             value = float(tgt.get_attribute(self.critical_attribute))
             new_attribute_value = values.index(value)
-            translation.add_attribute(self.new_attribute_name, new_attribute_value)
+            translation.add_attribute(self.new_attribute_name, str(new_attribute_value))
         return ps
         
         
