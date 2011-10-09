@@ -85,7 +85,7 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         
         string =  simplesentence.get_string()
         if self.tokenize:
-            string = PunktWordTokenizer().tokenize(string) 
+            string = ' '.join(PunktWordTokenizer().tokenize(string))
         return string
     
     def add_features_batch(self, parallelsentences):

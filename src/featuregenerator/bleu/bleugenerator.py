@@ -51,12 +51,11 @@ class BleuGenerator(FeatureGenerator):
         
         path = [path for path in sys.path if path.endswith("src")][0]
         bleupath = "%s/featuregenerator/bleu/bleu" % path
-        subprocess.call([bleupath, "-r", rfilename, "-s" , "-S", tfilename], stdout = ofile)
-        
+        subprocess.call([bleupath, "-s" , "-p", "-S", "-r", rfilename, tfilename], stdout = ofile)
         ofile.close()
         ofile = open(ofilename, 'r')
-        output = float(ofile.readline())
-        
+        output = ofile.readline()
+        output = float(output)
         return output
 
         

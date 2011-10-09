@@ -28,7 +28,7 @@ def analyze_external_features(infilename, outfilename, langpair=""):
                          DecodingProbsAnalyzer(),
                          LevenshteinGenerator(), 
                          BleuGenerator(), 
-                         AttributeRankGenerator('bleu'), 
+                         AttributeRankGenerator('bleu', None, True), 
                          AttributeRankGenerator('lev')]
     outfile = open(outfilename, 'w')
     infile = open(infilename, 'r')
