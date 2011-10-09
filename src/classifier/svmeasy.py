@@ -26,7 +26,9 @@ class SVMEasy(SVMLearner):
         self.classTreatment = params["classTreatment"]
                 
         print "continuizing data"
-        newdomain, newexamples = self.continuize(examples)
+        #newdomain, newexamples = self.continuize(examples)
+        newexamples = examples
+        newdomain = examples.domain
         newexamples.save("continuized_examples.tab")
         self.verbose = True
         print "tuning classifier"
@@ -43,12 +45,12 @@ class SVMEasy(SVMLearner):
         
     def continuize(self, examples):
         transformer=orange.DomainContinuizer()
-        transformer.multinomialTreatment=orange.DomainContinuizer.NValues
-        transformer.continuousTreatment=orange.DomainContinuizer.NormalizeBySpan
-        #transformer.multinomialTreatment = self.multinomialTreatment
-        #transformer.continuousTreatment = self.continuousTreatment
-        #transformer.classTreatment = self.classTreatment
-        transformer.classTreatment = orange.DomainContinuizer.Ignore
+        #transformer.multinomialTreatment=orange.DomainContinuizer.NValues
+        #transformer.continuousTreatment=orange.DomainContinuizer.NormalizeBySpan
+        transformer.multinomialTreatment = self.multinomialTreatment
+        transformer.continuousTreatment = self.continuousTreatment
+        transformer.classTreatment = self.classTreatment
+        #transformer.classTreatment = orange.DomainContinuizer.Ignore
         newdomain = transformer(examples)
         newexamples = examples.translate(newdomain)
         return newdomain, newexamples

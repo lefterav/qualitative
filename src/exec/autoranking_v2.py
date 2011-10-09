@@ -139,7 +139,7 @@ class AutoRankingExperiment(object):
             classified_orng, accuracy, taukendall = testset_orng.classify_accuracy(trained_classifier)
         else:
             classified_orng = testset_orng.classify_with(trained_classifier)
-        parallelsentences_multiclass = RankHandler().get_multiclass_from_pairwise_set(classified_orng.get_dataset(), True)
+        parallelsentences_multiclass = RankHandler(self.class_name).get_multiclass_from_pairwise_set(classified_orng.get_dataset(), True)
         XmlWriter(parallelsentences_multiclass).write_to_file("%s/classified.jcml" % self.dir)
         
         if self.test_mode == "evaluate":
@@ -152,19 +152,19 @@ class AutoRankingExperiment(object):
         output.append(("pairwise tau", str(taukendall)))
         
         scoringset = Scoring(parallelsentences)
-        (rho, p) = scoringset.get_spearman_correlation("rank", "orig_rank")
-        output.append(("Spearman rho" , str(rho)))
-        output.append(("Spearman p" , str(p)))
+#        (rho, p) = scoringset.get_spearman_correlation(self.class_name, "orig_rank")
+#        output.append(("Spearman rho" , str(rho)))
+#        output.append(("Spearman p" , str(p)))
         
-        kendalltau = scoringset.get_kendall_tau("rank", "orig_rank")
+        kendalltau = scoringset.get_kendall_tau(self.class_name, "orig_rank")
         output.append(("actual tau", str(kendalltau)))
         
-        accuracy, precision = scoringset.selectbest_accuracy("rank", "orig_rank") 
+        accuracy, precision = scoringset.selectbest_accuracy(self.class_name, "orig_rank") 
         
         output.append(("select best acc", str(accuracy)))
         output.append(("select best prec", str(precision)))
         
-        resultsfile = open("%s/results.tab", 'w')
+        resultsfile = open("results.tab", 'w')
         resultsfile.writelines(["%s\t%s" % (description, value) for (description, value) in output])
         resultsfile.close()
     
@@ -184,7 +184,7 @@ class AutoRankingExperiment(object):
             parallelsentences = XmlReader(filename).get_parallelsentences()
             
             if self.convert_pairwise:
-                parallelsentences = RankHandler().get_pairwise_from_multiclass_set(parallelsentences, allow_ties, self.exponential)
+                parallelsentences = RankHandler(self.class_name).get_pairwise_from_multiclass_set(parallelsentences, allow_ties, self.exponential)
 
             if self.generate_diff:                 
                 parallelsentences = DiffGenerator().add_features_batch(parallelsentences)
@@ -192,7 +192,7 @@ class AutoRankingExperiment(object):
             allparallelsentences.extend(parallelsentences)
             
         if self.merge_overlapping:
-            allparallelsentences = RankHandler().merge_overlapping_pairwise_set(allparallelsentences)
+            allparallelsentences = RankHandler(self.class_name).merge_overlapping_pairwise_set(allparallelsentences)
            
         #TODO: get list of attributes directly from feature generators
         return DataSet(allparallelsentences)  
