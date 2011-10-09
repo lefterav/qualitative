@@ -186,7 +186,10 @@ class RankHandler(object):
             try:
                 set_id = ps.get_attribute("testset")
             except:
-                set_id = ps.get_attribute("document_id")
+                try:
+                    set_id = ps.get_attribute("document_id")
+                except:
+                    set_id = "0"
                 
             if sets.has_key(set_id):
                 if sets[set_id].has_key(sentence_id):

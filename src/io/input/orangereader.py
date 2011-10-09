@@ -384,6 +384,33 @@ class OrangeData:
         return OrangeData(mydata)
             
     
+    def classify_accuracy(self,classifier):
+        """
+        Utility function which classifies the test data with the given classifier
+        """
+        mydata = self.data
+        correct = 0.0
+        wrong = 0.0
+        for i in range(len(mydata)):
+            
+        #for ex in mydata:
+            try:
+                new_value = classifier(mydata[i])
+                if new_value == mydata[i].getClass():
+                    correct += 1
+                else:
+                    wrong += 1
+                #new_value, prob  = classifier(mydata[i], orange.Classifier.GetBoth)
+            except:
+                print "couldn't apply classifier"
+                new_value = "0"
+            mydata[i].setclass(new_value)
+        
+        accuracy = (correct - wrong) / len(mydata)
+        taukendall = correct / len(mydata)
+        return OrangeData(mydata), accuracy, taukendall
+    
+    
     def get_accuracy(self, classifiers):
         correct = [0.0]*len(classifiers)
         wrong = [0.0]*len(classifiers)
