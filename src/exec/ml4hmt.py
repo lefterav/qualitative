@@ -18,17 +18,18 @@ from featuregenerator.bleu.bleugenerator import BleuGenerator
 from featuregenerator.attribute_rank import AttributeRankGenerator
 from featuregenerator.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.decodingprobs import DecodingProbsAnalyzer
+from featuregenerator.ratio_generator import RatioGenerator
 
 def analyze_external_features(infilename, outfilename, langpair=""):
-    #LevenshteinGenerator(),
-    #BleuGenerator()
+    
     langpair = tuple(langpair.split('-'))
     featuregenerators = [LengthFeatureGenerator(), 
                          ParserMatches(langpair), 
                          DecodingProbsAnalyzer(),
                          LevenshteinGenerator(), 
-                         #BleuGenerator(), 
-                         #AttributeRankGenerator('bleu', None, True), 
+                         RatioGenerator(),
+                         BleuGenerator(), 
+                         AttributeRankGenerator('bleu', None, True), 
                          AttributeRankGenerator('lev')]
     outfile = open(outfilename, 'w')
     infile = open(infilename, 'r')
