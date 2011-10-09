@@ -26,6 +26,7 @@ class DecodingProbsAnalyzer(FeatureGenerator):
         tool_id = simplesentence.get_attribute("system")
         
         attributes = simplesentence.get_attributes()
+        attributes = self._remove_sid_tags(attributes)
         if (tool_id == "t1"):
             attributes = self.analyze_probs_joshua(attributes)    
         
@@ -33,8 +34,18 @@ class DecodingProbsAnalyzer(FeatureGenerator):
             attributes = self.analyze_probs_matrex(attributes)
                 #TODO: make the names nice, get everything into separate functions and then place them nicely into a dict
         
-        simplesentence.attributes = attributes                 
+                 
+        
+        simplesentence.attributes = attributes
+                      
         return simplesentence
+    
+    def _remove_sid_tags(self, attributes):
+        new_attributes = {}
+        for attribute_name in attributes:
+            new_attribute_name = re.sub("s\d*_", "", attribute_name)
+            new_attributes[new_attribute_name] = attributes[attribute_name]   
+        return new_attributes
     
     def analyze_probs_joshua(self, attributes):
         """
