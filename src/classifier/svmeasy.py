@@ -17,26 +17,19 @@ class SVMEasy(SVMLearner):
         self.verbose=0
         SVMLearner.__init__(self, **kwds)
         self.learner = SVMLearner(**kwds)
-        
     
-    def continuize(self, examples):
-        transformer=orange.DomainContinuizer()
-        #transformer.multinomialTreatment=orange.DomainContinuizer.NValues
-        #transformer.continuousTreatment=orange.DomainContinuizer.NormalizeBySpan
-        transformer.multinomialTreatment=orange.DomainContinuizer.Ignore
-        transformer.continuousTreatment=orange.DomainContinuizer.Ignore
-        transformer.classTreatment=orange.DomainContinuizer.Ignore
-        newdomain=transformer(examples)
-        newexamples=examples.translate(newdomain)
-        return newdomain, newexamples
 
-    def learnClassifier(self, examples):
+    def learnClassifier(self, examples, params):
+        
+        self.multinomialTreatment = params["multinomialTreatment"]
+        self.continuousTreatment = params["continuousTreatment"]
+        self.classTreatment = params["classTreatment"]
+                
         print "continuizing data"
         newdomain, newexamples = self.continuize(examples)
         newexamples.save("continuized_examples.tab")
         self.verbose = True
         print "tuning classifier"
-        newdomain = newexamples.domain
         classifier, fittedParameters = self.tuneClassifier(newexamples, newdomain, examples)
         
         paramfile = open("svm.params", 'w')
@@ -48,7 +41,19 @@ class SVMEasy(SVMLearner):
         paramfile.close()
         return classifier
         
+    def continuize(self, examples):
+        transformer=orange.DomainContinuizer()
+        transformer.multinomialTreatment=orange.DomainContinuizer.NValues
+        transformer.continuousTreatment=orange.DomainContinuizer.NormalizeBySpan
+        #transformer.multinomialTreatment = self.multinomialTreatment
+        #transformer.continuousTreatment = self.continuousTreatment
+        #transformer.classTreatment = self.classTreatment
+        transformer.classTreatment = orange.DomainContinuizer.Ignore
+        newdomain = transformer(examples)
+        newexamples = examples.translate(newdomain)
+        return newdomain, newexamples
         #print newexamples[0]
+        
     def tuneClassifier(self, newexamples, newdomain, examples):
         params={}
         parameters = []
@@ -65,23 +70,23 @@ class SVMEasy(SVMLearner):
             parameters.append(("C", [2**a for a in  range(-5,15,2)]))
         if self.kernel_type==2:
             parameters.append(("gamma", [2**a for a in range(-5,5,2)]+[0]))
-        parameters = [("nu", [1/10.0]) , ("C", [2,3]), ("gamma", [2])]
+        parameters = [("nu", [1/10.0]) , ("C", [2]), ("gamma", [2])]
         tunedLearner = orngWrap.TuneMParameters(object=self.learner, parameters=parameters, folds=self.folds)
         appliedTunedLearner = tunedLearner(newexamples, verbose=self.verbose)
              
         return SVMClassifierClassEasyWrapper(appliedTunedLearner, newdomain, examples), appliedTunedLearner.fittedParameters
 
-examples = orange.ExampleTable("/home/elav01/training-attset1.tab")
-svmlearner = SVMEasy(examples)
+#examples = orange.ExampleTable("/home/lefterav/workspace/TaraXUscripts/src/training-attset1.100.tab")
+#svmlearner = SVMEasy(examples)
+#
+#testexamples = orange.ExampleTable("/home/lefterav/workspace/TaraXUscripts/src/training-attset2.tab")
+#print svmlearner(testexamples[1])
 
-testexamples = orange.ExampleTable("/home/elav01/test-attset1.tab")
-print svmlearner(testexamples[1])
-
-objectfile = open("/home/elav01/svmeasy.pickle", 'w')
-pickle.dump(svmlearner, objectfile)
-objectfile.close()
-
-#objectfile = open("/home/elav01/svmeasy.pickle", 'r')
+#objectfile = open("/tmp/svmeasy.pickle", 'w')
+#pickle.dump(svmlearner, objectfile)
+#objectfile.close()
+#
+#objectfile = open("/tmp/svmeasy.pickle", 'r')
 #recovered_svmlearner = pickle.load(objectfile)
 #objectfile.close()
 #print recovered_svmlearner(testexamples[1])

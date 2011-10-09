@@ -36,7 +36,7 @@ class DataSet(object):
     
     def get_attribute_names(self):
         if not self.attribute_names_found: 
-            self.attribute_names = self.__retrieve_attribute_names__()
+            self.attribute_names = self._retrieve_attribute_names()
             self.attribute_names_found = True
         return self.attribute_names
     
@@ -51,7 +51,7 @@ class DataSet(object):
             nested_attribute_names.update ( parallelsentence.get_nested_attributes().keys() )
         return list(nested_attribute_names)
     
-    def __retrieve_attribute_names__(self):
+    def _retrieve_attribute_names(self):
         attribute_names = set()
         for parallelsentence in self.parallelsentences:
             attribute_names.update( parallelsentence.get_attribute_names() )

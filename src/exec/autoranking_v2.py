@@ -12,6 +12,7 @@ from orngLR import LogRegLearner
 from orange import kNNLearner
 from io.input.orangereader import OrangeData
 from io.input.xmlreader import XmlReader
+from io.output.xmlwriter import XmlWriter  
 from sentence.rankhandler import RankHandler
 from sentence.dataset import DataSet
 from sentence.scoring import Scoring
@@ -19,6 +20,12 @@ from featuregenerator.diff_generator import DiffGenerator
 import sys
 import ConfigParser
 
+import classifier
+import pkgutil
+import orange
+import cPickle as pickle
+import os
+import shutil
  
 
 class AutoRankingExperiment(object):
@@ -27,70 +34,149 @@ class AutoRankingExperiment(object):
     '''
     config = ConfigParser.RawConfigParser()
 
-    def __init__(self, config = None, class_name = "rank"):
+    def __init__(self, configfile):
         '''
         Constructor
         '''
-        self.classifiers = [SVMLearnerEasy, BayesLearner] #, , SVMClassifier, TreeLearner, LogRegLearner, kNNLearner]
-        self.attribute_sets = []
-        self.training_filenames = None
-        self.test_filename = None
-        self.class_name = class_name
-        self.convert_pairwise = True
-        #self.allow_ties = False
-        self.generate_diff = False
-        
-        if config:
-            self.__readconf__(config)
-            
+        self._readconf(configfile)
     
-    def __readconf__(self, config):
+    
+    def _readconf(self, configfile):
+        config = ConfigParser.RawConfigParser()
+        config.read(["default.cfg", configfile])
+        path = config.get("general", "path")
+        self.dir = self._prepare_dir(path, configfile)
+        
+
+        #training
+        classifier_name = config.get("training", "classifier")
+        self.classifier = self._get_classifier_from_name(classifier_name)
+        
+        self.continuize = config.getboolean("training", "continuize")
+        self.classifier_params = {"multinomialTreatment" : self._get_continuizer_constant(config.get("training", "multinomialTreatment")),
+                                 "continuousTreatment" : self._get_continuizer_constant(config.get("training", "continuousTreatment")),
+                                 "classTreatment" : self._get_continuizer_constant(config.get("training", "classTreatment"))}
+                
+        self.allow_ties = config.getboolean("training", "allow_ties")
+        self.exponential = config.getboolean("training", "exponential")
+        self.merge_overlapping = config.getboolean("training", "merge_overlapping")
+        self.generate_diff = config.getboolean("training", "generate_diff")
+        self.convert_pairwise = config.getboolean("training", "convert_pairwise")
+        
         self.training_filenames = config.get("training", "filenames").split(",")
-        self.test_filename = config.get("testing", "filename")
-        try:
-            self.output_filename = config.get("testing", "output_filename_base")
-        except:
-            self.output_filename = ""
         self.class_name = config.get("training", "class_name")
+        
         try:
-            self.orangefile = config.get("training", "orange_files_dir")
+            self.meta_attribute_names = config.get("training", "meta_attributes")
+            self.attribute_names = config.get("training", "attributes")
         except:
-            self.orangefile = "."
-        self.meta_attribute_names = config.get("training", "meta_attributes").split(",")
-        self.desired_classifiers = config.get("training", "classifiers").split(",")
+            self._print_attributes()
+            sys.exit()
+        #testing
+        self.test_filename = config.get("testing", "filename")
+        self.test_mode = config.get("testing", "mode")
+        
+    def _prepare_dir(self, path, configfile):
         try:
-            self.allow_ties = config.getboolean("training", "allow_ties")
+            existing_files = os.listdir(path)
         except:
-            self.allow_ties = False
-        try:
-            self.exponential = config.getboolean("training", "exponential")
-        except:
-            self.exponential = True
-        try:
-            self.merge_overlapping = config.getboolean("training", "merge_overlapping")
-        except:
-            self.merge_overlapping = True
-        if "pairwise" in config.items("training") :  #TODO: this does not work, don't set false
-            self.convert_pairwise = config.getboolean("training", "pairwise")
-        for (name, value) in config.items("attributes"):
-            if name.startswith("set"):
-                self.add_attribute_set(value.split(","))
+            os.makedirs(path)
+            existing_files = []
+        filenames = [int(filename) for filename in existing_files]
+        if filenames:
+            highestnum = max(filenames)
+            newnum = highestnum + 1
+        else:
+            newnum = 1
+        path = os.path.join(path, str(newnum))
+        os.mkdir(path)
+        os.chdir(path)
+        shutil.copy(configfile, path)
+        return path
+        
+
+    def _get_classifier_from_name(self, name):
+        package = classifier
+        prefix = package.__name__ + '.'
+        for importer, modname, ispkg in pkgutil.iter_modules(package.__path__, prefix):
+            module = __import__(modname, fromlist="dummy")
+            try:
+                return getattr(module, name)
+            except:
+                pass
+        return getattr(orange, name)
     
+    def _get_continuizer_constant(self, name):
+        return getattr(orange.DomainContinuizer, name)
+  
+  
+    def _print_attributes(self):
+        trainingset_jcml = self._get_trainingset()
+        print "Available attributes in dataset:"
+        print ",".join(trainingset_jcml.get_all_attribute_names())
+            
     def execute(self):
-        trainingset = self.__get_trainingset__()
-        trained_classifiers = self.__train_classifiers__(trainingset)
+        trainingset_jcml = self._get_trainingset()
         
-    
-        testset = self.__get_testset__()
-        finish_experiment = self.__finish_experiment__(trained_classifiers, testset)
+        orangefilename = "%s/trainingdata.tab" % self.dir 
+        trainingset_orng = OrangeData(trainingset_jcml, self.class_name, self.attribute_names, self.meta_attribute_names, orangefilename)
         
+        myclassifier = self.classifier()
+        #try:
+        trained_classifier = myclassifier.learnClassifier(trainingset_orng.get_data(), self.classifier_params)
+#        except:
+#            trained_classifier = myclassifier(trainingset_orng.get_data())
+        objectfile = open("%s/classifier.pickle" % self.dir, 'w')
+        pickle.dump(trained_classifier, objectfile)
+        objectfile.close()
+
+        testset_jcml = self._get_testset()
+        
+        orangefilename = "%s/testdata.tab" % self.dir
+        testset_orng = OrangeData(testset_jcml, self.class_name, self.attribute_names, self.meta_attribute_names, orangefilename)
+        
+        if self.test_mode == "evaluate":
+            classified_orng, accuracy, taukendall = testset_orng.classify_accuracy(trained_classifier)
+        else:
+            classified_orng = testset_orng.classify_with(trained_classifier)
+        parallelsentences_multiclass = RankHandler().get_multiclass_from_pairwise_set(classified_orng.get_dataset(), True)
+        XmlWriter(parallelsentences_multiclass).write_to_file("%s/classified.jcml" % self.dir)
+        
+        if self.test_mode == "evaluate":
+            self._get_statistics(parallelsentences_multiclass, accuracy, taukendall)
+        
+        #finish_experiment = self._finish_experiment(trained_classifier, testset)
+    def _get_statistics(self, parallelsentences, accuracy, taukendall):
+        output = []
+        output.append(("pairwise accuracy", str(accuracy)))
+        output.append(("pairwise tau", str(taukendall)))
+        
+        scoringset = Scoring(parallelsentences)
+        (rho, p) = scoringset.get_spearman_correlation("rank", "orig_rank")
+        output.append(("Spearman rho" , str(rho)))
+        output.append(("Spearman p" , str(p)))
+        
+        kendalltau = scoringset.get_kendall_tau("rank", "orig_rank")
+        output.append(("actual tau", str(kendalltau)))
+        
+        accuracy, precision = scoringset.selectbest_accuracy("rank", "orig_rank") 
+        
+        output.append(("select best acc", str(accuracy)))
+        output.append(("select best prec", str(precision)))
+        
+        resultsfile = open("%s/results.tab", 'w')
+        resultsfile.writelines(["%s\t%s" % (description, value) for (description, value) in output])
+        resultsfile.close()
     
-    def __get_trainingset__(self):
-        filenames = self.training_filenames.split(",")
-        return self.__get_dataset__(filenames)
+    def _get_trainingset(self):
+        filenames = self.training_filenames
+        return self._get_dataset(filenames, self.allow_ties)
     
+    def _get_testset(self):
+        filename = self.test_filename
+        return self._get_dataset([filename], True)
     
-    def __get_dataset__(self, filenames):
+    def _get_dataset(self, filenames, allow_ties):
         allparallelsentences = []
         
         for filename in filenames:
@@ -111,33 +197,22 @@ class AutoRankingExperiment(object):
         #TODO: get list of attributes directly from feature generators
         return DataSet(allparallelsentences)  
   
+    
+        
 
 if __name__ == "__main__":
     if len(sys.argv) < 1:
         print 'USAGE: %s configuration_file.cfg' % sys.argv[0]
-        #print 'USAGE: %s SORTEDJUDGMENTS.CSV PATH' % sys.argv[0]
-        #print '\tpath = path to folder with evaluation raw data'
+        
     else:
-        #initialize the experiment with the config parameters
-        config = ConfigParser.RawConfigParser()
+        
         try:
             print sys.argv[1]
-            config.read(sys.argv[1])
-            exp = AutoRankingExperiment(config)
+            
+            exp = AutoRankingExperiment(sys.argv[1])
+            exp.execute()
             
             
-            try:
-                mode = config.get("testing", "mode")
-            except:
-                mode = "evaluate"
-                
-            if mode == "evaluate":
-                exp.train_evaluate()
-            elif mode == "decode":
-                exp.train_decode()
-            elif mode == "decodebest":
-                print "Decoding only for best"
-                exp.train_decodebest()
         except IOError as (errno, strerror):
             print "configuration file error({0}): {1}".format(errno, strerror)
             sys.exit()

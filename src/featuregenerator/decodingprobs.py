@@ -71,15 +71,15 @@ class DecodingProbsAnalyzer(FeatureGenerator):
             
 
             mean = numpy.average(diffs)
-            att_name = "%s-mean" % feature_id
+            att_name = "dp-%s-mean" % feature_id
             produced_atts[att_name] = str(mean)
             
             std = numpy.std(diffs)
-            att_name = "%s-std" % feature_id
+            att_name = "dp-%s-std" % feature_id
             produced_atts[att_name] = str(std)
             
             var = numpy.var(diffs)
-            att_name = "%s-var" % feature_id
+            att_name = "dp-%s-var" % feature_id
             produced_atts[att_name] = str(var)
             
         attributes.update(produced_atts)
@@ -112,15 +112,15 @@ class DecodingProbsAnalyzer(FeatureGenerator):
             probs = [feature_steps[step] for step in sorted(feature_steps.keys())]
             
             mean = numpy.average(probs)
-            att_name = "%s-mean" % feature_id
+            att_name = "dp-%s-mean" % feature_id
             produced_atts[att_name] = str(mean)
             
             std = numpy.std(probs)
-            att_name = "%s-std" % feature_id
+            att_name = "dp-%s-std" % feature_id
             produced_atts[att_name] = str(std)
             
             var = numpy.var(probs)
-            att_name = "%s-var" % feature_id
+            att_name = "dp-%s-var" % feature_id
             produced_atts[att_name] = str(var)
             
         attributes.update(produced_atts)
