@@ -35,7 +35,7 @@ class Xml2Mrg:
         @return xml: input xml text that is being converted into mrg format
         @type xml: string
         """
-        a = open(filename, 'r') # rewritten_sample, attempt 
+        a = open(filename, 'r') 
         xml = a.read()
         a.close()
         return xml
@@ -160,7 +160,7 @@ class Xml2Mrg:
 
     def white_spaces(self, xml):
         """
-        The output file size is minimized. NOT NECESSARY FOR berkeleyParser.jar!
+        The output file size is minimized to one line. NOT NECESSARY FOR berkeleyParser.jar!
         @param xml: input xml text that is being converted into mrg format
         @type xml: string
         @return xml: input xml text that is being converted into mrg format
@@ -192,4 +192,4 @@ class Xml2Mrg:
         b.write(xml)
         b.close()
 
-Xml2Mrg('UAM_TreeBank_es.xml')
+#Xml2Mrg('/media/DATA/Arbeit/DFKI/11_09_08_Penn_format/Berkeley_parser/sample_source_xml_format.xml')
