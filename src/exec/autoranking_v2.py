@@ -41,7 +41,7 @@ class AutoRankingExperiment(object):
         self.step = step
         self._readconf(configfile)
         self.ready_classifier = None
-        self.self.ready_testset_orng = None
+        self.ready_testset_orng = None
     
     def _readconf(self, configfile):
         config = ConfigParser.RawConfigParser()
