@@ -374,13 +374,13 @@ class OrangeData:
         for i in range(len(mydata)):
             
         #for ex in mydata:
-            try:
-                new_value = classifier(mydata[i])
-                #new_value, prob  = classifier(mydata[i], orange.Classifier.GetBoth)
-            except:
-                print "couldn't apply classifier"
-                new_value = "0"
-            mydata[i].setclass(new_value)
+            #try:
+            new_value = classifier(mydata[i])
+            #new_value, prob  = classifier(mydata[i], orange.Classifier.GetBoth)
+            #except:
+            #    print "couldn't apply classifier"
+            #    new_value = "0"
+            mydata[i].setclass(new_value.value)
         return OrangeData(mydata)
             
     
@@ -394,20 +394,20 @@ class OrangeData:
         for i in range(len(mydata)):
             
         #for ex in mydata:
-            try:
-                new_value = classifier(mydata[i])
-                if new_value == mydata[i].getClass():
-                    correct += 1
-                else:
-                    wrong += 1
-                #new_value, prob  = classifier(mydata[i], orange.Classifier.GetBoth)
-            except:
-                print "couldn't apply classifier"
-                new_value = "0"
-            mydata[i].setclass(new_value)
+            #try:
+            new_value = classifier(mydata[i])
+            if new_value == mydata[i].getclass():
+                correct += 1
+            else:
+                wrong += 1
+            #    #new_value, prob  = classifier(mydata[i], orange.Classifier.GetBoth)
+            #except:
+            #    print "couldn't apply classifier"
+            #    new_value = "0"
+            mydata[i].setclass(new_value.value)
         
-        accuracy = (correct - wrong) / len(mydata)
-        taukendall = correct / len(mydata)
+        taukendall = (correct - wrong) / len(mydata)
+        accuracy = correct / len(mydata)
         return OrangeData(mydata), accuracy, taukendall
     
     

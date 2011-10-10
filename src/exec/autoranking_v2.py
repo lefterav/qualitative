@@ -135,7 +135,7 @@ class AutoRankingExperiment(object):
         try:
             trained_classifier = myclassifier.learnClassifier(trainingset_orng.get_data(), self.classifier_params)
         except AttributeError:
-            trained_classifier = myclassifier(trainingset_orng.get_data(), self.classifier_params)
+            trained_classifier = myclassifier(trainingset_orng.get_data())
         objectfile = open("%s/classifier.pickle" % self.dir, 'w')
         pickle.dump(trained_classifier, objectfile)
         objectfile.close()
