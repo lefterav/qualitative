@@ -5,12 +5,13 @@ Created on 07.10.2011
 '''
 
 from featuregenerator.featuregenerator import FeatureGenerator
-#from nltk.tokenize.punkt import PunktWordTokenizer 
+from nltk.tokenize.punkt import PunktWordTokenizer 
 from tempfile import mktemp
 
 from os import unlink 
 import subprocess
 import sys
+import codecs
 
 class BleuGenerator(FeatureGenerator):
     '''
@@ -34,26 +35,26 @@ class BleuGenerator(FeatureGenerator):
 
     def bleu(self, translation, reference):
         
-        #translation = " ".join(PunktWordTokenizer().tokenize(translation))
+        translation = " ".join(PunktWordTokenizer().tokenize(translation))
         tfilename = mktemp(dir=u'/tmp/', suffix=u'.tgt.txt')
-        tfile = open(tfilename, 'w')
+        tfile = codecs.open(tfilename, 'w', 'utf-8')
         tfile.write(translation)
         tfile.close()
         
-        #reference = " ".join(PunktWordTokenizer().tokenize(reference))
+        reference = " ".join(PunktWordTokenizer().tokenize(reference))
         rfilename = mktemp(dir=u'/tmp/', suffix=u'.ref.txt')
-        rfile = open(rfilename, 'w')
+        rfile = codecs.open(rfilename, 'w', 'utf-8')
         rfile.write(reference)
         rfile.close()
         
         ofilename = mktemp(dir=u'/tmp/', suffix=u'.out.txt')
-        ofile = open(ofilename, 'w')
+        ofile = codecs.open(ofilename, 'w', 'utf-8')
         
         path = [path for path in sys.path if path.endswith("src")][0]
         bleupath = "%s/featuregenerator/bleu/bleu" % path
         subprocess.call([bleupath, "-s" , "-p", "-S", "-r", rfilename, tfilename], stdout = ofile)
         ofile.close()
-        ofile = open(ofilename, 'r')
+        ofile = codecs.open(ofilename, 'r', 'utf-8')
         output = ofile.readline()
         output = float(output)
         return output
