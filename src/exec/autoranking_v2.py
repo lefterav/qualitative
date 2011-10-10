@@ -38,8 +38,8 @@ class AutoRankingExperiment(object):
         '''
         Constructor
         '''
-        self._readconf(configfile)
         self.step = step
+        self._readconf(configfile)
         self.ready_classifier = None
         self.self.ready_testset_orng = None
     
