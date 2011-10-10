@@ -234,21 +234,22 @@ class OrangeData:
                 line_3 = line_3 + "m"
             line_3 = line_3 + "\t"
         
-        #src
-        line_2 += "string\t"
-        line_3 += "m\t"
-        line_1 += "src\t"
-        #target
-        i=0
-        for tgt in dataset.get_parallelsentences()[0].get_translations():
-            i+=1
+        if not self.avoidstrings:
+            #src
             line_2 += "string\t"
             line_3 += "m\t"
-            line_1 += "tgt-" + str(i) + "\t"
-        #ref 
-        line_2 += "string\t"
-        line_3 += "m\t"
-        line_1 += "ref\t"
+            line_1 += "src\t"
+            #target
+            i=0
+            for tgt in dataset.get_parallelsentences()[0].get_translations():
+                i+=1
+                line_2 += "string\t"
+                line_3 += "m\t"
+                line_1 += "tgt-" + str(i) + "\t"
+            #ref 
+            line_2 += "string\t"
+            line_3 += "m\t"
+            line_1 += "ref\t"
         
         #break the line in the end
         line_1 = line_1 + "\n"
@@ -280,16 +281,18 @@ class OrangeData:
                     
                 #even if attribute value exists or not, we have to tab    
                 outputlines.append ("\t")
-            outputlines.append( psentence.get_source().get_string())
-            outputlines.append("\t")
-            for tgt in psentence.get_translations():
-                outputlines.append(tgt.get_string())
+                
+            if not self.avoidstrings:
+                outputlines.append( psentence.get_source().get_string())
                 outputlines.append("\t")
-            try:
-                outputlines.append(psentence.get_reference().get_string())
-                outputlines.append("\t")
-            except:
-                outputlines.append("\t")
+                for tgt in psentence.get_translations():
+                    outputlines.append(tgt.get_string())
+                    outputlines.append("\t")
+                try:
+                    outputlines.append(psentence.get_reference().get_string())
+                    outputlines.append("\t")
+                except:
+                    outputlines.append("\t")
             outputlines.append("\n")
         output += "".join(outputlines)
         return output
