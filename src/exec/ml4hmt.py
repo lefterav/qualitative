@@ -6,6 +6,8 @@ Created on Sep 12, 2011
 import os
 import sys
 import re
+import codecs
+
 from xml.sax import make_parser
 from io.input.jcmlreader import JcmlReader
 from io.saxjcml import SaxJCMLProcessor
@@ -19,6 +21,7 @@ from featuregenerator.attribute_rank import AttributeRankGenerator
 from featuregenerator.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.decodingprobs import DecodingProbsAnalyzer
 from featuregenerator.ratio_generator import RatioGenerator
+
 
 def analyze_external_features(infilename, outfilename, langpair=""):
     
