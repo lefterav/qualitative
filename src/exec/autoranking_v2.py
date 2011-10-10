@@ -34,18 +34,24 @@ class AutoRankingExperiment(object):
     '''
     config = ConfigParser.RawConfigParser()
 
-    def __init__(self, configfile):
+    def __init__(self, configfile, step = None):
         '''
         Constructor
         '''
         self._readconf(configfile)
-    
+        self.step = step
+        self.ready_classifier = None
+        self.self.ready_testset_orng = None
     
     def _readconf(self, configfile):
         config = ConfigParser.RawConfigParser()
         config.read(["default.cfg", configfile])
         path = config.get("general", "path")
-        self.dir = self._prepare_dir(path, configfile)
+        
+        if self.step:
+            self.dir = self._resume_dir(path, configfile, self.step)
+        else:
+            self.dir = self._prepare_dir(path, configfile)
         
 
         #training
@@ -77,7 +83,7 @@ class AutoRankingExperiment(object):
         self.test_filename = config.get("testing", "filename")
         self.test_mode = config.get("testing", "mode")
         
-    def _prepare_dir(self, path, configfile):
+    def _prepare_dir(self, path, configfile, step = None):
         try:
             existing_files = os.listdir(path)
         except:
@@ -86,10 +92,10 @@ class AutoRankingExperiment(object):
         
         filenames = []
         for filename in existing_files:
-       	    try:
+            try:
                 filenames.append(int(filename))
             except:
-		        pass
+                pass
         if filenames:
             highestnum = max(filenames)
             newnum = highestnum + 1
@@ -100,6 +106,17 @@ class AutoRankingExperiment(object):
         os.chdir(path)
         shutil.copy(configfile, path)
         return path
+        
+    def _resume_dir(self, path, configfile, step):
+        path = os.path.join(path, str(step))
+        os.chdir(path)
+        existing_files = os.listdir(path)
+        if "classifier.pickle" in existing_files:
+            mypickle = open("classifier.pickle", "r")
+            self.ready_classifier = pickle.load(mypickle)
+            mypickle.close()
+        if "testdata.tab" in existing_files:
+            self.ready_testset_orng = orange.ExampleTable("testdata.tab")
         
 
     def _get_classifier_from_name(self, name):
@@ -123,25 +140,29 @@ class AutoRankingExperiment(object):
         print ",".join(trainingset_jcml.get_all_attribute_names())
             
     def execute(self):
-        trainingset_jcml = self._get_trainingset()
-        orangefilename = "%s/trainingdata.tab" % self.dir 
-        trainingset_orng = OrangeData(trainingset_jcml, self.class_name, self.attribute_names, self.meta_attribute_names, orangefilename, self.orange_minimal)
+        if not self.ready_testset_orng:
+            testset_jcml = self._get_testset()
+            orangefilename = "%s/testdata.tab" % self.dir
+            testset_orng = OrangeData(testset_jcml, self.class_name, self.attribute_names, self.meta_attribute_names, orangefilename, self.orange_minimal)
+        else:
+            testset_orng = self.ready_testset_orng
         
-        testset_jcml = self._get_testset()
-        orangefilename = "%s/testdata.tab" % self.dir
-        testset_orng = OrangeData(testset_jcml, self.class_name, self.attribute_names, self.meta_attribute_names, orangefilename, self.orange_minimal)
+        if not self.ready_classifier:
+            trainingset_jcml = self._get_trainingset()
+            orangefilename = "%s/trainingdata.tab" % self.dir 
+            trainingset_orng = OrangeData(trainingset_jcml, self.class_name, self.attribute_names, self.meta_attribute_names, orangefilename, self.orange_minimal)
+                        
+            myclassifier = self.classifier()
+            try:
+                trained_classifier = myclassifier.learnClassifier(trainingset_orng.get_data(), self.classifier_params)
+            except AttributeError:
+                trained_classifier = myclassifier(trainingset_orng.get_data())
+            objectfile = open("%s/classifier.pickle" % self.dir, 'w')
+            pickle.dump(trained_classifier, objectfile)
+            objectfile.close()
         
-        myclassifier = self.classifier()
-        try:
-            trained_classifier = myclassifier.learnClassifier(trainingset_orng.get_data(), self.classifier_params)
-        except AttributeError:
-            trained_classifier = myclassifier(trainingset_orng.get_data())
-        objectfile = open("%s/classifier.pickle" % self.dir, 'w')
-        pickle.dump(trained_classifier, objectfile)
-        objectfile.close()
-
-        
-        
+        else:    
+            trained_classifier = self.ready_classifier
         
         if self.test_mode == "evaluate":
             classified_orng, accuracy, taukendall = testset_orng.classify_accuracy(trained_classifier)
@@ -217,8 +238,15 @@ if __name__ == "__main__":
         try:
             print sys.argv[1]
             
-            exp = AutoRankingExperiment(sys.argv[1])
+            try:
+                if sys.argv[2] == "-continue":
+                    continue_step = int(sys.argv[3])
+                    exp = AutoRankingExperiment(sys.argv[1], continue_step)
+            except:
+                exp = AutoRankingExperiment(sys.argv[1])
+            
             exp.execute()
+            
             
             
         except IOError as (errno, strerror):
