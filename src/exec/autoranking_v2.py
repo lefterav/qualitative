@@ -82,7 +82,13 @@ class AutoRankingExperiment(object):
         except:
             os.makedirs(path)
             existing_files = []
-        filenames = [int(filename) for filename in existing_files]
+        
+        filenames = []
+        for filename in existing_files:
+       	    try:
+                filenames.append(int(filename))
+            except:
+		        pass
         if filenames:
             highestnum = max(filenames)
             newnum = highestnum + 1

@@ -3,7 +3,7 @@
 @author: lefterav
 '''
 
-from orngSVM import SVMLearner, SVMClassifierClassEasyWrapper
+from orngSVM import SVMLearner #, SVMClassifierClassEasyWrapper
 import orange
 import orngWrap
 import cPickle as pickle
@@ -72,11 +72,11 @@ class SVMEasy(SVMLearner):
             parameters.append(("C", [2**a for a in  range(-5,15,2)]))
         if self.kernel_type==2:
             parameters.append(("gamma", [2**a for a in range(-5,5,2)]+[0]))
-        parameters = [("nu", [1/10.0]) , ("C", [2]), ("gamma", [2])]
         tunedLearner = orngWrap.TuneMParameters(object=self.learner, parameters=parameters, folds=self.folds)
         appliedTunedLearner = tunedLearner(newexamples, verbose=self.verbose)
              
-        return SVMClassifierClassEasyWrapper(appliedTunedLearner, newdomain, examples), appliedTunedLearner.fittedParameters
+        #return SVMClassifierClassEasyWrapper(appliedTunedLearner, newdomain, examples), appliedTunedLearner.fittedParameters
+        return appliedTunedLearner, appliedTunedLearner.fittedParameters
 
 #examples = orange.ExampleTable("/home/lefterav/workspace/TaraXUscripts/src/training-attset1.100.tab")
 #svmlearner = SVMEasy(examples)
