@@ -62,6 +62,7 @@ class AutoRankingExperiment(object):
         self.merge_overlapping = config.getboolean("training", "merge_overlapping")
         self.generate_diff = config.getboolean("training", "generate_diff")
         self.convert_pairwise = config.getboolean("training", "convert_pairwise")
+        self.orange_minimal = config.getboolean("training", "orange_minimal")
         
         self.training_filenames = config.get("training", "filenames").split(",")
         self.class_name = config.get("training", "class_name")
@@ -123,23 +124,24 @@ class AutoRankingExperiment(object):
             
     def execute(self):
         trainingset_jcml = self._get_trainingset()
-        
         orangefilename = "%s/trainingdata.tab" % self.dir 
-        trainingset_orng = OrangeData(trainingset_jcml, self.class_name, self.attribute_names, self.meta_attribute_names, orangefilename)
+        trainingset_orng = OrangeData(trainingset_jcml, self.class_name, self.attribute_names, self.meta_attribute_names, orangefilename, self.orange_minimal)
+        
+        testset_jcml = self._get_testset()
+        orangefilename = "%s/testdata.tab" % self.dir
+        testset_orng = OrangeData(testset_jcml, self.class_name, self.attribute_names, self.meta_attribute_names, orangefilename, self.orange_minimal)
         
         myclassifier = self.classifier()
-        #try:
-        trained_classifier = myclassifier.learnClassifier(trainingset_orng.get_data(), self.classifier_params)
-#        except:
-#            trained_classifier = myclassifier(trainingset_orng.get_data())
+        try:
+            trained_classifier = myclassifier.learnClassifier(trainingset_orng.get_data(), self.classifier_params)
+        except AttributeError:
+            trained_classifier = myclassifier(trainingset_orng.get_data(), self.classifier_params)
         objectfile = open("%s/classifier.pickle" % self.dir, 'w')
         pickle.dump(trained_classifier, objectfile)
         objectfile.close()
 
-        testset_jcml = self._get_testset()
         
-        orangefilename = "%s/testdata.tab" % self.dir
-        testset_orng = OrangeData(testset_jcml, self.class_name, self.attribute_names, self.meta_attribute_names, orangefilename)
+        
         
         if self.test_mode == "evaluate":
             classified_orng, accuracy, taukendall = testset_orng.classify_accuracy(trained_classifier)
