@@ -14,6 +14,75 @@ from io.input.xmlreader import XmlReader
 import os
 
 
+class SaxJcml2Orange():
+    """
+    This class converts jcml format to tab format (orange format).
+    The output file is saved to the same folder where input file is.
+    """
+    def __init__(self, input_file_addr, class_name, desired_attributes, meta_attributes):
+        """
+        Init calls class SaxJcmlOrangeHeader for creating header and 
+        SaxJcmlOrangeContent for creating content.
+        @param input_file_addr: name of input jcml file
+        @type input_file_addr: string
+        @param class_name: name of class
+        @type class_name: string
+        @param desired_attributes: desired attributes
+        @type desired_attributes: list of strings
+        @param meta_attributes: meta attributes
+        @type meta_attributes: list of strings
+        """
+        self.input_filename = input_file_addr
+        self.class_name = class_name
+        self.desired_attributes = desired_attributes
+        self.meta_attributes = meta_attributes
+        
+        self.orange_filename = self.input_filename.rpartition('.')[0]+'.tab'
+        self.dataset = XmlReader(self.input_filename).get_dataset()
+        self.object_file = open(self.orange_filename, 'w')
+
+        # get orange header
+        self.get_orange_header()
+        
+        # get orange content
+        self.get_orange_content()
+        self.object_file.close()
+        print 'Orange file %s created!' % self.orange_filename
+        
+        # test orange file
+        #self.test_orange()
+        
+        
+    def get_orange_header(self):    
+        """
+        This function gets orange header.
+        """
+        parser = make_parser()
+        curHandler1 = SaxJcmlOrangeHeader(self.object_file, self.class_name, self.desired_attributes, self.meta_attributes)
+        parser.setContentHandler(curHandler1)
+        parser.parse(open(self.input_filename))
+
+       
+    def get_orange_content(self):    
+        """
+        This function gets orange content.
+        """
+        parser = make_parser()
+        curHandler2 = SaxJcmlOrangeContent(self.object_file, self.class_name, self.meta_attributes)
+        parser.setContentHandler(curHandler2)
+        parser.parse(open(self.input_filename))
+    
+    
+    def test_orange(self):
+        """
+        Test function for getting orange file.
+        """
+        import orange
+        from io.input.orangereader import OrangeData
+        wrapped_data = OrangeData(self.dataset, self.class_name, self.desired_attributes, self.meta_attributes, self.orange_filename)
+        new_dataset = wrapped_data.get_dataset()
+        
+
 class SaxJcmlOrangeHeader(ContentHandler):
     
     
@@ -122,7 +191,7 @@ class SaxJcmlOrangeHeader(ContentHandler):
             
             #TODO: find a way to define continuous and discrete arg
             # line 2 holds the class type
-            if attribute_name == class_name:
+            if attribute_name == self.class_name:
                 line_2 += "d\t"
             elif attribute_name in self.desired_attributes and attribute_name not in self.meta_attributes:
                 line_2 += "c\t"
@@ -130,7 +199,7 @@ class SaxJcmlOrangeHeader(ContentHandler):
                 line_2 += "d\t"
 
             # line 3 defines the class and the metadata
-            if attribute_name == class_name:
+            if attribute_name == self.class_name:
                 line_3 = line_3 + "c"
             elif attribute_name not in self.desired_attributes or attribute_name in self.meta_attributes:
                 line_3 = line_3 + "m"
@@ -158,13 +227,13 @@ class SaxJcmlOrangeHeader(ContentHandler):
         output = line_1 + line_2 + line_3
         self.o_file.write(output)
         
-        # creating a temp file with attribute names for class SaxJcml2OrangeContent
+        # creating a temp file with attribute names for class SaxJcmlOrangeContent
         f = open('attribute_names.dat', 'w')
         [f.write(attribute_name + '\n') for attribute_name in self.attribute_names] 
         f.close()
 
 
-class SaxJcml2OrangeContent(ContentHandler):
+class SaxJcmlOrangeContent(ContentHandler):
 
 
     def __init__ (self, o_file, class_name, meta_attributes):
@@ -177,7 +246,7 @@ class SaxJcml2OrangeContent(ContentHandler):
         self.o_file = o_file
         self.is_simple_sentence = False
         self.set_tags()
-        # reading  a temp file with attribute names for class SaxJcml2OrangeContent
+        # reading  a temp file with attribute names for class SaxJcmlOrangeContent
         f = open('attribute_names.dat', 'r')
         self.attribute_names = f.read().strip().split('\n')
         f.close()
@@ -276,55 +345,11 @@ class SaxJcml2OrangeContent(ContentHandler):
             # split parallel sentences by an additional tab and by a newline
             self.o_file.write('\t\n')
 
-"""
-def Compare(sax, orange):
-    print len(sax.split('\t')) == len(orange.split('\t'))
-    print set(sax.split('\t')) == set(orange.split('\t'))
-    print set(sax.split('\t')) - set(orange.split('\t'))
-    print set(orange.split('\t')) - set(sax.split('\t'))
 
-a = open('ojcml.tab', 'r')
-sax = a.read()
-a.close()
-
-b = open('tmpiuZu2L.tab', 'r')
-orange = b.read()
-b.close()
-Compare(sax, orange)
-
-import sys
-sys.exit()
-"""
-
-input_filename = 'wmt08.if.partial.jcml'
-output_filename = 'ojcml.tab'
-#desired_attributes = []
+input_file_addr = 'wmt08.if.partial.jcml'
 desired_attributes = ['tgt-1_berkeley-avg-confidence_ratio', 'tgt-1_length_ratio', 'tgt-1_berkeley-tree', 'tgt-1_parse-NN']
-#meta_attributes = []
 meta_attributes = ['langsrc', 'tgt-1_system', 'tgt-2_system', 'tgt-3_system', 'tgt-4_system', 'tgt-5_system', 'tgt-1_berkeley-tree',\
                    'tgt-2_berkeley-tree', 'tgt-3_berkeley-tree', 'tgt-4_berkeley-tree', 'tgt-5_berkeley-tree', 'testset',\
                    'src_berkeley-tree', 'langtgt']
-
 class_name = 'tgt-1_rank'
-dataset = XmlReader(input_filename).get_dataset()
-object_file = open(output_filename, 'w')
-
-# DESIRED METHOD OF GETTING ORANGEFILE:
-# get orange header from file.xml
-parser = make_parser()
-curHandler1 = SaxJcmlOrangeHeader(object_file, class_name, desired_attributes, meta_attributes)
-parser.setContentHandler(curHandler1)
-parser.parse(open(input_filename))
-
-# get orange content from file.xml
-parser = make_parser()
-curHandler2 = SaxJcml2OrangeContent(object_file, class_name, meta_attributes)
-parser.setContentHandler(curHandler2)
-parser.parse(open(input_filename))
-object_file.close()
-
-# TEST METHOD FOR GETTING ORANGEFILE:
-import orange
-from io.input.orangereader import OrangeData
-wrapped_data = OrangeData(dataset, class_name, desired_attributes, meta_attributes, True)
-new_dataset = wrapped_data.get_dataset()
+SaxJcml2Orange(input_file_addr, class_name, desired_attributes, meta_attributes)
