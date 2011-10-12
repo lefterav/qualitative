@@ -344,12 +344,3 @@ class SaxJcmlOrangeContent(ContentHandler):
             [self.o_file.write('%s\t' % tgt.get_string()) for tgt in ps.get_translations()]
             # split parallel sentences by an additional tab and by a newline
             self.o_file.write('\t\n')
-
-
-input_file_addr = 'wmt08.if.partial.jcml'
-desired_attributes = ['tgt-1_berkeley-avg-confidence_ratio', 'tgt-1_length_ratio', 'tgt-1_berkeley-tree', 'tgt-1_parse-NN']
-meta_attributes = ['langsrc', 'tgt-1_system', 'tgt-2_system', 'tgt-3_system', 'tgt-4_system', 'tgt-5_system', 'tgt-1_berkeley-tree',\
-                   'tgt-2_berkeley-tree', 'tgt-3_berkeley-tree', 'tgt-4_berkeley-tree', 'tgt-5_berkeley-tree', 'testset',\
-                   'src_berkeley-tree', 'langtgt']
-class_name = 'tgt-1_rank'
-SaxJcml2Orange(input_file_addr, class_name, desired_attributes, meta_attributes)
