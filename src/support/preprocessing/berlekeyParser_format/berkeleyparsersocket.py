@@ -4,7 +4,7 @@ Created on Sep 21, 2011
 @author: jogin
 '''
 
-from py4j.java_gateway import JavaGateway
+from py4j.java_gateway import JavaGateway #@UnresolvedImport
 from subprocess import Popen
 import time
 
