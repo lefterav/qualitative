@@ -7,6 +7,7 @@ Created on Jul 21, 2011
 from io.input.rankreader import RankReader
 
 
+
 class CohenKappa(object):
     
     def get_cohen_kappa(self, system_names, rankingFile1, rankingFile2):
