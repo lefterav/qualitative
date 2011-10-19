@@ -4,6 +4,7 @@ Created on 19 Oct 2011
 @author: Eleftherios Avramidis
 '''
 import sys
+import codecs
 
 if __name__ == '__main__':
     from io.input.jcmlreader import JcmlReader
@@ -12,7 +13,7 @@ if __name__ == '__main__':
     filename_in = sys.argv[1]
     filename_out = sys.argv[2]
     
-    file_out = open(filename_out, 'w')
+    file_out = codecs.open(filename_out, 'w', 'utf-8')
     rank_attribute = "orig_rank"
 
     parallelsentences = JcmlReader(filename_in).get_parallelsentences()
