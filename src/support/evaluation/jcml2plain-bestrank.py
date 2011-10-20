@@ -10,11 +10,12 @@ if __name__ == '__main__':
     from io.input.jcmlreader import JcmlReader
     #filename_in = "/home/elav01/taraxu_data/ml4hmt/5/classified.jcml"
     #filename_out = "/home/elav01/taraxu_data/ml4hmt/5/bestselected.txt"
+    #rank_attribute = "orig_rank"
     filename_in = sys.argv[1]
     filename_out = sys.argv[2]
+    rank_attribute = sys.argv[3]
     
     file_out = codecs.open(filename_out, 'w', 'utf-8')
-    rank_attribute = "orig_rank"
 
     parallelsentences = JcmlReader(filename_in).get_parallelsentences()
     for parallelsentence in parallelsentences:
