@@ -24,8 +24,11 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
     #Warning: not language-aware function. Use the ones above
     def get_features_simplesentence(self, simplesentence, parallelsentence):
         sent_string = simplesentence.get_string()
+        return self.get_features_string(sent_string)
+    
+    def get_features_string(self, sent_string):
         try:
-            results = self.server.BParser.parse ( sent_string )
+            results = self.server.BParser.parse (sent_string)
         except Exception as inst:
             print type(inst) 
             print inst
