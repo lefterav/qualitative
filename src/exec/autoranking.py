@@ -31,7 +31,7 @@ class AutoRankingExperiment(object):
         '''
         Constructor
         '''
-        self.classifiers = [SVMEasy] #, BayesLearner] #, , SVMClassifier, TreeLearner, LogRegLearner, kNNLearner]
+        self.classifiers = [SVMEasy, BayesLearner] #, , SVMClassifier, TreeLearner, LogRegLearner, kNNLearner]
         self.attribute_sets = []
         self.training_filenames = None
         self.test_filename = None
