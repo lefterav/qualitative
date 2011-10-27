@@ -3,6 +3,8 @@ Created on Aug 31, 2011
 
 @author: elav01
 '''
+
+import inspect
 from io.saxjcml import SaxJCMLProcessor
 from xml.sax import make_parser
 
@@ -25,9 +27,11 @@ class Task(object):
     required = []
     offered = []
     
-    def __init__(self, processors = []):
-        self.processors = processors
-        
+    def __init__(self, **kwargs):
+        class_arguments = [member[0] for member in inspect.getmembers(self) if not member[0].startswith("__")]
+        for parameter_name in kwargs:
+            if parameter_name in class_arguments: 
+                setattr(self, parameter_name, kwargs[parameter_name])
 #        for processor in processors:
 #            self.required.extend(processor.required())
 #            self.offered.extend(processor.offered())
