@@ -6,7 +6,7 @@
 @author: Eleftherios Avramidis
 """
 
-
+import sys
 
 class DataSet(object):
     """
@@ -64,7 +64,7 @@ class DataSet(object):
         merged_attribute_names = existing_attribute_names.union(new_attribute_names)
         self.attribute_names = list(merged_attribute_names)
     
-    def merge_dataset(self, dataset_for_merging_with, attribute_replacements = {"rank": "predicted_rank"}, merging_attributes = ["id"]):
+    def merge_dataset(self, dataset_for_merging_with, attribute_replacements = {"rank": "predicted_rank"}, merging_attributes = ["id"], merge_strict = False):
         """
         It takes a dataset which contains the same parallelsentences, but with different attributes.
         Incoming parallel sentences are matched with the existing parallel sentences based on the "merging attribute". 
@@ -84,12 +84,15 @@ class DataSet(object):
             
         
         for i in range(len(self.parallelsentences)):
-            try:
+            if self.parallelsentences[i]:
                 key = "||".join([self.parallelsentences[i].get_attribute(att) for att in merging_attributes]) #hopefully this runs always in the same order
+            try:
                 incoming_ps = incoming_parallelsentences_indexed[key]
                 self.parallelsentences[i].merge_parallelsentence(incoming_ps, attribute_replacements)
             except:
-                print "Didn't find key while merging"
+                sys.stderr.write( "Didn't find key while merging sentence %s " % key )
+                if merge_strict:
+                    self.parallelsentences[i] = None
                 pass
             
     

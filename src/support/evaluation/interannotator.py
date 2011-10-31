@@ -43,7 +43,7 @@ def get_pi_calculation(systems, ranking_files, reader = RankReader):
     #merge all datasets (i.e. users) in one dataset, where each sentence 
     #appears only once, and has all judgments by all annotators 
     for i in range(1, len(datasets)):
-        dataset.merge_dataset(datasets[i], {'rank' : 'rank_%d' % i }, ["sentence_id"])
+        dataset.merge_dataset(datasets[i], {'rank' : 'rank_%d' % i }, ["sentence_id"], True)
     
     agreements = 0.0000
     pairwise_rankings = 0.0000
@@ -54,6 +54,8 @@ def get_pi_calculation(systems, ranking_files, reader = RankReader):
     
     #first get each sentence
     for ps in dataset.get_parallelsentences():
+        if not ps:
+            continue
         pairwise_ps_set = ps.get_pairwise_parallelsentences(False)
         system_pairs = get_combination_pairs(systems, True)
         #then do comparisons per system pair
@@ -129,7 +131,9 @@ def get_pi_calculation(systems, ranking_files, reader = RankReader):
 
 
 def get_pi(systems, ranking_files, reader = RankReader):
-    return get_pi_calculation(systems, ranking_files, reader)[0]
+    pi, calc = get_pi_calculation(systems, ranking_files, reader)
+    #print calc
+    return pi
 
 
 
@@ -151,23 +155,25 @@ def print_total_pis(systems, ranking_file_sets):
         print langpair , "&" , round(get_pi(systems, ranking_files), 3), " \\"
     return
 
-systems = [  "trados", "lucy", "moses", "google"  ]
+systems = [  "dcu", "dfki-a", "dfki-b", "lium"  ]
 
-ranking_files_deen = [  "/home/elav01/taraxu_data/r1/results/19-1-WMT08-de-en-ranking.xml", "/home/elav01/taraxu_data/r1/results/6-1-WMT08-de-en-ranking.xml"]
-ranking_files_ende = ["/home/elav01/taraxu_data/r1/results/10-1-WMT08-en-de-ranking.xml", "/home/elav01/taraxu_data/r1/results/15-1-WMT08-en-de-ranking.xml", "/home/elav01/taraxu_data/r1/results/25-1-WMT08-en-de-ranking.xml"]
+#ranking_files_deen = [  "/home/elav01/taraxu_data/r1/results/19-1-WMT08-de-en-ranking.xml", "/home/elav01/taraxu_data/r1/results/6-1-WMT08-de-en-ranking.xml"]
+#ranking_files_ende = ["/home/elav01/taraxu_data/r1/results/10-1-WMT08-en-de-ranking.xml", "/home/elav01/taraxu_data/r1/results/15-1-WMT08-en-de-ranking.xml", "/home/elav01/taraxu_data/r1/results/25-1-WMT08-en-de-ranking.xml"]
+ranking_files_ende = ["/home/elav01/taraxu_data/ml4hmt-submissions/rankings/1-ML4HMT-DCU-Task-es-en-ranking.xml","/home/elav01/taraxu_data/ml4hmt-submissions/rankings/2-ML4HMT-DFKI-Task-es-en-ranking.xml","/home/elav01/taraxu_data/ml4hmt-submissions/rankings/3-ML4HMT-BM-Task-es-en-ranking.xml"]
  
 #ranking_files = ["/home/elav01/taraxu_data/r1/results/10-1-WMT08-en-de-ranking.xml", "/home/elav01/taraxu_data/r1/results/15-1-WMT08-en-de-ranking.xml"]
 #ranking_files = ["/home/elav01/taraxu_data/r1/results/10-1-WMT08-en-de-ranking.xml", "/home/elav01/taraxu_data/r1/results/25-1-WMT08-en-de-ranking.xml"]
 #ranking_files = ["/home/elav01/taraxu_data/r1/results/15-1-WMT08-en-de-ranking.xml", "/home/elav01/taraxu_data/r1/results/25-1-WMT08-en-de-ranking.xml"]
 
 print "Overall correlations scores"
-print print_total_pis(systems, [("de-en", ranking_files_deen), ("en-de", ranking_files_ende)])
+#print print_total_pis(systems, [("de-en", ranking_files_deen), ("en-de", ranking_files_ende)])
+print print_total_pis(systems, [("es-en", ranking_files_ende)])
 
 print "English to German\n"
 print print_pairwise_pis(systems, ranking_files_ende)
 
-print "German to English\n"
-print print_pairwise_pis(systems, ranking_files_deen)
+#print "German to English\n"
+#print print_pairwise_pis(systems, ranking_files_deen)
 
 
 
