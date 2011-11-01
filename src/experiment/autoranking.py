@@ -5,6 +5,12 @@ Created on 20 Oct 2011
 '''
 
 
+class ExpDataReader(AccumulativeTask):
+    
+    def execute(self):
+        
+
+
 class Autoranking:
     
     def define(self):
@@ -25,7 +31,7 @@ class Autoranking:
         test_data_converter.required = [test_data_pairwiser]
         
         classifier_tester = ExpClassifierTester(classifier = classifier_trainer, input = test_data_converter)
-
+        results_analyzer = ResultsAnalyzer(results = classifier_tester, input = test_data_reader)
         
         
 

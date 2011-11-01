@@ -32,18 +32,22 @@ class Task(object):
         for parameter_name in kwargs:
             if parameter_name in class_arguments: 
                 setattr(self, parameter_name, kwargs[parameter_name])
+    
+    
 #        for processor in processors:
 #            self.required.extend(processor.required())
 #            self.offered.extend(processor.offered())
 
 
+    def get_prerequisites(self):
+        for self.
     
-    def is_ready(self):
-        is_ready = True
-        for requirement in self.required:
-            if not requirement.completed:
-                is_ready = False
-        return is_ready
+#    def is_ready(self):
+#        is_ready = True
+#        for requirement in self.required:
+#            if not requirement.completed:
+#                is_ready = False
+#        return is_ready
     
 
     
@@ -57,7 +61,6 @@ class SerialTask(Task):
     '''
     saxprocessor = SaxJCMLProcessor
     
-
     def run(self):
         self.output = self.input.replace("jcml", "%s.jcml"%self.file_extension) 
         input_file_object = open(self.input, 'r')
