@@ -155,7 +155,7 @@ def print_total_pis(systems, ranking_file_sets):
         print langpair , "&" , round(get_pi(systems, ranking_files), 3), " \\"
     return
 
-systems = [  "dcu", "dfki-a", "dfki-b", "lium"  ]
+systems = [  "lucy", "moses", "trados", "google"  ]
 
 #ranking_files_deen = [  "/home/elav01/taraxu_data/r1/results/19-1-WMT08-de-en-ranking.xml", "/home/elav01/taraxu_data/r1/results/6-1-WMT08-de-en-ranking.xml"]
 #ranking_files_ende = ["/home/elav01/taraxu_data/r1/results/10-1-WMT08-en-de-ranking.xml", "/home/elav01/taraxu_data/r1/results/15-1-WMT08-en-de-ranking.xml", "/home/elav01/taraxu_data/r1/results/25-1-WMT08-en-de-ranking.xml"]
