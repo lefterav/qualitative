@@ -3,12 +3,16 @@ Created on Nov 16, 2011
 
 @author: jogin
 '''
+
+import sys
+sys.path.append("/home/lupo01")
+
 from featuregenerator.levenshtein.levenshtein import levenshtein_tok
 
 
 class OOLinkage():
     """
-    This class shows 100 randomly chosen source and target language sentences next to each other in order to compare them.
+    This script compares sentences from Open Office 2010 with sentences from Open Office 2011 (OpenOffice3) according to Levenshtein distance.
     """
     def __init__(self, oldOOSnts, newOOSnts, newOOLinks='', oldOOLinks=''):
         """
