@@ -5,7 +5,7 @@ Created on Nov 16, 2011
 '''
 
 import sys
-sys.path.append("/home/lupo01")
+sys.path.append("/home/lupo01/taraxuscripts")
 
 from featuregenerator.levenshtein.levenshtein import levenshtein_tok
 
