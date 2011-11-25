@@ -5,6 +5,7 @@ Created on Aug 31, 2011
 '''
 
 import inspect
+import sys
 from io.saxjcml import SaxJCMLProcessor
 from xml.sax import make_parser
 
@@ -16,22 +17,68 @@ class Task(object):
     A Task represent the part of an experiment Phase, where data need to be read from one source, 
     get processed and (optionally) be written to another source. 
     The steps of the processing are defined by a list of processors (e.g. featuregenerators) to be launched sequentially
+    
+    A Task is given: a dic of inputs
+                     a dic of parameters
+                     
+    1. Each implementation of the task should specify the required input name and parameters as class attributes
+    2. The Task should be initialized, by providing named arguments to the init function. Arguments that are 
+        objects (i.e. classes or functions) are considered to be "inputs", whereas arguments that are constant 
+        values are considered to be parameters  
+                     
     '''
-    input = ""
-    output = ""
-    completed = False
-    file_extension = ""
-
-    name = ""
-    processors = []
-    required = []
-    offered = []
+    
+    #First define here the names of the inputs and the parameters of the particular task subclass    
+    #e.g. input = None
     
     def __init__(self, **kwargs):
-        class_arguments = [member[0] for member in inspect.getmembers(self) if not member[0].startswith("__")]
+        '''
+        The initialization of the task. Pass the named arguments provided upon the initialization of the class
+        as class arguments, provided that they apply to the specific Task subclass
+        '''
+        argument_names = self.get_argument_names()
         for parameter_name in kwargs:
-            if parameter_name in class_arguments: 
-                setattr(self, parameter_name, kwargs[parameter_name])
+            if parameter_name in argument_names: 
+                setattr(self, parameter_name, kwargs[parameter_name])        
+            else:
+                sys.stderr.write("Warning: Task initialization provided argument that is not specified in the particular task subclass")
+                #TODO: print here the name of the subclass with the warning
+    
+    
+    def get_argument_names(self):
+        '''
+        This function provides a list with the names of the arguments defined at this point for this class,
+        excluding the class-specific python arguments
+        '''
+        argument_names = [member[0] for member in inspect.getmembers(self) if not member[0].startswith("__")]
+        return argument_names
+
+    
+    
+    def get_parameters(self):
+        pass
+    
+    
+    
+    def is_ready_to_run(self):
+        pass
+    
+    
+#    input = ""
+#    output = ""
+#    completed = False
+#    file_extension = ""
+#
+#    name = ""
+#    processors = []
+#    required = []
+#    offered = []
+    
+#    def __init__(self, **kwargs):
+#        class_arguments = [member[0] for member in inspect.getmembers(self) if not member[0].startswith("__")]
+#        for parameter_name in kwargs:
+#            if parameter_name in class_arguments: 
+#                setattr(self, parameter_name, kwargs[parameter_name])
     
     
 #        for processor in processors:
@@ -39,8 +86,8 @@ class Task(object):
 #            self.offered.extend(processor.offered())
 
 
-    def get_prerequisites(self):
-        for self.
+    def is_ready_to_run(self):
+        
     
 #    def is_ready(self):
 #        is_ready = True
