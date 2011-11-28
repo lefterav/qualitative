@@ -50,18 +50,26 @@ class Task(object):
         This function provides a list with the names of the arguments defined at this point for this class,
         excluding the class-specific python arguments
         '''
-        argument_names = [member[0] for member in inspect.getmembers(self) if not member[0].startswith("__")]
+        argument_names = [member[0] for member in inspect.getmembers(self) if not member[0].startswith("__") and not inspect.ismethod(member[1])]
         return argument_names
 
+    
+    def get_prerequisites(self):
+        '''
+        It returns a list of the class arguments, if their value is another task class
+        '''
+        argument_names = [member[0] for member in inspect.getmembers(self) if not member[0].startswith("__") and not inspect.ismethod(member[1])]
     
     
     def get_parameters(self):
         pass
+       
     
-    
-    
-    def is_ready_to_run(self):
-        pass
+    def get_pending_prerequisites(self):
+        '''
+        It returns a list of task objects that need to be finished before the task of the current instance runs
+        '''
+        
     
     
 #    input = ""
@@ -86,9 +94,7 @@ class Task(object):
 #            self.offered.extend(processor.offered())
 
 
-    def is_ready_to_run(self):
         
-    
 #    def is_ready(self):
 #        is_ready = True
 #        for requirement in self.required:
