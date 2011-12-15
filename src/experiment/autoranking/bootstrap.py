@@ -21,6 +21,12 @@ path = /home/elav01/taraxu_data/selection-mechanism/ml4hmt/experiment/109
 
 [training]
 filename = /home/elav01/taraxu_data/ml4hmt/news-test2008-dev.es-en.withlang.if.jcml
+pairwise = True
+pairwise_exponential = True
+class_name = rank
+allow_ties = False
+generate_diff = False
+merge_overlapping = True
 
 [DEFAULT]
 # Lab name and project name are used for uploading files to a webserver
