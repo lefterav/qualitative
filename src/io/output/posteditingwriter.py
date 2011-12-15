@@ -50,17 +50,17 @@ class PosteditingWriter(object):
                 parallelsentence_xml.setAttribute( attribute_key , str(ps.get_attribute(attribute_key)) )
             
             #add source as a child of parallel sentence
-            src_xml = self.__create_xml_sentence__(doc_xml, ps.get_source(), "source")
+            src_xml = self._create_xml_sentence(doc_xml, ps.get_source(), "source")
             parallelsentence_xml.appendChild( src_xml )
 
             #add translations
             for tgt in ps.get_translations():
-                tgt_xml = self.__create_xml_sentence__(doc_xml, tgt, "system")
+                tgt_xml = self._create_xml_sentence(doc_xml, tgt, "system")
                 parallelsentence_xml.appendChild( tgt_xml )
 
             #add reference as a child of parallel sentence
             if ps.get_reference():
-                ref_xml = self.__create_xml_sentence__(doc_xml, ps.get_reference(), "post-edited")
+                ref_xml = self._create_xml_sentence(doc_xml, ps.get_reference(), "post-edited")
                 parallelsentence_xml.appendChild( ref_xml )
 
             #append the newly populated parallel sentence to the document
@@ -80,7 +80,7 @@ class PosteditingWriter(object):
            
         
         
-    def __create_xml_sentence__(self, doc_xml, sentence, tag):
+    def _create_xml_sentence(self, doc_xml, sentence, tag):
         """
         Helper function that fetches the text and the attributes of a sentence
         and wraps them up into a minidom XML sentenceect

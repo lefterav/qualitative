@@ -7,10 +7,13 @@ Created on 20 Oct 2011
 from ruffus import *
 import shutil
 import os
-from io.input.jcmlreader import JcmlReader
-from sentence.rankhandler import RankHandler
-
 from experiment.autoranking.bootstrap import cfg
+from multiprocessing import Process, Manager 
+from io.input.jcmlreader import JcmlReader
+from io.sax.saxps2jcml import Parallelsentence2Jcml 
+from sentence.rankhandler import RankHandler
+from featuregenerator.diff_generator import DiffGenerator
+
 
 #TODO: Use stringIO to pass objects loaded into memory???
 
@@ -21,32 +24,62 @@ except OSError:
     pass
 os.chdir(path)
 
-dataset = [None]
+manager = Manager() 
+dataset = manager.list()
 
 def _retrieve_sentences(obj, output_file):
-    if obj == [None]:
+    if not obj:
         return JcmlReader(output_file).get_parallelsentences()
     else:
-        return obj
+        print "got ready object"
+        return obj[0]
+
+def _pass_sentences(sentences, output_file):
+    dataset.append(sentences)
+    Parallelsentence2Jcml(sentences).write_to_file(output_file)
 
 
-@files(None, 'data.input.jcml', cfg.get('training', 'filename'), dataset)
+#maybe open here many files
+
+@files(None, "data.raw", cfg.get("training", "filename"), dataset)
 def data_fetch(input_file, output_file, external_file, dataset):
     '''
     Fetch file and place it comfortably in the working directory
     then load the data into memory
     '''
-    shutil.copy(external_file, output_file)
-    dataset[0] = _retrieve_sentences(dataset, output_file)
+    shutil.copy(external_file, output_file) 
+    dataset = _retrieve_sentences(dataset, output_file)
+    _pass_sentences(dataset, output_file)
 
-#@active_if(True)
-@files(data_fetch, 'data.pairwise.jcml', dataset)
-def data_pairwise(input_file, output_file, dataset, cfg.get('training', )):
-    print input_file
-    print "received dataset with value" , dataset
-    RankHandler(self.class_name).get_pairwise_from_multiclass_set(parallelsentences, allow_ties, self.exponential)
-    
 
+
+@active_if(cfg.getboolean('training', 'pairwise'))
+@transform(data_fetch, suffix(".raw"), ".pairwise", dataset, cfg.get("training", "class_name"), cfg.getboolean("training", "pairwise_exponential"), cfg.getboolean("training", "allow_ties") )
+def data_pairwise(input_file, output_file, dataset, class_name, pairwise_exponential, allow_ties):
+    parallelsentences = _retrieve_sentences(dataset, input_file)
+    print "got sentences"
+    parallelsentences = RankHandler(class_name).get_pairwise_from_multiclass_set(parallelsentences, pairwise_exponential, allow_ties)
+    print "converted"
+    print "writing to output ", output_file
+    _pass_sentences(parallelsentences, output_file)
+    print "written down"
+
+
+@active_if(cfg.getboolean('training', 'generate_diff'))
+@transform(data_pairwise, suffix(".pairwise"), ".diff", dataset)
+def data_generate_diff(input_file, output_file, dataset):
+    parallelsentences = _retrieve_sentences(dataset, input_file)
+    parallelsentences = DiffGenerator().add_features_batch(parallelsentences)
+    _pass_sentences(parallelsentences)
+
+
+#maybe merge here
+
+@active_if(cfg.getboolean('training', 'merge_overlapping'))
+@transform(data_generate_diff, suffix(".diff"), ".merge", dataset, cfg.get('training', 'class_name'))
+def data_merge_overlapping(input_file, output_file, dataset, class_name):
+    parallelsentences = _retrieve_sentences(dataset, input_file)
+    parallelsentences = RankHandler(class_name).merge_overlapping_pairwise_set(parallelsentences)
 
 pipeline_run([data_pairwise], [data_fetch], multiprocess = 1)
 
