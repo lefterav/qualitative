@@ -129,7 +129,7 @@ class SentenceReader:
         from io.input.xliffreader import XliffReader
     def startElement(self, name, atts = []):
         if name == self.TAG_SENT:
-            
+            pass
     
 
 class OrangeProcessor:
@@ -508,7 +508,7 @@ class OrangeProcessor:
                 print "couldn't apply classifier"
                 new_value = "0"
             mydata[i].setclass(new_value)
-        return OrangeData(mydata)
+        return mydata
             
     
     def get_accuracy(self, classifiers):
