@@ -36,6 +36,7 @@ continuize=True
 multinomialTreatment=NValues
 continuousTreatment=NormalizeBySpan
 classTreatment=Ignore
+classifier=Bayes
 
 [testing]
 filename = /home/elav01/taraxu_data/wmt-annotated/wmt10.ex.3.jcml
@@ -47,7 +48,7 @@ cfg.readfp(StringIO.StringIO(CONFIG_TEMPLATE))  # set up defaults
 cfg.read(CONFIG_FILENAME)  # add user-specified settings
 
 
-def get_classifier(self, name):
+def get_classifier(name = cfg.get("training", "classifier")):
     package = classifier
     prefix = package.__name__ + '.'
     for importer, modname, ispkg in pkgutil.iter_modules(package.__path__, prefix):
