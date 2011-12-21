@@ -10,6 +10,7 @@ from experiment.autoranking.bootstrap import cfg
 from experiment.autoranking.bootstrap import get_classifier
 from multiprocessing import Process, Manager 
 from io.input.orangereader import OrangeData
+from io.sax.saxjcml2orange import SaxJcml2Orange
 from io.input.jcmlreader import JcmlReader
 from io.sax.saxps2jcml import Parallelsentence2Jcml 
 from sentence.dataset import DataSet
@@ -19,6 +20,7 @@ from orange import ExampleTable
 import cPickle as pickle
 import orange
 from ruffus.task import pipeline_printout_graph
+from io.sax import saxjcml2orange
 
 #TODO: Use stringIO to pass objects loaded into memory???
 
@@ -72,6 +74,7 @@ def testdata_fetch(input_file, output_file, external_file, dataset):
     shutil.copy(external_file, output_file) 
     mydataset = _retrieve_sentences(dataset, output_file)
     _pass_sentences(mydataset, output_file)
+    pass
 
 
 
@@ -135,8 +138,14 @@ def testdata_get_orange(input_file, output_file, class_name, attribute_names, me
     data_get_orange(input_file, output_file, class_name, attribute_names, meta_attribute_names, orange_minimal)
 
 def data_get_orange(input_file, output_file, class_name, attribute_names, meta_attribute_names, orange_minimal):
+    print "Starting orange conversion"
     parallelsentences = _retrieve_sentences(dataset, input_file)
-    OrangeData(DataSet(parallelsentences), class_name, attribute_names, meta_attribute_names, output_file, orange_minimal)
+    trainingset = OrangeData(DataSet(parallelsentences), class_name, attribute_names, meta_attribute_names, output_file)
+    orange.saveTabDelimited ("%s.test" % output_file, trainingset.get_data())
+
+    #SaxJcml2Orange(input_file, class_name, attribute_names, meta_attribute_names, output_file)
+    print "Finished orange conversion"
+    pass
     #dataset.append(trainingset_orng) #EOF error thrown given when used
     
 
@@ -151,6 +160,8 @@ def train_classifier(input_file, output_file, param_continuize, multinomialTreat
     #except:
     #    trainingset_orng = ExampleTable(input_file)
     trainingset_orng = ExampleTable(input_file)
+    print "Loaded ", len(trainingset_orng) , " sentences from file " , input_file
+    trainingset_dataset = OrangeData(trainingset_orng).get_dataset()
     
     #prepare classifeir params
     classifier_params = {"multinomialTreatment" : _get_continuizer_constant(cfg.get("training", "multinomialTreatment")),
@@ -173,7 +184,7 @@ def train_classifier(input_file, output_file, param_continuize, multinomialTreat
 
 
 @merge([train_classifier, testdata_get_orange], "testdata.classified.tab")
-def test_classifier(infiles, classified_orng_file):
+def test_classifier(infiles, output_file):
     #load classifier 
     classifier_filename = infiles[0]
     classifier_file = open(classifier_filename, 'r')
@@ -184,17 +195,16 @@ def test_classifier(infiles, classified_orng_file):
     testset_orng = OrangeData(ExampleTable(infiles[1]))
     
     classified_orng = testset_orng.classify_with(trained_classifier)
-    orange.saveTabDelimited (classified_orng_file, classified_orng.get_data())
-
-
-@transform(test_classifier, suffix("tab"), ".jcml")
-def test_deorange(input_file, output_file):
-    testset_orng = ExampleTable(input_file)
-    dataset = OrangeData(testset_orng).get_dataset()
+#    orange.saveTabDelimited (output_file, classified_orng.get_data())
+#@transform(test_classifier, suffix("tab"), ".jcml")
+#def test_deorange(input_file, output_file):
+#    testset_orng = ExampleTable(input_file)
+#    dataset = OrangeData(testset_orng).get_dataset()
+    dataset = classified_orng.get_dataset()
     Parallelsentence2Jcml(dataset.get_parallelsentences()).write_to_file(output_file)
 
 
-@transform(test_deorange, suffix("classified.jcml"), cfg.get('training', 'class_name') )
+@transform(test_classifier, suffix("classified.jcml"), cfg.get('training', 'class_name') )
 def test_revert_multiclass(input_file, output_file, class_name ):
     if not cfg.getboolean('preprocessing', 'pairwise'):
         os.symlink(input_file, output_file)

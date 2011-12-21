@@ -19,7 +19,7 @@ class SaxJcml2Orange():
     This class converts jcml format to tab format (orange format).
     The output file is saved to the same folder where input file is.
     """
-    def __init__(self, input_file_addr, class_name, desired_attributes, meta_attributes):
+    def __init__(self, input_file_addr, class_name, desired_attributes, meta_attributes, output_file):
         """
         Init calls class SaxJcmlOrangeHeader for creating header and 
         SaxJcmlOrangeContent for creating content.
@@ -37,8 +37,8 @@ class SaxJcml2Orange():
         self.desired_attributes = desired_attributes
         self.meta_attributes = meta_attributes
         
-        self.orange_filename = self.input_filename.rpartition('.')[0]+'.tab'
-        self.dataset = XmlReader(self.input_filename).get_dataset()
+        self.orange_filename = output_file
+        #self.dataset = XmlReader(self.input_filename).get_dataset()
         self.object_file = open(self.orange_filename, 'w')
 
         # get orange header
@@ -79,7 +79,8 @@ class SaxJcml2Orange():
         """
         import orange
         from io.input.orangereader import OrangeData
-        wrapped_data = OrangeData(self.dataset, self.class_name, self.desired_attributes, self.meta_attributes, self.orange_filename)
+        dataset = XmlReader(self.input_filename).get_dataset()
+        wrapped_data = OrangeData(dataset, self.class_name, self.desired_attributes, self.meta_attributes, self.orange_filename)
         new_dataset = wrapped_data.get_dataset()
         
 
@@ -167,7 +168,8 @@ class SaxJcmlOrangeHeader(ContentHandler):
             self.tgt = []
             self.ref = ''
             self.ps_attributes = {}
-            [self.attribute_names.add(str(attribute)) for attribute in ps.get_nested_attributes().keys()]
+            for attribute in ps.get_nested_attributes():
+                self.attribute_names.add(str(attribute))
             
             
     def endDocument(self):

@@ -31,7 +31,7 @@ orange_minimal = False
 filename = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt08.if.jcml
 class_name = rank
 meta_attributes=id,testset
-attributes = tgt-1_unk,tgt-2_unk,tgt-1_tri-prob,tgt-2_tri-prob,tgt-1_length_ratio,tgt-2_length_ratio,tgt-1_berkeley-n_ratio,tgt-2_berkeley-n_ratio,tgt-1_berkeley-n,tgt-2_berkeley-n,tgt-1_parse-VB,tgt-2_parse-VB,tgt-1_berkeley-loglikelihood_ratio,tgt-2_berkeley-loglikelihood_ratio,tgt-1_ibm1,tgt-2_ibm1
+attributes = tgt-1_unk,tgt-2_unk,tgt-1_tri-prob,tgt-2_tri-prob,tgt-1_length_ratio,tgt-2_length_ratio,tgt-1_berkeley-n_ratio,tgt-2_berkeley-n_ratio,tgt-1_berkeley-n,tgt-2_berkeley-n,tgt-1_parse-VB,tgt-2_parse-VB
 continuize=True
 multinomialTreatment=NValues
 continuousTreatment=NormalizeBySpan
@@ -39,7 +39,7 @@ classTreatment=Ignore
 classifier=Bayes
 
 [testing]
-filename = /home/elav01/taraxu_data/wmt-annotated/wmt10.ex.3.jcml
+filename = /home/elav01/taraxu_data/wmt-annotated/wmt10.ex.3.sample.jcml
 """
 
 # global configuration
