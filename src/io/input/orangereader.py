@@ -22,12 +22,12 @@ class OrangeData:
         Handles the conversion of the generic data objects to a format handled by Orange library
     """
     
-    def __init__ (self, dataSet, class_name="", desired_attributes=[], meta_attributes=[], chosen_orangefilename=False, avoidstrings=False):
+    def __init__ (self, dataSet, class_name="", desired_attributes=[], meta_attributes=[], chosen_orangefilename=False):
         if isinstance ( dataSet , orange.ExampleTable ):
             self.data = dataSet
             
         elif isinstance ( dataSet , sentence.dataset.DataSet ):
-            self.avoidstrings = avoidstrings #this is to prevent buggy utf8 exporting when non-ascii characters contained in strings
+            #self.avoidstrings = avoidstrings #this is to prevent buggy utf8 exporting when non-ascii characters contained in strings
             print "desired attributes" , desired_attributes
             print "meta attributes" , meta_attributes
             #get the data in Orange file format
@@ -219,11 +219,11 @@ class OrangeData:
             #TODO: find a way to define continuous and discrete arg
             #line 2 holds the class type
             if attribute_name == class_name:
-                line_2 += "d\t"
+                line_2 += "discrete\t"
             elif attribute_name in desired_attributes and attribute_name not in meta_attributes:
-                line_2 += "c\t"
+                line_2 += "continuous\t"
             else:
-                line_2 += "d\t"
+                line_2 += "discrete\t"
 
             
             #line 3 defines the class and the metadata
@@ -234,23 +234,23 @@ class OrangeData:
                 line_3 = line_3 + "m"
             line_3 = line_3 + "\t"
         
-        if not self.avoidstrings:
-            #src
+        #if not self.avoidstrings:
+        #src
+        line_2 += "string\t"
+        line_3 += "m\t"
+        line_1 += "src\t"
+        #target
+        i=0
+        for tgt in dataset.get_parallelsentences()[0].get_translations():
+            i+=1
             line_2 += "string\t"
             line_3 += "m\t"
-            line_1 += "src\t"
-            #target
-            i=0
-            for tgt in dataset.get_parallelsentences()[0].get_translations():
-                i+=1
-                line_2 += "string\t"
-                line_3 += "m\t"
-                line_1 += "tgt-" + str(i) + "\t"
-            #ref 
-            line_2 += "string\t"
-            line_3 += "m\t"
-            line_1 += "ref\t"
-        
+            line_1 += "tgt-" + str(i) + "\t"
+        #ref 
+        line_2 += "string\t"
+        line_3 += "m\t"
+        line_1 += "ref\t"
+    
         #break the line in the end
         line_1 = line_1 + "\n"
         line_2 = line_2 + "\n"
@@ -282,17 +282,17 @@ class OrangeData:
                 #even if attribute value exists or not, we have to tab    
                 outputlines.append ("\t")
                 
-            if not self.avoidstrings:
-                outputlines.append( psentence.get_source().get_string())
+            #if not self.avoidstrings:
+            outputlines.append( psentence.get_source().get_string())
+            outputlines.append("\t")
+            for tgt in psentence.get_translations():
+                outputlines.append(tgt.get_string())
                 outputlines.append("\t")
-                for tgt in psentence.get_translations():
-                    outputlines.append(tgt.get_string())
-                    outputlines.append("\t")
-                try:
-                    outputlines.append(psentence.get_reference().get_string())
-                    outputlines.append("\t")
-                except:
-                    outputlines.append("\t")
+            try:
+                outputlines.append(psentence.get_reference().get_string())
+                outputlines.append("\t")
+            except:
+                outputlines.append("\t")
             outputlines.append("\n")
         output += "".join(outputlines)
         return output
@@ -378,7 +378,8 @@ class OrangeData:
             
         #for ex in mydata:
             #try:
-            new_value = classifier(mydata[i])
+            instance = mydata[i]
+            new_value = classifier(instance)
             #new_value, prob  = classifier(mydata[i], orange.Classifier.GetBoth)
             #except:
             #    print "couldn't apply classifier"
