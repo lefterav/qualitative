@@ -223,7 +223,7 @@ class OrangeData:
             elif attribute_name in desired_attributes and attribute_name not in meta_attributes:
                 line_2 += "continuous\t"
             else:
-                line_2 += "discrete\t"
+                line_2 += "string\t"
 
             
             #line 3 defines the class and the metadata
