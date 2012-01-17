@@ -30,7 +30,6 @@ class Parallelsentence2Jcml(object):
         file = open(filename, 'w')
         generator = XMLGenerator(file, "utf-8")
         generator.startDocument()
-        generator.characters("\n")
         generator.startElement(self.TAG["doc"], {})
         for parallelsentence in self.parallelsentences:
             generator.characters("\n\t")
@@ -51,7 +50,7 @@ class Parallelsentence2Jcml(object):
             
             
             ref = parallelsentence.get_reference()
-            if ref:
+            if ref and ref.get_string() != "":
                 generator._write("\n\t\t")
                 generator.startElement(self.TAG["ref"], ref.get_attributes())
                 generator.characters(ref.get_string())

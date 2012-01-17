@@ -3,24 +3,31 @@ Created on 20 Oct 2011
 @author: elav01
 '''
 
-from ruffus import *
 import shutil
 import os
+
+#pipeline essentials
+from ruffus import *
+from multiprocessing import Process, Manager 
+from ruffus.task import pipeline_printout_graph
+import cPickle as pickle
+
+#internal code classes
 from experiment.autoranking.bootstrap import cfg
 from experiment.autoranking.bootstrap import get_classifier
-from multiprocessing import Process, Manager 
 from io.input.orangereader import OrangeData
 from io.sax.saxjcml2orange import SaxJcml2Orange
 from io.input.jcmlreader import JcmlReader
+from io.sax import saxjcml2orange
 from io.sax.saxps2jcml import Parallelsentence2Jcml 
 from sentence.dataset import DataSet
 from sentence.rankhandler import RankHandler
 from featuregenerator.diff_generator import DiffGenerator
+from sentence.scoring import Scoring
+
+#ML
 from orange import ExampleTable
-import cPickle as pickle
 import orange
-from ruffus.task import pipeline_printout_graph
-from io.sax import saxjcml2orange
 
 #TODO: Use stringIO to pass objects loaded into memory???
 
@@ -34,6 +41,23 @@ os.chdir(path)
 manager = Manager() 
 dataset = manager.list()
 
+cached_classifier = manager.list()
+
+
+#Caching functions
+def _save_classifier_object(classifier_object):
+    cached_classifier.append(classifier_object)
+
+def _get_classifier_object(classifier_filename = ""):
+    try:
+        trained_classifier = cached_classifier[0]
+        print "classifier loaded from memory"
+    except:
+        classifier_file = open(classifier_filename, 'r')
+        trained_classifier = pickle.load(classifier_file) 
+        classifier_file.close()
+        print "classifier loaded from file"
+    return trained_classifier
 
 def _retrieve_sentences(obj, output_file):
 #    if not obj:
@@ -61,9 +85,10 @@ def traindata_fetch(input_file, output_file, external_file, dataset):
     Fetch training file and place it comfortably in the working directory
     then load the data into memory
     '''
-    shutil.copy(external_file, output_file) 
-    mydataset = _retrieve_sentences(dataset, output_file)
-    _pass_sentences(mydataset, output_file)
+    shutil.copy(external_file, output_file)
+    #TODO: uncomment when memory passing is fixed 
+    #mydataset = _retrieve_sentences(dataset, output_file)
+    #_pass_sentences(mydataset, output_file + "test")
 
 @files(None, "testdata.annotated.jcml", cfg.get("testing", "filename"), dataset)
 def testdata_fetch(input_file, output_file, external_file, dataset):
@@ -72,8 +97,9 @@ def testdata_fetch(input_file, output_file, external_file, dataset):
     then load the data into memory
     '''
     shutil.copy(external_file, output_file) 
-    mydataset = _retrieve_sentences(dataset, output_file)
-    _pass_sentences(mydataset, output_file)
+    #TODO: uncomment when memory passing is fixed
+    #mydataset = _retrieve_sentences(dataset, output_file)
+    #_pass_sentences(mydataset, output_file)
     pass
 
 
@@ -118,7 +144,8 @@ def traindata_merge_overlapping(input_file, output_file, dataset, class_name):
 
 @transform(testdata_generate_diff, suffix(".diff.jcml"), ".overlap.jcml", dataset, cfg.get('training', 'class_name'))
 def testdata_merge_overlapping(input_file, output_file, dataset, class_name):
-    data_merge_overlapping(input_file, output_file, dataset, class_name)
+    os.symlink(input_file, output_file)
+    #data_merge_overlapping(input_file, output_file, dataset, class_name)
 
 def data_merge_overlapping(input_file, output_file, dataset, class_name):
     if not cfg.getboolean('preprocessing', 'merge_overlapping'):
@@ -161,7 +188,6 @@ def train_classifier(input_file, output_file, param_continuize, multinomialTreat
     #    trainingset_orng = ExampleTable(input_file)
     trainingset_orng = ExampleTable(input_file)
     print "Loaded ", len(trainingset_orng) , " sentences from file " , input_file
-    trainingset_dataset = OrangeData(trainingset_orng).get_dataset()
     
     #prepare classifeir params
     classifier_params = {"multinomialTreatment" : _get_continuizer_constant(cfg.get("training", "multinomialTreatment")),
@@ -169,27 +195,28 @@ def train_classifier(input_file, output_file, param_continuize, multinomialTreat
                          "classTreatment" : _get_continuizer_constant(cfg.get("training", "classTreatment"))}
                                                                                                
     #train the classifier
-    classifier = get_classifier() #fetch classifier object
+    learner = get_classifier() #fetch classifier object
 
     try:    
-        myclassifier = classifier()   #initialize it
+        myclassifier = learner()   #initialize it
         trained_classifier = myclassifier.learnClassifier(trainingset_orng, classifier_params)
     except:
-        trained_classifier = classifier(OrangeData(trainingset_orng))
+        trained_classifier = learner(OrangeData(trainingset_orng))
     objectfile = open(output_file, 'w')
     pickle.dump(trained_classifier, objectfile)
+    _save_classifier_object(trained_classifier)
     objectfile.close()
     #dataset.append(trained_classifier)
 
 
 
-@merge([train_classifier, testdata_get_orange], "testdata.classified.tab")
+@merge([train_classifier, testdata_get_orange], "testdata.pairwise.classified.jcml")
 def test_classifier(infiles, output_file):
     #load classifier 
     classifier_filename = infiles[0]
-    classifier_file = open(classifier_filename, 'r')
-    trained_classifier = pickle.load(classifier_file) 
-    classifier_file.close()
+
+    
+    trained_classifier = _get_classifier_object(classifier_filename)
     print "classifier loaded"
     #load testdata
     testset_orng = OrangeData(ExampleTable(infiles[1]))
@@ -200,11 +227,11 @@ def test_classifier(infiles, output_file):
 #def test_deorange(input_file, output_file):
 #    testset_orng = ExampleTable(input_file)
 #    dataset = OrangeData(testset_orng).get_dataset()
-    dataset = classified_orng.get_dataset()
-    Parallelsentence2Jcml(dataset.get_parallelsentences()).write_to_file(output_file)
+    classified_dataset = classified_orng.get_dataset()
+    Parallelsentence2Jcml(classified_dataset.get_parallelsentences()).write_to_file(output_file)
 
 
-@transform(test_classifier, suffix("classified.jcml"), cfg.get('training', 'class_name') )
+@transform(test_classifier, suffix("pairwise.classified.jcml"), "multiclass.classified.jcml", cfg.get('training', 'class_name') )
 def test_revert_multiclass(input_file, output_file, class_name ):
     if not cfg.getboolean('preprocessing', 'pairwise'):
         os.symlink(input_file, output_file)
@@ -215,16 +242,36 @@ def test_revert_multiclass(input_file, output_file, class_name ):
     Parallelsentence2Jcml(parallelsentences_multiclass).write_to_file(output_file)
 
 
+@transform(test_revert_multiclass, suffix("multiclass.classified.jcml"), "statistics.report", cfg.get('training', 'class_name') )
+def test_evaluate(input_file, output_file, class_name):
     
-
-
+    parallelsentences = JcmlReader(input_file).get_parallelsentences()
+    scoringset = Scoring(parallelsentences)
+#        (rho, p) = scoringset.get_spearman_correlation(self.class_name, "orig_rank")
+#        output.append(("Spearman rho" , str(rho)))
+#        output.append(("Spearman p" , str(p)))
+    
+    kendalltau = scoringset.get_kendall_tau(class_name, "orig_rank")
+    
+    output = []
+    output.append(("actual tau", str(kendalltau)))  
+    
+    accuracy, precision = scoringset.selectbest_accuracy(class_name, "orig_rank") 
+    
+    output.append(("select best acc", str(accuracy)))
+    output.append(("select best prec", str(precision)))
+    
+    resultsfile = open("results.tab", 'w')
+    resultsfile.writelines(["%s\t%s" % (description, value) for (description, value) in output])
+    resultsfile.close()
+ 
     
 #maybe merge here
 
 
 
-pipeline_printout_graph("flowchart.jpg", "jpg", [test_revert_multiclass])
-pipeline_run([test_revert_multiclass], multiprocess = 1)
+pipeline_printout_graph("flowchart.pdf", "pdf", [test_evaluate])
+pipeline_run([test_evaluate], multiprocess = 1)
 
 
 
