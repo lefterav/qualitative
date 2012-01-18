@@ -88,7 +88,7 @@ def traindata_fetch(input_file, output_files, external_files):
 def testdata_fetch(input_file, output_files, external_files):
     data_fetch(input_file, output_files, external_files, "test")
     
-def data_fetch(input_file, output_files, external_files, mode):
+def data_fetch(input_file, output_files, external_files, prefix):
     '''
     Fetch training file and place it comfortably in the working directory
     then load the data into memory
@@ -97,7 +97,7 @@ def data_fetch(input_file, output_files, external_files, mode):
         print "Moving here external file ", external_file
         (path, setname) = re.findall("(.*)/([^/]*)\.jcml", external_file)[0]
         
-        output_file = "%sdata.%s.%s" % (mode, setname, "annotated.jcml")
+        output_file = "%sdata.%s.%s" % (prefix, setname, "annotated.jcml")
         shutil.copy(external_file, output_file)
         #TODO: uncomment when memory passing is fixed 
         #mydataset = _retrieve_sentences(dataset, output_file)
@@ -179,7 +179,7 @@ def data_get_orange(input_file, output_file, class_name, attribute_names, meta_a
     print "Starting orange conversion"
     parallelsentences = _retrieve_sentences(dataset, input_file)
     trainingset = OrangeData(DataSet(parallelsentences), class_name, attribute_names, meta_attribute_names, output_file)
-    orange.saveTabDelimited ("%s.test" % output_file, trainingset.get_data())
+    orange.saveTabDelimited (output_file, trainingset.get_data())
 
     #SaxJcml2Orange(input_file, class_name, attribute_names, meta_attribute_names, output_file)
     print "Finished orange conversion"
@@ -225,16 +225,17 @@ def train_classifier(input_file, output_file, param_continuize, multinomialTreat
 
 
 
-@merge([train_classifier, testdata_get_orange], "testdata.pairwise.classified.jcml")
+#@merge([train_classifier, testdata_get_orange], "testdata.pairwise.classified.jcml")
+@transform(testdata_get_orange, suffix(".tab"), add_inputs(train_classifier), ".pairwise.classified.jcml")
 def test_classifier(infiles, output_file):
     #load classifier 
-    classifier_filename = infiles[0]
+    classifier_filename = infiles[1]
 
     
     trained_classifier = _get_classifier_object(classifier_filename)
     print "classifier loaded"
     #load testdata
-    testset_orng = OrangeData(ExampleTable(infiles[1]))
+    testset_orng = OrangeData(ExampleTable(infiles[0]))
     
     classified_orng = testset_orng.classify_with(trained_classifier)
 #    orange.saveTabDelimited (output_file, classified_orng.get_data())
