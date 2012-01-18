@@ -5,6 +5,7 @@ Created on 20 Oct 2011
 
 import shutil
 import os
+import re
 
 #pipeline essentials
 from ruffus import *
@@ -79,29 +80,28 @@ def _pass_sentences(sentences, output_file):
 
 #maybe open here many files
 
-@files(None, "trainingdata.annotated.jcml", cfg.get("training", "filename"), dataset)
-def traindata_fetch(input_file, output_file, external_file, dataset):
+@split(None, "trainingdata.*.annotated.jcml", cfg.get("training", "filenames").split(","))
+def traindata_fetch(input_file, output_files, external_files):
+    data_fetch(input_file, output_files, external_files, "training")
+
+@split(None, "testdata.*.annotated.jcml", cfg.get("testing", "filenames").split(","))
+def testdata_fetch(input_file, output_files, external_files):
+    data_fetch(input_file, output_files, external_files, "test")
+    
+def data_fetch(input_file, output_files, external_files, mode):
     '''
     Fetch training file and place it comfortably in the working directory
     then load the data into memory
     '''
-    shutil.copy(external_file, output_file)
-    #TODO: uncomment when memory passing is fixed 
-    #mydataset = _retrieve_sentences(dataset, output_file)
-    #_pass_sentences(mydataset, output_file + "test")
-
-@files(None, "testdata.annotated.jcml", cfg.get("testing", "filename"), dataset)
-def testdata_fetch(input_file, output_file, external_file, dataset):
-    '''
-    Fetch testing file and place it comfortably in the working directory
-    then load the data into memory
-    '''
-    shutil.copy(external_file, output_file) 
-    #TODO: uncomment when memory passing is fixed
-    #mydataset = _retrieve_sentences(dataset, output_file)
-    #_pass_sentences(mydataset, output_file)
-    pass
-
+    for external_file in external_files:
+        print "Moving here external file ", external_file
+        (path, setname) = re.findall("(.*)/([^/]*)\.jcml", external_file)[0]
+        
+        output_file = "%sdata.%s.%s" % (mode, setname, "annotated.jcml")
+        shutil.copy(external_file, output_file)
+        #TODO: uncomment when memory passing is fixed 
+        #mydataset = _retrieve_sentences(dataset, output_file)
+        #_pass_sentences(mydataset, output_file + "test")
 
 
 
@@ -114,7 +114,9 @@ def testdata_pairwise(input_file, output_file, dataset, class_name, pairwise_exp
     data_pairwise(input_file, output_file, dataset, class_name, pairwise_exponential, True)
 
 def data_pairwise(input_file, output_file, dataset, class_name, pairwise_exponential, allow_ties):
-    
+    if not cfg.getboolean('preprocessing', 'pairwise'):
+        os.symlink(input_file, output_file)
+        return    
     parallelsentences = _retrieve_sentences(dataset, input_file)
     parallelsentences = RankHandler(class_name).get_pairwise_from_multiclass_set(parallelsentences, pairwise_exponential, allow_ties)
     _pass_sentences(parallelsentences, output_file)
@@ -138,7 +140,16 @@ def data_generate_diff(input_file, output_file, dataset):
     _pass_sentences(parallelsentences, output_file)
 
 
-@transform(traindata_generate_diff, suffix(".diff.jcml"), ".overlap.jcml", dataset, cfg.get('training', 'class_name'))
+@merge(traindata_generate_diff, "trainingdata.all.jcml")
+def traindata_gather(input_files, output_file):
+    parallelsentences = []
+    for input_file in input_files:
+        parallelsentences.extend(JcmlReader(input_file).get_parallelsentences())
+    Parallelsentence2Jcml(parallelsentences).write_to_file(output_file)
+
+
+
+@transform(traindata_gather, suffix(".jcml"), ".overlap.jcml", dataset, cfg.get('training', 'class_name'))
 def traindata_merge_overlapping(input_file, output_file, dataset, class_name):
     data_merge_overlapping(input_file, output_file, dataset, class_name)
 
@@ -175,6 +186,10 @@ def data_get_orange(input_file, output_file, class_name, attribute_names, meta_a
     pass
     #dataset.append(trainingset_orng) #EOF error thrown given when used
     
+
+
+
+
 
 def _get_continuizer_constant(name):
     return getattr(orange.DomainContinuizer, name)

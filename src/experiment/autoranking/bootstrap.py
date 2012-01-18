@@ -19,6 +19,9 @@ CONFIG_TEMPLATE = """
 [general]
 path = /home/elav01/taraxu_data/selection-mechanism/ml4hmt/experiment/109
 
+[annotation]
+filenames = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt08.if.jcml 
+
 [preprocessing]
 pairwise = True
 pairwise_exponential = True
@@ -28,7 +31,7 @@ merge_overlapping = True
 orange_minimal = False
 
 [training]
-filename = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt08.if.jcml
+filenames = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt08.if.jcml,/home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-train.partial.if.jcml
 class_name = rank
 meta_attributes=id,testset
 attributes = tgt-1_unk,tgt-2_unk,tgt-1_tri-prob,tgt-2_tri-prob,tgt-1_length_ratio,tgt-2_length_ratio,tgt-1_berkeley-n_ratio,tgt-2_berkeley-n_ratio,tgt-1_berkeley-n,tgt-2_berkeley-n,tgt-1_parse-VB,tgt-2_parse-VB
@@ -39,7 +42,7 @@ classTreatment=Ignore
 classifier=Bayes
 
 [testing]
-filename = /home/elav01/taraxu_data/wmt-annotated/wmt10.ex.3.sample.jcml
+filenames = /home/elav01/taraxu_data/wmt-annotated/wmt10.ex.3.sample.jcml
 """
 
 # global configuration
