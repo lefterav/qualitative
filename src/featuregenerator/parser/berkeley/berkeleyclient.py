@@ -26,14 +26,21 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         sent_string = simplesentence.get_string()
         return self.get_features_string(sent_string)
     
+    
     def get_features_string(self, sent_string):
-        try:
-            results = self.server.BParser.parse (sent_string)
-        except Exception as inst:
-            print type(inst) 
-            print inst
-            return {}
-
+        connected = False
+        failed = 0
+        while not connected:
+            try:
+                results = self.server.BParser.parse (sent_string)
+                connected = True
+                
+            except Exception as inst:
+                print type(inst),  inst
+                time.sleep(0.5)
+                failed += 1
+        
+        print "worked"
         loglikelihood = results['loglikelihood']
         nbestList = results['nbest']
         n = len(nbestList)
@@ -79,6 +86,13 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
                 print "Fault string: %s" % err.faultString
                 print "\nconnection failed, sleeping for 5 sec"
                 time.sleep(5)
+            except socket.timeout:
+                print "time out, doing something..."
+                time.sleep(5)
+            except Exception, errorcode:
+                if errorcode[0] == 111:
+                    print "error 10035, doing something..."
+                    time.sleep(5)
             #except TimeoutException: TODO: find a better way to handle timeouts
             #    sys.stderr.write("Connection to server %s failed, trying again after a few seconds...\n" % self.url)
             #    time.sleep(5)

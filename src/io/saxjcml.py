@@ -7,8 +7,30 @@
 
 
 from xml.sax.saxutils import XMLGenerator
+from xml import sax
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
+import shutil
+
+
+def run_features_generator(input_file, output_file, generators):
+    """
+    Function that runs a jcml file through a list of featuregenerators in the SAX way
+    and adds the features directly on a target jcml file
+    @param input_file Filename for the XML-formated data used as input
+    @type input_file string
+    @param output_file Filename for the result of the featuregenerator, to be generated
+    @type output_file string
+    @param generators List of generators to be applied on each of the parallelsentences contained in the XMLs   
+    """
+    input_file_object = open(input_file, 'r' )
+    tmpfile = "%s.tmp" % output_file
+    output_file_object = open(tmpfile, 'w' )
+    saxhandler = SaxJCMLProcessor(output_file_object, generators)
+    sax.parse(input_file_object, saxhandler)    
+    input_file_object.close()
+    output_file_object.close()
+    shutil.move(tmpfile, output_file)
 
 class SaxJCMLProcessor(XMLGenerator):
     """

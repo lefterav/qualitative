@@ -18,9 +18,28 @@ CONFIG_FILENAME = 'pipeline.cfg'
 CONFIG_TEMPLATE = """
 [general]
 path = /home/elav01/taraxu_data/selection-mechanism/ml4hmt/experiment/109
+source_language = de
+target_language = en
+
 
 [annotation]
-filenames = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt08.if.jcml 
+filenames = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-test.jcml
+[parser:berkeley_en]
+language = en
+url = http://percival.sb.dfki.de:8682
+tokenize = False
+
+[parser:berkeley_es]
+language = es
+url = http://percival.sb.dfki.de:21115
+tokenize = False
+
+[parser:berkeley_de]
+language = de
+url = http://percival.sb.dfki.de:8684
+tokenize = False
+
+
 
 [preprocessing]
 pairwise = True
@@ -31,7 +50,8 @@ merge_overlapping = True
 orange_minimal = False
 
 [training]
-filenames = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt08.if.jcml,/home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-train.partial.if.jcml
+filenames = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt08.if.partial.jcml
+#,/home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-train.partial.if.jcml
 class_name = rank
 meta_attributes=id,testset
 attributes = tgt-1_unk,tgt-2_unk,tgt-1_tri-prob,tgt-2_tri-prob,tgt-1_length_ratio,tgt-2_length_ratio,tgt-1_berkeley-n_ratio,tgt-2_berkeley-n_ratio,tgt-1_berkeley-n,tgt-2_berkeley-n,tgt-1_parse-VB,tgt-2_parse-VB
@@ -42,7 +62,7 @@ classTreatment=Ignore
 classifier=Bayes
 
 [testing]
-filenames = /home/elav01/taraxu_data/wmt-annotated/wmt10.ex.3.sample.jcml
+filenames = /home/elav01/taraxu_data/wmt-annotated/wmt10.ex.3.sample.jcml,/home/elav01/workspace/TaraXUscripts/data/multiclass/wmt08.if.partial.jcml
 """
 
 # global configuration
