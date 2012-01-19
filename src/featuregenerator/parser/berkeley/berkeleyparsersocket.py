@@ -40,16 +40,16 @@ class BerkeleyParserSocket():
         self.bp_obj = self.bpInstance.get_BP_obj()
     
     
-    def parse(self):
+    def parse(self, sentence_string):
         """
         It calls the parse function on BParser object.
         """
-        line = "this is a sentence to parse"
+         
         # call the python function parse() on BParser object
-        self.bp_obj.parse(line)
+        self.bp_obj.parse(sentence_string)
         
     
-    def shutdown_server(self):
+    def close(self):
         """
         Java server is terminated from here.
         """
