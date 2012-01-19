@@ -7,7 +7,7 @@ Created on 14 Dec 2011
 from xml.sax.saxutils import XMLGenerator
 from xml.sax.xmlreader import AttributesImpl
 from io.dataformat.jcmlformat import JcmlFormat
-
+import shutil
 
 class Parallelsentence2Jcml(object):
     '''
@@ -27,7 +27,8 @@ class Parallelsentence2Jcml(object):
         '''
         XML output is written to the desired file
         '''
-        file = open(filename, 'w')
+        tempfilename = "%s.tmp" % filename 
+        file = open(tempfilename, 'w')
         generator = XMLGenerator(file, "utf-8")
         generator.startDocument()
         generator.startElement(self.TAG["doc"], {})
@@ -66,6 +67,7 @@ class Parallelsentence2Jcml(object):
         generator.characters("\n")
         generator.endDocument()
         file.close()
+        shutil.move(tempfilename, filename)
             
             
             

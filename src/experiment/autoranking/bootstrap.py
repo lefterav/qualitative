@@ -28,6 +28,9 @@ filenames = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-test.jcml
 language = en
 url = http://percival.sb.dfki.de:8682
 tokenize = False
+reference_features = False
+moreisbetter = bleu
+lessisbetter = lev
 
 [parser:berkeley_es]
 language = es
@@ -39,6 +42,11 @@ language = de
 url = http://percival.sb.dfki.de:8684
 tokenize = False
 
+[lmserver:lm4gram]
+language = en
+lowercase = True
+tokenize = True
+url = 
 
 
 [preprocessing]
