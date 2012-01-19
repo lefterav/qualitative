@@ -28,19 +28,9 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
     
     
     def get_features_string(self, sent_string):
-        connected = False
-        failed = 0
-        while not connected:
-            try:
-                results = self.server.BParser.parse (sent_string)
-                connected = True
-                
-            except Exception as inst:
-                print type(inst),  inst
-                time.sleep(0.5)
-                failed += 1
+
         
-        print "worked"
+        results = self.parse(sent_string)
         loglikelihood = results['loglikelihood']
         nbestList = results['nbest']
         n = len(nbestList)
@@ -164,36 +154,49 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
 #        
 #        return new_parallelsentences
 
-    
-    
     def parse(self, string):
-
-        results = self.server.BParser.parse ( string )
-        loglikelihood = results['loglikelihood']
-        nbestList = results['nbest']
-        n = len(nbestList)
-        
-
-        
-        best_confidence = -1e308;
-        best_parse = ""
-        sum_confidence = 0
-        
-        for entry in nbestList:
-            confidence = entry["confidence"]
-            parse = entry["tree"]
-            if float(confidence) > best_confidence:
-                best_confidence = float(confidence)
-                best_parse = parse
-            sum_confidence += float(confidence)
-            
-        avg_confidence = sum_confidence / n
-        
-        print "berkeley-n" + str(n)
-        print "berkley-loglikelihood" + str(results['loglikelihood'])
-        print "berkeley-best-parse-confidence" , best_confidence
-        print "berkeley-avg-confidence" , avg_confidence
-        print "berkeley-best-parse-tree" , best_parse
+        connected = False
+        failed = 0
+        while not connected:
+            try:
+                results = self.server.BParser.parse (string)
+                connected = True
+                
+            except Exception as inst:
+                print type(inst),  inst
+                time.sleep(0.5)
+                failed += 1
+        return results
+    
+#    
+#    def parse(self, string):
+#
+#        results = self.server.BParser.parse ( string )
+#        loglikelihood = results['loglikelihood']
+#        nbestList = results['nbest']
+#        n = len(nbestList)
+#        
+#
+#        
+#        best_confidence = -1e308;
+#        best_parse = ""
+#        sum_confidence = 0
+#        
+#        for entry in nbestList:
+#            confidence = entry["confidence"]
+#            parse = entry["tree"]
+#            if float(confidence) > best_confidence:
+#                best_confidence = float(confidence)
+#                best_parse = parse
+#            sum_confidence += float(confidence)
+#            
+#        avg_confidence = sum_confidence / n
+#        
+#        print "berkeley-n" + str(n)
+#        print "berkley-loglikelihood" + str(results['loglikelihood'])
+#        print "berkeley-best-parse-confidence" , best_confidence
+#        print "berkeley-avg-confidence" , avg_confidence
+#        print "berkeley-best-parse-tree" , best_parse
         
     
 #b = BerkeleyFeatureGenerator("http://percival.sb.dfki.de:8683", "fr")
