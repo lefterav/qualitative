@@ -5,7 +5,8 @@ Created on Sep 21, 2011
 '''
 
 from py4j.java_gateway import JavaGateway #@UnresolvedImport
-from subprocess import Popen
+
+import subprocess
 import time
 
 
@@ -13,7 +14,7 @@ class BerkeleyParserSocket():
     """
     This class enables running java methods for BParser.java from Python.
     """
-    def __init__(self, berkeley_parser_jar, py4j_jar, java_server_loc):
+    def __init__(self, berkeley_parser_jar, py4j_jar, java_server_loc, grammarfile):
         """
         @param berkeley_parser_jar: Location of BerkeleyParser.jar
         @type berkeley_parser_jar: string
@@ -31,10 +32,13 @@ class BerkeleyParserSocket():
         bps.shutdown_server()
         
         """
+        
+        subprocess.check_call(["javac", "-classpath", "%s:%s:%s" % (berkeley_parser_jar, py4j_jar, java_server_loc), "JavaServer.java"])
+        
         cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, java_server_loc)
         
         # run Java server
-        Popen(cmd, shell=True, close_fds=True)
+        subprocess.Popen(cmd, shell=True, close_fds=True)
         
         # wait till server starts
         time.sleep(1)
@@ -46,7 +50,7 @@ class BerkeleyParserSocket():
         self.bpInstance = self.gateway.entry_point
         
         # call the method get_BP_obj() in java
-        self.bp_obj = self.bpInstance.get_BP_obj()
+        self.bp_obj = self.bpInstance.get_BP_obj(grammarfile)
     
     
     def parse(self, sentence_string):
@@ -64,5 +68,8 @@ class BerkeleyParserSocket():
         """
         self.gateway.shutdown()
 
+bps = BerkeleyParserSocket("/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar", "/home/elav01/workspace/TaraXUscripts/src/featuregenerator/parser/berkeley/", "/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr")
+print bps.parse("This is a sentence")
+bps.close()
 
 
