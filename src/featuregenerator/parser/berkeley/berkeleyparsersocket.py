@@ -8,24 +8,33 @@ from py4j.java_gateway import JavaGateway #@UnresolvedImport
 
 import subprocess
 import time
+import os
 
 
 class BerkeleyParserSocket():
     """
-    This class enables running java methods for BParser.java from Python.
+    A flexible wrapper for the Berkeley parser. It starts the Berkeley parser as an object
+    which can be called as a Python object. It requires presence of external java libraries.
+    The advantage of this class (e.g. vs XMLRPC) is that it can fully control starting and 
+    stopping the parsing engine within Python code.   
     """
-    def __init__(self, berkeley_parser_jar, py4j_jar, java_server_loc, grammarfile):
+    def __init__(self, grammarfile, berkeley_parser_jar, py4j_jar):
         """
-        @param berkeley_parser_jar: Location of BerkeleyParser.jar
+        @param berkeley_parser_jar: Location of BerkeleyParser.jar; a modified java library that
+        fetches full parsing details from the Berkeley Engine and calculates full features upon request
         @type berkeley_parser_jar: string
-        @param py4j_jar: Location of py4j.jar
+        @param py4j_jar: Location of py4j.jar; java library responsible for connecting to java from python
+        through a socket connection.
         @type py4j_jar: string
         @param java_server_loc: Location of JavaServer.class
         @type java_server_loc: string
         
         Example use
         
-        bps = BerkeleyParserSocket("/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar", "/home/elav01/workspace/TaraXUscripts/src/featuregenerator/parser/berkeley/", "/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr")
+        grammarfile = "/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr"
+        berkleyjar = "/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar"
+        py4jjar = "/usr/share/py4j/py4j0.7.jar"
+        bps = BerkeleyParserSocket(grammarfile, berkleyjar, py4jjar)
         print bps.parse("This is a sentence")
         # if the server wasn't closed, it has to be done manually in cmdline ('kill <PID>')
         # with local address 25333 specified in JavaServer.java 
@@ -33,20 +42,27 @@ class BerkeleyParserSocket():
         
         """
         
-        subprocess.check_call(["javac", "-classpath", "%s:%s:%s" % (berkeley_parser_jar, py4j_jar, java_server_loc), "JavaServer.java"])
+        #define running directory
+        path = os.path.abspath(__file__)
+        dir_path = os.path.dirname(path)
+
+        #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
+        subprocess.check_call(["javac", "-classpath", "%s:%s:%s" % (berkeley_parser_jar, py4j_jar, dir_path), "JavaServer.java"])
         
-        cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, java_server_loc)
         
-        # run Java server
-        subprocess.Popen(cmd, shell=True, close_fds=True)
+        # prepare and run Java server
+        #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
+        cmd = ["java", "-cp", "%s:%s:%s" % (berkeley_parser_jar, py4j_jar, dir_path), "JavaServer" ]
+        self.process = subprocess.Popen(cmd,  close_fds=True) #shell=True,
+        print "Started java process with pid ", self.process.pid
         
-        # wait till server starts
-        time.sleep(1)
+        # wait so that server starts
+        time.sleep(2)
         
         # connect to the JVM
         self.gateway = JavaGateway()
         
-        # get the AdditionApplication instance
+        # get the application instance
         self.bpInstance = self.gateway.entry_point
         
         # call the method get_BP_obj() in java
@@ -67,9 +83,27 @@ class BerkeleyParserSocket():
         Java server is terminated from here.
         """
         self.gateway.shutdown()
+        print "trying to close process ", self.process.pid
+        self.process.terminate()
 
-bps = BerkeleyParserSocket("/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar", "/home/elav01/workspace/TaraXUscripts/src/featuregenerator/parser/berkeley/", "/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr")
+        
+    def __del__(self):
+        """
+        Destroy object when object unloaded or program exited
+        """
+        self.close()
+        
+
+bps = BerkeleyParserSocket("/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr", "/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar")
+bps2 = BerkeleyParserSocket("/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr", "/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar")
+print bps2.parse("This is a sentence")
 print bps.parse("This is a sentence")
 bps.close()
+bps2.close()
+
+#bps2 = BerkeleyParserSocket("/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar", "/home/elav01/workspace/TaraXUscripts/src/featuregenerator/parser/berkeley/", "/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr")
+#print bps2.parse("This is a sentence")
+#bps2.close()
+
 
 
