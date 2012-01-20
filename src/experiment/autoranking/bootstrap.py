@@ -24,29 +24,47 @@ target_language = en
 
 [annotation]
 filenames = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-test.jcml
-[parser:berkeley_en]
-language = en
-url = http://percival.sb.dfki.de:8682
-tokenize = False
 reference_features = False
 moreisbetter = bleu
 lessisbetter = lev
 
-[parser:berkeley_es]
-language = es
-url = http://percival.sb.dfki.de:21115
+[parser:berkeley_en:soc]
+type = socket
+grammarfile = /home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr
+berkeley_parser_jar = /home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar
+py4j_jar = /usr/share/py4j/py4j0.7.jar
+language = en
 tokenize = False
 
-[parser:berkeley_de]
-language = de
-url = http://percival.sb.dfki.de:8684
-tokenize = False
+#[parser:berkeley_en]
+#type = xmlrpc
+#language = en
+#url = http://percival.sb.dfki.de:8682
+#tokenize = False
+#
+#[parser:berkeley_es]
+#type = xmlrpc
+#language = es
+#url = http://percival.sb.dfki.de:21115
+#tokenize = False
+#
+#[parser:berkeley_de]
+#type = xmlrpc
+#language = de
+#url = http://percival.sb.dfki.de:8684
+#tokenize = False
 
-[lmserver:lm4gram]
+[lmserver:lm_en]
 language = en
 lowercase = True
 tokenize = True
-url = 
+url = http://percival.sb.dfki.de:8585
+
+[lmserver:lm_de]
+language = de
+lowercase = True
+tokenize = True
+url = http://percival.sb.dfki.de:8585
 
 
 [preprocessing]

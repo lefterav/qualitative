@@ -46,14 +46,14 @@ class BerkeleyParserSocket():
         dir_path = os.path.dirname(path)
 
         #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
-        subprocess.check_call(["javac", "-classpath", "%s:%s:%s" % (berkeley_parser_jar, py4j_jar, dir_path), "JavaServer.java"])
+        subprocess.check_call(["javac", "-classpath", "%s:%s:%s" % (berkeley_parser_jar, py4j_jar, dir_path), "%s/JavaServer.java" % dir_path])
         
         
         # prepare and run Java server
         #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
         cmd = ["java", "-cp", "%s:%s:%s" % (berkeley_parser_jar, py4j_jar, dir_path), "JavaServer" ]
         self.process = subprocess.Popen(cmd,  close_fds=True) #shell=True,
-        sys.stderr.write("Started java process with pid %f" % self.process.pid)
+        sys.stderr.write("Started java process with pid %d\n" % self.process.pid)
         
         # wait so that server starts
         time.sleep(2)
@@ -82,7 +82,7 @@ class BerkeleyParserSocket():
         Java server is terminated from here.
         """
         self.gateway.shutdown()
-        sys.stderr.write( "trying to close process %f" % self.process.pid)
+        sys.stderr.write( "trying to close process %d\n" % self.process.pid)
         self.process.terminate()
 
         
