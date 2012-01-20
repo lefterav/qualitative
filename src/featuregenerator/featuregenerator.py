@@ -172,63 +172,15 @@ class FeatureGenerator():
         
     
     #TODO: remove this, as it breaks architecture    
-    def add_features_batch_xml(self, filename_in, filename_out):
-        reader = XmlReader(filename_in)
-        parallelsentences = reader.get_parallelsentences()
-        parallelsentences = self.add_features_batch(parallelsentences)
-        reader = None
-        writer = XmlWriter(parallelsentences)
-        writer.write_to_file(filename_out)
+#    def add_features_batch_xml(self, filename_in, filename_out):
+#        reader = XmlReader(filename_in)
+#        parallelsentences = reader.get_parallelsentences()
+#        parallelsentences = self.add_features_batch(parallelsentences)
+#        reader = None
+#        writer = XmlWriter(parallelsentences)
+#        writer.write_to_file(filename_out)
     
-    def xmlrpc_call(self, batch):
-        return []
-    
-    def add_features_batch_xmlrpc(self, parallelsentences):
-        row_id = 0
 
-        if parallelsentences[0].get_attribute("langsrc") == self.lang:
-            batch = [[self.prepare_sentence(parallelsentence.get_source())] for parallelsentence in parallelsentences]
-
-            features_batch = self.xmlrpc_call(batch) #self.server.getNgramFeatures_batch(batch)
-            
-            
-            for row in features_batch:
-                parallelsentence = parallelsentences[row_id]
-                src = parallelsentence.get_source()
-                
-                #dig in the batch to retrieve features
-                
-                for feature_set in row:
-                    for key in feature_set:
-                        src.add_attribute(key, feature_set[key])
-                        #print "type" , feature_set[key], type(feature_set[key])
-                        
-                parallelsentence.set_source(src)
-                #parallelsentence.set_translations(targets)
-                parallelsentences[row_id] = parallelsentence
-                row_id += 1
-        elif  parallelsentences[0].get_attribute("langtgt") == self.lang:
-            batch = [[self.prepare_sentence(translation) for translation in parallelsentence.get_translations()] for parallelsentence in parallelsentences]
-
-            features_batch = self.xmlrpc_call(batch) 
-            
-            for row in features_batch:
-                parallelsentence = parallelsentences[row_id]
-                targets = parallelsentence.get_translations()
-                
-                column_id = 0
-                #dig in the batch to retrieve features
-                for feature_set in row:
-                    for key in feature_set:
-                        targets[column_id].add_attribute(key, feature_set[key])
-                                            
-                    column_id += 1
-                
-                #parallelsentence.set_source(src)
-                parallelsentence.set_translations(targets)
-                parallelsentences[row_id] = parallelsentence
-                row_id += 1
-        return parallelsentences
     
     def process_dataset(self, dataset):
         return self.add_features_dataset(dataset)

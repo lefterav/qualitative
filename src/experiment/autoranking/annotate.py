@@ -38,7 +38,7 @@ from xml import sax
 
 import re
 
-from featuregenerator.parser.berkeley.berkeleyclient import BerkeleyFeatureGenerator 
+from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator, BerkeleyFeatureGenerator, BerkeleyXMLRPCFeatureGenerator 
 from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
 from featuregenerator.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
@@ -73,40 +73,51 @@ def data_fetch(input_file, output_files, external_files):
 #def features_parse():
 #    pass
 
-#this is reading the configuration, maybe move elsewher
-source_language = cfg.get("general", "source_language")
-target_language = cfg.get("general", "target_language")
-parser_source = False
-parser_target = False
-for parser_name in [section for section in cfg.sections() if section.startswith("parser:")]:
-    if cfg.get(parser_name, "language") == source_language:
-        parser_source = parser_name
-    elif cfg.get(parser_name, "language") == target_language:
-        parser_target = parser_name
+
+
+source_language =  cfg.get("general", "source_language")
+target_language =  cfg.get("general", "target_language")
+
+def get_parser(language):
+    #this is reading the configuration, maybe move elsewher
+    for parser_name in [section for section in cfg.sections() if section.startswith("parser:")]:
+        if cfg.get(parser_name, "language") == language:
+            tokenize = cfg.getboolean(parser_name, "tokenize")
+            if cfg.get(parser_name, "type") == "xmlrpc":
+                url = cfg.get(parser_name, "url")
+                return BerkeleyXMLRPCFeatureGenerator(url, language, tokenize)
+            elif cfg.get(parser_name, "type") == "socket":
+                grammarfile = cfg.get(parser_name, "grammarfile")
+                berkeley_parser_jar = cfg.get(parser_name, "berkeley_parser_jar")
+                py4j_jar = cfg.get(parser_name, "py4j_jar")
+                return BerkeleySocketFeatureGenerator(grammarfile, berkeley_parser_jar, py4j_jar, language, tokenize)
+    return False
+            
 #TODO: handle the case where parser is absent for one language
 
             
 @posttask(touch_file("features_berkeley_source.done"))
-@active_if(parser_source)
-@transform(data_fetch, suffix(".orig.jcml"), ".parsed.%s.f.jcml" % source_language, source_language, cfg.get(parser_source, "url"), cfg.getboolean(parser_source, "tokenize"))
-def features_berkeley_source(input_file, output_file, source_language, parser_url, parser_tokenize):
-    features_berkeley(input_file, output_file, source_language, parser_url, parser_tokenize)
+@active_if(get_parser(source_language))
+@transform(data_fetch, suffix(".orig.jcml"), ".parsed.%s.f.jcml" % source_language, source_language, get_parser(source_language))
+def features_berkeley_source(input_file, output_file, source_language, parser):
+    features_berkeley(input_file, output_file, source_language, parser)
 
 @posttask(touch_file("features_berkeley_target.done"))
-@active_if(parser_target)
-@transform(data_fetch, suffix(".orig.jcml"), ".parsed.%s.f.jcml" % target_language, target_language, cfg.get(parser_target, "url"), cfg.getboolean(parser_target, "tokenize"))
-def features_berkeley_target(input_file, output_file, target_language, parser_url, parser_tokenize):
-    features_berkeley(input_file, output_file, target_language, parser_url, parser_tokenize)
+@active_if(get_parser(target_language))
+@transform(data_fetch, suffix(".orig.jcml"), ".parsed.%s.f.jcml" % target_language, target_language, get_parser(target_language))
+def features_berkeley_target(input_file, output_file, target_language, parser):
+    features_berkeley(input_file, output_file, source_language, parser)
 
-def features_berkeley(input_file, output_file, language, parser_url, parser_tokenize):
-    parser = BerkeleyFeatureGenerator(parser_url, language, parser_tokenize)
+def features_berkeley(input_file, output_file, language, parser_url, parser):
     saxjcml.run_features_generator(input_file, output_file, [parser])
+#    parser = BerkeleyXMLRPCFeatureGenerator(parser_url, language, parser_tokenize)
+#    saxjcml.run_features_generator(input_file, output_file, [parser])
 
 #unimplemented
-def features_berkeley_socket(input_file, output_file, language, parser_url, parser_tokenize):
-    pass
 
 
+
+#TODO: probably establish sth like ExternalProcessor object and wrap all these params there
 source_language = cfg.get("general", "source_language")
 target_language = cfg.get("general", "target_language")
 lm_source = False
@@ -114,16 +125,23 @@ lm_target = False
 for lm_name in [section for section in cfg.sections() if section.startswith("lmserver:")]:
     if cfg.get(lm_name, "language") == source_language:
         lm_source = lm_name
+        lm_source_url = cfg.get(lm_source, "url")
+        lm_source_tokenize = cfg.getboolean(lm_source, "tokenize")
+        lm_source_lowercase = cfg.getboolean(lm_source, "lowercase")
     elif cfg.get(lm_name, "language") == target_language:
         lm_target = lm_name
+        lm_target_url = cfg.get(lm_target, "url")
+        lm_target_tokenize = cfg.getboolean(lm_target, "tokenize")
+        lm_target_lowercase = cfg.getboolean(lm_target, "lowercase")
 
-
-@transform(data_fetch, suffix(".orig.jcml"), ".lm.%s.f.jcmk" % source_language, source_language, cfg.get(lm_source, "url"), cfg.getboolean(lm_source, "tokenize"), cfg.getboolean(lm_source, "tokenize"), cfg.getboolean(lm_source, "lowercase")) 
+@active_if(lm_source)
+@transform(data_fetch, suffix(".orig.jcml"), ".lm.%s.f.jcml" % source_language, source_language, lm_source_url, lm_source_tokenize, lm_source_lowercase) 
 def features_lm_source(input_file, output_file, language, lm_url, lm_tokenize, lm_lowercase):
     features_lm(input_file, output_file, language, lm_url, lm_tokenize, lm_lowercase)
     #saxjcml.run_features_generator(input_file, output_file, [srilm_ngram])
 
-@transform(data_fetch, suffix(".orig.jcml"), ".lm.%s.f.jcmk" % target_language, target_language, cfg.get(lm_target, "url"), cfg.getboolean(lm_target, "tokenize"), cfg.getboolean(lm_target, "tokenize"), cfg.getboolean(lm_target, "lowercase")) 
+@active_if(lm_target)
+@transform(data_fetch, suffix(".orig.jcml"), ".lm.%s.f.jcml" % target_language, target_language, lm_target_url, lm_target_tokenize, lm_target_lowercase) 
 def features_lm_target(input_file, output_file, language, lm_url, lm_tokenize, lm_lowercase):
     features_lm(input_file, output_file, language, lm_url, lm_tokenize, lm_lowercase)
     
@@ -135,7 +153,7 @@ def features_lm_batch(input_file, output_file, language, lm_url, lm_tokenize, lm
     processed_parallelsentences = srilm_ngram.add_features_batch(JcmlReader(input_file).get_parallelsentences())
     Parallelsentence2Jcml(processed_parallelsentences).write_to_file(output_file)
 
-
+@active_if(False)
 def features_ibm(input_file, output_file, ibm1lexicon):
     ibmfeaturegenerator = Ibm1FeatureGenerator(ibm1lexicon)
     saxjcml.run_features_generator(input_file, output_file, [ibmfeaturegenerator])
