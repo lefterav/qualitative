@@ -37,9 +37,7 @@ class BerkeleyParserSocket():
         py4jjar = "/usr/share/py4j/py4j0.7.jar"
         bps = BerkeleyParserSocket(grammarfile, berkleyjar, py4jjar)
         print bps.parse("This is a sentence")
-        # if the server wasn't closed, it has to be done manually in cmdline ('kill <PID>')
-        # with local address 25333 specified in JavaServer.java 
-        bps.shutdown_server()
+        bps.close() #optional, but better to do
         
         """
         
