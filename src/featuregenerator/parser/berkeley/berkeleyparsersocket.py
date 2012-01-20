@@ -93,10 +93,10 @@ class BerkeleyParserSocket():
         self.close()
         
 
-bps = BerkeleyParserSocket("/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr", "/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar")
-bps2 = BerkeleyParserSocket("/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr", "/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar")
-print bps2.parse("This is a sentence")
-print bps.parse("This is another sentence")
+#bps = BerkeleyParserSocket("/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr", "/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar")
+#bps2 = BerkeleyParserSocket("/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr", "/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar")
+#print bps2.parse("This is a sentence")
+#print bps.parse("This is another sentence")
 
 
 
