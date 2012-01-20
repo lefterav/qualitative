@@ -9,6 +9,7 @@ from py4j.java_gateway import JavaGateway #@UnresolvedImport
 import subprocess
 import time
 import os
+import sys
 
 
 class BerkeleyParserSocket():
@@ -54,7 +55,7 @@ class BerkeleyParserSocket():
         #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
         cmd = ["java", "-cp", "%s:%s:%s" % (berkeley_parser_jar, py4j_jar, dir_path), "JavaServer" ]
         self.process = subprocess.Popen(cmd,  close_fds=True) #shell=True,
-        print "Started java process with pid ", self.process.pid
+        sys.stderr.write("Started java process with pid %f" % self.process.pid)
         
         # wait so that server starts
         time.sleep(2)
@@ -83,7 +84,7 @@ class BerkeleyParserSocket():
         Java server is terminated from here.
         """
         self.gateway.shutdown()
-        print "trying to close process ", self.process.pid
+        sys.stderr.write( "trying to close process %f" % self.process.pid)
         self.process.terminate()
 
         
@@ -97,13 +98,8 @@ class BerkeleyParserSocket():
 bps = BerkeleyParserSocket("/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr", "/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar")
 bps2 = BerkeleyParserSocket("/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr", "/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar")
 print bps2.parse("This is a sentence")
-print bps.parse("This is a sentence")
-bps.close()
-bps2.close()
+print bps.parse("This is another sentence")
 
-#bps2 = BerkeleyParserSocket("/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar", "/home/elav01/workspace/TaraXUscripts/src/featuregenerator/parser/berkeley/", "/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr")
-#print bps2.parse("This is a sentence")
-#bps2.close()
 
 
 
