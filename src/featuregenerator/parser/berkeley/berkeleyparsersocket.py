@@ -21,6 +21,15 @@ class BerkeleyParserSocket():
         @type py4j_jar: string
         @param java_server_loc: Location of JavaServer.class
         @type java_server_loc: string
+        
+        Example use
+        
+        bps = BerkeleyParserSocket("/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar", "/home/elav01/workspace/TaraXUscripts/src/featuregenerator/parser/berkeley/", "/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr")
+        print bps.parse("This is a sentence")
+        # if the server wasn't closed, it has to be done manually in cmdline ('kill <PID>')
+        # with local address 25333 specified in JavaServer.java 
+        bps.shutdown_server()
+        
         """
         cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, java_server_loc)
         
@@ -46,7 +55,7 @@ class BerkeleyParserSocket():
         """
          
         # call the python function parse() on BParser object
-        self.bp_obj.parse(sentence_string)
+        return self.bp_obj.parse(sentence_string)
         
     
     def close(self):
@@ -54,14 +63,6 @@ class BerkeleyParserSocket():
         Java server is terminated from here.
         """
         self.gateway.shutdown()
-'''
-lib_1 = '/media/DATA/Arbeit/DFKI/BerkeleyServer/lib/BerkeleyParser.jar' # berkeley_parser_loc
-lib_2 = '/media/DATA/Arbeit/DFKI/TaraXUscripts/support/berkeley-server/lib/py4j0.7.jar' # py4j_loc
-lib_3 = '/media/DATA/Arbeit/DFKI/BerkeleyServer/bin/' # java_server_loc
 
-bps = BerkeleyParserSocket(lib_1, lib_2, lib_3)
-bps.parse()
-# if the server wasn't closed, it has to be done manually in cmdline ('kill <PID>')
-# with local address 25333 specified in JavaServer.java 
-bps.shutdown_server()
-'''
+
+
