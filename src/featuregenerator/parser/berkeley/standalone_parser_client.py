@@ -43,7 +43,7 @@ class BerkeleyFeatures():
         best_parse = ""
         sum_confidence = 0
         
-        print "analyzing tree statistics",
+        #print "analyzing tree statistics",
         for entry in nbestList:
             confidence = entry["confidence"]
             parse = entry["tree"]
@@ -52,7 +52,7 @@ class BerkeleyFeatures():
                 best_parse = parse
             sum_confidence += float(confidence)
         
-        print
+        #print
         if n !=0:
             avg_confidence = sum_confidence / n
         else:

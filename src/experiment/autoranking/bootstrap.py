@@ -6,6 +6,7 @@
 import StringIO
 from ConfigParser import ConfigParser
 import classifier
+from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator, BerkeleyFeatureGenerator, BerkeleyXMLRPCFeatureGenerator 
 import pkgutil
 import orange
 
@@ -91,24 +92,57 @@ classifier=Bayes
 filenames = /home/elav01/taraxu_data/wmt-annotated/wmt10.ex.3.sample.jcml,/home/elav01/workspace/TaraXUscripts/data/multiclass/wmt08.if.partial.jcml
 """
 
+
+
+class ExperimentConfigParser(ConfigParser):
+    
+    def get_classifier(self, name = None):
+        if not name:
+            name = self.get("training", "classifier")
+        package = classifier
+        prefix = package.__name__ + '.'
+        for importer, modname, ispkg in pkgutil.iter_modules(package.__path__, prefix):
+            module = __import__(modname, fromlist="dummy")
+            try:
+                return getattr(module, name)
+            except:
+                pass
+        return getattr(orange, name)
+    
+    
+    def exists_parser(self, language):
+        for parser_name in [section for section in cfg.sections() if section.startswith("parser:")]:
+            if cfg.get(parser_name, "language") == language:
+                return True
+        return False
+    
+    def get_parser(self, language):
+        #this is reading the configuration, maybe move elsewher
+        for parser_name in [section for section in cfg.sections() if section.startswith("parser:")]:
+            if cfg.get(parser_name, "language") == language:
+                tokenize = cfg.getboolean(parser_name, "tokenize")
+                if cfg.get(parser_name, "type") == "xmlrpc":
+                    url = cfg.get(parser_name, "url")
+                    return BerkeleyXMLRPCFeatureGenerator(url, language, tokenize)
+                elif cfg.get(parser_name, "type") == "socket":
+                    print "initializing socket parser"
+                    grammarfile = cfg.get(parser_name, "grammarfile")
+                    berkeley_parser_jar = cfg.get(parser_name, "berkeley_parser_jar")
+                    py4j_jar = cfg.get(parser_name, "py4j_jar")
+                    return BerkeleySocketFeatureGenerator(grammarfile, berkeley_parser_jar, py4j_jar, language, tokenize)
+        return False
+    
+    
+    def get_parser_name(self, language):
+        for parser_name in [section for section in cfg.sections() if section.startswith("parser:")]:
+            if cfg.get(parser_name, "language") == language:
+                return parser_name
+        return None
+    
 # global configuration
-cfg = ConfigParser()
+cfg = ExperimentConfigParser()
 cfg.readfp(StringIO.StringIO(CONFIG_TEMPLATE))  # set up defaults
 cfg.read(CONFIG_FILENAME)  # add user-specified settings
-
-
-def get_classifier(name = cfg.get("training", "classifier")):
-    package = classifier
-    prefix = package.__name__ + '.'
-    for importer, modname, ispkg in pkgutil.iter_modules(package.__path__, prefix):
-        module = __import__(modname, fromlist="dummy")
-        try:
-            return getattr(module, name)
-        except:
-            pass
-    return getattr(orange, name)
-
-    
 #
 #def genome_path():
 #    'returns the path to the genome fasta file (and downloads it if necessary)'
