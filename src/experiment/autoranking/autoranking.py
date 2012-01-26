@@ -15,7 +15,6 @@ import cPickle as pickle
 
 #internal code classes
 from experiment.autoranking.bootstrap import cfg
-from experiment.autoranking.bootstrap import get_classifier
 from io.input.orangereader import OrangeData
 from io.sax.saxjcml2orange import SaxJcml2Orange
 from io.input.jcmlreader import JcmlReader
@@ -210,7 +209,7 @@ def train_classifier(input_file, output_file, param_continuize, multinomialTreat
                          "classTreatment" : _get_continuizer_constant(cfg.get("training", "classTreatment"))}
                                                                                                
     #train the classifier
-    learner = get_classifier() #fetch classifier object
+    learner = cfg.get_classifier() #fetch classifier object
 
     try:    
         myclassifier = learner()   #initialize it

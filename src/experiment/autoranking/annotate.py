@@ -12,12 +12,11 @@ import os
 #pipeline essentials
 from ruffus import *
 from multiprocessing import Process, Manager 
-from ruffus.task import pipeline_printout_graph
+from ruffus.task import pipeline_printout_graph, pipeline_printout
 import cPickle as pickle
 
 #internal code classes
 from experiment.autoranking.bootstrap import cfg
-from experiment.autoranking.bootstrap import get_classifier
 from io.input.orangereader import OrangeData
 from io.sax.saxjcml2orange import SaxJcml2Orange
 from io.input.jcmlreader import JcmlReader
@@ -38,7 +37,6 @@ from xml import sax
 
 import re
 
-from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator, BerkeleyFeatureGenerator, BerkeleyXMLRPCFeatureGenerator 
 from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
 from featuregenerator.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
@@ -55,7 +53,7 @@ try:
 except OSError:
     pass
 os.chdir(path)
-
+cores = 2
 
 @split(None, "*orig.jcml", cfg.get("annotation", "filenames").split(","))
 def data_fetch(input_file, output_files, external_files):
@@ -75,46 +73,61 @@ def data_fetch(input_file, output_files, external_files):
 
 
 
-source_language =  cfg.get("general", "source_language")
-target_language =  cfg.get("general", "target_language")
 
-def get_parser(language):
-    #this is reading the configuration, maybe move elsewher
-    for parser_name in [section for section in cfg.sections() if section.startswith("parser:")]:
-        if cfg.get(parser_name, "language") == language:
-            tokenize = cfg.getboolean(parser_name, "tokenize")
-            if cfg.get(parser_name, "type") == "xmlrpc":
-                url = cfg.get(parser_name, "url")
-                return BerkeleyXMLRPCFeatureGenerator(url, language, tokenize)
-            elif cfg.get(parser_name, "type") == "socket":
-                grammarfile = cfg.get(parser_name, "grammarfile")
-                berkeley_parser_jar = cfg.get(parser_name, "berkeley_parser_jar")
-                py4j_jar = cfg.get(parser_name, "py4j_jar")
-                return BerkeleySocketFeatureGenerator(grammarfile, berkeley_parser_jar, py4j_jar, language, tokenize)
-    return False
+
             
 #TODO: handle the case where parser is absent for one language
-
+@split(data_fetch, "*.part.orig.jcml", cores)
+def original_data_split(input_files, output_files, parts):
+    for input_file in input_files:
+        parallelsentences = JcmlReader(input_file).get_parallelsentences()
+        length = len(parallelsentences)
+        step = len(parallelsentences)/parts
+        partindex = 0 
+        for index in range(0, length, step):
+            partindex += 1
+            start = index
+            end = index + step - 1
+            if (index + (2*step) > length):
+                end = length - 1
+            try:
+                filename_prefix = re.findall("([^.]*)\.orig.jcml", input_file)[0]
+                filename = "%s.%d.part.orig.jcml" % (filename_prefix, partindex)
+                Parallelsentence2Jcml(parallelsentences[start:end]).write_to_file(filename)
+            except IndexError:
+                print "Please try to not have a dot in the test set name, cause you don't help me with splitting"
             
-@posttask(touch_file("features_berkeley_source.done"))
-@active_if(get_parser(source_language))
-@transform(data_fetch, suffix(".orig.jcml"), ".parsed.%s.f.jcml" % source_language, source_language, get_parser(source_language))
-def features_berkeley_source(input_file, output_file, source_language, parser):
-    features_berkeley(input_file, output_file, source_language, parser)
 
-@posttask(touch_file("features_berkeley_target.done"))
-@active_if(get_parser(target_language))
-@transform(data_fetch, suffix(".orig.jcml"), ".parsed.%s.f.jcml" % target_language, target_language, get_parser(target_language))
-def features_berkeley_target(input_file, output_file, target_language, parser):
-    features_berkeley(input_file, output_file, source_language, parser)
 
-def features_berkeley(input_file, output_file, language, parser_url, parser):
+source_language =  cfg.get("general", "source_language")
+target_language =  cfg.get("general", "target_language")
+       
+@active_if(cfg.exists_parser(source_language))
+@transform(original_data_split, suffix("part.orig.jcml"), "part.parsed.%s.f.jcml" % source_language, source_language, cfg.get_parser_name(source_language))
+def features_berkeley_source(input_file, output_file, source_language, source_parser, parser_name):
+    features_berkeley(input_file, output_file, source_language)
+    
+@active_if(cfg.exists_parser(target_language))
+@transform(original_data_split, suffix("part.orig.jcml"), "part.parsed.%s.f.jcml" % target_language, target_language, cfg.get_parser_name(target_language))
+def features_berkeley_target(input_file, output_file, target_language, parser_name):
+    features_berkeley(input_file, output_file, target_language)
+
+def features_berkeley(input_file, output_file, language):
+    parser = cfg.get_parser(language) #this is bypassing the architecture, but avoids wasting memory for the loaded parser
     saxjcml.run_features_generator(input_file, output_file, [parser])
+    
 #    parser = BerkeleyXMLRPCFeatureGenerator(parser_url, language, parser_tokenize)
 #    saxjcml.run_features_generator(input_file, output_file, [parser])
 
 #unimplemented
 
+
+@collate([features_berkeley_source, features_berkeley_target], regex(r"([^.]+)\.(\d+)\.part.parsed.([^.]+).f.jcml"),  r"\1.parsed.\3.f.jcml")
+def merge_parse_parts(inputs, output):
+    parallelsentences = []
+    for input in inputs:
+        parallelsentences.extend(JcmlReader(input).get_parallelsentences())
+    Parallelsentence2Jcml(parallelsentences).write_to_file(output)    
 
 
 #TODO: probably establish sth like ExternalProcessor object and wrap all these params there
@@ -162,7 +175,7 @@ def features_ibm(input_file, output_file, ibm1lexicon):
 def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, lm_lowercase):
     pass
 
-@collate([features_berkeley_source, features_berkeley_target], regex(r"([^.]+)\.(.+)\.f.jcml"),  r"\1.all.f.jcml")
+@collate([merge_parse_parts], regex(r"([^.]+)\.(.+)\.f.jcml"),  r"\1.all.f.jcml")
 def features_gather(singledataset_annotations, gathered_singledataset_annotations):
     tobermerged = singledataset_annotations
     original_file = tobermerged[0]
@@ -200,11 +213,11 @@ def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_
 def create_ranks():
     pass
 
-
-
-
        
 
 if __name__ == '__main__':
+    
     pipeline_printout_graph("flowchart.pdf", "pdf", [features_gather])
-    pipeline_run([features_gather], multiprocess = 2)
+    import sys
+    
+    pipeline_run([features_gather], multiprocess = cores)
