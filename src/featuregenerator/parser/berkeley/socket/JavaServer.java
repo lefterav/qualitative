@@ -1,5 +1,4 @@
 
-
 import py4j.GatewayServer;
 
 public class JavaServer {
@@ -8,10 +7,21 @@ public class JavaServer {
 	static JavaServer app = new JavaServer();
 	// app is now the gateway.entry_point
 	static GatewayServer server;
+	static int usercount = 0;
+	
+	public static int getusers(){
+		return usercount;
+	}
+	
+	public static void deluser(){
+		usercount--;
+	}
+	
 
 	public static BParser get_BP_obj(String grammarfile) {
 		System.err.println("Creating a BParser object...");
 		BParser bp = new BParser(grammarfile);
+		usercount++;
 		return bp;
 	}
 	

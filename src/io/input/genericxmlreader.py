@@ -9,12 +9,15 @@ Created on 15 Οκτ 2010
 """
 
 
+import re
+import math
+import os
 from xml.dom import minidom
 from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence
 from xml.sax.saxutils import unescape
 from io.input.genericreader import GenericReader
-import StringIO
+from io.sax.saxps2jcml import Parallelsentence2Jcml
 
 class GenericXmlReader(GenericReader):
     """
@@ -81,8 +84,38 @@ class GenericXmlReader(GenericReader):
 #            print "File doesn't contain annotation information"
 #            return []
 #        
-        
+    
+    
+    def split_and_write(self, parts, re_split):
+        """
+        Convenience function that splits an XML file into parts and writes them directly to the disk
+        into .part files with similar filenames. The construction of the resulting filenames defined 
+        by parameters 
+        @param parts
+        Number of parts to split into 
+        @type int 
+        @param re_split Regular expression which should define two (bracketed) groups upon the filename. 
+        The resulting files will have the part number inserted in the filename between these two parts
+        """
+        parallelsentences = self.get_parallelsentences()
+        inputfilename = os.path.basename(self.input_filename)
+        length = len(parallelsentences)
+        step = int(math.ceil(1.00 * len(parallelsentences) / parts)) #get ceiling to avoid mod
+        partindex = 0 
+        for index in range(0, length, step):
+            partindex += 1
+            start = index
+            end = index + step
+            print start, end
+            try:
+                print inputfilename
+                filename_prefix, filename_suffix = re.findall(re_split, inputfilename)[0]
+                filename = "%s.%d.part.%s" % (filename_prefix, partindex, filename_suffix)
+                Parallelsentence2Jcml(parallelsentences[start:end]).write_to_file(filename)
+            except IndexError:
+                print "Please try to not have a dot in the test set name, cause you don't help me with splitting"
 
+        
     
     
     def get_attributes(self):
