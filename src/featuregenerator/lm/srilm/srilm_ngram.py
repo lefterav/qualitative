@@ -99,7 +99,7 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
                 else:
                     uni_probs += uni_prob
             except: 
-                sys.stderr.write("Failed to retrieve unigram probability for token: '%s'\n" % token) 
+                #sys.stderr.write("Failed to retrieve unigram probability for token: '%s'\n" % token) 
                 pass
         
         
@@ -112,8 +112,8 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
                     #bi_prob = self.server.getBigramProb(base64.standard_b64encode(' '.join(token)))
                     bi_probs += bi_prob
                 except:
-                    sys.stderr.write("Failed to retrieve bigram probability for tokens: '%s'\n" % ' '.join(token)) 
-
+                    #sys.stderr.write("Failed to retrieve bigram probability for tokens: '%s'\n" % ' '.join(token)) 
+                    pass
          
         #get trigram probabilities
         for pos in range ( len(tokens) -2 ):
@@ -123,7 +123,8 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
                     tri_prob = self.server.getTrigramProb(' '.join(token))
                     tri_probs += tri_prob
                 except:
-                    sys.stderr.write("Failed to retrieve trigram probability for tokens: '%s'\n" % ' '.join(token)) 
+                    #sys.stderr.write("Failed to retrieve trigram probability for tokens: '%s'\n" % ' '.join(token))
+                    pass 
         
         attributes = { 'unk' : str(unk_count),
                        'uni-prob' : str(uni_probs),
@@ -148,9 +149,9 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
         
 
     
-    def add_features_batch(self, parallelsentences):
-        
-        return self.add_features_batch_xmlrpc(parallelsentences)
+#    def add_features_batch(self, parallelsentences):
+#        
+#        #return self.add_features_batch_xmlrpc(parallelsentences)
 #        batch = []
 #        preprocessed_batch = []
 #        for parallelsentence in parallelsentences:

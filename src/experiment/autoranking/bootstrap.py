@@ -6,7 +6,8 @@
 import StringIO
 from ConfigParser import ConfigParser
 import classifier
-from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator, BerkeleyFeatureGenerator, BerkeleyXMLRPCFeatureGenerator 
+from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator, BerkeleyXMLRPCFeatureGenerator
+from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator 
 import pkgutil
 import orange
 
@@ -24,7 +25,7 @@ target_language = en
 
 
 [annotation]
-filenames = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-test.jcml
+filenames = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-test-devpart.jcml
 reference_features = False
 moreisbetter = bleu
 lessisbetter = lev
@@ -55,13 +56,13 @@ tokenize = False
 #url = http://percival.sb.dfki.de:8684
 #tokenize = False
 
-[lmserver:lm_en]
+[lm:lm_en]
 language = en
 lowercase = True
 tokenize = True
-url = http://percival.sb.dfki.de:8585
+url = http://percival.sb.dfki.de:8586
 
-[lmserver:lm_de]
+[lm:lm_de]
 language = de
 lowercase = True
 tokenize = True
@@ -119,25 +120,59 @@ class ExperimentConfigParser(ConfigParser):
     def get_parser(self, language):
         #this is reading the configuration, maybe move elsewher
         for parser_name in [section for section in cfg.sections() if section.startswith("parser:")]:
-            if cfg.get(parser_name, "language") == language:
-                tokenize = cfg.getboolean(parser_name, "tokenize")
-                if cfg.get(parser_name, "type") == "xmlrpc":
-                    url = cfg.get(parser_name, "url")
+            if self.get(parser_name, "language") == language:
+                tokenize = self.getboolean(parser_name, "tokenize")
+                if self.get(parser_name, "type") == "xmlrpc":
+                    url = self.get(parser_name, "url")
                     return BerkeleyXMLRPCFeatureGenerator(url, language, tokenize)
-                elif cfg.get(parser_name, "type") == "socket":
+                elif self.get(parser_name, "type") == "socket":
                     print "initializing socket parser"
-                    grammarfile = cfg.get(parser_name, "grammarfile")
-                    berkeley_parser_jar = cfg.get(parser_name, "berkeley_parser_jar")
-                    py4j_jar = cfg.get(parser_name, "py4j_jar")
+                    grammarfile = self.get(parser_name, "grammarfile")
+                    berkeley_parser_jar = self.get(parser_name, "berkeley_parser_jar")
+                    py4j_jar = self.get(parser_name, "py4j_jar")
                     return BerkeleySocketFeatureGenerator(grammarfile, berkeley_parser_jar, py4j_jar, language, tokenize)
         return False
     
     
     def get_parser_name(self, language):
-        for parser_name in [section for section in cfg.sections() if section.startswith("parser:")]:
-            if cfg.get(parser_name, "language") == language:
+        for parser_name in [section for section in self.sections() if section.startswith("parser:")]:
+            if self.get(parser_name, "language") == language:
                 return parser_name
         return None
+    
+    
+    def get_source_language(self):
+        return self.get("general", "source_language")
+    
+    def get_target_language(self):
+        return self.get("general", "target_language")
+    
+    
+    
+    def exists_lm(self, language):
+        for lm_name in [section for section in self.sections() if section.startswith("lm:")]:
+            if self.get(lm_name, "language") == language:
+                return True
+        return False
+    
+    def get_lm(self, language):
+        #TODO: probably establish sth like ExternalProcessor object and wrap all these params there
+        for lm_name in [section for section in self.sections() if section.startswith("lm:")]:
+            if self.get(lm_name, "language") == language:
+                #TODO: if KenLM gets wrapped up, add a type: setting
+                lm_url = self.get(lm_name, "url")
+                lm_tokenize = self.getboolean(lm_name, "tokenize")
+                lm_lowercase = self.getboolean(lm_name, "lowercase")
+                srilm_generator = SRILMngramGenerator(lm_url, language, lm_lowercase, lm_tokenize)
+                return srilm_generator
+        return None
+    
+    
+    def get_lm_name(self, language):
+        for lm_name in [section for section in self.sections() if section.startswith("lm:")]:
+            if self.get(lm_name, "language") == language:        
+                return lm_name
+        return ""
     
 # global configuration
 cfg = ExperimentConfigParser()
