@@ -28,11 +28,12 @@ parser.add_option("-t", '--setType', dest='setType', \
 options, args  = parser.parse_args()
 if not options.srcFilename: sys.exit('ERROR: Option --srcFilename is missing!')
 if not options.tgtFilename: sys.exit('ERROR: Option --tgtFilename is missing!')
-if not options.setType: sys.exit('ERROR: Option --setType is missing!')
+if not options.setType: print 'WARNING: Option --setType is missing!'
 
 srcFilename = options.srcFilename
 tgtFilename = options.tgtFilename
-setType = options.setType
+if options.setType: setType = options.setType
+else: setType = ''
 
 f = open(srcFilename)
 content = f.read().strip()
