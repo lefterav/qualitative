@@ -173,11 +173,11 @@ class BerkeleySocketFeatureGenerator(BerkeleyFeatureGenerator):
     def parse(self, string):
         return self.berkeleyparser.parse(string)
     
-    def __del__(self):
-        try:
-            self.berkeleyparser.__del__()
-        except:
-            pass
+#    def __del__(self):
+#        try:
+#            self.berkeleyparser.__del__()
+#        except:
+#            pass
     
         
 
