@@ -14,14 +14,14 @@ import sys
 from optparse import OptionParser
 
 parser = OptionParser()
-parser.add_option("-t", '--tgtFilename', dest='tgtFilename', \
-                                               help="target big xml filename ")
+parser.add_option("-t", '--tgtFile', dest='tgtFile', \
+                                               help="target big xml file")
 options, args  = parser.parse_args()
-if not options.tgtFilename: sys.exit('Option --tgtFilename is missing!')
+if not options.tgtFile: sys.exit('Option --tgtFile is missing!')
 
-tgtFilename = options.tgtFilename
+tgtFile = options.tgtFile
 
-g = open(tgtFilename, 'w+')
+g = open(tgtFile, 'w+')
 g.write('<?xml version="1.0" encoding="UTF-8"?>\n')
 g.write('<multiset>\n')
 for filename in args:
@@ -39,5 +39,5 @@ for filename in args:
 g.write('</multiset>\n')
 g.close()
 
-print '%s was created!' % tgtFilename
+print '%s was created!' % tgtFile
 
