@@ -11,12 +11,19 @@ from compiler.ast import Raise
 
 class DataSet(object):
     """
-    classdocs
+    A wrapper over a list of parallelsentences. It offers convenience functions for features and properties that 
+    apply to the entire set of parallelsentences altogether
     """
 
     def __init__(self, parallelsentence_list, attributes_list = [], annotations = []):
         """
-        Constructor
+        @param parallelsentence_list: the parallelsentences to be wrapped in the dataset
+        @type parallelsentence_list: list
+        @param attributes_list: if the names of the attributes for the parallelsentences are known, they can 
+        be given here, in order to avoid extra processing. Otherwise they will be computed when needed.
+        @type list
+        @param annotations: Not implemented
+        @type list     
         """
         
         self.parallelsentences = parallelsentence_list
@@ -31,6 +38,42 @@ class DataSet(object):
     
     def get_parallelsentences(self):
         return self.parallelsentences
+    
+    
+    def get_parallelsentences_per_sentence_id(self):
+        ps_sid = {}
+        for parallelsentence in self.parallelsentences:
+            #get the id of the particular multiple ranking (judgment) or create a new one
+            sentence_id = parallelsentence.get_compact_id()
+            if not ps_sid.has_key(sentence_id):
+                ps_sid[sentence_id] = []
+            else:
+                ps_sid[sentence_id].append(parallelsentence)
+        return ps_sid        
+                
+    
+    def get_parallelsentences_with_judgment_ids(self):
+        """
+        Parallel sentences often come with multiple occurences, where a judgment id is unique.
+        This functions returns a dictionary of all the parallel sentences mapped to their respective judgment id.
+        If a judment id is missing, it gets assigned the incremental value showing the order of the entry in the set.
+        @return: A dictionary of all the parallel sentences mapped to their respective judgment id.
+        @rtype: dict
+        """
+        ps_jid = {}
+        j = 0
+        for parallelsentence in self.parallelsentences:
+            #get the id of the particular multiple ranking (judgment) or create a new one
+            try:
+                judgement_id = parallelsentence.get_attribute("judgment_id")
+            except AttributeError:
+                judgement_id = str(j)
+            j += 1
+            
+            #add the pair into the dictionary
+            ps_jid[judgement_id] = parallelsentence
+        return ps_jid
+    
     
     def get_annotations(self):
         return self.annotations
