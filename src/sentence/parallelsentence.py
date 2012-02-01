@@ -9,7 +9,7 @@
 
 from copy import deepcopy
 import re
-
+import sys
 
 class ParallelSentence(object):
     """
@@ -60,6 +60,13 @@ class ParallelSentence(object):
         
     def set_id (self, id):
         self.attributes["id"] = str(id)
+
+    def get_compact_id(self):
+        try:
+            return "%s:%s" % (self.atributes["testset"], self.attributes["id"])
+        except:
+            sys.stderr.write("Could not add set id into compact sentence id")
+            return self.attributes["id"]
     
     def get_source(self):
         return self.src
