@@ -194,7 +194,7 @@ class ParallelSentence(object):
                 self.tgt.append(tgtPS)
 
 
-    def get_pairwise_parallelsentences(self, directed = False):
+    def get_pairwise_parallelsentence_set(self, directed = False):
         """
         Create a set of all available parallel sentence pairs (in tgt) from one ParallelSentence object.
         @param ps: Object of ParallelSetnece() with one source sentence and more target sentences

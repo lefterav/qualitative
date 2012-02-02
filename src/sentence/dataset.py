@@ -46,7 +46,7 @@ class DataSet(object):
             #get the id of the particular multiple ranking (judgment) or create a new one
             sentence_id = parallelsentence.get_compact_id()
             if not ps_sid.has_key(sentence_id):
-                ps_sid[sentence_id] = []
+                ps_sid[sentence_id] = [parallelsentence]
             else:
                 ps_sid[sentence_id].append(parallelsentence)
         return ps_sid        
