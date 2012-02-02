@@ -17,10 +17,16 @@ class PairwiseParallelSentenceSet():
         @param pps_list: a list of pairwise parallel sentences
         @type pps_list: a list of PairwiseParallelSentence() objects
         """
-        self.pps_list = pps_list
+        
         self.pps_dict = {}
         for pps in pps_list:
             self.pps_dict[pps.get_system_names()] = pps
+    
+    def get_parallelsentences(self):
+        return self.pps_dict.values()
+    
+    def get_system_names(self):
+        return self.pps_dict.keys()
     
     def get_pairwise_parallelsentence(self, system_names, order = True):
         """
