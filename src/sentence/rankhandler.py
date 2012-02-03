@@ -14,9 +14,11 @@ class RankHandler(object):
 
 
     def __init__(self, rank_name = "rank"):
-        '''
-        Constructor
-        '''
+        """
+        Collection of convenience functions for transforming parallel sentences with many ranks
+        into pairwise mode and vice versa. Most of the implementations here are ugly with many nested loops,
+        so a more object-oriented approach would be to go through the various DataSet types
+        """
         self.rank_name = rank_name
       
     def get_multiclass_from_pairwise_set(self, parallelsentences, allow_ties = False):
@@ -111,7 +113,7 @@ class RankHandler(object):
             
         
     
-    def get_pairwise_from_multiclass_sentence(self, parallelsentence, judgement_id, allow_ties = False, exponential = True):
+    def get_pairwise_from_multiclass_sentence(self, parallelsentence, judgement_id, allow_ties = False, exponential = True, rename_rank = True):
         """
         Converts a the ranked system translations of one sentence into many sentences containing one translation pair each,
         so that system output can be compared in a pairwise manner. 
@@ -132,6 +134,7 @@ class RankHandler(object):
                     continue
                 if system_b in systems_parsed and not exponential:
                     continue
+                systems_parsed.append(system_a)
                 rank = self._normalize_rank(system_a, system_b)
                 if not rank:
                     new_attributes = parallelsentence.get_attributes()
@@ -147,19 +150,20 @@ class RankHandler(object):
                     new_attributes["judgement_id"] = judgement_id
                     pairwise_sentence = ParallelSentence(source, [system_a, system_b], None, new_attributes) 
                     pairwise_sentences.append(pairwise_sentence)
-                    
-        for system in translations:
-            #remove existing ranks
-            try:
-                system.rename_attribute(self.rank_name, "orig_rank")
-            except KeyError:
-                print "didn't rename rank attribute"
-                pass
+        
+        if rename_rank:
+            for system in translations:
+                #remove existing ranks
+                try:
+                    system.rename_attribute(self.rank_name, "orig_rank")
+                except KeyError:
+                    print "didn't rename rank attribute"
+                    pass
         
         return pairwise_sentences
                 
     
-    def get_pairwise_from_multiclass_set(self, parallelsentences, allow_ties = False, exponential = True):
+    def get_pairwise_from_multiclass_set(self, parallelsentences, allow_ties = False, exponential = True, rename_rank = True):
         pairwise_parallelsentences = []
         j = 0
         for parallelsentence in parallelsentences: 
@@ -168,7 +172,7 @@ class RankHandler(object):
                 judgement_id = parallelsentence.get_attribute("judgment_id")
             else:
                 judgement_id = str(j)
-            pairwise_parallelsentences.extend( self.get_pairwise_from_multiclass_sentence(parallelsentence, judgement_id, allow_ties) )
+            pairwise_parallelsentences.extend( self.get_pairwise_from_multiclass_sentence(parallelsentence, judgement_id, allow_ties, exponential, rename_rank) )
         #pairwise_parallelsentences = self.merge_overlapping_pairwise_set(pairwise_parallelsentences)
         return pairwise_parallelsentences
     
