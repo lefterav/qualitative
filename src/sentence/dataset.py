@@ -15,7 +15,7 @@ class DataSet(object):
     apply to the entire set of parallelsentences altogether
     """
 
-    def __init__(self, parallelsentence_list, attributes_list = [], annotations = []):
+    def __init__(self, parallelsentence_list = [], attributes_list = [], annotations = []):
         """
         @param parallelsentence_list: the parallelsentences to be wrapped in the dataset
         @type parallelsentence_list: list
