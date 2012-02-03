@@ -19,6 +19,13 @@ class PairwiseDataset:
     def get_all_parallelsentence_sets(self):
         return self.pairwise_parallelsentence_sets.values()
     
+    def get_parallelsentences(self):
+        all_parallel_sentences = []
+        for set in self.get_all_parallelsentence_sets():
+            all_parallel_sentences.extend(set.get_parallelsentences())
+        return all_parallel_sentences
+    
+    
     def get_sentence_ids(self):
         return self.pairwise_parallelsentence_sets.keys()
     
@@ -27,6 +34,10 @@ class PairwiseDataset:
     
     def get_pairwise_parallelsentence_sets(self):
         return self.pairwise_parallelsentence_sets
+    
+    def remove_ties(self):
+        for set in self.pairwise_parallelsentence_sets.values():
+            set.remove_ties()
 
 
 
@@ -38,24 +49,29 @@ class AnalyticPairwiseDataset(PairwiseDataset):
         
         """
         self.pairwise_parallelsentence_sets = {}
+        pairwise_parallelsentences_per_sid = {}
+        
+        #first group by sentence ID
         for parallelsentence in plain_dataset.get_parallelsentences():
             sentence_id = parallelsentence.get_compact_id()
-            self.pairwise_parallelsentence_sets[sentence_id] = AnalyticPairwiseParallelSentenceSet(parallelsentence.get_pairwise_parallelsentences())
-#            try:
-#                self.pairwise_parallelsentences_per_sid[sentence_id].append(pairwise_parallelsentences)
-#            except KeyError:
-#                self.pairwise_parallelsentences_per_sid[sentence_id] = [pairwise_parallelsentences]
-#    
+            try:
+                pairwise_parallelsentences_per_sid[sentence_id].extend(parallelsentence.get_pairwise_parallelsentences())
+            except KeyError:
+                pairwise_parallelsentences_per_sid[sentence_id] = parallelsentence.get_pairwise_parallelsentences()
+        
+        for sentence_id, pairwiseparallelsentences in pairwise_parallelsentences_per_sid.iteritems():
+        #then convert each group to a Analytic Pairwise Parallel SentenceSet
+            self.pairwise_parallelsentence_sets[sentence_id] = AnalyticPairwiseParallelSentenceSet(pairwiseparallelsentences)
 
 
 
 
-class CompactPairwiseDataset:
+class CompactPairwiseDataset(PairwiseDataset):
     
     def __init__(self, analytic_pairwise_dataset = AnalyticPairwiseDataset()):
         self.pairwise_parallelsentence_sets = {}
-        for sentence_id, pairwise_parallelsentence_set in analytic_pairwise_dataset.get_pairwise_parallelsentence_sets().itervalues():
-            self.pairwise_parallelsentence_sets[sentence_id] = CompactPairwiseDataset(pairwise_parallelsentence_set)
+        for sentence_id, analytic_pairwise_parallelsentence_set in analytic_pairwise_dataset.get_pairwise_parallelsentence_sets().iteritems():
+            self.pairwise_parallelsentence_sets[sentence_id] = analytic_pairwise_parallelsentence_set.get_compact_pairwise_parallelsentence_set()
         
         
         

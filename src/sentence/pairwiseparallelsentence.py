@@ -17,7 +17,7 @@ class PairwiseParallelSentence(ParallelSentence):
     A pairwise parallel sentence, is a parallel sentence that contains output produced by only two systems.  
     """
 
-    def __init__(self, source, translations, systems, reference=None, attributes={}, rank_name = "rank"):
+    def __init__(self, source, translations, systems, reference=None, attributes={}, rank_name = u"rank"):
         """
         Constructor
         @type source: SimpleSentence
@@ -32,16 +32,21 @@ class PairwiseParallelSentence(ParallelSentence):
         @param systems: names of target systems
         """
         self.src = source 
-        self.tgt = translations
+        self.tgt = sorted(translations)
         self.systems = systems
         self.ref = reference
-        self.attributes = deepcopy (attributes)
+        self.attributes = deepcopy(attributes)
         self.rank_name = rank_name
         self._normalize_ranks()
 #        self.ties_allowed = ties_allowed
 
         
     def _normalize_ranks(self):
+        """
+        Receives two rank scores for the two respective system outputs, compares them and returns a universal
+        comparison value, namely -1 if the first system is better, +1 if the second system output is better, 
+        and 0 if they are equally good. 
+        """
         rank_a = self.tgt[0].get_attribute(self.rank_name)
         rank_b = self.tgt[1].get_attribute(self.rank_name)
         
@@ -51,9 +56,9 @@ class PairwiseParallelSentence(ParallelSentence):
             rank = -1
         else:
             rank = 0
-        self.attributes[self.rank_name] = rank
-        del(self.tgt[0].attributes[self.rank_name])
-        del(self.tgt[1].attributes[self.rank_name])
+        self.attributes[self.rank_name] = str(rank)
+#        del(self.tgt[0].attributes[self.rank_name])
+#        del(self.tgt[1].attributes[self.rank_name])
         
     def get_system_names(self):
         return self.systems

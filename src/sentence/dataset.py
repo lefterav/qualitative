@@ -34,6 +34,18 @@ class DataSet(object):
         else:
             self.attribute_names_found = False
             self.attribute_names = []
+        self.ensure_judgment_ids()
+            
+    def ensure_judgment_ids(self):
+        """
+        Processes one by one the contained parallel sentences and ensures that there are judgment ids
+        otherwise adds an incremental value
+        """
+        i = 0
+        for parallelsentence in self.parallelsentences:
+            i += 1
+            if not parallelsentence.has_judgment_id():
+                parallelsentence.add_judgment_id(i)
 
     
     def get_parallelsentences(self):
@@ -41,6 +53,11 @@ class DataSet(object):
     
     
     def get_parallelsentences_per_sentence_id(self):
+        """
+        Group the contained parallel sentences by sentence id 
+        @return: a dictionary with lists of parallel sentences for each sentence id
+        @rtype: dict(String, list(sentence.parallelsentence.ParallelSentence))
+        """
         ps_sid = {}
         for parallelsentence in self.parallelsentences:
             #get the id of the particular multiple ranking (judgment) or create a new one
@@ -149,6 +166,8 @@ class DataSet(object):
                 incoming_ps = incoming_parallelsentences[i]
                 self.parallelsentences[i].merge_parallelsentence(incoming_ps, attribute_replacements)
                
+    def get_translations_count_vector(self):
+        return [len(ps.get_translations()) for ps in self.get_parallelsentences()]
             
             
             
