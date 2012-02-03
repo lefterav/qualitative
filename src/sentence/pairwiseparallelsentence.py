@@ -17,7 +17,7 @@ class PairwiseParallelSentence(ParallelSentence):
     A pairwise parallel sentence, is a parallel sentence that contains output produced by only two systems.  
     """
 
-    def __init__(self, source, translations, systems, reference=None, attributes={}):
+    def __init__(self, source, translations, systems, reference=None, attributes={}, rank_name = "rank"):
         """
         Constructor
         @type source: SimpleSentence
@@ -36,9 +36,35 @@ class PairwiseParallelSentence(ParallelSentence):
         self.systems = systems
         self.ref = reference
         self.attributes = deepcopy (attributes)
+        self.rank_name = rank_name
+        self._normalize_ranks()
+#        self.ties_allowed = ties_allowed
+
+        
+    def _normalize_ranks(self):
+        rank_a = self.tgt[0].get_attribute(self.rank_name)
+        rank_b = self.tgt[1].get_attribute(self.rank_name)
+        
+        if rank_a > rank_b:
+            rank = 1
+        elif rank_b > rank_a:
+            rank = -1
+        else:
+            rank = 0
+        self.attributes[self.rank_name] = rank
+        del(self.tgt[0].attributes[self.rank_name])
+        del(self.tgt[1].attributes[self.rank_name])
         
     def get_system_names(self):
         return self.systems
     
+    def get_rank(self):
+        return self.attributes[self.rank_name]
+    
     def get_translations(self):
         return self.tgt
+    
+    def get_reversed(self):
+        new_attributes = deepcopy(self.attributes)
+        new_attributes[self.rank_name] = -1 * new_attributes[self.rank_name]
+        return PairwiseParallelSentence(self.src, (self.tgt[1], self.tgt[0]), (self.systems[1], self.systems[0]), self.ref )
