@@ -27,7 +27,14 @@ class SimpleSentence(object):
         self.string = string.replace("\t", "  ")
         #avoid getting a shallow reference to the attributes in the dict
         self.attributes = deepcopy (attributes) 
-        
+    
+    
+    def __gt__(self, other):
+        return self.attributes["system"] > other.attributes["system"]
+    
+    def __lt__(self, other):
+        return self.attributes["system"] < other.attributes["system"]
+    
     def get_string(self):
         """
         Get the string of this simple sentence

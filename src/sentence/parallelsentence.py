@@ -32,10 +32,25 @@ class ParallelSentence(object):
         @param the attributes that describe the parallel sentence
         """
         self.src = source 
-        self.tgt = translations
+        self.tgt = sorted(translations)
         self.ref = reference
         self.attributes = deepcopy (attributes)
         self.rank_name = rank_name
+        
+    def __lt__(self, other):
+        return self.get_compact_id() < other.get_compact_id()
+        
+    def __gt__(self, other):
+        return self.get_compact_id() > other.get_compact_id()
+    
+    def __eq__(self, other):
+        self.src = other.src 
+        self.tgt = other.tgt
+        self.ref = other.ref
+        self.attributes = other.attributes
+        self.rank_name = other.rank_name
+    
+        
             
     def get_attributes (self):
         return self.attributes
@@ -66,10 +81,19 @@ class ParallelSentence(object):
 
     def get_compact_id(self):
         try:
-            return "%s:%s" % (self.atributes["testset"], self.attributes["id"])
+            return "%s:%s" % (self.attributes["testset"], self.attributes["id"])
         except:
-            sys.stderr.write("Could not add set id into compact sentence id")
+            sys.stderr.write("Warning: Could not add set id into compact sentence id %s\n" %  self.attributes["id"])
             return self.attributes["id"]
+        
+    def get_judgment_id(self):
+        return self.attributes["judgement_id"]
+    
+    def has_judgment_id(self):
+        return self.attributes.has_key("judgement_id")
+    
+    def add_judgment_id(self, value):
+        self.attributes["judgement_id"] = str(value)
     
     def get_source(self):
         return self.src

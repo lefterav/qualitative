@@ -46,6 +46,20 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
             except KeyError:
                 self.pps_dict[system_names] = [ps]
     
+    def get_parallelsentences(self):
+        all_parallelsentences = []
+        for parallelsentencelist in self.pps_dict.values():
+            all_parallelsentences.extend(parallelsentencelist)
+        return all_parallelsentences
+                
+            
+    def remove_ties(self):
+        reformed_dict = {}
+        for system_names in self.pps_dict:
+            reformed_dict[system_names] = [ps for ps in self.pps_dict[system_names] if int(ps.get_attribute(self.rank_name)) != 0]
+        self.pps_dict = reformed_dict
+    
+    
     def get_pairwise_parallelsentences(self, system_names, directed = False):
         """
         Provides the pairwise parallel sentences, whose target sentences provide output by the two given systems
@@ -87,13 +101,13 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
     def merge_judgments(self, pairwise_parallelsentences = [], system_names=()):
         """
         Merge many overlapping judgements over translations produced by the same system pair
-        originating from the same source sentence
+        originating from the same source sentence, into only one judgment
         """
         rank = 0
         for ps in pairwise_parallelsentences:
             rank += ps.get_rank() * self._merge_weight(ps)
         
-        attributes = deepcopy(self.attributes)
+        attributes = deepcopy(pairwise_parallelsentences[0].attributes)
         attributes[self.rank_name] = rank
         source = pairwise_parallelsentences[0].get_source()
         translations = pairwise_parallelsentences[0].get_translations()
@@ -122,6 +136,10 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         self.pps_dict = dict([(ps.get_system_names(), ps) for ps in pairwise_parallelsentences])
     
     
+    def remove_ties(self):
+        for system_names in self.pps_dict:
+            if int(self.pps_dict[system_names].get_attribute(self.rank_name)) == 0:
+                del(self.pps_dict[system_names])
     
     def get_pairwise_parallelsentence(self, system_names, directed = False):
         """
