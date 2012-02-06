@@ -50,7 +50,8 @@ class ParallelSentence(object):
         self.attributes = other.attributes
         self.rank_name = other.rank_name
     
-        
+    def get_rank(self):
+        return self.attributes[self.rank_name]
             
     def get_attributes (self):
         return self.attributes
