@@ -82,7 +82,30 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
             else:
                 print "At least one of system names is missing."
     
+    
+    def get_filtered_pairwise_parallelsentences(self):
+        merged_pairwise_parallelsentences = []
+        for system_names in self.get_system_names():
+            overlapping_judgments = self.get_pairwise_parallelsentences(system_names)
+            merged_pairwise_parallelsentence = self._filter_agreement(overlapping_judgments, system_names)
+            if merged_pairwise_parallelsentence:
+                merged_pairwise_parallelsentences.append(merged_pairwise_parallelsentence)
+        return merged_pairwise_parallelsentences
+    
+    def _filter_agreement(self, threshold = 1.00, pairwise_parallelsentences = [], system_names=()):
+        
+        rank_vector = [ps.get_rank() for ps in pairwise_parallelsentences]
+        rank_values = set(rank_vector)
+        rank_distribution = sorted([(rank_vector.count(rank)*1.00/len(rank_vector), rank) for rank in rank_values])
+        most_popular = rank_distribution[-1][0]
+        if most_popular >= threshold:
+            return 
+             
+    
     def get_compact_pairwise_parallelsentences(self):
+        self.get_merged_pairwise_parallelsentences()
+    
+    def get_merged_pairwise_parallelsentences(self):
         """
         Merge many overlapping judgments over translations originating from the same source sentence
         @return pairwise parallel sentences, containing only the merged output rank
@@ -91,21 +114,19 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         merged_pairwise_parallelsentences = []
         for system_names in self.get_system_names():
             overlapping_judgments = self.get_pairwise_parallelsentences(system_names)
-            merged_pairwise_parallelsentence = self.merge_judgments(overlapping_judgments, system_names)
+            merged_pairwise_parallelsentence = self._merge_judgments(overlapping_judgments, system_names)
             merged_pairwise_parallelsentences.append(merged_pairwise_parallelsentence)
         return merged_pairwise_parallelsentences
     
     def get_compact_pairwise_parallelsentence_set(self):
         return CompactPairwiseParallelSentenceSet(self.get_compact_pairwise_parallelsentences())
         
-    def merge_judgments(self, pairwise_parallelsentences = [], system_names=()):
+    def _merge_judgments(self, pairwise_parallelsentences = [], system_names=()):
         """
         Merge many overlapping judgements over translations produced by the same system pair
         originating from the same source sentence, into only one judgment
-        """
-        rank = 0
-        for ps in pairwise_parallelsentences:
-            rank += ps.get_rank() * self._merge_weight(ps)
+        """        
+        rank = sum([float(ps.get_rank()) * self._merge_weight(ps) for ps in pairwise_parallelsentences] 
         
         attributes = deepcopy(pairwise_parallelsentences[0].attributes)
         attributes[self.rank_name] = rank
@@ -114,6 +135,8 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         reference = pairwise_parallelsentences[0].get_reference()
         new_ps = PairwiseParallelSentence(source, translations, system_names, reference, attributes, self.rank_name)
         return new_ps
+    
+            
     
     def _merge_weight(self, ps):
         return 1
