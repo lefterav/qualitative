@@ -98,6 +98,24 @@ class TestPairwiseParallelSentenceConversion(unittest.TestCase):
         pps_rebuilt = RankHandler().get_multiclass_from_pairwise_set(pps_new, True)
         self.assertEqual(len(pps_original), len(pps_rebuilt))
 #        self.assertEqual(pps_original, pps_new)
+    
+    def test_pairwise_merge(self):
+        new_analytic = AnalyticPairwiseDataset(self.mydataset)
+        new_merged = CompactPairwiseDataset(new_analytic)
+        new_merged_sentences = new_merged.get_parallelsentences()
+        
+        parallelsentences = self.mydataset.get_parallelsentences()
+        old_unmerged_sentences = RankHandler().get_pairwise_from_multiclass_set(parallelsentences, True, False, False)
+        old_merged_sentences = RankHandler().merge_overlapping_pairwise_set(old_unmerged_sentences) 
+    
+        filename1 = "%s.mergednew" % self.filename
+        filename2 = "%s.mergedold" % self.filename
+        Parallelsentence2Jcml(new_merged_sentences).write_to_file(filename1)
+        Parallelsentence2Jcml(old_merged_sentences).write_to_file(filename2)
+        
+        self.assertEqual(len(new_merged_sentences), len(old_merged_sentences), "The two ways of merging differ")
+        #self.assertEqual(os.path.getsize(filename1), os.path.getsize(filename2)) 
+        
         
         
 #class TestPairwiseParallelSentenceConversion(unittest.TestCase):
