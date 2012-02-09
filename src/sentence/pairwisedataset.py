@@ -64,6 +64,12 @@ class AnalyticPairwiseDataset(PairwiseDataset):
             self.pairwise_parallelsentence_sets[sentence_id] = AnalyticPairwiseParallelSentenceSet(pairwiseparallelsentences)
 
 
+class FilteredPairwiseDataset(PairwiseDataset):
+    def __init__(self, analytic_pairwise_dataset = AnalyticPairwiseDataset(), threshold = 1.00):    
+        self.pairwise_parallelsentence_sets = {}
+        for sentence_id, analytic_pairwise_parallelsentence_set in analytic_pairwise_dataset.get_pairwise_parallelsentence_sets().iteritems():
+            self.pairwise_parallelsentence_sets[sentence_id] = analytic_pairwise_parallelsentence_set.get_filtered_pairwise_parallelsentence_set(threshold)
+       
 
 
 class CompactPairwiseDataset(PairwiseDataset):
