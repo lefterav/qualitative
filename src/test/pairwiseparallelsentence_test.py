@@ -3,11 +3,12 @@
 '''
 from io.input.jcmlreader import JcmlReader
 from io.sax.saxps2jcml import Parallelsentence2Jcml
-from sentence.pairwisedataset import AnalyticPairwiseDataset, CompactPairwiseDataset
+from sentence.pairwisedataset import AnalyticPairwiseDataset, CompactPairwiseDataset, FilteredPairwiseDataset
 import os
 import unittest
 from numpy.ma.testutils import assert_equal
 from sentence.rankhandler import RankHandler
+from sentence.dataset import DataSet
 from io.output.xmlwriter import XmlWriter
 
 class TestPairwiseParallelSentenceConversion(unittest.TestCase):
@@ -116,7 +117,82 @@ class TestPairwiseParallelSentenceConversion(unittest.TestCase):
         self.assertEqual(len(new_merged_sentences), len(old_merged_sentences), "The two ways of merging differ")
         #self.assertEqual(os.path.getsize(filename1), os.path.getsize(filename2)) 
         
+    
+#    def test_filter_sentence_28(self):
+#        new_analytic = AnalyticPairwiseDataset(self.mydataset)  
+#        sentence_id = "28"
+#        analytic_parallelsentences = new_analytic.get_parallelsentences()
+#        analytic_parallelsentences = [ps for ps in analytic_parallelsentences if ps.get_compact_id() == sentence_id]
+#        
+#        sentence_ids = set([ps.get_compact_id() for ps in analytic_parallelsentences]) 
+#        rank_vector = [tuple(sorted(ps.get_system_names())) for ps in analytic_parallelsentences]
+#        rank_pairs = set(rank_vector)
+#        
+#        new_filtered = FilteredPairwiseDataset(new_analytic, 1.00)
+#        
+#        print "Should have", unique, "and have" , len(new_filtered_parallelsentences)
+#        self.assertEqual(len(new_filtered_parallelsentences), rank_pairs)
+#        
+
+    def test_pairwise_28(self):
+        sentence_28 = DataSet([ps for ps in self.mydataset.get_parallelsentences() if ps.get_compact_id() == "28"])
+        analytic_dataset = AnalyticPairwiseDataset(sentence_28)
+        analytic_parallelsentences = analytic_dataset.get_parallelsentences()
+
+        for ps in analytic_parallelsentences:
+            rank_items = [(tuple(sorted(ps.get_system_names())), ps.get_rank()) ]
+            for rank_item in sorted(rank_items):
+                print rank_item
+            
+        print 
+        rank_vector = [tuple(sorted(ps.get_system_names())) for ps in analytic_parallelsentences]
+        unique = sorted(set(rank_vector))
         
+        #manual check
+        self.assertEqual(len(rank_vector), 80)
+        self.assertEqual(len(unique), 59)
+        
+        new_compact = CompactPairwiseDataset(analytic_dataset)
+        new_compact_sentences = new_compact.get_parallelsentences()
+        self.assertEqual(len(new_compact_sentences), 59)
+        new_filtered_sentences = FilteredPairwiseDataset(analytic_dataset, 1.00).get_parallelsentences()
+        self.assertEqual(len(new_filtered_sentences), 54)
+        new_filtered_sentences = FilteredPairwiseDataset(analytic_dataset, 0.60).get_parallelsentences()
+        self.assertEqual(len(new_filtered_sentences), 55)
+        
+    def test_pairwise_merge_count(self):
+        new_analytic = AnalyticPairwiseDataset(self.mydataset)
+        analytic_parallelsentences = new_analytic.get_parallelsentences()
+        sentence_ids = set([ps.get_compact_id() for ps in analytic_parallelsentences]) 
+        print
+        unique = 0
+        for sentence_id in sentence_ids:
+            #get a list of the system name pairs, order irrelevant
+            rank_vector = [tuple(sorted(ps.get_system_names())) for ps in analytic_parallelsentences if ps.get_compact_id() == sentence_id]
+            
+            rank_pairs = set(rank_vector)
+        
+            print "rank vector for sentence %s has %d comparisons "% (sentence_id, len(rank_vector))
+            print "rank vector for sentence %s has %d unique comparisons "% (sentence_id, len(rank_pairs))
+            unique += len(rank_pairs)
+        
+        new_filtered = CompactPairwiseDataset(new_analytic)
+        new_filtered_parallelsentences = new_filtered.get_parallelsentences()
+        print "Should have", unique, "and have" , len(new_filtered_parallelsentences)
+        self.assertEqual(len(new_filtered_parallelsentences), unique)
+#        for rank_tupple in rank_vector:
+#            print rank_tupple
+        filename1 = "%s.filterednew" % self.filename
+        Parallelsentence2Jcml(new_filtered_parallelsentences).write_to_file(filename1)
+        
+        new_filtered = FilteredPairwiseDataset(new_analytic, 0.00)
+        new_filtered_parallelsentences = new_filtered.get_parallelsentences()
+        print "Should have", unique, "and have" , len(new_filtered_parallelsentences)
+        self.assertEqual(len(new_filtered_parallelsentences), unique)
+#        for rank_tupple in rank_vector:
+#            print rank_tupple
+        filename1 = "%s.filterednew" % self.filename
+        Parallelsentence2Jcml(new_filtered_parallelsentences).write_to_file(filename1)
         
 #class TestPairwiseParallelSentenceConversion(unittest.TestCase):
 #

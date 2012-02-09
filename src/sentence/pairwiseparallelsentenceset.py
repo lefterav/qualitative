@@ -8,6 +8,10 @@ Created on Jul 12, 2011
 from pairwiseparallelsentence import PairwiseParallelSentence
 from copy import deepcopy
 
+
+
+    
+
 class PairwiseParallelSentenceSet():
     """
     A set of pairwise parallel sentences, all originating from the same source sentence, in order to facilitate pairwise comparisons etc. 
@@ -26,6 +30,12 @@ class PairwiseParallelSentenceSet():
         @rtype: list of tuples of two strings each
         """
         return self.pps_dict.keys()
+    
+    def get_multiclass(self):
+        """
+        reconstruct a single parallelsentence 
+        """
+        pass
     
 
 class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
@@ -83,27 +93,37 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
                 print "At least one of system names is missing."
     
     
-    def get_filtered_pairwise_parallelsentences(self):
-        merged_pairwise_parallelsentences = []
+    def get_filtered_pairwise_parallelsentence_set(self, threshold = 1.00):
+        return CompactPairwiseParallelSentenceSet(self.get_filtered_pairwise_parallelsentences(threshold))
+    
+    
+    def get_filtered_pairwise_parallelsentences(self, threshold = 1.00):
+        filtered_pairwise_parallelsentences = []
         for system_names in self.get_system_names():
             overlapping_judgments = self.get_pairwise_parallelsentences(system_names)
-            merged_pairwise_parallelsentence = self._filter_agreement(overlapping_judgments, system_names)
-            if merged_pairwise_parallelsentence:
-                merged_pairwise_parallelsentences.append(merged_pairwise_parallelsentence)
-        return merged_pairwise_parallelsentences
+            filtered_pairwise_parallelsentence = self._filter_agreement(threshold, overlapping_judgments, system_names)
+            if filtered_pairwise_parallelsentence:
+                filtered_pairwise_parallelsentences.append(filtered_pairwise_parallelsentence)
+        return filtered_pairwise_parallelsentences
     
     def _filter_agreement(self, threshold = 1.00, pairwise_parallelsentences = [], system_names=()):
-        
+        if len(pairwise_parallelsentences) == 1:
+            return pairwise_parallelsentences[0]
         rank_vector = [ps.get_rank() for ps in pairwise_parallelsentences]
         rank_values = set(rank_vector)
         rank_distribution = sorted([(rank_vector.count(rank)*1.00/len(rank_vector), rank) for rank in rank_values])
-        most_popular = rank_distribution[-1][0]
-        if most_popular >= threshold:
-            return 
+        most_popular = rank_distribution[-1]
+        if most_popular[0] >= threshold:
+            #return the first pairwise sentence that appears to have this rank
+            for ps in pairwise_parallelsentences:
+                if ps.get_rank() == most_popular[1]:
+                    return ps 
+        else:
+            return None
              
     
     def get_compact_pairwise_parallelsentences(self):
-        self.get_merged_pairwise_parallelsentences()
+        return self.get_merged_pairwise_parallelsentences()
     
     def get_merged_pairwise_parallelsentences(self):
         """
@@ -126,7 +146,7 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         Merge many overlapping judgements over translations produced by the same system pair
         originating from the same source sentence, into only one judgment
         """        
-        rank = sum([float(ps.get_rank()) * self._merge_weight(ps) for ps in pairwise_parallelsentences] 
+        rank = sum([float(ps.get_rank()) * self._merge_weight(ps) for ps in pairwise_parallelsentences])
         
         attributes = deepcopy(pairwise_parallelsentences[0].attributes)
         attributes[self.rank_name] = rank
