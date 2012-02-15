@@ -150,8 +150,12 @@ output += '<set setid="%s" source-language="%s" target-language="%s">\n' \
                                                     % (setid, srcLang, tgtLang)
 
 for i in range(len(contentLinks)):
-    segid = contentLinks[i].split('\t')[1]
-    docid = contentLinks[i].split('\t')[2]
+    if len(contentLinks[i].split('\t'))==3:
+        segid = contentLinks[i].split('\t')[1]
+        docid = contentLinks[i].split('\t')[2]
+    elif len(contentLinks[i].split('\t'))==2:
+        segid = contentLinks[i].split('\t')[0]
+        docid = contentLinks[i].split('\t')[1]
     source = contentSrc[i]
     reference = contentRef[i]
     
