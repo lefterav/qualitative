@@ -10,7 +10,7 @@ import codecs
 import subprocess
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
-from io.output.xmlwriter import XmlWriter
+from io.sax.saxps2jcml import Parallelsentence2Jcml
 
 
 #Language mapping, needed for browsing the correct test/source/ref file
@@ -291,10 +291,9 @@ if __name__ == "__main__":
         wmtr = WMTEvalReader(config)
         parallelsentences = wmtr.parse()
         
-        sys.stderr.write("Sentences read, proceeding with writing XML\n")
-        xmlwriter = XmlWriter(parallelsentences)
+        sys.stderr.write("%d sentences read, proceeding with writing XML\n" % len(parallelsentences))
         filename = config.get("output", "filename")
-        xmlwriter.write_to_file(filename)
+        Parallelsentence2Jcml(parallelsentences).write_to_file(filename)
         sys.stderr.write("Done")
         
                   
