@@ -17,7 +17,7 @@ from ruffus.task import pipeline_printout_graph, pipeline_printout
 import cPickle as pickle
 
 #internal code classes
-from experiment.autoranking.bootstrap import cfg
+from bootstrap import cfg
 from io.input.orangereader import OrangeData
 from io.sax.saxjcml2orange import SaxJcml2Orange
 from io.input.jcmlreader import JcmlReader
@@ -49,14 +49,17 @@ from featuregenerator.attribute_rank import AttributeRankGenerator
 from io.input.xmlreader import XmlReader
 
 
+cores = 2
+parallel_feature_functions = []
+
+
+
 path = cfg.get('general','path')
 try:
     os.mkdir(path)
 except OSError:
     pass
 os.chdir(path)
-cores = 2
-parallel_feature_functions = []
 
 @split(None, "*orig.jcml", cfg.get("annotation", "filenames").split(","))
 def data_fetch(input_file, output_files, external_files):
@@ -207,6 +210,7 @@ def create_ranks():
 
 
 if __name__ == '__main__':
+    
     
     pipeline_printout_graph("flowchart.pdf", "pdf", [features_gather])
     import sys
