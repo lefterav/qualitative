@@ -1,0 +1,157 @@
+'''
+Created on 23 Φεβ 2012
+
+@author: lefterav
+'''
+from dataset import DataSet
+from coupledparallelsentence import CoupledParallelSentence
+from io.input.orangereader import OrangeData
+import sys
+
+class CoupledDataSet(DataSet):
+    '''
+    A coupled data set contains all possible couples of parallel sentences of a simple dataset
+    @ivar parallelsentences: a list of the coupled parallel sentences
+    @type parallelsentences: [L{CoupledParallelSentence}, ...]
+    '''
+
+
+    def __init__(self, existing_item):
+        '''
+        @var existing_item: allows the construction of a coupled dataset from an existing simple dataset or already coupled parallel sentences
+        @type existing_item: L{DataSet} or [L{CoupledParallelSentence}, ...]
+        '''
+        self.parallelsentences = []
+        
+        
+        if isinstance(existing_item, DataSet):
+            dataset = existing_item
+            parallelsentences = dataset.get_parallelsentences()
+            for i in range(len(parallelsentences)):
+                for j in range(i, len(parallelsentences)):
+                    new_coupled_parallelsentence = CoupledParallelSentence(parallelsentences[i], parallelsentences[j])
+                    self.parallelsentences.append(new_coupled_parallelsentence)
+        
+        
+                    
+
+class OrangeCoupledDataSet(OrangeData):
+    """
+    A wrapper for the orange Example Table that can be initialized upon a CoupledDataSet
+    @todo: maybe change that to a function of the previous class and break down to the parallel sentences
+    """
+    
+    def _get_orange_header(self, dataset, class_name, attribute_names, desired_attributes=[], meta_attributes=[]):
+
+        #first construct the lines for the declaration
+        line_1 = "" #line for the name of the arguments
+        line_2 = "" #line for the type of the arguments
+        line_3 = "" #line for the definition of the class 
+        print "Getting attributes"
+        
+        if desired_attributes == []:
+            desired_attributes = attribute_names
+        
+        
+        #if no desired attribute define, get all of them
+        #if not desired_attributes:
+        #    desired_attributes =  attribute_names
+        
+        print "Constructing file"
+        #prepare heading
+        for attribute_name in attribute_names :
+            #line 1 holds just the names
+            attribute_name = str(attribute_name)
+            line_1 += attribute_name +"\t"
+            
+            #TODO: find a way to define continuous and discrete arg
+            #line 2 holds the class type
+            if attribute_name == class_name:
+                line_2 += "discrete\t"
+            elif attribute_name in desired_attributes and attribute_name not in meta_attributes:
+                line_2 += "continuous\t"
+            else:
+                line_2 += "string\t"
+
+            
+            #line 3 defines the class and the metadata
+            if attribute_name == class_name:
+                line_3 = line_3 + "c"
+            elif attribute_name not in desired_attributes or attribute_name in meta_attributes:
+                #print attribute_name , "= meta"
+                line_3 = line_3 + "m"
+            line_3 = line_3 + "\t"
+        
+        #if not self.avoidstrings:
+        #src
+        line_2 += "string\t"
+        line_3 += "m\t"
+        line_1 += "src-1\t"
+        
+        line_2 += "string\t"
+        line_3 += "m\t"
+        line_1 += "src-2\t"
+        #target
+        i=0
+        for tgt in dataset.get_parallelsentences()[0].get_translations():
+            i+=1
+            line_2 += "string\t"
+            line_3 += "m\t"
+            line_1 += "tgt-" + str(i) + "\t"
+        #ref 
+        line_2 += "string\t"
+        line_3 += "m\t"
+        line_1 += "ref\t"
+    
+        #break the line in the end
+        line_1 = line_1 + "\n"
+        line_2 = line_2 + "\n"
+        line_3 = line_3 + "\n"
+        output = line_1 + line_2 + line_3
+        return output
+    
+    
+    def _getOrangeFormat(self, dataset, class_name, desired_attributes=[], meta_attributes=[]):
+        sys.stderr.write("retrieving attribute names\n")
+        attribute_names = dataset.get_all_attribute_names()
+
+        sys.stderr.write("processing orange header\n") 
+        output = self._get_orange_header(dataset, class_name, attribute_names, desired_attributes, meta_attributes)
+        sys.stderr.write("processing content\n")
+
+        outputlines = []
+ 
+        for psentence in dataset.get_parallelsentences():
+            #sys.stderr.write("getting nested attributes\n")
+            nested_attributes = psentence.get_nested_attributes()
+            nested_attribute_names = nested_attributes.keys()
+            
+            #sys.stderr.write("printing content\n")
+            for attribute_name in attribute_names:
+                if attribute_name in nested_attribute_names:
+                    outputlines.append(nested_attributes[attribute_name])
+                    
+                #even if attribute value exists or not, we have to tab    
+                outputlines.append ("\t")
+                
+            #if not self.avoidstrings:
+            outputlines.append( psentence.get_source()[0].get_string())
+            outputlines.append("\t")
+            
+            outputlines.append( psentence.get_source()[1].get_string())
+            outputlines.append("\t")
+            
+            for tgt in psentence.get_translations():
+                outputlines.append(tgt.get_string())
+                outputlines.append("\t")
+            try:
+                outputlines.append(psentence.get_reference().get_string())
+                outputlines.append("\t")
+            except:
+                outputlines.append("\t")
+            outputlines.append("\n")
+        output += "".join(outputlines)
+        return output
+    
+                
+                

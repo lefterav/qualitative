@@ -31,11 +31,11 @@ class OrangeData:
             print "desired attributes" , desired_attributes
             print "meta attributes" , meta_attributes
             #get the data in Orange file format
-            fileData = self.__getOrangeFormat__(dataSet, class_name, desired_attributes, meta_attributes)
+            fileData = self._getOrangeFormat(dataSet, class_name, desired_attributes, meta_attributes)
             
             #write the data in a temporary file
             #not secure but we trust our hard disk
-            orangefilename = self.__writeTempFile__(fileData, chosen_orangefilename)
+            orangefilename = self._writeTempFile(fileData, chosen_orangefilename)
 
             #load the data
             print "Feeding file to Orange"
@@ -178,7 +178,7 @@ class OrangeData:
         
 
     
-    def __writeTempFile__(self, data, orangefilename):
+    def _writeTempFile(self, data, orangefilename):
         if not orangefilename:
             orangefilename = mktemp(dir=u'.', suffix=u'.tab')
         file_object = open(orangefilename, 'w')
@@ -193,7 +193,7 @@ class OrangeData:
         return orangefilename
         
     
-    def __get_orange_header__(self, dataset, class_name, attribute_names, desired_attributes=[], meta_attributes=[]):
+    def _get_orange_header(self, dataset, class_name, attribute_names, desired_attributes=[], meta_attributes=[]):
 
         #first construct the lines for the declaration
         line_1 = "" #line for the name of the arguments
@@ -259,12 +259,12 @@ class OrangeData:
         return output
     
     
-    def __getOrangeFormat__(self, dataset, class_name, desired_attributes=[], meta_attributes=[]):
+    def _getOrangeFormat(self, dataset, class_name, desired_attributes=[], meta_attributes=[]):
         sys.stderr.write("retrieving attribute names\n")
         attribute_names = dataset.get_all_attribute_names()
 
         sys.stderr.write("processing orange header\n") 
-        output = self.__get_orange_header__(dataset, class_name, attribute_names, desired_attributes, meta_attributes)
+        output = self._get_orange_header(dataset, class_name, attribute_names, desired_attributes, meta_attributes)
         sys.stderr.write("processing content\n")
 
         outputlines = []

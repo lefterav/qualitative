@@ -175,9 +175,9 @@ class ExperimentConfigParser(ConfigParser):
         return ""
     
 # global configuration
-cfg = ExperimentConfigParser()
-cfg.readfp(StringIO.StringIO(CONFIG_TEMPLATE))  # set up defaults
-cfg.read(CONFIG_FILENAME)  # add user-specified settings
+#cfg = ExperimentConfigParser()
+#cfg.readfp(StringIO.StringIO(CONFIG_TEMPLATE))  # set up defaults
+#cfg.read(CONFIG_FILENAME)  # add user-specified settings
 #
 #def genome_path():
 #    'returns the path to the genome fasta file (and downloads it if necessary)'

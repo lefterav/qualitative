@@ -182,7 +182,10 @@ class DataSet(object):
         """
         for ps in self.parallelsentences:
             ps.remove_ties()  
-            
+    
+    
+
+    
     
     """
      def get_nested_attributes(self):
