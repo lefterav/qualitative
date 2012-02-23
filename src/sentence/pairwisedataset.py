@@ -14,17 +14,20 @@ class PairwiseDataset:
     A data container that stores the entire dataset of parallel sentences, but internally this has been re-structured
     so that every multiple ranking judgment (e.g. 1-5) has been split into pairwise comparisons (1,2; 1,3; ...).
     Every set of pairwise comparisons has been mapped to the sentence id of the original source sentence
-    This allows for direct access to pairwise elements of each sentence    
+    This allows for direct access to pairwise elements of each sentence   
+    @ivar pairwise_parallelsentence_sets: A dictionary which keeps the pairwise sentences per (original) sentence id
+    @type pairwise_parallelsentence_sets: {str: }
     '''
     def get_all_parallelsentence_sets(self):
         return self.pairwise_parallelsentence_sets.values()
     
     def get_parallelsentences(self):
         all_parallel_sentences = []
-        for set in self.get_all_parallelsentence_sets():
-            all_parallel_sentences.extend(set.get_parallelsentences())
+        for sentence_set in self.get_all_parallelsentence_sets():
+            all_parallel_sentences.extend(sentence_set.get_parallelsentences())
         return all_parallel_sentences
     
+     
     
     def get_sentence_ids(self):
         return self.pairwise_parallelsentence_sets.keys()
@@ -36,9 +39,17 @@ class PairwiseDataset:
         return self.pairwise_parallelsentence_sets
     
     def remove_ties(self):
-        for set in self.pairwise_parallelsentence_sets.values():
-            set.remove_ties()
-
+        """
+        It removes the ties from the current data set
+        @return: the number of ties removed (helpful for testing)
+        @rtype: int
+        """
+        removed_ties = 0
+        for myset in self.pairwise_parallelsentence_sets.values():
+            removed_ties += myset.remove_ties()
+        #filter out sentences where nothing is left
+        self.pairwise_parallelsentence_sets = dict([(id, ps) for (id, ps) in self.pairwise_parallelsentence_sets.iteritems() if ps.length() > 0])
+        return removed_ties
 
 
 class AnalyticPairwiseDataset(PairwiseDataset):
@@ -64,24 +75,33 @@ class AnalyticPairwiseDataset(PairwiseDataset):
             self.pairwise_parallelsentence_sets[sentence_id] = AnalyticPairwiseParallelSentenceSet(pairwiseparallelsentences)
 
 
-class FilteredPairwiseDataset(PairwiseDataset):
-    def __init__(self, analytic_pairwise_dataset = AnalyticPairwiseDataset(), threshold = 1.00):    
-        self.pairwise_parallelsentence_sets = {}
-        for sentence_id, analytic_pairwise_parallelsentence_set in analytic_pairwise_dataset.get_pairwise_parallelsentence_sets().iteritems():
-            self.pairwise_parallelsentence_sets[sentence_id] = analytic_pairwise_parallelsentence_set.get_filtered_pairwise_parallelsentence_set(threshold)
-       
-
-
-class CompactPairwiseDataset(PairwiseDataset):
-    
+class CompactPairwiseDataset(PairwiseDataset):  
     def __init__(self, analytic_pairwise_dataset = AnalyticPairwiseDataset()):
         self.pairwise_parallelsentence_sets = {}
         for sentence_id, analytic_pairwise_parallelsentence_set in analytic_pairwise_dataset.get_pairwise_parallelsentence_sets().iteritems():
             self.pairwise_parallelsentence_sets[sentence_id] = analytic_pairwise_parallelsentence_set.get_compact_pairwise_parallelsentence_set()
         
+    def get_multiclass_set(self):
+        multirank_parallelsentences = []
+        for sentence_id in self.pairwise_parallelsentence_sets:
+            pairwise_parallelsentence_set = self.pairwise_parallelsentence_sets[sentence_id]
+            multirank_parallelsentence = pairwise_parallelsentence_set.get_multiranked_sentence()
+            multirank_parallelsentences.append(multirank_parallelsentence)
+        try:
+            multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute("id")))
+        except:
+            pass
+        return DataSet(multirank_parallelsentences)       
         
         
-        
+class FilteredPairwiseDataset(CompactPairwiseDataset):
+    def __init__(self, analytic_pairwise_dataset = AnalyticPairwiseDataset(), threshold = 1.00):    
+        self.pairwise_parallelsentence_sets = {}
+        for sentence_id, analytic_pairwise_parallelsentence_set in analytic_pairwise_dataset.get_pairwise_parallelsentence_sets().iteritems():
+            self.pairwise_parallelsentence_sets[sentence_id] = analytic_pairwise_parallelsentence_set.get_filtered_pairwise_parallelsentence_set(threshold)
+
+
+
         
         
 

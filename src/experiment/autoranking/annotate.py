@@ -204,7 +204,7 @@ def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_
 def create_ranks():
     pass
 
-       
+
 
 if __name__ == '__main__':
     

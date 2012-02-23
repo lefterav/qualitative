@@ -255,6 +255,22 @@ class ParallelSentence(object):
                         for i in range(len(systems))]
         return pps_list
 
+    def remove_ties(self):
+        """
+        Function that modifies the current parallel sentence by removing the target translations that create ties. 
+        Only first translation for each rank is kept
+        """
+        translation_per_rank = [(tgt.get_rank(), tgt) for tgt in self.tgt]
+        prev_rank = None
+        remaining_translations = []
+        for system, translation in sorted(translation_per_rank):
+            rank = int(translation.get_rank())
+            if prev_rank != rank:
+                remaining_translations.append(translation)
+                prev_rank = rank    
+        self.tgt = remaining_translations
+            
+            
 
 
         

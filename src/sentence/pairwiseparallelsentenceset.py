@@ -7,7 +7,7 @@ Created on Jul 12, 2011
 '''
 from pairwiseparallelsentence import PairwiseParallelSentence
 from copy import deepcopy
-
+from parallelsentence import ParallelSentence
 
 
     
@@ -31,21 +31,21 @@ class PairwiseParallelSentenceSet():
         """
         return self.pps_dict.keys()
     
-    def get_multiclass(self):
-        """
-        reconstruct a single parallelsentence 
-        """
-        pass
+
+    def length(self):
+        return len(self.get_parallelsentences())    
     
 
 class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
     """
     A set of pairwise parallel sentences, all originating from the same source sentence, where more than one comparisons per system-pair are allowed
+    @ivar pps_dict: a dict that stores all the pairwise parallelsentences mapped to a tuple of strings containing the system names for the respective translations 
+    @type pps_dict: {(str, str): [L{PairwiseParallelSentence}, ...]} 
     """
     def __init__(self, pairwise_parallelsentences = [], rank_name = "rank"):
         """
         @param pairwise_parallelsentences: a list of pairwise parallel sentences
-        @type pairwise_parallelsentences: list of L{sentence.pairwiseparallelsentence.PairwiseParallelSentence} instances
+        @type pairwise_parallelsentences: [L{sentence.pairwiseparallelsentence.PairwiseParallelSentence}, ...]
         """
         self.pps_dict = {}
         self.rank_name = rank_name
@@ -61,14 +61,25 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         for parallelsentencelist in self.pps_dict.values():
             all_parallelsentences.extend(parallelsentencelist)
         return all_parallelsentences
-                
+    
+       
             
     def remove_ties(self):
+        """
+        It removes the pairwise sentences whose rank is equal with each other's
+        @return: the number of ties filtered
+        @rtype: int
+        @todo: test
+        """
         reformed_dict = {}
+        removed_ties = 0  
         for system_names in self.pps_dict:
             reformed_dict[system_names] = [ps for ps in self.pps_dict[system_names] if int(ps.get_attribute(self.rank_name)) != 0]
+            removed_ties += len(self.pps_dict[system_names]) - len(reformed_dict[system_names])
+        
         self.pps_dict = reformed_dict
-    
+        return removed_ties
+
     
     def get_pairwise_parallelsentences(self, system_names, directed = False):
         """
@@ -78,7 +89,7 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         @param order: whether the order of the systems in the tuple is important, or not
         @type order: boolean
         @return: the pairwise parallel sentence that contains the outputs of the two given systems
-        @rtype: list of L{L{sentence.pairwiseparallelsentence.PairwiseParallelSentence}} instances
+        @rtype: [L{sentence.pairwiseparallelsentence.PairwiseParallelSentence}, ...]
         """
         try:
             return self.pps_dict[system_names]
@@ -129,7 +140,7 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         """
         Merge many overlapping judgments over translations originating from the same source sentence
         @return pairwise parallel sentences, containing only the merged output rank
-        @rtype list of L{L{sentence.pairwiseparallelsentence.PairwiseParallelSentence}.PairwiseParallelSentence} instances 
+        @rtype [L{L{sentence.pairwiseparallelsentence.PairwiseParallelSentence}, ...] 
         """
         merged_pairwise_parallelsentences = []
         for system_names in self.get_system_names():
@@ -145,6 +156,8 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         """
         Merge many overlapping judgements over translations produced by the same system pair
         originating from the same source sentence, into only one judgment
+        @return: a pairwise parallel sentences
+        @rtype: L{PairwiseParallelSentence}
         """        
         rank = sum([float(ps.get_rank()) * self._merge_weight(ps) for ps in pairwise_parallelsentences])
         
@@ -167,22 +180,101 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
 
 class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
     """
-    A compact set of pairwise parallel sentences, all originating from the same source sentence, where only one comparison per system-pair is allowed 
+    A compact set of pairwise parallel sentences, all originating from the same source sentence,
+    where only one comparison per system-pair is allowed
+    @ivar rank_name: the name of the rank value
+    @type rank_name: str
+    @ivar pps_dict: a dictionary of pairwise parallelel sentences
+    @type pps_dict: {(str, str): L{PairwiseParallelSentence}} 
     """
     
-    def __init__(self, pairwise_parallelsentences = [], rank_name = "rank"):
+    def __init__(self, pairwise_parallelsentences, rank_name = "rank"):
         """
         @param pairwise_parallelsentences: a list of pairwise parallel sentences
-        @type pairwise_parallelsentences: list of L{sentence.pairwiseparallelsentence.PairwiseParallelSentence} instances
+        @type pairwise_parallelsentences: [L{PairwiseParallelSentence}, ...]
         """
         self.rank_name = rank_name
         self.pps_dict = dict([(ps.get_system_names(), ps) for ps in pairwise_parallelsentences])
+        pass
     
     
     def remove_ties(self):
+        """
+        It removes the pairwise sentences whose rank is equal with each other's
+        @return: the number of ties filtered
+        @rtype: int
+        """
+        reformed_dict = {}
+        ties = 0
         for system_names in self.pps_dict:
-            if int(self.pps_dict[system_names].get_attribute(self.rank_name)) == 0:
-                del(self.pps_dict[system_names])
+            ps = self.pps_dict[system_names]
+            if int(ps.get_attribute(self.rank_name)) != 0:
+                reformed_dict[system_names] = ps
+            else:
+                ties += 1
+        self.pps_dict = reformed_dict       
+        
+        print "filtered %d ties" % ties
+        return ties
+    
+    def get_multiranked_sentence(self):
+        """
+        It reconstructs a single parallel sentence object with a gathered discrete [1-9] 
+        ranking out of the pairwise comparisons that exist in the pairwise parallel sentence instances
+        @return: a parallel sentence
+        @rtype: L{ParallelSentence} 
+        """
+        rank_per_system = {}
+        translations_per_system = {}
+        
+        #first iterate and make a sum of the rank per system name        
+        for (system_a, system_b), parallelsentence in self.pps_dict.iteritems():
+            #get the rank value (0, -1, 1)
+            rank = int(parallelsentence.get_rank())
+            
+            #rank value adds up on the first system's rank
+            #and subtracts from the seconds system's
+            try:
+                rank_per_system[system_b] += rank
+            except KeyError:
+                rank_per_system[system_b] = rank
+            try:
+                rank_per_system[system_a] -= rank
+            except KeyError:
+                rank_per_system[system_a] = -1 * rank
+            
+            #also gather in a dict the translations per system name, in order to have easy access later
+            translations_per_system[system_a] = parallelsentence.get_translations()[1]
+            translations_per_system[system_b] = parallelsentence.get_translations()[0]
+
+        
+        #normalize ranks
+        i = 0
+        prev_rank = None
+        translations_new_rank = [] #list that gathers all the translations
+                
+        #iterate through the system outputs, sorted by their rank
+        #and increment their rank only if there is no tie
+        systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
+        for system in systems:
+            #if there is no tie                
+            if rank_per_system[system] != prev_rank: 
+                i += 1
+                    
+            #print "system: %s\t%d -> %d" % (system, rank_per_system[system] , i)
+#                print i, system,
+            prev_rank = rank_per_system[system]
+            translation = translations_per_system[system]
+            translation.add_attribute(self.rank_name, str(i))
+            translations_new_rank.append(translation)
+        
+        #get the values of the first sentence as template
+        source = self.pps_dict.values()[0].get_source()
+        reference = self.pps_dict.values()[0].get_reference()
+        attributes = self.pps_dict.values()[0].get_attributes()
+        
+        return ParallelSentence(source, translations_new_rank, reference, attributes)         
+        
     
     def get_pairwise_parallelsentence(self, system_names, directed = False):
         """
@@ -192,7 +284,7 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         @param order: whether the order of the systems in the tuple is important, or not
         @type order: boolean
         @return: the pairwise parallel sentence that contains the outputs of the two given systems
-        @rtype: L{sentence.pairwiseparallelsentence.PairwiseParallelSentence}
+        @rtype: L{PairwiseParallelSentence}
         """
             
         try:

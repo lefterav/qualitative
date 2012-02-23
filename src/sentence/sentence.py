@@ -51,6 +51,9 @@ class SimpleSentence(object):
         """
         return self.attributes
 
+    def get_rank(self):
+        return self.attributes["rank"]
+
     def add_attribute(self, key, value):
         self.attributes[key] = value
 
