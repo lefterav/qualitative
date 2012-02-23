@@ -13,15 +13,21 @@ class DataSet(object):
     """
     A wrapper over a list of parallelsentences. It offers convenience functions for features and properties that 
     apply to the entire set of parallelsentences altogether
+    @ivar parallelsentences: a list of the contained parallel sentence instances
+    @type parallelsentences: [L{ParallelSentence}, ...]  
+    @ivar attribute_names: (optional) keeps track of the attributes that can be found in the contained parallel sentences
+    @type attribute_names: [str, ...]
+    @ivar attribute_names_found: remembers if the attribute names have been set
+    @type attribute_names_found: boolean
     """
 
     def __init__(self, parallelsentence_list = [], attributes_list = [], annotations = []):
         """
         @param parallelsentence_list: the parallelsentences to be wrapped in the dataset
-        @type parallelsentence_list: list
+        @type parallelsentence_list: [L{ParallelSentence}, ...]
         @param attributes_list: if the names of the attributes for the parallelsentences are known, they can 
         be given here, in order to avoid extra processing. Otherwise they will be computed when needed.
-        @type list
+        @type [str, ...]
         @param annotations: Not implemented
         @type list     
         """
@@ -169,7 +175,13 @@ class DataSet(object):
     def get_translations_count_vector(self):
         return [len(ps.get_translations()) for ps in self.get_parallelsentences()]
             
-            
+    
+    def remove_ties(self):
+        """
+        Modifies the current dataset by removing ranking ties        
+        """
+        for ps in self.parallelsentences:
+            ps.remove_ties()  
             
     
     """

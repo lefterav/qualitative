@@ -142,19 +142,19 @@ class GenericXmlReader(GenericReader):
         tgtXMLentries = xml_entry.getElementsByTagName(self.TAG["tgt"])
         refXML = xml_entry.getElementsByTagName(self.TAG["ref"])
         
-        src = self.__read_simplesentence__(srcXML[0])
+        src = self._read_simplesentence(srcXML[0])
         
         #Create a list of SimpleSentence objects out of the object
-        tgt = map(lambda tgtXML: self.__read_simplesentence__(tgtXML), tgtXMLentries) 
+        tgt = [self._read_simplesentence(tgtXML) for tgtXML in tgtXMLentries if tgtXML.childNodes] 
         
         ref = SimpleSentence()
         try:    
-            ref = self.__read_simplesentence__(refXML[0])
+            ref = self._read_simplesentence(refXML[0])
         except LookupError:
             pass
         
         #Extract the XML features and attach them to the ParallelSentenceObject
-        attributes = self.__read_attributes__(xml_entry)
+        attributes = self._read_attributes(xml_entry)
         
         #TODO: fix this language by getting from other parts of the sentence
         if not self.TAG["langsrc"]  in attributes:
@@ -183,13 +183,14 @@ class GenericXmlReader(GenericReader):
             newssentences.append(curJudgedSentence)
         return newssentences
     
-    def __read_simplesentence__(self, xml_entry):
-        return SimpleSentence(self.__read_string__(xml_entry), self.__read_attributes__(xml_entry))
+    def _read_simplesentence(self, xml_entry):
+        return SimpleSentence(self._read_string(xml_entry), self._read_attributes(xml_entry))
     
-    def __read_string__(self, xml_entry):
+    def _read_string(self, xml_entry):
         return unescape(xml_entry.childNodes[0].nodeValue.strip()) #.encode('utf8')
+
     
-    def __read_attributes__(self, xml_entry):
+    def _read_attributes(self, xml_entry):
         """
         @return: a dictionary of the attributes of the current sentence {name:value}
         """
