@@ -31,14 +31,45 @@ print soap_client
 #serverId = soap_client.service.getServerId()
 #print serverId
 
-# create soapProperty object with user id
-userId = soap_client.factory.create('soapProperty')
-userId['key'] = 'user_id'
-userId['value'] = '1393'
 
-# get licence data string
-licenseDataStr = soap_client.service.registerClient([userId])[0]['value']
-#print licenseDataStr
+license_data_filename = "license.dat"
+USER_ID = '1359'   #if license doesn't work, delete license.dat and change user id
+
+def _update_license(response):
+    """
+    Function to call every time we get a response that may change the license. It extracts the license string from the 
+    response and updates the text file. Then it returns the license string.
+    @return: the license string
+    @rtype: str
+    """
+    licenseDataStr = response[0]['value']
+    license_data_file = open(license_data_filename, 'w')
+    license_data_file.write(licenseDataStr)
+    license_data_file.close()
+    return licenseDataStr
+
+
+#register only once
+try:
+    license_data_file = open(license_data_filename, 'r')
+    print "reusing stored license"
+    licenseDataStr = license_data_file.readline().strip()
+    license_data_file.close()
+    
+except IOError:
+    
+    print "probably new user, obtaining new license"
+    # create soapProperty object with user id
+    userId = soap_client.factory.create('soapProperty')
+    userId['key'] = 'user_id'
+    userId['value'] = USER_ID
+
+    # get licence data string
+    register_client_response = soap_client.service.registerClient([userId])
+    licenseDataStr = _update_license(register_client_response)
+    
+print licenseDataStr
+
 
 # create soapProperty object with license data
 licenseData = soap_client.factory.create('soapProperty')
@@ -48,10 +79,11 @@ licenseData['value'] = licenseDataStr
 # create soapProperty object with license.user_id
 userId = soap_client.factory.create('soapProperty')
 userId['key'] = 'license.user_id'
-userId['value'] = '1393'
+userId['value'] = USER_ID
 
 # get session id
 sessionIdStr = soap_client.service.requestClientSession([licenseData, userId])
+
 #print sessionIdStr
 
 # release client session in any case
@@ -97,19 +129,20 @@ try:
     checkStyle['value'] = 'true'
     
     # create soapProperty object with check_terms
-    checkTerms = soap_client.factory.create('soapProperty')
-    checkTerms['key'] = 'check_terms'
-    checkTerms['value'] = 'MT-preediting-DE-EN.modules.terms'
+#    checkTerms = soap_client.factory.create('soapProperty')
+#    checkTerms['key'] = 'check_terms'
+#    checkTerms['value'] = 'MT-preediting-DE-EN.modules.terms'
     ###check_terms: comma-separated list of term sets
     
     print soap_client.service.getLanguageOptions('de')
     #aaa
     SOAPProperty = [licenseData, userId, sessionId, \
-                    textLang, textType, checkSpelling, checkGrammar, checkStyle, checkTerms]
+                    textLang, textType, checkSpelling, checkGrammar, checkStyle]
     print SOAPProperty
     
     resp = soap_client.service.checkDocumentMtom(SOAPProperty, text64, sessionIdStr, checkId)
     print resp
+    
 finally:
     soap_client.service.releaseClientSession(sessionIdStr)
 
