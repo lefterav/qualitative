@@ -8,6 +8,7 @@ from xml.sax.saxutils import XMLGenerator
 from xml.sax.xmlreader import AttributesImpl
 from io.dataformat.jcmlformat import JcmlFormat
 import shutil
+from sentence.sentence import SimpleSentence
 
 class Parallelsentence2Jcml(object):
     '''
@@ -37,11 +38,19 @@ class Parallelsentence2Jcml(object):
             generator.startElement(self.TAG["sent"], parallelsentence.get_attributes())
             
             src = parallelsentence.get_source()
-                        
-            generator._write("\n\t\t")
-            generator.startElement(self.TAG["src"], src.get_attributes())
-            generator.characters(src.get_string())
-            generator.endElement(self.TAG["src"])
+            
+            if isinstance(src, SimpleSentence):            
+                                    
+                generator._write("\n\t\t")
+                generator.startElement(self.TAG["src"], src.get_attributes())
+                generator.characters(src.get_string())
+                generator.endElement(self.TAG["src"])
+            elif isinstance(src, list):
+                for src in parallelsentence.get_source():
+                    generator._write("\n\t\t")
+                    generator.startElement(self.TAG["src"], src.get_attributes())
+                    generator.characters(src.get_string())
+                    generator.endElement(self.TAG["src"])
             
             for tgt in parallelsentence.get_translations():
                 generator._write("\n\t\t")

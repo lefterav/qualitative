@@ -1,5 +1,5 @@
 '''
-Created on 23 Φεβ 2012
+Created on 23 Feb 2012
 
 @author: lefterav
 '''
@@ -23,15 +23,20 @@ class CoupledDataSet(DataSet):
         '''
         self.parallelsentences = []
         
+        from itertools import combinations
         
         if isinstance(existing_item, DataSet):
             dataset = existing_item
             parallelsentences = dataset.get_parallelsentences()
-            for i in range(len(parallelsentences)):
-                for j in range(i, len(parallelsentences)):
-                    new_coupled_parallelsentence = CoupledParallelSentence(parallelsentences[i], parallelsentences[j])
-                    self.parallelsentences.append(new_coupled_parallelsentence)
-        
+            
+            ps_combinations = combinations(parallelsentences, 2)
+            
+            self.parallelsentences = [CoupledParallelSentence(ps1, ps2) for ps1, ps2 in ps_combinations]
+#            
+#            for ps1, ps2 in combinations:
+#                new_coupled_parallelsentence = CoupledParallelSentence(parallelsentences[i], parallelsentences[j])
+#                self.parallelsentences.append(new_coupled_parallelsentence)
+#        
         
                     
 
