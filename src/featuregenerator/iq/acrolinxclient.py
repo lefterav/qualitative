@@ -24,6 +24,7 @@ from suds.client import Client
 url = "http://msv-3231.sb.dfki.de:8031/acrolinx/services/core-no-mtom?wsdl"
 soap_client = Client(url)
 print soap_client
+import base64
 
 #print soap_client
 #ping = soap_client.service.ping()
@@ -101,7 +102,7 @@ try:
     
     text = 'Das ist meine Erste versuch.'
     # encode text to base64
-    text64 = text.encode('base64', 'strict')
+    text64 = base64.standard_b64encode(text)
     
     # create soapProperty object with text_lang
     textLang = soap_client.factory.create('soapProperty')
@@ -129,9 +130,9 @@ try:
     checkStyle['value'] = 'true'
     
     # create soapProperty object with check_terms
-#    checkTerms = soap_client.factory.create('soapProperty')
-#    checkTerms['key'] = 'check_terms'
-#    checkTerms['value'] = 'MT-preediting-DE-EN.modules.terms'
+    checkTerms = soap_client.factory.create('soapProperty')
+    checkTerms['key'] = 'check_terms'
+    checkTerms['value'] = 'MT-postediting-DE-EN.modules.terms'
     ###check_terms: comma-separated list of term sets
     
     print soap_client.service.getLanguageOptions('de')
