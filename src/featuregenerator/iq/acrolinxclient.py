@@ -17,6 +17,7 @@ from suds.client import Client
 import base64
 import re
 import urllib
+from xml.etree import ElementTree as ET
 
 host = "msv-3231.sb.dfki.de:8031"
 # create suds client
@@ -63,7 +64,7 @@ def _update_license(response):
     return licenseDataStr
 
 
-def _read_report_xml(report_xml):
+def _read_report_url(report_url):
     """
     Processes the xml report by Acrolinx IQ and returns a dict of the corrections suggested
     @param report_xml: the content of the report
@@ -72,7 +73,29 @@ def _read_report_xml(report_xml):
     @rtype: {str: str}
     @todo: write the function that reads the XML
     """
-    pass
+    feed = urllib.urlopen(report_url)
+    tree = ET.parse(feed)
+    
+    # spelling
+    spelling = tree.find('body/results/spelling')
+    spellingFlags = spelling.find('listOfSpellingFlags')
+    for sp in spellingFlags.findall('spellingFlag'):
+        orig = sp.find('match')
+        print orig.text, orig.attrib
+        for sugg in sp.findall('suggestions/suggestion'):
+            print sugg.text
+    
+    # grammar
+    grammar = tree.find('body/results/grammar')
+    gLangFlags = grammar.find('listOfLangFlags')
+    for gLf in gLangFlags.findall('langFlag'):
+        print gLf.find('description').text
+    
+    # style
+    style = tree.find('body/results/style')
+    sLangFlags = style.find('listOfLangFlags')
+    for sLf in sLangFlags.findall('langFlag'):
+        print sLf.find('description').text
 
 
 def _attributes2soapproperties(attributes = {}):
@@ -196,10 +219,10 @@ try:
     #fix the host part of the url
     report_url = re.sub("http://[^/]*/", "http://{0}/".format(host), report_url)
     print "retrieving report from ", report_url
-    report_xml = urllib.urlopen(report_url).read()
+    #report_xml = urllib.urlopen(report_url).read()
     
     #@todo: write the function that reads that
-    attributes = _read_report_xml(report_xml)
+    attributes = _read_report_url(report_url)
     
     
 finally:
