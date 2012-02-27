@@ -34,7 +34,7 @@ print soap_client
 
 
 license_data_filename = "license.dat"
-USER_ID = '1359'   #if license doesn't work, delete license.dat and change user id OR remove access id
+USER_ID = '1360'   #if license doesn't work, delete license.dat and change user id OR remove access id
 
 def _get_property(response, key):
     """
@@ -76,26 +76,83 @@ def _read_report_url(report_url):
     feed = urllib.urlopen(report_url)
     tree = ET.parse(feed)
     
-    # spelling
-    spelling = tree.find('body/results/spelling')
-    spellingFlags = spelling.find('listOfSpellingFlags')
-    for sp in spellingFlags.findall('spellingFlag'):
-        orig = sp.find('match')
-        print orig.text, orig.attrib
-        for sugg in sp.findall('suggestions/suggestion'):
-            print sugg.text
+    atts = {}
     
+    # checking stats
+    resStats = tree.find('body/statistics/checkingStats/resultStats')
+    
+    for item in resStats.attrib.items():
+        atts['%s_%s' % (resStats.tag, item[0])] = item[1]
+    
+    for stat in resStats.getchildren():
+        for item in stat.attrib.items():
+            atts['%s_%s' % (stat.tag, item[0])] = item[1]
+            
     # grammar
     grammar = tree.find('body/results/grammar')
     gLangFlags = grammar.find('listOfLangFlags')
     for gLf in gLangFlags.findall('langFlag'):
-        print gLf.find('description').text
+        errorName = gLf.find('description').text
+        
+        # No. of particular errors
+        if not 'grammar:%s' % errorName in atts:
+            atts['grammar:%s' % errorName] = 1
+        else:
+            atts['grammar:%s' % errorName] += 1
+        
+        # No. of matches for particular error
+        if not 'grammar:%s_matches' % errorName in atts:
+            atts['grammar:%s_matches' % errorName] = len(gLf.findall('match'))
+        else:
+            atts['grammar:%s_matches' % errorName] += len(gLf.findall('match'))
+        
+        # No. of chars influenced by particular error
+        begin = 999999
+        end = 0
+        for match in gLf.findall('match'):
+            if int(match.get('begin')) < begin: begin = int(match.get('begin'))
+            if int(match.get('end')) > end: end = int(match.get('end'))
+        diff = end - begin
+        if not 'grammar:%s_chars' % errorName in atts:
+            atts['grammar:%s_chars' % errorName] = diff
+        else:
+            atts['grammar:%s_chars' % errorName] += diff
     
     # style
     style = tree.find('body/results/style')
     sLangFlags = style.find('listOfLangFlags')
     for sLf in sLangFlags.findall('langFlag'):
-        print sLf.find('description').text
+        errorName = sLf.find('description').text
+        
+        # No. of particular errors
+        if not 'style:%s' % errorName in atts:
+            atts['style:%s' % errorName] = 1
+        else:
+            atts['style:%s' % errorName] += 1
+        
+        # No. of matches for particular error
+        if not 'style:%s_matches' % errorName in atts:
+            atts['style:%s_matches' % errorName] = len(sLf.findall('match'))
+        else:
+            atts['style:%s_matches' % errorName] += len(sLf.findall('match'))
+        
+        # No. of chars influenced by particular error
+        begin = 999999
+        end = 0
+        for match in sLf.findall('match'):
+            if int(match.get('begin')) < begin: begin = int(match.get('begin'))
+            if int(match.get('end')) > end: end = int(match.get('end'))
+        diff = end - begin
+        if not 'style:%s_chars' % errorName in atts:
+            atts['style:%s_chars' % errorName] = diff
+        else:
+            atts['style:%s_chars' % errorName] += diff
+    
+    # make strings from ints
+    for item in atts.items():
+        atts[item[0]] = str(item[1])
+    
+    return atts
 
 
 def _attributes2soapproperties(attributes = {}):
@@ -167,7 +224,8 @@ try:
     
     ### TEXT SETTINGS
     
-    text = 'Dear clients, we would like to informm you that during the latest commerccial update we recieved marvelous products, which wwe can offers in really good prices. Please keeps in touch for further notice. This break every possibility'
+    #text = 'Dear clients, we would like to informm you that during the latest commerccial update we recieved marvelous products, which wwe can offers in really good prices. Please keeps in touch for further notice. This break every possibility'
+    text = 'This break every possibility. Dear clients, we would like to informm you that during the latest commerccial update we recieved marvelous products, which wwe can offers in really good prices. Please keeps in touch for further notice. This break every possibility.'
     # encode text to base64
     text64 = base64.standard_b64encode(text)
     
@@ -204,7 +262,6 @@ try:
     ###check_terms: comma-separated list of term sets
     
 #    print soap_client.service.getLanguageOptions('en')
-    #aaa
     soap_properties = [licenseData, userId, sessionId, \
                     textLang, textType, checkSpelling, checkGrammar, checkStyle, checkTerms]
     print soap_properties
@@ -223,6 +280,8 @@ try:
     
     #@todo: write the function that reads that
     attributes = _read_report_url(report_url)
+    
+    print attributes
     
     
 finally:
