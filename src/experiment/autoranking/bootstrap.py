@@ -10,6 +10,8 @@ from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatur
 from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator 
 import pkgutil
 import orange
+import os
+import shutil
 
 #from experiment.utils.ruffus_utils import (touch, sys_call,
 #                                           main_logger as log,
@@ -22,7 +24,6 @@ CONFIG_TEMPLATE = """
 path = /home/elav01/taraxu_data/selection-mechanism/ml4hmt/experiment/109
 source_language = de
 target_language = en
-
 
 [annotation]
 filenames = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-test-devpart.jcml
@@ -78,7 +79,7 @@ merge_overlapping = True
 orange_minimal = False
 
 [training]
-filenames = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt08.if.partial.jcml
+filenames = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt08.test.jcml
 #,/home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-train.partial.if.jcml
 class_name = rank
 meta_attributes=id,testset
@@ -90,7 +91,8 @@ classTreatment=Ignore
 classifier=Bayes
 
 [testing]
-filenames = /home/elav01/taraxu_data/wmt-annotated/wmt10.ex.3.sample.jcml,/home/elav01/workspace/TaraXUscripts/data/multiclass/wmt08.if.partial.jcml
+filename = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-test-devpart.jcml
+#,/home/elav01/workspace/TaraXUscripts/data/multiclass/wmt08.if.partial.jcml
 """
 
 
@@ -173,29 +175,64 @@ class ExperimentConfigParser(ConfigParser):
             if self.get(lm_name, "language") == language:        
                 return lm_name
         return ""
+
+    def get_path(self):
+        return self.path
+
+    def prepare_dir(self, continue_step = None):
+        
+        path = self.get("general", "path")
+        
+        #first check whether the path of the "pool" exists or create it
+        try:
+            existing_files = os.listdir(path)
+        except:
+            os.makedirs(path)
+            existing_files = []
+        
+        if continue_step:
+            current_step_id = continue_step
+            path = os.path.join(path, str(current_step_id))
+        else:
+            current_step_id = self._get_new_step_id(existing_files)
+            path = os.path.join(path, str(current_step_id))
+            os.mkdir(path)
+               
+        os.chdir(path)
+        #copy all configuration settings to the new directory
+        new_configfile = open("experiment.cfg",'w')
+        self.write(new_configfile)
+        new_configfile.close()
+        self.path = path
+        return path
+    
+    def _get_new_step_id(self, existing_files):
+        #subdirectories should only have as name the integer id of the experiment
+        filename_ids = []
+        for filename in existing_files: #@todo add check if is directory or do better listing
+            try:
+                filename_ids.append(int(filename))
+            except:
+                pass
+        current_step_id = 1
+        
+        #add one to the get the id of this experiment
+        if filename_ids:
+            highestnum = max(filename_ids)
+            current_step_id = highestnum + 1
+        return current_step_id 
+
+try:
+    configfilename = os.sys.argv[1]
+except IndexError:
+    configfilename = CONFIG_FILENAME
     
 # global configuration
-#cfg = ExperimentConfigParser()
-#cfg.readfp(StringIO.StringIO(CONFIG_TEMPLATE))  # set up defaults
+cfg = ExperimentConfigParser()
+cfg.readfp(StringIO.StringIO(CONFIG_TEMPLATE))  # set up defaults
 #cfg.read(CONFIG_FILENAME)  # add user-specified settings
-#
-#def genome_path():
-#    'returns the path to the genome fasta file (and downloads it if necessary)'
-#    genome = worldbase(cfg.get('DEFAULT', 'worldbase_genome'), download=True)
-#    return genome.filepath
-#
-#
-#@files(None, genome_path())
-#def get_genome(_, out_genome_path, touch_file=True):
-#    'download the worldbase genome'
-#    genome = worldbase(cfg.get('DEFAULT', 'worldbase_genome'), download=True)
-#    if touch_file:
-#        touch(out_genome_path)
-#    return genome
-#
-#
-#@files(None, '%s.chrom.sizes' % genome_path())
-#def get_chrom_sizes(_, out_sizes):
-#    'retrieve the chromosome sizes for the current genome from UCSC'
-#    cmd = 'fetchChromSizes %s > %s' % (cfg.get('DEFAULT', 'genome'), out_sizes)
-#    sys_call(cmd, file_log=False)
+cfg.read(configfilename)  # add user-specified settings
+
+path = cfg.prepare_dir()
+#os.chdir(path)
+
