@@ -31,12 +31,15 @@ class OrangeData:
             print "desired attributes" , desired_attributes
             print "meta attributes" , meta_attributes
             #get the data in Orange file format
-            fileData = self._getOrangeFormat(dataSet, class_name, desired_attributes, meta_attributes)
+            orange_file = self._get_temp_file(chosen_orangefilename)
+            self._getOrangeFormat(orange_file, dataSet, class_name, desired_attributes, meta_attributes)
             
             #write the data in a temporary file
             #not secure but we trust our hard disk
-            orangefilename = self._writeTempFile(fileData, chosen_orangefilename)
-
+            orangefilename = orange_file.name
+            orange_file.close()
+            
+            dataSet = None
             #load the data
             print "Feeding file to Orange"
             self.data = orange.ExampleTable(orangefilename)
@@ -178,6 +181,14 @@ class OrangeData:
         
 
     
+    def _get_temp_file(self, orangefilename):
+        if not orangefilename:
+            orangefilename = mktemp(dir=u'.', suffix=u'.tab')
+        
+        orange_file = open(orangefilename, 'w')
+        return orange_file
+            
+    
     def _writeTempFile(self, data, orangefilename):
         if not orangefilename:
             orangefilename = mktemp(dir=u'.', suffix=u'.tab')
@@ -258,18 +269,19 @@ class OrangeData:
         output = line_1 + line_2 + line_3
         return output
     
+
     
-    def _getOrangeFormat(self, dataset, class_name, desired_attributes=[], meta_attributes=[]):
+    def _getOrangeFormat(self, orange_file, dataset, class_name, desired_attributes=[], meta_attributes=[]):
         sys.stderr.write("retrieving attribute names\n")
         attribute_names = dataset.get_all_attribute_names()
 
         sys.stderr.write("processing orange header\n") 
-        output = self._get_orange_header(dataset, class_name, attribute_names, desired_attributes, meta_attributes)
+        header_output = self._get_orange_header(dataset, class_name, attribute_names, desired_attributes, meta_attributes)
         sys.stderr.write("processing content\n")
-
-        outputlines = []
+        orange_file.write(header_output)
  
         for psentence in dataset.get_parallelsentences():
+            outputlines = []
             #sys.stderr.write("getting nested attributes\n")
             nested_attributes = psentence.get_nested_attributes()
             nested_attribute_names = nested_attributes.keys()
@@ -294,8 +306,11 @@ class OrangeData:
             except:
                 outputlines.append("\t")
             outputlines.append("\n")
-        output += "".join(outputlines)
-        return output
+            
+            
+            orange_file.writelines(outputlines)
+            
+        #return output
     
     
     def split_data(self, percentage):
