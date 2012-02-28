@@ -16,6 +16,8 @@ class LanguageFeatureGenerator(FeatureGenerator):
     Extends the base FeatureGenerator class, by providing basic checking/functioning for language-specific feature processes.
     This way, this class can be inhereted and extended for feature categories that can only correspond to a particular language
     specified upon the initialization of the object
+    @ivar lang: the language abrev. code
+    @type lang: str
     """
     def __init__(self, lang):
         """
