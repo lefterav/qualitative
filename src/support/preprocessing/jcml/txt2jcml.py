@@ -16,6 +16,10 @@ if __name__ == '__main__':
     
     parser.add_option("-t", "--translation", dest="target_filename",
                       help="read one translation output sentence per line from FILE", metavar="FILE")
+    
+    parser.add_option("-m", "--system", dest="system_name",
+                      help="system name")
+    
   
     parser.add_option("-r", "--reference", dest="reference_filename",
                       help="read one reference sentence per line from FILE", metavar="FILE")
@@ -62,7 +66,7 @@ if __name__ == '__main__':
         score = score_file.readline().strip()
         
         source_sentence = SimpleSentence(source_line)
-        target_sentences = [SimpleSentence(target_line, {"score": score})]
+        target_sentences = [SimpleSentence(target_line, {"score": score,  "system" : opt.system_name})]
         reference_sentence = SimpleSentence(reference_line)
         
         ps_atts =  {"langsrc" : opt.langsrc ,
