@@ -3,10 +3,11 @@ Created on 23 Feb 2012
 
 @author: lefterav
 '''
+from itertools import combinations
+import sys
 from dataset import DataSet
 from coupledparallelsentence import CoupledParallelSentence
 from io.input.orangereader import OrangeData
-import sys
 
 class CoupledDataSet(DataSet):
     '''
@@ -22,21 +23,34 @@ class CoupledDataSet(DataSet):
         @type existing_item: L{DataSet} or [L{CoupledParallelSentence}, ...]
         '''
         self.parallelsentences = []
-        
-        from itertools import combinations
+        self.attribute_names_found = False
+        self.attribute_names = []
         
         if isinstance(existing_item, DataSet):
             dataset = existing_item
             parallelsentences = dataset.get_parallelsentences()
-            
             ps_combinations = combinations(parallelsentences, 2)
-            
             self.parallelsentences = [CoupledParallelSentence(ps1, ps2) for ps1, ps2 in ps_combinations]
-#            
-#            for ps1, ps2 in combinations:
-#                new_coupled_parallelsentence = CoupledParallelSentence(parallelsentences[i], parallelsentences[j])
-#                self.parallelsentences.append(new_coupled_parallelsentence)
-#        
+            
+            
+    def get_single_set(self):
+        '''
+        Reconstructs the original data set, with only one sentence per entry.
+        @return: Simple dataset that contains the simplified parallel sentences
+        @rtype: L{DataSet}
+        '''
+        single_parallelsentences = {}
+        for coupled_parallelsentence in self.parallelsentences:
+            ps1, ps2 = coupled_parallelsentence.get_couple()
+            single_parallelsentences[ps1.get_tuple_id()] = ps1
+            single_parallelsentences[ps2.get_tuple_id()] = ps2
+        
+        sorted_keys = sorted(single_parallelsentences)
+        sorted_ps = [single_parallelsentences[key] for key in sorted_keys]
+        return DataSet(sorted_ps)
+    
+    def get_nested_attribute_names(self):
+        return []
         
                     
 
@@ -116,19 +130,23 @@ class OrangeCoupledDataSet(OrangeData):
         return output
     
     
-    def _getOrangeFormat(self, dataset, class_name, desired_attributes=[], meta_attributes=[]):
+    def _getOrangeFormat(self, orange_file, dataset, class_name, desired_attributes=[], meta_attributes=[]):
         sys.stderr.write("retrieving attribute names\n")
         attribute_names = dataset.get_all_attribute_names()
 
         sys.stderr.write("processing orange header\n") 
         output = self._get_orange_header(dataset, class_name, attribute_names, desired_attributes, meta_attributes)
         sys.stderr.write("processing content\n")
-
-        outputlines = []
+        
+        orange_file.write(output)
  
         for psentence in dataset.get_parallelsentences():
+            outputlines = []
             #sys.stderr.write("getting nested attributes\n")
             nested_attributes = psentence.get_nested_attributes()
+            if nested_attributes == {}:
+                nested_attributes = psentence.get_attributes()
+            
             nested_attribute_names = nested_attributes.keys()
             
             #sys.stderr.write("printing content\n")
@@ -155,8 +173,6 @@ class OrangeCoupledDataSet(OrangeData):
             except:
                 outputlines.append("\t")
             outputlines.append("\n")
-        output += "".join(outputlines)
-        return output
-    
+            orange_file.writelines(outputlines)
                 
                 

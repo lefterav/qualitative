@@ -53,44 +53,43 @@ cores = 2
 parallel_feature_functions = []
 
 
-
-path = cfg.get('general','path')
-try:
-    os.mkdir(path)
-except OSError:
-    pass
+path = cfg.get_path()
 os.chdir(path)
+source_language =  cfg.get("general", "source_language")
+target_language =  cfg.get("general", "target_language")
+training_sets = cfg.get("training", "filenames").split(",")
+testing_set = cfg.get("testing", "filename")
+all_sets = training_sets
+all_sets.append(testing_set)
 
-@split(None, "*orig.jcml", cfg.get("annotation", "filenames").split(","))
+print all_sets
+
+@split(None, "*orig.jcml", all_sets)
 def data_fetch(input_file, output_files, external_files):
     """
     Fetch training file and place it comfortably in the working directory
+    Files are expected to contain the set name, followed by the ending .jcml
     """
     for external_file in external_files:
         print "Moving here external file ", external_file
-        (path, setname) = re.findall("(.*)/([^/]+)\.jcml", external_file)[0]
+        basename = re.findall("(.*).jcml", os.path.basename(external_file))[0]
+        basename = basename.replace(".", "-")
         
-        output_file = "%s.%s" % (setname, "orig.jcml")
+        output_file = "{0}.{1}".format(basename, "orig.jcml")
         shutil.copy(external_file, output_file)
-
-
-#def features_parse():
-#    pass
-
-
-
-
-
+        
             
 @split(data_fetch, "*.part.jcml", cores)
 def original_data_split(input_files, output_files, parts):
+    """
+    Split the datasets to parts, in order to perform heavy tasks
+    """
     for input_file in input_files:
+        print "splitting file", input_file
         re_split = "([^.]*)\.orig\.(jcml)"
         XmlReader(input_file).split_and_write(parts, re_split)
 
 
-source_language =  cfg.get("general", "source_language")
-target_language =  cfg.get("general", "target_language")
        
 @active_if(cfg.exists_parser(source_language))
 @transform(original_data_split, suffix("part.jcml"), "part.parsed.%s.f.jcml" % source_language, source_language, cfg.get_parser_name(source_language))
@@ -103,6 +102,9 @@ def features_berkeley_target(input_file, output_file, target_language, parser_na
     features_berkeley(input_file, output_file, target_language)
 
 def features_berkeley(input_file, output_file, language):
+    """
+    Parsing
+    """
     parser = cfg.get_parser(language) #this is bypassing the architecture, but avoids wasting memory for the loaded parser
     saxjcml.run_features_generator(input_file, output_file, [parser])
     
@@ -167,6 +169,7 @@ def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, l
 
 #active_parallel_feature_functions = [function for function in parallel_feature_functions if function.is_active]
 
+#first part of the regular expression is the basename of the dataset
 @collate(parallel_feature_functions, regex(r"([^.]+)\.(.+)\.f.jcml"),  r"\1.all.f.jcml")
 def features_gather(singledataset_annotations, gathered_singledataset_annotations):
     tobermerged = singledataset_annotations

@@ -183,8 +183,18 @@ class DataSet(object):
         for ps in self.parallelsentences:
             ps.remove_ties()  
     
+    def get_size(self):
+        return len(self.parallelsentences)
     
-
+    def get_head_sentences(self, n):
+        return self.parallelsentences[:n]
+    
+    def get_tail_sentences(self, n):
+        return self.parallelsentences[-1 * n:]
+    
+    def split(self, ratio):
+        size = int(round(ratio * len(self.parallelsentences)))
+        return DataSet(self.parallelsentences[:size-2]), DataSet(self.parallelsentences[size-1:]) 
     
     
     """

@@ -45,7 +45,7 @@ class Parallelsentence2Jcml(object):
                 generator.startElement(self.TAG["src"], src.get_attributes())
                 generator.characters(src.get_string())
                 generator.endElement(self.TAG["src"])
-            elif isinstance(src, list):
+            elif isinstance(src, tuple):
                 for src in parallelsentence.get_source():
                     generator._write("\n\t\t")
                     generator.startElement(self.TAG["src"], src.get_attributes())
