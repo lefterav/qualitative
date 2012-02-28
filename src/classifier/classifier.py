@@ -21,7 +21,7 @@ class OrangeClassifier():
         resultvector = []
         for instance in orange_table:
             value, distribution = self.classifier.__call__(instance, return_type)
-            resultvector.append(value.value, distribution[value.value])
+            resultvector.append((value.value, distribution))
         return resultvector 
             
 

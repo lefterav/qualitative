@@ -12,14 +12,16 @@ from classifier.classifier import OrangeClassifier
 
 if __name__ == '__main__':
     
-    input_file = "/home/lefterav/taraxu_data/wmt12/qe/training_set/training.jcml"
-    output_file = "/home/lefterav/taraxu_data/wmt12/qe/training_set/training.coupled.jcml"
+    input_file = "/home/elav01/taraxu_data/wmt12/qe/training_set/training.jcml"
+    output_file = "/home/elav01/taraxu_data/wmt12/qe/training_set/training.coupled.jcml"
     
     print "loading big set"
     simple_dataset = JcmlReader(input_file).get_dataset() 
     
     print "spliting set"
-    simple_dataset, a = simple_dataset.split(0.2)
+    simple_dataset, a = simple_dataset.split(0.05)
+    
+    Parallelsentence2Jcml(simple_dataset.get_parallelsentences()).write_to_file('/home/elav01/taraxu_data/wmt12/qe/training_set/training-sample.jcml')
     simple_trainset, simple_testset = simple_dataset.split(0.9)
     simple_dataset = None
     
@@ -28,7 +30,7 @@ if __name__ == '__main__':
     simple_trainset = None
     print "orange version of coupling training set"
     
-    meta_attributes = ["testset", "judgment-id", "langsrc", "langtgt", "ps1_judgement_id", "ps1_id", "ps2_id", "tgt-1_score" , "tgt-2_score"]
+    meta_attributes = ["testset", "judgment-id", "langsrc", "langtgt", "ps1_judgement_id", "ps1_id", "ps2_id", "tgt-1_score" , "tgt-2_score", "tgt-1_system" , "tgt-2_system"]
     
         
     orange_coupled_trainset = OrangeCoupledDataSet(coupled_trainset, "rank", [], meta_attributes, "trainset.tab")
@@ -41,7 +43,7 @@ if __name__ == '__main__':
     
     bayes_learner = BayesLearner()
     bayes_classifier = OrangeClassifier(bayes_learner(orange_coupled_trainset.get_data()))
-    bayes_classifier.classify_orange_table(orange_coupled_testset.get_data())
+    print bayes_classifier.classify_orange_table(orange_coupled_testset.get_data())
         
     
 #    Parallelsentence2Jcml(coupled_dataset.get_parallelsentences()).write_to_file(output_file)
