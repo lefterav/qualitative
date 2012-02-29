@@ -227,7 +227,11 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
 #        
         # get session id
         print "trying get session by giving properties ", log_in_soap_properties
-        self.sessionIdStr = self.soap_client.service.requestClientSession(log_in_soap_properties)
+        try:
+            self.sessionIdStr = self.soap_client.service.requestClientSession(log_in_soap_properties)
+        except Exception as e:
+            print e
+            
         
         #print sessionIdStr
         
