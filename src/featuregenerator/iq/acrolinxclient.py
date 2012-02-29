@@ -31,7 +31,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
     """
     
     
-    def __init__(self, lang, settings = {}, user_id = '1361', host = "msv-3231.sb.dfki.de:8031", wsdl_path = "/acrolinx/services/core-no-mtom?wsdl", protocol = "http"):
+    def __init__(self, lang, settings = {}, user_id = 'dfki-taraxu', host = "msv-3231.sb.dfki.de:8031", wsdl_path = "/acrolinx/services/core-no-mtom?wsdl", protocol = "http"):
         """
         @param lang: abrev. code for the language that this generator will be responsible for
         @type lang: str
@@ -48,7 +48,8 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         self.soap_client = Client(url)
         self.license_data_filename = "license.dat"
         self.user_id = user_id    #if license doesn't work, delete license.dat and change user id OR remove access id
-        self._initialize_session(settings)
+        self.settings = settings
+        self._initialize_session()
 
     def _get_property(self, response, key):
         """
@@ -59,8 +60,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         for soap_property in response:
             if soap_property['key'] == key:
                 return soap_property['value']
-                break
-        return None
+        raise KeyError
     
     def _update_license(self, response):
         """
@@ -71,11 +71,11 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         @return: the license string
         @rtype: str
         """
-        license_data_str = self._get_property(response, "license.data")
+        self.license_data_str = self._get_property(response, "license.data")
         license_data_file = open(self.license_data_filename, 'w')
-        license_data_file.write(license_data_str)
+        license_data_file.write(self.license_data_str)
         license_data_file.close()
-        return license_data_str
+        return self.license_data_str
     
     
     def _read_report_url(self, report_url):
@@ -107,18 +107,20 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         gLangFlags = grammar.find('listOfLangFlags')
         for gLf in gLangFlags.findall('langFlag'):
             errorName = gLf.find('description').text
+            errorName = errorName.replace(" ", "_")
+            errorName = errorName.replace(":", "_")
             
             # No. of particular errors
-            if not 'grammar:%s' % errorName in atts:
-                atts['grammar:%s' % errorName] = 1
+            if not 'grammar_%s' % errorName in atts:
+                atts['grammar_%s' % errorName] = 1
             else:
-                atts['grammar:%s' % errorName] += 1
+                atts['grammar_%s' % errorName] += 1
             
             # No. of matches for particular error
-            if not 'grammar:%s_matches' % errorName in atts:
-                atts['grammar:%s_matches' % errorName] = len(gLf.findall('match'))
+            if not 'grammar_%s_matches' % errorName in atts:
+                atts['grammar_%s_matches' % errorName] = len(gLf.findall('match'))
             else:
-                atts['grammar:%s_matches' % errorName] += len(gLf.findall('match'))
+                atts['grammar_%s_matches' % errorName] += len(gLf.findall('match'))
             
             # No. of chars influenced by particular error
             begin = 999999
@@ -127,10 +129,10 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
                 if int(match.get('begin')) < begin: begin = int(match.get('begin'))
                 if int(match.get('end')) > end: end = int(match.get('end'))
             diff = end - begin
-            if not 'grammar:%s_chars' % errorName in atts:
-                atts['grammar:%s_chars' % errorName] = diff
+            if not 'grammar_%s_chars' % errorName in atts:
+                atts['grammar_%s_chars' % errorName] = diff
             else:
-                atts['grammar:%s_chars' % errorName] += diff
+                atts['grammar_%s_chars' % errorName] += diff
         
         # style
         style = tree.find('body/results/style')
@@ -139,16 +141,16 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
             errorName = sLf.find('description').text
             
             # No. of particular errors
-            if not 'style:%s' % errorName in atts:
-                atts['style:%s' % errorName] = 1
+            if not 'style_%s' % errorName in atts:
+                atts['style_%s' % errorName] = 1
             else:
-                atts['style:%s' % errorName] += 1
+                atts['style_%s' % errorName] += 1
             
             # No. of matches for particular error
-            if not 'style:%s_matches' % errorName in atts:
-                atts['style:%s_matches' % errorName] = len(sLf.findall('match'))
+            if not 'style_%s_matches' % errorName in atts:
+                atts['style_%s_matches' % errorName] = len(sLf.findall('match'))
             else:
-                atts['style:%s_matches' % errorName] += len(sLf.findall('match'))
+                atts['style_%s_matches' % errorName] += len(sLf.findall('match'))
             
             # No. of chars influenced by particular error
             begin = 999999
@@ -157,10 +159,10 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
                 if int(match.get('begin')) < begin: begin = int(match.get('begin'))
                 if int(match.get('end')) > end: end = int(match.get('end'))
             diff = end - begin
-            if not 'style:%s_chars' % errorName in atts:
-                atts['style:%s_chars' % errorName] = diff
+            if not 'style_%s_chars' % errorName in atts:
+                atts['style_%s_chars' % errorName] = diff
             else:
-                atts['style:%s_chars' % errorName] += diff
+                atts['style_%s_chars' % errorName] += diff
         
         # make strings from ints
         for item in atts.items():
@@ -186,13 +188,13 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
             soap_properties.append(soap_property)
         return soap_properties   
         
-    def _initialize_session(self, settings):
-        
+    def _initialize_session(self):
+        settings = self.settings
         #register only once
         try:
             license_data_file = open(self.license_data_filename, 'r')
             print "reusing stored license"
-            license_data_str = license_data_file.readline().strip()
+            self.license_data_str = license_data_file.readline().strip()
             license_data_file.close()
             
         except IOError:
@@ -205,36 +207,27 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         
             # get licence data string
             register_client_response = self.soap_client.service.registerClient([userId])
-            license_data_str = self._update_license(register_client_response)
+            self._update_license(register_client_response)
             
-        print license_data_str
+        print self.license_data_str
         
 #        # create soapProperty object with license data
 #        # create soapProperty object with license.user_id
-        log_in_parameters = {'license.data' : license_data_str 
+        log_in_parameters = {'license.data' : self.license_data_str 
                            , 'license.user_id' : self.user_id }
         
         log_in_soap_properties = self._attributes2soapproperties(log_in_parameters)
-        
-#        license_data = self.soap_client.factory.create('soapProperty')
-#        license_data['key'] = 'license.data'
-#        license_data['value'] = license_data_str
-#        
-#        userId = self.soap_client.factory.create('soapProperty')
-#        userId['key'] = 'license.user_id'
-#        userId['value'] = self.user_id
 #        
         # get session id
         self.sessionIdStr = self.soap_client.service.requestClientSession(log_in_soap_properties)
         
         #print sessionIdStr
         
-            
+    def _start_new_check(self):
         # get check id
-        self.checkId = self.soap_client.service.getCheckId()
-            #print checkId
-            
-            ### TEXT SETTINGS
+        settings = self.settings
+        check_id = self.soap_client.service.getCheckId()
+
         if settings:
             soap_attributes = settings
         else:
@@ -247,10 +240,11 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
                                    client_session_id = self.sessionIdStr
                                     )
             
-            soap_attributes["license.data"] = license_data_str
+            soap_attributes["license.data"] = self.license_data_str
             soap_attributes["user.id"] = self.user_id
     
-        self.soap_properties = self._attributes2soapproperties(soap_attributes)
+        soap_properties = self._attributes2soapproperties(soap_attributes)
+        return check_id, soap_properties
         
         
         
@@ -263,38 +257,44 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         @rtype: {str: str} 
         """
         
-        #text = 'Dear clients, we would like to informm you that during the latest commerccial update we recieved marvelous products, which wwe can offers in really good prices. Please keeps in touch for further notice. This break every possibility'
-#            text = 'This break every possibility. Dear clients, we would like to informm you that during the latest commerccial update we recieved marvelous products, which wwe can offers in really good prices. Please keeps in touch for further notice. This break every possibility.'
-            # encode text to base64
-        text64 = base64.standard_b64encode(text)
+        try:
+            text64 = base64.standard_b64encode(text)
+                
+            check_id, soap_properties = self._start_new_check()
+            resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)
+            self._update_license(resp)
             
-        resp = self.soap_client.service.checkDocumentMtom(self.soap_properties, text64, "utf-8", self.checkId)
-        self.license_data_str = self._update_license(resp)
-        
-        #extract document score from the response
-        document_score = self._get_property(resp, "document_score")
-        #get url of the report xml
-        report_url = self._get_property(resp, "report_url")
-        #fix the host part of the url
-        report_url = re.sub("://[^/]*/", "://{0}/".format(self.host), report_url)
-        print "retrieving report from ", report_url
-        #report_xml = urllib.urlopen(report_url).read()
-        
-        attributes = self._read_report_url(report_url)
-        
-        return attributes
+            #extract document score from the response
+            document_score = self._get_property(resp, "document_score")
+            #get url of the report xml
+            report_url = self._get_property(resp, "report_url")
+            #fix the host part of the url
+            report_url = re.sub("://[^/]*/", "://{0}/".format(self.host), report_url)
+            #print "retrieving report from ", report_url
+            #report_xml = urllib.urlopen(report_url).read()
+            
+            attributes = self._read_report_url(report_url)
+            
+            return attributes
+        except Exception as inst:
+            print "Error from server: ", inst
+            return {}
+            
     
     def get_language_options(self):
         return self.soap_client.service.getLanguageOptions(self.lang)
             
     def __del__(self):
-        # release client session in any case
-        if self.sessionIdStr:
-            self.soap_client.service.releaseClientSession(self.sessionIdStr)
+        self.soap_client.service.releaseClientSession(self.sessionIdStr)
+#        # release client session in any case
+#        if self.sessionIdStr:
         
 
 
 
 #text = 'This break every possibility. Dear clients, we would like to informm you that during the latest commerccial update we recieved marvelous products, which wwe can offers in really good prices. Please keeps in touch for further notice. This break every possibility.'
-#ac = IQFeatureGenerator("en")
+ac = IQFeatureGenerator("en")
+from io import saxjcml
+
+saxjcml.run_features_generator("/home/elav01/taraxu_data/wmt12/qe/training_set/training-sample.jcml", "/home/elav01/taraxu_data/wmt12/qe/training_set/training-sample.iq.jcml", [ac])
 #print ac.process(text)

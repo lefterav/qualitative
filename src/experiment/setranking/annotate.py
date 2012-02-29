@@ -8,7 +8,7 @@ Created on 17 Jan 2012
 
 import shutil
 import os
-import math
+import time
 
 #pipeline essentials
 from ruffus import *
@@ -93,7 +93,8 @@ def original_data_split(input_files, output_files, parts):
        
 @active_if(cfg.exists_parser(source_language))
 @transform(original_data_split, suffix("part.jcml"), "part.parsed.%s.f.jcml" % source_language, source_language, cfg.get_parser_name(source_language))
-def features_berkeley_source(input_file, output_file, source_language, source_parser, parser_name):
+def features_berkeley_source(input_file, output_file, source_language, parser_name):
+    time.sleep(10)
     features_berkeley(input_file, output_file, source_language)
     
 @active_if(cfg.exists_parser(target_language))
@@ -162,7 +163,7 @@ def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, l
     pass
 
 @active_if(cfg.exists_checker(source_language))
-@transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % source_language, target_language,)
+@transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % source_language, source_language)
 def features_checker_source(input_file, output_file, language):
     features_checker(input_file, output_file, language)
 if cfg.exists_checker(source_language):
@@ -177,6 +178,7 @@ if cfg.exists_checker(target_language):
 
 def features_checker(input_file, output_file, language):
     language_checker = cfg.get_checker(language)
+    print language_checker
     saxjcml.run_features_generator(input_file, output_file, [language_checker])
 
 

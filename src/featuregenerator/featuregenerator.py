@@ -34,7 +34,7 @@ class FeatureGenerator():
         src = self.add_features_src (parallelsentence.get_source(), parallelsentence)
         tgt = [(self.add_features_tgt (tgt_item, parallelsentence)) for tgt_item in parallelsentence.get_translations()]
         try:
-            ref = self.add_features_simplesentence (parallelsentence.get_reference(), parallelsentence)
+            ref = self.add_features_tgt (parallelsentence.get_reference(), parallelsentence)
         except:
             ref = parallelsentence.get_reference()
         
