@@ -79,11 +79,14 @@ class ExperimentConfigParser(ConfigParser):
     def get_checker(self, language):
         #@todo: see how to generalize this. also pass parameters read by the pipeline, currently hardcoded
         for checker_name in [section for section in self.sections() if section.startswith("checker:")]:
+            print "looking on checker ", checker_name , language
             if self.get(checker_name, "language") == language:
                 #TODO: if KenLM gets wrapped up, add a type: setting
                 from featuregenerator.iq.acrolinxclient import IQFeatureGenerator
                 feature_generator = IQFeatureGenerator(language)
+                print "returning feature generator"
                 return feature_generator
+        print "Failure with checker for", language
         return None
     
     def get_source_language(self):
@@ -167,28 +170,36 @@ class ExperimentConfigParser(ConfigParser):
             current_step_id = highestnum + 1
         return current_step_id 
 
-try:
-    configfilename = os.sys.argv[1]
-except IndexError:
-    configfilename = CONFIG_FILENAME
+#try:
+#    configfilename = os.sys.argv[1]
+#except IndexError:
+#    configfilename = CONFIG_FILENAME
 
-try:
-    continue_experiment = os.sys.argv[2]
-except:
-    continue_experiment = None
+
 
     
 # global configuration
 cfg = ExperimentConfigParser()
 cfg.readfp(StringIO.StringIO(CONFIG_TEMPLATE))  # set up defaults
 #cfg.read(CONFIG_FILENAME)  # add user-specified settings
-cfg.read(configfilename)  # add user-specified settings
+#cfg.read(configfilename)  # add user-specified settings
 
 try: 
-    cfg.read("pipeline.machine.cfg")
+    cfg.read(CONFIG_FILENAME)
 except:
-    print "cannot read supplementary cfg file"
+    print "cannot read original cfg file"
     pass
+
+try: 
+    cfg.read(os.sys.argv[1])
+except:
+    print "cannot read original cfg file"
+    pass
+
+try:
+    continue_experiment = os.sys.argv[2]
+except:
+    continue_experiment = None
 
 path = cfg.prepare_dir(continue_experiment)
 #os.chdir(path)

@@ -231,7 +231,7 @@ except IndexError:
 cfg = ExperimentConfigParser()
 cfg.readfp(StringIO.StringIO(CONFIG_TEMPLATE))  # set up defaults
 #cfg.read(CONFIG_FILENAME)  # add user-specified settings
-cfg.read(configfilename)  # add user-specified settings
+cfg.read(CONFIG_FILENAME)  # add user-specified settings
 
 path = cfg.prepare_dir()
 #os.chdir(path)
