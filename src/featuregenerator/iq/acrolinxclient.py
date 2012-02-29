@@ -52,6 +52,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         
         self.user_id = user_id    #if license doesn't work, delete license.dat and change user id OR remove access id
         self.settings = settings
+        print "proceeding with IQ session initialization"
         self._initialize_session()
 
     def _get_property(self, response, key):
