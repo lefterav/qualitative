@@ -230,6 +230,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
     def _start_new_check(self):
         # get check id
         settings = self.settings
+        print "getting required check id"
         check_id = self.soap_client.service.getCheckId()
 
         if settings:
