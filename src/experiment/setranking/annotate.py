@@ -49,7 +49,7 @@ from featuregenerator.attribute_rank import AttributeRankGenerator
 from io.input.xmlreader import XmlReader
 
 
-cores = 2
+cores = cfg.get("general", "cores")
 parallel_feature_functions = []
 
 
