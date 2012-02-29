@@ -196,6 +196,19 @@ class DataSet(object):
         size = int(round(ratio * len(self.parallelsentences)))
         return DataSet(self.parallelsentences[:size-2]), DataSet(self.parallelsentences[size-1:]) 
     
+    def add_attribute_vector(self, att_vector, target="tgt", item=0):
+        att_vector.reverse()
+        
+        for ps in self.parallelsentences:
+            atts = att_vector.pop()
+            atts = dict([(k, str(v)) for k,v in atts.iteritems()])
+            if target == "ps":
+                ps.add_attributes(atts)
+            elif target == "tgt":
+                ps.tgt[item].add_attributes(atts)
+            elif target == "src":
+                ps.src.add_attributes(atts)
+        
     
     """
      def get_nested_attributes(self):
