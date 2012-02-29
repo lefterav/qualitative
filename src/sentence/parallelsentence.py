@@ -219,20 +219,18 @@ class ParallelSentence(object):
             pass
         
         #loop over the contained target sentences. Merge those with same system attribute and append those missing
-        if len(ps.get_translations()) == 1:
-            self.tgt.extend(ps.get_translations())
-        else:
-            for tgtPS in ps.get_translations():
-                system = tgtPS.get_attribute("system")
-                merged = False
-                for i in range(len(self.tgt)):
-                    if self.tgt[i].attributes["system"] == system:
-                        self.tgt[i].merge_simplesentence(tgtPS, attribute_replacements)
-                        merged = True
-                if not merged:
-                    #print tgtPS.get_attributes(), "not merged - unknown system!"
-                    print "Target sentence was missing. Adding..."
-                    self.tgt.append(tgtPS)
+
+        for tgtPS in ps.get_translations():
+            system = tgtPS.get_attribute("system")
+            merged = False
+            for i in range(len(self.tgt)):
+                if self.tgt[i].attributes["system"] == system:
+                    self.tgt[i].merge_simplesentence(tgtPS, attribute_replacements)
+                    merged = True
+            if not merged:
+                #print tgtPS.get_attributes(), "not merged - unknown system!"
+                print "Target sentence was missing. Adding..."
+                self.tgt.append(tgtPS)
 
 
     def get_pairwise_parallelsentences(self, directed = True):
