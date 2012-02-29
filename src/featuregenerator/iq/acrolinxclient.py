@@ -208,6 +208,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
             userId['value'] = self.user_id
         
             # get licence data string
+            print "trying to register client with userid", userId
             register_client_response = self.soap_client.service.registerClient([userId])
             self._update_license(register_client_response)
             
@@ -221,6 +222,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         log_in_soap_properties = self._attributes2soapproperties(log_in_parameters)
 #        
         # get session id
+        print "trying get session by giving properties ", log_in_soap_properties
         self.sessionIdStr = self.soap_client.service.requestClientSession(log_in_soap_properties)
         
         #print sessionIdStr
@@ -261,8 +263,13 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         
         try:
             text64 = base64.standard_b64encode(text)
-                
             check_id, soap_properties = self._start_new_check()
+            
+            print 'soap_properties', soap_properties
+            print 'text64', text64
+            print 'check_id', check_id
+            print 'resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)'
+            
             resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)
             self._update_license(resp)
             
