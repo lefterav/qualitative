@@ -19,6 +19,7 @@ import re
 import urllib
 from xml.etree import ElementTree as ET
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+import os
 
 class IQFeatureGenerator(LanguageFeatureGenerator):
     """
@@ -46,7 +47,9 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         self.host = host
         url = "{0}://{1}{2}".format(protocol, host, wsdl_path)
         self.soap_client = Client(url)
-        self.license_data_filename = "license.dat"
+        path = os.path.dirname(__file__)
+        self.license_data_filename = os.path.join(path, "license.dat")
+        
         self.user_id = user_id    #if license doesn't work, delete license.dat and change user id OR remove access id
         self.settings = settings
         self._initialize_session()
@@ -295,9 +298,11 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         return self.soap_client.service.getLanguageOptions(self.lang)
             
     def __del__(self):
-        self.soap_client.service.releaseClientSession(self.sessionIdStr)
+        try:
+            self.soap_client.service.releaseClientSession(self.sessionIdStr)
+        except:
+            pass
 #        # release client session in any case
-#        if self.sessionIdStr:
         
 
 
