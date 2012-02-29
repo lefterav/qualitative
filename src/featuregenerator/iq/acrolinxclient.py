@@ -47,7 +47,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         self.host = host
         url = "{0}://{1}{2}".format(protocol, host, wsdl_path)
         self.soap_client = Client(url)
-        path = os.path.dirname(__file__)
+        path = os.path.dirname(__file__) #keep license file in current directory for the moment
         self.license_data_filename = os.path.join(path, "license.dat")
         
         self.user_id = user_id    #if license doesn't work, delete license.dat and change user id OR remove access id
@@ -308,8 +308,8 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
 
 
 #text = 'This break every possibility. Dear clients, we would like to informm you that during the latest commerccial update we recieved marvelous products, which wwe can offers in really good prices. Please keeps in touch for further notice. This break every possibility.'
-ac = IQFeatureGenerator("en")
-from io import saxjcml
-
-saxjcml.run_features_generator("/home/elav01/taraxu_data/wmt12/qe/training_set/training-sample.jcml", "/home/elav01/taraxu_data/wmt12/qe/training_set/training-sample.iq.jcml", [ac])
+#ac = IQFeatureGenerator("en")
+#from io import saxjcml
+#
+#saxjcml.run_features_generator("/home/elav01/taraxu_data/wmt12/qe/training_set/training-sample.jcml", "/home/elav01/taraxu_data/wmt12/qe/training_set/training-sample.iq.jcml", [ac])
 #print ac.process(text)
