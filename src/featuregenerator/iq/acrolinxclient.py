@@ -139,6 +139,8 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         sLangFlags = style.find('listOfLangFlags')
         for sLf in sLangFlags.findall('langFlag'):
             errorName = sLf.find('description').text
+            errorName = errorName.replace(" ", "_")
+            errorName = errorName.replace(":", "_")
             
             # No. of particular errors
             if not 'style_%s' % errorName in atts:
