@@ -31,7 +31,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
     """
     
     
-    def __init__(self, lang, settings = {}, user_id = 'dfki-taraxu', host = "msv-3231.sb.dfki.de:8031", wsdl_path = "/acrolinx/services/core-no-mtom?wsdl", protocol = "http"):
+    def __init__(self, lang, settings = {}, user_id = 'dfkitaraxu', host = "msv-3231.sb.dfki.de:8031", wsdl_path = "/acrolinx/services/core-no-mtom?wsdl", protocol = "http"):
         """
         @param lang: abrev. code for the language that this generator will be responsible for
         @type lang: str
