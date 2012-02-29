@@ -310,9 +310,9 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
 
 
 
-#text = 'This break every possibility. Dear clients, we would like to informm you that during the latest commerccial update we recieved marvelous products, which wwe can offers in really good prices. Please keeps in touch for further notice. This break every possibility.'
-#ac = IQFeatureGenerator("en")
-#from io import saxjcml
+text = 'This break every possibility. Dear clients, we would like to informm you that during the latest commerccial update we recieved marvelous products, which wwe can offers in really good prices. Please keeps in touch for further notice. This break every possibility.'
+ac = IQFeatureGenerator("en")
+from io import saxjcml
 #
-#saxjcml.run_features_generator("/home/elav01/taraxu_data/wmt12/qe/training_set/training-sample.jcml", "/home/elav01/taraxu_data/wmt12/qe/training_set/training-sample.iq.jcml", [ac])
-#print ac.process(text)
+saxjcml.run_features_generator("/home/elav01/taraxu_data/wmt12/qe/training_set/training.jcml", "/home/elav01/taraxu_data/wmt12/qe/training_set/training.iq.jcml", [ac])
+print ac.process(text)
