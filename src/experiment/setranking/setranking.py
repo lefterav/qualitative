@@ -20,7 +20,7 @@ if __name__ == '__main__':
     simple_dataset = JcmlReader(input_file).get_dataset() 
     
     print "spliting set"
-    simple_dataset, a = simple_dataset.split(0.05)
+    simple_dataset, a = simple_dataset.split(0.01)
     
     Parallelsentence2Jcml(simple_dataset.get_parallelsentences()).write_to_file('/home/elav01/taraxu_data/wmt12/qe/training_set/training-sample.jcml')
     simple_trainset, simple_testset = simple_dataset.split(0.9)

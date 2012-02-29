@@ -37,21 +37,36 @@ class ParserMatches(LanguageFeatureGenerator):
               ([","], [","])]
 
     mapping[("es","en")] = [(["sn"], ["NP"]),
-              (["S"], ["VP"]),
+              (["grup.verb"], ["VP"]),
+              (["S"], ["S"]),
               (["v" ], ["VB", "VBZ", "VBP", "VBN", "VBG" ]),
               (["n"], ["NN", "NNP", "NNS"]),
               (["sp"], ["PP"]),
               (["pu"], ["."]),
+              (["conj"], ["CC"]),
+              (["a"], ["JJ"]),
+              (["d"], ["DT", "PRP$"]),
               ([","], [","])]
 
+
+    
 
     def __init__(self, langpair=("de","en")):
         '''
         Constructor
         '''
+        #reverse mappings as well
+        reversed_mapping = {}
+        for (source_language, target_language), mapping in self.mapping.iteritems():
+            
+            reversed_mapping[(target_language, source_language)] = [(target_mapping, source_mapping) for (source_mapping, target_mapping) in mapping] 
+
+        self.mapping.update(reversed_mapping)
         self.mappings = self.mapping[langpair]
+        
+        
     
-    def __count_nodetags__(self, treestring="", taglist=[]):
+    def _count_nodetags(self, treestring="", taglist=[]):
         match_count = 0
         for parse_tag in taglist:
             parse_tag = "(%s" %parse_tag #get the bracket so that you can search in the parse string
@@ -66,8 +81,8 @@ class ParserMatches(LanguageFeatureGenerator):
             print "error reading berkeley tree"
             return {}
         for (src_map, tgt_map) in self.mappings:
-            src_map_count = self.__count_nodetags__(src_parse, src_map)
-            src_label = self.__canonicalize__(src_map[0])
+            src_map_count = self._count_nodetags(src_parse, src_map)
+            src_label = self._canonicalize(src_map[0])
             attributes["parse-%s" % src_label] = str(src_map_count)    
         return attributes
             
@@ -85,10 +100,10 @@ class ParserMatches(LanguageFeatureGenerator):
         
         if tgt_parse and src_parse:
             for (src_map, tgt_map) in self.mappings:
-                #src_label = self.__canonicalize__(src_map[0])
+                #src_label = self._canonicalize(src_map[0])
                 #src_map_count = int(parallelsentence.get_source().get_attribute("parse-%s" % src_label))
-                tgt_map_count = self.__count_nodetags__(tgt_parse, tgt_map)
-                tgt_label = self.__canonicalize__(src_map[0])
+                tgt_map_count = self._count_nodetags(tgt_parse, tgt_map)
+                tgt_label = self._canonicalize(src_map[0])
                 attributes["parse-%s" % tgt_label] = str(tgt_map_count)
 #                if tgt_map_count != 0:
 #                    attributes["parse-%s_ratio" % tgt_label] = str(1.0 * src_map_count / tgt_map_count)
@@ -97,7 +112,7 @@ class ParserMatches(LanguageFeatureGenerator):
         return attributes
         
 
-    def __canonicalize__(self, string):
+    def _canonicalize(self, string):
         string = string.replace("$." , "dot").replace("$," , "comma")
         string = string.replace(".", "dot").replace("," , "comma")
         return string

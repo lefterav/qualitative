@@ -112,16 +112,17 @@ def features_berkeley(input_file, output_file, language):
 #    parser = BerkeleyXMLRPCFeatureGenerator(parser_url, language, parser_tokenize)
 #    saxjcml.run_features_generator(input_file, output_file, [parser])
 
-#@collate(features_berkeley_source, regex(r"([^.]+)\.(\d+)\.part.parsed.([^.]+).f.jcml"),  r"\1.parsed.\3.f.jcml")
 @active_if(cfg.exists_parser(source_language))
-@merge(features_berkeley_source, "parsed.%s.f.jcml" % source_language)
+#@merge(features_berkeley_source, "parsed.%s.f.jcml" % source_language)
+@collate(features_berkeley_source, regex(r"([^.]+)\.(\d+)\.part.parsed.([^.]+).f.jcml"),  r"\1.parsed.\3.f.jcml")
 def merge_parse_parts_source(inputs, output):
     merge_parts(inputs, output)
 if (cfg.exists_parser(source_language)):
     parallel_feature_functions.append(merge_parse_parts_source)
 
 @active_if(cfg.exists_parser(target_language))
-@merge(features_berkeley_target, "parsed.%s.f.jcml" % target_language)
+#@merge(features_berkeley_target, "parsed.%s.f.jcml" % target_language)
+@collate(features_berkeley_target, regex(r"([^.]+)\.(\d+)\.part.parsed.([^.]+).f.jcml"),  r"\1.parsed.\3.f.jcml")
 def merge_parse_parts_target(inputs, output):
     merge_parts(inputs, output)
 if (cfg.exists_parser(target_language)):
@@ -195,6 +196,9 @@ def features_ibm(input_file, output_file, ibm1lexicon):
 #first part of the regular expression is the basename of the dataset
 @collate(parallel_feature_functions, regex(r"([^.]+)\.(.+)\.f.jcml"),  r"\1.all.f.jcml")
 def features_gather(singledataset_annotations, gathered_singledataset_annotations):
+    
+    print "gathering features from tasks ", parallel_feature_functions
+    
     tobermerged = singledataset_annotations
     original_file = tobermerged[0]
     original_dataset = JcmlReader(original_file).get_dataset()
