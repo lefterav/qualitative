@@ -64,6 +64,12 @@ all_sets = training_sets
 
 print all_sets
 
+
+def get_basename(filename):
+    basename = re.findall("(.*).jcml", os.path.basename(external_file))[0]
+    basename = basename.replace(".", "-")
+    return basename
+
 @split(None, "*orig.jcml", all_sets)
 def data_fetch(input_file, output_files, external_files):
     """
@@ -72,9 +78,7 @@ def data_fetch(input_file, output_files, external_files):
     """
     for external_file in external_files:
         print "Moving here external file ", external_file
-        basename = re.findall("(.*).jcml", os.path.basename(external_file))[0]
-        basename = basename.replace(".", "-")
-        
+        basename = get_basename(external_file)
         output_file = "{0}.{1}".format(basename, "orig.jcml")
         shutil.copy(external_file, output_file)
 
@@ -83,10 +87,17 @@ try:
 except:
     annotated_filenames = []
 
+
 @split(data_fetch,"*.ext.f.jcml", annotated_filenames)
 def add_externally_annotated_sets(input_file, output_files, external_files):
+    input_basename = get_basename(input_file)
     for external_file in external_files:
-        shutil.copy(external_file, external_file.replace(".jcml", ".ext.f.jcml"))
+        external_basename = get_basename(external_file)
+        if input_basename == external_basename:
+            shutil.copy(external_file, "%s.ext.f.jcml" % external_basename)
+            
+if (cfg.exists_parser(target_language)):
+    parallel_feature_functions.append(add_externally_annotated_sets)
             
             
 @split(data_fetch, "*.part.jcml", cores)
