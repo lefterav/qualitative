@@ -82,6 +82,14 @@ if __name__ == '__main__':
     input_jcml = sys.argv[2] #"/home/elav01/taraxu_data/wmt12/quality-estimation/training_set/training.jcml"
     output_jcml = sys.argv[3] #"/home/elav01/taraxu_data/wmt12/quality-estimation/training_set/training.decoding.es.f.jcml"
     
+    if len(sys.argv)<4 :
+        print "This script reads the supplementary decoding attributes of WMT12-quality estimation task and \
+         wraps them into the designated jcml format. Syntax: script [dir] [input.jcml] [output.jcml]\n \
+         dir: directory where the files [1-9]*.sgml, one file for sentence are stored \
+         input.jcml: original jcml file containing the rest of the data \
+         output.jcml: a copy of the original jcml file, with attributes from the decoded process added \
+         "
+    
     att_vector = process(input_path)
     
     dataset = JcmlReader(input_jcml).get_dataset()
