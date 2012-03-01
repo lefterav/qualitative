@@ -33,7 +33,7 @@ class CoupledDataSet(DataSet):
             self.parallelsentences = [CoupledParallelSentence(ps1, ps2) for ps1, ps2 in ps_combinations]
             
             
-    def get_single_set(self):
+    def get_single_set(self, critical_attribute="predicted_rank"):
         '''
         Reconstructs the original data set, with only one sentence per entry.
         @return: Simple dataset that contains the simplified parallel sentences
@@ -47,6 +47,41 @@ class CoupledDataSet(DataSet):
         
         sorted_keys = sorted(single_parallelsentences)
         sorted_ps = [single_parallelsentences[key] for key in sorted_keys]
+        return DataSet(sorted_ps)
+    
+    
+    def get_single_set_with_hard_ranks(self, critical_attribute="predicted_rank"):
+        '''
+        Reconstructs the original data set, with only one sentence per entry.
+        @return: Simple dataset that contains the simplified parallel sentences
+        @rtype: L{DataSet}
+        '''
+        single_parallelsentences = {}
+        single_parallelsentences_rank = {}
+        for coupled_parallelsentence in self.parallelsentences:
+            ps1, ps2 = coupled_parallelsentence.get_couple()
+            rank = int(coupled_parallelsentence.get_attribute(critical_attribute))
+             
+            int(ps2.attributes["predicted_rank"]) - rank
+            single_parallelsentences[ps1.get_tuple_id()] = ps1
+            try:
+                single_parallelsentences_rank[ps1.get_tuple_id()] += rank
+            except:
+                single_parallelsentences_rank[ps1.get_tuple_id()] = rank
+            
+            single_parallelsentences[ps2.get_tuple_id()] = ps2
+            try:
+                single_parallelsentences_rank[ps2.get_tuple_id()] -= rank
+            except:
+                single_parallelsentences_rank[ps2.get_tuple_id()] = -1 * rank
+            
+        
+        sorted_keys = sorted(single_parallelsentences)
+        sorted_ps = []
+        for key in sorted_keys:
+            ps = single_parallelsentences[key]
+            ps.add_attributes({critical_attribute: single_parallelsentences_rank[key]})
+            sorted_ps.append(ps)
         return DataSet(sorted_ps)
     
     def get_nested_attribute_names(self):

@@ -110,7 +110,7 @@ class CoupledParallelSentence(ParallelSentence):
             elif key.startswith("ps2_"):
                 attlist2.append((self._deprefix(key), value))
                                 
-        attdict1 = dict(attlist1)        
+        attdict1 = dict(attlist1)    
         attdict2 = dict(attlist2)
         
         return attdict1, attdict2

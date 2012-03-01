@@ -9,6 +9,7 @@ from xml.sax.xmlreader import AttributesImpl
 from io.dataformat.jcmlformat import JcmlFormat
 import shutil
 from sentence.sentence import SimpleSentence
+from sentence.dataset import DataSet
 
 class Parallelsentence2Jcml(object):
     '''
@@ -21,8 +22,13 @@ class Parallelsentence2Jcml(object):
         '''
         Provide a list of parallel sentences
         '''
+        
+        if isinstance (parallelsentences, DataSet):
+            self.parallelsentences = parallelsentences.get_parallelsentences()
+        else:
+            self.parallelsentences = parallelsentences
+        
         self.TAG = format.TAG
-        self.parallelsentences = parallelsentences
         
     def write_to_file(self, filename):
         '''

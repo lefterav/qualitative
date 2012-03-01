@@ -22,7 +22,7 @@ class OrangeData:
         Handles the conversion of the generic data objects to a format handled by Orange library
     """
     
-    def __init__ (self, dataSet, class_name="", desired_attributes=[], meta_attributes=[], chosen_orangefilename=False):
+    def __init__ (self, dataSet, class_name="", desired_attributes=[], meta_attributes=[], chosen_orangefilename=False, keep_empty=False):
         if isinstance ( dataSet , orange.ExampleTable ):
             self.data = dataSet
             
@@ -42,8 +42,9 @@ class OrangeData:
             dataSet = None
             #load the data
             print "Feeding file to Orange"
-            self.data = orange.ExampleTable(orangefilename)
-            print "Loaded ", len(self.data) , " sentences from file " , orangefilename
+            if not keep_empty:
+                self.data = orange.ExampleTable(orangefilename)
+                print "Loaded ", len(self.data) , " sentences from file " , orangefilename
             #get rid of the temp file
             if not chosen_orangefilename:
                 os.unlink(orangefilename)
@@ -202,7 +203,8 @@ class OrangeData:
         file_object.close()  
         
         return orangefilename
-        
+    
+    
     
     def _get_orange_header(self, dataset, class_name, attribute_names, desired_attributes=[], meta_attributes=[]):
 
@@ -211,6 +213,9 @@ class OrangeData:
         line_2 = "" #line for the type of the arguments
         line_3 = "" #line for the definition of the class 
         print "Getting attributes"
+        
+        dataset.confirm_attributes(desired_attributes, meta_attributes)
+        
         
         if desired_attributes == []:
             desired_attributes = attribute_names
@@ -244,7 +249,7 @@ class OrangeData:
                 #print attribute_name , "= meta"
                 line_3 = line_3 + "m"
             line_3 = line_3 + "\t"
-        
+                        
         #if not self.avoidstrings:
         #src
         line_2 += "string\t"
