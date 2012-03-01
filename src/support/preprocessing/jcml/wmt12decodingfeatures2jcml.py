@@ -1,6 +1,5 @@
 '''
 Created on 29 Feb 2012
-
 @author: elav01
 '''
 import re
@@ -61,20 +60,34 @@ def process(path):
         #now calculate avg
         
         for graph_feature_name, graph_feature_values in atts.iteritems():
-            sentence_atts["{0}_avg".format(graph_feature_name)] = numpy.average(graph_feature_values)
-            sentence_atts["{0}_std".format(graph_feature_name)] = numpy.std(graph_feature_values)
-            sentence_atts["{0}_var".format(graph_feature_name)] = numpy.var(graph_feature_values)
-        
+            sentence_atts["{0}_avg".format(graph_feature_name)] = "%.3f" % round(float(numpy.average(graph_feature_values)),3)
+            sentence_atts["{0}_std".format(graph_feature_name)] = "%.3f" % round(float(numpy.std(graph_feature_values)),3)
+            sentence_atts["{0}_var".format(graph_feature_name)] = "%.3f" % round(float(numpy.var(graph_feature_values)),3)  
+                                                                                
+        sentence_atts = dict([("d_%s" % k, v) for k,v in sentence_atts.iteritems()])
         atts_vector.append(sentence_atts)
-        
     return atts_vector
 
 
 def _split_a_vector(graph_feature_value):
-    return {}
+    values = graph_feature_value.split(", ")
+    atts = {}
+    i = 0
+    for value in values:
+        i+=1
+        atts["a{0}".format(i)] = float(value.strip())
+    return atts
+    
 
 def _split_r_vector(graph_feature_value):
-    return {}
+    #input data have a bug
+    values = re.findall("(\-?\d{1,3}\.\d{1,3})", graph_feature_value)
+    atts = {}
+    i = 0
+    for value in values:
+        i+=1
+        atts["r{0}".format(i)] = float(value.strip())
+    return atts
                         
 
 if __name__ == '__main__':
@@ -91,7 +104,6 @@ if __name__ == '__main__':
          "
     
     att_vector = process(input_path)
-    
     dataset = JcmlReader(input_jcml).get_dataset()
     dataset.add_attribute_vector(att_vector)
     Parallelsentence2Jcml(dataset.get_parallelsentences()).write_to_file(output_jcml)

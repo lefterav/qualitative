@@ -38,56 +38,50 @@ class LanguageCheckerCmd(LanguageFeatureGenerator):
     
     
     def offline_process(self, filename_input, filename_output, existing_jcml):
-        pss = JcmlReader(existing_jcml).get_parallelsentences()
+        dataset = JcmlReader(existing_jcml).get_dataset()
+        size = dataset.get_size()
         file_input = open(filename_input, 'r')
         file_content = file_input.read()
-        att_vector = self._get_att_vector(file_content)
-        att_vector.reverse()
+        att_vector = self._get_att_vector(file_content, size)
+        dataset.add_attribute_vector(att_vector)
         
-        new_pss = []
-        
-        for ps in pss:
-            atts = att_vector.pop()
-            atts = dict([(k, str(v)) for k,v in atts.iteritems()])
-            ps.add_attributes(atts)
-        
-        Parallelsentence2Jcml(pss).write_to_file(filename_output)
+        Parallelsentence2Jcml(dataset.get_parallelsentences()).write_to_file(filename_output)
         
                 
         
     
     
-    def _get_att_vector(self, file_content):
+    def _get_att_vector(self, file_content, size):
         
         
         pattern = "\d*.\) Line (\d*), column \d*, Rule ID: (.*)\n"
         
         feature_entries = re.findall(pattern, file_content)
-        features_entries = [(int(key)-1, value.replace("[", "_").replace("]", "_")) for  (key, value) in feature_entries]
+        feature_entries = [(int(key), value.replace("[", "_").replace("]", "_")) for  (key, value) in feature_entries]
         errors_per_sentence = {}
-       
+        possible_error_ids = set()
         #first make one list of error ids per sentence 
         for sentence_id , error_id in feature_entries:
+            possible_error_ids.add(error_id)
             try:
-                errors_per_sentence[int(sentence_id)-1].append(error_id)
+                errors_per_sentence[sentence_id-1].append(error_id)
             except KeyError:
-                errors_per_sentence[int(sentence_id)-1] = [error_id]
-        
-        
+                errors_per_sentence[sentence_id-1] = [error_id]
+                
         #construct a vector of dictionaries with counts
         vector_atts = []
-        for i in range(0, max(errors_per_sentence.keys())+1):
+        for i in range(0, size+1):
             atts = {}
+            for error_id in possible_error_ids:
+                error_label = "lgt_{0}".format(error_id).lower()
+                atts[error_label] = 0  
             try:
                 for error_id in errors_per_sentence[i]:
-                    error_id = "tgt-1_lgt_{0}".format(error_id)
-                    try:
-                        atts[error_id] += 1
-                    except KeyError:
-                        atts[error_id] = 1
-                    vector_atts.append(atts)
+                    error_label = "lgt_{0}".format(error_id).lower()
+                    atts[error_label] += 1
             except KeyError:
-                vector_atts.append({})
+                pass
+            vector_atts.append(atts)
     
         return vector_atts
         
