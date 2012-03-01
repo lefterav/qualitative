@@ -46,10 +46,7 @@ class LanguageCheckerCmd(LanguageFeatureGenerator):
         dataset.add_attribute_vector(att_vector)
         
         Parallelsentence2Jcml(dataset.get_parallelsentences()).write_to_file(filename_output)
-        
-                
-        
-    
+
     
     def _get_att_vector(self, file_content, size):
         

@@ -124,7 +124,29 @@ class DataSet(object):
             attribute_names.update( parallelsentence.get_attribute_names() )
         return list(attribute_names)
     
+    def confirm_attributes(self, desired_attributes=[], meta_attributes=[]):
+        """
+        Convenience function that checks whether the user-requested attributes (possibly
+        via the config file) exist in the current dataset's list. If not, raise an error
+        to warn him of a possible typo or so.
+        @param desired_attributes: attributes that need to participate in the ML process
+        @rtype desired_attributes: [str, ...]
+        @param meta_attributes: attributes that need not participate in the ML process (meta)
+        @rtype meta_attributes: [str, ...]
+        """
+        attribute_names = self.get_all_attribute_names()
+        asked_attributes = set(desired_attributes.extend(meta_attributes()))
+        for asked_attribute in asked_attributes:
+            if asked_attribute not in attribute_names:
+                sys.stderr.write("Requested feature %s probably not available\n" % asked_attribute)
+                raise KeyError 
+    
     def append_dataset(self, add_dataset):
+        """
+        Appends a data set to the end of the current dataset in place
+        @param add_dataset: dataset to be appended
+        @rtype add_dataset: L{DataSet}
+        """
         self.parallelsentences.extend(add_dataset.get_parallelsentences())
         existing_attribute_names = set(self.get_attribute_names())
         new_attribute_names = set(add_dataset.get_attribute_names())
@@ -164,6 +186,14 @@ class DataSet(object):
             
     
     def merge_dataset_symmetrical(self, dataset_for_merging_with, attribute_replacements = {"rank": "predicted_rank"}):
+        """
+        Merge the current dataset in place with another symmetrical dataset of the same size and the same original content, but
+        possibly with different attributes per parallel sentence
+        @param dataset_for_merging_with: the symmetrical dataset with the same order of parallel sentences
+        @type dataset_for_merging_with: L{DataSet}
+        @param attribute_replacements: a dict of attribute replacements that need to take place, before merging occurs
+        @type attribute_replacements: {str, str; ...}
+        """
         incoming_parallelsentences = dataset_for_merging_with.get_parallelsentences()
         if len(self.parallelsentences) != len(incoming_parallelsentences):
             raise IndexError("Error, datasets not symmetrical")
@@ -208,7 +238,9 @@ class DataSet(object):
                 ps.tgt[item].add_attributes(atts)
             elif target == "src":
                 ps.src.add_attributes(atts)
-        
+    
+    def clone(self):
+        return DataSet(self.parallelsentence, self.attribute_names)
     
     """
      def get_nested_attributes(self):
