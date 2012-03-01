@@ -77,7 +77,17 @@ def data_fetch(input_file, output_files, external_files):
         
         output_file = "{0}.{1}".format(basename, "orig.jcml")
         shutil.copy(external_file, output_file)
-        
+
+try:
+    annotated_filenames = cfg.get("training", "annotated_filenames").split(",")
+except:
+    annotated_filenames = []
+
+@split(data_fetch,"*.ext.f.jcml", annotated_filenames)
+def add_externally_annotated_sets(input_file, output_files, external_files):
+    for external_file in external_files:
+        shutil.copy(external_file, external_file.replace(".jcml", ".ext.f.jcml"))
+            
             
 @split(data_fetch, "*.part.jcml", cores)
 def original_data_split(input_files, output_files, parts):
@@ -88,7 +98,6 @@ def original_data_split(input_files, output_files, parts):
         print "splitting file", input_file
         re_split = "([^.]*)\.orig\.(jcml)"
         XmlReader(input_file).split_and_write(parts, re_split)
-
 
        
 @active_if(cfg.exists_parser(source_language))
@@ -101,6 +110,7 @@ def features_berkeley_source(input_file, output_file, source_language, parser_na
 @transform(original_data_split, suffix("part.jcml"), "part.parsed.%s.f.jcml" % target_language, target_language, cfg.get_parser_name(target_language))
 def features_berkeley_target(input_file, output_file, target_language, parser_name):
     features_berkeley(input_file, output_file, target_language)
+
 
 def features_berkeley(input_file, output_file, language):
     """
