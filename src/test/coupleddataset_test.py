@@ -5,17 +5,17 @@ Created on 27 Feb 2012
 '''
 import unittest
 from io.input.jcmlreader import JcmlReader
-from sentence.coupleddataset import CoupledDataSet
+from sentence.coupleddataset import CoupledDataSet, OrangeCoupledDataSet, CoupledDataSetDisk
 from io.sax.saxps2jcml import Parallelsentence2Jcml
 
 
 class CoupledDataSetTest(unittest.TestCase):
 
     def setUp(self):
-        self.input_file = "/home/lefterav/taraxu_data/wmt12/qe/training_set_sample/training.jcml"
-        self.output_file = "/home/lefterav/taraxu_data/wmt12/qe/training_set_sample/training.coupled.jcml"
+        self.input_file = "/home/lefterav/taraxu_data/wmt12/qe/training_set/training-sample.jcml"
+        self.output_file = "/home/lefterav/taraxu_data/wmt12/qe/training_set/training-sample.coupled.jcml"
         self.simple_dataset = JcmlReader(self.input_file).get_dataset()
-        self.coupled_dataset = CoupledDataSet(self.simple_dataset)
+        self.coupled_dataset = CoupledDataSet(construct = self.simple_dataset)
         
 
     def test_coupling(self):
@@ -32,7 +32,20 @@ class CoupledDataSetTest(unittest.TestCase):
         self.assertEqual(m, n, "Coupling and decoupling doesn't regenerate same number of sentences as in input")
         Parallelsentence2Jcml(decoupled_dataset.get_parallelsentences()).write_to_file(self.output_file.replace("jcml", "decoupled.jcml"))
     
-
+    def test_ondisk_vs_onmemory(self):
+        
+#        Parallelsentence2Jcml(self.coupled_dataset.get_parallelsentences()).write_to_file(self.output_file.replace("jcml", "memory.jcml"))
+#        coupledfile_disk = self.output_file.replace("jcml", "disk.jcml")
+#        coupledfile_memory = self.output_file.replace("jcml", "memory.jcml")
+#        CoupledDataSetDisk(self.simple_dataset).write(coupledfile_disk)
+#        coupled_dataset = CoupledDataSet(readfile = coupledfile_disk)
+#        Parallelsentence2Jcml(self.coupled_dataset).write_to_file(coupledfile_memory)
+#        self.assertEqual(self.coupled_dataset, coupled_dataset)
+        
+                                                                                                                 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+        
+        
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
