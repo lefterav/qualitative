@@ -92,9 +92,9 @@ except:
 def add_externally_annotated_sets(input_file, output_files, external_files):
 #    input_basename = get_basename(input_file)
     for external_file in external_files:
-        external_basename = get_basename(external_file)
+        #external_basename = get_basename(external_file)
     #        if input_basename == external_basename:
-        shutil.copy(external_file, "%s.ext.f.jcml" % external_basename)
+        shutil.copy(external_file, external_file.replace(".jcml", "ext.f.jcml" ))
             
 if (cfg.exists_parser(target_language)):
     parallel_feature_functions.append(add_externally_annotated_sets)
