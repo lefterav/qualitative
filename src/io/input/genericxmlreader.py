@@ -138,11 +138,15 @@ class GenericXmlReader(GenericReader):
     
     def get_parallelsentence(self, xml_entry):
         
-        srcXML = xml_entry.getElementsByTagName(self.TAG["src"])
+        srcXMLentries = xml_entry.getElementsByTagName(self.TAG["src"])
         tgtXMLentries = xml_entry.getElementsByTagName(self.TAG["tgt"])
         refXML = xml_entry.getElementsByTagName(self.TAG["ref"])
         
-        src = self._read_simplesentence(srcXML[0])
+        if len(srcXMLentries) == 1 :
+            src = self._read_simplesentence(srcXMLentries[0])
+        elif len(srcXMLentries) > 1:
+            src = [self._read_simplesentence(srcXML) for srcXML in srcXMLentries] 
+            
         
         #Create a list of SimpleSentence objects out of the object
         tgt = [self._read_simplesentence(tgtXML) for tgtXML in tgtXMLentries if tgtXML.childNodes] 
