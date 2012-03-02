@@ -66,7 +66,7 @@ print all_sets
 
 
 def get_basename(filename):
-    basename = re.findall("(.*).jcml", os.path.basename(external_file))[0]
+    basename = re.findall("(.*).jcml", os.path.basename(filename))[0]
     basename = basename.replace(".", "-")
     return basename
 
