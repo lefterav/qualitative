@@ -35,6 +35,9 @@ class SimpleSentence(object):
     def __lt__(self, other):
         return self.attributes["system"] < other.attributes["system"]
     
+    def __eq__(self, other):
+        return (self.string == other.string and self.attributes == other.attributes)
+    
     def get_string(self):
         """
         Get the string of this simple sentence
