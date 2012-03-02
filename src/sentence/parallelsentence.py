@@ -44,11 +44,19 @@ class ParallelSentence(object):
         return self.get_compact_id() > other.get_compact_id()
     
     def __eq__(self, other):
-        self.src = other.src 
-        self.tgt = other.tgt
-        self.ref = other.ref
-        self.attributes = other.attributes
-        self.rank_name = other.rank_name
+        
+            print self.src == other.src
+            print self.tgt == other.tgt 
+            print self.attributes == other.attributes  
+             
+            
+            return ( 
+            self.src == other.src and 
+            self.tgt == other.tgt and 
+            self.ref == other.ref and
+            self.attributes == other.attributes)
+        
+        
     
     def get_rank(self):
         return self.attributes[self.rank_name]

@@ -8,6 +8,9 @@ import sys
 from dataset import DataSet
 from coupledparallelsentence import CoupledParallelSentence
 from io.input.orangereader import OrangeData
+from io.sax.saxps2jcml import IncrementalJcml
+from io.input.jcmlreader import JcmlReader
+
 
 class CoupledDataSet(DataSet):
     '''
@@ -17,7 +20,7 @@ class CoupledDataSet(DataSet):
     '''
 
 
-    def __init__(self, existing_item):
+    def __init__(self,  **kwargs):
         '''
         @var existing_item: allows the construction of a coupled dataset from an existing simple dataset or already coupled parallel sentences
         @type existing_item: L{DataSet} or [L{CoupledParallelSentence}, ...]
@@ -26,12 +29,19 @@ class CoupledDataSet(DataSet):
         self.attribute_names_found = False
         self.attribute_names = []
         
-        if isinstance(existing_item, DataSet):
-            dataset = existing_item
+        if "construct" in kwargs:
+            dataset = kwargs["construct"]
             parallelsentences = dataset.get_parallelsentences()
             ps_combinations = combinations(parallelsentences, 2)
-            print "Attempting %d combinations" % len(ps_combinations)
             self.parallelsentences = [CoupledParallelSentence(ps1, ps2) for ps1, ps2 in ps_combinations]
+        elif "readfile" in kwargs:
+            dataset = JcmlReader(kwargs["readfile"]).get_dataset()
+            already_coupled_parallelsentences = dataset.get_parallelsentences()
+            self.parallelsentences = [CoupledParallelSentence(ps) for ps in already_coupled_parallelsentences]
+        elif "wrap" in kwargs:
+            dataset = kwargs["wrap"]
+            already_coupled_parallelsentences = dataset.get_parallelsentences()
+            self.parallelsentences = [CoupledParallelSentence(ps) for ps in already_coupled_parallelsentences]
             
             
     def get_single_set(self, critical_attribute="predicted_rank"):
@@ -88,6 +98,31 @@ class CoupledDataSet(DataSet):
     def get_nested_attribute_names(self):
         return []
         
+
+
+
+class CoupledDataSetDisk(CoupledDataSet):
+    def __init__(self, existing_item):
+        '''
+        @var existing_item: allows the construction of a coupled dataset from an existing simple dataset or already coupled parallel sentences
+        @type existing_item: L{DataSet} or [L{CoupledParallelSentence}, ...]
+        '''
+        self.parallelsentences = []
+        self.attribute_names_found = False
+        self.attribute_names = []
+        
+        if isinstance(existing_item, DataSet):
+            dataset = existing_item
+            parallelsentences = dataset.get_parallelsentences()
+            self.parallelsentences = combinations(parallelsentences, 2)
+    
+    def write(self, filename):
+        writer = IncrementalJcml(filename)        
+        for ps1, ps2 in self.parallelsentences:
+            coupled_ps = CoupledParallelSentence(ps1, ps2)
+            writer.add_parallelsentence(coupled_ps)
+        writer.close()
+            
                     
 
 class OrangeCoupledDataSet(OrangeData):
@@ -211,4 +246,6 @@ class OrangeCoupledDataSet(OrangeData):
             outputlines.append("\n")
             orange_file.writelines(outputlines)
                 
+
+
                 

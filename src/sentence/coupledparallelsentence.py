@@ -20,22 +20,29 @@ class CoupledParallelSentence(ParallelSentence):
     '''
 
 
-    def __init__(self, ps1, ps2):
+    def __init__(self, ps1, ps2 = None):
         '''
         @param ps1: first parallel sentence of the couple
         @type ps1: L{ParallelSentence}
         @param ps2: second parallel sentence of the couple
         @type ps2: L{ParallelSentence}
         '''
-        self.src = (ps1.get_source(), ps2.get_source())
-        if len(ps1.get_translations()) > 1 or len(ps2.get_translations()) > 1:
-            raise Exception
-        self.tgt = (ps1.get_translations()[0], ps2.get_translations()[0])
-        self.ref = None
-        #self.ref = (ps1.get_reference()[0], ps2.get_reference()[0])
-        self.attributes = self._prefix_parallelsentence_attributes(ps1.get_attributes(), ps2.get_attributes())
-        self._collapse_simplesentence_attributes()
-        self._generate_rank()
+        if not ps2: #wrap
+            self.src = ps1.src
+            self.tgt = ps1.tgt
+            self.ref = ps1.ref
+            self.attributes = ps1.attributes
+            
+        else: #construct
+            self.src = (ps1.get_source(), ps2.get_source())
+            if len(ps1.get_translations()) > 1 or len(ps2.get_translations()) > 1:
+                raise Exception
+            self.tgt = (ps1.get_translations()[0], ps2.get_translations()[0])
+            self.ref = None
+            #self.ref = (ps1.get_reference()[0], ps2.get_reference()[0])
+            self.attributes = self._prefix_parallelsentence_attributes(ps1.get_attributes(), ps2.get_attributes())
+            self._collapse_simplesentence_attributes()
+            self._generate_rank()
     
     def get_couple(self):
         try:

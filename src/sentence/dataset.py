@@ -255,6 +255,19 @@ class DataSet(object):
         self.attribute_names = list( propagated_attribute_names )
     """
     
+    def __eq__(self, other):
+        """
+        @todo comparison doesn't really work
+        """
+        i = 0
+        for ps_here, ps_other in zip(self.parallelsentences, other.parallelsentences):
+            i+=1
+            if not ps_here == ps_other:
+                print "Sentence %d with id %s-%s seems to be unequal"% (i, ps_here.get_attribute("ps1_id"), ps_here.get_attribute("ps2_id"))
+                return False
+        return True
+#        return self.parallelsentences == other.parallelsentences
+    
     def compare(self, other_dataset, start=0, to=None ):
         """
         Compares this dataset to another, by displaying parallel sentences in pairs
