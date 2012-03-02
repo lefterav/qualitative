@@ -42,6 +42,8 @@ if __name__ == '__main__':
     if not test_file:
         print "arbitrarily split given set to training and test sets 90% + 10%"
         simple_trainset, simple_testset = simple_trainset.split(0.9)
+        Parallelsentence2Jcml(simple_trainset).write_to_file("trainset.jcml")
+        Parallelsentence2Jcml(simple_testset).write_to_file("testset.jcml")
     else:
         simple_testset = JcmlReader(test_file).get_dataset() 
         
@@ -49,6 +51,7 @@ if __name__ == '__main__':
     print "TRAINING"
     print "coupling training set"
     coupled_trainset = CoupledDataSet(simple_trainset)
+    Parallelsentence2Jcml(coupled_trainset).write_to_file("trainset.coupled.jcml")
     simple_trainset = None
     
     print "orange version of coupling training set"
@@ -74,6 +77,7 @@ if __name__ == '__main__':
     print "TESTING"
     print "coupling test set"
     coupled_testset = CoupledDataSet(simple_testset)
+    Parallelsentence2Jcml(coupled_testset).write_to_file("testset.coupled.jcml")
     simple_testset = None
     print "orange version of coupling test set"
     orange_coupled_testset = OrangeCoupledDataSet(coupled_testset, "rank", [], meta_attributes, "testset.tab", True)
