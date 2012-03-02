@@ -5,7 +5,7 @@ Created on 23 Feb 2012
 '''
 
 from io.input.jcmlreader import JcmlReader
-from sentence.coupleddataset import CoupledDataSet, OrangeCoupledDataSet
+from sentence.coupleddataset import CoupledDataSet, OrangeCoupledDataSet, CoupledDataSetDisk
 from io.sax.saxps2jcml import Parallelsentence2Jcml
 from orange import BayesLearner 
 from classifier.classifier import OrangeClassifier
@@ -50,8 +50,8 @@ if __name__ == '__main__':
     
     print "TRAINING"
     print "coupling training set"
-    coupled_trainset = CoupledDataSet(simple_trainset)
-    Parallelsentence2Jcml(coupled_trainset).write_to_file("trainset.coupled.jcml")
+    CoupledDataSetDisk(simple_trainset).write("trainset.coupled.jcml")
+    coupled_trainset = CoupledDataSet(readfile = "trainset.coupled.jcml")
     simple_trainset = None
     
     print "orange version of coupling training set"
@@ -76,8 +76,9 @@ if __name__ == '__main__':
     
     print "TESTING"
     print "coupling test set"
-    coupled_testset = CoupledDataSet(simple_testset)
-    Parallelsentence2Jcml(coupled_testset).write_to_file("testset.coupled.jcml")
+    CoupledDataSetDisk(simple_testset).write("testset.coupled.jcml")
+    coupled_testset = CoupledDataSet(readfile = "testset.coupled.jcml")
+
     simple_testset = None
     print "orange version of coupling test set"
     orange_coupled_testset = OrangeCoupledDataSet(coupled_testset, "rank", [], meta_attributes, "testset.tab", True)
