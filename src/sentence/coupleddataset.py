@@ -30,6 +30,7 @@ class CoupledDataSet(DataSet):
             dataset = existing_item
             parallelsentences = dataset.get_parallelsentences()
             ps_combinations = combinations(parallelsentences, 2)
+            print "Attempting %d combinations" % len(ps_combinations)
             self.parallelsentences = [CoupledParallelSentence(ps1, ps2) for ps1, ps2 in ps_combinations]
             
             
