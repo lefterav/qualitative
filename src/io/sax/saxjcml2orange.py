@@ -400,7 +400,7 @@ class SaxJcmlOrangeContent(ContentHandler):
             # split parallel sentences by an additional tab and by a newline
             self.o_file.write('\t\n')
 
-meta_attributes = set(["testset", "judgment-id", "langsrc", "langtgt", "ps1_judgement_id", 
-                               "ps1_id", "ps2_id", "tgt-1_score" , "tgt-2_score", "tgt-1_system" , "tgt-2_system", "tgt-2_berkeley-tree", "tgt-1_berkeley-tree", "src-1_berkeley-tree", "src-2_berkeley-tree", 
-                                 ])
-SaxJcml2Orange("/home/lefterav/taraxu_data/selection-mechanism/wmt12qe/experiment/1/trainset.coupled.jcml", "rank", [], meta_attributes, "/home/lefterav/taraxu_data/selection-mechanism/wmt12qe/experiment/1/trainset.coupled.utf8.tab")
+#meta_attributes = set(["testset", "judgment-id", "langsrc", "langtgt", "ps1_judgement_id", 
+#                               "ps1_id", "ps2_id", "tgt-1_score" , "tgt-2_score", "tgt-1_system" , "tgt-2_system", "tgt-2_berkeley-tree", "tgt-1_berkeley-tree", "src-1_berkeley-tree", "src-2_berkeley-tree", 
+#                                 ])
+#SaxJcml2Orange("/home/lefterav/taraxu_data/selection-mechanism/wmt12qe/experiment/1/trainset.coupled.jcml", "rank", [], meta_attributes, "/home/lefterav/taraxu_data/selection-mechanism/wmt12qe/experiment/1/trainset.coupled.utf8.tab")
