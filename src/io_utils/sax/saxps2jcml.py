@@ -6,7 +6,7 @@ Created on 14 Dec 2011
 
 from xml.sax.saxutils import XMLGenerator
 from xml.sax.xmlreader import AttributesImpl
-from io.dataformat.jcmlformat import JcmlFormat
+from io_utils.dataformat.jcmlformat import JcmlFormat
 import shutil
 from sentence.sentence import SimpleSentence
 from sentence.dataset import DataSet

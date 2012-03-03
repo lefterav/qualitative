@@ -10,7 +10,7 @@ from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
-from io.input.xmlreader import XmlReader
+from io_utils.input.xmlreader import XmlReader
 import codecs
 import os
 
@@ -105,7 +105,7 @@ class SaxJcml2Orange():
         Test function for getting orange file.
         """
         import orange
-        from io.input.orangereader import OrangeData
+        from io_utils.input.orangereader import OrangeData
         dataset = XmlReader(self.input_filename).get_dataset()
         wrapped_data = OrangeData(dataset, self.class_name, self.desired_attributes, self.meta_attributes, self.orange_filename)
         new_dataset = wrapped_data.get_dataset()

@@ -8,8 +8,8 @@
 
 from xml.sax.saxutils import XMLGenerator
 from xml.sax import ContentHandler
-from io.input.genericreader import GenericReader
-from io.output.xmlwriter import GenericWriter
+from io_utils.input.genericreader import GenericReader
+from io_utils.output.xmlwriter import GenericWriter
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 import StringIO
