@@ -21,7 +21,7 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
     
     #Warning: not language-aware function. Use the ones above
     def get_features_simplesentence(self, simplesentence, parallelsentence):
-        sent_string = simplesentence.get_string()
+        sent_string = self.prepare_sentence(simplesentence)
         return self.get_features_string(sent_string)
         
     def get_features_string(self, sent_string):
