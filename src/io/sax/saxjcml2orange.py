@@ -11,6 +11,7 @@ from xml.sax.handler import ContentHandler
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 from io.input.xmlreader import XmlReader
+import codecs
 import os
 
 
@@ -32,36 +33,40 @@ class SaxJcml2Orange():
         @param meta_attributes: meta attributes
         @type meta_attributes: list of strings
         """
+        self.get_nested_attributes = False
+        self.compact_mode = False
+        self.discrete_attributes = []
+        self.hidden_attributes = []
+        self.filter_attributes = {} 
+        self.class_type = "d"
+        
         if "compact_mode" in kwargs:
             self.compact_mode = kwargs["compact_mode"]
-        else:
-            self.compact_mode = False
+        
         if "discrete_attributes" in kwargs:
-            self.discrete_attributes = kwargs["discrete_attributes"]
-        else:
-            self.discrete_attributes = []
-            
+            self.discrete_attributes = set(kwargs["discrete_attributes"])
+        
+        if "discrete_attributes" in kwargs:
+            self.hidden_attributes = set(kwargs["hidden_attributes"])
+        
         if "get_nested_attributes" in kwargs:
             self.get_nested_attributes = kwargs["get_nested_attributes"]
-            
+        
         if "filter_attributes" in kwargs:
             self.filter_attributes = kwargs["filter_attributes"]
-        else:
-            self.filter_attributes = {} 
             
         if "class_type" in kwargs:
             self.class_type = kwargs["class_type"]
-        else:
-            self.class_type = "d"
+        
         
         self.input_filename = input_filename
         self.class_name = class_name
-        self.desired_attributes = desired_attributes
-        self.meta_attributes = meta_attributes
+        self.desired_attributes = set(desired_attributes)
+        self.meta_attributes = set(meta_attributes)
         
         self.orange_filename = output_file
         #self.dataset = XmlReader(self.input_filename).get_dataset()
-        self.object_file = open(self.orange_filename, 'w')
+        self.object_file = codecs.open(self.orange_filename, encoding='utf-8', mode = 'w')
 
         # get orange header
         self.get_orange_header()
@@ -82,7 +87,7 @@ class SaxJcml2Orange():
         parser = make_parser()
         curHandler1 = SaxJcmlOrangeHeader(self.object_file, self.class_name, self.desired_attributes, self.meta_attributes, self.discrete_attributes, self.get_nested_attributes, self.class_type)
         parser.setContentHandler(curHandler1)
-        parser.parse(open(self.input_filename))
+        parser.parse( open(self.input_filename, 'r'))
 
        
     def get_orange_content(self):    
@@ -92,7 +97,7 @@ class SaxJcml2Orange():
         parser = make_parser()
         curHandler2 = SaxJcmlOrangeContent(self.object_file, self.class_name, self.meta_attributes, self.compact_mode, self.filter_attributes)
         parser.setContentHandler(curHandler2)
-        parser.parse(open(self.input_filename))
+        parser.parse(open(self.input_filename, 'r'))
     
     
     def test_orange(self):
@@ -109,7 +114,7 @@ class SaxJcml2Orange():
 class SaxJcmlOrangeHeader(ContentHandler):
     
     
-    def __init__ (self, o_file, class_name, desired_attributes, meta_attributes, discrete_attributes, get_nested_attributes, class_type):
+    def __init__ (self, o_file, class_name, desired_attributes, meta_attributes, discrete_attributes, get_nested_attributes, class_type, hidden_attributes=[]):
         """
         @param oFile: file object to receive processed changes
         @type oFile: file object
@@ -119,7 +124,8 @@ class SaxJcmlOrangeHeader(ContentHandler):
         self.o_file = o_file
         self.desired_attributes = desired_attributes
         self.meta_attributes = meta_attributes
-        self.discrete_attribtues = discrete_attributes
+        self.discrete_attributes = discrete_attributes
+        self.hidden_attributes = hidden_attributes
         self.class_name = class_name
         self.get_nested_attributes = get_nested_attributes
         self.class_type = class_type
@@ -154,7 +160,7 @@ class SaxJcmlOrangeHeader(ContentHandler):
         @type attrs: attributes
         """
         if name in [self.TAG_SRC, self.TAG_TGT]:
-            self.ss_text = ''
+            self.ss_text = u''
             self.ss_attributes = {}
             for att_name in attrs.getNames():
                 self.ss_attributes[att_name] = attrs.getValue(att_name)
@@ -182,16 +188,16 @@ class SaxJcmlOrangeHeader(ContentHandler):
     def endElement(self, name):
         if name == self.TAG_SRC:
             self.src = SimpleSentence(self.ss_text, self.ss_attributes)
-            self.ss_text = ''
+            self.ss_text = u''
         elif name == self.TAG_TGT:
             self.tgt.append(SimpleSentence(self.ss_text, self.ss_attributes))
         elif name == self.TAG_SENT:
             if len(self.tgt) > self.number_of_targets:
                 self.number_of_targets = len(self.tgt)
             ps = ParallelSentence(self.src, self.tgt, self.ref, self.ps_attributes)
-            self.src = ''
+            self.src = u''
             self.tgt = []
-            self.ref = ''
+            self.ref = u''
             if self.get_nested_attributes:
                 for attribute in ps.get_nested_attributes():
                     self.attribute_names.add(str(attribute))
@@ -223,9 +229,11 @@ class SaxJcmlOrangeHeader(ContentHandler):
             #TODO: find a way to define continuous and discrete arg
             # line 2 holds the class type
             if attribute_name == self.class_name:
-                line_2 += "%s\t"% self.class_type
-            elif attribute_name in self.desired_attributes and attribute_name not in self.meta_attributes:
-                if attribute_name in self.discrete_attribtues:
+                line_2 += u"%s\t"% self.class_type
+            elif (attribute_name in self.desired_attributes 
+                  and attribute_name not in self.meta_attributes 
+                  and attribute_name not in self.hidden_attributes):
+                if attribute_name in self.discrete_attributes:
                     line_2 += "d\t"
                 else:
                     line_2 += "c\t"
@@ -235,7 +243,9 @@ class SaxJcmlOrangeHeader(ContentHandler):
             # line 3 defines the class and the metadata
             if attribute_name == self.class_name:
                 line_3 = line_3 + "c"
-            elif attribute_name not in self.desired_attributes or attribute_name in self.meta_attributes:
+            elif ((attribute_name not in self.desired_attributes 
+                   or attribute_name in self.meta_attributes)
+                   and attribute_name not in self.hidden_attributes):
                 line_3 = line_3 + "m"
             line_3 = line_3 + "\t"
 
@@ -271,7 +281,7 @@ class SaxJcmlOrangeHeader(ContentHandler):
 class SaxJcmlOrangeContent(ContentHandler):
 
 
-    def __init__ (self, o_file, class_name, meta_attributes, compact_mode=False, filter_attributes={}):
+    def __init__ (self, o_file, class_name, meta_attributes, compact_mode=False, filter_attributes={}, hidden_attributes={}):
         """
         @param oFile: file object to receive processed changes
         @type oFile: file object
@@ -283,6 +293,7 @@ class SaxJcmlOrangeContent(ContentHandler):
         self.o_file = o_file
         self.is_simple_sentence = False
         self.set_tags()
+        self.hidden_attributes = hidden_attributes
         # reading  a temp file with attribute names for class SaxJcmlOrangeContent
         f = open('attribute_names.dat', 'r')
         self.attribute_names = f.read().strip().split('\n')
@@ -356,29 +367,31 @@ class SaxJcmlOrangeContent(ContentHandler):
         """
         if name == self.TAG_SRC:
             self.src = SimpleSentence(self.ss_text, self.ss_attributes)
-            self.ss_text = ''
+            self.ss_text = u''
         elif name == self.TAG_TGT:
             self.tgt.append(SimpleSentence(self.ss_text, self.ss_attributes))
-            self.ss_text = ''
+            self.ss_text = u''
         elif name == self.TAG_SENT:
             ps = ParallelSentence(self.src, self.tgt, self.ref, self.ps_attributes)
-            self.src = ''
+            self.src = u''
             self.tgt = []
-            self.ref = ''
+            self.ref = u''
             self.ps_attributes = {}
             
+            #skip totally lines that have a certain value for a particular att
             for fatt in self.filter_attributes: 
                 if ps.get_attribute(fatt) == self.filter_attributes[fatt]:
                     return
 
             # print source and target sentence
             for attribute_name in self.attribute_names:
-                if attribute_name in ps.get_nested_attributes():
-                    # print attribute names
-                    self.o_file.write(u'%s\t' % ps.get_nested_attributes()[attribute_name])
-                else:
-                    # even if attribute value exists or not, we have to tab
-                    self.o_file.write('\t')
+                if not attribute_name in self.hidden_attributes:
+                    if attribute_name in ps.get_nested_attributes():
+                        # print attribute names
+                        self.o_file.write(u'%s\t' % ps.get_nested_attributes()[attribute_name])
+                    else:
+                        # even if attribute value exists or not, we have to tab
+                        self.o_file.write('\t')
             
             # print source sentence
             self.o_file.write('%s\t' % ps.get_source().get_string())
@@ -386,3 +399,8 @@ class SaxJcmlOrangeContent(ContentHandler):
             [self.o_file.write('%s\t' % tgt.get_string()) for tgt in ps.get_translations()]
             # split parallel sentences by an additional tab and by a newline
             self.o_file.write('\t\n')
+
+meta_attributes = set(["testset", "judgment-id", "langsrc", "langtgt", "ps1_judgement_id", 
+                               "ps1_id", "ps2_id", "tgt-1_score" , "tgt-2_score", "tgt-1_system" , "tgt-2_system", "tgt-2_berkeley-tree", "tgt-1_berkeley-tree", "src-1_berkeley-tree", "src-2_berkeley-tree", 
+                                 ])
+SaxJcml2Orange("/home/lefterav/taraxu_data/selection-mechanism/wmt12qe/experiment/1/trainset.coupled.jcml", "rank", [], meta_attributes, "/home/lefterav/taraxu_data/selection-mechanism/wmt12qe/experiment/1/trainset.coupled.utf8.tab")
