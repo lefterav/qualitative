@@ -48,6 +48,11 @@ class SaxJcml2Orange():
             self.filter_attributes = kwargs["filter_attributes"]
         else:
             self.filter_attributes = {} 
+            
+        if "class_type" in kwargs:
+            self.class_type = kwargs["class_type"]
+        else:
+            self.class_type = "d"
         
         self.input_filename = input_filename
         self.class_name = class_name
@@ -75,7 +80,7 @@ class SaxJcml2Orange():
         This function gets orange header.
         """
         parser = make_parser()
-        curHandler1 = SaxJcmlOrangeHeader(self.object_file, self.class_name, self.desired_attributes, self.meta_attributes, self.discrete_attributes, self.get_nested_attributes)
+        curHandler1 = SaxJcmlOrangeHeader(self.object_file, self.class_name, self.desired_attributes, self.meta_attributes, self.discrete_attributes, self.get_nested_attributes, self.class_type)
         parser.setContentHandler(curHandler1)
         parser.parse(open(self.input_filename))
 
@@ -104,7 +109,7 @@ class SaxJcml2Orange():
 class SaxJcmlOrangeHeader(ContentHandler):
     
     
-    def __init__ (self, o_file, class_name, desired_attributes, meta_attributes, discrete_attributes, get_nested_attributes):
+    def __init__ (self, o_file, class_name, desired_attributes, meta_attributes, discrete_attributes, get_nested_attributes, class_type):
         """
         @param oFile: file object to receive processed changes
         @type oFile: file object
@@ -117,6 +122,7 @@ class SaxJcmlOrangeHeader(ContentHandler):
         self.discrete_attribtues = discrete_attributes
         self.class_name = class_name
         self.get_nested_attributes = get_nested_attributes
+        self.class_type = class_type
         
         self.attribute_names = set()
         self.number_of_targets = 0
@@ -217,7 +223,7 @@ class SaxJcmlOrangeHeader(ContentHandler):
             #TODO: find a way to define continuous and discrete arg
             # line 2 holds the class type
             if attribute_name == self.class_name:
-                line_2 += "d\t"
+                line_2 += "%s\t"% self.class_type
             elif attribute_name in self.desired_attributes and attribute_name not in self.meta_attributes:
                 if attribute_name in self.discrete_attribtues:
                     line_2 += "d\t"
