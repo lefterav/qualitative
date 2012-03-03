@@ -68,7 +68,7 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
                 tokens = PunktWordTokenizer().tokenize(string)
                 tokens[-1] = tokens[-1].replace(".", " .")
                 fixed_string.extend(tokens)
-            mystring = " ".join(fixed_string) 
+            string = " ".join(fixed_string) 
         return string
     
 
