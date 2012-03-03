@@ -3,9 +3,9 @@ Created on Sep 12, 2011
 
 @author: elav01
 '''
-from io.input.linereader import LineReader
-from io.input.jcmlreader import JcmlReader
-from io.output.xmlwriter import XmlWriter
+from io_utils.input.linereader import LineReader
+from io_utils.input.jcmlreader import JcmlReader
+from io_utils.output.xmlwriter import XmlWriter
 from tara_noorange import Experiment
 from featuregenerator.ibm1featuregenerator import Ibm1FeatureGenerator
 import os

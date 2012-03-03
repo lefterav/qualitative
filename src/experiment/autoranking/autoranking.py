@@ -15,11 +15,11 @@ import cPickle as pickle
 
 #internal code classes
 from experiment.autoranking.bootstrap import cfg
-from io.input.orangereader import OrangeData
-from io.sax.saxjcml2orange import SaxJcml2Orange
-from io.input.jcmlreader import JcmlReader
-from io.sax import saxjcml2orange
-from io.sax.saxps2jcml import Parallelsentence2Jcml 
+from io_utils.input.orangereader import OrangeData
+from io_utils.sax.saxjcml2orange import SaxJcml2Orange
+from io_utils.input.jcmlreader import JcmlReader
+from io_utils.sax import saxjcml2orange
+from io_utils.sax.saxps2jcml import Parallelsentence2Jcml 
 from sentence.dataset import DataSet
 from sentence.rankhandler import RankHandler
 from featuregenerator.diff_generator import DiffGenerator

@@ -9,9 +9,9 @@ import re
 import codecs
 
 from xml.sax import make_parser
-from io.input.jcmlreader import JcmlReader
-from io.saxjcml import SaxJCMLProcessor
-from io.output.xmlwriter import XmlWriter
+from io_utils.input.jcmlreader import JcmlReader
+from io_utils.saxjcml import SaxJCMLProcessor
+from io_utils.output.xmlwriter import XmlWriter
 from tara_noorange import Experiment
 from featuregenerator.ibm1featuregenerator import Ibm1FeatureGenerator
 from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator

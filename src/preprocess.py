@@ -4,15 +4,15 @@
 @author: lefterav
 '''
 
-from io.input.xmlreader import XmlReader
-from io.output.xmlwriter import XmlWriter
+from io_utils.input.xmlreader import XmlReader
+from io_utils.output.xmlwriter import XmlWriter
 from os import getenv
 import os
 from sentence.dataset import DataSet
 import codecs
 from sentence.rankhandler import RankHandler
 import sys
-from io.saxjcml import SaxJCMLProcessor
+from io_utils.saxjcml import SaxJCMLProcessor
 from xml.sax import make_parser
 
 
@@ -85,7 +85,7 @@ if __name__ == '__main__':
         sourcefile = sys.argv[2]
         filename_out = sourcefile.replace("jcml", "%d.tab")
         reader = XmlReader(sourcefile)
-        from io.output.wmt11tabwriter import Wmt11TabWriter
+        from io_utils.output.wmt11tabwriter import Wmt11TabWriter
         
         i = 0
         filenames = []

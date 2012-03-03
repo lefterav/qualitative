@@ -5,7 +5,7 @@ Created on Jul 21, 2011
 @author: jogin
 '''
 
-from io.input.rankreader import RankReader
+from io_utils.input.rankreader import RankReader
 
 
 

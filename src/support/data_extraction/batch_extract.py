@@ -7,7 +7,7 @@ import ConfigParser
 import os, errno
 import sys
 
-from io.sax.saxps2jcml import Parallelsentence2Jcml
+from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
 from extract_judgments import WMTEvalReader
 import fnmatch
 
