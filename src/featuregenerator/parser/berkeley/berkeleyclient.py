@@ -61,7 +61,7 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         
         string =  simplesentence.get_string()
         if self.tokenize:   
-            string = string.replace('“', '"')
+            string = string.replace(u'“', u'"')
             strings = PunktSentenceTokenizer().tokenize(string)
             fixed_string = []
             for string in strings:
