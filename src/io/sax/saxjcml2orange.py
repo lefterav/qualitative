@@ -19,12 +19,12 @@ class SaxJcml2Orange():
     This class converts jcml format to tab format (orange format).
     The output file is saved to the same folder where input file is.
     """
-    def __init__(self, input_file_addr, class_name, desired_attributes, meta_attributes, output_file):
+    def __init__(self, input_filename, class_name, desired_attributes, meta_attributes, output_file, **kwargs):
         """
         Init calls class SaxJcmlOrangeHeader for creating header and 
         SaxJcmlOrangeContent for creating content.
-        @param input_file_addr: name of input jcml file
-        @type input_file_addr: string
+        @param input_filename: name of input jcml file
+        @type input_filename: string
         @param class_name: name of class
         @type class_name: string
         @param desired_attributes: desired attributes
@@ -32,7 +32,24 @@ class SaxJcml2Orange():
         @param meta_attributes: meta attributes
         @type meta_attributes: list of strings
         """
-        self.input_filename = input_file_addr
+        if "compact_mode" in kwargs:
+            self.compact_mode = kwargs["compact_mode"]
+        else:
+            self.compact_mode = False
+        if "discrete_attributes" in kwargs:
+            self.discrete_attributes = kwargs["discrete_attributes"]
+        else:
+            self.discrete_attributes = []
+            
+        if "get_nested_attributes" in kwargs:
+            self.get_nested_attributes = kwargs["get_nested_attributes"]
+            
+        if "filter_attributes" in kwargs:
+            self.filter_attributes = kwargs["filter_attributes"]
+        else:
+            self.filter_attributes = {} 
+        
+        self.input_filename = input_filename
         self.class_name = class_name
         self.desired_attributes = desired_attributes
         self.meta_attributes = meta_attributes
@@ -58,7 +75,7 @@ class SaxJcml2Orange():
         This function gets orange header.
         """
         parser = make_parser()
-        curHandler1 = SaxJcmlOrangeHeader(self.object_file, self.class_name, self.desired_attributes, self.meta_attributes)
+        curHandler1 = SaxJcmlOrangeHeader(self.object_file, self.class_name, self.desired_attributes, self.meta_attributes, self.discrete_attributes, self.get_nested_attributes)
         parser.setContentHandler(curHandler1)
         parser.parse(open(self.input_filename))
 
@@ -68,7 +85,7 @@ class SaxJcml2Orange():
         This function gets orange content.
         """
         parser = make_parser()
-        curHandler2 = SaxJcmlOrangeContent(self.object_file, self.class_name, self.meta_attributes)
+        curHandler2 = SaxJcmlOrangeContent(self.object_file, self.class_name, self.meta_attributes, self.compact_mode, self.filter_attributes)
         parser.setContentHandler(curHandler2)
         parser.parse(open(self.input_filename))
     
@@ -87,7 +104,7 @@ class SaxJcml2Orange():
 class SaxJcmlOrangeHeader(ContentHandler):
     
     
-    def __init__ (self, o_file, class_name, desired_attributes, meta_attributes):
+    def __init__ (self, o_file, class_name, desired_attributes, meta_attributes, discrete_attributes, get_nested_attributes):
         """
         @param oFile: file object to receive processed changes
         @type oFile: file object
@@ -97,7 +114,9 @@ class SaxJcmlOrangeHeader(ContentHandler):
         self.o_file = o_file
         self.desired_attributes = desired_attributes
         self.meta_attributes = meta_attributes
+        self.discrete_attribtues = discrete_attributes
         self.class_name = class_name
+        self.get_nested_attributes = get_nested_attributes
         
         self.attribute_names = set()
         self.number_of_targets = 0
@@ -167,9 +186,13 @@ class SaxJcmlOrangeHeader(ContentHandler):
             self.src = ''
             self.tgt = []
             self.ref = ''
+            if self.get_nested_attributes:
+                for attribute in ps.get_nested_attributes():
+                    self.attribute_names.add(str(attribute))
+            else:
+                for attribute in self.ps_attributes:
+                    self.attribute_names.add(str(attribute))
             self.ps_attributes = {}
-            for attribute in ps.get_nested_attributes():
-                self.attribute_names.add(str(attribute))
             
             
     def endDocument(self):
@@ -196,7 +219,10 @@ class SaxJcmlOrangeHeader(ContentHandler):
             if attribute_name == self.class_name:
                 line_2 += "d\t"
             elif attribute_name in self.desired_attributes and attribute_name not in self.meta_attributes:
-                line_2 += "c\t"
+                if attribute_name in self.discrete_attribtues:
+                    line_2 += "d\t"
+                else:
+                    line_2 += "c\t"
             else:
                 line_2 += "d\t"
 
@@ -231,20 +257,23 @@ class SaxJcmlOrangeHeader(ContentHandler):
         
         # creating a temp file with attribute names for class SaxJcmlOrangeContent
         f = open('attribute_names.dat', 'w')
-        [f.write(attribute_name + '\n') for attribute_name in self.attribute_names] 
+        for attribute_name in self.attribute_names:
+            f.write(attribute_name + '\n') 
         f.close()
 
 
 class SaxJcmlOrangeContent(ContentHandler):
 
 
-    def __init__ (self, o_file, class_name, meta_attributes):
+    def __init__ (self, o_file, class_name, meta_attributes, compact_mode=False, filter_attributes={}):
         """
         @param oFile: file object to receive processed changes
         @type oFile: file object
         @param attributeNames: a list of attribute names
         @type attributeNames: list of strings
         """
+        self.filter_attributes = filter_attributes
+        self.compact_mode = compact_mode
         self.o_file = o_file
         self.is_simple_sentence = False
         self.set_tags()
@@ -308,7 +337,8 @@ class SaxJcmlOrangeContent(ContentHandler):
         @type ch: str 
         """
         if self.is_simple_sentence:
-            self.ss_text = u'%s%s' % (self.ss_text, ch)
+            if not self.compact_mode:
+                self.ss_text = u'%s%s' % (self.ss_text, ch)
             self.is_simple_sentence = False
 
 
@@ -330,10 +360,14 @@ class SaxJcmlOrangeContent(ContentHandler):
             self.tgt = []
             self.ref = ''
             self.ps_attributes = {}
+            
+            for fatt in self.filter_attributes: 
+                if ps.get_attribute(fatt) == self.filter_attributes[fatt]:
+                    return
 
             # print source and target sentence
             for attribute_name in self.attribute_names:
-                if attribute_name in ps.get_nested_attributes().keys():
+                if attribute_name in ps.get_nested_attributes():
                     # print attribute names
                     self.o_file.write('%s\t' % ps.get_nested_attributes()[attribute_name])
                 else:

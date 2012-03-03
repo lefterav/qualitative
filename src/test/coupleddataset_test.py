@@ -33,7 +33,7 @@ class CoupledDataSetTest(unittest.TestCase):
         Parallelsentence2Jcml(decoupled_dataset.get_parallelsentences()).write_to_file(self.output_file.replace("jcml", "decoupled.jcml"))
     
     def test_ondisk_vs_onmemory(self):
-        
+        pass
 #        Parallelsentence2Jcml(self.coupled_dataset.get_parallelsentences()).write_to_file(self.output_file.replace("jcml", "memory.jcml"))
 #        coupledfile_disk = self.output_file.replace("jcml", "disk.jcml")
 #        coupledfile_memory = self.output_file.replace("jcml", "memory.jcml")
