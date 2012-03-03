@@ -7,9 +7,9 @@ from itertools import combinations
 import sys
 from dataset import DataSet
 from coupledparallelsentence import CoupledParallelSentence
-from io.input.orangereader import OrangeData
-from io.sax.saxps2jcml import IncrementalJcml
-from io.input.jcmlreader import JcmlReader
+from io_utils.input.orangereader import OrangeData
+from io_utils.sax.saxps2jcml import IncrementalJcml
+from io_utils.input.jcmlreader import JcmlReader
 
 
 class CoupledDataSet(DataSet):

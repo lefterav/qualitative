@@ -4,7 +4,7 @@ Created on 18 Oct 2011
 @author: Elefherios Avramidis
 '''
 
-from io.input.jcmlreader import JcmlReader
+from io_utils.input.jcmlreader import JcmlReader
 
 def _add_rank(dic, system):
     if dic.has_key(system):

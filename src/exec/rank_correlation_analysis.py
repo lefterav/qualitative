@@ -4,8 +4,8 @@ Created on Aug 4, 2011
 @author: Eleftherios Avramidis
 '''
 from sys import argv
-from io.input.xmlreader import XmlReader
-from io.input.rankreader import RankReader
+from io_utils.input.xmlreader import XmlReader
+from io_utils.input.rankreader import RankReader
 from sentence.scoring import Scoring
 
 """

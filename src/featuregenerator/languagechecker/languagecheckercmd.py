@@ -11,8 +11,8 @@ import os
 import subprocess
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 
-from io.sax.saxps2jcml import Parallelsentence2Jcml
-from io.input.jcmlreader import JcmlReader
+from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
+from io_utils.input.jcmlreader import JcmlReader
 
 
 

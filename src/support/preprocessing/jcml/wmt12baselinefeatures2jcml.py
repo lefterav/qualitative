@@ -5,8 +5,8 @@ Created on 1 Mar 2012
 '''
 
 import sys
-from io.sax.saxps2jcml import Parallelsentence2Jcml
-from io.input.jcmlreader import JcmlReader
+from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
+from io_utils.input.jcmlreader import JcmlReader
 from xml.etree import ElementTree
 
 def wmt12baselinefeatures2jcml(features_description_filename, features_filename, input_jcml, output_jcml):

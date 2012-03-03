@@ -4,8 +4,8 @@ Created on 25 Sept 2011
 @author: lefterav
 '''
 from sentence.rankhandler import RankHandler
-from io.input.xmlreader import XmlReader 
-from io.output.xmlwriter import XmlWriter
+from io_utils.input.xmlreader import XmlReader 
+from io_utils.output.xmlwriter import XmlWriter
 
 if __name__ == '__main__':
 #    multiclass_ps = XmlReader("/home/elav01/taraxu_data/iwslt11/training/wmt08.en-fr.rank.if.jcml").get_parallelsentences()

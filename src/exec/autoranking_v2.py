@@ -10,9 +10,9 @@ from orngSVM import SVMLearnerEasy
 from orngTree import TreeLearner
 from orngLR import LogRegLearner
 from orange import kNNLearner
-from io.input.orangereader import OrangeData
-from io.input.xmlreader import XmlReader
-from io.output.xmlwriter import XmlWriter  
+from io_utils.input.orangereader import OrangeData
+from io_utils.input.xmlreader import XmlReader
+from io_utils.output.xmlwriter import XmlWriter  
 from sentence.rankhandler import RankHandler
 from sentence.dataset import DataSet
 from sentence.scoring import Scoring

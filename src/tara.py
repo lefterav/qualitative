@@ -6,9 +6,9 @@
 @author: Eleftherios Avramidis
 """
 
-from io.input.xmlreader import XmlReader
-from io.input.orangereader import OrangeData
-from io.output.xmlwriter import XmlWriter
+from io_utils.input.xmlreader import XmlReader
+from io_utils.input.orangereader import OrangeData
+from io_utils.output.xmlwriter import XmlWriter
 from classifier.bayes import Bayes
 from classifier.tree import TreeLearner
 from classifier.svm import SVM

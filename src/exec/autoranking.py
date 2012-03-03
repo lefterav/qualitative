@@ -10,8 +10,8 @@ from orngSVM import SVMLearnerEasy
 from orngTree import TreeLearner
 from orngLR import LogRegLearner
 from orange import kNNLearner
-from io.input.orangereader import OrangeData
-from io.input.xmlreader import XmlReader
+from io_utils.input.orangereader import OrangeData
+from io_utils.input.xmlreader import XmlReader
 from sentence.rankhandler import RankHandler
 from sentence.dataset import DataSet
 from sentence.scoring import Scoring
@@ -210,10 +210,10 @@ class AutoRankingExperiment(object):
                 classified_pairwise = test_data_pairwise.classify_with(classifier)
                 parallelsentences = RankHandler().get_multiclass_from_pairwise_set(classified_pairwise.get_dataset(), self.allow_ties)
 
-                from io.output.xmlwriter import XmlWriter
+                from io_utils.output.xmlwriter import XmlWriter
                 classified_xmlwriter = XmlWriter(parallelsentences)
                 classified_xmlwriter.write_to_file(filename_out + "xml")
-                from io.output.wmt11tabwriter import Wmt11TabWriter
+                from io_utils.output.wmt11tabwriter import Wmt11TabWriter
                 classified_xmlwriter = Wmt11TabWriter(parallelsentences, "dfki_parseconf_%d" % i)
                 classified_xmlwriter.write_to_file(filename_out + "tab")
                 output.append("\n")
@@ -231,7 +231,7 @@ class AutoRankingExperiment(object):
                 output_file_object = open(filename_out, 'w')
             
                 from classifier.ranker import Ranker
-                from io.saxwmt11eval import SaxWMTexporter
+                from io_utils.saxwmt11eval import SaxWMTexporter
                 from xml.sax import make_parser
                 
                 ranker =  Ranker(classifier, attribute_names, self.meta_attribute_names)
@@ -256,7 +256,7 @@ class AutoRankingExperiment(object):
                 output_file_object = open(filename_out, 'w')
             
                 from classifier.ranker import Ranker
-                from io.sax_bestrank2simplefile import SaxBestRank2SimpleFile
+                from io_utils.sax_bestrank2simplefile import SaxBestRank2SimpleFile
                 from xml.sax import make_parser
                 
                 ranker =  Ranker(classifier, attribute_names, self.meta_attribute_names)

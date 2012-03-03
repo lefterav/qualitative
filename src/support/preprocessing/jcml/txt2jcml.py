@@ -6,7 +6,7 @@ Created on 23 Feb 2012
 from optparse import OptionParser
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
-from io.sax.saxps2jcml import Parallelsentence2Jcml
+from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
 
 if __name__ == '__main__':
 
