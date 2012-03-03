@@ -4,7 +4,7 @@ import time
 import sys
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 import socket
-from nltk import PunktWordTokenizer
+from nltk import PunktWordTokenizer, PunktSentenceTokenizer
 from featuregenerator.parser.berkeley.socket.berkeleyparsersocket import BerkeleyParserSocket
 
 
@@ -57,12 +57,19 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         attributes ["berkeley-tree"] = best_parse
         return attributes
     
-    def prepare_sentence(self, simplesentence):
-        
-        string =  simplesentence.get_string()
-        if self.tokenize:
-            string = ' '.join(PunktWordTokenizer().tokenize(string))
-        return string
+def prepare_sentence(self, simplesentence):
+    
+    string =  simplesentence.get_string()
+    if self.tokenize:   
+        string = string.replace('“', '"')
+        strings = PunktSentenceTokenizer().tokenize(string)
+        fixed_string = []
+        for string in strings:
+            tokens = PunktWordTokenizer().tokenize(string)
+            tokens[-1] = tokens[-1].replace(".", " .")
+            fixed_string.extend(tokens)
+        mystring = " ".join(fixed_string) 
+    return string
     
 
 #        batch = []
