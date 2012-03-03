@@ -16,8 +16,8 @@ from xml.dom import minidom
 from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence
 from xml.sax.saxutils import unescape
-from io.input.genericreader import GenericReader
-from io.sax.saxps2jcml import Parallelsentence2Jcml
+from io_utils.input.genericreader import GenericReader
+from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
 
 class GenericXmlReader(GenericReader):
     """
