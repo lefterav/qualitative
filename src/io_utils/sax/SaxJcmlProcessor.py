@@ -5,7 +5,7 @@ Created on Aug 31, 2011
 '''
 
 from saxprocessor import SaxProcessor
-from io.dataformat.jcmlformat import JcmlFormat
+from io_utils.dataformat.jcmlformat import JcmlFormat
 
 class SaxJcmlProcessor(SaxProcessor):
     '''
