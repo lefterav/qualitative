@@ -8,10 +8,10 @@ from orange import SVMLearner
 from orngTree import TreeLearner
 from orngLR import LogRegLearner
 from orange import kNNLearner
-from io.input.orangereader import OrangeData
-from io.input.xmlreader import XmlReader
-from io.output.xmlwriter import XmlWriter
-from io.input.xliffreader import XliffReader
+from io_utils.input.orangereader import OrangeData
+from io_utils.input.xmlreader import XmlReader
+from io_utils.output.xmlwriter import XmlWriter
+from io_utils.input.xliffreader import XliffReader
 from sentence.rankhandler import RankHandler
 from sentence.dataset import DataSet
 from sentence.scoring import Scoring
@@ -186,10 +186,10 @@ class SelectBestExperiment(object):
                 classified_original = test_data_classifiable.classify_with(classifier)
                 parallelsentences = RankHandler().get_multiclass_from_pairwise_set(classified_original.get_dataset(), self.allow_ties)
 
-                from io.output.xmlwriter import XmlWriter
+                from io_utils.output.xmlwriter import XmlWriter
                 classified_xmlwriter = XmlWriter(parallelsentences)
                 classified_xmlwriter.write_to_file(filename_out + "xml")
-                from io.output.wmt11tabwriter import Wmt11TabWriter
+                from io_utils.output.wmt11tabwriter import Wmt11TabWriter
                 classified_xmlwriter = Wmt11TabWriter(parallelsentences, "dfki_parseconf_%d" % i)
                 classified_xmlwriter.write_to_file(filename_out + "tab")
                 output.append("\n")

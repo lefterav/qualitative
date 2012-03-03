@@ -6,10 +6,10 @@
 @author: Eleftherios Avramidis
 """
 
-from io.input.xmlreader import XmlReader
-from io.input.taraxureader import TaraXUReader
-#from io.input.orangereader import OrangeData
-from io.output.xmlwriter import XmlWriter
+from io_utils.input.xmlreader import XmlReader
+from io_utils.input.taraxureader import TaraXUReader
+#from io_utils.input.orangereader import OrangeData
+from io_utils.output.xmlwriter import XmlWriter
 
 from os import getenv
 import os
@@ -20,7 +20,7 @@ from sentence.dataset import DataSet
 
 
 
-from io.saxjcml import SaxJCMLProcessor
+from io_utils.saxjcml import SaxJCMLProcessor
 from xml.sax import make_parser
 from sentence.rankhandler import RankHandler
 import sys
@@ -166,7 +166,7 @@ class Experiment:
     
     def split_corpus(self, filename, filename_train, filename_test, proportion=0.1):
         
-        from io.input.orangereader import OrangeData
+        from io_utils.input.orangereader import OrangeData
         
         #filename = os.getenv("HOME") + "/taraxu_data/wmt08-humaneval-data/wmt08_human_binary.jcml"
         class_name = "rank"
@@ -378,7 +378,7 @@ class Experiment:
         
     
     def train_classifiers(self, filenames):
-        from io.input.orangereader import OrangeData
+        from io_utils.input.orangereader import OrangeData
         from classifier.bayes import Bayes
         from classifier.tree import TreeLearner
         from classifier.svm import SVM
@@ -499,7 +499,7 @@ class Experiment:
     
     
     def test_classifiers(self, classifiers, filename, filename_out):
-        from io.input.orangereader import OrangeData
+        from io_utils.input.orangereader import OrangeData
         from classifier.bayes import Bayes
         from classifier.tree import TreeLearner
         from classifier.svm import SVM
@@ -536,10 +536,10 @@ class Experiment:
         classified_data = test_data.classify_with(myclassifier)
         parallelsentences = classified_data.get_dataset().get_parallelsentences()
         parallelsentences = rankhandler.get_multiclass_from_pairwise_set(parallelsentences, allow_ties)
-        from io.output.xmlwriter import XmlWriter
+        from io_utils.output.xmlwriter import XmlWriter
         classified_xmlwriter = XmlWriter(parallelsentences)
         classified_xmlwriter.write_to_file(filename_out + "xml")
-        from io.output.wmt11tabwriter import Wmt11TabWriter
+        from io_utils.output.wmt11tabwriter import Wmt11TabWriter
         classified_xmlwriter = Wmt11TabWriter(parallelsentences, "dfki_parseconf")
         classified_xmlwriter.write_to_file(filename_out + "tab")
         
@@ -601,7 +601,7 @@ class Experiment:
             
     
     def convert_wmtdata(self, dir, langpair, filename):
-        from io.input.wmt11reader import Wmt11Reader
+        from io_utils.input.wmt11reader import Wmt11Reader
         reader = Wmt11Reader()
         
         writer = XmlWriter(reader.read_parallelsentences(dir, langpair))
@@ -611,7 +611,7 @@ class Experiment:
         filename_out = sourcefile.replace("jcml", "%d.tab")
         print "opening %s" % sourcefile 
         reader = XmlReader(sourcefile)
-        from io.output.wmt11tabwriter import Wmt11TabWriter
+        from io_utils.output.wmt11tabwriter import Wmt11TabWriter
         
         i = 0
         filenames = []

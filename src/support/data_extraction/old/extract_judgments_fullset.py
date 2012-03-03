@@ -16,7 +16,7 @@ import string
 import math
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
-from io.output.xmlwriter import XmlWriter
+from io_utils.output.xmlwriter import XmlWriter
 
 
 """

@@ -15,7 +15,7 @@ if __name__ == '__main__':
 #    for entry in scoresprint:
 #        f.write(entry)
 #    f.close()
-    from io.saxscoring import SaxSystemScoring
+    from io_utils.saxscoring import SaxSystemScoring
     saxreader = SaxSystemScoring("rank", sys.argv[2], sys.argv[3])
     fileinput = open(sys.argv[1])
     

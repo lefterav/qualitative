@@ -10,7 +10,7 @@ import codecs
 import subprocess
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
-from io.sax.saxps2jcml import Parallelsentence2Jcml
+from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
 
 
 #Language mapping, needed for browsing the correct test/source/ref file

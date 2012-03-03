@@ -4,9 +4,9 @@ Created on 7 Feb 2012
 @author: elav01
 '''
 
-from io.input.jcmlreader import JcmlReader
+from io_utils.input.jcmlreader import JcmlReader
 from sentence.pairwisedataset import FilteredPairwiseDataset , AnalyticPairwiseDataset
-from io.sax.saxps2jcml import Parallelsentence2Jcml
+from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
 
 def get_clean_testset(input_file, output_file):
     plain_dataset = JcmlReader(input_file).get_dataset()

@@ -1,6 +1,6 @@
-from io.input.xliffreader import XliffReader
-from io.output.xmlwriter import XmlWriter
-from io.sax.saxwrapper import SaxWrapper
+from io_utils.input.xliffreader import XliffReader
+from io_utils.output.xmlwriter import XmlWriter
+from io_utils.sax.saxwrapper import SaxWrapper
 from sys import argv
 from xml import sax
 
