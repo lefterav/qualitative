@@ -10,8 +10,8 @@ Created on 15 Οκτ 2010
 
 
 from xml.dom.minidom import parse
-from io.input.genericxmlreader import GenericXmlReader
-from io.dataformat.jcmlformat import JcmlFormat
+from io_utils.input.genericxmlreader import GenericXmlReader
+from io_utils.dataformat.jcmlformat import JcmlFormat
 
 class JcmlReader(GenericXmlReader):
     """

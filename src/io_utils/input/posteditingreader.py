@@ -11,7 +11,7 @@ from xml.dom.minidom import parse
 from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence
 from xml.sax.saxutils import unescape
-from io.input.genericreader import GenericReader
+from io_utils.input.genericreader import GenericReader
  
 
 class PosteditingReader(GenericReader):
