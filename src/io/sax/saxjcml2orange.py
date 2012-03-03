@@ -375,7 +375,7 @@ class SaxJcmlOrangeContent(ContentHandler):
             for attribute_name in self.attribute_names:
                 if attribute_name in ps.get_nested_attributes():
                     # print attribute names
-                    self.o_file.write('%s\t' % ps.get_nested_attributes()[attribute_name])
+                    self.o_file.write(u'%s\t' % ps.get_nested_attributes()[attribute_name])
                 else:
                     # even if attribute value exists or not, we have to tab
                     self.o_file.write('\t')
