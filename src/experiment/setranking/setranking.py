@@ -35,8 +35,8 @@ if __name__ == '__main__':
         print "loading big set"
         simple_trainset = JcmlReader(input_file).get_dataset() 
     
-#    print "concatenating set for development purposes"
-#    simple_trainset, a = simple_trainset.split(0.07)
+#        print "concatenating set for development purposes"
+#        simple_trainset, a = simple_trainset.split(0.07)
 #    
 #    print "writing down the concatenated set"
 #    Parallelsentence2Jcml(simple_dataset.get_parallelsentences()).write_to_file('/home/elav01/taraxu_data/wmt12/qe/training_set/training-sample.jcml')
