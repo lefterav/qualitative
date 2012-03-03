@@ -35,8 +35,8 @@ if __name__ == '__main__':
         print "loading big set"
         simple_trainset = JcmlReader(input_file).get_dataset() 
     
-        print "concatenating set for development purposes"
-        simple_trainset, a = simple_trainset.split(0.07)
+#        print "concatenating set for development purposes"
+#        simple_trainset, a = simple_trainset.split(0.07)
 #    
 #    print "writing down the concatenated set"
 #    Parallelsentence2Jcml(simple_dataset.get_parallelsentences()).write_to_file('/home/elav01/taraxu_data/wmt12/qe/training_set/training-sample.jcml')
@@ -55,8 +55,10 @@ if __name__ == '__main__':
         print "orange version of coupling training set"
         #param
         meta_attributes = set(["testset", "judgment-id", "langsrc", "langtgt", "ps1_judgement_id", 
-                               "id", "tgt-1_score" ,  "tgt-1_system" ,  "tgt-1_berkeley-tree", "src_berkeley-tree",  
+                               "id", "tgt-1_score" ,  "tgt-1_system" ,    
                                  ])
+        
+        hidden_attributes = ["tgt-1_berkeley-tree", "src_berkeley-tree",]
         
         discrete_attributes = [ "src_reuse_status",  
                                "src_terminologyAdmitted_status", 
@@ -97,7 +99,7 @@ if __name__ == '__main__':
 #            multinomialTreatment=orange.DomainContinuizer.NValues, \
 #            continuousTreatment=orange.DomainContinuizer.NormalizeBySpan, \
 #            classTreatment=orange.DomainContinuizer.Ignore)
-        myclassifier = OrangeClassifier(mylearner(ExampleTable("trainset.disk.tab")), {})
+        myclassifier = OrangeClassifier(mylearner(ExampleTable("trainset.disk.tab")))
         
         objectfile = open("classifier.pickle", 'w')
         pickle.dump(myclassifier.classifier, objectfile)

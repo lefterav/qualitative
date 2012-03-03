@@ -46,7 +46,7 @@ class SaxJcml2Orange():
         if "discrete_attributes" in kwargs:
             self.discrete_attributes = set(kwargs["discrete_attributes"])
         
-        if "discrete_attributes" in kwargs:
+        if "hidden_attributes" in kwargs:
             self.hidden_attributes = set(kwargs["hidden_attributes"])
         
         if "get_nested_attributes" in kwargs:
