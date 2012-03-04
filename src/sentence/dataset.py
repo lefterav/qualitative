@@ -21,7 +21,7 @@ class DataSet(object):
     @type attribute_names_found: boolean
     """
 
-    def __init__(self, parallelsentence_list = [], attributes_list = [], annotations = []):
+    def __init__(self, content = [], attributes_list = [], annotations = []):
         """
         @param parallelsentence_list: the parallelsentences to be wrapped in the dataset
         @type parallelsentence_list: [L{ParallelSentence}, ...]
@@ -32,16 +32,24 @@ class DataSet(object):
         @type list     
         """
         
-        self.parallelsentences = parallelsentence_list
-        self.annotations = annotations    
-        if attributes_list:
-            self.attribute_names = attributes_list
-            self.attribute_names_found = True
+        if isinstance(content, DataSet):
+            self.parallelsentences = content.parallelsentences
+            self.annotations = content.annotations
+            self.attribute_names = content.attribute_names
+            self.attribute_names_found = content.attribute_names_found
+        
         else:
-            self.attribute_names_found = False
-            self.attribute_names = []
-        self.ensure_judgment_ids()
             
+            self.parallelsentences = content
+            self.annotations = annotations    
+            if attributes_list:
+                self.attribute_names = attributes_list
+                self.attribute_names_found = True
+            else:
+                self.attribute_names_found = False
+                self.attribute_names = []
+            self.ensure_judgment_ids()
+                
     def ensure_judgment_ids(self):
         """
         Processes one by one the contained parallel sentences and ensures that there are judgment ids
