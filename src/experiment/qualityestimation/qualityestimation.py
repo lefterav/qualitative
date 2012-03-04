@@ -16,6 +16,7 @@ import orange
 import sys
 import cPickle as pickle
 import os
+from sentence.scoring import Scoring
 
 if __name__ == '__main__':
     
@@ -131,10 +132,16 @@ if __name__ == '__main__':
         
         
         print "adding attribute vector"
-        att_vector = [{"rank_predicted": v[0]} for v in classified_set_vector]
+        att_vector = [{"score_predicted": v[0]} for v in classified_set_vector]
         print att_vector
         simple_testset.add_attribute_vector(att_vector, "ps")
         Parallelsentence2Jcml(simple_testset).write_to_file("testset.classified.jcml")
+        
+        from support.evaluation.wmt12.wmt_scoring import WmtScoring
+        
+        print WmtScoring(simple_testset).process("tgt-1_score", "", "score_predicted", "")
+        
+        
 #    Parallelsentence2Jcml(reconstructed_testset).write_to_file("testset_predicted.jcml")
     
     
