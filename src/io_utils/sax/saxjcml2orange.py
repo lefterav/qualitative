@@ -85,7 +85,7 @@ class SaxJcml2Orange():
         This function gets orange header.
         """
         parser = make_parser()
-        curHandler1 = SaxJcmlOrangeHeader(self.object_file, self.class_name, self.desired_attributes, self.meta_attributes, self.discrete_attributes, self.get_nested_attributes, self.class_type)
+        curHandler1 = SaxJcmlOrangeHeader(self.object_file, self.class_name, self.desired_attributes, self.meta_attributes, self.discrete_attributes, self.get_nested_attributes, self.class_type, self.hidden_attributes)
         parser.setContentHandler(curHandler1)
         parser.parse( open(self.input_filename, 'r'))
 
@@ -95,7 +95,7 @@ class SaxJcml2Orange():
         This function gets orange content.
         """
         parser = make_parser()
-        curHandler2 = SaxJcmlOrangeContent(self.object_file, self.class_name, self.meta_attributes, self.compact_mode, self.filter_attributes)
+        curHandler2 = SaxJcmlOrangeContent(self.object_file, self.class_name, self.meta_attributes, self.compact_mode, self.filter_attributes, self.hidden_attributes)
         parser.setContentHandler(curHandler2)
         parser.parse(open(self.input_filename, 'r'))
     
@@ -104,7 +104,6 @@ class SaxJcml2Orange():
         """
         Test function for getting orange file.
         """
-        import orange
         from io_utils.input.orangereader import OrangeData
         dataset = XmlReader(self.input_filename).get_dataset()
         wrapped_data = OrangeData(dataset, self.class_name, self.desired_attributes, self.meta_attributes, self.orange_filename)
@@ -218,12 +217,14 @@ class SaxJcmlOrangeHeader(ContentHandler):
         line_2 = '' # line for the type of the arguments
         line_3 = '' # line for the definition of the class
 
-        if self.desired_attributes == []:
+        if self.desired_attributes == set([]):
             self.desired_attributes = self.attribute_names
             
         # prepare heading
         for attribute_name in self.attribute_names:
             # line 1 holds just the names
+            if attribute_name in self.hidden_attributes:
+                continue
             line_1 += attribute_name +"\t"
             
             #TODO: find a way to define continuous and discrete arg
@@ -232,21 +233,22 @@ class SaxJcmlOrangeHeader(ContentHandler):
                 line_2 += u"%s\t"% self.class_type
             elif (attribute_name in self.desired_attributes 
                   and attribute_name not in self.meta_attributes 
-                  and attribute_name not in self.hidden_attributes):
+                  ):
                 if attribute_name in self.discrete_attributes:
                     line_2 += "d\t"
                 else:
                     line_2 += "c\t"
             else:
-                line_2 += "d\t"
+                line_2 += "s\t"
 
             # line 3 defines the class and the metadata
             if attribute_name == self.class_name:
                 line_3 = line_3 + "c"
             elif ((attribute_name not in self.desired_attributes 
                    or attribute_name in self.meta_attributes)
-                   and attribute_name not in self.hidden_attributes):
+                   ):
                 line_3 = line_3 + "m"
+            
             line_3 = line_3 + "\t"
 
         # src
@@ -281,7 +283,7 @@ class SaxJcmlOrangeHeader(ContentHandler):
 class SaxJcmlOrangeContent(ContentHandler):
 
 
-    def __init__ (self, o_file, class_name, meta_attributes, compact_mode=False, filter_attributes={}, hidden_attributes={}):
+    def __init__ (self, o_file, class_name, meta_attributes, compact_mode=False, filter_attributes={}, hidden_attributes=[]):
         """
         @param oFile: file object to receive processed changes
         @type oFile: file object
@@ -388,10 +390,13 @@ class SaxJcmlOrangeContent(ContentHandler):
                 if not attribute_name in self.hidden_attributes:
                     if attribute_name in ps.get_nested_attributes():
                         # print attribute names
-                        self.o_file.write(u'%s\t' % ps.get_nested_attributes()[attribute_name])
+                        attvalue = ps.get_nested_attributes()[attribute_name].strip()
+                        attvalue.replace("inf", "99999999")
+                        self.o_file.write(u'%s\t' % attvalue)
+                        
                     else:
                         # even if attribute value exists or not, we have to tab
-                        self.o_file.write('\t')
+                        self.o_file.write('0\t')
             
             # print source sentence
             self.o_file.write('%s\t' % ps.get_source().get_string())
