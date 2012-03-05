@@ -92,7 +92,8 @@ class QualityEstimationSuite(PyExperimentSuite):
         if n == 6:
             print "performing classification"
             orangeData = Table("testset.tab")
-            self.classified_set_vector = self.myclassifier.classify_orange_table(orangeData)
+            classified_set_vector = self.myclassifier.classify_orange_table(orangeData)
+            self.classified_values_vector = [str(v[0]) for v in classified_set_vector]
 #            print classified_set_vector
         
         if n == 7:
@@ -101,7 +102,7 @@ class QualityEstimationSuite(PyExperimentSuite):
             self.simple_testset = JcmlReader("testset.jcml").get_dataset()
             
             print "adding attribute vector"
-            att_vector = [{"score_predicted": v[0]} for v in self.classified_set_vector]
+            att_vector = [{"score_predicted": v} for v in self.classified_values_vector]
             print att_vector
             self.simple_testset.add_attribute_vector(att_vector, "ps")
             
@@ -109,7 +110,7 @@ class QualityEstimationSuite(PyExperimentSuite):
         if n == 8:
             from support.evaluation.wmt12.wmt_scoring import WmtScoring
             ret = WmtScoring(self.simple_testset).process("tgt-1_score", "", "score_predicted", "")
-            
+            print "finished"
         return ret
         
     def save_state(self, params, rep, n):
@@ -119,7 +120,7 @@ class QualityEstimationSuite(PyExperimentSuite):
             objectfile.close()
         if n == 6:
             classified_vector_file = open("classified.txt", 'w')
-            classified_vector_file.writelines(self.classified_set_vector)
+            classified_vector_file.writelines(self.classified_values_vector)
             classified_vector_file.close()
         if n == 7:
             Parallelsentence2Jcml(self.simple_testset).write_to_file("testset.classified.jcml")
