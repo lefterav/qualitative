@@ -9,7 +9,7 @@ import classifier
 from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator, BerkeleyXMLRPCFeatureGenerator
 from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator 
 import pkgutil
-import orange
+import Orange
 import os
 import shutil
 
@@ -37,7 +37,7 @@ class ExperimentConfigParser(ConfigParser):
                 return getattr(module, name)
             except:
                 pass
-        return getattr(orange, name)
+        return getattr(Orange, name)
     
     
     def exists_parser(self, language):
