@@ -242,7 +242,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
     def _start_new_check(self):
         # get check id
         settings = self.settings
-        print "getting required check id"
+#        print "getting required check id"
         check_id = self.soap_client.service.getCheckId()
 
         if settings:
@@ -278,11 +278,11 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
             text64 = base64.standard_b64encode(text)
             check_id, soap_properties = self._start_new_check()
             
-            print 'soap_properties', soap_properties
-            print 'text64', text64
-            print 'check_id', check_id
-            print 'resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)'
-            
+#            print 'soap_properties', soap_properties
+#            print 'text64', text64
+#            print 'check_id', check_id
+#            print 'resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)'
+#            
             resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)
             self._update_license(resp)
             
