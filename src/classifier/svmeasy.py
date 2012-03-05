@@ -3,9 +3,10 @@
 @author: lefterav
 '''
 
-from orngSVM import SVMLearner #, SVMClassifierClassEasyWrapper
-import orange
-import orngWrap
+from Orange.classification.svm import SVMLearner #, SVMClassifierClassEasyWrapper
+import Orange
+from Orange.optimization import TuneMParameters
+from Orange.data.continuization import DomainContinuizer
 import cPickle as pickle
 
 class SVMEasy(SVMLearner):
@@ -19,7 +20,7 @@ class SVMEasy(SVMLearner):
         self.learner = SVMLearner(**kwds)
     
 
-    def learnClassifier(self, examples, params):
+    def __call__(self, examples, params):
         
         self.multinomialTreatment = params["multinomialTreatment"]
         self.continuousTreatment = params["continuousTreatment"]
@@ -42,7 +43,7 @@ class SVMEasy(SVMLearner):
         return classifier
         
     def continuize(self, examples):
-        transformer=orange.DomainContinuizer()
+        transformer=DomainContinuizer()
         #transformer.multinomialTreatment=orange.DomainContinuizer.NValues
         #transformer.continuousTreatment=orange.DomainContinuizer.NormalizeBySpan
         transformer.multinomialTreatment = self.multinomialTreatment
@@ -70,7 +71,7 @@ class SVMEasy(SVMLearner):
             parameters.append(("C", [2**a for a in  range(-5,15,2)]))
         if self.kernel_type==2:
             parameters.append(("gamma", [2**a for a in range(-5,5,2)]+[0]))
-        tunedLearner = orngWrap.TuneMParameters(object=self.learner, parameters=parameters, folds=self.folds)
+        tunedLearner = TuneMParameters(object=self.learner, parameters=parameters, folds=self.folds)
         appliedTunedLearner = tunedLearner(newexamples, verbose=self.verbose)
              
         #return SVMClassifierClassEasyWrapper(appliedTunedLearner, newdomain, examples), appliedTunedLearner.fittedParameters
