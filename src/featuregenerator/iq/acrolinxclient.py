@@ -17,6 +17,7 @@ from suds.client import Client
 import base64
 import re
 import urllib
+import re
 from xml.etree import ElementTree as ET
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 import os
@@ -143,14 +144,19 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         sLangFlags = style.find('listOfLangFlags')
         for sLf in sLangFlags.findall('langFlag'):
             errorName = sLf.find('description').text
-            errorName = errorName.replace(" ", "_")
-            errorName = errorName.replace(":", "_")
             
-            # No. of particular errors
-            if not 'style_%s' % errorName in atts:
-                atts['style_%s' % errorName] = 1
+            if errorName.startswith("Sentence too long"):
+                errorName = "style_too_long"
+                too_long = re.findall("Sentence too long[: ](\d*)")[0] 
+                atts['style_too_long'] = too_long 
             else:
-                atts['style_%s' % errorName] += 1
+                errorName = errorName.replace(" ", "_")
+                errorName = errorName.replace(":", "_")
+                # No. of particular errors
+                if not 'style_%s' % errorName in atts:
+                    atts['style_%s' % errorName] = 1
+                else:
+                    atts['style_%s' % errorName] += 1
             
             # No. of matches for particular error
             if not 'style_%s_matches' % errorName in atts:
@@ -312,7 +318,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
 
 text = 'This break every possibility. Dear clients, we would like to informm you that during the latest commerccial update we recieved marvelous products, which wwe can offers in really good prices. Please keeps in touch for further notice. This break every possibility.'
 ac = IQFeatureGenerator("en")
-from io import saxjcml
+from io_utils import saxjcml
 #
 saxjcml.run_features_generator("/home/elav01/taraxu_data/wmt12/qe/training_set/training.jcml", "/home/elav01/taraxu_data/wmt12/qe/training_set/training.iq.jcml", [ac])
 print ac.process(text)

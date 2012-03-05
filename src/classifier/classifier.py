@@ -3,9 +3,9 @@
 @author: Eleftherios Avramidis
 """
     
-from orange import Orange
-from orange import ExampleTable
-from orange import Classifier
+import Orange
+from Orange.data import Table
+from Orange.classification import Classifier
 
 class OrangeClassifier():
     """
@@ -17,7 +17,7 @@ class OrangeClassifier():
         
         
     def classify_orange_table(self, orange_table, return_type=Classifier.GetBoth):
-        #orange_table = ExampleTable()
+        #orange_table = Table()
         resultvector = []
         for instance in orange_table:
             value, distribution = self.classifier.__call__(instance, return_type)

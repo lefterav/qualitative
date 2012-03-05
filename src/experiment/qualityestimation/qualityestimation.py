@@ -8,11 +8,13 @@ from io_utils.input.jcmlreader import JcmlReader
 from sentence.coupleddataset import CoupledDataSet, OrangeCoupledDataSet, CoupledDataSetDisk
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
 from io_utils.sax.saxjcml2orange import SaxJcml2Orange
-from orange import BayesLearner 
+from Orange.classification.bayes import NaiveLearner
+from Orange.regression.linear import LinearRegressionLearner
+
 from classifier.classifier import OrangeClassifier
-from orange import ExampleTable
+from Orange.data import Table
 from classifier.svmeasy import SVMEasy
-import orange
+import Orange
 import sys
 import cPickle as pickle
 import os
@@ -82,8 +84,9 @@ if __name__ == '__main__':
                                                  compact_mode = True, 
                                                  discrete_attributes=discrete_attributes, 
                                                  get_nested_attributes=True,
+                                                 hidden_attributes = hidden_attributes,
 #                                                 filter_attributes={"rank" : "0"},
-                                                 class_type="d"
+                                                 class_type="c"
                                                  )
         
 #    coupled_trainset = CoupledDataSet(readfile="trainset.coupled.jcml")
@@ -92,15 +95,15 @@ if __name__ == '__main__':
     
     if step<4:
         #param
-        mylearner = orange.LinearLearner()
-        myclassifier = mylearner(ExampleTable("trainset.disk.tab"))
+        mylearner = LinearRegressionLearner()
+        myclassifier = mylearner(Table("trainset.disk.tab"))
 
         
 #        params = dict(continuize=True, \
 #            multinomialTreatment=orange.DomainContinuizer.NValues, \
 #            continuousTreatment=orange.DomainContinuizer.NormalizeBySpan, \
 #            classTreatment=orange.DomainContinuizer.Ignore)
-        myclassifier = OrangeClassifier(mylearner(ExampleTable("trainset.disk.tab")))
+        myclassifier = OrangeClassifier(mylearner(Table("trainset.disk.tab")))
         
         objectfile = open("classifier.pickle", 'w')
         pickle.dump(myclassifier.classifier, objectfile)
@@ -123,7 +126,7 @@ if __name__ == '__main__':
     #    orange_coupled_testset = OrangeCoupledDataSet(coupled_testset, "rank", [], meta_attributes, "testset.tab", True)
     if step<8:
         print "performing classification"
-        classified_set_vector = myclassifier.classify_orange_table(ExampleTable("testset.tab"))
+        classified_set_vector = myclassifier.classify_orange_table(Table("testset.tab"))
         print classified_set_vector
         
     if step<9:
