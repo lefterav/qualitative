@@ -3,7 +3,7 @@ Created on 04 Mar 2012
 @author: lefterav
 '''
 import Orange
-from Orange.regression.linear import LinearRegressionLearner
+from Orange.regression.linear import LinearRegressionLearner 
 from Orange.regression.pls import PLSRegressionLearner
 from Orange.regression.lasso import LassoRegressionLearner
 from Orange.regression.earth import EarthLearner
@@ -30,6 +30,7 @@ from expsuite import PyExperimentSuite
 class QualityEstimationSuite(PyExperimentSuite):
     
     def reset(self, params, rep):
+        self.restore_supported = True
         classifier_name = params["classifier"] + "Learner"
         self.learner = eval(classifier_name)
         self.meta_attributes = params["meta_attributes"].split(",")
