@@ -28,12 +28,12 @@ from sentence.rankhandler import RankHandler
 from featuregenerator.diff_generator import DiffGenerator
 from sentence.scoring import Scoring
 
-from io import saxjcml
+from io_utils import saxjcml
 
 
 #ML
-from orange import ExampleTable
-import orange
+#from orange import ExampleTable
+#import orange
 from xml import sax
 
 import re
