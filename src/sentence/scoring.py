@@ -8,8 +8,6 @@
 
 from dataset import DataSet
 from multirankeddataset import MultiRankedDataset
-from scipy.stats import spearmanr
-from scipy.stats import kendalltau
 
 class Scoring(MultiRankedDataset):
     """
@@ -17,6 +15,7 @@ class Scoring(MultiRankedDataset):
     """
     
     def get_systems_scoring_from_segment_ranks(self, rank_attribute_name):
+        
         """
         Provides a performance score for every system. The score is the percentage of times the system
         performed better than all other systems or equally to the systems that performed better than all other systems
@@ -46,6 +45,7 @@ class Scoring(MultiRankedDataset):
         return systems_performance
     
     def get_spearman_correlation(self, rank_name_1, rank_name_2):
+        from scipy.stats import spearmanr
         """
         Calculates the system-level Spearman rank correlation given two sentence-level features, i.e. 
         the human and the estimated rank of each parallelsentence 
@@ -71,6 +71,8 @@ class Scoring(MultiRankedDataset):
         return spearmanr(rank_evaluation_1, rank_evaluation_2)
     
     def get_kendall_tau_vector(self, rank_name_1, rank_name_2):
+        from scipy.stats import kendalltau
+
         taus = []
         pis = []
         for parallesentence in self.parallelsentences:
@@ -138,6 +140,8 @@ class Scoring(MultiRankedDataset):
     @todo: clean references and delete
     """
     def get_kendall_tau(self, rank_name_1, rank_name_2):
+        from scipy.stats import kendalltau
+
         segment_tau = 0.00
         didnt = 0
         for parallesentence in self.parallelsentences:
