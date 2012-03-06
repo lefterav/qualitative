@@ -132,7 +132,22 @@ class DataSet(object):
         for parallelsentence in self.parallelsentences:
             attribute_names.update( parallelsentence.get_attribute_names() )
         return list(attribute_names)
-    
+
+    def get_discrete_attribute_values(self, discrete_attribute_names):
+        attvalues = {}
+        for parallelsentence in self.parallelsentences:
+            allattributes = {}
+            allattributes.update(parallelsentence.get_nested_attributes())
+            allattributes.update(parallelsentence.attributes)
+            for attname in discrete_attribute_names:
+                if attname in allattributes:
+                    attvalue = allattributes[attname]
+                    try:
+                        attvalues[attname].add(attvalue)
+                    except:
+                        attvalues[attname] = set([attvalue])
+        return attvalues
+
     def confirm_attributes(self, desired_attributes=[], meta_attributes=[]):
         """
         Convenience function that checks whether the user-requested attributes (possibly
