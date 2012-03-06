@@ -11,7 +11,8 @@ from Orange.regression.tree import TreeLearner
 
 from Orange.classification.knn import kNNLearner
 from Orange.classification.bayes import NaiveLearner
-from classifier.svmeasy import SVMEasyLearner
+from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
+#from classifier.svmeasy import SVMEasyLearner
 from Orange.classification.tree import TreeLearner
 from Orange.classification.logreg import LogRegLearner
 
