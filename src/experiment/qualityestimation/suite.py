@@ -48,7 +48,7 @@ class QualityEstimationSuite(PyExperimentSuite):
         if self.active_attributes == [""]:
             self.active_attributes = []
         self.discretization = False
-        if params["discretization"]:
+        if params.has_key("discretization"):
             self.discretization = params["discretization"]
         self.hidden_attributes = params["hidden_attributes"].split(",")
         self.discrete_attributes = params["discrete_attributes"].split(",")
