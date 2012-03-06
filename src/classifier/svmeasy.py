@@ -4,10 +4,9 @@
 '''
 
 from Orange.classification.svm import SVMLearner #, SVMClassifierClassEasyWrapper
-import Orange
 from Orange.optimization import TuneMParameters
-from Orange.data.continuization import DomainContinuizer
-import cPickle as pickle
+from Orange.core import DomainContinuizer
+
 
 class SVMEasyLearner(SVMLearner):
     '''
@@ -18,13 +17,21 @@ class SVMEasyLearner(SVMLearner):
         self.verbose=0
         SVMLearner.__init__(self, **kwds)
         self.learner = SVMLearner(**kwds)
-    
+        try: 
+            self.multinomialTreatment = eval(kwds["multinomialTreatment"])
+        except:
+            self.multinomialTreatment = DomainContinuizer.NValues
+        try:
+            self.continuousTreatment = eval(kwds["continuousTreatment"])
+        except:
+            self.continuousTreatment = DomainContinuizer.NormalizeBySpan
+        try:            
+            self.classTreatment = eval(kwds["classTreatment"])
+        except:
+            self.classTreatment = DomainContinuizer.Ignore
 
-    def __call__(self, examples, params):
+    def __call__(self, examples):
         
-        self.multinomialTreatment = params["multinomialTreatment"]
-        self.continuousTreatment = params["continuousTreatment"]
-        self.classTreatment = params["classTreatment"]
                 
         print "continuizing data"
         newdomain, newexamples = self.continuize(examples)
