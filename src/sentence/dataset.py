@@ -7,6 +7,7 @@
 """
 
 import sys
+import re
 from compiler.ast import Raise
 
 class DataSet(object):
@@ -246,6 +247,17 @@ class DataSet(object):
                 ps.tgt[item].add_attributes(atts)
             elif target == "src":
                 ps.src.add_attributes(atts)
+    
+    
+    def select_attribute_names(self, expressions=[]):
+        attribute_names = []
+        for expression in expressions:
+            attribute_names.extend([attribute_name 
+                                    for attribute_name in self.get_all_attribute_names() 
+                                    if re.match(expression, attribute_name)
+                                    ])
+        return list(set(attribute_names))
+            
     
     def clone(self):
         return DataSet(self.parallelsentence, self.attribute_names)

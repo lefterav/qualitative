@@ -9,7 +9,7 @@ from Orange.optimization import TuneMParameters
 from Orange.data.continuization import DomainContinuizer
 import cPickle as pickle
 
-class SVMEasy(SVMLearner):
+class SVMEasyLearner(SVMLearner):
     '''
     classdocs
     '''
