@@ -2,14 +2,18 @@
 Created on 04 Mar 2012
 @author: lefterav
 '''
-import Orange
+
 from Orange.regression.linear import LinearRegressionLearner 
 from Orange.regression.pls import PLSRegressionLearner
 from Orange.regression.lasso import LassoRegressionLearner
 from Orange.regression.earth import EarthLearner
 from Orange.regression.tree import TreeLearner
-from Orange.classification.knn import kNNLearner
 
+from Orange.classification.knn import kNNLearner
+from Orange.classification.bayes import NaiveLearner
+from classifier.svmeasy import SVMEasyLearner
+from Orange.classification.tree import TreeLearner
+from Orange.classification.logreg import LogRegLearner
 
 from io_utils.input.jcmlreader import JcmlReader
 #from sentence.coupleddataset import CoupledDataSet, OrangeCoupledDataSet, CoupledDataSetDisk
@@ -27,17 +31,24 @@ import os
 from expsuite import PyExperimentSuite
 
 
+
 class QualityEstimationSuite(PyExperimentSuite):
     
     def reset(self, params, rep):
         self.restore_supported = True
         classifier_name = params["classifier"] + "Learner"
+        try:
+            self.classifier_params = eval(params["params_%s" % params["classifier"]])
+        except:
+            self.classifier_params = {}
         self.learner = eval(classifier_name)
         self.meta_attributes = params["meta_attributes"].split(",")
-        self.active_attributes = []
-        if params.has_key("active_atributes"):
-            self.active_attributes = params["active_attributes"].split(",")
-        
+        self.active_attributes = params[params["att"]].split(",")
+        if self.active_attributes == [""]:
+            self.active_attributes = []
+        self.discretization = False
+        if params["discretization"]:
+            self.discretization = params["discretization"]
         self.hidden_attributes = params["hidden_attributes"].split(",")
         self.discrete_attributes = params["discrete_attributes"].split(",")
         self.class_name = params["class_name"]
@@ -46,7 +57,7 @@ class QualityEstimationSuite(PyExperimentSuite):
     def iterate(self, params, rep, n):
         ret = {}
         
-        print "repetition", rep
+        print "experiment", os.getcwd()
         print "iteration", n
         if n == 1:
             print "loading big set"
@@ -67,20 +78,17 @@ class QualityEstimationSuite(PyExperimentSuite):
                  hidden_attributes=self.hidden_attributes,
                  get_nested_attributes=True,
                  #filter_attributes={"rank" : "0"},
-                 class_type=self.class_type
+                 class_type=self.class_type,
+                 class_discretize = self.discretization
                                          )
 
         if n == 4:
             orangeData = Table("trainset.tab")
-#            self.imputer = Orange.feature.imputation.Defaults(orangeData.domain)
-#            att_names = [att.name for att in orangeData.domain.attributes]
-#            for att_name in att_names:
-#                self.imputer.defaults[att_name] = 0
-            mylearner = self.learner() #imputer=self.imputer)
+            mylearner = self.learner(**self.classifier_params) #imputer=self.imputer)
             self.myclassifier = OrangeClassifier(mylearner(orangeData))
         if n == 5:
             self.meta_attributes.append(self.class_name)
-            print "orange version of coupling test set"
+            print "orange version of test set"
             SaxJcml2Orange("testset.jcml", "", 
                                                  self.active_attributes, 
                                                  self.meta_attributes, 
@@ -88,7 +96,8 @@ class QualityEstimationSuite(PyExperimentSuite):
                                                  compact_mode=True, 
                                                  discrete_attributes=self.discrete_attributes,
                                                  hidden_attributes=self.hidden_attributes, 
-                                                 get_nested_attributes=True)
+                                                 get_nested_attributes=True
+                                                 )
         if n == 6:
             print "performing classification"
             orangeData = Table("testset.tab")
@@ -110,6 +119,7 @@ class QualityEstimationSuite(PyExperimentSuite):
         if n == 8:
             from support.evaluation.wmt12.wmt_scoring import WmtScoring
             ret = WmtScoring(self.simple_testset).process("tgt-1_score", "", "score_predicted", "")
+            print ret
             print "finished"
         return ret
         
