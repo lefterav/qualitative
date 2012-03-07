@@ -77,7 +77,7 @@ class Jcml2Arff:
             for attname in hidden_attribute_names:
                 try:
                     del(atts[attname])
-                    print "deleted", attname 
+                    
                 except:
                     pass
             arff.write_instance(atts, class_value)
@@ -98,6 +98,6 @@ if __name__ == '__main__':
                        "src_terminology_status",
                        "src_resultStats_projectStatus", 
                        ]
-    Jcml2Arff().process("/home/lefterav/taraxu_data/wmt12/qe/training_set/training.all.analyzed.f.jcml", 
-                        "/home/lefterav/taraxu_data/wmt12/qe/training_set/trainset.arff", 
+    Jcml2Arff().process("/home/elav01/taraxu_data/wmt12/qe/training_set/training.all.analyzed.f.jcml", 
+                        "/home/elav01/taraxu_data/wmt12/qe/training_set/trainset.arff", 
                         hidden_attributes, discrete_attributes, [], "qe", "tgt-1_score", "numeric", [])

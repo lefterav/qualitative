@@ -5,6 +5,7 @@ Created on 23 Feb 2012
 '''
 
 from parallelsentence import ParallelSentence
+from sentence import SimpleSentence
 
 class CoupledParallelSentence(ParallelSentence):
     '''
@@ -20,13 +21,18 @@ class CoupledParallelSentence(ParallelSentence):
     '''
 
 
-    def __init__(self, ps1, ps2 = None):
+    def __init__(self, ps1, ps2 = None, **kwargs):
         '''
         @param ps1: first parallel sentence of the couple
         @type ps1: L{ParallelSentence}
         @param ps2: second parallel sentence of the couple
         @type ps2: L{ParallelSentence}
         '''
+        try:
+            self.compact = kwargs["compact"]
+        except:
+            self.compact = False
+        
         if not ps2: #wrap
             self.src = ps1.src
             self.tgt = ps1.tgt
@@ -34,14 +40,20 @@ class CoupledParallelSentence(ParallelSentence):
             self.attributes = ps1.attributes
             
         else: #construct
-            self.src = (ps1.get_source(), ps2.get_source())
-            if len(ps1.get_translations()) > 1 or len(ps2.get_translations()) > 1:
-                raise Exception
-            self.tgt = (ps1.get_translations()[0], ps2.get_translations()[0])
+            
+            if not self.compact:
+                self.src = (ps1.get_source(), ps2.get_source())
+                if len(ps1.get_translations()) > 1 or len(ps2.get_translations()) > 1:
+                    raise Exception
+                self.tgt = (ps1.get_translations()[0], ps2.get_translations()[0])
+            else:
+                self.src = (SimpleSentence(), SimpleSentence())
+                self.tgt = (SimpleSentence(), SimpleSentence())
             self.ref = None
+                
             #self.ref = (ps1.get_reference()[0], ps2.get_reference()[0])
             self.attributes = self._prefix_parallelsentence_attributes(ps1.get_attributes(), ps2.get_attributes())
-            self._collapse_simplesentence_attributes()
+            self._collapse_simplesentence_attributes(ps1, ps2)
             self._generate_rank()
     
     def get_couple(self):
@@ -123,12 +135,12 @@ class CoupledParallelSentence(ParallelSentence):
         return attdict1, attdict2
         
 
-    def _collapse_simplesentence_attributes(self):
+    def _collapse_simplesentence_attributes(self, ps1, ps2):
         """
         Creates a flat dictionary of attributes for the doubled parallel sentence, 
         containing attributes from its ingredients
         """
-        simplesentences_prefixes = [(self.src[0], "src-1"), (self.src[1], "src-2"), (self.tgt[0], "tgt-1"), (self.tgt[1], "tgt-2")]
+        simplesentences_prefixes = [(ps1.get_source(), "src-1"), (ps2.get_source(), "src-2"), (ps1.get_translations()[0], "tgt-1"), (ps2.get_translations()[0], "tgt-2")]
         
         for (simplesentence, prefix) in simplesentences_prefixes:
             
