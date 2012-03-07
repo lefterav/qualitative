@@ -8,11 +8,12 @@ from io_utils.input.jcmlreader import JcmlReader
 from sentence.coupleddataset import CoupledDataSet, OrangeCoupledDataSet, CoupledDataSetDisk
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
 from io_utils.sax.saxjcml2orange import SaxJcml2Orange
-from orange import BayesLearner 
+from Orange.classification.bayes import NaiveLearner as BayesLearner 
 from classifier.classifier import OrangeClassifier
-from orange import ExampleTable
-from classifier.svmeasy import SVMEasy
-import orange
+from Orange.data import Table as ExampleTable
+from Orange.core import DomainContinuizer 
+from classifier.svmeasy import SVMEasyLearner as SVMEasy
+import Orange
 import sys
 import cPickle as pickle
 import os
@@ -52,7 +53,7 @@ if __name__ == '__main__':
     if step<2:
         print "TRAINING"
         print "coupling training set"
-        CoupledDataSetDisk(simple_trainset).write("trainset.coupled.jcml")
+        CoupledDataSetDisk(simple_trainset).write("trainset.coupled.jcml", "score", 2.0, True)
     #    coupled_trainset = CoupledDataSet(readfile = "trainset.coupled.jcml")
         simple_trainset = None
     
@@ -93,13 +94,16 @@ if __name__ == '__main__':
     
     if step<4:
         #param
-        mylearner = SVMEasy()
-        
-        params = dict(continuize=True, \
-            multinomialTreatment=orange.DomainContinuizer.NValues, \
-            continuousTreatment=orange.DomainContinuizer.NormalizeBySpan, \
-            classTreatment=orange.DomainContinuizer.Ignore)
-        myclassifier = OrangeClassifier(mylearner.learnClassifier(ExampleTable("trainset.coupled.disk.tab"), params))
+#        mylearner = SVMEasy()
+#        
+#        params = dict(continuize=True, \
+#            multinomialTreatment=DomainContinuizer.NValues, \
+#            continuousTreatment=DomainContinuizer.NormalizeBySpan, \
+#            classTreatment=DomainContinuizer.Ignore)
+        mylearner = BayesLearner()
+    
+
+        myclassifier = OrangeClassifier(mylearner(ExampleTable("trainset.coupled.disk.tab")))
         
         objectfile = open("classifier.pickle", 'w')
         pickle.dump(myclassifier.classifier, objectfile)

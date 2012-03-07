@@ -3,16 +3,18 @@
 '''
 Created on Jul 21, 2011
 
-@author: jogin
+@author: jogin, lefterav
 '''
 
+import codecs
+import os
+import tempfile
+import shutil
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 from io_utils.input.xmlreader import XmlReader
-import codecs
-import os
 
 
 class SaxJcml2Orange():
@@ -68,8 +70,9 @@ class SaxJcml2Orange():
         self.meta_attributes = set(meta_attributes)
         
         self.orange_filename = output_file
+        self.temporary_filename = tempfile.mktemp()
         #self.dataset = XmlReader(self.input_filename).get_dataset()
-        self.object_file = codecs.open(self.orange_filename, encoding='utf-8', mode = 'w')
+        self.object_file = codecs.open(self.temporary_filename, encoding='utf-8', mode = 'w')
 
         # get orange header
         self.get_orange_header()
@@ -77,6 +80,7 @@ class SaxJcml2Orange():
         # get orange content
         self.get_orange_content()
         self.object_file.close()
+        shutil.move(self.temporary_filename, self.orange_filename)
         print 'Orange file %s created!' % self.orange_filename
         
         # test orange file
