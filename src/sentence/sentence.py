@@ -29,11 +29,11 @@ class SimpleSentence(object):
         self.attributes = deepcopy (attributes) 
     
     
-    def __gt__(self, other):
-        return self.attributes["system"] > other.attributes["system"]
+#    def __gt__(self, other):
+#        return self.attributes["system"] > other.attributes["system"]
     
-    def __lt__(self, other):
-        return self.attributes["system"] < other.attributes["system"]
+#    def __lt__(self, other):
+#        return self.attributes["system"] < other.attributes["system"]
     
     def __eq__(self, other):
         return (self.string == other.string and self.attributes == other.attributes)

@@ -4,10 +4,12 @@ Created on 14 Dec 2011
 @author: elav01
 '''
 
+import shutil
+import os
+import tempfile
 from xml.sax.saxutils import XMLGenerator
 from xml.sax.xmlreader import AttributesImpl
 from io_utils.dataformat.jcmlformat import JcmlFormat
-import shutil
 from sentence.sentence import SimpleSentence
 from sentence.dataset import DataSet
 
@@ -16,8 +18,9 @@ class IncrementalJcml(object):
     def __init__(self, filename, format = JcmlFormat()):
         self.TAG = format.TAG
         self.filename = filename
-        self.tempfilename = "%s.tmp" % filename 
-        self.file = open(self.tempfilename, 'w')
+        self.file = tempfile.NamedTemporaryFile(mode='w',delete=False,suffix='.jcml', prefix='tmp_', dir="/tmp") #"/tmp/%s.tmp" % os.path.basename(filename)
+        self.tempfilename = self.file.name
+#        self.file = open(self.tempfilename, 'w')
         self.generator = XMLGenerator(self.file, "utf-8")
         self.generator.startDocument()
         self.generator.startElement(self.TAG["doc"], {})

@@ -5,6 +5,8 @@ Created on 23 Feb 2012
 '''
 from itertools import combinations
 import sys
+import os
+import shutil
 from dataset import DataSet
 from coupledparallelsentence import CoupledParallelSentence
 from io_utils.input.orangereader import OrangeData
@@ -116,13 +118,20 @@ class CoupledDataSetDisk(CoupledDataSet):
             parallelsentences = dataset.get_parallelsentences()
             self.parallelsentences = combinations(parallelsentences, 2)
     
-    def write(self, filename):
+    def write(self, filename, filter_att=False, diff=0, compact=False):
         writer = IncrementalJcml(filename)        
+        filtered = 0
+        total = 0
         for ps1, ps2 in self.parallelsentences:
-            coupled_ps = CoupledParallelSentence(ps1, ps2)
+            total += 1
+            if filter_att and (abs(float(ps1.get_translations()[0].get_attribute(filter_att)) - float(ps2.get_translations()[0].get_attribute(filter_att))) <= diff):
+                filtered += 1
+                continue    
+            coupled_ps = CoupledParallelSentence(ps1, ps2, compact=compact)
             writer.add_parallelsentence(coupled_ps)
-        writer.close()
-            
+        percentage = 100.00 * filtered / total
+        print "filtered {0} from {1} sentences ({2} %)".format(filtered,total,percentage)
+        writer.close()            
                     
 
 class OrangeCoupledDataSet(OrangeData):
