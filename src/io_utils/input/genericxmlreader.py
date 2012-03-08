@@ -149,7 +149,7 @@ class GenericXmlReader(GenericReader):
             
         
         #Create a list of SimpleSentence objects out of the object
-        tgt = [self._read_simplesentence(tgtXML) for tgtXML in tgtXMLentries if tgtXML.childNodes] 
+        tgt = [self._read_simplesentence(tgtXML) for tgtXML in tgtXMLentries] 
         
         ref = SimpleSentence()
         try:    
@@ -191,7 +191,10 @@ class GenericXmlReader(GenericReader):
         return SimpleSentence(self._read_string(xml_entry), self._read_attributes(xml_entry))
     
     def _read_string(self, xml_entry):
-        return unescape(xml_entry.childNodes[0].nodeValue.strip()) #.encode('utf8')
+        try:
+            return unescape(xml_entry.childNodes[0].nodeValue.strip()) #.encode('utf8')
+        except:
+            return ""
 
     
     def _read_attributes(self, xml_entry):

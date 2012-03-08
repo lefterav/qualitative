@@ -33,7 +33,7 @@ class DataSet(object):
         @type list     
         """
         
-        if isinstance(content, DataSet):
+        if isinstance(content, DataSet) or issubclass(content.__class__, DataSet):
             self.parallelsentences = content.parallelsentences
             self.annotations = content.annotations
             self.attribute_names = content.attribute_names
@@ -57,10 +57,13 @@ class DataSet(object):
         otherwise adds an incremental value
         """
         i = 0
-        for parallelsentence in self.parallelsentences:
-            i += 1
-            if not parallelsentence.has_judgment_id():
-                parallelsentence.add_judgment_id(i)
+        try:
+            for parallelsentence in self.parallelsentences:
+                i += 1
+                if not parallelsentence.has_judgment_id():
+                    parallelsentence.add_judgment_id(i)
+        except:
+            pass
 
     
     def get_parallelsentences(self):
