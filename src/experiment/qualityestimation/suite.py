@@ -50,6 +50,9 @@ class QualityEstimationSuite(PyExperimentSuite):
         self.discretization = False
         if params.has_key("discretization"):
             self.discretization = params["discretization"]
+        self.testset_ratio = 0.7
+        if params.has_key("testset_ratio"):
+            self.testset_ratio = params["testset_ratio"]
         self.hidden_attributes = params["hidden_attributes"].split(",")
         self.discrete_attributes = params["discrete_attributes"].split(",")
         self.class_name = params["class_name"]
@@ -64,7 +67,7 @@ class QualityEstimationSuite(PyExperimentSuite):
             print "loading big set"
             shutil.copy(params["training_set"], "trainset.jcml")
         if n == 2:
-            self._get_testset(params["test_set"], params["mode"])
+            self._get_testset(params["test_set"], params["mode"], self.testset_ratio)
             
      
         if n == 3:
@@ -150,7 +153,7 @@ class QualityEstimationSuite(PyExperimentSuite):
         pass
     ##############################
                 
-    def _get_testset(self, test_filename, mode = ""):
+    def _get_testset(self, test_filename, mode = "", ratio):
         if not test_filename == "":
             print "arbitrarily split given set to training and test sets 90% + 10%"
             simple_trainset = JcmlReader("trainset.jcml").get_dataset()
@@ -158,7 +161,7 @@ class QualityEstimationSuite(PyExperimentSuite):
             if mode == "development":
                 simple_trainset, a = simple_trainset.split(0.1)
             
-            simple_trainset, simple_testset = simple_trainset.split(0.7)
+            simple_trainset, simple_testset = simple_trainset.split(ratio)
             Parallelsentence2Jcml(simple_trainset).write_to_file("trainset.jcml")
             Parallelsentence2Jcml(simple_testset).write_to_file("testset.jcml")
         else:
