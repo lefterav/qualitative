@@ -54,7 +54,10 @@ if __name__ == '__main__':
         reference_file = open(opt.reference_filename, 'r')
     except:
         reference_file = None
-    score_file = open(opt.score_filename)
+    try:
+        score_file = open(opt.score_filename)
+    except:
+        score_file = None
     
 
     
@@ -63,25 +66,28 @@ if __name__ == '__main__':
     
     for source_line in source_file:
         i+=1
+        atts = {}
         source_line = source_line.strip()
         target_line = target_file.readline().strip()
         if reference_file:
             reference_line = reference_file.readline().strip()
-        score = score_file.readline().strip()
-        
-        source_sentence = SimpleSentence(source_line)
-        target_sentences = [SimpleSentence(target_line, {"score": score,  "system" : opt.system_name})]
-        if reference_file:
             reference_sentence = SimpleSentence(reference_line)
         else:
             reference_sentence = None
+        
+        if score_file:
+            score = score_file.readline().strip()
+            atts["score"] = score
+        
+        atts["system"] = opt.system_name
+        
+        source_sentence = SimpleSentence(source_line)
+        target_sentences = [SimpleSentence(target_line, atts)]
         
         ps_atts =  {"langsrc" : opt.langsrc ,
                      "langtgt" : opt.langtgt ,
                      "testset" : opt.testset ,
                      "id" : str(i)}
-        
-        
         
         ps = ParallelSentence(source_sentence, target_sentences, reference_sentence, ps_atts)
         parallelsentences.append(ps)
