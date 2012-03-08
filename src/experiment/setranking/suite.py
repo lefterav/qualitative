@@ -35,6 +35,7 @@ from expsuite import PyExperimentSuite
 
 
 class QualityEstimationSuite(PyExperimentSuite):
+    restore_supported = True
     
     def reset(self, params, rep):
         self.restore_supported = True
@@ -96,8 +97,8 @@ class QualityEstimationSuite(PyExperimentSuite):
             self.myclassifier = OrangeClassifier(mylearner(orangeData))
             
         if n == 5:
-            simple_testset = JcmlReader("testset.jcml")
-            CoupledDataSetDisk(simple_testset).write("testset.coupled.jcml", self.original_class_name, 0, True)
+            simple_testset = JcmlReader("testset.jcml").get_dataset()
+            CoupledDataSetDisk(simple_testset).write("testset.coupled.jcml", self.original_class_name, -1, True)
         
         if n == 6:
             self.meta_attributes.append(self.class_name)
@@ -113,31 +114,31 @@ class QualityEstimationSuite(PyExperimentSuite):
                                                  )
         if n == 7:
             print "performing classification"
-            orangeData = Table("testset.coupled.tab")
+            orangeData = Table("testset.tab")
             classified_set_vector = self.myclassifier.classify_orange_table(orangeData)
             self.classified_values_vector = [str(v[0]) for v in classified_set_vector]
 #            print classified_set_vector
         
         if n == 8:
             print "EVALUATION"
-            print "reloading test set"
-            print "EVALUATION"
             print "reloading coupled test set"
             self.simple_testset = CoupledDataSet(readfile = "testset.coupled.jcml")
         
+
+
 
             print "reconstructing test set"
             att_vector = [{"rank_predicted": v} for v in self.classified_values_vector]
             print att_vector
             print "adding guessed rank"
             self.simple_testset.add_attribute_vector(att_vector, "ps")
-            self.reconstructed_testset = self.simple_testset.get_single_set()
+            self.reconstructed_testset = self.simple_testset.get_single_set_with_hard_ranks("rank_predicted")
             self.simple_testset = None
         if n == 9:
             original_score_vector = [float(ps.get_attribute("tgt-1_score")) for ps in self.reconstructed_testset.get_parallelsentences()]
-            original_score_set = set(original_score_vector)
-            original_score_sorted = sorted(original_score_set, reverse=True)
-            original_rank_vector = [{"rank_original": str(original_score_sorted.index(v))} for v in original_score_vector]
+            #original_score_set = set(original_score_vector)
+            original_score_sorted = sorted(original_score_vector, reverse=True)
+            original_rank_vector = [{"rank_original": str(original_score_sorted.index(v)+1)} for v in original_score_vector]
             self.reconstructed_testset.add_attribute_vector(original_rank_vector, "ps")
             
         if n == 10:
@@ -152,13 +153,13 @@ class QualityEstimationSuite(PyExperimentSuite):
             objectfile = open("classifier.pickle", 'w')
             pickle.dump(self.myclassifier.classifier, objectfile)
             objectfile.close()
-        if n == 6:
-            classified_vector_file = open("classified.txt", 'w')
-            classified_vector_file.writelines(self.classified_values_vector)
-            classified_vector_file.close()
         if n == 7:
-            Parallelsentence2Jcml(self.simple_testset).write_to_file("testset.classified.jcml")
+            classified_vector_file = open("classified.txt", 'w')
+            for value in self.classified_values_vector:
+                classified_vector_file.write("{0}\n".format(value))
+            classified_vector_file.close()
         if n == 8:
+#            Parallelsentence2Jcml(self.simple_testset).write_to_file("testset.classified.jcml")
             Parallelsentence2Jcml(self.reconstructed_testset).write_to_file("testset.reconstructed.jcml")
         if n == 9:
             Parallelsentence2Jcml(self.reconstructed_testset).write_to_file("testset.reconstructed_w_orig.jcml")
@@ -168,16 +169,15 @@ class QualityEstimationSuite(PyExperimentSuite):
             objectfile = open("classifier.pickle", 'r')
             self.myclassifier = pickle.load(objectfile)
             objectfile.close()
-        if n == 7:
-            classified_vector_file = open("classified.txt", 'r') 
-            self.classified_set_vector = classified_vector_file.readlines()
-            classified_vector_file.close()
         if n == 8:
-            self.simple_testset = JcmlReader("testset.classified.jcml").get_dataset
+            classified_vector_file = open("classified.txt", 'r') 
+            self.classified_values_vector = classified_vector_file.readlines()
+            classified_vector_file.close()
         if n == 9:
-            self.reconstructed_testset = JcmlReader("testset.reconstructed.jcml").get_dataset
+#            self.simple_testset = JcmlReader("testset.classified.jcml").get_dataset
+            self.reconstructed_testset = JcmlReader("testset.reconstructed.jcml").get_dataset()
         if n == 10:
-            self.reconstructed_testset = JcmlReader("testset.reconstructed_w_orig.jcml").get_dataset
+            self.reconstructed_testset = JcmlReader("testset.reconstructed_w_orig.jcml").get_dataset()
         
     ##############################
                 
@@ -187,9 +187,9 @@ class QualityEstimationSuite(PyExperimentSuite):
             simple_trainset = JcmlReader("trainset.jcml").get_dataset()
             
             if mode == "development":
-                simple_trainset, a = simple_trainset.split(0.05)
+                simple_trainset, a = simple_trainset.split(0.03)
             
-            simple_trainset, simple_testset = simple_trainset.split(0.90)
+            simple_trainset, simple_testset = simple_trainset.split(0.70)
             Parallelsentence2Jcml(simple_trainset).write_to_file("trainset.jcml")
             Parallelsentence2Jcml(simple_testset).write_to_file("testset.jcml")
         else:
