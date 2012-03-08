@@ -88,9 +88,9 @@ if __name__ == '__main__':
 #    filename_input = sys.argv[1]
 #    filename_output = sys.argv[2]    
 #java -jar LanguageTool.jar -l es /home/elav01/taraxu_data/wmt12/qe/training_set/target_system.spa >  /home/elav01/taraxu_data/wmt12/qe/training_set/target_system.lngt
-    filename_input = "/home/elav01/taraxu_data/wmt12/qe/training_set/target_system.lngt"
-    filename_output = "/home/elav01/taraxu_data/wmt12/qe/training_set/training.lgt.es.f.jcml"
-    existing_jcml = "/home/elav01/taraxu_data/wmt12/qe/training_set/training.jcml"
+    filename_input = sys.argv[1] #"/home/elav01/taraxu_data/wmt12/qe/training_set/target_system.lngt"
+    filename_output = sys.argv[2] #"/home/elav01/taraxu_data/wmt12/qe/training_set/training.lgt.es.f.jcml"
+    existing_jcml = sys.argv[3] #"/home/elav01/taraxu_data/wmt12/qe/training_set/training.jcml"
     LanguageCheckerCmd().offline_process(filename_input, filename_output, existing_jcml)
           
     
