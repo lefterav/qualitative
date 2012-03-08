@@ -17,7 +17,6 @@ from suds.client import Client
 import base64
 import re
 import urllib
-import re
 from xml.etree import ElementTree as ET
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 import os
@@ -146,8 +145,8 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
             errorName = sLf.find('description').text
             
             if errorName.startswith("Sentence too long"):
+                too_long = re.findall("Sentence too long\: (\d*)", errorName)[0] 
                 errorName = "style_too_long"
-                too_long = re.findall("Sentence too long[: ](\d*)")[0] 
                 atts['style_too_long'] = too_long 
             else:
                 errorName = errorName.replace(" ", "_")
@@ -186,7 +185,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
     def _attributes2soapproperties(self, attributes = {}):
         """
         Converts a normal python dict to a list of SoapProperty instances
-        @param attributes: a dict containing soap properties
+        @param attrib    utes: a dict containing soap properties
         @type attributes: {str, str}
         @return: a list of SoapProperty instances that can be sent to Soap
         @rtype: [SoapProperty, ...]
@@ -274,33 +273,34 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         @rtype: {str: str} 
         """
         
-        try:
-            text64 = base64.standard_b64encode(text)
-            check_id, soap_properties = self._start_new_check()
+        text64 = base64.standard_b64encode(text)
+        check_id, soap_properties = self._start_new_check()
             
 #            print 'soap_properties', soap_properties
 #            print 'text64', text64
 #            print 'check_id', check_id
 #            print 'resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)'
 #            
+        try:
             resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)
-            self._update_license(resp)
-            
-            #extract document score from the response
-            document_score = self._get_property(resp, "document_score")
-            #get url of the report xml
-            report_url = self._get_property(resp, "report_url")
-            #fix the host part of the url
-            report_url = re.sub("://[^/]*/", "://{0}/".format(self.host), report_url)
-            #print "retrieving report from ", report_url
-            #report_xml = urllib.urlopen(report_url).read()
-            
-            attributes = self._read_report_url(report_url)
-            
-            return attributes
         except Exception as inst:
             print "Error from server: ", inst
             return {}
+        
+        self._update_license(resp)
+        
+        #extract document score from the response
+        document_score = self._get_property(resp, "document_score")
+        #get url of the report xml
+        report_url = self._get_property(resp, "report_url")
+        #fix the host part of the url
+        report_url = re.sub("://[^/]*/", "://{0}/".format(self.host), report_url)
+        #print "retrieving report from ", report_url
+        #report_xml = urllib.urlopen(report_url).read()
+        
+        attributes = self._read_report_url(report_url)
+        
+        return attributes
             
     
     def get_language_options(self):
@@ -316,9 +316,11 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
 
 #
 #
-#text = 'This break every possibility. Dear clients, we would like to informm you that during the latest commerccial update we recieved marvelous products, which wwe can offers in really good prices. Please keeps in touch for further notice. This break every possibility.'
-#ac = IQFeatureGenerator("en")
-#from io_utils import saxjcml
-##
-#saxjcml.run_features_generator("/home/elav01/taraxu_data/wmt12/qe/training_set/training.jcml", "/home/elav01/taraxu_data/wmt12/qe/training_set/training.iq.jcml", [ac])
-#print ac.process(text)
+if __name__ == '__main__':
+    
+    text = 'This break every possibility. Dear clients, we would like to informm you that during the latest commerccial update we recieved marvelous products, which wwe can offers in really good prices. Please keeps in touch for further notice. This break every possibility.'
+    ac = IQFeatureGenerator("en")
+    from io_utils import saxjcml
+    #
+    saxjcml.run_features_generator("/home/elav01/taraxu_data/wmt12/qe/training_set/training.jcml", "/home/elav01/taraxu_data/wmt12/qe/training_set/training.iq.jcml", [ac])
+    print ac.process(text)
