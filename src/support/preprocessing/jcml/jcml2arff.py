@@ -3,7 +3,6 @@ Created on 06 Mar 2012
 
 @author: lefterav
 '''
-from lxml import etree
 from io_utils.input.jcmlreader import JcmlReader
 
 class ArffWriter:
