@@ -50,7 +50,10 @@ if __name__ == '__main__':
     
     source_file = open(opt.source_filename, 'r')
     target_file = open(opt.target_filename, 'r')
-    reference_file = open(opt.reference_filename, 'r')
+    try:
+        reference_file = open(opt.reference_filename, 'r')
+    except:
+        reference_file = None
     score_file = open(opt.score_filename)
     
 
@@ -62,17 +65,22 @@ if __name__ == '__main__':
         i+=1
         source_line = source_line.strip()
         target_line = target_file.readline().strip()
-        reference_line = reference_file.readline().strip()
+        if reference_file:
+            reference_line = reference_file.readline().strip()
         score = score_file.readline().strip()
         
         source_sentence = SimpleSentence(source_line)
         target_sentences = [SimpleSentence(target_line, {"score": score,  "system" : opt.system_name})]
-        reference_sentence = SimpleSentence(reference_line)
+        if reference_file:
+            reference_sentence = SimpleSentence(reference_line)
+        else:
+            reference_sentence = None
         
         ps_atts =  {"langsrc" : opt.langsrc ,
                      "langtgt" : opt.langtgt ,
                      "testset" : opt.testset ,
                      "id" : str(i)}
+        
         
         
         ps = ParallelSentence(source_sentence, target_sentences, reference_sentence, ps_atts)
