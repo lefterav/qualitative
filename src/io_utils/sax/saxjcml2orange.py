@@ -70,7 +70,7 @@ class SaxJcml2Orange():
         self.meta_attributes = set(meta_attributes)
         
         self.orange_filename = output_file
-        self.temporary_filename = tempfile.mktemp()
+        self.temporary_filename = tempfile.mktemp(dir=".", suffix='.tab')
         #self.dataset = XmlReader(self.input_filename).get_dataset()
         self.object_file = codecs.open(self.temporary_filename, encoding='utf-8', mode = 'w')
 
