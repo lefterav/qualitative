@@ -75,7 +75,7 @@ class CoupledDataSet(DataSet):
             ps1, ps2 = coupled_parallelsentence.get_couple()
             rank = int(coupled_parallelsentence.get_attribute(critical_attribute))
              
-            int(ps2.attributes["predicted_rank"]) - rank
+            int(ps2.attributes[critical_attribute]) - rank
             single_parallelsentences[ps1.get_tuple_id()] = ps1
             try:
                 single_parallelsentences_rank[ps1.get_tuple_id()] += rank
@@ -87,13 +87,26 @@ class CoupledDataSet(DataSet):
                 single_parallelsentences_rank[ps2.get_tuple_id()] -= rank
             except:
                 single_parallelsentences_rank[ps2.get_tuple_id()] = -1 * rank
-            
+        
+        j = 0
+        prev_rank = None
+        prev_j = None
+        normalized_rank = {}
+        for key, rank in sorted(single_parallelsentences_rank.iteritems(), key=lambda (k,v): (v,k)):
+            j+=1
+            if rank == prev_rank:
+                normalized_rank[key] = prev_j
+            else:
+                normalized_rank[key] = j
+                prev_j = j
+                prev_rank = rank
+             
         
         sorted_keys = sorted(single_parallelsentences)
         sorted_ps = []
         for key in sorted_keys:
             ps = single_parallelsentences[key]
-            ps.add_attributes({critical_attribute: single_parallelsentences_rank[key]})
+            ps.add_attributes({critical_attribute: str(normalized_rank[key])})
             sorted_ps.append(ps)
         return DataSet(sorted_ps)
     
