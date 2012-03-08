@@ -78,15 +78,29 @@ if __name__ == '__main__':
         
     #    active_attributes = list(set(coupled_trainset.get_all_attribute_names()) - meta_attributes)
         active_attributes = []
+        
+        import time
+        import shutil
+        import random
+        #there is space only for one tmp file
+        flag = '/tmp/trainset.coupled.disk.run'
+        time.sleep(random.randint(1,17))
+        while os.path.exists(flag):
+            time.sleep(31)
+        
+        f = open(flag, 'w')
         orange_coupled_trainset = SaxJcml2Orange("trainset.coupled.jcml", 
                                                  "rank", 
                                                  active_attributes, 
                                                  meta_attributes, 
-                                                 "trainset.coupled.disk.tab", 
+                                                 "/tmp/trainset.coupled.disk.tab", 
                                                  compact_mode = True, 
                                                  discrete_attributes=discrete_attributes, 
                                                  get_nested_attributes=False,
-                                                 filter_attributes={"rank" : "0"})
+                                                 )
+        shutil.move("/tmp/trainset.coupled.disk.tab", "trainset.coupled.disk.tab")
+        f.close()
+        os.remove(flag)
         
 #    coupled_trainset = CoupledDataSet(readfile="trainset.coupled.jcml")
 #    orange_coupled_trainset = OrangeCoupledDataSet(coupled_trainset, "rank", active_attributes , meta_attributes, "trainset.coupled.memory.tab", True)
