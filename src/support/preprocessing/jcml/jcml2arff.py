@@ -98,6 +98,19 @@ if __name__ == '__main__':
                        "src_terminology_status",
                        "src_resultStats_projectStatus", 
                        ]
-    Jcml2Arff().process("/home/elav01/taraxu_data/wmt12/qe/training_set/training.all.analyzed.f.jcml", 
-                        "/home/elav01/taraxu_data/wmt12/qe/training_set/trainset.arff", 
-                        hidden_attributes, discrete_attributes, [], "qe", "tgt-1_score", "numeric", [])
+    
+    import sys
+    input_sgml = sys.argv[1]
+    output_arff = sys.argv[2]
+    try:
+        class_name = sys.argv[3]
+    except:
+        class_name =  "tgt-1_score"
+    try:
+        class_type = sys.argv[4]
+    except:
+        class_type = "numeric"
+    
+    Jcml2Arff().process(input_sgml, 
+                        output_arff, 
+                        hidden_attributes, discrete_attributes, [], "qe", class_name, class_type, [])
