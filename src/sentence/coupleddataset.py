@@ -63,6 +63,58 @@ class CoupledDataSet(DataSet):
         return DataSet(sorted_ps)
     
     
+    def get_single_set_with_soft_ranks(self, attribute1="", attribute2="", critical_attribute="rank_soft_predicted"):
+        '''
+        Reconstructs the original data set, with only one sentence per entry.
+        @return: Simple dataset that contains the simplified parallel sentences
+        @rtype: L{DataSet}
+        '''
+        single_parallelsentences = {}
+        single_parallelsentences_rank = {}
+        for coupled_parallelsentence in self.parallelsentences:
+            ps1, ps2 = coupled_parallelsentence.get_couple()
+            #when this wins, it indicates that first sentence is better
+            if coupled_parallelsentence.get_attribute(attribute1) == "n":
+                return []
+            prob_neg = -1.00 * float(coupled_parallelsentence.get_attribute(attribute1))
+            prob_pos = -1.00 * float(coupled_parallelsentence.get_attribute(attribute2))
+             
+#            int(ps2.attributes[critical_attribute]) - rank
+            single_parallelsentences[ps1.get_tuple_id()] = ps1
+            try:
+                single_parallelsentences_rank[ps1.get_tuple_id()] += prob_neg
+            except:
+                single_parallelsentences_rank[ps1.get_tuple_id()] = prob_neg
+            
+            single_parallelsentences[ps2.get_tuple_id()] = ps2
+            try:
+                single_parallelsentences_rank[ps2.get_tuple_id()] += prob_pos
+            except:
+                single_parallelsentences_rank[ps2.get_tuple_id()] = prob_pos
+        
+        j = 0
+        prev_rank = None
+        prev_j = None
+        normalized_rank = {}
+        for key, rank in sorted(single_parallelsentences_rank.iteritems(), key=lambda (k,v): (v,k)):
+            j+=1
+            if rank == prev_rank:
+                normalized_rank[key] = prev_j
+            else:
+                normalized_rank[key] = j
+                prev_j = j
+                prev_rank = rank
+             
+        
+        sorted_keys = sorted(single_parallelsentences)
+        sorted_ps = []
+        for key in sorted_keys:
+            ps = single_parallelsentences[key]
+            ps.add_attributes({critical_attribute: str(normalized_rank[key])})
+            sorted_ps.append(ps)
+        return DataSet(sorted_ps)
+        
+    
     def get_single_set_with_hard_ranks(self, critical_attribute="predicted_rank"):
         '''
         Reconstructs the original data set, with only one sentence per entry.
@@ -75,7 +127,7 @@ class CoupledDataSet(DataSet):
             ps1, ps2 = coupled_parallelsentence.get_couple()
             rank = int(coupled_parallelsentence.get_attribute(critical_attribute))
              
-            int(ps2.attributes[critical_attribute]) - rank
+#            int(ps2.attributes[critical_attribute]) - rank
             single_parallelsentences[ps1.get_tuple_id()] = ps1
             try:
                 single_parallelsentences_rank[ps1.get_tuple_id()] += rank
