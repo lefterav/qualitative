@@ -25,6 +25,9 @@ from classifier.classifier import OrangeClassifier
 from Orange.data import Table
 
 
+import time
+
+import random
 import sys
 import shutil
 import cPickle as pickle
@@ -74,17 +77,29 @@ class QualityEstimationSuite(PyExperimentSuite):
             self._get_testset(params["test_set"], params["mode"], self.testset_ratio)
         
         if n == 2:
-            print "coupling training set"
-            simple_trainset = JcmlReader("trainset.jcml").get_dataset()
-            CoupledDataSetDisk(simple_trainset).write("trainset.coupled.jcml", self.original_class_name, self.filter_score_diff, True)
-            simple_trainset = None
+            if params.has_key("coupled_training_set"):
+                print "coupled training set provided"
+                os.link(params["coupled_training_set"], "trainset.coupled.jcml")
+            else:
+                print "coupling training set"
+                simple_trainset = JcmlReader("trainset.jcml").get_dataset()
+                CoupledDataSetDisk(simple_trainset).write("trainset.coupled.jcml", self.original_class_name, self.filter_score_diff, True)
+                simple_trainset = None
         if n == 3:
+            #there is space only for one tmp file
+            flag = '/tmp/trainset.coupled.disk.run'
+            time.sleep(random.randint(1,17))
+            while os.path.exists(flag):
+                time.sleep(31)
+                print "other experiment running, no space in /tmp, waiting..."
+            f = open(flag, 'w')
+            
             print "converting to orange"
             SaxJcml2Orange("trainset.coupled.jcml", 
                  self.class_name,
                  self.active_attributes, 
                  self.meta_attributes, 
-                 "trainset.tab", 
+                 "/tmp/trainset.tab", 
                  compact_mode = True, 
                  discrete_attributes=self.discrete_attributes,
                  hidden_attributes=self.hidden_attributes,
@@ -93,9 +108,13 @@ class QualityEstimationSuite(PyExperimentSuite):
                  class_type=self.class_type,
                  
                                          )
+            shutil.move("/tmp/trainset.coupled.disk.tab", "trainset.coupled.disk.tab")
+            f.close()
+            os.remove(flag)
+            
 
         if n == 4:
-            orangeData = Table("trainset.tab")
+            orangeData = Table("trainset.coupled.disk.tab")
             mylearner = self.learner(**self.classifier_params) #imputer=self.imputer)
             self.myclassifier = OrangeClassifier(mylearner(orangeData))
             
@@ -186,6 +205,8 @@ class QualityEstimationSuite(PyExperimentSuite):
             Parallelsentence2Jcml(self.reconstructed_soft_testset).write_to_file("testset.reconstructed.org.soft.jcml")
     
     def restore_state(self,params, rep, n):
+        if n in [1, 5]:
+            pass 
         if n in [6, 7]:
             objectfile = open("classifier.pickle", 'r')
             self.myclassifier = OrangeClassifier(pickle.load(objectfile))
