@@ -18,7 +18,7 @@ class IncrementalJcml(object):
     def __init__(self, filename, format = JcmlFormat()):
         self.TAG = format.TAG
         self.filename = filename
-        self.file = tempfile.NamedTemporaryFile(mode='w',delete=False,suffix='.jcml', prefix='tmp_') #"/tmp/%s.tmp" % os.path.basename(filename)
+        self.file = tempfile.NamedTemporaryFile(mode='w',delete=False,suffix='.jcml', prefix='tmp_', dir='.') #"/tmp/%s.tmp" % os.path.basename(filename)
         self.tempfilename = self.file.name
 #        self.file = open(self.tempfilename, 'w')
         self.generator = XMLGenerator(self.file, "utf-8")
