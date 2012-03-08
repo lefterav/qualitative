@@ -153,7 +153,7 @@ class QualityEstimationSuite(PyExperimentSuite):
         pass
     ##############################
                 
-    def _get_testset(self, test_filename, mode = "", ratio):
+    def _get_testset(self, test_filename, mode = "", ratio=0.9):
         if not test_filename == "":
             print "arbitrarily split given set to training and test sets 90% + 10%"
             simple_trainset = JcmlReader("trainset.jcml").get_dataset()
