@@ -142,7 +142,7 @@ class QualityEstimationSuite(PyExperimentSuite):
                                          )
             
             orangeData = Table("full-trainset.tab")
-            cv = evaluation.testing.cross_validation([self.learner], orangeData, folds=5)
+            cv = evaluation.testing.cross_validation([self.learner(**self.classifier_params)], orangeData, folds=5)
             ret["CA"] = evaluation.scoring.CA(cv)
             ret["AUC"] = evaluation.scoring.AUC(cv)
             print "finished"
