@@ -99,7 +99,7 @@ class QualityEstimationSuite(PyExperimentSuite):
                  self.class_name,
                  self.active_attributes, 
                  self.meta_attributes, 
-                 "/tmp/trainset.tab", 
+                 "/tmp/trainset.coupled.disk.tab", 
                  compact_mode = True, 
                  discrete_attributes=self.discrete_attributes,
                  hidden_attributes=self.hidden_attributes,
