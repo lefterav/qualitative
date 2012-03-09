@@ -125,9 +125,24 @@ class QualityEstimationSuite(PyExperimentSuite):
             from support.evaluation.wmt12.wmt_scoring import WmtScoring
             ret = WmtScoring(self.simple_testset).process("tgt-1_score", "", "score_predicted", "")
             print ret
-        if n == 9:
-            orangeData = Table("trainset.tab")
-            cv = evaluation.testing.cross_validation([self.classifier], orangeData, folds=5)
+        if n == 10:
+            
+            SaxJcml2Orange(params["training_set"], 
+                 self.class_name,
+                 self.active_attributes, 
+                 self.meta_attributes, 
+                 "full-trainset.tab", 
+                 compact_mode = True, 
+                 discrete_attributes=self.discrete_attributes,
+                 hidden_attributes=self.hidden_attributes,
+                 get_nested_attributes=True,
+                 #filter_attributes={"rank" : "0"},
+                 class_type=self.class_type,
+                 class_discretize = self.discretization
+                                         )
+            
+            orangeData = Table("full-trainset.tab")
+            cv = evaluation.testing.cross_validation([self.learner], orangeData, folds=5)
             ret["CA"] = evaluation.scoring.CA(cv)
             ret["AUC"] = evaluation.scoring.AUC(cv)
             print "finished"
