@@ -60,8 +60,9 @@ class WmtScoring(DataSet):
         pattern =  "(\w*)\s*=[\[\s]*([\d*\-\.]*)"
         import re
         scores = dict(re.findall(pattern, score_string))
-        os.remove(reference_filename)
-        os.remove(output_filename)
+#        os.remove(reference_filename)
+#        os.remove(output_filename)
         return scores
-        
-            
+
+if __name__ == '__main__':
+    pass
