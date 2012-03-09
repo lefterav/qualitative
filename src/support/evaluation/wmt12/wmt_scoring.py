@@ -59,7 +59,7 @@ class WmtScoring(DataSet):
         score_string = process.communicate()[0]
         pattern =  "(\w*)\s*=[\[\s]*([\d*\-\.]*)"
         import re
-        scores = dict(("%s"%k, v for k,v in re.findall(pattern, score_string)))
+        scores = dict(re.findall(pattern, score_string))
         try:
             scores["interval1"], scores["interval2"] = str(scores["Interval"]).split('-')
             del(scores["Interval"]) 
@@ -73,6 +73,7 @@ if __name__ == '__main__':
     import sys
     import os
     from io_utils.input.jcmlreader import JcmlReader
+    import shutil
     classified_jcml = sys.argv[1]
     mode = sys.argv[2]
     reference_score_attribute_name = sys.argv[3]
@@ -83,8 +84,14 @@ if __name__ == '__main__':
     clean_str = " ".join(["{0}:{1}".format(k,v) for k,v in ret.iteritems()])
     if sys.argv[5] == "--fix-output":
         current_path = os.path.dirname(classified_jcml)
-        output_filename = os.path.join(current_path, '0.log')
-        output_file = open(output_filename, 'a')
-        output_file.write("{0}\n".format(clean_str))
+        input_filename = os.path.join(current_path, '0.log')
+        output_filename = os.path.join(current_path, '1.log')
+        
+        input_file = open(input_filename, 'r')
+        log = input_file.readlines()
+        input_file.close()
+        log[8] =  "%s\n" % clean_str #repair results line
+        output_file = open(output_filename, 'w')
+        output_file.writelines(log)
         output_file.close()
         
