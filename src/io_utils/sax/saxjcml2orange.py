@@ -42,6 +42,7 @@ class SaxJcml2Orange():
         self.filter_attributes = {} 
         self.class_type = "d"
         self.class_discretize = False
+        self.dir = "."
         
         if "compact_mode" in kwargs:
             self.compact_mode = kwargs["compact_mode"]
@@ -64,13 +65,16 @@ class SaxJcml2Orange():
         if "class_discretize" in kwargs:
             self.class_discretize = kwargs["class_discretize"]
         
+        if "dir" in kwargs:
+            self.dir = kwargs["dir"]
+        
         self.input_filename = input_filename
         self.class_name = class_name
         self.desired_attributes = set(desired_attributes)
         self.meta_attributes = set(meta_attributes)
         
         self.orange_filename = output_file
-        self.temporary_filename = tempfile.mktemp(dir=".", suffix='.tab')
+        self.temporary_filename = tempfile.mktemp(dir=self.dir, suffix='.tab')
         #self.dataset = XmlReader(self.input_filename).get_dataset()
         self.object_file = codecs.open(self.temporary_filename, encoding='utf-8', mode = 'w')
 
@@ -378,6 +382,7 @@ class SaxJcmlOrangeContent(ContentHandler):
         @param name: the name of the element
         @type name: string
         """
+        output = []
         if name == self.TAG_SRC:
             self.src = SimpleSentence(self.ss_text, self.ss_attributes)
             self.ss_text = u''
@@ -395,7 +400,7 @@ class SaxJcmlOrangeContent(ContentHandler):
             for fatt in self.filter_attributes: 
                 if ps.get_attribute(fatt) == self.filter_attributes[fatt]:
                     return
-
+            
             # print source and target sentence
             for attribute_name in self.attribute_names:
                 if not attribute_name in self.hidden_attributes:
@@ -403,24 +408,26 @@ class SaxJcmlOrangeContent(ContentHandler):
                         attvalue = float(ps.get_nested_attributes()[attribute_name].strip())
                         attvalue = round(attvalue/self.class_discretize) * self.class_discretize
                         attvalue = str(attvalue)
-                        self.o_file.write(u'%s\t' % attvalue)                        
+                        output.append(u'%s\t' % attvalue)                        
                     elif attribute_name in ps.get_nested_attributes():
                         # print attribute names
                         attvalue = ps.get_nested_attributes()[attribute_name].strip()
                         attvalue.replace("inf", "99999999")
                         attvalue.replace("nan", "0")
-                        self.o_file.write(u'%s\t' % attvalue)
+                        output.append(u'%s\t' % attvalue)
                         
                     else:
                         # even if attribute value exists or not, we have to tab
-                        self.o_file.write('0\t')
+                        output.append('0\t')
             
             # print source sentence
-            self.o_file.write('%s\t' % ps.get_source().get_string())
+            output.append('%s\t' % ps.get_source().get_string())
             # print target sentences
-            [self.o_file.write('%s\t' % tgt.get_string()) for tgt in ps.get_translations()]
+            for tgt in ps.get_translations():
+                output.append('%s\t' % tgt.get_string())
             # split parallel sentences by an additional tab and by a newline
-            self.o_file.write('\t\n')
+            output.append('\t\n')
+            self.o_file.write("".join(output))
 
 #meta_attributes = set(["testset", "judgment-id", "langsrc", "langtgt", "ps1_judgement_id", 
 #                               "ps1_id", "ps2_id", "tgt-1_score" , "tgt-2_score", "tgt-1_system" , "tgt-2_system", "tgt-2_berkeley-tree", "tgt-1_berkeley-tree", "src-1_berkeley-tree", "src-2_berkeley-tree", 
