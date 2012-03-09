@@ -174,7 +174,7 @@ class QualityEstimationSuite(PyExperimentSuite):
             self.classified_set_vector = classified_vector_file.readlines()
             classified_vector_file.close()
         if n == 8:
-            self.simple_testset = JcmlReader("testset.classified.jcml").get_dataset
+            self.simple_testset = JcmlReader("testset.classified.jcml").get_dataset()
         pass
     ##############################
                 
