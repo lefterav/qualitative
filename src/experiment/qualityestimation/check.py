@@ -14,17 +14,28 @@ if __name__ == '__main__':
     directory = sys.argv[1]
     
     mysuite = QualityEstimationSuite()
-    a = mysuite.get_values_fix_params("./%s" % directory , 0, "RootMeanSqrErr")
-    b = mysuite.get_values_fix_params("./%s" % directory, 0, "MeanAvgErr")
-    for a, b, d in zip(a[0], b[0] , ["%s-%s" % (i['classifier'], i['att']) for i in a[1]]):
-        output = [a, b]
-        output.append(i['classifier'])
-        output.append(i['att'])
-        if i.has_key('filter_score_diff'):
-            output.append(str(i['filter_score_diff']))
-        if i.has_key('discretization'):
-            output.append(str(i['discretization']))
-        print "\t".append(output)
+    ta = mysuite.get_values_fix_params("./%s" % directory , 0, "RootMeanSqrErr")
+    tb = mysuite.get_values_fix_params("./%s" % directory, 0, "MeanAvgErr")
+    tc = mysuite.get_values_fix_params("./%s" % directory, 0 , "LargeErrPerc")
+    td = mysuite.get_values_fix_params("./%s" % directory, 0 , "SmallErrPerc")
+    te = mysuite.get_values_fix_params("./%s" % directory, 0 , "Interval")
+    tf = mysuite.get_values_fix_params("./%s" % directory, 0 , "DeltaAvg")
+    tg = mysuite.get_values_fix_params("./%s" % directory, 0 , "Spearman-Corr")
+    
+    for a, b, c, ad, e, f, g, d, in zip(ta[0], tb[0], tc[0], td[0], te[0], tf[0], tg[0], ta[1]):
+        output = [str(a), str(b), str(c), str(ad), str(e), str(f), str(g)]
+        output.append(d['classifier'])
+        output.append(d['att'])
+        if d.has_key('filter_score_diff'):
+            output.append(str(d['filter_score_diff']))
+        if d.has_key('discretization'):
+            output.append(str(d['discretization']))
+        
+        if d.has_key('CA'):
+            output.append(str(d['CA']))
+        if d.has_key('AUC'):
+            output.append(str(d['AUC']))
+        print "\t".join(output)
             
         
         
