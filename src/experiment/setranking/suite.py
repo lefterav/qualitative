@@ -106,6 +106,7 @@ class QualityEstimationSuite(PyExperimentSuite):
                  get_nested_attributes=False,
                  #filter_attributes={"rank" : "0"},
                  class_type=self.class_type,
+                 dir = "/tmp"
                  
                                          )
             f.close()
