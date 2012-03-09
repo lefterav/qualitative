@@ -125,7 +125,7 @@ class QualityEstimationSuite(PyExperimentSuite):
             ret = WmtScoring(self.simple_testset).process("tgt-1_score", "", "score_predicted", "")
             print ret
         if n == 9:
-            orangeData = Table("testset.tab")
+            orangeData = Table("trainset.tab")
             cv = evaluation.testing.cross_validation([self.classifier], orangeData, folds=5)
             ret["CA"] = evaluation.scoring.CA(cv)
             ret["AUC"] = evaluation.scoring.AUC(cv)
