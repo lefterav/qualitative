@@ -123,7 +123,7 @@ class QualityEstimationSuite(PyExperimentSuite):
             
         
         if n == 8:
-            if params["testset"] != '-':
+            if params["test_set"] != '-':
                 ret = WmtScoring(self.simple_testset).process("tgt-1_score", "score_predicted", "score")
                 print ret
                 
