@@ -34,6 +34,7 @@ from expsuite import PyExperimentSuite
 
 
 class QualityEstimationSuite(PyExperimentSuite):
+    restore_supported = True
     
     def reset(self, params, rep):
         self.restore_supported = True
