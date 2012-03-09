@@ -22,7 +22,7 @@ from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
 from io_utils.sax.saxjcml2orange import SaxJcml2Orange
 from classifier.classifier import OrangeClassifier
 from Orange.data import Table
-
+from Orange import evaluation
 
 import sys
 import shutil
@@ -124,6 +124,11 @@ class QualityEstimationSuite(PyExperimentSuite):
             from support.evaluation.wmt12.wmt_scoring import WmtScoring
             ret = WmtScoring(self.simple_testset).process("tgt-1_score", "", "score_predicted", "")
             print ret
+        if n == 9:
+            orangeData = Table("testset.tab")
+            cv = evaluation.testing.cross_validation([self.classifier], orangeData, folds=5)
+            ret["CA"] = evaluation.scoring.CA(cv)
+            ret["AUC"] = evaluation.scoring.AUC(cv)
             print "finished"
         return ret
         
