@@ -21,6 +21,7 @@ from io_utils.input.jcmlreader import JcmlReader
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
 from io_utils.sax.saxjcml2orange import SaxJcml2Orange
 from classifier.classifier import OrangeClassifier
+from support.evaluation.wmt12.wmt_scoring import WmtScoring
 from Orange.data import Table
 from Orange import evaluation
 
@@ -122,9 +123,12 @@ class QualityEstimationSuite(PyExperimentSuite):
             
         
         if n == 8:
-            from support.evaluation.wmt12.wmt_scoring import WmtScoring
-            ret = WmtScoring(self.simple_testset).process("tgt-1_score", "", "score_predicted", "")
-            print ret
+            if params["testset"] != '-':
+                ret = WmtScoring(self.simple_testset).process("tgt-1_score", "score_predicted", "score")
+                print ret
+                
+            else:
+                WmtScoring(self.simple_testset).create_output_file("score_predicted", "score")
         if n == 10:
             
             SaxJcml2Orange(params["training_set"], 
@@ -155,7 +159,7 @@ class QualityEstimationSuite(PyExperimentSuite):
             objectfile.close()
         if n == 6:
             classified_vector_file = open("classified.txt", 'w')
-            classified_vector_file.writelines(self.classified_values_vector)
+            classified_vector_file.writelines(["%s\n" % v for v in self.classified_values_vector])
             classified_vector_file.close()
         if n == 7:
             Parallelsentence2Jcml(self.simple_testset).write_to_file("testset.classified.jcml")
@@ -175,7 +179,7 @@ class QualityEstimationSuite(PyExperimentSuite):
     ##############################
                 
     def _get_testset(self, test_filename, mode = "", ratio=0.9):
-        if not test_filename == "":
+        if test_filename == "-":
             print "arbitrarily split given set to training and test sets 90% + 10%"
             simple_trainset = JcmlReader("trainset.jcml").get_dataset()
             
