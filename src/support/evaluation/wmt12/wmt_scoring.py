@@ -26,7 +26,27 @@ class WmtScoring(DataSet):
         
         self.create_files(reference_score_attribute_name, score_attribute_name, method_name, output_filename, reference_filename, mode)
         return self.run_command(evaluation_script,  reference_filename, output_filename)
+    
+    
+    def create_output_file(self, score_attribute_name, method_name = "group_method",
+                           output_filename = "output.hyp",
+                           mode = "score"):
+        output_file = open(output_filename, "w")
+        i = 0
+        for ps in self.parallelsentences:
+            i += 1
+            if mode == "score":
+                score_attribute_value = ps.get_attribute(score_attribute_name)
+                rank_attribute_value = "-1000"
+            elif mode == "rank":                
+                rank_attribute_value = ps.get_attribute(score_attribute_name)
+                score_attribute_value = "-1000"
+
+            
+            output_file.write("{0}\t{1}\t{2}\t{3}\n".format(method_name, i, score_attribute_value, rank_attribute_value))
+
         
+     
     def create_files(self, reference_score_attribute_name, 
                 score_attribute_name, 
                 method_name = "group_method", output_filename = "output.hyp", reference_filename = "reference.hyp", mode = "rank"):
