@@ -21,9 +21,11 @@ if __name__ == '__main__':
     te = mysuite.get_values_fix_params("./%s" % directory, 0 , "Interval")
     tf = mysuite.get_values_fix_params("./%s" % directory, 0 , "DeltaAvg")
     tg = mysuite.get_values_fix_params("./%s" % directory, 0 , "Spearman-Corr")
+    tacc = mysuite.get_values_fix_params("./%s" % directory, 0 , "CA")
+    tauc = mysuite.get_values_fix_params("./%s" % directory, 0 , "AUC")
     
-    for a, b, c, ad, e, f, g, d, in zip(ta[0], tb[0], tc[0], td[0], te[0], tf[0], tg[0], ta[1]):
-        output = [str(a), str(b), str(c), str(ad), str(e), str(f), str(g)]
+    for a, b, c, ad, e, f, g, acc, auc, d, in zip(ta[0], tb[0], tc[0], td[0], te[0], tf[0], tg[0], tacc[0], tauc[0], ta[1]):
+        output = [str(a), str(b), str(c), str(ad), str(e), str(f), str(g), str(acc), str(auc)]
         output.append(d['classifier'])
         output.append(d['att'])
         if d.has_key('filter_score_diff'):
