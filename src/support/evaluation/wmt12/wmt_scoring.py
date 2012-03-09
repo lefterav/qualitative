@@ -59,10 +59,10 @@ class WmtScoring(DataSet):
         score_string = process.communicate()[0]
         pattern =  "(\w*)\s*=[\[\s]*([\d*\-\.]*)"
         import re
-        scores = dict(re.findall(pattern, score_string))
+        scores = dict(("i_%s"%k, v for k,v in re.findall(pattern, score_string)))
         try:
-            scores["interval1"], scores["interval2"] = str(scores["Interval"]).split('-')
-            del(scores["Interval"]) 
+            scores["i_interval1"], scores["i_interval2"] = str(scores["i_Interval"]).split('-')
+            del(scores["i_Interval"]) 
         except:
             pass
 #        os.remove(reference_filename)
