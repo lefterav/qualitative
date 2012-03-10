@@ -147,8 +147,15 @@ class QualityEstimationSuite(PyExperimentSuite):
             
             orangeData = Table("full-trainset.tab")
             cv = evaluation.testing.cross_validation([self.learner(**self.classifier_params)], orangeData, folds=5)
-            ret["CA"] = evaluation.scoring.CA(cv)
-            ret["AUC"] = evaluation.scoring.AUC(cv)
+            if params.has_key("evaluation") and params["evaluation"] == "regression":
+                ret["RMSE"] = evaluation.scoring.RMSE(v)
+                ret["MAE"] = evaluation.scoring.MAE(v)
+                ret["MSE"] = evaluation.scoring.MSE(v)
+                ret["RSE"] = evaluation.scoring.RSE(v)
+                ret["RSE"] = evaluation.scoring.R2(v)
+            else:
+                ret["CA"] = evaluation.scoring.CA(cv)
+                ret["AUC"] = evaluation.scoring.AUC(cv)
             print "finished"
         return ret
         
