@@ -16,7 +16,7 @@ Gathers the WMT12 quality estimation results from the experiment folders created
 
 
     
-def sort_values(mysuite, directory, rep):
+def sort_values(mysuite, directory, rep, mode):
     """
     Parallelizes and aligned the vectors provided by the Experiment Suite API
     @param mysuite: instance of the Experiment Suite or subclass
@@ -29,8 +29,10 @@ def sort_values(mysuite, directory, rep):
     """
 
     table = []
-    
-    required_feature_names = ["RootMeanSqrErr", "MeanAvgErr", "LargeErrPerc", "SmallErrPerc", "interval1", "interval2", "DeltaAvg", "Spearman-Corr", "CA", "AUC"]
+    if args.mode:
+        required_feature_names = ["RMSE", "MAE", "MSE", "RSE", "R2"]
+    else:
+        required_feature_names = ["RootMeanSqrErr", "MeanAvgErr", "LargeErrPerc", "SmallErrPerc", "interval1", "interval2", "DeltaAvg", "Spearman-Corr", "CA", "AUC"]
     
     for feature in required_feature_names:
         vector = mysuite.get_values_fix_params("./%s" % directory , rep, feature)
@@ -104,20 +106,26 @@ def print_values_directory(mysuite, directory):
         
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Display progress of variable')
-
-    directory1 = sys.argv[1]
+    parser.add_argument('directories', type=str, metavar='N', nargs='2')
+    parser.add_argument('--regression' , dest='mode', action='store_const', const=True, default = False)
+    parser.add_argument('--rep', type=int, dest='rep', default = 1)
+    
+    args = parser.parse_args()
+    
+    rep = parser.rep
+    directory1 = parser.directories[0]
     directory2 = False
     try:
-        directory2 = sys.argv[2]
+        directory2 = parser.directories[0]
     except: 
         pass
     
     mysuite = QualityEstimationSuite()
     rep = 1
     
-    dict1 = sort_values(mysuite, directory1, 1)
+    dict1 = sort_values(mysuite, directory1, rep, args.mode)
     if directory2:
-        dict2 = dict(sort_values(mysuite, directory2, 1))
+        dict2 = dict(sort_values(mysuite, directory2, args.mode))
     
     #by using dict1 as a reference, align each of its entries with the 
     #corresponding entry of dict2 (second directory)
