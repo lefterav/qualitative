@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 '''
 Created on Jan 30, 2012
 
@@ -22,6 +24,9 @@ There can be up to 5 sys parameters (maximum is sys5File, sys5Name).
 
 import sys
 from optparse import OptionParser
+
+def escapeXML(string):
+    return string.replace("<", "&lt;").replace(">", "&gt;")
 
 # command line arguments definition
 parser = OptionParser()
@@ -58,11 +63,11 @@ parser.add_option("-e", '--sys5Name', dest='sys5Name', help="5.system name")
 options, args  = parser.parse_args()
 if not options.linksFile: sys.exit('ERROR: Option --linksFile is missing!')
 if not options.srcFile: sys.exit('ERROR: Option --srcFile is missing!')
-if not options.refFile: sys.exit('ERROR: Option --refFile is missing!')
+#if not options.refFile: sys.exit('ERROR: Option --refFile is missing!')
 if not options.srcLang: sys.exit('ERROR: Option --srcLang is missing!')
 if not options.tgtLang: sys.exit('ERROR: Option --tgtLang is missing!')
 if not options.setid: sys.exit('ERROR: Option --setid is missing!')
-if not options.combxml: sys.exit('ERROR: Option --combxml is missing!')
+#if not options.combxml: sys.exit('ERROR: Option --combxml is missing!')
 
 # variables with command line arguments
 linksFile = options.linksFile
@@ -82,9 +87,12 @@ f = open(srcFile)
 contentSrc = f.read().strip().split('\n')
 f.close()
 
-f = open(refFile)
-contentRef = f.read().strip().split('\n')
-f.close()
+if refFile:
+    f = open(refFile)
+    contentRef = f.read().strip().split('\n')
+    f.close()
+else:
+    contentRef = None
 
 # read input system files if exist
 contentSys1 = []
@@ -131,7 +139,7 @@ if options.sys5File and options.sys5Name:
 # check if number of lines in input files is equal
 if len(contentLinks) != len(contentSrc):
     sys.exit('ERROR: Number of lines in linksFile and srcFile not equal!')
-if len(contentLinks) != len(contentRef):
+if contentRef and len(contentLinks) != len(contentRef):
     sys.exit('ERROR: Number of lines in linksFile and refFile not equal!')
 if contentSys1 and len(contentLinks) != len(contentSys1):
     sys.exit('ERROR: Number of lines in linksFile and sys1File not equal!')
@@ -157,26 +165,33 @@ for i in range(len(contentLinks)):
         segid = contentLinks[i].split('\t')[0]
         docid = contentLinks[i].split('\t')[1]
     source = contentSrc[i]
-    reference = contentRef[i]
+    if contentRef:
+        reference = contentRef[i]
+    else:
+        reference = None
     
     output += '\t<seg id="%s" docid="%s">\n' % (segid, docid)
-    output += '\t\t<source>%s</source>\n' % (source)
-    output += '\t\t<reference>%s</reference>\n' % (reference)
+    output += '\t\t<source>%s</source>\n' % escapeXML(source)
+    if reference:
+        output += '\t\t<reference>%s</reference>\n' % escapeXML(reference)
     if contentSys1: output +='\t\t<translation system="%s">%s</translation>\n'\
-                                                   % (sys1Name, contentSys1[i])
+                                                   % (sys1Name, escapeXML(contentSys1[i]))
     if contentSys2: output +='\t\t<translation system="%s">%s</translation>\n'\
-                                                   % (sys2Name, contentSys2[i])
+                                                   % (sys2Name, escapeXML(contentSys2[i]))
     if contentSys3: output +='\t\t<translation system="%s">%s</translation>\n'\
-                                                   % (sys3Name, contentSys3[i])
+                                                   % (sys3Name, escapeXML(contentSys3[i]))
     if contentSys4: output +='\t\t<translation system="%s">%s</translation>\n'\
-                                                   % (sys4Name, contentSys4[i])
+                                                   % (sys4Name, escapeXML(contentSys4[i]))
     if contentSys5: output +='\t\t<translation system="%s">%s</translation>\n'\
-                                                   % (sys5Name, contentSys5[i])
+                                                   % (sys5Name, escapeXML(contentSys5[i]))
     output += '\t</seg>\n'
 output += '</set>\n'
 
-f = open(combxml, 'w')
-f.write(output)
-f.close()
+if combxml:
+    f = open(combxml, 'w')
+    f.write(output)
+    f.close()
+    print '%s was generated' % combxml
+else:
+    sys.stdout.write(output)
 
-print '%s was generated' % combxml
