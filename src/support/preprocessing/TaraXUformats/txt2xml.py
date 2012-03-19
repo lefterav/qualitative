@@ -85,7 +85,7 @@ sysNames = options.sysNames.split(",")
 
 # create combined xml file
 output = '<?xml version="1.0" encoding="UTF-8"?>\n'
-output += '<set setid="%s" source-language="%s" target-language="%s">\n' \
+output += '<set set-id="%s" source-language="%s" target-language="%s">\n' \
                                                     % (options.setid, options.srcLang, options.tgtLang)
 for i in range(len(contentLinks)):
     if len(contentLinks[i].split('\t'))==3:
@@ -102,7 +102,7 @@ for i in range(len(contentLinks)):
     
     fullsegid = "%s-%s-%s" % (options.setid, docid, segid)
 
-    output += '\t<seg id="%s" docid="%s">\n' % (fullsegid, docid)
+    output += '\t<seg id="%s" doc-id="%s">\n' % (fullsegid, docid)
     output += '\t\t<source>%s</source>\n' % escapeXML(source)
     if reference:
         output += '\t\t<reference>%s</reference>\n' % escapeXML(reference)
