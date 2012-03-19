@@ -1,5 +1,3 @@
-#!/usr/bin/env python2
-
 '''
 Created on 16 Mar 2012
 
@@ -64,7 +62,8 @@ if __name__ == '__main__':
         i+=1
         if i not in range(first_sentence, last_sentence) :
             root.remove(child)
-    
+            
+    print '<?xml version="1.0" encoding="UTF-8"?>'
     print etree.tostring(root, pretty_print=True) 
     
     
