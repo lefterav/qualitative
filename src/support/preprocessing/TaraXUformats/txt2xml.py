@@ -44,8 +44,8 @@ parser.add_option("-x", '--combxml', dest='combxml', \
 
 # optional command line arguments
 parser.add_option("-f", '--sysFiles', dest='sysFiles', \
-                   help="system output txt files with line-by-line sentences (comma separated list)")
-parser.add_option("-n", '--sysNames', dest='sysNames', help="system name (comman separated list)")
+        help="system output txt files with line-by-line sentences (':' separated list)")
+parser.add_option("-n", '--sysNames', dest='sysNames', help="system name (':' separated list)")
 
 # check of command line arguments
 options, args  = parser.parse_args()
@@ -71,7 +71,7 @@ if options.refFile:
 else:
     contentRef = None
 
-sysFnames = options.sysFiles.split(",")
+sysFnames = options.sysFiles.split(":")
 sysContents = []
 lContentLinks = len(contentLinks)
 for fname in sysFnames:
@@ -81,7 +81,7 @@ for fname in sysFnames:
     if len(content) != lContentLinks:
         sys.exit('ERROR: Number of lines in linksFile and %s not equal!' % fname)
     sysContents.append(content)
-sysNames = options.sysNames.split(",")
+sysNames = options.sysNames.split(":")
 
 # create combined xml file
 output = '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -113,10 +113,10 @@ for i in range(len(contentLinks)):
 output += '</set>\n'
 
 if options.combxml:
-    f = open(combxml, 'w')
+    f = open(options.combxml, 'w')
     f.write(output)
     f.close()
-    print '%s was generated' % combxml
+    print '%s was generated' % options.combxml
 else:
     sys.stdout.write(output)
 
