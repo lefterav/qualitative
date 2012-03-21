@@ -11,7 +11,7 @@ import subprocess
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
-
+from io_utils.output.xmlwriter import XmlWriter
 
 #Language mapping, needed for browsing the correct test/source/ref file
 LANGUAGES = {
@@ -35,7 +35,7 @@ class WMTEvalReader:
         self.config = config
         fieldnames = config.get("format","fieldnames").split(',')
         csvfilename = "%s/%s" % (config.get("data", "path"), config.get("data", "filename"))
-        csvfile = open(csvfilename, 'r')
+        csvfile = codecs.open(csvfilename, 'r', 'utf-8')
         try:
             dialect = config.get("format","dialect")
         except:

@@ -37,10 +37,15 @@ if __name__ == '__main__':
                     config.set("filters_include", "srclang", srclang)
                     config.set("filters_include", "trglang", tgtlang)
                     
-
-
+                    try:
+                        config.add_section("preprocessing")
+                    except:
+                        pass
+                    config.set("preprocessing", "tokenize_source", True)
+                    config.set("preprocessing", "tokenize_target", True)
+                    config.set("preprocessing", "tokenizer", "/home/elav01/taraxu_tools/moses-scripts/tokenizer.perl")
                     
-                    config.set("output", "filename", "/home/elav01/taraxu_data/jcml-latest/%s.rank.jcml" % new_filename)
+                    config.set("output", "filename", "/home/elav01/taraxu_data/jcml-latest/raw/%s.rank.jcml" % new_filename)
                     
                     
                     wmtr = WMTEvalReader(config)
