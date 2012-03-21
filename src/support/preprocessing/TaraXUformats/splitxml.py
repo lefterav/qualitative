@@ -7,27 +7,27 @@ Created on 16 Mar 2012
 
 try:
   from lxml import etree
-  print("running with lxml.etree")
+  #print("running with lxml.etree")
 except ImportError:
   try:
     # Python 2.5
     import xml.etree.cElementTree as etree
-    print("running with cElementTree on Python 2.5+")
+    #print("running with cElementTree on Python 2.5+")
   except ImportError:
     try:
       # Python 2.5
       import xml.etree.ElementTree as etree
-      print("running with ElementTree on Python 2.5+")
+      #print("running with ElementTree on Python 2.5+")
     except ImportError:
       try:
         # normal cElementTree install
         import cElementTree as etree
-        print("running with cElementTree")
+        #print("running with cElementTree")
       except ImportError:
         try:
           # normal ElementTree install
           import elementtree.ElementTree as etree
-          print("running with ElementTree")
+          #print("running with ElementTree")
         except ImportError:
           print("Failed to import ElementTree library from any known place")
 
@@ -49,6 +49,7 @@ if __name__ == '__main__':
     
     except:    
         print "Please provide an XML file and the index of the first and last sentence you want to keep"
+        print "Indexes start at 1"
         print
         print "{0} <file.xml> first_sentence last_sentence"
         sys.exit(1)
