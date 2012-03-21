@@ -7,6 +7,7 @@ Created on 7 Feb 2012
 from io_utils.input.jcmlreader import JcmlReader
 from sentence.pairwisedataset import FilteredPairwiseDataset , AnalyticPairwiseDataset
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
+import os
 
 def get_clean_testset(input_file, output_file):
     plain_dataset = JcmlReader(input_file).get_dataset()
@@ -21,8 +22,10 @@ def get_clean_testset(input_file, output_file):
 
 if __name__ == '__main__':
     langpairs = ["de-en", "en-de", "en-fr", "fr-en", "en-es", "es-en", "en-cz", "cz-en"]
-    for langpair in langpairs:
-        input_filename = "/home/lefterav/taraxu_data/jcml-latest/wmt2009.%s.jcml.rank.jcml" % langpair
-        print input_filename
-        output_filename = "/home/lefterav/taraxu_data/jcml-latest/testset/wmt2009.%s.rank-clean.jcml" % langpair
-        get_clean_testset(input_filename, output_filename)
+    sets = ['wmt2008', 'wmt2009', 'wmt2010', 'wmt2010-public', "wmt11.combo"]
+    for setid in sets:
+        for langpair in langpairs:
+            input_filename = "/home/elav01/taraxu_data/jcml-latest/raw/%s.%s.jcml.rank.jcml" % (setid, langpair)
+            print input_filename
+            output_filename = "/home/elav01/taraxu_data/jcml-latest/clean/%s.%s.rank-clean.jcml" % (setid, langpair)
+            get_clean_testset(input_filename, output_filename)
