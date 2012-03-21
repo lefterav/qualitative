@@ -85,7 +85,7 @@ sysNames = options.sysNames.split(":")
 
 # create combined xml file
 output = '<?xml version="1.0" encoding="UTF-8"?>\n'
-output += '<set set-id="%s" source-language="%s" target-language="%s">\n' \
+output += '<set id="%s" source-language="%s" target-language="%s">\n' \
                                                     % (options.setid, options.srcLang, options.tgtLang)
 for i in range(len(contentLinks)):
     if len(contentLinks[i].split('\t'))==3:
