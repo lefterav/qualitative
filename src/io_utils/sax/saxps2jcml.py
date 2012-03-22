@@ -21,7 +21,7 @@ illegal_xml_chars_RE = re.compile(u'[\x00-\x08\x0b\x0c\x0e-\x1F\uD800-\uDFFF\uFF
 def c(string):
     """
     Kills extended unicode characters that are not allowed in a proper XML 
-    """    
+    """     
     clean_string, rep = illegal_xml_chars_RE.subn('', string)
     if rep > 0:
         sys.stderr.write("I had to kill {0} unicode characters because they were not XML-compliant\n".format(rep))
