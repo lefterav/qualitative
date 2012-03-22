@@ -22,7 +22,7 @@ def get_clean_testset(input_file, output_file):
 
 if __name__ == '__main__':
     langpairs = ["de-en", "en-de", "en-fr", "fr-en", "en-es", "es-en", "en-cz", "cz-en"]
-    sets = ['wmt2008', 'wmt2009', 'wmt2010', 'wmt2010-public', "wmt11.combo"]
+    sets = ['wmt2008', 'wmt2009', 'wmt2010', 'wmt2010-public', "wmt2011.combo"]
     for setid in sets:
         for langpair in langpairs:
             input_filename = "/home/elav01/taraxu_data/jcml-latest/raw/%s.%s.jcml.rank.jcml" % (setid, langpair)
