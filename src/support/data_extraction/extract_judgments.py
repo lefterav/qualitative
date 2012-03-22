@@ -35,7 +35,7 @@ class WMTEvalReader:
         self.config = config
         fieldnames = config.get("format","fieldnames").split(',')
         csvfilename = "%s/%s" % (config.get("data", "path"), config.get("data", "filename"))
-        csvfile = codecs.open(csvfilename, 'r', 'utf-8')
+        csvfile = open(csvfilename, 'r')
         try:
             dialect = config.get("format","dialect")
         except:
