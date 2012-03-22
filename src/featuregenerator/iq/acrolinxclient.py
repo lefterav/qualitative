@@ -32,7 +32,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
     """
     
     
-    def __init__(self, lang, settings = {}, user_id = 'dfkitaraxu', host = "msv-3231.sb.dfki.de:8031", wsdl_path = "/acrolinx/services/core-no-mtom?wsdl", protocol = "http"):
+    def __init__(self, lang, settings = {}, user_id = 'dfkitaraxu', host = "msv-3231.sb.dfki.de:8031", wsdl_path = "/acrolinx/services/core-no-mtom?wsdl", protocol = "http" , license_file = "license.dat"):
         """
         @param lang: abrev. code for the language that this generator will be responsible for
         @type lang: str
@@ -48,7 +48,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         url = "{0}://{1}{2}".format(protocol, host, wsdl_path)
         self.soap_client = Client(url)
         path = os.path.dirname(__file__) #keep license file in current directory for the moment
-        self.license_data_filename = os.path.join(path, "license.dat")
+        self.license_data_filename = os.path.join(path, license_file)
         
         self.user_id = user_id    #if license doesn't work, delete license.dat and change user id OR remove access id
         self.settings = settings
@@ -246,6 +246,8 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
 
         if settings:
             soap_attributes = settings
+            soap_attributes["text_lang"] = self.lang
+            soap_attributes["client_session_id"] = self.sessionIdStr
         else:
             soap_attributes = dict(text_lang = self.lang, 
                                    text_type = 'MT-preediting-DE-EN-T1', 
