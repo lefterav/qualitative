@@ -272,6 +272,7 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         source = self.pps_dict.values()[0].get_source()
         reference = self.pps_dict.values()[0].get_reference()
         attributes = self.pps_dict.values()[0].get_attributes()
+        del(attributes[self.rank_name])
         
         return ParallelSentence(source, translations_new_rank, reference, attributes)         
         
