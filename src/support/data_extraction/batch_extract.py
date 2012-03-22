@@ -41,8 +41,8 @@ if __name__ == '__main__':
                         config.add_section("preprocessing")
                     except:
                         pass
-                    config.set("preprocessing", "tokenize_source", True)
-                    config.set("preprocessing", "tokenize_target", True)
+                    config.set("preprocessing", "tokenize_source", "False")
+                    config.set("preprocessing", "tokenize_target", "False")
                     config.set("preprocessing", "tokenizer", "/home/elav01/taraxu_tools/moses-scripts/tokenizer.perl")
                     
                     config.set("output", "filename", "/home/elav01/taraxu_data/jcml-latest/raw/%s.rank.jcml" % new_filename)
