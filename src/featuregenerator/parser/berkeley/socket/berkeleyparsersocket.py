@@ -10,6 +10,7 @@ import subprocess
 import time
 import os
 import sys
+import random
 
 
 class BerkeleyParserSocket():
@@ -47,6 +48,8 @@ class BerkeleyParserSocket():
         
         try:
         # connect to the JVM
+            wtime = random.randint(1, 15)
+            time.sleep(wtime)
             self.gateway = JavaGateway()
             # get the application instance
             bpInstance = self.gateway.entry_point
