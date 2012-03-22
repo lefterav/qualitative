@@ -9,90 +9,18 @@ import classifier
 from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator, BerkeleyXMLRPCFeatureGenerator
 from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator 
 import pkgutil
-import orange
+import Orange
 import os
 import shutil
+import re
 
 #from experiment.utils.ruffus_utils import (touch, sys_call,
 #                                           main_logger as log,
 #                                           main_mutex as log_mtx)
 
 # --- config and options---
-CONFIG_FILENAME = 'pipeline.cfg'
+CONFIG_FILENAME = 'config/pipeline.cfg'
 CONFIG_TEMPLATE = """
-[general]
-path = /home/elav01/taraxu_data/selection-mechanism/ml4hmt/experiment/109
-source_language = de
-target_language = en
-
-[annotation]
-filenames = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-test-devpart.jcml
-reference_features = False
-moreisbetter = bleu
-lessisbetter = lev
-
-[parser:berkeley_en:soc]
-type = socket
-grammarfile = /home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr
-berkeley_parser_jar = /home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar
-py4j_jar = /usr/share/py4j/py4j0.7.jar
-language = en
-tokenize = False
-
-#[parser:berkeley_en]
-#type = xmlrpc
-#language = en
-#url = http://percival.sb.dfki.de:8682
-#tokenize = False
-#
-#[parser:berkeley_es]
-#type = xmlrpc
-#language = es
-#url = http://percival.sb.dfki.de:21115
-#tokenize = False
-#
-#[parser:berkeley_de]
-#type = xmlrpc
-#language = de
-#url = http://percival.sb.dfki.de:8684
-#tokenize = False
-
-[lm:lm_en]
-language = en
-lowercase = True
-tokenize = True
-url = http://percival.sb.dfki.de:8586
-
-[lm:lm_de]
-language = de
-lowercase = True
-tokenize = True
-url = http://percival.sb.dfki.de:8585
-
-
-[preprocessing]
-pairwise = True
-pairwise_exponential = True
-allow_ties = False
-generate_diff = False
-merge_overlapping = True
-orange_minimal = False
-
-[training]
-filenames = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt08.test.jcml
-#,/home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-train.partial.if.jcml
-class_name = rank
-meta_attributes=id,testset
-attributes = tgt-1_unk,tgt-2_unk,tgt-1_tri-prob,tgt-2_tri-prob,tgt-1_length_ratio,tgt-2_length_ratio,tgt-1_berkeley-n_ratio,tgt-2_berkeley-n_ratio,tgt-1_berkeley-n,tgt-2_berkeley-n,tgt-1_parse-VB,tgt-2_parse-VB
-continuize=True
-multinomialTreatment=NValues
-continuousTreatment=NormalizeBySpan
-classTreatment=Ignore
-classifier=Bayes
-
-[testing]
-filename = /home/elav01/workspace/TaraXUscripts/data/multiclass/wmt10-test-devpart.jcml
-#,/home/elav01/workspace/TaraXUscripts/data/multiclass/wmt08.if.partial.jcml
 """
 
 
@@ -110,7 +38,7 @@ class ExperimentConfigParser(ConfigParser):
                 return getattr(module, name)
             except:
                 pass
-        return getattr(orange, name)
+        return getattr(Orange, name)
     
     
     def exists_parser(self, language):
@@ -143,6 +71,46 @@ class ExperimentConfigParser(ConfigParser):
         return None
     
     
+    def exists_checker(self, language):
+        for checker_name in [section for section in self.sections() if section.startswith("checker:")]:
+            if self.get(checker_name, "language") == language:
+                return True
+        return False
+    
+    
+    def _get_checker_settings(self, checker_name):
+        settings = {}
+        for option in self.options(checker_name):
+            if option.startswith("setting_"):
+                setting_name = re.findall("setting_(.*)", option)[0]
+                setting_value = self.get(checker_name, option)
+                settings[setting_name] = setting_value
+        return settings
+    
+    
+    def get_checker(self, language):
+        #@todo: see how to generalize this. also pass parameters read by the pipeline, currently hardcoded
+        for checker_name in [section for section in self.sections() if section.startswith("checker:")]:
+            print "looking on checker ", checker_name , language
+            if self.get(checker_name, "language") == language:
+                #TODO: if KenLM gets wrapped up, add a type: setting
+                from featuregenerator.iq.acrolinxclient import IQFeatureGenerator
+                
+                settings = self._get_checker_settings(checker_name)
+                
+                feature_generator = IQFeatureGenerator(language,
+                                                       settings,
+                                                       self.get(checker_name, "user_id"),
+                                                       self.get(checker_name, "host"),
+                                                       self.get(checker_name, "wsdl_path"),
+                                                       self.get(checker_name, "protocol"),
+                                                       self.get(checker_name, "license_file")
+                                                       )
+                print "returning feature generator"
+                return feature_generator
+        print "Failure with checker for", language
+        return None
+    
     def get_source_language(self):
         return self.get("general", "source_language")
     
@@ -156,6 +124,8 @@ class ExperimentConfigParser(ConfigParser):
             if self.get(lm_name, "language") == language:
                 return True
         return False
+    
+    
     
     def get_lm(self, language):
         #TODO: probably establish sth like ExternalProcessor object and wrap all these params there
@@ -222,17 +192,37 @@ class ExperimentConfigParser(ConfigParser):
             current_step_id = highestnum + 1
         return current_step_id 
 
-try:
-    configfilename = os.sys.argv[1]
-except IndexError:
-    configfilename = CONFIG_FILENAME
+#try:
+#    configfilename = os.sys.argv[1]
+#except IndexError:
+#    configfilename = CONFIG_FILENAME
+
+
+
     
 # global configuration
 cfg = ExperimentConfigParser()
 cfg.readfp(StringIO.StringIO(CONFIG_TEMPLATE))  # set up defaults
 #cfg.read(CONFIG_FILENAME)  # add user-specified settings
-cfg.read(CONFIG_FILENAME)  # add user-specified settings
+#cfg.read(configfilename)  # add user-specified settings
 
-path = cfg.prepare_dir()
+try: 
+    cfg.read(CONFIG_FILENAME)
+except:
+    print "cannot read original cfg file"
+    pass
+
+try: 
+    cfg.read(os.sys.argv[1])
+except:
+    print "cannot read additional cfg file"
+    pass
+
+try:
+    continue_experiment = os.sys.argv[2]
+except:
+    continue_experiment = None
+
+path = cfg.prepare_dir(continue_experiment)
 #os.chdir(path)
 
