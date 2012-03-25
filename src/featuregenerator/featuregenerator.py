@@ -10,7 +10,7 @@ from io_utils.output.xmlwriter import XmlWriter
 #from abc import ABCMeta
 from sys import stderr
 
-class FeatureGenerator():
+class FeatureGenerator(object):
     """
     A base feature generator class, with no particular functioning. 
         It just provides basic feature generator functions to be inherited (or overwritten) by specific feature generators.
