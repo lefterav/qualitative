@@ -50,13 +50,21 @@ class CommandlinePreprocessor(Preprocessor):
                                         stdout=subprocess.PIPE,
                                         )
         
-        self.process.stdin = codecs.getwriter('utf-8')(self.process.stdin)
-        self.process.stdout = codecs.getreader('utf-8')(self.process.stdout)
+        
+        #self.process.stdin = codecs.getwriter('utf-8')(self.process.stdin)
+        #self.process.stdout = codecs.getreader('utf-8')(self.process.stdout)
     
     def process_string(self, string):
-        print >>self.process.stdin, string
-        self.process.stdin.flush()       
+        #string = string.decode('utf-8')
+        
+        #string = string.encode('utf-8')
+        self.process.stdin.write(string)
+        self.process.stdin.write("\n")
+        self.process.stdin.flush()   
+        self.process.stdout.flush()
+    
         output = self.process.stdout.readline()
+        self.process.stdout.flush()
         return output
     
     def close(self):
@@ -101,7 +109,7 @@ if __name__ == '__main__':
 #    path = "/home/lefterav/taraxu_tools/scripts/tokenizer/normalize-punctuation.perl"
 #    command_template = "perl {path} -l {lang} -b"
     tokenizer = Tokenizer("en")
-    parallelsentences = JcmlReader("/home/lefterav/taraxu_data/selection-mechanism/ml4hmt/experiment/autoranking/4/training-sample.orig.jcml").get_parallelsentences()
+    parallelsentences = JcmlReader("/home/lefterav/taraxu_data/selection-mechanism/ml4hmt/experiment/autoranking/4/wmt00-test-devpart.orig.jcml").get_parallelsentences()
     tokenized = tokenizer.add_features_batch(parallelsentences)
     #tokenizer.close()
     Parallelsentence2Jcml(tokenized).write_to_file("/home/lefterav/taraxu_data/selection-mechanism/ml4hmt/experiment/autoranking/4/training-sample.tok.jcml")
