@@ -19,7 +19,7 @@ import re
 #                                           main_mutex as log_mtx)
 
 # --- config and options---
-CONFIG_FILENAME = os.path.join(os.path.dirname(__name__), 'config/pipeline.cfg')
+CONFIG_FILENAME = os.path.abspath(os.path.join(os.path.dirname(__name__), 'config/pipeline.cfg'))
 print 'config', CONFIG_FILENAME 
 CONFIG_TEMPLATE = """
 """
