@@ -246,20 +246,19 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
 
         if settings:
             soap_attributes = settings
-            soap_attributes["text_lang"] = self.lang
-            soap_attributes["client_session_id"] = self.sessionIdStr
         else:
-            soap_attributes = dict(text_lang = self.lang, 
+            soap_attributes = dict(
                                    text_type = 'MT-preediting-DE-EN-T1', 
                                    check_spelling = 'true', 
                                    check_grammar = 'true', 
                                    check_style = 'true',
                                    check_terms = 'MT-preediting-DE-EN-T1.modules.terms',
-                                   client_session_id = self.sessionIdStr
                                     )
             
-            soap_attributes["license.data"] = self.license_data_str
-            soap_attributes["user.id"] = self.user_id
+        soap_attributes["text_lang"] = self.lang
+        soap_attributes["client_session_id"] = self.sessionIdStr
+        soap_attributes["license.data"] = self.license_data_str
+        soap_attributes["user.id"] = self.user_id
     
         soap_properties = self._attributes2soapproperties(soap_attributes)
         return check_id, soap_properties
@@ -287,7 +286,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
             resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)
         except Exception as inst:
             print "Error from server: ", inst
-            return {}
+            raise inst
         
         self._update_license(resp)
         
@@ -324,5 +323,6 @@ if __name__ == '__main__':
     ac = IQFeatureGenerator("en")
     from io_utils import saxjcml
     #
-    saxjcml.run_features_generator("/home/elav01/taraxu_data/wmt12/qe/training_set/training.jcml", "/home/elav01/taraxu_data/wmt12/qe/training_set/training.iq.jcml", [ac])
+    saxjcml.run_features_generator("/home/elav01/taraxu_data/wmt12/qe/training_set/training.jcml", 
+                                   "/home/elav01/taraxu_data/wmt12/qe/training_set/training.iq.jcml", [ac])
     print ac.process(text)
