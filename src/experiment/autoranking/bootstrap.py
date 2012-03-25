@@ -25,9 +25,8 @@ CONFIG_TEMPLATE = """
 """
 
 
-
 class ExperimentConfigParser(ConfigParser):
-    
+    checker = 0
     def get_classifier(self, name = None):
         if not name:
             name = self.get("training", "classifier")
@@ -98,13 +97,18 @@ class ExperimentConfigParser(ConfigParser):
                 
                 settings = self._get_checker_settings(checker_name)
                 
+                
+                ExperimentConfigParser.checker += 1
+                
+                user_id = "{}{}".format(self.get(checker_name, "user_id"), ExperimentConfigParser.checker)
+                
                 feature_generator = IQFeatureGenerator(language,
                                                        settings,
-                                                       self.get(checker_name, "user_id"),
+                                                       user_id,
                                                        self.get(checker_name, "host"),
                                                        self.get(checker_name, "wsdl_path"),
                                                        self.get(checker_name, "protocol"),
-                                                       self.get(checker_name, "license_file")
+                                                       "%s.dat" % user_id 
                                                        )
                 print "returning feature generator"
                 return feature_generator
