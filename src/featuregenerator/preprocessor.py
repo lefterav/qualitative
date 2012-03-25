@@ -7,6 +7,7 @@ Created on 24 Mar 2012
 from featuregenerator import FeatureGenerator
 import subprocess
 import util
+import codecs
 import os
 
 class Preprocessor(FeatureGenerator):
@@ -48,6 +49,9 @@ class CommandlinePreprocessor(Preprocessor):
                                         stdin=subprocess.PIPE, 
                                         stdout=subprocess.PIPE,
                                         )
+        
+        self.process.stdin = codecs.getwriter('utf-8')(self.process.stdin)
+        self.process.stdout = codecs.getreader('utf-8')(self.process.stdout)
     
     def process_string(self, string):
         print >>self.process.stdin, string

@@ -7,6 +7,7 @@ Created on 24 Mar 2012
 import subprocess
 import sys
 import re
+import codecs
 import time
 from threading  import Thread
 
@@ -42,7 +43,8 @@ class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
                                         )
 #        self.process.stdout.readline()
 #        self.process.stdout.readline()
-        
+        self.process.stdin = codecs.getwriter('utf-8')(self.process.stdin)
+        self.process.stdout = codecs.getreader('utf-8')(self.process.stdout)
         #Thread(target=self.print_output, args=(self.process.stderr,)).start()
         Thread(target=self.print_output, args=(self.process.stdout,)).start()
         self.i = 0

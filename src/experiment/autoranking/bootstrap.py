@@ -13,6 +13,7 @@ import Orange
 import os
 import shutil
 import re
+import tempfile
 
 #from experiment.utils.ruffus_utils import (touch, sys_call,
 #                                           main_logger as log,
@@ -100,7 +101,8 @@ class ExperimentConfigParser(ConfigParser):
                 
                 ExperimentConfigParser.checker += 1
                 
-                user_id = "{}{}".format(self.get(checker_name, "user_id"), ExperimentConfigParser.checker)
+                #user_id = "{}{}".format(self.get(checker_name, "user_id"), ExperimentConfigParser.checker)
+                user_id = os.path.basename(tempfile.mktemp())
                 
                 feature_generator = IQFeatureGenerator(language,
                                                        settings,
