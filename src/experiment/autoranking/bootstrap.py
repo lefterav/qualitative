@@ -40,7 +40,6 @@ class ExperimentConfigParser(ConfigParser):
                 pass
         return getattr(Orange, name)
     
-    
     def exists_parser(self, language):
         for parser_name in [section for section in cfg.sections() if section.startswith("parser:")]:
             if cfg.get(parser_name, "language") == language:
@@ -110,6 +109,7 @@ class ExperimentConfigParser(ConfigParser):
                 return feature_generator
         print "Failure with checker for", language
         return None
+        
     
     def get_source_language(self):
         return self.get("general", "source_language")
@@ -146,8 +146,17 @@ class ExperimentConfigParser(ConfigParser):
                 return lm_name
         return ""
 
+    def get_truecaser_model(self, language):
+        for tc_name in [section for section in self.sections() if section.startswith("tc:")]:
+            if self.get(tc_name, "language") == language:        
+                return self.get(tc_name, "model")
+        return ""
+        
     def get_path(self):
         return self.path
+    
+    
+        
 
     def prepare_dir(self, continue_step = None):
         

@@ -9,6 +9,7 @@ Modified 22 Mar 2012 for autoranking experiment
 import shutil
 import os
 import time
+import codecs
 
 #pipeline essentials
 from ruffus import *
@@ -67,6 +68,7 @@ print all_sets
 
 def get_basename(filename):
     basename = re.findall("(.*).jcml", os.path.basename(filename))[0]
+    print basename
     return basename
 
 @split(None, "*orig.jcml", all_sets)
@@ -79,7 +81,9 @@ def data_fetch(input_file, output_files, external_files):
         print "Moving here external file ", external_file
         basename = get_basename(external_file)
         basename = basename.replace(".", "-")
+        
         output_file = "{0}.{1}".format(basename, "orig.jcml")
+        print "output", output_file
         shutil.copy(external_file, output_file)
 
 try:
@@ -88,26 +92,40 @@ except:
     annotated_filenames = []
 
 
-@split(data_fetch,"*.ext.f.jcml", annotated_filenames)
-def add_externally_annotated_sets(input_file, output_files, external_files):
-#    input_basename = get_basename(input_file)
-    for external_file in external_files:
-        external_basename = get_basename(external_file)
-#        if input_basename == external_basename:
-        shutil.copy(external_file, "%s.ext.f.jcml" % external_basename)
+#@split(data_fetch,"*.ext.f.jcml", annotated_filenames)
+#def add_externally_annotated_sets(input_file, output_files, external_files):
+##    input_basename = get_basename(input_file)
+#    for external_file in external_files:
+#        external_basename = get_basename(external_file)
+##        if input_basename == external_basename:
+#        shutil.copy(external_file, "%s.ext.f.jcml" % external_basename)
+#            
+#if (cfg.exists_parser(target_language)):
+#    parallel_feature_functions.append(add_externally_annotated_sets)
+
+@transform(data_fetch, suffix("orig.jcml"), "tok.jcml")        
+def preprocess_data(input_file, output_file):
+    from featuregenerator.preprocessor import Normalizer
+    from featuregenerator.preprocessor import Tokenizer
+    normalizer_src = Normalizer(source_language)
+    normalizer_tgt = Normalizer(target_language)
+    tokenizer_src = Tokenizer(source_language)
+    tokenizer_tgt = Tokenizer(target_language)
+    saxjcml.run_features_generator(input_file, output_file, [normalizer_src, normalizer_tgt, tokenizer_src, tokenizer_tgt])
+    
+    
+    
+
+
             
-if (cfg.exists_parser(target_language)):
-    parallel_feature_functions.append(add_externally_annotated_sets)
-            
-            
-@split(data_fetch, "*.part.jcml", cores)
+@split(preprocess_data, "*.part.jcml", cores)
 def original_data_split(input_files, output_files, parts):
     """
     Split the datasets to parts, in order to perform heavy tasks
     """
     for input_file in input_files:
         print "splitting file", input_file
-        re_split = "([^.]*)\.orig\.(jcml)"
+        re_split = "([^.]*)\.tok\.(jcml)"
         XmlReader(input_file).split_and_write(parts, re_split)
 
        
@@ -156,8 +174,24 @@ def merge_parts(inputs, output):
     Parallelsentence2Jcml(parallelsentences).write_to_file(output)    
 
 
+
+@transform(preprocess_data, suffix(".tok.jcml"), ".tc.%s.jcml" % source_language, source_language, cfg.get_truecaser_model(source_language))
+def truecase_source(input_file, output_file, language, model):
+    truecase(input_file, output_file, language, model)
+
+@transform(preprocess_data, suffix(".tok.jcml"), ".tc.%s.jcml" % target_language, target_language, cfg.get_truecaser_model(target_language))
+def truecase_target(input_file, output_file, language, model):
+    truecase(input_file, output_file, language, model)
+
+def truecase(input_file, output_file, language, model):
+    from featuregenerator.preprocessor import Truecaser
+    truecaser = Truecaser(language, model)
+    saxjcml.run_features_generator(input_file, output_file, [truecaser])
+    
+
+
 @active_if(cfg.exists_lm(source_language))
-@transform(data_fetch, suffix(".orig.jcml"), ".lm.%s.f.jcml" % source_language, source_language, cfg.get_lm_name(source_language)) 
+@transform(truecase_source, suffix(".tc.%s.jcml" % source_language), ".lm.%s.f.jcml" % source_language, source_language, cfg.get_lm_name(source_language)) 
 def features_lm_source(input_file, output_file, language, lm_name):
     features_lm(input_file, output_file, language, lm_name)
     #saxjcml.run_features_generator(input_file, output_file, [srilm_ngram])
@@ -165,11 +199,11 @@ if (cfg.exists_lm(source_language)):
     parallel_feature_functions.append(features_lm_source)
 
 @active_if(cfg.exists_lm(target_language))
-@transform(data_fetch, suffix(".orig.jcml"), ".lm.%s.f.jcml" % target_language, target_language, cfg.get_lm_name(target_language)) 
+@transform(truecase_target, suffix(".tc.%s.jcml" % target_language), ".lm.%s.f.jcml" % target_language, target_language, cfg.get_lm_name(target_language)) 
 def features_lm_target(input_file, output_file, language, lm_name):
     features_lm(input_file, output_file, language, lm_name)
 if (cfg.exists_lm(target_language)):
-    parallel_feature_functions.append(features_lm_source)
+    parallel_feature_functions.append(features_lm_target)
     
 def features_lm(input_file, output_file, language, lm_name):
     features_lm_batch(input_file, output_file, language, lm_name)
@@ -183,19 +217,24 @@ def features_lm_batch(input_file, output_file, language, lm_name):
 def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, lm_lowercase):
     pass
 
+
 @active_if(cfg.exists_checker(source_language))
+@jobs_limit(1)
 @transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % source_language, source_language)
 def features_checker_source(input_file, output_file, language):
     features_checker(input_file, output_file, language)
 if cfg.exists_checker(source_language):
     parallel_feature_functions.append(features_checker_source)
 
+
 @active_if(cfg.exists_checker(target_language))
+@jobs_limit(1)
 @transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % target_language, target_language)
 def features_checker_target(input_file, output_file, language):
     features_checker(input_file, output_file, language)
 if cfg.exists_checker(target_language):
     parallel_feature_functions.append(features_checker_target)
+
 
 def features_checker(input_file, output_file, language):
     language_checker = cfg.get_checker(language)
@@ -203,6 +242,25 @@ def features_checker(input_file, output_file, language):
     saxjcml.run_features_generator(input_file, output_file, [language_checker])
 
 
+
+@active_if(cfg.has_section("languagetool"))
+@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, source_language, cfg.get("languagetool", "path"))
+def features_langtool_source(input_file, output_file, language, path):
+    features_langtool(input_file, output_file, language, path)
+
+@active_if(cfg.has_section("languagetool"))
+@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, target_language, cfg.get("languagetool", "path"))
+def features_langtool_target(input_file, output_file, language, path):
+    features_langtool(input_file, output_file, language, path)
+if cfg.has_section("languagetool"):
+    parallel_feature_functions.append(features_langtool_target)
+    parallel_feature_functions.append(features_langtool_source)
+
+def features_langtool(input_file, output_file, language, path):
+    from featuregenerator.languagechecker.languagetool import LanguageToolFeatureGenerator
+    fg1 = LanguageToolFeatureGenerator(path, "en")
+    fg2 = LanguageToolFeatureGenerator(path, "es")
+    saxjcml.run_features_generator(input_file, output_file, [fg1, fg2])
 
 @active_if(False)
 def features_ibm(input_file, output_file, ibm1lexicon):
@@ -233,6 +291,7 @@ def analyze_external_features(input_file, output_file, source_language, target_l
     langpair = (source_language, target_language)
     analyzers = [LengthFeatureGenerator(),
                  ParserMatches(langpair),
+                 LevenshteinGenerator(),
                  RatioGenerator()]
     saxjcml.run_features_generator(input_file, output_file, analyzers)
     
@@ -241,17 +300,16 @@ def analyze_external_features(input_file, output_file, source_language, target_l
 @transform(data_fetch, suffix(".orig.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(",")) 
 def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_atts):
     analyzers = [LevenshteinGenerator(),
-                 BleuGenerator(),
+                 #BleuGenerator(),
                  RatioGenerator()
                  ]
     
     for attribute in moreisbetter_atts:
-        analyzers.append(AttributeRankGenerator(attribute), None, True)
+        analyzers.append(AttributeRankGenerator(attribute, None, True))
     for attribute in lessisbetter_atts:
         analyzers.append(AttributeRankGenerator(attribute))
         
     saxjcml.run_features_generator(input_file, output_file, analyzers)
-
 
 
 def create_ranks():
@@ -262,7 +320,7 @@ def create_ranks():
 if __name__ == '__main__':
     
     
-    pipeline_printout_graph("flowchart.pdf", "pdf", [features_gather])
+    pipeline_printout_graph("flowchart.pdf", "pdf", [analyze_external_features])
     import sys
     
     pipeline_run([analyze_external_features], multiprocess = cores)
