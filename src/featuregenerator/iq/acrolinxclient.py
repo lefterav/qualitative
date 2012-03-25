@@ -254,10 +254,10 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
                                    check_style = 'true',
                                    check_terms = 'MT-preediting-DE-EN-T1.modules.terms',
                                     )
-            
+        license_data_str = open(self.license_data_filename, 'r').read()
         soap_attributes["text_lang"] = self.lang
         soap_attributes["client_session_id"] = self.sessionIdStr
-        soap_attributes["license.data"] = self.license_data_str
+        soap_attributes["license.data"] = license_data_str
         soap_attributes["user.id"] = self.user_id
     
         soap_properties = self._attributes2soapproperties(soap_attributes)
