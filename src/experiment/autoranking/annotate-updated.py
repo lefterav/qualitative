@@ -219,7 +219,6 @@ def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, l
 
 
 @active_if(cfg.exists_checker(source_language))
-@jobs_limit(1)
 @transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % source_language, source_language)
 def features_checker_source(input_file, output_file, language):
     features_checker(input_file, output_file, language)
@@ -228,7 +227,6 @@ if cfg.exists_checker(source_language):
 
 
 @active_if(cfg.exists_checker(target_language))
-@jobs_limit(1)
 @transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % target_language, target_language)
 def features_checker_target(input_file, output_file, language):
     features_checker(input_file, output_file, language)
