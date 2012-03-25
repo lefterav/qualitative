@@ -15,6 +15,8 @@ import shutil
 import re
 import tempfile
 import sys
+import time
+import random
 
 #from experiment.utils.ruffus_utils import (touch, sys_call,
 #                                           main_logger as log,
@@ -91,12 +93,14 @@ class ExperimentConfigParser(ConfigParser):
     
     
     def get_checker(self, language):
+        from featuregenerator.iq.acrolinxclient import IQFeatureGenerator
         #@todo: see how to generalize this. also pass parameters read by the pipeline, currently hardcoded
         for checker_name in [section for section in self.sections() if section.startswith("checker:")]:
             print "looking on checker ", checker_name , language
             if self.get(checker_name, "language") == language:
+                wtime = random.randint(1, 15)
+                time.sleep(wtime)
                 #TODO: if KenLM gets wrapped up, add a type: setting
-                from featuregenerator.iq.acrolinxclient import IQFeatureGenerator
                 
                 settings = self._get_checker_settings(checker_name)
                                 
