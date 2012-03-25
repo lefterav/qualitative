@@ -9,6 +9,7 @@ from nltk.tokenize.punkt import PunktWordTokenizer
 from tempfile import mktemp
 
 from os import unlink 
+import os
 import subprocess
 import sys
 import codecs
@@ -50,8 +51,9 @@ class BleuGenerator(FeatureGenerator):
         ofilename = mktemp(dir=u'/tmp/', suffix=u'.out.txt')
         ofile = codecs.open(ofilename, 'w', 'utf-8')
         
-        path = [path for path in sys.path if path.endswith("src")][0]
-        bleupath = "%s/featuregenerator/bleu/bleu" % path
+        path = os.path.dirname(__file__)
+        bleupath = os.path.join(path, "bleu")
+        print bleupath
         subprocess.call([bleupath, "-s" , "-p", "-S", "-r", rfilename, tfilename], stdout = ofile)
         ofile.close()
         ofile = codecs.open(ofilename, 'r', 'utf-8')
