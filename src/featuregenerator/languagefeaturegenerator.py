@@ -97,6 +97,10 @@ class LanguageFeatureGenerator(FeatureGenerator):
         return parallelsentences
     
     
+    def get_features_string(self, string):
+        raise NotImplementedError
+    
+    
     #TODO: remove this, as it breaks architecture    
     def add_features_batch_xml(self, filename_in, filename_out):
         reader = XmlReader(filename_in)
