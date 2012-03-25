@@ -14,6 +14,7 @@ import os
 import shutil
 import re
 import tempfile
+import sys
 
 #from experiment.utils.ruffus_utils import (touch, sys_call,
 #                                           main_logger as log,
@@ -24,6 +25,7 @@ CONFIG_FILENAME = os.path.abspath(os.path.join(os.path.dirname(__name__), 'confi
 print 'config', CONFIG_FILENAME 
 CONFIG_TEMPLATE = """
 """
+
 
 
 class ExperimentConfigParser(ConfigParser):
@@ -97,10 +99,7 @@ class ExperimentConfigParser(ConfigParser):
                 from featuregenerator.iq.acrolinxclient import IQFeatureGenerator
                 
                 settings = self._get_checker_settings(checker_name)
-                
-                
-                ExperimentConfigParser.checker += 1
-                
+                                
                 #user_id = "{}{}".format(self.get(checker_name, "user_id"), ExperimentConfigParser.checker)
                 user_id = os.path.basename(tempfile.mktemp())
                 
@@ -112,7 +111,7 @@ class ExperimentConfigParser(ConfigParser):
                                                        self.get(checker_name, "protocol"),
                                                        "%s.dat" % user_id 
                                                        )
-                print "returning feature generator"
+                print "returning feature generator with user_id", user_id
                 return feature_generator
         print "Failure with checker for", language
         return None
