@@ -111,7 +111,7 @@ def preprocess_data(input_file, output_file):
     normalizer_tgt = Normalizer(target_language)
     tokenizer_src = Tokenizer(source_language)
     tokenizer_tgt = Tokenizer(target_language)
-    saxjcml.run_features_generator(input_file, output_file, [normalizer_src, normalizer_tgt, tokenizer_src, tokenizer_tgt])
+    saxjcml.run_features_generator(input_file, output_file, [normalizer_src, normalizer_tgt, tokenizer_src, tokenizer_tgt], True)
     
     
     
