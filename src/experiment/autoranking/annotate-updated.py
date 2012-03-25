@@ -67,7 +67,7 @@ print all_sets
 
 
 def get_basename(filename):
-    basename = re.findall("(.*).jcml", os.path.basename(filename))[0]
+    basename = re.findall("(.*)\.jcml", os.path.basename(filename))[0]
     print basename
     return basename
 
@@ -80,6 +80,7 @@ def data_fetch(input_file, output_files, external_files):
     for external_file in external_files:
         print "Moving here external file ", external_file
         basename = get_basename(external_file)
+        print "Found basename" 
         basename = basename.replace(".", "-")
         
         output_file = "{0}.{1}".format(basename, "orig.jcml")
