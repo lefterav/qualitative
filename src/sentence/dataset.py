@@ -231,6 +231,45 @@ class DataSet(object):
                
     def get_translations_count_vector(self):
         return [len(ps.get_translations()) for ps in self.get_parallelsentences()]
+    
+    
+    def get_singlesource_strings(self):
+        return [ps.get_source().get_string() for ps in self.parallelsentences]
+    
+    
+    def write_singlesource_strings_file(self, filename = None):
+        import tempfile
+        if not filename:
+            file = tempfile.mkstemp(text=True)
+            filename = file.name
+        else:
+            file = open(filename, 'w')
+        for source in self.get_singlesource_strings():
+            file.write(source)
+            file.write('\n')
+        file.close()
+        return filename 
+    
+    def get_multisource_strings(self):
+        raise NotImplementedError
+    
+    def get_target_strings(self):
+        output = []
+        for ps in self.parallelsentences:
+            output.append([tgt.get_string() for tgt in ps.get_translations()])
+        return output
+            
+    def modify_singlesource_strings(self, strings = []):
+        for string, ps in zip(strings, self.parallelsentences):
+            ps.src.string = string
+    
+    def modify_target_strings(self, strings = []):
+        for stringlist, ps in zip(strings, self.parallelsentences):
+            for string, tgt in zip(stringlist, ps.tgt):
+                tgt.string = string
+                   
+        
+         
             
     
     def remove_ties(self):

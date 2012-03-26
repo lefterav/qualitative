@@ -77,17 +77,14 @@ class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
     def __del__(self):
         self.close()
         
-
-    
-    
+        
     def postprocess_output(self, output):
         
         #pattern that matches one error appearance
         pattern = 'ruleId="([^"]*)".*errorlength="([^"]*)"'
         #get a list of the error appearances
         errors = re.findall(pattern, output)
-        
-           
+
         #construct a vector of dictionaries with counts      
         atts = {}
         counts = {}
@@ -115,7 +112,7 @@ class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
 
 class LanguageCheckerCmd(LanguageFeatureGenerator):
     
-    def __init__(self, lang="", commandline=[]):
+    def __init__(self, path, lang, params = {}, command_template= 'java -jar {path} -v -l {lang} -b --api',):
         self.lang = lang
     
     def add_features_batch(self, parallelsentences):
