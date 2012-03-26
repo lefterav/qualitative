@@ -9,6 +9,7 @@ import subprocess
 import util
 import codecs
 import os
+from sentence.dataset import DataSet
 
 class Preprocessor(FeatureGenerator):
     """
@@ -38,8 +39,8 @@ class CommandlinePreprocessor(Preprocessor):
         self.lang = lang
         params["lang"] = lang
         params["path"] = path
-        command = command_template.format(**params)
-        command_items = command.split(' ')
+        self.command = command_template.format(**params)
+        command_items = self.command.split(' ')
         self.output = []
         self.running = True
         
@@ -77,6 +78,45 @@ class CommandlinePreprocessor(Preprocessor):
     
     def __del__(self):
         self.close()
+        
+    
+    def _get_temporary_file(self, strings):
+        import tempfile
+                
+        file, filename = tempfile.mkstemp(text=True)
+        file = open(filename, 'w')
+        for string in strings:
+            file.write(string)
+            file.write('\n')
+        file.close()
+        return filename
+    
+    def _get_tool_output(self, strings):
+        tmpfilename = self._get_temporary_file(strings)
+        tmpfile = open(tmpfilename, 'r')
+        commanditems = self.command.split(' ')
+        output = subprocess.check_output(commanditems, stdin=tmpfile).split('\n')
+        tmpfile.close()
+        #os.remove(tmpfile)
+        return output
+            
+    def add_features_batch(self, parallelsentences):
+        dataset = DataSet(parallelsentences)
+        
+        if dataset.get_parallelsentences.get_attribute("langsrc") == self.lang:
+            sourcestrings = dataset.get_singlesource_strings()
+            processed_sourcestrings = self._get_tool_output(sourcestrings)
+            dataset.modify_singlesource_strings(processed_sourcestrings)
+        
+        
+        if dataset.get_parallelsentences.get_attribute("langtgt") == self.lang:
+            targetstringlists = dataset.get_target_strings()
+            for targetstrings in targetstringlists:
+                processed_targetstrings = self._get_tool_output(targetstrings)
+                dataset.modify_target_strings(processed_targetstrings)
+        
+        return dataset.get_parallelsentences()
+    
 
 class Normalizer(CommandlinePreprocessor):
     def __init__(self, lang):
