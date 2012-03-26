@@ -84,6 +84,7 @@ class CommandlinePreprocessor(Preprocessor):
         import tempfile
                 
         file, filename = tempfile.mkstemp(text=True)
+        os.close(file)
         file = open(filename, 'w')
         for string in strings:
             file.write(string)
