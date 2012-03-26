@@ -302,7 +302,7 @@ def analyze_external_features(input_file, output_file, source_language, target_l
     langpair = (source_language, target_language)
     analyzers = [LengthFeatureGenerator(),
                  ParserMatches(langpair),
-                 LevenshteinGenerator(),
+                 #LevenshteinGenerator(),
                  RatioGenerator()]
     saxjcml.run_features_generator(input_file, output_file, analyzers)
     
@@ -334,5 +334,5 @@ if __name__ == '__main__':
     pipeline_printout_graph("flowchart.pdf", "pdf", [analyze_external_features])
     import sys
     
-    pipeline_run([analyze_external_features], multiprocess = cores)
+    pipeline_run([analyze_external_features], multiprocess = cores, verbose = 10)
     #pipeline_run([original_data_split], multiprocess = 2)
