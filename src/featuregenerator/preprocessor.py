@@ -103,13 +103,13 @@ class CommandlinePreprocessor(Preprocessor):
     def add_features_batch(self, parallelsentences):
         dataset = DataSet(parallelsentences)
         
-        if dataset.get_parallelsentences.get_attribute("langsrc") == self.lang:
+        if dataset.get_parallelsentences()[0].get_attribute("langsrc") == self.lang:
             sourcestrings = dataset.get_singlesource_strings()
             processed_sourcestrings = self._get_tool_output(sourcestrings)
             dataset.modify_singlesource_strings(processed_sourcestrings)
         
         
-        if dataset.get_parallelsentences.get_attribute("langtgt") == self.lang:
+        if dataset.get_parallelsentences()[0].get_attribute("langtgt") == self.lang:
             targetstringlists = dataset.get_target_strings()
             for targetstrings in targetstringlists:
                 processed_targetstrings = self._get_tool_output(targetstrings)
