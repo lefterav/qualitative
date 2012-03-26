@@ -17,6 +17,8 @@ import tempfile
 import sys
 import time
 import random
+import argparse
+import fnmatch
 
 #from experiment.utils.ruffus_utils import (touch, sys_call,
 #                                           main_logger as log,
@@ -193,6 +195,7 @@ class ExperimentConfigParser(ConfigParser):
         self.write(new_configfile)
         new_configfile.close()
         self.path = path
+        print "working in path ", path
         return path
     
     def _get_new_step_id(self, existing_files):
@@ -210,6 +213,7 @@ class ExperimentConfigParser(ConfigParser):
             highestnum = max(filename_ids)
             current_step_id = highestnum + 1
         return current_step_id 
+    
 
 #try:
 #    configfilename = os.sys.argv[1]
@@ -225,22 +229,36 @@ cfg.readfp(StringIO.StringIO(CONFIG_TEMPLATE))  # set up defaults
 #cfg.read(CONFIG_FILENAME)  # add user-specified settings
 #cfg.read(configfilename)  # add user-specified settings
 
-try: 
-    cfg.read(CONFIG_FILENAME)
-except:
-    print "cannot read original cfg file"
-    pass
+parser = argparse.ArgumentParser(description='')
+parser.add_argument('--config', nargs='*', default=['cfg/pipeline.cfg'], help="Configuration files")
+parser.add_argument('--sourcelang', '-s', help="Source language code")
+parser.add_argument('--targetlang', '-t', help="Target language code")
+parser.add_argument('--selectpath', help="""If source and target language are set, 
+                                            then use all files in the indicated directory 
+                                            that have these language codes in their filename""")
+parser.add_argument('--cont', help="""If you want to resume an existing experiment, 
+                                      specify its folder name heres. This must be 
+                                      an existing dir name""")
 
-try: 
-    cfg.read(os.sys.argv[1])
-except:
-    print "cannot read additional cfg file"
-    pass
+args = parser.parse_args()
 
-try:
-    continue_experiment = os.sys.argv[2]
-except:
-    continue_experiment = None
+for config_filename in args.config:
+    cfg.read(config_filename)
+
+continue_experiment = args.cont
+if args.sourcelang and args.targetlang and args.selectpath:
+    #source-target lang code separated with hyphen
+    filepattern = "*{}-{}*".format(args.sourcelang, args.targetlang) 
+    available_files = os.listdir(args.selectpath)
+    print available_files
+    chosen_files = fnmatch.filter(available_files, filepattern)
+    print chosen_files
+    #prepend path
+    chosen_files = [os.path.join(args.selectpath, f) for f in chosen_files] 
+    cfg.set("general", "source_language", args.sourcelang)
+    cfg.set("general", "target_language", args.targetlang)
+    cfg.set("training", "filenames", ",".join(chosen_files))
+    
 
 path = cfg.prepare_dir(continue_experiment)
 #os.chdir(path)
