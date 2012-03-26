@@ -112,9 +112,8 @@ class CommandlinePreprocessor(Preprocessor):
         
         if dataset.get_parallelsentences()[0].get_attribute("langtgt") == self.lang:
             targetstringlists = dataset.get_target_strings()
-            for targetstrings in targetstringlists:
-                processed_targetstrings = self._get_tool_output(targetstrings)
-                dataset.modify_target_strings(processed_targetstrings)
+            processed_targetstringslist = [self._get_tool_output(targetstrings) for targetstrings in targetstringlists]
+            dataset.modify_target_strings(processed_targetstringslist)
         
         return dataset.get_parallelsentences()
     

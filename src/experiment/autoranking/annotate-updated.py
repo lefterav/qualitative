@@ -260,7 +260,7 @@ def features_langtool_source(input_file, output_file, language, path):
     features_langtool(input_file, output_file, language, path)
 
 @active_if(cfg.has_section("languagetool"))
-@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, target_language, cfg.get("languagetool", "path"))
+@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % target_language, target_language, cfg.get("languagetool", "path"))
 def features_langtool_target(input_file, output_file, language, path):
     features_langtool(input_file, output_file, language, path)
 if cfg.has_section("languagetool"):
