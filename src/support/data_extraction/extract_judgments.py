@@ -76,6 +76,8 @@ class WMTEvalReader:
                 
             #standardize naming of languages and testsets
             row = self.convert_languages(row)
+            if not (row):
+                continue
             row = self.map_testsets(row)
 
             #skip this row if it doesn't match filtering criteria
@@ -131,9 +133,10 @@ class WMTEvalReader:
         try:
             row["srclang"] = LANGUAGES[row["srclang"]]
             row["trglang"] = LANGUAGES[row["trglang"]]
+            return row
         except:
-            sys.stderr.write("Not known language\n")  
-        return row
+            sys.stderr.write("Not known language\n")
+            return None  
             
     def get_translations(self, row):
         
