@@ -239,6 +239,7 @@ parser.add_argument('--selectpath', help="""If source and target language are se
 parser.add_argument('--cont', help="""If you want to resume an existing experiment, 
                                       specify its folder name heres. This must be 
                                       an existing dir name""")
+parser.add_argument('--cores',  help='How many cores should be parallelized')
 
 args = parser.parse_args()
 
@@ -258,7 +259,9 @@ if args.sourcelang and args.targetlang and args.selectpath:
     cfg.set("general", "source_language", args.sourcelang)
     cfg.set("general", "target_language", args.targetlang)
     cfg.set("training", "filenames", ",".join(chosen_files))
-    
+
+if args.cores:
+    cfg.set("general", "cores", args.cores)
 
 path = cfg.prepare_dir(continue_experiment)
 #os.chdir(path)
