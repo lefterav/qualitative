@@ -49,8 +49,31 @@ class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
         Thread(target=self.print_output, args=(self.process.stdout,)).start()
         self.i = 0
 
+    
+    def _get_temporary_file(self, strings):
+        import tempfile
+                
+        file, filename = tempfile.mkstemp(text=True)
+        file = open(filename, 'w')
+        for string in strings:
+            file.write(string)
+            file.write('\n')
+        file.close()
+        return filename
+    
+    def _get_tool_output(self, strings):
+        tmpfilename = self._get_temporary_file(strings)
+        tmpfile = open(tmpfilename, 'r')
+        commanditems = self.command.split(' ')
+        output = subprocess.check_output(commanditems, stdin=tmpfile).split('\n')
+        tmpfile.close()
+        #os.remove(tmpfile)
+        return output
+            
+    def add_features_string(self, string):
+        return self._get_tool_output([string])
         
-    def get_features_string(self, string):
+    def get_features_string_pipe(self, string):
         print >>self.process.stdin, string + "\n"
         #print string
         self.process.stdin.flush()           
