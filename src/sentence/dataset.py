@@ -162,7 +162,7 @@ class DataSet(object):
         @rtype meta_attributes: [str, ...]
         """
         attribute_names = self.get_all_attribute_names()
-        asked_attributes = set(desired_attributes.extend(meta_attributes()))
+        asked_attributes = set(desired_attributes.extend(meta_attributes))
         for asked_attribute in asked_attributes:
             if asked_attribute not in attribute_names:
                 sys.stderr.write("Requested feature %s probably not available\n" % asked_attribute)
