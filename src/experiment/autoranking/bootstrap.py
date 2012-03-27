@@ -20,6 +20,18 @@ import random
 import argparse
 import fnmatch
 
+from Orange.regression.linear import LinearRegressionLearner 
+from Orange.regression.pls import PLSRegressionLearner
+from Orange.regression.lasso import LassoRegressionLearner
+from Orange.regression.earth import EarthLearner
+from Orange.regression.tree import TreeLearner
+
+from Orange.classification.knn import kNNLearner
+from Orange.classification.bayes import NaiveLearner
+from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
+#from classifier.svmeasy import SVMEasyLearner
+from Orange.classification.tree import TreeLearner
+from Orange.classification.logreg import LogRegLearner
 #from experiment.utils.ruffus_utils import (touch, sys_call,
 #                                           main_logger as log,
 #                                           main_mutex as log_mtx)
@@ -34,6 +46,14 @@ CONFIG_TEMPLATE = """
 
 class ExperimentConfigParser(ConfigParser):
     checker = 0
+    
+    def getlearner(self):
+        classifier_name = self.get("training",  "classifier") + "Learner"
+        return eval(classifier_name)
+    
+    def get_classifier_params(self):
+        self.classifier_params = eval(self.get("training", "params_%s" % self.get("training", "classifier")))
+    
     def get_classifier(self, name = None):
         if not name:
             name = self.get("training", "classifier")
