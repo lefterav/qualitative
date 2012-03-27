@@ -9,7 +9,7 @@ from dataset import DataSet
 from pairwiseparallelsentenceset import AnalyticPairwiseParallelSentenceSet, CompactPairwiseParallelSentenceSet
 
 
-class PairwiseDataset:
+class PairwiseDataset(DataSet):
     '''
     A data container that stores the entire dataset of parallel sentences, but internally this has been re-structured
     so that every multiple ranking judgment (e.g. 1-5) has been split into pairwise comparisons (1,2; 1,3; ...).
@@ -66,9 +66,9 @@ class AnalyticPairwiseDataset(PairwiseDataset):
         for parallelsentence in plain_dataset.get_parallelsentences():
             sentence_id = parallelsentence.get_compact_id()
             try:
-                pairwise_parallelsentences_per_sid[sentence_id].extend(parallelsentence.get_pairwise_parallelsentences())
+                pairwise_parallelsentences_per_sid[sentence_id].extend(parallelsentence.get_pairwise_parallelsentences(False))
             except KeyError:
-                pairwise_parallelsentences_per_sid[sentence_id] = parallelsentence.get_pairwise_parallelsentences()
+                pairwise_parallelsentences_per_sid[sentence_id] = parallelsentence.get_pairwise_parallelsentences(False)
         
         for sentence_id, pairwiseparallelsentences in pairwise_parallelsentences_per_sid.iteritems():
         #then convert each group to a Analytic Pairwise Parallel SentenceSet
@@ -82,18 +82,41 @@ class CompactPairwiseDataset(PairwiseDataset):
             self.pairwise_parallelsentence_sets[sentence_id] = analytic_pairwise_parallelsentence_set.get_compact_pairwise_parallelsentence_set()
         
     def get_multiclass_set(self):
+        self.get_single_set_with_soft_ranks()
+        
+    def get_single_set_with_hard_ranks(self, critical_attribute=None, new_rank_name=None):
+
         multirank_parallelsentences = []
         for sentence_id in self.pairwise_parallelsentence_sets:
             pairwise_parallelsentence_set = self.pairwise_parallelsentence_sets[sentence_id]
-            multirank_parallelsentence = pairwise_parallelsentence_set.get_multiranked_sentence()
+            multirank_parallelsentence = pairwise_parallelsentence_set.get_multiranked_sentence(critical_attribute, new_rank_name)
             multirank_parallelsentences.append(multirank_parallelsentence)
         try:
             multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute("id")))
         except:
             pass
-        return DataSet(multirank_parallelsentences)       
-        
-        
+        return DataSet(multirank_parallelsentences)
+    
+    
+    
+    def get_single_set_with_soft_ranks(self, attribute1="", attribute2="", critical_attribute="rank_soft_predicted"):
+        '''
+        Reconstructs the original data set, with only one sentence per entry.
+        @return: Simple dataset that contains the simplified parallel sentences
+        @rtype: L{DataSet}
+        '''
+        multirank_parallelsentences = []
+        for sentence_id in self.pairwise_parallelsentence_sets:
+            pairwise_parallelsentence_set = self.pairwise_parallelsentence_sets[sentence_id]
+            multirank_parallelsentence = pairwise_parallelsentence_set.get_multiranked_sentence_with_soft_ranks(attribute1, attribute2, critical_attribute)
+            multirank_parallelsentences.append(multirank_parallelsentence)
+        try:
+            multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute("id")))
+        except:
+            pass
+        return DataSet(multirank_parallelsentences)
+
+    
 class FilteredPairwiseDataset(CompactPairwiseDataset):
     def __init__(self, analytic_pairwise_dataset = AnalyticPairwiseDataset(), threshold = 1.00):    
         self.pairwise_parallelsentence_sets = {}
