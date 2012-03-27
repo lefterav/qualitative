@@ -194,7 +194,7 @@ if __name__ == '__main__':
     cmdfg = LanguageToolFeatureGenerator(path, 'en')
     from io_utils.input.jcmlreader import JcmlReader
     from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
-    parallelsentences = JcmlReader("/home/lefterav/taraxu_data/selection-mechanism/ml4hmt/experiment/autoranking/4/training-sample.orig.jcml").get_parallelsentences()
+    parallelsentences = JcmlReader("/home/lefterav/taraxu_data/selection-mechanism/ml4hmt/experiment/autoranking/4/wmt00-test-devpart.orig.jcml").get_parallelsentences()
     annotated = cmdfg.add_features_batch(parallelsentences)
     cmdfg.close()
     Parallelsentence2Jcml(annotated).write_to_file("/home/lefterav/taraxu_data/selection-mechanism/ml4hmt/experiment/autoranking/4/training-sample.lt.jcml")
