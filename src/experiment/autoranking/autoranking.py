@@ -9,12 +9,12 @@ import re
 
 #pipeline essentials
 from ruffus import *
-from multiprocessing import Process, Manager 
+#from multiprocessing import Process, Manager 
 from ruffus.task import pipeline_printout_graph
 import cPickle as pickle
 
 #internal code classes
-from experiment.autoranking.bootstrap import cfg
+from bootstrap import cfg
 from io_utils.input.orangereader import OrangeData
 from io_utils.sax.saxjcml2orange import SaxJcml2Orange
 from io_utils.input.jcmlreader import JcmlReader
@@ -27,40 +27,40 @@ from sentence.scoring import Scoring
 
 
 #ML
-from orange import ExampleTable
-import orange
+from Orange.data import Table as ExampleTable
+import Orange
 
 #TODO: Use stringIO to pass objects loaded into memory???
 
-path = cfg.get('general','path')
+path = cfg.get_path()
 try:
     os.mkdir(path)
 except OSError:
     pass
 os.chdir(path)
 
-manager = Manager() 
-dataset = manager.list()
+#manager = Manager() 
+#dataset = manager.list()
 
-cached_classifier = manager.list()
+#cached_classifier = manager.list()
 
 
 #Caching functions
-def _save_classifier_object(classifier_object):
-    cached_classifier.append(classifier_object)
-
+#def _save_classifier_object(classifier_object):
+#    cached_classifier.append(classifier_object)
+#
 def _get_classifier_object(classifier_filename = ""):
-    try:
-        trained_classifier = cached_classifier[0]
-        print "classifier loaded from memory"
-    except:
-        classifier_file = open(classifier_filename, 'r')
-        trained_classifier = pickle.load(classifier_file) 
-        classifier_file.close()
-        print "classifier loaded from file"
+#    try:
+#        trained_classifier = cached_classifier[0]
+#        print "classifier loaded from memory"
+#    except:
+    classifier_file = open(classifier_filename, 'r')
+    trained_classifier = pickle.load(classifier_file) 
+    classifier_file.close()
+    print "classifier loaded from file"
     return trained_classifier
 
-def _retrieve_sentences(obj, output_file):
+def _retrieve_sentences(output_file):
 #    if not obj:
         return JcmlReader(output_file).get_parallelsentences()
 #    elif len(obj) == 1:
@@ -105,37 +105,37 @@ def data_fetch(input_file, output_files, external_files, prefix):
 
 
 
-@transform(traindata_fetch, suffix(".annotated.jcml"), ".pairwise.jcml", dataset, cfg.get("training", "class_name"), cfg.getboolean("preprocessing", "pairwise_exponential"), cfg.getboolean("preprocessing", "allow_ties") )
-def traindata_pairwise(input_file, output_file, dataset, class_name, pairwise_exponential, allow_ties):
-    data_pairwise(input_file, output_file, dataset, class_name, pairwise_exponential, allow_ties)
+@transform(traindata_fetch, suffix(".annotated.jcml"), ".pairwise.jcml", cfg.get("training", "class_name"), cfg.getboolean("preprocessing", "pairwise_exponential"), cfg.getboolean("preprocessing", "allow_ties") )
+def traindata_pairwise(input_file, output_file, class_name, pairwise_exponential, allow_ties):
+    data_pairwise(input_file, output_file, class_name, pairwise_exponential, allow_ties)
     
-@transform(testdata_fetch, suffix(".annotated.jcml"), ".pairwise.jcml", dataset, cfg.get("training", "class_name"), cfg.getboolean("preprocessing", "pairwise_exponential") )
-def testdata_pairwise(input_file, output_file, dataset, class_name, pairwise_exponential):
-    data_pairwise(input_file, output_file, dataset, class_name, pairwise_exponential, True)
+@transform(testdata_fetch, suffix(".annotated.jcml"), ".pairwise.jcml", cfg.get("training", "class_name"), cfg.getboolean("preprocessing", "pairwise_exponential") )
+def testdata_pairwise(input_file, output_file, class_name, pairwise_exponential):
+    data_pairwise(input_file, output_file, class_name, pairwise_exponential, True)
 
-def data_pairwise(input_file, output_file, dataset, class_name, pairwise_exponential, allow_ties):
+def data_pairwise(input_file, output_file, class_name, pairwise_exponential, allow_ties):
     if not cfg.getboolean('preprocessing', 'pairwise'):
         os.symlink(input_file, output_file)
         return    
-    parallelsentences = _retrieve_sentences(dataset, input_file)
+    parallelsentences = _retrieve_sentences(input_file)
     parallelsentences = RankHandler(class_name).get_pairwise_from_multiclass_set(parallelsentences, pairwise_exponential, allow_ties)
     _pass_sentences(parallelsentences, output_file)
 
 
 
-@transform(traindata_pairwise, suffix(".pairwise.jcml"), ".diff.jcml", dataset)
-def traindata_generate_diff(input_file, output_file, dataset):
-    data_generate_diff(input_file, output_file, dataset)
+@transform(traindata_pairwise, suffix(".pairwise.jcml"), ".diff.jcml")
+def traindata_generate_diff(input_file, output_file):
+    data_generate_diff(input_file, output_file)
     
-@transform(testdata_pairwise, suffix(".pairwise.jcml"), ".diff.jcml", dataset)
-def testdata_generate_diff(input_file, output_file, dataset):
-    data_generate_diff(input_file, output_file, dataset)    
+@transform(testdata_pairwise, suffix(".pairwise.jcml"), ".diff.jcml")
+def testdata_generate_diff(input_file, output_file):
+    data_generate_diff(input_file, output_file)    
     
-def data_generate_diff(input_file, output_file, dataset):
+def data_generate_diff(input_file, output_file):
     if not cfg.getboolean('preprocessing', 'generate_diff'):
         os.symlink(input_file, output_file)
         return
-    parallelsentences = _retrieve_sentences(dataset, input_file)
+    parallelsentences = _retrieve_sentences(input_file)
     parallelsentences = DiffGenerator().add_features_batch(parallelsentences)
     _pass_sentences(parallelsentences, output_file)
 
@@ -149,37 +149,50 @@ def traindata_gather(input_files, output_file):
 
 
 
-@transform(traindata_gather, suffix(".jcml"), ".overlap.jcml", dataset, cfg.get('training', 'class_name'))
-def traindata_merge_overlapping(input_file, output_file, dataset, class_name):
-    data_merge_overlapping(input_file, output_file, dataset, class_name)
-
-@transform(testdata_generate_diff, suffix(".diff.jcml"), ".overlap.jcml", dataset, cfg.get('training', 'class_name'))
-def testdata_merge_overlapping(input_file, output_file, dataset, class_name):
-    os.symlink(input_file, output_file)
-    #data_merge_overlapping(input_file, output_file, dataset, class_name)
-
-def data_merge_overlapping(input_file, output_file, dataset, class_name):
-    if not cfg.getboolean('preprocessing', 'merge_overlapping'):
-        os.symlink(input_file, output_file)
-        return
-    parallelsentences = _retrieve_sentences(dataset, input_file)
-    parallelsentences = RankHandler(class_name).merge_overlapping_pairwise_set(parallelsentences)
-    _pass_sentences(parallelsentences, output_file)
+#@transform(traindata_gather, suffix(".jcml"), ".overlap.jcml", cfg.get('training', 'class_name'))
+#def traindata_merge_overlapping(input_file, output_file, class_name):
+#    data_merge_overlapping(input_file, output_file, class_name)
+#
+#@transform(testdata_generate_diff, suffix(".diff.jcml"), ".overlap.jcml", cfg.get('training', 'class_name'))
+#def testdata_merge_overlapping(input_file, output_file, class_name):
+#    os.symlink(input_file, output_file)
+#    #data_merge_overlapping(input_file, output_file, class_name)
+#
+#def data_merge_overlapping(input_file, output_file, class_name):
+#    if not cfg.getboolean('preprocessing', 'merge_overlapping'):
+#        os.symlink(input_file, output_file)
+#        return
+#    parallelsentences = _retrieve_sentences(input_file)
+#    parallelsentences = RankHandler(class_name).merge_overlapping_pairwise_set(parallelsentences)
+#    _pass_sentences(parallelsentences, output_file)
     
 
-@transform(traindata_merge_overlapping, suffix(".overlap.jcml"), ".tab", cfg.get("training", "class_name"), cfg.get("training", "attributes").split(","), cfg.get("training", "meta_attributes").split(","), cfg.get("preprocessing", "orange_minimal"))
+@transform(traindata_gather, suffix(".jcml"), ".tab", cfg.get("training", "class_name"), cfg.get("training", "attributes").split(","), cfg.get("training", "meta_attributes").split(","), cfg.get("preprocessing", "orange_minimal"))
 def traindata_get_orange(input_file, output_file, class_name, attribute_names, meta_attribute_names, orange_minimal):
     data_get_orange(input_file, output_file, class_name, attribute_names, meta_attribute_names, orange_minimal)
     
-@transform(testdata_merge_overlapping, suffix(".overlap.jcml"), ".tab", cfg.get("training", "class_name"), cfg.get("training", "attributes").split(","), cfg.get("training", "meta_attributes").split(","), cfg.get("preprocessing", "orange_minimal"))
+@transform(testdata_generate_diff, suffix(".diff.jcml"), ".tab", cfg.get("training", "class_name"), cfg.get("training", "attributes").split(","), cfg.get("training", "meta_attributes").split(","), cfg.get("preprocessing", "orange_minimal"))
 def testdata_get_orange(input_file, output_file, class_name, attribute_names, meta_attribute_names, orange_minimal):
     data_get_orange(input_file, output_file, class_name, attribute_names, meta_attribute_names, orange_minimal)
 
-def data_get_orange(input_file, output_file, class_name, attribute_names, meta_attribute_names, orange_minimal):
+def data_get_orange(input_file, output_file, class_name, attribute_names, meta_attribute_names, orange_minimal, discrete_attributes=[], hidden_attributes=[]):
     print "Starting orange conversion"
-    parallelsentences = _retrieve_sentences(dataset, input_file)
-    trainingset = OrangeData(DataSet(parallelsentences), class_name, attribute_names, meta_attribute_names, output_file)
-    orange.saveTabDelimited (output_file, trainingset.get_data())
+#    parallelsentences = _retrieve_sentences(input_file)
+#    trainingset = OrangeData(DataSet(parallelsentences), class_name, attribute_names, meta_attribute_names, output_file)
+#    Orange.core.saveTabDelimited(output_file, trainingset.get_data())
+    
+    SaxJcml2Orange(input_file, 
+                 class_name,
+                 attribute_names, 
+                 meta_attribute_names, 
+                 output_file, 
+                 compact_mode = True, 
+                 discrete_attributes=discrete_attributes,
+                 hidden_attributes=hidden_attributes,
+                 get_nested_attributes=True,
+                 #filter_attributes={"rank" : "0"},
+#                 class_type=class_type
+                )
 
     #SaxJcml2Orange(input_file, class_name, attribute_names, meta_attribute_names, output_file)
     print "Finished orange conversion"
@@ -192,9 +205,14 @@ def data_get_orange(input_file, output_file, class_name, attribute_names, meta_a
 
 
 def _get_continuizer_constant(name):
-    return getattr(orange.DomainContinuizer, name)
+    return getattr(Orange.core.DomainContinuizer, name)
 
-@transform(traindata_get_orange, suffix(".tab"), ".clsf" , cfg.getboolean("training", "continuize"), cfg.get("training", "multinomialTreatment"), cfg.get("training", "continuousTreatment"), cfg.get("training", "classTreatment"))
+@transform(traindata_get_orange, suffix(".tab"), ".clsf" , 
+           cfg.getboolean("training", "continuize"), 
+           cfg.getlearner(),
+                      
+           )
+
 def train_classifier(input_file, output_file, param_continuize, multinomialTreatment, continuousTreatment, classTreatment):
     #fetch data the fastest way
     #try:
@@ -210,16 +228,12 @@ def train_classifier(input_file, output_file, param_continuize, multinomialTreat
                          "classTreatment" : _get_continuizer_constant(cfg.get("training", "classTreatment"))}
                                                                                                
     #train the classifier
-    learner = cfg.get_classifier() #fetch classifier object
+    mylearner = learner(**classifier_params) #fetch classifier object
+    myclassifier = OrangeClassifier(mylearner(orangeData))
 
-    try:    
-        myclassifier = learner()   #initialize it
-        trained_classifier = myclassifier.learnClassifier(trainingset_orng, classifier_params)
-    except:
-        trained_classifier = learner(OrangeData(trainingset_orng))
     objectfile = open(output_file, 'w')
     pickle.dump(trained_classifier, objectfile)
-    _save_classifier_object(trained_classifier)
+#    _save_classifier_object(trained_classifier)
     objectfile.close()
     #dataset.append(trained_classifier)
 
@@ -285,9 +299,9 @@ def test_evaluate(input_file, output_file, class_name):
 #maybe merge here
 
 
-
-pipeline_printout_graph("flowchart.pdf", "pdf", [test_evaluate])
-pipeline_run([test_evaluate], multiprocess = 1)
+if __name__ == '__main__':
+    pipeline_printout_graph("flowchart.pdf", "pdf", [test_evaluate])
+    pipeline_run([test_evaluate], multiprocess = 1, verbose = 5)
 
 
 
