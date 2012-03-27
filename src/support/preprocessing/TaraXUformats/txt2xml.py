@@ -85,8 +85,8 @@ sysNames = options.sysNames.split(":")
 
 # create combined xml file
 output = '<?xml version="1.0" encoding="UTF-8"?>\n'
-output += '<set id="%s" source-language="%s" target-language="%s">\n' \
-                                                    % (options.setid, options.srcLang, options.tgtLang)
+output = '%s<set id="%s" source-language="%s" target-language="%s">\n' \
+                    % (output, options.setid, options.srcLang, options.tgtLang)
 for i in range(len(contentLinks)):
     if len(contentLinks[i].split('\t'))==3:
         segid = contentLinks[i].split('\t')[1]
@@ -102,15 +102,15 @@ for i in range(len(contentLinks)):
     
     fullsegid = "%s-%s-%s" % (options.setid, docid, segid)
 
-    output += '\t<seg id="%s" doc-id="%s">\n' % (fullsegid, docid)
-    output += '\t\t<source>%s</source>\n' % escapeXML(source)
+    output = '%s\t<seg id="%s" doc-id="%s">\n' % (output, fullsegid, docid)
+    output = '%s\t\t<source>%s</source>\n' % (output, escapeXML(source))
     if reference:
-        output += '\t\t<reference>%s</reference>\n' % escapeXML(reference)
+        output = '%s\t\t<reference>%s</reference>\n' % (output, escapeXML(reference))
     for (s, content) in enumerate(sysContents):
-        output += '\t\t<translation system="%s">%s</translation>\n'\
-                                                   % (sysNames[s], escapeXML(content[i]))
-    output += '\t</seg>\n'
-output += '</set>\n'
+        output = '%s\t\t<translation system="%s">%s</translation>\n'\
+                                 % (output, sysNames[s], escapeXML(content[i]))
+    output = '%s\t</seg>\n' % output
+output = '%s</set>\n' % output
 
 if options.combxml:
     f = open(options.combxml, 'w')
@@ -119,4 +119,3 @@ if options.combxml:
     print '%s was generated' % options.combxml
 else:
     sys.stdout.write(output)
-
