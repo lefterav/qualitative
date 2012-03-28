@@ -22,6 +22,7 @@ class LevenshteinGenerator(FeatureGenerator):
         """
         target_untokenized = target.get_string()
         ref_untokenized = parallelsentence.get_reference().get_string()
+        
 
         wer_value = levenshtein_tok(target_untokenized, ref_untokenized)
         return {'lev': str(wer_value)}

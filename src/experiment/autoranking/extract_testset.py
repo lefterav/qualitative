@@ -17,7 +17,7 @@ def get_clean_testset(input_file, output_file):
     filtered_dataset.remove_ties()
     reconstructed_dataset = filtered_dataset.get_multiclass_set()
     reconstructed_dataset.remove_ties()
-    Parallelsentence2Jcml(reconstructed_dataset.get_parallelsentences()).write_to_file(output_file)
+    Parallelsentence2Jcml(reconstructed_dataset.get_parallelsentences(), shuffle_translations=True).write_to_file(output_file)
 
 
 if __name__ == '__main__':
