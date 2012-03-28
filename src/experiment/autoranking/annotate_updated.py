@@ -52,7 +52,7 @@ from io_utils.input.xmlreader import XmlReader
 
 cores = int(cfg.get("general", "cores"))
 parallel_feature_functions = []
-
+print "running with {} cores".format(cores) 
 
 path = cfg.get_path()
 os.chdir(path)
