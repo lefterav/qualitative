@@ -304,6 +304,7 @@ def analyze_external_features(input_file, output_file, source_language, target_l
 def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_atts):
     analyzers = [LevenshteinGenerator(),
                  #BleuGenerator(),
+                 
                  RatioGenerator()
                  ]
     
