@@ -66,7 +66,7 @@ class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
         tmpfilename = self._get_temporary_file(strings)
         tmpfile = open(tmpfilename, 'r')
         commanditems = self.command.split(' ')
-        output = subprocess.check_output(commanditems, stdin=tmpfile)
+        output = subprocess.check_output(commanditems, stdin=tmpfile, stderr=subprocess.STDOUT)
         tmpfile.close()
         #os.remove(tmpfile)
         return output
