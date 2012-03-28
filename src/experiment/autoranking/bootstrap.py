@@ -127,7 +127,8 @@ class ExperimentConfigParser(ConfigParser):
                 settings = self._get_checker_settings(checker_name)
                                 
                 #user_id = "{}{}".format(self.get(checker_name, "user_id"), ExperimentConfigParser.checker)
-                user_id = os.path.basename(tempfile.mktemp())
+                user_id = self.get(checker_name, "user_id")
+                #user_id = os.path.basename(tempfile.mktemp())
                 
                 feature_generator = IQFeatureGenerator(language,
                                                        settings,
