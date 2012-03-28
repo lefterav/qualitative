@@ -66,6 +66,8 @@ class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
         tmpfile = open(tmpfilename, 'r')
         commanditems = self.command.split(' ')
         output = subprocess.check_output(commanditems, stdin=tmpfile).split('\n')
+        print "output from LT:" , output
+        print "written temporary file" , tmpfilename
         tmpfile.close()
         #os.remove(tmpfile)
         return output
