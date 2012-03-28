@@ -242,17 +242,17 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
             #rank value adds up on the first system's rank
             #and subtracts from the seconds system's
             try:
-                rank_per_system[system_b] += rank
+                rank_per_system[system_a] += rank
             except KeyError:
-                rank_per_system[system_b] = rank
+                rank_per_system[system_a] = rank
             try:
-                rank_per_system[system_a] -= rank
+                rank_per_system[system_b] -= rank
             except KeyError:
-                rank_per_system[system_a] = -1 * rank
+                rank_per_system[system_b] = -1 * rank
             
             #also gather in a dict the translations per system name, in order to have easy access later
-            translations_per_system[system_a] = parallelsentence.get_translations()[1]
-            translations_per_system[system_b] = parallelsentence.get_translations()[0]
+            translations_per_system[system_b] = parallelsentence.get_translations()[1]
+            translations_per_system[system_a] = parallelsentence.get_translations()[0]
 
         
         #normalize ranks
@@ -271,21 +271,21 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
             #print "system: %s\t%d -> %d" % (system, rank_per_system[system] , i)
 #                print i, system,
             prev_rank = rank_per_system[system]
-            translation = translations_per_system[system]
+            translation = deepcopy(translations_per_system[system])
             translation.add_attribute(new_rank_name, str(i))
             translations_new_rank.append(translation)
         
         #get the values of the first sentence as template
-        source = self.pps_dict.values()[0].get_source()
-        reference = self.pps_dict.values()[0].get_reference()
-        attributes = self.pps_dict.values()[0].get_attributes()
+        source = deepcopy(self.pps_dict.values()[0].get_source())
+        reference = deepcopy(self.pps_dict.values()[0].get_reference())
+        attributes = deepcopy(self.pps_dict.values()[0].get_attributes())
         del(attributes[self.rank_name])
         
         return ParallelSentence(source, translations_new_rank, reference, attributes)         
         
 
 
-    def get_multiranked_sentence_with_soft_ranks(self, attribute1="", attribute2="", critical_attribute="rank_soft_predicted"):
+    def get_multiranked_sentence_with_soft_ranks(self, attribute1="", attribute2="", critical_attribute="rank_soft_predicted", new_rank_name = None):
         """
         It reconstructs a single parallel sentence object with a gathered discrete [1-9] 
         ranking out of the pairwise comparisons that exist in the pairwise parallel sentence instances
@@ -294,6 +294,9 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         """
         rank_per_system = {}
         translations_per_system = {}
+        
+        if not new_rank_name:
+            new_rank_name = self.rank_name
         
         #first iterate and make a sum of the rank per system name        
         for (system_a, system_b), parallelsentence in self.pps_dict.iteritems():
@@ -315,8 +318,8 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
                 rank_per_system[system_a] = -1 * prob_pos
             
             #also gather in a dict the translations per system name, in order to have easy access later
-            translations_per_system[system_a] = parallelsentence.get_translations()[1]
-            translations_per_system[system_b] = parallelsentence.get_translations()[0]
+            translations_per_system[system_b] = parallelsentence.get_translations()[1]
+            translations_per_system[system_a] = parallelsentence.get_translations()[0]
 
         
         #normalize ranks
@@ -327,6 +330,7 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         #iterate through the system outputs, sorted by their rank
         #and increment their rank only if there is no tie
         systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
+        print systems
         for system in systems:
             #if there is no tie                
             if rank_per_system[system] != prev_rank: 
@@ -335,16 +339,16 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
             #print "system: %s\t%d -> %d" % (system, rank_per_system[system] , i)
 #                print i, system,
             prev_rank = rank_per_system[system]
-            translation = translations_per_system[system]
-            translation.add_attribute(self.rank_name, str(i))
+            translation = deepcopy(translations_per_system[system])
+            translation.add_attribute(new_rank_name, str(i))
             translations_new_rank.append(translation)
         
         #get the values of the first sentence as template
-        source = self.pps_dict.values()[0].get_source()
-        reference = self.pps_dict.values()[0].get_reference()
-        attributes = self.pps_dict.values()[0].get_attributes()
+        source = deepcopy(self.pps_dict.values()[0].get_source())
+        reference = deepcopy(self.pps_dict.values()[0].get_reference())
+        attributes = deepcopy(self.pps_dict.values()[0].get_attributes())
         try:
-            del(attributes[self.rank_name])
+            del(attributes[new_rank_name])
         except:
             pass
         
