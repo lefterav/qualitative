@@ -10,6 +10,7 @@ import re
 import codecs
 import time
 from threading  import Thread
+import os
 
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 
@@ -68,7 +69,7 @@ class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
         commanditems = self.command.split(' ')
         output = subprocess.check_output(commanditems, stdin=tmpfile, stderr=subprocess.STDOUT)
         tmpfile.close()
-        #os.remove(tmpfile)
+        os.remove(tmpfile)
         return output
             
     def get_features_string(self, string):
