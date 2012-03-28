@@ -32,7 +32,7 @@ class PairwiseParallelSentence(ParallelSentence):
         @param systems: names of target systems
         """
         self.src = source 
-        self.tgt = sorted(translations)
+        self.tgt = translations
         self.systems = systems
         self.ref = reference
         self.attributes = deepcopy(attributes)
