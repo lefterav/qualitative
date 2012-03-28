@@ -69,7 +69,7 @@ class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
         commanditems = self.command.split(' ')
         output = subprocess.check_output(commanditems, stdin=tmpfile, stderr=subprocess.STDOUT)
         tmpfile.close()
-        os.remove(tmpfile)
+        os.remove(tmpfilename)
         return output
             
     def get_features_string(self, string):
