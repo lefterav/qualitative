@@ -48,6 +48,7 @@ from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenera
 from featuregenerator.bleu.bleugenerator import BleuGenerator
 from featuregenerator.attribute_rank import AttributeRankGenerator
 from io_utils.input.xmlreader import XmlReader
+from featuregenerator.languagechecker.languagetool import LanguageToolFeatureGenerator
 
 
 cores = int(cfg.get("general", "cores"))
@@ -260,10 +261,8 @@ if cfg.has_section("languagetool"):
     parallel_feature_functions.append(features_langtool_source)
 
 def features_langtool(input_file, output_file, language, path):
-    from featuregenerator.languagechecker.languagetool import LanguageToolFeatureGenerator
-    fg1 = LanguageToolFeatureGenerator(path, "en")
-    fg2 = LanguageToolFeatureGenerator(path, "es")
-    saxjcml.run_features_generator(input_file, output_file, [fg1, fg2])
+    fg = LanguageToolFeatureGenerator(path, language)
+    saxjcml.run_features_generator(input_file, output_file, [fg])
 
 @active_if(False)
 def features_ibm(input_file, output_file, ibm1lexicon):
