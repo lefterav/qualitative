@@ -211,17 +211,17 @@ class AutorankingSuite(PyExperimentSuite):
             self.simple_testset = AnalyticPairwiseDataset(self.simple_testset) #this 
             self.simple_testset = CompactPairwiseDataset(self.simple_testset) #and this should have no effect
             
-            self.reconstructed_hard_testset = self.simple_testset.get_single_set_with_hard_ranks("rank_predicted", "rank_p")
-            self.reconstructed_soft_testset = self.simple_testset.get_single_set_with_soft_ranks("prob_-1", "prob_1", "rank_soft_predicted")
+            self.reconstructed_hard_testset = self.simple_testset.get_single_set_with_hard_ranks("rank_predicted", "rank_hard")
+            self.reconstructed_soft_testset = self.simple_testset.get_single_set_with_soft_ranks("prob_-1", "prob_1", "rank_soft_predicted", "rank_soft")
             self.simple_testset = None
             
         
         if n == 120:
             scoringset = Scoring(self.reconstructed_hard_testset)
-            ret["kendalltau-hard"]  = scoringset.get_kendall_tau("rank_p", self.class_name)
+            ret["kendalltau-hard"]  = scoringset.get_kendall_tau("rank_hard", self.class_name)
             
             scoringset = Scoring(self.reconstructed_soft_testset)
-            ret["kendalltau-soft"] = scoringset.get_kendall_tau("rank_p", self.class_name)
+            ret["kendalltau-soft"] = scoringset.get_kendall_tau("rank_soft", self.class_name)
             
             
             
@@ -286,14 +286,14 @@ class AutorankingSuite(PyExperimentSuite):
             objectfile = open("classifier.clsf", 'r')
             self.classifier = OrangeClassifier(pickle.load(objectfile))
             objectfile.close()
-        if n > 100:
+        if n > 90:
             classified_vector_file = open("classified.hard.txt", 'r') 
             self.classified_values_vector = classified_vector_file.readlines()
             classified_vector_file.close()
             classified_prob_file = open("classified.soft.txt", 'r') 
             self.classified_probs_vector = classified_prob_file.readlines()
             classified_prob_file.close()
-        if n > 110:
+        if n > 100:
 #            self.simple_testset = JcmlReader("testset.classified.jcml").get_dataset
             self.reconstructed_hard_testset = JcmlReader("testset.reconstructed.hard.jcml").get_dataset()
             self.reconstructed_soft_testset = JcmlReader("testset.reconstructed.soft.jcml").get_dataset()
