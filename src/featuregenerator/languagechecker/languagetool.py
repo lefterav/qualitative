@@ -30,6 +30,7 @@ class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
         params["lang"] = lang
         params["path"] = path
         command = command_template.format(**params)
+        self.command = command
         command_items = command.split(' ')
         self.output = []
         self.running = True
@@ -65,15 +66,13 @@ class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
         tmpfilename = self._get_temporary_file(strings)
         tmpfile = open(tmpfilename, 'r')
         commanditems = self.command.split(' ')
-        output = subprocess.check_output(commanditems, stdin=tmpfile).split('\n')
-        print "output from LT:" , output
-        print "written temporary file" , tmpfilename
+        output = subprocess.check_output(commanditems, stdin=tmpfile)
         tmpfile.close()
         #os.remove(tmpfile)
         return output
             
-    def add_features_string(self, string):
-        return self._get_tool_output([string])
+    def get_features_string(self, string):
+        return self.postprocess_output(self._get_tool_output([string]))
         
     def get_features_string_pipe(self, string):
         print >>self.process.stdin, string + "\n"

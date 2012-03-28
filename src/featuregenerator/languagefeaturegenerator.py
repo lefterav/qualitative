@@ -59,10 +59,9 @@ class LanguageFeatureGenerator(FeatureGenerator):
         It should be overriden by a feature generator that doesn't differentiate between source and target features
         """
         #stderr.println("Featuregenerator of type %s doesn't provide SimpleSentence features" % self.__class__.__name__)
-        try:
-            return self.get_features_string(simplesentence.get_string())
-        except:
-            return {}
+        
+        return self.get_features_string(simplesentence.get_string())
+
     
     def add_features_dataset(self, dataset):
         """
