@@ -294,7 +294,7 @@ def analyze_external_features(input_file, output_file, source_language, target_l
     langpair = (source_language, target_language)
     analyzers = [LengthFeatureGenerator(),
                  ParserMatches(langpair),
-                 LevenshteinGenerator(),
+                 #LevenshteinGenerator(),
                  RatioGenerator()]
     saxjcml.run_features_generator(input_file, output_file, analyzers)
     
