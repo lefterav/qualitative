@@ -8,11 +8,13 @@ import shutil
 import sys
 import re
 import tempfile
+from random import shuffle
 from xml.sax.saxutils import XMLGenerator
 from xml.sax.xmlreader import AttributesImpl
 from io_utils.dataformat.jcmlformat import JcmlFormat
 from sentence.sentence import SimpleSentence
 from sentence.dataset import DataSet
+
 
 #compile the much needed regular expression
 illegal_xml_chars_RE = re.compile(u'[\x00-\x08\x0b\x0c\x0e-\x1F\uD800-\uDFFF\uFFFE\uFFFF]') 
@@ -93,10 +95,14 @@ class Parallelsentence2Jcml(object):
     into the memory
     '''
 
-    def __init__(self, parallelsentences, format = JcmlFormat()):
+    def __init__(self, parallelsentences, format = JcmlFormat(), **kwargs):
         '''
         Provide a list of parallel sentences
         '''
+        
+        self.shuffle_translations = False
+        if kwargs.has_key("shuffle_translations"):
+            self.shuffle_translations = kwargs["shuffle_translations"]
         
         if isinstance (parallelsentences, DataSet):
             self.parallelsentences = parallelsentences.get_parallelsentences()
@@ -134,7 +140,12 @@ class Parallelsentence2Jcml(object):
                     generator.characters(c(src.get_string()))
                     generator.endElement(self.TAG["src"])
             
-            for tgt in parallelsentence.get_translations():
+            translations = parallelsentence.get_translations()
+            
+            if self.shuffle_translations:
+                shuffle(translations)
+            
+            for tgt in translations:
                 generator._write("\n\t\t")
                 generator.startElement(self.TAG["tgt"], tgt.get_attributes())
                 generator.characters(c(tgt.get_string()))
