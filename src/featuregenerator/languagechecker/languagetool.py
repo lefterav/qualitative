@@ -36,19 +36,19 @@ class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
         self.output = []
         self.running = True
         
-        self.process = subprocess.Popen(command_items, 
-                                        shell=False, 
-                                        bufsize=0, 
-                                        stdin=subprocess.PIPE, 
-                                        stdout=subprocess.PIPE,
-                                        stderr=subprocess.PIPE
-                                        )
-#        self.process.stdout.readline()
-#        self.process.stdout.readline()
-        self.process.stdin = codecs.getwriter('utf-8')(self.process.stdin)
-        self.process.stdout = codecs.getreader('utf-8')(self.process.stdout)
-        #Thread(target=self.print_output, args=(self.process.stderr,)).start()
-        Thread(target=self.print_output, args=(self.process.stdout,)).start()
+#        self.process = subprocess.Popen(command_items, 
+#                                        shell=False, 
+#                                        bufsize=0, 
+#                                        stdin=subprocess.PIPE, 
+#                                        stdout=subprocess.PIPE,
+#                                        stderr=subprocess.PIPE
+#                                        )
+##        self.process.stdout.readline()
+##        self.process.stdout.readline()
+#        self.process.stdin = codecs.getwriter('utf-8')(self.process.stdin)
+#        self.process.stdout = codecs.getreader('utf-8')(self.process.stdout)
+#        #Thread(target=self.print_output, args=(self.process.stderr,)).start()
+#        Thread(target=self.print_output, args=(self.process.stdout,)).start()
         self.i = 0
 
     
