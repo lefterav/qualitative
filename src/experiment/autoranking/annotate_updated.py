@@ -327,5 +327,5 @@ if __name__ == '__main__':
     pipeline_printout_graph("flowchart.pdf", "pdf", [analyze_external_features])
     import sys
     
-    pipeline_run([analyze_external_features], multiprocess = cores)
+    pipeline_run([analyze_external_features], multiprocess = cores, verbose = 5)
     #pipeline_run([original_data_split], multiprocess = 2)
