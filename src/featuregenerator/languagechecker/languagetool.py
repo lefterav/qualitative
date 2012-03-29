@@ -55,7 +55,7 @@ class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
     def _get_temporary_file(self, strings):
         import tempfile
                 
-        file, filename = tempfile.mkstemp(text=True)
+        filename = tempfile.mktemp()
         file = open(filename, 'w')
         for string in strings:
             file.write(string)
