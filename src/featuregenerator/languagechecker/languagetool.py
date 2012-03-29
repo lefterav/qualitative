@@ -96,9 +96,9 @@ class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
     
     def close(self):
         self.running = False
-        self.process.stdin.close()
-        self.process.terminate()
-    
+#        self.process.stdin.close()
+#        self.process.terminate()
+#    
     def __del__(self):
         self.close()
         

@@ -220,29 +220,27 @@ def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, l
     pass
 
 
+language_checker_source = cfg.get_checker(source_language)
+
 @active_if(cfg.exists_checker(source_language))
-@transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % source_language, source_language)
-def features_checker_source(input_file, output_file, language):
-    language_checker = cfg.get_checker(language)
-    print language_checker
-    saxjcml.run_features_generator(input_file, output_file, [language_checker])
+@transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % source_language, language_checker_source)
+def features_checker_source(input_file, output_file, language_checker_source):
+    features_checker(language_checker_source)
 if cfg.exists_checker(source_language):
     parallel_feature_functions.append(features_checker_source)
 
 
+language_checker_target = cfg.get_checker(target_language)
+
 @active_if(cfg.exists_checker(target_language))
-@transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % target_language, target_language)
-def features_checker_target(input_file, output_file, language):
-    language_checker = cfg.get_checker(language)
-    print language_checker
-    saxjcml.run_features_generator(input_file, output_file, [language_checker])
+@transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % target_language, language_checker_target)
+def features_checker_target(input_file, output_file, language_checker_target):
+    features_checker(language_checker_target)
 if cfg.exists_checker(target_language):
     parallel_feature_functions.append(features_checker_target)
 
 
-def features_checker(input_file, output_file, language):
-    language_checker = cfg.get_checker(language)
-    print language_checker
+def features_checker(input_file, output_file, language_checker):
     saxjcml.run_features_generator(input_file, output_file, [language_checker])
 
 
@@ -253,7 +251,7 @@ def features_langtool_source(input_file, output_file, language, path):
     features_langtool(input_file, output_file, language, path)
 
 @active_if(cfg.has_section("languagetool"))
-@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, target_language, cfg.get("languagetool", "path"))
+@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % target_language, target_language, cfg.get("languagetool", "path"))
 def features_langtool_target(input_file, output_file, language, path):
     features_langtool(input_file, output_file, language, path)
 if cfg.has_section("languagetool"):

@@ -59,8 +59,7 @@ class CommandlinePreprocessor(Preprocessor):
         #string = string.decode('utf-8')
         
         #string = string.encode('utf-8')
-        self.process.stdin.write(string)
-        self.process.stdin.write("\n")
+        self.process.stdin.write("{}".format(string))
         self.process.stdin.flush()   
         self.process.stdout.flush()
     
@@ -83,13 +82,14 @@ class CommandlinePreprocessor(Preprocessor):
     def _get_temporary_file(self, strings):
         import tempfile
                 
-        file, filename = tempfile.mkstemp(text=True)
-        os.close(file)
-        file = open(filename, 'w')
+        f, filename = tempfile.mkstemp(text=True)
+        os.close(f)
+        print filename
+        f = open(filename, 'w')
         for string in strings:
-            file.write(string)
-            file.write('\n')
-        file.close()
+            f.write(string)
+            f.write('\n')
+        f.close()
         return filename
     
     def _get_tool_output(self, strings):
