@@ -1,0 +1,73 @@
+2012-03-30.14-02-20 javac JavaServer.java
+2012-03-30.14-03-10 javac JavaServer.java -classpath:/usr/share/py4j/py4j0.7.jar
+2012-03-30.14-03-13 javac JavaServer.java -classpath /usr/share/py4j/py4j0.7.jar
+2012-03-30.14-03-37 javac JavaServer.java -classpath /usr/share/py4j/py4j0.7.jar
+2012-03-30.14-03-44 java JavaServer 
+2012-03-30.14-05-13 java JavaServer 
+2012-03-30.14-05-14 javac JavaServer.java -classpath /usr/share/py4j/py4j0.7.jar
+2012-03-30.14-05-15 java JavaServer 
+2012-03-30.14-05-28 javac JavaServer.java -classpath /usr/share/py4j/py4j0.7.jar
+2012-03-30.14-05-37 java JavaServer 
+2012-03-30.14-05-41 javac JavaServer.java -classpath /usr/share/py4j/py4j0.7.jar
+2012-03-30.14-05-42 java JavaServer 
+2012-03-30.14-07-27 javac JavaServer.java -classpath /usr/share/py4j/py4j0.7.jar
+2012-03-30.14-07-28 java JavaServer 
+2012-03-30.14-07-48 javac JavaServer.java -classpath /usr/share/py4j/py4j0.7.jar
+2012-03-30.14-07-49 java JavaServer 
+2012-03-30.14-08-20 javac JavaServer.java -classpath /usr/share/py4j/py4j0.7.jar
+2012-03-30.14-08-21 java JavaServer 
+2012-03-30.14-08-50 javac JavaServer.java -jar /usr/share/py4j/py4j0.7.jar
+2012-03-30.14-09-02 javac JavaServer.java -classpath /usr/share/py4j/py4j0.7.jar 
+2012-03-30.14-09-03 javac JavaServer.java -jar /usr/share/py4j/py4j0.7.jar
+2012-03-30.14-09-05 java JavaServer 
+2012-03-30.14-11-38 javac JavaServer.java -jar /usr/share/py4j/py4j0.7.jar
+2012-03-30.14-11-43 javac JavaServer.java -jar /usr/share/py4j/py4j0.7.jar
+2012-03-30.14-11-46 javac JavaServer.java -classpath /usr/share/py4j/py4j0.7.jar 
+2012-03-30.14-11-52 java JavaServer  -classpath /usr/share/py4j/py4j0.7.jar
+2012-03-30.14-12-45 java JavaServer  -classpath /usr/share/py4j/py4j0.7.jar
+2012-03-30.14-12-59 java JavaServer  -classpath /usr/share/py4j/py4j0.7.jar 
+2012-03-30.14-13-17 javac -classpath /usr/share/py4j/py4j0.7.jar  JavaServer.java
+2012-03-30.14-13-27 java -classpath /usr/share/py4j/py4j0.7.jar Java
+2012-03-30.14-13-37 java -classpath /usr/share/py4j/py4j0.7.jar JavaServer
+2012-03-30.14-14-10 java -cp /usr/share/py4j/py4j0.7.jar:. JavaServer
+2012-03-30.14-14-13 java -cp /usr/share/py4j/py4j0.7.jar JavaServer
+2012-03-30.14-14-16 java -cp /usr/share/py4j/py4j0.7.jar:. JavaServer
+2012-03-30.14-15-31 java -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6:. JavaServer
+2012-03-30.14-20-03 java -cp /usr/share/py4j/py4j0.7.jar:. JavaServer
+2012-03-30.14-20-14 java -cp /usr/share/py4j/py4j0.7.jar:. JavaServer
+2012-03-30.14-20-14 java -cp /usr/share/py4j/py4j0.7.jar:. JavaServer
+2012-03-30.14-20-17 clear
+2012-03-30.14-20-20 javac -classpath /usr/share/py4j/py4j0.7.jar  JavaServer.java
+2012-03-30.14-20-33 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6:. JavaServer.java 
+2012-03-30.14-20-49 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.jar:. JavaServer.java 
+2012-03-30.14-22-34 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.jar:. JavaServer.java 
+2012-03-30.14-23-10 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6:. JavaServer.java 
+2012-03-30.14-23-47 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.java:. JavaServer.java 
+2012-03-30.14-24-29 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.java:. JavaServer.java 
+2012-03-30.14-24-37 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/:. JavaServer.java 
+2012-03-30.14-25-17 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.java:. JavaServer.java 
+2012-03-30.14-25-29 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.java:. JavaServer.java 
+2012-03-30.14-26-24 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.java:. JavaServer.java 
+2012-03-30.14-26-34 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.java:. JavaServer.java 
+2012-03-30.14-26-44 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.java:. JavaServer.java 
+2012-03-30.14-27-13 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.java:. JavaServer.java 
+2012-03-30.14-27-13 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.java:. JavaServer.java 
+2012-03-30.14-27-13 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.java:. JavaServer.java 
+2012-03-30.14-27-13 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.java:. JavaServer.java 
+2012-03-30.14-27-13 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.java:. JavaServer.java 
+2012-03-30.14-27-13 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.java:. JavaServer.java 
+2012-03-30.14-27-13 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.java:. JavaServer.java 
+2012-03-30.14-27-15 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.java:. JavaServer.java 
+2012-03-30.14-28-45 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.jar:. JavaServer.java 
+2012-03-30.14-33-13 java -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.jar:. JavaServer
+2012-03-30.14-33-46 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.jar:. JavaServer.java 
+2012-03-30.14-33-52 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.jar:. JavaServer.java 
+2012-03-30.14-34-12 java -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.jar:. JavaServer
+2012-03-30.14-34-14 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.jar:. JavaServer.java 
+2012-03-30.14-35-08 java -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.jar:. JavaServer
+2012-03-30.14-35-13 javac -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.jar:. JavaServer.java 
+2012-03-30.15-14-19 java -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.jar:. JavaServer
+2012-03-30.15-40-03 java -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.jar:/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar:. JavaServer
+2012-03-30.15-48-36 java -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.jar:/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar:/home/elav01/workspace/TaraXUscripts/src/featuregenerator/parser/berkeley/socket/BParser.java:. JavaServer
+2012-03-30.16-49-25 java -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.jar:/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar:/home/elav01/workspace/TaraXUscripts/src/featuregenerator/parser/berkeley/socket/:. JavaServer
+2012-03-30.16-49-25 java -cp /usr/share/py4j/py4j0.7.jar:/home/elav01/taraxu_tools/LanguageTool-1.6/LanguageTool.jar:/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar:/home/elav01/workspace/TaraXUscripts/src/featuregenerator/parser/berkeley/socket/:. JavaServer

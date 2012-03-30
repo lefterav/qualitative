@@ -35,6 +35,7 @@ from Orange.classification.logreg import LogRegLearner
 #from experiment.utils.ruffus_utils import (touch, sys_call,
 #                                           main_logger as log,
 #                                           main_mutex as log_mtx)
+import subprocess
 
 # --- config and options---
 CONFIG_FILENAME = os.path.abspath(os.path.join(os.path.dirname(__name__), 'config/pipeline.cfg'))
@@ -43,9 +44,46 @@ CONFIG_TEMPLATE = """
 """
 
 
-
 class ExperimentConfigParser(ConfigParser):
     checker = 0
+    
+    def java_init(self):
+        #define running directory
+        
+        if self.get("general", "java_classpath"):
+            
+            path = os.path.abspath(__file__)
+            dir_path = os.path.dirname(path) #@todo: change location of the JavaServer to sth more universal
+             
+            classpath = self.get("general", "java_classpath")
+            classpath = "{}:{}".format(classpath, dir_path) 
+    
+            #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
+            subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path])
+            
+            # prepare and run Java server
+            #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
+            cmd = ["java", "-cp", classpath, "JavaServer" ]
+            self.jvm = subprocess.Popen(cmd,  close_fds=True, stdout=subprocess.PIPE) #shell=True,
+            self.socket_no = int(self.jvm.stdin.readline().strip()) 
+            
+            sys.stderr.write("Started java process with pid {} in socket {}".format(self.process.pid, self.socket_no))
+            
+            # wait so that server starts
+#            time.sleep(2)
+    def get_socket_no(self):
+        try:
+            return self.socket_no
+        except:
+            None
+        
+    
+    def java_terminate(self):
+        try:
+            self.jvm.terminate()
+        except:
+            pass
+        
     
     def getlearner(self):
         classifier_name = self.get("training",  "classifier") + "Learner"
@@ -235,6 +273,8 @@ class ExperimentConfigParser(ConfigParser):
             current_step_id = highestnum + 1
         return current_step_id 
     
+    
+        
 
 #try:
 #    configfilename = os.sys.argv[1]
