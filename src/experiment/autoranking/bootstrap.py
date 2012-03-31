@@ -37,6 +37,8 @@ from Orange.classification.logreg import LogRegLearner
 #                                           main_mutex as log_mtx)
 import subprocess
 
+from py4j.java_gateway import GatewayClient
+
 # --- config and options---
 CONFIG_FILENAME = os.path.abspath(os.path.join(os.path.dirname(__name__), 'config/pipeline.cfg'))
 print 'config', CONFIG_FILENAME 
@@ -65,15 +67,15 @@ class ExperimentConfigParser(ConfigParser):
             #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
             cmd = ["java", "-cp", classpath, "JavaServer" ]
             self.jvm = subprocess.Popen(cmd,  close_fds=True, stdout=subprocess.PIPE) #shell=True,
-            self.socket_no = int(self.jvm.stdin.readline().strip()) 
-            
-            sys.stderr.write("Started java process with pid {} in socket {}".format(self.process.pid, self.socket_no))
+            socket_no = int(self.jvm.stdout.readline().strip()) 
+            self.socket = GatewayClient('localhost', socket_no)
+            sys.stderr.write("Started java process with pid {} in socket {}".format(self.jvm.pid, socket_no))
             
             # wait so that server starts
 #            time.sleep(2)
-    def get_socket_no(self):
+    def get_gatewayclient(self):
         try:
-            return self.socket_no
+            return self.socket
         except:
             None
         
@@ -122,9 +124,8 @@ class ExperimentConfigParser(ConfigParser):
                 elif self.get(parser_name, "type") == "socket":
                     print "initializing socket parser"
                     grammarfile = self.get(parser_name, "grammarfile")
-                    berkeley_parser_jar = self.get(parser_name, "berkeley_parser_jar")
-                    py4j_jar = self.get(parser_name, "py4j_jar")
-                    return BerkeleySocketFeatureGenerator(grammarfile, berkeley_parser_jar, py4j_jar, language, tokenize)
+                    
+                    return BerkeleySocketFeatureGenerator(language, grammarfile, self.socket)
         return False
     
     
@@ -273,7 +274,8 @@ class ExperimentConfigParser(ConfigParser):
             current_step_id = highestnum + 1
         return current_step_id 
     
-    
+    def __del__(self):
+        self.java_terminate()
         
 
 #try:

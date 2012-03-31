@@ -30,7 +30,7 @@ from featuregenerator.diff_generator import DiffGenerator
 from sentence.scoring import Scoring
 
 from io_utils import saxjcml
-
+cfg.java_init()
 
 #ML
 #from orange import ExampleTable
@@ -48,8 +48,9 @@ from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenera
 from featuregenerator.bleu.bleugenerator import BleuGenerator
 from featuregenerator.attribute_rank import AttributeRankGenerator
 from io_utils.input.xmlreader import XmlReader
-from featuregenerator.languagechecker.languagetool import LanguageToolFeatureGenerator
-
+from featuregenerator.languagechecker.languagetool_socket import LanguageToolSocketFeatureGenerator
+from featuregenerator.preprocessor import Normalizer
+from featuregenerator.preprocessor import Tokenizer
 
 cores = int(cfg.get("general", "cores"))
 parallel_feature_functions = []
@@ -94,6 +95,7 @@ except:
     annotated_filenames = []
 
 
+
 #@split(data_fetch,"*.ext.f.jcml", annotated_filenames)
 #def add_externally_annotated_sets(input_file, output_files, external_files):
 ##    input_basename = get_basename(input_file)
@@ -107,8 +109,7 @@ except:
 
 @transform(data_fetch, suffix("orig.jcml"), "tok.jcml")        
 def preprocess_data(input_file, output_file):
-    from featuregenerator.preprocessor import Normalizer
-    from featuregenerator.preprocessor import Tokenizer
+    
     normalizer_src = Normalizer(source_language)
     normalizer_tgt = Normalizer(target_language)
     tokenizer_src = Tokenizer(source_language)
@@ -246,20 +247,20 @@ def features_checker(input_file, output_file, language_checker):
 
 
 @active_if(cfg.has_section("languagetool"))
-@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, source_language, cfg.get("languagetool", "path"))
-def features_langtool_source(input_file, output_file, language, path):
-    features_langtool(input_file, output_file, language, path)
+@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, source_language, cfg.get_gatewayclient())
+def features_langtool_source(input_file, output_file, language, socket_no):
+    features_langtool(input_file, output_file, language, socket_no)
 
 @active_if(cfg.has_section("languagetool"))
-@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % target_language, target_language, cfg.get("languagetool", "path"))
-def features_langtool_target(input_file, output_file, language, path):
-    features_langtool(input_file, output_file, language, path)
+@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % target_language, target_language, cfg.get_gatewayclient())
+def features_langtool_target(input_file, output_file, language, socket_no):
+    features_langtool(input_file, output_file, language, socket_no)
 if cfg.has_section("languagetool"):
     parallel_feature_functions.append(features_langtool_target)
     parallel_feature_functions.append(features_langtool_source)
 
-def features_langtool(input_file, output_file, language, path):
-    fg = LanguageToolFeatureGenerator(path, language)
+def features_langtool(input_file, output_file, language, socket_no):
+    fg = LanguageToolSocketFeatureGenerator(language, socket_no)
     saxjcml.run_features_generator(input_file, output_file, [fg])
 
 @active_if(False)
@@ -322,7 +323,9 @@ if __name__ == '__main__':
     
     
     pipeline_printout_graph("flowchart.pdf", "pdf", [analyze_external_features])
-    import sys
     
     pipeline_run([analyze_external_features], multiprocess = cores, verbose = 5)
     #pipeline_run([original_data_split], multiprocess = 2)
+
+print "Done!"
+cfg.java_terminate()

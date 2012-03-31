@@ -35,22 +35,25 @@ class Preprocessor(FeatureGenerator):
     
     
 class CommandlinePreprocessor(Preprocessor):
-    def __init__(self, path, lang, params = {}, command_template = ""):
+    def __init__(self, path, lang, params = {}, command_template = "", load_process= False):
+        print "starting preprocessor"
         self.lang = lang
         params["lang"] = lang
         params["path"] = path
         self.command = command_template.format(**params)
+        print self.command
         command_items = self.command.split(' ')
         self.output = []
         self.running = True
         
-        self.process = subprocess.Popen(command_items, 
-                                        shell=False, 
-                                        bufsize=0, 
-                                        stdin=subprocess.PIPE, 
-                                        stdout=subprocess.PIPE,
-                                        )
         
+        self.process = subprocess.Popen(command_items, 
+                                            shell=False, 
+                                            bufsize=0, 
+                                            stdin=subprocess.PIPE, 
+                                            stdout=subprocess.PIPE,
+                                            )
+            
         
         #self.process.stdin = codecs.getwriter('utf-8')(self.process.stdin)
         #self.process.stdout = codecs.getreader('utf-8')(self.process.stdout)
@@ -59,11 +62,13 @@ class CommandlinePreprocessor(Preprocessor):
         #string = string.decode('utf-8')
         
         #string = string.encode('utf-8')
-        self.process.stdin.write("{}".format(string))
+        print "/",
+        self.process.stdin.write("{}\n".format(string))
         self.process.stdin.flush()   
         self.process.stdout.flush()
     
         output = self.process.stdout.readline()
+        print "\\",
         self.process.stdout.flush()
         return output
     
