@@ -66,7 +66,7 @@ class ExperimentConfigParser(ConfigParser):
             # prepare and run Java server
             #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
             cmd = ["java", "-cp", classpath, "JavaServer" ]
-            self.jvm = subprocess.Popen(cmd,  close_fds=True, stdout=subprocess.PIPE) #shell=True,
+            self.jvm = subprocess.Popen(cmd, bufsize=0, close_fds=True, stdout=subprocess.PIPE) #shell=True,
             socket_no = int(self.jvm.stdout.readline().strip()) 
             self.socket = GatewayClient('localhost', socket_no)
             sys.stderr.write("Started java process with pid {} in socket {}".format(self.jvm.pid, socket_no))
