@@ -72,8 +72,20 @@ class Wmt11Reader():
         return parallelsentences
                 
             
-            
-        
+if __name__ == '__main__':
+    import sys
+    from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
+    import os
+    
+    langpairs = ["en-de", "de-en", "en-fr", "fr-en", "en-es", "es-en", "en-cs", "cs-en"]
+    base_dir = sys.argv[1]
+    output_dir = sys.argv[2]
+    for langpair in langpairs:
+        pss = Wmt11Reader().read_parallelsentences(base_dir, langpair)
+        filename = "wmt12.{}.jcml".format(langpair)
+        filename = os.path.join(output_dir, filename)
+        Parallelsentence2Jcml(pss).write_to_file(filename)
+    
         
         
         
