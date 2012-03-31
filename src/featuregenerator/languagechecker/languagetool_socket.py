@@ -7,6 +7,8 @@ from py4j.java_gateway import JavaGateway
 from py4j.java_gateway import GatewayClient
 from py4j.java_gateway import java_import
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+import os, subprocess, sys
+
 
 class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
     '''
@@ -14,13 +16,28 @@ class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
     '''
 
 
-    def __init__(self, lang, socket):
+    def __init__(self, lang, classpath):
         '''
         Constructor
         '''
         self.lang = lang
         
-        gatewayclient = socket
+        classpath, dir_path = classpath
+
+        #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
+        subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path])
+        
+        # prepare and run Java server
+        #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
+        cmd = ["java", "-cp", classpath, "JavaServer" ]
+        self.jvm = subprocess.Popen(cmd, shell=False, bufsize=0, stdout=subprocess.PIPE) #shell=True,
+        self.jvm.stdout.flush()
+        socket_no = int(self.jvm.stdout.readline().strip()) 
+        self.socket = GatewayClient('localhost', socket_no)
+        sys.stderr.write("Started java process with pid {} in socket {}".format(self.jvm.pid, socket_no))
+        
+        
+        gatewayclient = self.socket
         gateway = JavaGateway(gatewayclient)
         ltool_view = gateway.new_jvm_view()
         java_import(ltool_view, 'org.languagetool.*')
@@ -61,6 +78,7 @@ class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
         return atts
             
     
-        
+    def __del__(self):
+        self.jvm.terminate()
         
     
