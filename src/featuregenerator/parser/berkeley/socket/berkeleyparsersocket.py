@@ -4,7 +4,11 @@ Created on Sep 21, 2011
 @author: jogin
 '''
 
-from py4j.java_gateway import JavaGateway #@UnresolvedImport
+from py4j.java_gateway import JavaGateway
+from py4j.java_gateway import GatewayClient
+from py4j.java_gateway import java_import
+
+ #@UnresolvedImport
 
 import subprocess
 import time
@@ -21,7 +25,7 @@ class BerkeleyParserSocket():
     stopping the parsing engine within Python code.   
     """
     
-    def __init__(self, grammarfile, berkeley_parser_jar, py4j_jar):
+    def __init__(self, grammarfile, gatewayclient):
         """
         @param berkeley_parser_jar: Location of BerkeleyParser.jar; a modified java library that
         fetches full parsing details from the Berkeley Engine and calculates full features upon request
@@ -43,22 +47,24 @@ class BerkeleyParserSocket():
         
         """
         self.grammarfile = grammarfile
-        self.berkeley_parser_jar = berkeley_parser_jar
-        self.py4_jar = py4j_jar
         
-        try:
+        print "initializing Berkeley client"
+#        try:
         # connect to the JVM
-            wtime = random.randint(1, 15)
-            time.sleep(wtime)
-            self.gateway = JavaGateway()
-            # get the application instance
-            bpInstance = self.gateway.entry_point
+#        wtime = random.randint(1, 15)
+#        time.sleep(wtime)
+        gateway = JavaGateway(gatewayclient)
+        module_view = gateway.new_jvm_view()
         
-            # call the method get_BP_obj() in java
-            self.bp_obj = bpInstance.get_BP_obj(grammarfile)
-        except:
-            self._reconnect(berkeley_parser_jar, py4j_jar)
-       
+        java_import(module_view, 'BParser')
+    
+        
+        # get the application instance
+        self.bp_obj =  module_view.BParser(grammarfile)
+        print "got BParser object"
+#        except:
+#            self._reconnect(berkeley_parser_jar, py4j_jar)
+    
     def _reconnect(self, berkeley_parser_jar, py4j_jar):
         #define running directory
         path = os.path.abspath(__file__)
@@ -95,16 +101,16 @@ class BerkeleyParserSocket():
             parseresult = self.bp_obj.parse(sentence_string)
         return parseresult
         
-    
-    def __del__(self):
-        self.gateway.deluser()
-        
-        if self.gateway.getusers() == 0:
-            self.gateway.shutdown()
-            try:
-                self.process.terminate()
-            except:
-                pass
+#    
+#    def __del__(self):
+#        self.gateway.deluser()
+#        
+#        if self.gateway.getusers() == 0:
+#            self.gateway.shutdown()
+#            try:
+#                self.process.terminate()
+#            except:
+#                pass
         
             
 #    def __del__(self):
@@ -123,6 +129,8 @@ class BerkeleyParserSocket():
 #        #sys.stderr.write( "trying to close process %d\n" % self.process.pid)
 #        self.process.terminate()
         
+
+
 
 #bps = BerkeleyParserSocket("/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr", "/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar")
 #bps2 = BerkeleyParserSocket("/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr", "/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar")
