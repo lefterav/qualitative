@@ -25,6 +25,8 @@ import py4j.GatewayServer;
 
 public class JavaServer {
 	
+	static GatewayServer server;
+	
     public static void main(String[] args) {
     	
     	boolean serverCreated = false;
@@ -34,21 +36,21 @@ public class JavaServer {
 		while (!serverCreated) {
 			try{
 				System.err.println("Trying to start Java server in socket " + Integer.toString(socket));
-				server = new GatewayServer(app, socket);
+				server = new GatewayServer(null, socket);
 				server.start();
 				serverCreated = true;
 			} catch (Exception e) {
 				server.shutdown();
 				socket++;
 			}
-		}
-		
-		public static void shutdown() {
-			server.shutdown();
-			System.err.println("Java server terminated!");
-		}
-		
+		}		
 		System.out.println(Integer.toString(socket));
     }
+//    
+//	public static void shutdown() {
+//		server.shutdown();
+//		System.err.println("Java server terminated!");
+//	}
+
 
 }
