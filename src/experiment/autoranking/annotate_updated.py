@@ -30,7 +30,7 @@ from featuregenerator.diff_generator import DiffGenerator
 from sentence.scoring import Scoring
 
 from io_utils import saxjcml
-cfg.java_init()
+#cfg.java_init()
 
 #ML
 #from orange import ExampleTable
@@ -247,12 +247,12 @@ def features_checker(input_file, output_file, language_checker):
 
 
 @active_if(cfg.has_section("languagetool"))
-@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, source_language, cfg.get_gatewayclient())
+@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, source_language, cfg.get_classpath())
 def features_langtool_source(input_file, output_file, language, socket_no):
     features_langtool(input_file, output_file, language, socket_no)
 
 @active_if(cfg.has_section("languagetool"))
-@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % target_language, target_language, cfg.get_gatewayclient())
+@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % target_language, target_language, cfg.get_classpath())
 def features_langtool_target(input_file, output_file, language, socket_no):
     features_langtool(input_file, output_file, language, socket_no)
 if cfg.has_section("languagetool"):
@@ -328,4 +328,4 @@ if __name__ == '__main__':
     #pipeline_run([original_data_split], multiprocess = 2)
 
 print "Done!"
-cfg.java_terminate()
+#cfg.java_terminate()
