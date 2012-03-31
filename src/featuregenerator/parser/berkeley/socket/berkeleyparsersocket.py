@@ -25,7 +25,7 @@ class BerkeleyParserSocket():
     stopping the parsing engine within Python code.   
     """
     
-    def __init__(self, grammarfile, gatewayclient):
+    def __init__(self, grammarfile, classpath):
         """
         @param berkeley_parser_jar: Location of BerkeleyParser.jar; a modified java library that
         fetches full parsing details from the Berkeley Engine and calculates full features upon request
@@ -51,9 +51,21 @@ class BerkeleyParserSocket():
         print "initializing Berkeley client"
 #        try:
         # connect to the JVM
-#        wtime = random.randint(1, 15)
-#        time.sleep(wtime)
-        gateway = JavaGateway(gatewayclient)
+        classpath, dir_path = classpath
+
+        #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
+        subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path])
+        
+        # prepare and run Java server
+        #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
+        cmd = ["java", "-cp", classpath, "JavaServer" ]
+        self.jvm = subprocess.Popen(cmd, shell=False, bufsize=0, stdout=subprocess.PIPE) #shell=True,
+        self.jvm.stdout.flush()
+        socket_no = int(self.jvm.stdout.readline().strip()) 
+        self.socket = GatewayClient('localhost', socket_no)
+        sys.stderr.write("Started java process with pid {} in socket {}".format(self.jvm.pid, socket_no))
+        
+        gateway = JavaGateway(self.socket)
         module_view = gateway.new_jvm_view()
         
         java_import(module_view, 'BParser')
@@ -101,6 +113,8 @@ class BerkeleyParserSocket():
             parseresult = self.bp_obj.parse(sentence_string)
         return parseresult
         
+    def __del__(self):
+        self.jvm.terminate()
 #    
 #    def __del__(self):
 #        self.gateway.deluser()

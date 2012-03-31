@@ -74,6 +74,14 @@ class ExperimentConfigParser(ConfigParser):
             
             # wait so that server starts
 #            time.sleep(2)
+
+    def get_classpath(self):
+        path = os.path.abspath(__file__)
+        dir_path = os.path.dirname(path)
+        classpath = self.get("general", "java_classpath")
+        classpath = "{}:{}".format(classpath, dir_path) 
+        return classpath, dir_path
+
     def get_gatewayclient(self):
         try:
             return self.socket
@@ -126,7 +134,7 @@ class ExperimentConfigParser(ConfigParser):
                     print "initializing socket parser"
                     grammarfile = self.get(parser_name, "grammarfile")
                     
-                    return BerkeleySocketFeatureGenerator(language, grammarfile, self.socket)
+                    return BerkeleySocketFeatureGenerator(language, grammarfile, self.get_classpath())
         return False
     
     
