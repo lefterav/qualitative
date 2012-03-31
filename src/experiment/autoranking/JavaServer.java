@@ -45,6 +45,7 @@ public class JavaServer {
 			}
 		}		
 		System.out.println(Integer.toString(socket));
+		System.out.flush();
     }
 //    
 //	public static void shutdown() {
