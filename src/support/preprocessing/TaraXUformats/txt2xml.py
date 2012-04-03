@@ -26,7 +26,8 @@ import sys
 from optparse import OptionParser
 
 def escapeXML(string):
-    return string.replace("<", "&lt;").replace(">", "&gt;")
+    # Some file were already converted to "XML format", so first we convert them back
+    return string.replace("&lt;", "<").replace("&gt;",">").replace("&", "&amp;").replace("\"", "&quot;").replace("<", "&lt;").replace(">", "&gt;")
 
 # command line arguments definition
 parser = OptionParser()

@@ -27,7 +27,8 @@ import sys
 from optparse import OptionParser
 
 def escapeXML(string):
-    return string.replace("<", "&lt;").replace(">", "&gt;")
+        # Some file were already converted to "XML format", so first we convert them back
+            return string.replace("&lt;", "<").replace("&gt;",">").replace("&", "&amp;").replace("\"", "&quot;").replace("<", "&lt;").replace(">", "&gt;")
 
 # command line arguments definition
 parser = OptionParser()
@@ -42,7 +43,7 @@ parser.add_option("-t", '--tgtLang', dest='tgtLang', help="target language")
 parser.add_option("-i", '--setid', dest='setid', help="id of the whole set")
 parser.add_option("-x", '--combxml', dest='combxml', \
                                        help="name of output combined xml file")
-parser.add_option("-b", "--block-size", dest="blockSize",
+parser.add_option("-b", "--block-size", dest="blockSize", type=int, default=100,
                                        help="block size for repetitions")
 
 # optional command line arguments
@@ -103,7 +104,7 @@ beginCurrentBlock = 0
 endCurrentBlock = options.blockSize
 while beginCurrentBlock < len(contentLinks):
     for run in range(nSystems):
-        for i in xrange(beginCurrentBlock, min(endCurrentBlock, len(contentLinks)):
+        for i in xrange(beginCurrentBlock, min(endCurrentBlock, len(contentLinks))):
             if len(contentLinks[i].split('\t'))==3:
                 segid = contentLinks[i].split('\t')[1]
                 docid = contentLinks[i].split('\t')[2]
@@ -123,7 +124,7 @@ while beginCurrentBlock < len(contentLinks):
             if reference:
                 output += '\t\t<reference>%s</reference>\n' % escapeXML(reference)
             output += '\t\t<translation system="%s">%s</translation>\n'\
-                                                       % (sysNames[systemsOrder[run]], escapeXML(sysContents[run][i]))
+                                                       % (sysNames[systemsOrder[i][run]], escapeXML(sysContents[run][i]))
             output += '\t</seg>\n'
     beginCurrentBlock = endCurrentBlock
     endCurrentBlock += options.blockSize
