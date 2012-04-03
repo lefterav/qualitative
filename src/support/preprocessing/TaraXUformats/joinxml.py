@@ -25,20 +25,26 @@ tgtFile = options.tgtFile
 
 g = open(tgtFile, 'w+')
 g.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-g.write('<multiset>\n')
-for filename in args:
+#g.write('<multiset>\n')
+for (i, filename) in enumerate(args):
     f = open(filename)
     content = f.read().strip()
     f.close()
     
     # remove xml heading tags
     content = re.sub('<\?.*?\?>','',content)
+    if i > 0:
+        # remove the set tags
+        content = re.sub('<set.*?>','',content)
+    if i < len(args) - 1:
+        # remove the /set
+        content = re.sub('</set>','',content)
     
     # add one TAB alignment and write to output xml
     lines = content.split('\n')
     g.writelines(['\t%s\n' % line for line in lines])
 
-g.write('</multiset>\n')
+#g.write('</multiset>\n')
 g.close()
 
 print '%s was created!' % tgtFile
