@@ -14,13 +14,13 @@ import time
 This class reads txt file with translation system analysis and saves as
 much information as possible to a dictionary.
 """
-class ReadSystemAnalysis:
+class ExtractEvaluation:
     """
     @param filename: Name of input file with translation system analysis.
     @type filename: string 
     """
     def __init__(self, filename):
-        start = time.time()
+        #start = time.time()
         self.att = {}
         self.parsingTime = 0
         self.totTraOpt = re.compile('Total translation options: ([\d.-]+)\n')
@@ -69,10 +69,10 @@ class ReadSystemAnalysis:
         f = file('%s_dict' % filename, 'w')
         f.write(attrsReadable)
         f.close()
-        print attrsReadable
-        print time.time()-start
-        print self.parsingTime
-        sys.exit()
+        #print attrsReadable
+        #print time.time()-start
+        #print self.parsingTime
+        #sys.exit()
                     
 
     
@@ -85,7 +85,7 @@ class ReadSystemAnalysis:
     @type partNo: int 
     """
     def add_attributes(self, transPart, partNo):
-        begin = time.time()
+        #begin = time.time()
         # get 'Total translation options'
         self.att['total_transl_options', partNo] = self.totTraOpt.search(transPart).group(1)
         
@@ -102,82 +102,82 @@ class ReadSystemAnalysis:
         futCos = self.futCos.findall(transPart)
         if not futCos: sys.exit('future cost not found in part %s!' % partNo)
         for item in futCos:
-            self.att['future_cost', partNo, item[0], item[1]] = item[2]
+            self.att['future_cost', 'snt_%s' % partNo, item[0], item[1]] = item[2]
         
         # get 'total hypothesis considered'
-        self.att['total_hypothesis', partNo] = self.totHypCon.search(transPart).group(1)
+        self.att['total_hypothesis', 'snt_%s' % partNo] = self.totHypCon.search(transPart).group(1)
         
         # get 'hypothesis not built'
-        self.att['hypothesis_not_built', partNo] = self.hypNotBui.search(transPart).group(1)
+        self.att['hypothesis_not_built', 'snt_%s' % partNo] = self.hypNotBui.search(transPart).group(1)
         
         # get 'hypothesis discarded earlier'
-        self.att['hypothesis_disc_earlier', partNo] = self.hypDisEar.search(transPart).group(1)
+        self.att['hypothesis_disc_earlier', 'snt_%s' % partNo] = self.hypDisEar.search(transPart).group(1)
         
         # get 'hypothesis discarded'
-        self.att['hypothesis_discarded', partNo] = self.hypDis.search(transPart).group(1)
+        self.att['hypothesis_discarded', 'snt_%s' % partNo] = self.hypDis.search(transPart).group(1)
         
         # get 'hypothesis recombined'
-        self.att['hypothesis_recombined', partNo] = self.hypRec.search(transPart).group(1)
+        self.att['hypothesis_recombined', 'snt_%s' % partNo] = self.hypRec.search(transPart).group(1)
         
         # get 'hypothesis pruned'
-        self.att['hypothesis_pruned', partNo] = self.hypPru.search(transPart).group(1)
+        self.att['hypothesis_pruned', 'snt_%s' % partNo] = self.hypPru.search(transPart).group(1)
         
         # get 'time to collect options'
-        self.att['time_collect_opt', partNo] = self.timColOpt.search(transPart).group(1,2)
+        self.att['time_collect_opt', 'snt_%s' % partNo] = self.timColOpt.search(transPart).group(1,2)
         
         # get 'time to create hypothesis'
-        self.att['time_create_hypothesis', partNo] = self.timCreHyp.search(transPart).group(1,2)
+        self.att['time_create_hypothesis', 'snt_%s' % partNo] = self.timCreHyp.search(transPart).group(1,2)
         
         # get 'time to estimate score'
-        self.att['time_estimate_score', partNo] = self.timEstSco.search(transPart).group(1,2)
+        self.att['time_estimate_score', 'snt_%s' % partNo] = self.timEstSco.search(transPart).group(1,2)
         
         # get 'time to calculate lm'
-        self.att['time_calculate_lm', partNo] = self.timCalLm.search(transPart).group(1,2)
+        self.att['time_calculate_lm', 'snt_%s' % partNo] = self.timCalLm.search(transPart).group(1,2)
         
         # get 'time to other hypothesis score'
-        self.att['time_other_hypothesis_score', partNo] = self.timOthHypSco.search(transPart).group(1,2)
+        self.att['time_other_hypothesis_score', 'snt_%s' % partNo] = self.timOthHypSco.search(transPart).group(1,2)
         
         # get 'time to manage stacks'
-        self.att['time_manage_stacks', partNo] = self.timManSta.search(transPart).group(1,2)
+        self.att['time_manage_stacks', 'snt_%s' % partNo] = self.timManSta.search(transPart).group(1,2)
         
         # get 'time to other'
-        self.att['time_other', partNo] = self.timOth.search(transPart).group(1,2)
+        self.att['time_other', 'snt_%s' % partNo] = self.timOth.search(transPart).group(1,2)
         
         # get 'total source words'
-        self.att['total_source_words', partNo] = self.totSouWor.search(transPart).group(1)
+        self.att['total_source_words', 'snt_%s' % partNo] = self.totSouWor.search(transPart).group(1)
         
         # get 'words deleted'
-        self.att['words_deleted', partNo] = self.worDel.search(transPart).group(1)
+        self.att['words_deleted', 'snt_%s' % partNo] = self.worDel.search(transPart).group(1)
         
         # get 'words inserted'
-        self.att['words_inserted', partNo] = self.worIns.search(transPart).group(1)
+        self.att['words_inserted', 'snt_%s' % partNo] = self.worIns.search(transPart).group(1)
         
         # get 'best translation - total'
-        self.att['best_trans_total', partNo] = self.besTraTot.search(transPart).group(1)
+        self.att['best_trans_total', 'snt_%s' % partNo] = self.besTraTot.search(transPart).group(1)
         
         # get 'best translation - values' 
-        self.att['best_trans_values', partNo] = re.findall \
+        self.att['best_trans_values', 'snt_%s' % partNo] = re.findall \
                        ('([\d.-]+)', self.besTraVal.search(transPart).group(1))
         
         # get 'pC parameters'
-        self.att['pC', partNo] = self.pC.search(transPart).group(0)
-        print self.pC.findall(transPart)
+        self.att['pC', 'snt_%s' % partNo] = self.pC.findall(transPart)
+        #print self.pC.findall(transPart)
         
         # get 'c parameters'
-        self.att['c', partNo] = self.c.search(transPart).group(0)
-        print self.c.findall(transPart)
+        self.att['c', 'snt_%s' % partNo] = self.c.findall(transPart)
+        #print self.c.findall(transPart)
         
         #print '\n'.join(['%s = %s' % (str(item), str(value)) for item, value in self.att.items()])
-        #if partNo == 2: sys.exit()
+        #if partNo == 1: sys.exit()
         #sys.exit()
-        self.parsingTime += time.time() - begin
+        #self.parsingTime += time.time() - begin
 
 
 # check command line arguments
 parser = OptionParser()
 parser.add_option("-f", '--filename', dest='filename', \
                     help="Name of input file with translation system analysis")
-options, args  = parser.parse_args()
-#if not options.filename: sys.exit('ERROR: Option --filename is missing!')
-filename = '/media/DATA/Arbeit/DFKI/120402_sentence_analysis/SERVICE_EXCELLENCE_cust_euDE_4.txt.log'
-ReadSystemAnalysis(options.filename)
+options, args = parser.parse_args()
+if not options.filename: sys.exit('ERROR: Option --filename is missing!')
+#filename = '/media/DATA/Arbeit/DFKI/120402_sentence_analysis/SERVICE_EXCELLENCE_cust_euDE_4.txt.log'
+ExtractEvaluation(options.filename)
