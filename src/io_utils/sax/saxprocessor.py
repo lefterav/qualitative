@@ -43,7 +43,7 @@ class SaxProcessor(XMLGenerator):
         self.ref = None
         self.annotations = []
         
-        self.ss_text = ""
+        self.ss_text = []
         
         self.set_tags()
         
@@ -72,7 +72,7 @@ class SaxProcessor(XMLGenerator):
         if name == self.IN_TAG["sent"]:
             
             #empty up string and attribute buffer
-            self.ss_text = u""
+            self.ss_text = []
             self.ps_attributes = {}
             self.tgt = []
             for att_name in attrs.getNames():
@@ -99,7 +99,7 @@ class SaxProcessor(XMLGenerator):
         elif name in [self.IN_TAG["src"], self.IN_TAG["tgt"], self.IN_TAG["ref"] ]:
             
             #empty up string and attribute buffer
-            self.ss_text = u""
+            self.ss_text = []
             self.ss_attributes = {}
             for att_name in attrs.getNames():
                 self.ss_attributes[att_name] = attrs.getValue(att_name)
@@ -114,7 +114,8 @@ class SaxProcessor(XMLGenerator):
         @type ch: str 
         """
         if self.is_simplesentence :
-            self.ss_text = u"%s%s" % (self.ss_text, ch)
+#            self.ss_text = u"%s%s" % (self.ss_text, ch)
+            self.ss_text.append(ch)
             
     
     def endElement(self, name):
@@ -126,7 +127,7 @@ class SaxProcessor(XMLGenerator):
         @param attrs: of the element type as a string and the attrs parameter holds an object of the Attributes interface containing the attributes of the element.
         @type attrs: Attributes
         """
-        
+        self.ss_text = "".join(self.ss_text)
         #get rid of annoying leading spaces
         self.ss_text = self.ss_text.strip()
         
@@ -134,10 +135,10 @@ class SaxProcessor(XMLGenerator):
         #for each element, create the objects and clear "buffers"
         if name == self.IN_TAG["src"]:
             self.src = SimpleSentence(self.ss_text, self.ss_attributes)
-            self.ss_text = u""
+            self.ss_text = []
         elif name == self.IN_TAG["tgt"]:
             self.tgt.append(SimpleSentence(self.ss_text, self.ss_attributes))
-            self.ss_text = u""
+            self.ss_text = []
         elif name == self.IN_TAG["sent"]:
             #when the judged sentence gets closed, all previously inserted data have to be converted to objects 
             parallelsentence = ParallelSentence(self.src, self.tgt, self.ref, self.ps_attributes)

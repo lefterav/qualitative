@@ -10,8 +10,10 @@ src_resultStats_legacyScore
 tgt-1_lgt_det_nom_sing_1_
 src_style_use_article_matches
 tgt-1_lgt_pp_v_plural_5_
-tgt-1_parse-CC  src_reuse_absolute
-src_style_do_not_use_complex_sentences_matches  src_parse-dot
+tgt-1_parse-CC  
+src_reuse_absolute
+src_style_do_not_use_complex_sentences_matches  
+src_parse-dot
 tgt-1_length
 tgt-1_d_a5_std
 bb_1009
