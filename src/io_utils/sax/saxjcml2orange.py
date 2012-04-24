@@ -156,7 +156,7 @@ class SaxJcmlOrangeHeader(ContentHandler):
         self.ps_list = []
         self.is_simple_sentence = False
 
-        self.ss_text = ''
+        self.ss_text = []
         self.ss_attributes = {}
         self.ps_attributes = {} 
         
@@ -172,7 +172,7 @@ class SaxJcmlOrangeHeader(ContentHandler):
         @type attrs: attributes
         """
         if name in [self.TAG_SRC, self.TAG_TGT]:
-            self.ss_text = u''
+            self.ss_text = []
             self.ss_attributes = {}
             for att_name in attrs.getNames():
                 self.ss_attributes[att_name] = attrs.getValue(att_name)
@@ -193,14 +193,16 @@ class SaxJcmlOrangeHeader(ContentHandler):
         @type ch: str 
         """
         if self.is_simple_sentence:
-            self.ss_text = u'%s%s' % (self.ss_text, ch)
+            self.ss_text.append(ch)
+#            self.ss_text = u'%s%s' % (self.ss_text, ch)
             self.is_simple_sentence = False
 
 
     def endElement(self, name):
+        self.ss_text = "".join(self.ss_text)
         if name == self.TAG_SRC:
             self.src = SimpleSentence(self.ss_text, self.ss_attributes)
-            self.ss_text = u''
+            self.ss_text = []
         elif name == self.TAG_TGT:
             self.tgt.append(SimpleSentence(self.ss_text, self.ss_attributes))
         elif name == self.TAG_SENT:
@@ -334,7 +336,7 @@ class SaxJcmlOrangeContent(ContentHandler):
         self.ref = None
         self.ps_list = []
         
-        self.ss_text = ''
+        self.ss_text = []
         self.ss_attributes = {}
         self.ps_attributes = {}
 
@@ -350,7 +352,7 @@ class SaxJcmlOrangeContent(ContentHandler):
         @type attrs: attributes
         """
         if name in [self.TAG_SRC, self.TAG_TGT]:
-            self.ss_text = ''
+            self.ss_text = []
             self.ss_attributes = {}
             for att_name in attrs.getNames():
                 self.ss_attributes[att_name] = attrs.getValue(att_name)
@@ -372,7 +374,8 @@ class SaxJcmlOrangeContent(ContentHandler):
         """
         if self.is_simple_sentence:
             if not self.compact_mode:
-                self.ss_text = u'%s%s' % (self.ss_text, ch)
+#                self.ss_text = u'%s%s' % (self.ss_text, ch)
+                self.ss_text.append(ch)
             self.is_simple_sentence = False
 
 
@@ -382,13 +385,14 @@ class SaxJcmlOrangeContent(ContentHandler):
         @param name: the name of the element
         @type name: string
         """
+        self.ss_text = "".join(self.ss_text)
         output = []
         if name == self.TAG_SRC:
             self.src = SimpleSentence(self.ss_text, self.ss_attributes)
-            self.ss_text = u''
+            self.ss_text = []
         elif name == self.TAG_TGT:
             self.tgt.append(SimpleSentence(self.ss_text, self.ss_attributes))
-            self.ss_text = u''
+            self.ss_text = []
         elif name == self.TAG_SENT:
             ps = ParallelSentence(self.src, self.tgt, self.ref, self.ps_attributes)
             self.src = u''

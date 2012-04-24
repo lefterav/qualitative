@@ -15,6 +15,7 @@ from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
 #from classifier.svmeasy import SVMEasyLearner
 from Orange.classification.tree import TreeLearner
 from Orange.classification.logreg import LogRegLearner
+from Orange import evaluation
 
 from io_utils.input.jcmlreader import JcmlReader
 #from sentence.coupleddataset import CoupledDataSet, OrangeCoupledDataSet, CoupledDataSetDisk
@@ -77,8 +78,8 @@ class AutorankingSuite(PyExperimentSuite):
     def iterate(self, params, rep, n):
         ret = {}
         
-        print "experiment", os.getcwd()
-        print "iteration", n
+#        print "experiment", os.getcwd()
+#        print "iteration", n
         if n == 0:
             print "fetch training set"
             parallelsentences = []
@@ -86,9 +87,9 @@ class AutorankingSuite(PyExperimentSuite):
                 parallelsentences.extend(JcmlReader(training_set).get_parallelsentences())
             
             self.trainset = DataSet(parallelsentences)  
-            
-   
-            
+        
+        #TODO: alter training filters?
+        
         if n == 10:
             print "fetch test set"
             shutil.copy(self.testset, "testset.jcml")
@@ -96,8 +97,7 @@ class AutorankingSuite(PyExperimentSuite):
             
         if n == 20:
             print "pairwise training set"
-            
-            
+                
             self.trainset = AnalyticPairwiseDataset(self.trainset)
             
             if not self.ties:  
@@ -177,20 +177,38 @@ class AutorankingSuite(PyExperimentSuite):
             
             mylearner = self.learner(**self.classifier_params)
             self.classifier = OrangeClassifier(mylearner(trainset))
-            
         
+        
+        if n == 85:
+            print "evaluate classifier with cross-fold validation"
+            orangeData = Table(self.trainset_orange_filename)
+            cv = evaluation.testing.cross_validation([self.learner(**self.classifier_params)], orangeData, folds=10)
+            ret["CA"] = evaluation.scoring.CA(cv)
+            ret["AUC"] = evaluation.scoring.AUC(cv)
+            
         if n == 90:
             print "test_classifier"
             input_file = self.testset_orange_filename
-            output_file = "classified.tab"
+#            output_file = "classified.tab"
             
             print "performing classification"
-            orangeData = Table(input_file)
-            classified_set_vector = self.classifier.classify_orange_table(orangeData)
+            orangedata = Table(input_file)
+            
+            classified_set_vector = self.classifier.classify_orange_table(orangedata)
             self.classified_values_vector = [str(v[0]) for v in classified_set_vector]
             self.classified_probs_vector = [(v[1]["-1"], v[1]["1"]) for v in classified_set_vector]
+            
+            
 #            print [str(v[1]["-1"]) for v in classified_set_vector]
 #            print classified_set_vector
+        
+#        if n == 95:
+#            print "accuracy over test set"
+#            orangedata = Table(self.testset_orange_filename)
+#            cv = evaluation.testing.default_evaluation([self.learner(**self.classifier_params)], orangedata)
+#            ret["CA_test"] = evaluation.scoring.CA(cv)
+#            ret["AUC_test"] = evaluation.scoring.AUC(cv)
+        
         
         if n == 100:
             print "EVALUATION"
@@ -219,11 +237,11 @@ class AutorankingSuite(PyExperimentSuite):
         if n == 120:
             scoringset = Scoring(self.reconstructed_hard_testset)
             ret["kendalltau-hard"]  = scoringset.get_kendall_tau("rank_hard", self.class_name)
+            ret["b1-acc-hard-1"], ret["b1-acc-hard-any"] = scoringset.selectbest_accuracy("rank_hard", self.class_name)            
             
             scoringset = Scoring(self.reconstructed_soft_testset)
             ret["kendalltau-soft"] = scoringset.get_kendall_tau("rank_soft", self.class_name)
-            
-            
+            ret["b1-acc-soft-1"], ret["b1-acc-soft-any"] = scoringset.selectbest_accuracy("rank_soft", self.class_name)        
             
             
         return ret
