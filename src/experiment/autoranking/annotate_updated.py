@@ -116,11 +116,11 @@ def preprocess_data(input_file, output_file):
     tokenizer_tgt = Tokenizer(target_language)
     fgs = [normalizer_src, normalizer_tgt, tokenizer_src, tokenizer_tgt]
     
-    parallelsentences = JcmlReader(input_file).get_parallelsentences()
-    for fg in fgs:
-        parallelsentences = fg.add_features_batch(parallelsentences)
-    Parallelsentence2Jcml(parallelsentences).write_to_file(output_file)
-#    saxjcml.run_features_generator(input_file, output_file, , True)
+#    parallelsentences = JcmlReader(input_file).get_parallelsentences()
+#    for fg in fgs:
+#        parallelsentences = fg.add_features_batch(parallelsentences)
+#    Parallelsentence2Jcml(parallelsentences).write_to_file(output_file)
+    saxjcml.run_features_generator(input_file, output_file, fgs, True)
     
     
     
@@ -195,11 +195,11 @@ def truecase_target(input_file, output_file, language, model):
 def truecase(input_file, output_file, language, model):
     from featuregenerator.preprocessor import Truecaser
     truecaser = Truecaser(language, model)
-#    saxjcml.run_features_generator(input_file, output_file, [truecaser])
+    saxjcml.run_features_generator(input_file, output_file, [truecaser])
     
-    parallelsentences = JcmlReader(input_file).get_parallelsentences()
-    parallelsentences = truecaser.add_features_batch(parallelsentences)
-    Parallelsentence2Jcml(parallelsentences).write_to_file(output_file)
+#    parallelsentences = JcmlReader(input_file).get_parallelsentences()
+#    parallelsentences = truecaser.add_features_batch(parallelsentences)
+#    Parallelsentence2Jcml(parallelsentences).write_to_file(output_file)
     
 
 

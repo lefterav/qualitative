@@ -5,6 +5,10 @@ Created on 24 Mar 2012
 '''
 
 from featuregenerator import FeatureGenerator
+import sys
+from subprocess import PIPE, Popen
+from threading  import Thread
+from Queue import Queue, Empty
 import subprocess
 import util
 import codecs
@@ -47,16 +51,26 @@ class CommandlinePreprocessor(Preprocessor):
         self.running = True
         
         
+        ON_POSIX = 'posix' in sys.builtin_module_names
         self.process = subprocess.Popen(command_items, 
                                             shell=False, 
-                                            bufsize=0, 
+                                            bufsize=1, 
                                             stdin=subprocess.PIPE, 
                                             stdout=subprocess.PIPE,
+                                            close_fds=ON_POSIX
                                             )
-            
         
+        self.q = Queue()
+        t = Thread(target=self.enqueue_output, args=(self.process.stdout, self.q))
+        t.daemon = True # thread dies with the program
+        t.start()
         #self.process.stdin = codecs.getwriter('utf-8')(self.process.stdin)
         #self.process.stdout = codecs.getreader('utf-8')(self.process.stdout)
+    def enqueue_output(self, out, queue):
+        for line in iter(out.readline, b''):
+            queue.put(line)
+        out.close()
+
     
     def process_string(self, string):
         #string = string.decode('utf-8')
@@ -66,9 +80,26 @@ class CommandlinePreprocessor(Preprocessor):
         self.process.stdin.write("{}\n".format(string))
         self.process.stdin.flush()   
         self.process.stdout.flush()
-    
-        output = self.process.stdout.readline()
-        print "\\",
+        
+        
+        found = False
+        dummy = 0
+        while not found:
+            try:
+                print "trying" 
+                output = self.q.get_nowait() # or q.get(timeout=.1)
+            except Empty:
+                print ".",
+                self.process.stdin.write("\n")
+                dummy+=1
+                self.process.stdin.flush()
+            else:
+                print "\\",
+                # or q.get(timeout=.1)          
+                found = True
+                dummy=0
+                
+#        output = self.process.stdout.readline()
         self.process.stdout.flush()
         return output
     
