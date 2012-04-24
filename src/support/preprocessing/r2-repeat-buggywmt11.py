@@ -19,6 +19,7 @@ if __name__ == '__main__':
         
         for translation in seg.iter("translation"):
             fixed_translation, changes = pattern.subn("\1", translation.text)
+            translation.text = fixed_translation
             if changes == 0:
                 segments_clean.add(seg)
     
