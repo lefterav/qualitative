@@ -5,14 +5,13 @@ Created on 24 Mar 2012
 '''
 
 from featuregenerator import FeatureGenerator
-import sys
-from subprocess import PIPE, Popen
-from threading  import Thread
-from Queue import Queue, Empty
 import subprocess
 import util
 import codecs
 import os
+
+import Queue
+import threading
 from sentence.dataset import DataSet
 
 class Preprocessor(FeatureGenerator):
@@ -39,68 +38,68 @@ class Preprocessor(FeatureGenerator):
     
     
 class CommandlinePreprocessor(Preprocessor):
-    def __init__(self, path, lang, params = {}, command_template = "", load_process= False):
-        print "starting preprocessor"
+    
+    
+    def _enqueue_output(self, stdout, queue):
+        out = 0
+        for line in iter(stdout.readline, ''):
+            print "thread received response: ", line
+            queue.put(line)
+#            break
+
+
+
+    
+
+
+
+    
+    def __init__(self, path, lang, params = {}, command_template = ""):
         self.lang = lang
         params["lang"] = lang
         params["path"] = path
         self.command = command_template.format(**params)
-        print self.command
         command_items = self.command.split(' ')
         self.output = []
         self.running = True
         
-        
-        ON_POSIX = 'posix' in sys.builtin_module_names
+        print "starting process"
         self.process = subprocess.Popen(command_items, 
-                                            shell=False, 
-                                            bufsize=1, 
-                                            stdin=subprocess.PIPE, 
-                                            stdout=subprocess.PIPE,
-                                            close_fds=ON_POSIX
-                                            )
+                                        shell=False, 
+                                        bufsize=1, 
+                                        stdin=subprocess.PIPE, 
+                                        stdout=subprocess.PIPE,
+                                        )
         
-        self.q = Queue()
-        t = Thread(target=self.enqueue_output, args=(self.process.stdout, self.q))
-        t.daemon = True # thread dies with the program
-        t.start()
+
+        
+#        self.q = Queue.Queue()
+#        t = threading.Thread(target = self._enqueue_output, args = (self.process.stdout, self.q))
+#
+#        t.daemon = True
+#        t.start()
+        
+        
+        
+        print "process started"
+        
         #self.process.stdin = codecs.getwriter('utf-8')(self.process.stdin)
         #self.process.stdout = codecs.getreader('utf-8')(self.process.stdout)
-    def enqueue_output(self, out, queue):
-        for line in iter(out.readline, b''):
-            queue.put(line)
-        out.close()
-
     
     def process_string(self, string):
         #string = string.decode('utf-8')
         
         #string = string.encode('utf-8')
-        print "/",
-        self.process.stdin.write("{}\n".format(string))
+        self.process.stdin.write('{0}{1}\n'.format(string, ' '*10240))
+        print "sent sentence"
+        
+        
         self.process.stdin.flush()   
         self.process.stdout.flush()
         
-        
-        found = False
-        dummy = 0
-        while not found:
-            try:
-                print "trying" 
-                output = self.q.get_nowait() # or q.get(timeout=.1)
-            except Empty:
-                print ".",
-                self.process.stdin.write("\n")
-                dummy+=1
-                self.process.stdin.flush()
-            else:
-                print "\\",
-                # or q.get(timeout=.1)          
-                found = True
-                dummy=0
-                
-#        output = self.process.stdout.readline()
-        self.process.stdout.flush()
+        output = self.process.stdout.readline().strip()
+        print output
+
         return output
     
     def close(self):
@@ -137,22 +136,22 @@ class CommandlinePreprocessor(Preprocessor):
         #os.remove(tmpfile)
         return output
             
-    def add_features_batch(self, parallelsentences):
-        dataset = DataSet(parallelsentences)
-        
-        if dataset.get_parallelsentences()[0].get_attribute("langsrc") == self.lang:
-            sourcestrings = dataset.get_singlesource_strings()
-            processed_sourcestrings = self._get_tool_output(sourcestrings)
-            dataset.modify_singlesource_strings(processed_sourcestrings)
-        
-        
-        if dataset.get_parallelsentences()[0].get_attribute("langtgt") == self.lang:
-            targetstringlists = dataset.get_target_strings()
-            processed_targetstringslist = [self._get_tool_output(targetstrings) for targetstrings in targetstringlists]
-            dataset.modify_target_strings(processed_targetstringslist)
-        
-        return dataset.get_parallelsentences()
-    
+#    def add_features_batch(self, parallelsentences):
+#        dataset = DataSet(parallelsentences)
+#        
+#        if dataset.get_parallelsentences()[0].get_attribute("langsrc") == self.lang:
+#            sourcestrings = dataset.get_singlesource_strings()
+#            processed_sourcestrings = self._get_tool_output(sourcestrings)
+#            dataset.modify_singlesource_strings(processed_sourcestrings)
+#        
+#        
+#        if dataset.get_parallelsentences()[0].get_attribute("langtgt") == self.lang:
+#            targetstringlists = dataset.get_target_strings()
+#            processed_targetstringslist = [self._get_tool_output(targetstrings) for targetstrings in targetstringlists]
+#            dataset.modify_target_strings(processed_targetstringslist)
+#        
+#        return dataset.get_parallelsentences()
+#    
 
 class Normalizer(CommandlinePreprocessor):
     def __init__(self, lang):
@@ -185,8 +184,8 @@ if __name__ == '__main__':
 #    path = "/home/lefterav/taraxu_tools/scripts/tokenizer/normalize-punctuation.perl"
 #    command_template = "perl {path} -l {lang} -b"
     tokenizer = Tokenizer("en")
-    parallelsentences = JcmlReader("/home/lefterav/taraxu_data/selection-mechanism/ml4hmt/experiment/autoranking/4/wmt00-test-devpart.orig.jcml").get_parallelsentences()
+    parallelsentences = JcmlReader("/home/elav01/taraxu_data/jcml-latest/clean/wmt2011.newstest.en-de.rank-clean.jcml").get_parallelsentences()
     tokenized = tokenizer.add_features_batch(parallelsentences)
     #tokenizer.close()
-    Parallelsentence2Jcml(tokenized).write_to_file("/home/lefterav/taraxu_data/selection-mechanism/ml4hmt/experiment/autoranking/4/training-sample.tok.jcml")
+    Parallelsentence2Jcml(tokenized).write_to_file("/home/elav01/taraxu_data/jcml-latest/tok/wmt2011.newstest.en-de.rank-clean.jcml")
     
