@@ -13,7 +13,15 @@ import fnmatch
 
 if __name__ == '__main__':
         
-        langpairs = [("de", "en"), ("en", "de"), ("en", "fr"), ("fr", "en"), ("en", "es"), ("es", "en"), ("cz", "en"), ("en", "cz")]
+        langpairs = [("de", "en"), 
+                     ("en", "de"),
+                     ("en", "fr"),
+                     ("fr", "en"), 
+                     ("en", "es"), 
+                     ("es", "en"), 
+                     ("cz", "en"), 
+                     ("en", "cz")
+                    ]
         template_language = ("de", "en")
         path = os.curdir
         
