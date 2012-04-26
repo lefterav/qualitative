@@ -160,9 +160,8 @@ class SaxJCMLProcessor(XMLGenerator):
         @param attrs: of the element type as a string and the attrs parameter holds an object of the Attributes interface containing the attributes of the element.
         @type attrs: Attributes
         """
-        parsed_text = "".join(self.ss_text)
+        parsed_text = "".join(self.ss_text).strip()
         #get rid of annoying leading spaces
-        parsed_text = self.ss_text.strip()
         
         #all of the elements have to be declared here
         #for each element, create the objects and clear "buffers"
