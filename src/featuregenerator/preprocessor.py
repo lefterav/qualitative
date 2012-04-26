@@ -71,7 +71,6 @@ class CommandlinePreprocessor(Preprocessor):
                                         )
         
 
-        
 #        self.q = Queue.Queue()
 #        t = threading.Thread(target = self._enqueue_output, args = (self.process.stdout, self.q))
 #
