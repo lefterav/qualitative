@@ -160,20 +160,20 @@ class SaxJCMLProcessor(XMLGenerator):
         @param attrs: of the element type as a string and the attrs parameter holds an object of the Attributes interface containing the attributes of the element.
         @type attrs: Attributes
         """
-        self.ss_text = "".join(self.ss_text)
+        parsed_text = "".join(self.ss_text)
         #get rid of annoying leading spaces
-        self.ss_text = self.ss_text.strip()
+        parsed_text = self.ss_text.strip()
         
         #all of the elements have to be declared here
         #for each element, create the objects and clear "buffers"
         if name == self.TAG_SRC:
-            self.src = SimpleSentence(self.ss_text, self.ss_attributes)
+            self.src = SimpleSentence(parsed_text, self.ss_attributes)
             self.ss_text = []
         elif name == self.TAG_REF:
-            self.ref = SimpleSentence(self.ss_text, self.ss_attributes)
+            self.ref = SimpleSentence(parsed_text, self.ss_attributes)
             self.ss_text = []
         elif name == self.TAG_TGT:
-            self.tgt.append(SimpleSentence(self.ss_text, self.ss_attributes))
+            self.tgt.append(SimpleSentence(parsed_text, self.ss_attributes))
             self.ss_text = []
         elif name == self.TAG_SENT:
             #when the judged sentence gets closed, all previously inserted data have to be converted to objects 
