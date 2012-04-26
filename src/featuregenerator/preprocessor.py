@@ -63,7 +63,6 @@ class CommandlinePreprocessor(Preprocessor):
         self.output = []
         self.running = True
         
-        print "starting process"
         self.process = subprocess.Popen(command_items, 
                                         shell=False, 
                                         bufsize=1, 
@@ -81,7 +80,7 @@ class CommandlinePreprocessor(Preprocessor):
         
         
         
-        print "process started"
+
         
         #self.process.stdin = codecs.getwriter('utf-8')(self.process.stdin)
         #self.process.stdout = codecs.getreader('utf-8')(self.process.stdout)
@@ -91,15 +90,10 @@ class CommandlinePreprocessor(Preprocessor):
         
         #string = string.encode('utf-8')
         self.process.stdin.write('{0}{1}\n'.format(string, ' '*10240))
-        print "sent sentence"
-        
-        
         self.process.stdin.flush()   
         self.process.stdout.flush()
         
         output = self.process.stdout.readline().strip()
-        print output
-
         return output
     
     def close(self):
