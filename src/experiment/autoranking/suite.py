@@ -80,6 +80,12 @@ class AutorankingSuite(PyExperimentSuite):
         
 #        print "experiment", os.getcwd()
 #        print "iteration", n
+        
+#        if n == 0:
+#            import annotate_updated as annotate
+#            from ruffus import pipeline_run
+#            pipeline_run([annotate.analyze_external_features]) 
+        
         if n == 0:
             print "fetch training set"
             parallelsentences = []
