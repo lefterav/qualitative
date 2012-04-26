@@ -8,38 +8,25 @@ Modified 22 Mar 2012 for autoranking experiment
 
 import shutil
 import os
-import time
-import codecs
 
 #pipeline essentials
 from ruffus import *
 #from multiprocessing import Process, Manager 
 from ruffus.task import pipeline_printout_graph, pipeline_printout
-import cPickle as pickle
 
 #internal code classes
 from bootstrap import cfg
-from io_utils.input.orangereader import OrangeData
-from io_utils.sax.saxjcml2orange import SaxJcml2Orange
 from io_utils.input.jcmlreader import JcmlReader
-from io_utils.sax import saxjcml2orange
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml 
-from sentence.dataset import DataSet
-from sentence.rankhandler import RankHandler
-from featuregenerator.diff_generator import DiffGenerator
-from sentence.scoring import Scoring
 
 from io_utils import saxjcml
 #cfg.java_init()
 
-#ML
-#from orange import ExampleTable
-#import orange
-from xml import sax
+
+
 
 import re
 
-from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator
 from featuregenerator.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
 from featuregenerator.ratio_generator import RatioGenerator
@@ -231,28 +218,34 @@ def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, l
     pass
 
 
-language_checker_source = cfg.get_checker(source_language)
+#language_checker_source = cfg.get_checker(source_language)
 
+@jobs_limit(1, "checker")
 @active_if(cfg.exists_checker(source_language))
-@transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % source_language, language_checker_source)
-def features_checker_source(input_file, output_file, language_checker_source):
-    features_checker(input_file, output_file, language_checker_source)
+@transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % source_language, source_language)
+def features_checker_source(input_file, output_file, source_language):
+#    features_checker(input_file, output_file, language_checker_source)
+    saxjcml.run_features_generator(input_file, output_file, [cfg.get_checker(source_language)])
+    #ATTENTION: for some reason, the checker has to be initialized via suds in the same thread as it is being run
 if cfg.exists_checker(source_language):
     parallel_feature_functions.append(features_checker_source)
 
 
-language_checker_target = cfg.get_checker(target_language)
+#language_checker_target = cfg.get_checker(target_language)
 
+@jobs_limit(1, "checker")
 @active_if(cfg.exists_checker(target_language))
-@transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % target_language, language_checker_target)
-def features_checker_target(input_file, output_file, language_checker_target):
-    features_checker(input_file, output_file, language_checker_target)
+@transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % target_language, target_language)
+def features_checker_target(input_file, output_file, target_language):
+#    features_checker(input_file, output_file, language_checker_target)
+    saxjcml.run_features_generator(input_file, output_file, [cfg.get_checker(target_language)])
+    
 if cfg.exists_checker(target_language):
     parallel_feature_functions.append(features_checker_target)
 
 
-def features_checker(input_file, output_file, language_checker):
-    saxjcml.run_features_generator(input_file, output_file, [language_checker])
+#def features_checker(input_file, output_file, language_checker):
+#    saxjcml.run_features_generator(input_file, output_file, [language_checker])
 
 
 

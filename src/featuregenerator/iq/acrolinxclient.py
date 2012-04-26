@@ -300,7 +300,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         #report_xml = urllib.urlopen(report_url).read()
         
         attributes = self._read_report_url(report_url)
-        
+        print ".",
         return attributes
             
     

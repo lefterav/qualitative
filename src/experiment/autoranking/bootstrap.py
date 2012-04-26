@@ -5,33 +5,30 @@
 
 import StringIO
 from ConfigParser import ConfigParser
-import classifier
 from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator, BerkeleyXMLRPCFeatureGenerator
+from featuregenerator.iq.acrolinxclient import IQFeatureGenerator
 from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator 
-import pkgutil
-import Orange
+#import Orange
 import os
-import shutil
 import re
-import tempfile
 import sys
 import time
 import random
 import argparse
 import fnmatch
 
-from Orange.regression.linear import LinearRegressionLearner 
-from Orange.regression.pls import PLSRegressionLearner
-from Orange.regression.lasso import LassoRegressionLearner
-from Orange.regression.earth import EarthLearner
-from Orange.regression.tree import TreeLearner
-
-from Orange.classification.knn import kNNLearner
-from Orange.classification.bayes import NaiveLearner
-from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
-#from classifier.svmeasy import SVMEasyLearner
-from Orange.classification.tree import TreeLearner
-from Orange.classification.logreg import LogRegLearner
+#from Orange.regression.linear import LinearRegressionLearner 
+#from Orange.regression.pls import PLSRegressionLearner
+#from Orange.regression.lasso import LassoRegressionLearner
+#from Orange.regression.earth import EarthLearner
+#from Orange.regression.tree import TreeLearner
+#
+#from Orange.classification.knn import kNNLearner
+#from Orange.classification.bayes import NaiveLearner
+#from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
+##from classifier.svmeasy import SVMEasyLearner
+#from Orange.classification.tree import TreeLearner
+#from Orange.classification.logreg import LogRegLearner
 #from experiment.utils.ruffus_utils import (touch, sys_call,
 #                                           main_logger as log,
 #                                           main_mutex as log_mtx)
@@ -103,18 +100,18 @@ class ExperimentConfigParser(ConfigParser):
     def get_classifier_params(self):
         self.classifier_params = eval(self.get("training", "params_%s" % self.get("training", "classifier")))
     
-    def get_classifier(self, name = None):
-        if not name:
-            name = self.get("training", "classifier")
-        package = classifier
-        prefix = package.__name__ + '.'
-        for importer, modname, ispkg in pkgutil.iter_modules(package.__path__, prefix):
-            module = __import__(modname, fromlist="dummy")
-            try:
-                return getattr(module, name)
-            except:
-                pass
-        return getattr(Orange, name)
+#    def get_classifier(self, name = None):
+#        if not name:
+#            name = self.get("training", "classifier")
+#        package = classifier
+#        prefix = package.__name__ + '.'
+#        for importer, modname, ispkg in pkgutil.iter_modules(package.__path__, prefix):
+#            module = __import__(modname, fromlist="dummy")
+#            try:
+#                return getattr(module, name)
+#            except:
+#                pass
+#        return getattr(Orange, name)
     
     def exists_parser(self, language):
         for parser_name in [section for section in cfg.sections() if section.startswith("parser:")]:
@@ -163,7 +160,6 @@ class ExperimentConfigParser(ConfigParser):
     
     
     def get_checker(self, language):
-        from featuregenerator.iq.acrolinxclient import IQFeatureGenerator
         #@todo: see how to generalize this. also pass parameters read by the pipeline, currently hardcoded
         for checker_name in [section for section in self.sections() if section.startswith("checker:")]:
             print "looking on checker ", checker_name , language
