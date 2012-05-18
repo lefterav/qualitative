@@ -248,12 +248,13 @@ if cfg.exists_checker(target_language):
 #    saxjcml.run_features_generator(input_file, output_file, [language_checker])
 
 
-
+@jobs_limit(1, "ltool") #Dunno why, but only one language tool at a time
 @active_if(cfg.has_section("languagetool"))
 @transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, source_language)
 def features_langtool_source(input_file, output_file, language):
     features_langtool(input_file, output_file, language)
 
+@jobs_limit(1, "ltool")
 @active_if(cfg.has_section("languagetool"))
 @transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % target_language, target_language)
 def features_langtool_target(input_file, output_file, language):

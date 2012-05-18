@@ -267,7 +267,7 @@ class ExperimentConfigParser(ConfigParser):
         self.write(new_configfile)
         new_configfile.close()
         self.path = path
-        sys.stderr.write("working in path {}".format(path))
+        sys.stderr.write("working in path {}\n".format(path))
         return path
     
     def _get_new_step_id(self, existing_files):
