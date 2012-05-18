@@ -172,10 +172,13 @@ class BerkeleySocketFeatureGenerator(BerkeleyFeatureGenerator):
     experiments. In that case use an XMLRPC server    
     """
     
-    def __init__(self, lang, grammarfile, socket_no, tokenize = False):
+#    def __init__(self, lang, grammarfile, socket_no, tokenize = False):
+    def __init__(self, lang, grammarfile, gateway, tokenize = False):
+#def __init__(self, lang, grammarfile, socket_no, tokenize = False):        
         self.lang = lang
         self.tokenize = tokenize
-        self.berkeleyparser = BerkeleyParserSocket(grammarfile, socket_no)
+#        self.berkeleyparser = BerkeleyParserSocket(grammarfile, socket_no)
+        self.berkeleyparser = BerkeleyParserSocket(grammarfile, gateway)
     
     def parse(self, string):
         return self.berkeleyparser.parse(string)
