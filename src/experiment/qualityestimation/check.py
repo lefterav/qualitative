@@ -29,7 +29,8 @@ def sort_values(mysuite, directory, rep, mode):
     """
 
     table = []
-    if args.mode:
+    if mode:
+        print "Scores for regression"
         required_feature_names = ["RMSE", "MAE", "MSE", "RSE", "R2"]
     else:
         required_feature_names = ["RootMeanSqrErr", "MeanAvgErr", "LargeErrPerc", "SmallErrPerc", "interval1", "interval2", "DeltaAvg", "Spearman-Corr", "CA", "AUC"]
@@ -105,25 +106,28 @@ def print_values_directory(mysuite, directory):
             
         
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Display progress of variable')
-    parser.add_argument('directories', type=str, metavar='N', nargs='2')
-    parser.add_argument('--regression' , dest='mode', action='store_const', const=True, default = False)
-    parser.add_argument('--rep', type=int, dest='rep', default = 1)
+    #parser = argparse.ArgumentParser()
+    #parser.add_argument('directories', action='append' )
+    #parser.add_argument('--rep', default = 1)
+    #parser.add_argument('-c', dest='config')
     
-    args = parser.parse_args()
+    #parser.add_argument('--regression' , dest='mode', action='store_const', const=True, default = False)
+    #print sys.argv 
+    #args = parser.parse_args(sys.argv[3:])
     
-    rep = parser.rep
-    directory1 = parser.directories[0]
+    directory1 = './100/quality_estimation_development/'
     directory2 = False
+    rep = 0 
+    mode = True
+    #rep = int(args.rep)
     try:
         directory2 = parser.directories[0]
     except: 
         pass
     
     mysuite = QualityEstimationSuite()
-    rep = 1
-    
-    dict1 = sort_values(mysuite, directory1, rep, args.mode)
+    rep = 0    
+    dict1 = sort_values(mysuite, directory1, rep, mode)
     if directory2:
         dict2 = dict(sort_values(mysuite, directory2, args.mode))
     
