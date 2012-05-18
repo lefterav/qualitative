@@ -16,6 +16,7 @@ import time
 import random
 import argparse
 import fnmatch
+import socket
 
 #from Orange.regression.linear import LinearRegressionLearner 
 #from Orange.regression.pls import PLSRegressionLearner
@@ -34,7 +35,7 @@ import fnmatch
 #                                           main_mutex as log_mtx)
 import subprocess
 
-from py4j.java_gateway import GatewayClient
+from py4j.java_gateway import GatewayClient, JavaGateway
 
 # --- config and options---
 CONFIG_FILENAME = os.path.abspath(os.path.join(os.path.dirname(__name__), 'config/pipeline.cfg'))
@@ -63,12 +64,16 @@ class ExperimentConfigParser(ConfigParser):
             # prepare and run Java server
             #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
             cmd = ["java", "-cp", classpath, "JavaServer" ]
+#            cmd = " ".join(cmd)
+            
             self.jvm = subprocess.Popen(cmd, shell=False, bufsize=0, stdout=subprocess.PIPE) #shell=True,
+            time.sleep(10)
             self.jvm.stdout.flush()
             socket_no = int(self.jvm.stdout.readline().strip()) 
-            self.socket = GatewayClient('localhost', socket_no)
-            sys.stderr.write("Started java process with pid {} in socket {}".format(self.jvm.pid, socket_no))
-            
+            gatewayclient = GatewayClient('localhost', socket_no)
+            self.gateway = JavaGateway(gatewayclient)
+            sys.stderr.write("Initialized global Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
+            return self.gateway
             # wait so that server starts
 #            time.sleep(2)
 
@@ -131,7 +136,8 @@ class ExperimentConfigParser(ConfigParser):
                     print "initializing socket parser"
                     grammarfile = self.get(parser_name, "grammarfile")
                     
-                    return BerkeleySocketFeatureGenerator(language, grammarfile, self.get_classpath())
+#                    return BerkeleySocketFeatureGenerator(language, grammarfile, self.get_classpath())
+                    return BerkeleySocketFeatureGenerator(language, grammarfile, self.gateway)
         return False
     
     
@@ -171,8 +177,9 @@ class ExperimentConfigParser(ConfigParser):
                 settings = self._get_checker_settings(checker_name)
                                 
                 #user_id = "{}{}".format(self.get(checker_name, "user_id"), ExperimentConfigParser.checker)
-                user_id = self.get(checker_name, "user_id")
+#                user_id = self.get(checker_name, "user_id")
                 #user_id = os.path.basename(tempfile.mktemp())
+                user_id = socket.gethostname()
                 
                 feature_generator = IQFeatureGenerator(language,
                                                        settings,
@@ -260,7 +267,7 @@ class ExperimentConfigParser(ConfigParser):
         self.write(new_configfile)
         new_configfile.close()
         self.path = path
-        print "working in path ", path
+        sys.stderr.write("working in path {}".format(path))
         return path
     
     def _get_new_step_id(self, existing_files):
@@ -277,6 +284,7 @@ class ExperimentConfigParser(ConfigParser):
         if filename_ids:
             highestnum = max(filename_ids)
             current_step_id = highestnum + 1
+        sys.stderr.write("Running experiment as step {0}\n".format(current_step_id))
         return current_step_id 
     
     def __del__(self):
@@ -332,5 +340,6 @@ if args.cores:
     cfg.set("general", "cores", args.cores)
 
 path = cfg.prepare_dir(continue_experiment)
+
 #os.chdir(path)
 

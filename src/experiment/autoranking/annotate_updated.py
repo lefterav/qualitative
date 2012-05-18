@@ -20,7 +20,7 @@ from io_utils.input.jcmlreader import JcmlReader
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml 
 
 from io_utils import saxjcml
-#cfg.java_init()
+gateway = cfg.java_init()
 
 
 
@@ -250,20 +250,20 @@ if cfg.exists_checker(target_language):
 
 
 @active_if(cfg.has_section("languagetool"))
-@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, source_language, cfg.get_classpath())
-def features_langtool_source(input_file, output_file, language, socket_no):
-    features_langtool(input_file, output_file, language, socket_no)
+@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, source_language)
+def features_langtool_source(input_file, output_file, language):
+    features_langtool(input_file, output_file, language)
 
 @active_if(cfg.has_section("languagetool"))
-@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % target_language, target_language, cfg.get_classpath())
-def features_langtool_target(input_file, output_file, language, socket_no):
-    features_langtool(input_file, output_file, language, socket_no)
+@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % target_language, target_language)
+def features_langtool_target(input_file, output_file, language):
+    features_langtool(input_file, output_file, language)
 if cfg.has_section("languagetool"):
     parallel_feature_functions.append(features_langtool_target)
     parallel_feature_functions.append(features_langtool_source)
 
-def features_langtool(input_file, output_file, language, socket_no):
-    fg = LanguageToolSocketFeatureGenerator(language, socket_no)
+def features_langtool(input_file, output_file, language):
+    fg = LanguageToolSocketFeatureGenerator(language, cfg.gateway)
     saxjcml.run_features_generator(input_file, output_file, [fg])
 
 @active_if(False)
@@ -331,4 +331,4 @@ if __name__ == '__main__':
     #pipeline_run([original_data_split], multiprocess = 2)
 
 print "Done!"
-#cfg.java_terminate()
+cfg.java_terminate()

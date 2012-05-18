@@ -30,7 +30,7 @@ public class JavaServer {
     public static void main(String[] args) {
     	
     	boolean serverCreated = false;
-		int socket = 25333;
+		int socket = 25336;
 		
 		//keep trying to connect with the next socket, until socket is free
 		while (!serverCreated) {
