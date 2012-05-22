@@ -78,7 +78,7 @@ class BerkeleyParserSocket():
         
         # get the application instance
         self.bp_obj =  module_view.BParser(grammarfile)
-        print "got BParser object"
+        sys.stderr.write("got BParser object\n")
 #        except:
 #            self._reconnect(berkeley_parser_jar, py4j_jar)
     
