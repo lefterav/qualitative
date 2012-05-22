@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# copyright DFKI GmbH @ TaraXUe project
 
 import sys
 import codecs
