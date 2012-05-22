@@ -132,7 +132,7 @@ public class BParser {
 			double sumConfidence = 0;
 			double bestConfidence = Double.NEGATIVE_INFINITY;
 			String bestParse = new String();
-			
+			System.err.print("-");
 			for (Tree<String> parsedTree : parseTrees){
 				
 				if (! parsedTree.getChildren().isEmpty() ){

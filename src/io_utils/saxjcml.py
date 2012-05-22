@@ -12,6 +12,7 @@ from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 import shutil
 import codecs
+import sys
 
 
 def run_features_generator(input_file, output_file, generators, encode=False):
@@ -177,12 +178,12 @@ class SaxJCMLProcessor(XMLGenerator):
         elif name == self.TAG_SENT:
             #when the judged sentence gets closed, all previously inserted data have to be converted to objects 
             parallelsentence = ParallelSentence(self.src, self.tgt, self.ref, self.ps_attributes)
-
+            sys.stderr.write("\\")
             #apply feature generators
             for fg in self.feature_generators:
                 parallelsentence = fg.add_features_parallelsentence(parallelsentence)
                 #parallelsentence.add_attributes( fg.get_features_parallelsentence(parallelsentence) )
-            
+            sys.stderr.write("/")
             #print parallelsentence
             src = parallelsentence.get_source()
 #            #print src.get_string()
