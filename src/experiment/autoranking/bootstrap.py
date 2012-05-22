@@ -133,8 +133,8 @@ class ExperimentConfigParser(ConfigParser):
                     url = self.get(parser_name, "url")
                     return BerkeleyXMLRPCFeatureGenerator(url, language, tokenize)
                 elif self.get(parser_name, "type") == "socket":
-                    print "initializing socket parser"
                     grammarfile = self.get(parser_name, "grammarfile")
+                    sys.stderr.write("initializing socket parser with grammar file {}\n".format(grammarfile))
                     
 #                    return BerkeleySocketFeatureGenerator(language, grammarfile, self.get_classpath())
                     return BerkeleySocketFeatureGenerator(language, grammarfile, self.gateway)
