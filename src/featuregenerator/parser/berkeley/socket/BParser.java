@@ -69,9 +69,9 @@ public class BParser {
 		
 		
 		public Map<String, Object> parse (String line, Boolean tokenize){
-			System.out.println("Parsing... " +line);
+			System.err.println("Parsing... " +line);
 			try {
-				System.out.println ("parsing first string");
+				
 				
 				List<String> sentence;
 				
@@ -86,7 +86,7 @@ public class BParser {
 				Map<String, Object> output = new HashMap<String, Object>();
 				output.put("nbest", this.outputTrees(parsedTrees, parser));
 				output.put("loglikelihood", this.getLogLikelihood() );
-				
+				System.err.println ("Parsed" + line);
 				return output;
 				
 			} catch (IOException e) {
@@ -117,7 +117,6 @@ public class BParser {
 				HashMap<String, String> output = new HashMap<String, String>();
 				output.putAll( this.getNBestTreeFeatures(parsedTrees, parser));
 				output.put("berkeley-loglikelihood", Double.toString(this.getLogLikelihood()));
-				System.out.println ("Parsed" + line);
 				return output;
 				
 			} catch (Exception e) {
