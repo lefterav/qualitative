@@ -74,7 +74,9 @@ class BerkeleyParserSocket():
         module_view = gateway.new_jvm_view()
         
         java_import(module_view, 'BParser')
-    
+        self.parsername = os.urandom(6)
+
+
         
         # get the application instance
         self.bp_obj =  module_view.BParser(grammarfile)
@@ -111,11 +113,14 @@ class BerkeleyParserSocket():
         """
          
         # call the python function parse() on BParser object
-        try:
-            parseresult = self.bp_obj.parse(sentence_string)
-        except:
-            self._reconnect(self.berkeley_parser_jar, self.py4_jar)
-            parseresult = self.bp_obj.parse(sentence_string)
+#        try:
+        sys.stderr.write("{0} parsing sentence {1}".format(self.parsername, sentence_string))
+        parseresult = self.bp_obj.parse(sentence_string)
+#        except:
+#            self._reconnect(self.berkeley_parser_jar, self.py4_jar)
+#            parseresult = self.bp_obj.parse(sentence_string)
+        sys.stderr.write("{0} finished parsing sentence {1}".format(self.parsername, sentence_string))
+
         return parseresult
         
 #    def __del__(self):
