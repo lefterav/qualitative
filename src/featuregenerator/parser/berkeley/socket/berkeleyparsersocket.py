@@ -117,13 +117,13 @@ class BerkeleyParserSocket():
          
         # call the python function parse() on BParser object
 #        try:
-        sys.stderr.write("#p{0}<\n".format(self.parsername))
+        sys.stderr.write("§p{0}<\n".format(self.parsername, sentence_string))
         parseresult = self.bp_obj.parse(sentence_string)
 #        except:
 #            self._reconnect(self.berkeley_parser_jar, self.py4_jar)
 #            parseresult = self.bp_obj.parse(sentence_string)
 #            sys.stderr.write("{0} crashed, restarting object".format(self.parsername))
-        sys.stderr.write("#p{0}>\n".format(self.parsername))
+        sys.stderr.write("§p{0}>\n".format(self.parsername, sentence_string))
 
         return parseresult
         
