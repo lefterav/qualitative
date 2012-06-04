@@ -103,7 +103,7 @@ public class BParser {
 		public Map<String, String> getParseFeatures(String line, Boolean tokenize){
 			System.out.println("Parsing... " +line);
 			try {
-				System.out.println ("parsing first string");
+				//System.out.println ("parsing first string");
 				List<String> sentence;
 				
 				if (!tokenize) sentence = Arrays.asList(line.split(" "));
@@ -117,7 +117,7 @@ public class BParser {
 				HashMap<String, String> output = new HashMap<String, String>();
 				output.putAll( this.getNBestTreeFeatures(parsedTrees, parser));
 				output.put("berkeley-loglikelihood", Double.toString(this.getLogLikelihood()));
-				
+				System.out.println ("Parsed" + line);
 				return output;
 				
 			} catch (Exception e) {
