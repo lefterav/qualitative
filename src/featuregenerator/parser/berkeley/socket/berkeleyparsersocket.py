@@ -127,7 +127,7 @@ class BerkeleyParserSocket():
         sys.stderr.write("<p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
         
         signal.signal(signal.SIGALRM, handler)
-        signal.alarm(10)
+        signal.alarm(20)
         
         try:
             parseresult = self.parse_msg()

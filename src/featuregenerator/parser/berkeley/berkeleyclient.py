@@ -26,6 +26,8 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         
     def get_features_string(self, sent_string):
         results = self.parse(sent_string)
+        if results == {}:
+            return {}
         loglikelihood = results['loglikelihood']
         nbestList = results['nbest']
         n = len(nbestList)
