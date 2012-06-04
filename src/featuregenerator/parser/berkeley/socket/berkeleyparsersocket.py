@@ -133,6 +133,7 @@ class BerkeleyParserSocket():
             parseresult = self.parse_msg()
         except Exception, exc: 
             sys.stderr.write("Exception: {0}\n".format(exc))
+            parseresult = {}
                 
         
 #        except:
