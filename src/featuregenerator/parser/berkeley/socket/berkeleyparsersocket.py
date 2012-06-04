@@ -130,7 +130,7 @@ class BerkeleyParserSocket():
         signal.alarm(20)
         
         try:
-            parseresult = self.parse_msg()
+            parseresult = self.parse_msg(sentence_string)
         except Exception, exc: 
             sys.stderr.write("Exception: {0}\n".format(exc))
             parseresult = {}
