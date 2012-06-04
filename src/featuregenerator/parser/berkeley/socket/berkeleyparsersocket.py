@@ -15,7 +15,11 @@ import time
 import os
 import sys
 import random
+import signal
 
+def handler(self, signum, frame):
+    sys.stderr.write("Parsing timeout\n")
+    raise Exception("parse_timeout")
 
 class BerkeleyParserSocket():
     """
@@ -78,6 +82,9 @@ class BerkeleyParserSocket():
     
 
     
+
+    
+    
     def _connect(self, gateway, grammarfile):        
         module_view = gateway.new_jvm_view()      
         java_import(module_view, 'BParser')
@@ -118,7 +125,16 @@ class BerkeleyParserSocket():
         # call the python function parse() on BParser object
 #        try:
         sys.stderr.write("<p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
-        parseresult = self.bp_obj.parse(sentence_string)
+        
+        signal.signal(signal.SIGALRM, handler)
+        signal.alarm(10)
+        
+        try:
+            parseresult = self.parse_msg()
+        except Exception, exc: 
+            sys.stderr.write("Exception: {0}\n".format(exc))
+                
+        
 #        except:
 #            self._reconnect(self.berkeley_parser_jar, self.py4_jar)
 #            parseresult = self.bp_obj.parse(sentence_string)
@@ -126,6 +142,11 @@ class BerkeleyParserSocket():
         sys.stderr.write("<\p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
 
         return parseresult
+    
+    
+    def parse_msg(self, sentence_string):
+        return self.bp_obj.parse(sentence_string)
+        
         
 #    def __del__(self):
 #        self.jvm.terminate()
