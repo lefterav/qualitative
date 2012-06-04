@@ -189,7 +189,6 @@ def truecase(input_file, output_file, language, model):
 #    Parallelsentence2Jcml(parallelsentences).write_to_file(output_file)
     
 
-
 @active_if(cfg.exists_lm(source_language))
 @transform(truecase_source, suffix(".tc.%s.jcml" % source_language), ".lm.%s.f.jcml" % source_language, source_language, cfg.get_lm_name(source_language)) 
 def features_lm_source(input_file, output_file, language, lm_name):
@@ -220,6 +219,7 @@ def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, l
 
 #language_checker_source = cfg.get_checker(source_language)
 
+@follows(merge_parse_parts_target)
 @jobs_limit(1, "checker")
 @active_if(cfg.exists_checker(source_language))
 @transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % source_language, source_language)
@@ -233,6 +233,8 @@ if cfg.exists_checker(source_language):
 
 #language_checker_target = cfg.get_checker(target_language)
 
+
+@follows(features_checker_source)
 @jobs_limit(1, "checker")
 @active_if(cfg.exists_checker(target_language))
 @transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % target_language, target_language)
@@ -248,12 +250,14 @@ if cfg.exists_checker(target_language):
 #    saxjcml.run_features_generator(input_file, output_file, [language_checker])
 
 
+@follows(features_checker_target)
 @jobs_limit(1, "ltool") #Dunno why, but only one language tool at a time
 @active_if(cfg.has_section("languagetool"))
 @transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, source_language)
 def features_langtool_source(input_file, output_file, language):
     features_langtool(input_file, output_file, language)
 
+@follows(features_langtool_source)
 @jobs_limit(1, "ltool")
 @active_if(cfg.has_section("languagetool"))
 @transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % target_language, target_language)
