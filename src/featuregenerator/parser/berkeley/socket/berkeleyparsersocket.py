@@ -73,7 +73,7 @@ class BerkeleyParserSocket():
 
 #        except:
 #            self._reconnect(berkeley_parser_jar, py4j_jar)
-        self.parsername = os.urandom(6)
+        self.parsername = random.randint(1,10000)
         self._connect(gateway, grammarfile)
     
 
