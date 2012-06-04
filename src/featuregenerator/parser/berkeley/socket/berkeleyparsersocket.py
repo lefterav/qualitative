@@ -70,42 +70,45 @@ class BerkeleyParserSocket():
 #        sys.stderr.write("Started java process with pid {} in socket {}".format(self.jvm.pid, socket_no))
 #        
 #        gateway = JavaGateway(self.socket)
-        
-        module_view = gateway.new_jvm_view()
-        
-        java_import(module_view, 'BParser')
+
+#        except:
+#            self._reconnect(berkeley_parser_jar, py4j_jar)
         self.parsername = os.urandom(6)
+        self._connect(gateway, grammarfile)
+    
 
-
+    
+    def _connect(self, gateway, grammarfile):        
+        module_view = gateway.new_jvm_view()      
+        java_import(module_view, 'BParser')
         
         # get the application instance
         self.bp_obj =  module_view.BParser(grammarfile)
         sys.stderr.write("got BParser object\n")
-#        except:
-#            self._reconnect(berkeley_parser_jar, py4j_jar)
-    
-    def _reconnect(self, berkeley_parser_jar, py4j_jar):
-        #define running directory
-        path = os.path.abspath(__file__)
-        dir_path = os.path.dirname(path)
 
-        #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
-        subprocess.check_call(["javac", "-classpath", "%s:%s:%s" % (berkeley_parser_jar, py4j_jar, dir_path), "%s/JavaServer.java" % dir_path])
-        
-        
-        # prepare and run Java server
-        #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
-        cmd = ["java", "-cp", "%s:%s:%s" % (self.berkeley_parser_jar, py4j_jar, dir_path), "JavaServer" ]
-        self.process = subprocess.Popen(cmd,  close_fds=True) #shell=True,
-        sys.stderr.write("Started java process with pid %d\n" % self.process.pid)
-        
-        # wait so that server starts
-        time.sleep(2)
-        self.gateway = JavaGateway()
-        bpInstance = self.gateway.entry_point
     
-        # call the method get_BP_obj() in java
-        self.bp_obj = bpInstance.get_BP_obj(self.grammarfile)
+#    def _reconnect(self, berkeley_parser_jar, py4j_jar):
+#        #define running directory
+#        path = os.path.abspath(__file__)
+#        dir_path = os.path.dirname(path)
+#
+#        #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
+#        subprocess.check_call(["javac", "-classpath", "%s:%s:%s" % (berkeley_parser_jar, py4j_jar, dir_path), "%s/JavaServer.java" % dir_path])
+#        
+#        
+#        # prepare and run Java server
+#        #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
+#        cmd = ["java", "-cp", "%s:%s:%s" % (self.berkeley_parser_jar, py4j_jar, dir_path), "JavaServer" ]
+#        self.process = subprocess.Popen(cmd,  close_fds=True) #shell=True,
+#        sys.stderr.write("Started java process with pid %d\n" % self.process.pid)
+#        
+#        # wait so that server starts
+#        time.sleep(2)
+#        self.gateway = JavaGateway()
+#        bpInstance = self.gateway.entry_point
+#    
+#        # call the method get_BP_obj() in java
+#        self.bp_obj = bpInstance.get_BP_obj(self.grammarfile)
 
     def parse(self, sentence_string):
         """
@@ -114,12 +117,13 @@ class BerkeleyParserSocket():
          
         # call the python function parse() on BParser object
 #        try:
-        sys.stderr.write("{0} parsing sentence {1}".format(self.parsername, sentence_string))
+        sys.stderr.write("{0} parsing sentence {1}\n".format(self.parsername, sentence_string))
         parseresult = self.bp_obj.parse(sentence_string)
 #        except:
 #            self._reconnect(self.berkeley_parser_jar, self.py4_jar)
 #            parseresult = self.bp_obj.parse(sentence_string)
-        sys.stderr.write("{0} finished parsing sentence {1}".format(self.parsername, sentence_string))
+#            sys.stderr.write("{0} crashed, restarting object".format(self.parsername))
+        sys.stderr.write("{0} finished parsing sentence {1}\n".format(self.parsername, sentence_string))
 
         return parseresult
         
