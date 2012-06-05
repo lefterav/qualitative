@@ -79,7 +79,8 @@ public class BParser {
 				  else sentence = tokenizer.tokenizeLine(line);
 						
 				if (sentence.size()>=80)  
-	    			System.err.println("Skipping sentence with "+sentence.size()+" words since it is too long."); 
+	    			System.err.println("Skipping sentence with "+sentence.size()+" words since it is too long.");
+					 
 	    		
 				List<Tree<String>> parsedTrees = parser.getKBestConstrainedParses(sentence, null, kbest);	
 				
