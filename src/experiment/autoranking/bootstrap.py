@@ -268,7 +268,7 @@ class ExperimentConfigParser(ConfigParser):
         new_configfile.close()
         self.path = path
         sys.stderr.write("Working in path {}\n".format(path))
-        sys.stderr.write("System process pid: {}\m".format(os.getpid()))
+        sys.stderr.write("System process pid: {}\n".format(os.getpid()))
         return path
     
     def _get_new_step_id(self, existing_files):
