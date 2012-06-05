@@ -17,9 +17,9 @@ import sys
 import random
 import signal
 
-def handler(self, signum, frame):
-    sys.stderr.write("Parsing timeout\n")
-    raise Exception("parse_timeout")
+#def handler(self, signum):
+#    sys.stderr.write("Parsing timeout\n")
+#    raise Exception("parse_timeout")
 
 class BerkeleyParserSocket():
     """
@@ -58,7 +58,7 @@ class BerkeleyParserSocket():
 #        # connect to the JVM
 #        classpath, dir_path = classpath
 #
-#        #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
+        #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
 #        subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path])
 #        
 #        # prepare and run Java server
@@ -126,14 +126,14 @@ class BerkeleyParserSocket():
 #        try:
         sys.stderr.write("<p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
         
-        signal.signal(signal.SIGALRM, handler)
-        signal.alarm(20)
+#        signal.signal(signal.SIGALRM, handler)
+#        signal.alarm(20)
         
-        try:
-            parseresult = self.parse_msg(sentence_string)
-        except Exception, exc: 
-            sys.stderr.write("Exception: {0}\n".format(exc))
-            parseresult = {}
+#        try:
+        parseresult = self.parse_msg(sentence_string)
+#        except Exception, exc: 
+#            sys.stderr.write("Exception: {0}\n".format(exc))
+#            parseresult = {}
                 
         
 #        except:
