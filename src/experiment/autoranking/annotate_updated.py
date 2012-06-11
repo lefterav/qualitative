@@ -225,7 +225,8 @@ def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, l
 @transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % source_language, source_language)
 def features_checker_source(input_file, output_file, source_language):
 #    features_checker(input_file, output_file, language_checker_source)
-    saxjcml.run_features_generator(input_file, output_file, [cfg.get_checker(source_language)])
+    cfg.get_checker(source_language).add_features_batch_xml(input_file, output_file)
+#    saxjcml.run_features_generator(input_file, output_file, [cfg.get_checker(source_language)])
     #ATTENTION: for some reason, the checker has to be initialized via suds in the same thread as it is being run
 if cfg.exists_checker(source_language):
     parallel_feature_functions.append(features_checker_source)
@@ -240,7 +241,8 @@ if cfg.exists_checker(source_language):
 @transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % target_language, target_language)
 def features_checker_target(input_file, output_file, target_language):
 #    features_checker(input_file, output_file, language_checker_target)
-    saxjcml.run_features_generator(input_file, output_file, [cfg.get_checker(target_language)])
+    cfg.get_checker(target_language).add_features_batch_xml(input_file, output_file)
+#    saxjcml.run_features_generator(input_file, output_file, [cfg.get_checker(target_language)])
     
 if cfg.exists_checker(target_language):
     parallel_feature_functions.append(features_checker_target)
