@@ -110,7 +110,58 @@ def preprocess_data(input_file, output_file):
     saxjcml.run_features_generator(input_file, output_file, fgs, True)
     
     
+
+
+@jobs_limit(1, "checker")
+@active_if(cfg.exists_checker(source_language))
+@transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % source_language, source_language)
+def features_checker_source(input_file, output_file, source_language):
+#    features_checker(input_file, output_file, language_checker_source)
+    cfg.get_checker(source_language).add_features_batch_xml(input_file, output_file)
+#    saxjcml.run_features_generator(input_file, output_file, [cfg.get_checker(source_language)])
+    #ATTENTION: for some reason, the checker has to be initialized via suds in the same thread as it is being run
+if cfg.exists_checker(source_language):
+    parallel_feature_functions.append(features_checker_source)
+
+
+#language_checker_target = cfg.get_checker(target_language)
+
+
+@jobs_limit(1, "checker")
+@active_if(cfg.exists_checker(target_language))
+@transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % target_language, target_language)
+def features_checker_target(input_file, output_file, target_language):
+#    features_checker(input_file, output_file, language_checker_target)
+    cfg.get_checker(target_language).add_features_batch_xml(input_file, output_file)
+#    saxjcml.run_features_generator(input_file, output_file, [cfg.get_checker(target_language)])
     
+if cfg.exists_checker(target_language):
+    parallel_feature_functions.append(features_checker_target)
+
+
+#def features_checker(input_file, output_file, language_checker):
+#    saxjcml.run_features_generator(input_file, output_file, [language_checker])
+
+
+@jobs_limit(1, "ltool") #Dunno why, but only one language tool at a time
+@active_if(cfg.has_section("languagetool"))
+@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, source_language)
+def features_langtool_source(input_file, output_file, language):
+    features_langtool(input_file, output_file, language)
+
+@jobs_limit(1, "ltool")
+@active_if(cfg.has_section("languagetool"))
+@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % target_language, target_language)
+def features_langtool_target(input_file, output_file, language):
+    features_langtool(input_file, output_file, language)
+if cfg.has_section("languagetool"):
+    parallel_feature_functions.append(features_langtool_target)
+    parallel_feature_functions.append(features_langtool_source)
+
+def features_langtool(input_file, output_file, language):
+    fg = LanguageToolSocketFeatureGenerator(language, cfg.gateway)
+    saxjcml.run_features_generator(input_file, output_file, [fg])
+
 
 
             
@@ -219,59 +270,6 @@ def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, l
 
 #language_checker_source = cfg.get_checker(source_language)
 
-@follows(merge_parse_parts_target)
-@jobs_limit(1, "checker")
-@active_if(cfg.exists_checker(source_language))
-@transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % source_language, source_language)
-def features_checker_source(input_file, output_file, source_language):
-#    features_checker(input_file, output_file, language_checker_source)
-    cfg.get_checker(source_language).add_features_batch_xml(input_file, output_file)
-#    saxjcml.run_features_generator(input_file, output_file, [cfg.get_checker(source_language)])
-    #ATTENTION: for some reason, the checker has to be initialized via suds in the same thread as it is being run
-if cfg.exists_checker(source_language):
-    parallel_feature_functions.append(features_checker_source)
-
-
-#language_checker_target = cfg.get_checker(target_language)
-
-
-@follows(features_checker_source)
-@jobs_limit(1, "checker")
-@active_if(cfg.exists_checker(target_language))
-@transform(data_fetch, suffix(".orig.jcml"), ".iq.%s.f.jcml" % target_language, target_language)
-def features_checker_target(input_file, output_file, target_language):
-#    features_checker(input_file, output_file, language_checker_target)
-    cfg.get_checker(target_language).add_features_batch_xml(input_file, output_file)
-#    saxjcml.run_features_generator(input_file, output_file, [cfg.get_checker(target_language)])
-    
-if cfg.exists_checker(target_language):
-    parallel_feature_functions.append(features_checker_target)
-
-
-#def features_checker(input_file, output_file, language_checker):
-#    saxjcml.run_features_generator(input_file, output_file, [language_checker])
-
-
-@follows(features_checker_target)
-@jobs_limit(1, "ltool") #Dunno why, but only one language tool at a time
-@active_if(cfg.has_section("languagetool"))
-@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, source_language)
-def features_langtool_source(input_file, output_file, language):
-    features_langtool(input_file, output_file, language)
-
-@follows(features_langtool_source)
-@jobs_limit(1, "ltool")
-@active_if(cfg.has_section("languagetool"))
-@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % target_language, target_language)
-def features_langtool_target(input_file, output_file, language):
-    features_langtool(input_file, output_file, language)
-if cfg.has_section("languagetool"):
-    parallel_feature_functions.append(features_langtool_target)
-    parallel_feature_functions.append(features_langtool_source)
-
-def features_langtool(input_file, output_file, language):
-    fg = LanguageToolSocketFeatureGenerator(language, cfg.gateway)
-    saxjcml.run_features_generator(input_file, output_file, [fg])
 
 @active_if(False)
 def features_ibm(input_file, output_file, ibm1lexicon):
