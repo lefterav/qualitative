@@ -8,12 +8,14 @@ from Orange.regression.pls import PLSRegressionLearner
 from Orange.regression.lasso import LassoRegressionLearner
 from Orange.regression.earth import EarthLearner
 from Orange.regression.tree import TreeLearner
+from Orange.classification.rules import CN2Learner
 
-from Orange.classification.knn import kNNLearner
 from Orange.classification.bayes import NaiveLearner
-from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
-#from classifier.svmeasy import SVMEasyLearner
+from Orange.classification.knn import kNNLearner
+#from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
+from classifier.svmeasy import SVMEasyLearner
 from Orange.classification.tree import TreeLearner
+from Orange.classification.tree import C45Learner
 from Orange.classification.logreg import LogRegLearner
 from Orange import evaluation
 
@@ -74,6 +76,7 @@ class AutorankingSuite(PyExperimentSuite):
         self.training_sets = params["training_sets"].format(**params).split(',')
         self.testset = params["test_set"].format(**params)
         self.ties = params["ties"]
+    
     
     def iterate(self, params, rep, n):
         ret = {}
@@ -182,13 +185,17 @@ class AutorankingSuite(PyExperimentSuite):
             trainset = Table(input_file)
             
             mylearner = self.learner(**self.classifier_params)
-            self.classifier = OrangeClassifier(mylearner(trainset))
+            trained_classifier = mylearner(trainset)
+            self.classifier = OrangeClassifier(trained_classifier)
+            
+            
         
         
         if n == 85:
             print "evaluate classifier with cross-fold validation"
             orangeData = Table(self.trainset_orange_filename)
-            cv = evaluation.testing.cross_validation([self.learner(**self.classifier_params)], orangeData, folds=10)
+            learner = self.learner(**self.classifier_params)
+            cv = evaluation.testing.cross_validation([learner], orangeData, 10)
             ret["CA"] = evaluation.scoring.CA(cv)
             ret["AUC"] = evaluation.scoring.AUC(cv)
             
