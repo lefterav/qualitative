@@ -30,9 +30,7 @@ class SVMEasyLearner(SVMLearner):
         except:
             self.classTreatment = DomainContinuizer.Ignore
 
-    def __call__(self, examples):
-        
-                
+    def __call__(self, examples, weight=0):        
         print "continuizing data"
         newdomain, newexamples = self.continuize(examples)
         newexamples.save("continuized_examples.tab")
