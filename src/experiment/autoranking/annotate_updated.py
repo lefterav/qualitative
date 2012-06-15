@@ -4,10 +4,10 @@ Modified 22 Mar 2012 for autoranking experiment
 @author: lefterav
 '''
 
-
-
 import shutil
 import os
+import re
+import sys
 
 #pipeline essentials
 from ruffus import *
@@ -18,30 +18,30 @@ from ruffus.task import pipeline_printout_graph, pipeline_printout
 from bootstrap import cfg
 from io_utils.input.jcmlreader import JcmlReader
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml 
-
 from io_utils import saxjcml
-gateway = cfg.java_init()
-
-
-
-
-import re
-
 from featuregenerator.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
 from featuregenerator.ratio_generator import RatioGenerator
 from featuregenerator.ibm1featuregenerator import Ibm1FeatureGenerator
 from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenerator
-from featuregenerator.bleu.bleugenerator import BleuGenerator
+from featuregenerator.bleu.bleugenerator import CrossBleuGenerator
 from featuregenerator.attribute_rank import AttributeRankGenerator
 from io_utils.input.xmlreader import XmlReader
 from featuregenerator.languagechecker.languagetool_socket import LanguageToolSocketFeatureGenerator
 from featuregenerator.preprocessor import Normalizer
 from featuregenerator.preprocessor import Tokenizer
 
+
+
+
+
+
+
+gateway = cfg.java_init()
+
 cores = int(cfg.get("general", "cores"))
 parallel_feature_functions = []
-print "running with {} cores".format(cores) 
+sys.stderr.write("running with {} cores\n".format(cores)) 
 
 path = cfg.get_path()
 os.chdir(path)
@@ -269,6 +269,12 @@ def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, l
 
 
 #language_checker_source = cfg.get_checker(source_language)
+
+
+@transform(truecase_target, suffix(".crossbleu.%s.jcml" % target_language))
+def cross_bleu(input_file, output_file):
+    saxjcml.run_features_generator(input_file, output_file, [CrossBleuGenerator()])
+parallel_feature_functions.append(cross_bleu)
 
 
 @active_if(False)
