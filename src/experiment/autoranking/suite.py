@@ -8,7 +8,7 @@ from Orange.regression.pls import PLSRegressionLearner
 from Orange.regression.lasso import LassoRegressionLearner
 from Orange.regression.earth import EarthLearner
 from Orange.regression.tree import TreeLearner
-from Orange.classification.rules import CN2Learner
+from Orange.classification.rules import CN2Learner,  CN2UnorderedLearner, CN2SDUnorderedLearner, CN2EVCUnorderedLearner
 
 from Orange.classification.bayes import NaiveLearner
 from Orange.classification.knn import kNNLearner
@@ -187,7 +187,7 @@ class AutorankingSuite(PyExperimentSuite):
             mylearner = self.learner(**self.classifier_params)
             trained_classifier = mylearner(trainset)
             self.classifier = OrangeClassifier(trained_classifier)
-            
+            self.classifier.print_content()
             
         
         
