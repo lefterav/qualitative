@@ -8,6 +8,7 @@ Created on Jul 21, 2011
 
 import codecs
 import os
+import sys
 import tempfile
 import shutil
 from xml.sax import make_parser
@@ -224,8 +225,9 @@ class SaxJcmlOrangeHeader(ContentHandler):
     def endDocument(self):
         # check if the desired attributes are in attribute names that we got from input file
         if set(self.desired_attributes) - self.attribute_names:
-            print 'Following desired attributes werent found in input file:'
-            print set(self.desired_attributes) - self.attribute_names, '\n'
+            notfound = set(self.desired_attributes) - self.attribute_names
+            sys.stderr.write('Warning: Following desired attributes werent found in input file:\n{0}'.format(notfound))
+            
         
         # first construct the lines for the declaration
         line_1 = '' # line for the name of the arguments
@@ -263,6 +265,8 @@ class SaxJcmlOrangeHeader(ContentHandler):
                    or attribute_name in self.meta_attributes)
                    ):
                 line_3 = line_3 + "m"
+            elif "id" in attribute_name:
+                raise AttributeError('One of the given features seems to be a unique identifier')
             
             line_3 = line_3 + "\t"
 
