@@ -82,6 +82,9 @@ class SVMEasyLearner(SVMLearner):
         #return SVMClassifierClassEasyWrapper(appliedTunedLearner, newdomain, examples), appliedTunedLearner.fittedParameters
         return appliedTunedLearner, appliedTunedLearner.fittedParameters
 
+
+            
+        
 #examples = orange.ExampleTable("/home/lefterav/workspace/TaraXUscripts/src/training-attset1.100.tab")
 #svmlearner = SVMEasy(examples)
 #
