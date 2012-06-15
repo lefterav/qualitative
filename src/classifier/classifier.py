@@ -8,7 +8,10 @@ import Orange
 from Orange.data import Instance
 from Orange.data import Table
 from Orange.classification import Classifier
-
+from Orange.classification.rules import rule_to_string
+from Orange.classification.rules import RuleLearner
+from Orange.classification.svm import get_linear_svm_weights
+import sys
 
 class OrangeClassifier(Classifier):
     """
@@ -66,28 +69,62 @@ class OrangeClassifier(Classifier):
         @type basename: string         
         """
                 
-        classifier_type = self.__class__.__name__()
+        classifier_type = self.classifier.__class__.__name__
         
+        print classifier_type
         
         if classifier_type in ["NaiveClassifier", ]:
-            textfilename = "{}.txt".format(basename)
-            f = open(textfilename)
-            f.write(self.__str__())
-            sepal_length, probabilities = zip(*self.conditional_distributions[0].items())
-            p_setosa, p_versicolor, p_virginica = zip(*probabilities)
+#            textfilename = "{}.txt".format(basename)
+#            f = open(textfilename, "w")
+##            f.write(self.conditional_distributions[0].items()) 
+#            f.close()
+#            
+#            sepal_length, probabilities = zip(*self.conditional_distributions[0].items())
+#            print sepal_length
+#            print probabilities
+#            
+#            p_setosa, p_versicolor = zip(*probabilities)
+#            
+#            imagefilename = "{}.png".format(basename)
+#            pylab.xlabel("sepal length")
+#            pylab.ylabel("probability")
+#            pylab.plot(sepal_length, p_setosa, label="setosa", linewidth=2)
+#            pylab.plot(sepal_length, p_versicolor, label="versicolor", linewidth=2)
+##            pylab.plot(sepal_length, p_virginica, label="virginica", linewidth=2)
+#            pylab.legend(loc="best")
+#            pylab.savefig(imagefilename)
+            pass
+        
+        #if we are talking about a rule learner, just print its rules out in the file
+        try:        
             
-            imagefilename = "{}.png".format(basename)
-            pylab.xlabel("sepal length")
-            pylab.ylabel("probability")
-            pylab.plot(sepal_length, p_setosa, label="setosa", linewidth=2)
-            pylab.plot(sepal_length, p_versicolor, label="versicolor", linewidth=2)
-            pylab.plot(sepal_length, p_virginica, label="virginica", linewidth=2)
-            pylab.legend(loc="best")
-            pylab.savefig(imagefilename)
+            weights = get_linear_svm_weights(self.classifier)
+            textfilename = "{}.weights.txt".format(basename)
+            f = open(textfilename, "w")
+            f.write("Fitted parameters: \nnu = {0}\ngamma = {1}\n\nWeights: \n".format(self.classifier.fitted_parameters[0], self.classifier.fitted_parameters[1]))
+            for weight_name, weight_value in weights.iteritems():
+                f.write("{0}\t{1}\n".format(weight_name, weight_value))           
+            f.close()
+        except AttributeError:
+            pass 
+        
+        try:
+            rules = self.classifier.rules
+            textfilename = "{}.rules.txt".format(basename)
+            f = open(textfilename, "w")
+            for r in rules:
+                f.write("{}\n".format(rule_to_string(r)))             
+            f.close()
+            return 
+        except AttributeError:
+            pass
+        
         
             
-        if classifier_type == "SVMEasyLearner":
             
-        elif 
+            
+#        if classifier_type == "SVMEasyLearner":
+#            
+#        elif 
             
 
