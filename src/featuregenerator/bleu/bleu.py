@@ -51,6 +51,7 @@ def normalize(s):
     # Added to bypass NIST-style pre-processing of hyp and ref files -- wade
     if (nonorm):
         return s.split()
+    
     if type(s) is not str:
         s = " ".join(s)
     # language-independent part:
