@@ -120,8 +120,42 @@ class OrangeClassifier(Classifier):
             pass
         
         
+        try:
+            textfilename = "{}.tree.txt".format(basename)
+            f = open(textfilename, "w")
+            f.write(self.classifier.to_string("leaf", "node"))
+            f.close()
+            
+            graphics_filename = "{}.tree.dot"
+            self.classifier.dot(graphics_filename, "leaf", "node")
+        except TypeError, AttributeError:
+            pass
             
             
+#    def _print_tree(self, x, fileobj):
+#        if isinstance(x, Orange.classification.tree.TreeClassifier):
+#            self._print_tree0(x.tree, 0, fileobj)
+#        elif isinstance(x, Orange.classification.tree.Node):
+#            self._print_tree0(x, 0, fileobj)
+#        else:
+#            raise TypeError, "invalid parameter"
+#
+#    def _print_tree0(self, node, level, fileobj):
+#            if not node:
+#                fileobj.write( " "*level + "<null node>\n")
+#                return
+#            if node.branch_selector:
+#                node_desc = node.branch_selector.class_var.name
+#                node_cont = node.distribution
+#                fileobj.write("\\n" + "   "*level + "%s (%s)" % (node_desc, node_cont))
+#                for i in range(len(node.branches)):
+#                    fileobj.write("\\n" + "   "*level + ": %s" % node.branch_descriptions[i])
+#                    self.print_tree0(node.branches[i], level+1)
+#            else:
+#                node_cont = node.distribution
+#                major_class = node.node_classifier.default_value
+#                fileobj.write("--> %s (%s)" % (major_class, node_cont))            
+#            
             
 #        if classifier_type == "SVMEasyLearner":
 #            
