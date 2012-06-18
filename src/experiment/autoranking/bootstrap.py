@@ -4,7 +4,7 @@
 
 
 import StringIO
-from ConfigParser import ConfigParser
+from ConfigParser import ConfigParser, NoOptionError
 from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator, BerkeleyXMLRPCFeatureGenerator
 from featuregenerator.iq.acrolinxclient import IQFeatureGenerator
 from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator 
@@ -47,17 +47,23 @@ CONFIG_TEMPLATE = """
 class ExperimentConfigParser(ConfigParser):
     checker = 0
     
+
+    
     def java_init(self):
-        #define running directory
         
-        if self.get("general", "java_classpath"):
+        #collect java classpath entries from all sections        
+        java_classpath = self.get_classpath()
+        
+        if java_classpath:
             
             path = os.path.abspath(__file__)
             dir_path = os.path.dirname(path) #@todo: change location of the JavaServer to sth more universal
-             
-            classpath = self.get("general", "java_classpath")
-            classpath = "{}:{}".format(classpath, dir_path) 
-    
+            java_classpath.append(dir_path)
+            
+            classpath = ":".join(java_classpath) 
+            
+            print "classpath = ", classpath
+            
             #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
             subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path])
             
@@ -78,11 +84,13 @@ class ExperimentConfigParser(ConfigParser):
 #            time.sleep(2)
 
     def get_classpath(self):
-        path = os.path.abspath(__file__)
-        dir_path = os.path.dirname(path)
-        classpath = self.get("general", "java_classpath")
-        classpath = "{}:{}".format(classpath, dir_path) 
-        return classpath, dir_path
+        java_classpath = set()
+        for section in self.sections():
+            try:
+                java_classpath.add(self.get(section,"java_classpath"))
+            except NoOptionError:
+                pass
+        return list(java_classpath)
 
     def get_gatewayclient(self):
         try:
