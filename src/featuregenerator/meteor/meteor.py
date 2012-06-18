@@ -44,10 +44,10 @@ class MeteorGenerator(LanguageFeatureGenerator):
     def score(self, target, references):
         stats = self.scorer.getMeteorStats(target, references);
         
-        return {'meteor_precision' : stats.precision, 
-                'meteor_recall' : stats.recall, 
-                'meteor_fragPenalty' : stats.fragPenalty,  
-                'meteor_score' : stats.score}
+        return {'meteor_precision' : '{:.4}'.format(stats.precision), 
+                'meteor_recall' : '{:.4}'.format(stats.recall), 
+                'meteor_fragPenalty' : '{:.4}'.format(stats.fragPenalty),  
+                'meteor_score' : '{:.4}'.format(stats.score)}
     
 
 
@@ -58,5 +58,5 @@ class CrossMeteorGenerator(MeteorGenerator):
         alltranslations = dict([(t.get_attribute("system"), t.get_string()) for t in parallelsentence.get_translations()])
         del(alltranslations[current_system_name])
         references = alltranslations.values()
-        stats = self.score(translation, references)
+        stats = self.score(translation.get_string(), references)
         return stats
