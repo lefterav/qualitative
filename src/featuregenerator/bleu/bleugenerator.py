@@ -35,7 +35,7 @@ class BleuGenerator(FeatureGenerator):
         ref_untokenized = parallelsentence.get_reference().get_string()
 
         bleu_value = bleu.score_sentence(target_untokenized, ref_untokenized)
-        return {'bleu': str(bleu_value)}
+        return {'bleu': '{:.4}'.format(bleu_value)}
 
 
 
@@ -49,8 +49,8 @@ class CrossBleuGenerator(FeatureGenerator):
         alltranslations = dict([(t.get_attribute("system"), t.get_string()) for t in parallelsentence.get_translations()])
         del(alltranslations[current_system_name])
         references = alltranslations.values()
-        bleu_value = bleu.score_sentence(translation, references)
-        return {'bleu': str(bleu_value)}
+        bleu_value = bleu.score_sentence(translation.get_string(), references)
+        return {'bleu': '{:.4}'.format(bleu_value)}
         
             
             
