@@ -3,7 +3,7 @@
 @author: Eleftherios Avramidis
 """
 
-import pylab    
+#import pylab    
 import Orange
 from Orange.data import Instance
 from Orange.data import Table
@@ -11,6 +11,7 @@ from Orange.classification import Classifier
 from Orange.classification.rules import rule_to_string
 from Orange.classification.rules import RuleLearner
 from Orange.classification.svm import get_linear_svm_weights
+
 import sys
 
 class OrangeClassifier(Classifier):
@@ -96,8 +97,7 @@ class OrangeClassifier(Classifier):
             pass
         
         #if we are talking about a rule learner, just print its rules out in the file
-        try:        
-            
+        try:         
             weights = get_linear_svm_weights(self.classifier)
             textfilename = "{}.weights.txt".format(basename)
             f = open(textfilename, "w")
@@ -105,7 +105,7 @@ class OrangeClassifier(Classifier):
             for weight_name, weight_value in weights.iteritems():
                 f.write("{0}\t{1}\n".format(weight_name, weight_value))           
             f.close()
-        except AttributeError:
+        except:
             pass 
         
         try:
@@ -116,7 +116,7 @@ class OrangeClassifier(Classifier):
                 f.write("{}\n".format(rule_to_string(r)))             
             f.close()
             return 
-        except AttributeError:
+        except:
             pass
         
         
@@ -126,9 +126,9 @@ class OrangeClassifier(Classifier):
             f.write(self.classifier.to_string("leaf", "node"))
             f.close()
             
-            graphics_filename = "{}.tree.dot"
+            graphics_filename = "{}.tree.dot".format(basename)
             self.classifier.dot(graphics_filename, "leaf", "node")
-        except TypeError, AttributeError:
+        except:
             pass
             
             
