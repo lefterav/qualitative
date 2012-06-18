@@ -24,7 +24,7 @@ from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
 from featuregenerator.ratio_generator import RatioGenerator
 from featuregenerator.ibm1featuregenerator import Ibm1FeatureGenerator
 from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenerator
-from featuregenerator.bleu.bleugenerator import CrossBleuGenerator
+from featuregenerator.bleu.bleugenerator import CrossBleuGenerator, BleuGenerator
 from featuregenerator.attribute_rank import AttributeRankGenerator
 from io_utils.input.xmlreader import XmlReader
 from featuregenerator.languagechecker.languagetool_socket import LanguageToolSocketFeatureGenerator
@@ -271,7 +271,7 @@ def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, l
 #language_checker_source = cfg.get_checker(source_language)
 
 
-@transform(truecase_target, suffix(".crossbleu.%s.jcml" % target_language))
+@transform(truecase_target, suffix(".tc.%s.jcml" % target_language), ".bleu.%s.f.jcml" % target_language)
 def cross_bleu(input_file, output_file):
     saxjcml.run_features_generator(input_file, output_file, [CrossBleuGenerator()])
 parallel_feature_functions.append(cross_bleu)
@@ -315,7 +315,7 @@ def analyze_external_features(input_file, output_file, source_language, target_l
 @transform(data_fetch, suffix(".orig.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(",")) 
 def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_atts):
     analyzers = [LevenshteinGenerator(),
-                 #BleuGenerator(),
+                 BleuGenerator(),
                  
                  RatioGenerator()
                  ]
