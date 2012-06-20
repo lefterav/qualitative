@@ -77,7 +77,7 @@ class ExperimentConfigParser(ConfigParser):
             self.jvm.stdout.flush()
             socket_no = int(self.jvm.stdout.readline().strip()) 
             gatewayclient = GatewayClient('localhost', socket_no)
-            self.gateway = JavaGateway(gatewayclient)
+            self.gateway = JavaGateway(gatewayclient, auto_convert=True, auto_field=True)
             sys.stderr.write("Initialized global Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
             return self.gateway
             # wait so that server starts
