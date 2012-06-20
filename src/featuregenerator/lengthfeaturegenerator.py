@@ -21,7 +21,13 @@ class LengthFeatureGenerator(FeatureGenerator):
         @return: dictionary containing lenght attribute 
         """
         sent_string = simplesentence.get_string().strip()
-        length = len(PunktWordTokenizer().tokenize(sent_string)) #count tokens
-        return {"length" : str(length)}
+        tokens = len(sent_string.split(' ')) #count tokens
+        chars = len(sent_string)
+        avg_chars = 1.000 * chars / tokens
+        
+        return {"l_tokens" : str(tokens),
+                "l_chars" : str(chars),
+                "l_avgchars" : "{:.3}".format(avg_chars)
+                }
         
         
