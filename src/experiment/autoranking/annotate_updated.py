@@ -244,7 +244,7 @@ parallel_feature_functions.append(cross_bleu)
 @active_if(cfg.has_section("meteor"))
 @transform(truecase_target, suffix(".tc.%s.jcml" % target_language), ".meteor.%s.f.jcml" % target_language, target_language, gateway)
 def cross_meteor(input_file, output_file, target_language, gateway):
-    saxjcml.run_features_generator(input_file, output_file, [CrossBleuGenerator(), CrossMeteorGenerator(target_language, gateway)])
+    saxjcml.run_features_generator(input_file, output_file, [CrossMeteorGenerator(target_language, gateway)])
 
 if cfg.has_section("meteor"):    
     parallel_feature_functions.append(cross_meteor)
@@ -284,14 +284,16 @@ def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, l
 
 #language_checker_source = cfg.get_checker(source_language)
 
+@transform(preprocess_data, suffix(".tok.jcml"), "l.jcml")
+def features_length(input_file, output_file):
+    saxjcml.run_features_generator(input_file, output_file, [LengthFeatureGenerator()])
+parallel_feature_functions.append(features_length)
+     
 
-
-
-
-@active_if(False)
-def features_ibm(input_file, output_file, ibm1lexicon):
-    ibmfeaturegenerator = Ibm1FeatureGenerator(ibm1lexicon)
-    saxjcml.run_features_generator(input_file, output_file, [ibmfeaturegenerator])
+#@active_if(False)
+#def features_ibm(input_file, output_file, ibm1lexicon):
+#    ibmfeaturegenerator = Ibm1FeatureGenerator(ibm1lexicon)
+#    saxjcml.run_features_generator(input_file, output_file, [ibmfeaturegenerator])
     
 
 
@@ -329,7 +331,7 @@ def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_
                  BleuGenerator()]
     
     if cfg.has_section("meteor"):
-        analyzers.append(MeteorGenerator()),
+        analyzers.append(MeteorGenerator())
         
     analyzers.append(RatioGenerator())
     
