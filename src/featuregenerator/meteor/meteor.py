@@ -11,47 +11,72 @@ from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 
 class MeteorGenerator(LanguageFeatureGenerator):
     '''
-    classdocs
+    Uses an existing JavaGateway (Py4j) in order to perform METEOR scoring and
+    serve that as features. This Feature Generator overwrites the inherited get_features_tgt 
+    function for scoring target vs. the embedded reference translation of the 
+    ParallelSentence. See L{CrossMeteorGenerator} for target cross-scoring.
+    @ivar lang: The language code for the proper initialization of the included 
+    language-dependent tool
+    @type lang: string
+    @ivar gateway: An already initialized Py4j java gateway
+    @type gateway: py4j.java_gateway.JavaGateway
+    @ival scorer: The initialized object of the MeteorScorer
+    @type scorer: edu.cmu.meteor.scorer.MeteorScorer
     '''
 
-
-#    def __init__(self, lang, classpath):
     def __init__(self, lang, gateway):
         '''
         Constructor
+        @param lang: The language code for the proper initialization of this language-dependent tool
+        @type lang: string
+        @param gateway: An already initialized Py4j java gateway
+        @type gateway: py4j.java_gateway.JavaGateway
         '''
         self.lang = lang
-    
+        self.gateway = gateway
     
         meteor_view = gateway.new_jvm_view()
+        #import necessary java packages from meteor jar
         java_import(meteor_view, 'edu.cmu.meteor.scorer.*')
         java_import(meteor_view, 'edu.cmu.meteor.util.*')
         
-#        import edu.cmu.meteor.scorer.MeteorScorer; 
-#        import edu.cmu.meteor.scorer.MeteorConfiguration;
-#        import edu.cmu.meteor.scorer.MeteorStats;
-#        import edu.cmu.meteor.util.Constants;
-#        import edu.cmu.meteor.util.Normalizer;
-#        import edu.cmu.meteor.util.SGMData;
-
-        
+        #pass the language setting into the meteor configuration object
         config = meteor_view.MeteorConfiguration();
         config.setLanguage(lang);
+        #initialize object with the given config
         self.scorer = meteor_view.MeteorScorer(config)
-        
-        
+
     
+    def get_features_tgt(self, translation, parallelsentence):
+        references = [parallelsentence.get_reference().get_string()]
+        stats = self.score(translation.get_string(), references)
+        return stats
+
+
     def score(self, target, references):
+        '''
+        Score using the METEOR metric given one translated sentence, given a list of reference translations
+        @param target: The text of the (machine-generated) translation
+        @type target: string
+        @param references: A list of the reference translations, text-only
+        @type references: [string, ...]
+        @return: A dictionary of the various METEOR scoring results, namely precision, recall, fragPenalty and score
+        @rtype: {string: string}
+        '''
         stats = self.scorer.getMeteorStats(target, references);
         
         return {'meteor_precision' : '{:.4}'.format(stats.precision), 
                 'meteor_recall' : '{:.4}'.format(stats.recall), 
                 'meteor_fragPenalty' : '{:.4}'.format(stats.fragPenalty),  
                 'meteor_score' : '{:.4}'.format(stats.score)}
-    
 
 
 class CrossMeteorGenerator(MeteorGenerator):
+    '''
+    Overwrites the feature generation function, by allowing the provided target sentence
+    (i.e. translation) to be scored against the translations provided by the other systems
+    embedded in this Parallel Sentence.
+    '''
     
     def get_features_tgt(self, translation, parallelsentence):
         current_system_name = translation.get_attribute("system")
@@ -60,3 +85,10 @@ class CrossMeteorGenerator(MeteorGenerator):
         references = alltranslations.values()
         stats = self.score(translation.get_string(), references)
         return stats
+
+
+
+
+
+    
+    
