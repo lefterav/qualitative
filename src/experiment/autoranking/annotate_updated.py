@@ -241,13 +241,16 @@ def cross_bleu(input_file, output_file):
     saxjcml.run_features_generator(input_file, output_file, [CrossBleuGenerator()])
 parallel_feature_functions.append(cross_bleu)
 
+
 @active_if(cfg.has_section("meteor"))
-@transform(truecase_target, suffix(".tc.%s.jcml" % target_language), ".meteor.%s.f.jcml" % target_language, target_language, gateway)
-def cross_meteor(input_file, output_file, target_language, gateway):
-    saxjcml.run_features_generator(input_file, output_file, [CrossMeteorGenerator(target_language, gateway)])
+@transform(truecase_target, suffix(".tc.%s.jcml" % target_language), ".meteor.%s.f.jcml" % target_language, target_language, cfg.get_classpath()[0], cfg.get_classpath()[1])
+@jobs_limit(1)
+def cross_meteor(input_file, output_file, target_language, classpath, dir_path):
+    saxjcml.run_features_generator(input_file, output_file, [CrossMeteorGenerator(target_language, classpath, dir_path)])
 
 if cfg.has_section("meteor"):    
     parallel_feature_functions.append(cross_meteor)
+    
     
 #    parallelsentences = JcmlReader(input_file).get_parallelsentences()
 #    parallelsentences = truecaser.add_features_batch(parallelsentences)
@@ -284,7 +287,7 @@ def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, l
 
 #language_checker_source = cfg.get_checker(source_language)
 
-@transform(preprocess_data, suffix(".tok.jcml"), "l.jcml")
+@transform(preprocess_data, suffix(".tok.jcml"), ".l.jcml")
 def features_length(input_file, output_file):
     saxjcml.run_features_generator(input_file, output_file, [LengthFeatureGenerator()])
 parallel_feature_functions.append(features_length)
