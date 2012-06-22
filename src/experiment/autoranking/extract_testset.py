@@ -8,6 +8,8 @@ from io_utils.input.jcmlreader import JcmlReader
 from sentence.pairwisedataset import FilteredPairwiseDataset , AnalyticPairwiseDataset
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
 import os
+import argparse
+from ConfigParser import ConfigParser
 
 def get_clean_testset(input_file, output_file):
     plain_dataset = JcmlReader(input_file).get_dataset()
@@ -21,6 +23,7 @@ def get_clean_testset(input_file, output_file):
 
 
 if __name__ == '__main__':
+    
     langpairs = ["de-en", 
                  "en-de", 
                  "en-fr", 
@@ -30,10 +33,19 @@ if __name__ == '__main__':
                  "en-cz", 
                  "cz-en"
                 ]
+    
     sets = ['wmt2008', 'wmt2009', 'wmt2010', 'wmt2010-public', "wmt2011.newstest", "wmt2011.combo"]
-    for setid in sets:
-        for langpair in langpairs:
-            input_filename = "/home/elav01/taraxu_data/jcml-latest/raw/%s.%s.jcml.rank.jcml" % (setid, langpair)
-            print input_filename
-            output_filename = "/home/elav01/taraxu_data/jcml-latest/clean/%s.%s.rank-clean.jcml" % (setid, langpair)
+
+    cfg = ConfigParser()
+    parser = argparse.ArgumentParser(description='')
+    parser.add_argument("--langpair", nargs='*', default=langpairs, help="Language pairs")
+    parser.add_argument("--setid", nargs='*', default=sets, help="set names")
+    parser.add_argument("--input", help="input file pattern, e.g. /home/elav01/taraxu_data/jcml-latest/raw/{setid}.{langpair}.jcml.rank.jcml")
+    parser.add_argument("--output", help="output file pattern, e.g. /home/elav01/taraxu_data/jcml-latest/clean/{setid}.{langpair}.jcml.rank.jcml")
+    args = parser.parse_args()
+    
+    for setid in args.setid:
+        for langpair in args.langpair:
+            input_filename = args.input.format(setid=setid, langpair=langpair)
+            output_filename = args.output.format(setid=setid, langpair=langpair)
             get_clean_testset(input_filename, output_filename)
