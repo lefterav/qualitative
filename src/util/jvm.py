@@ -19,12 +19,12 @@ class JVM(object):
         classpath  = ":".join(java_classpath) 
         
         #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
-        subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path])
+        #subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path])
             
         print "classpath = ", classpath
-        
+         
         #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
-        subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path])
+        subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path ])
         
         # prepare and run Java server
         #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
