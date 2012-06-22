@@ -17,6 +17,7 @@ import random
 import argparse
 import fnmatch
 import socket
+from util.jvm import JVM
 
 #from Orange.regression.linear import LinearRegressionLearner 
 #from Orange.regression.pls import PLSRegressionLearner
@@ -52,30 +53,12 @@ class ExperimentConfigParser(ConfigParser):
     def java_init(self):
         
         #collect java classpath entries from all sections        
-        java_classpath = self.get_classpath()
+        java_classpath, dir_path = self.get_classpath()
         
         if java_classpath:
             
-            path = os.path.abspath(__file__)
-            dir_path = os.path.dirname(path) #@todo: change location of the JavaServer to sth more universal
-            java_classpath.append(dir_path)
-            
-            classpath = ":".join(java_classpath) 
-            
-            print "classpath = ", classpath
-            
-            #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
-            subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path])
-            
-            # prepare and run Java server
-            #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
-            cmd = ["java", "-cp", classpath, "JavaServer" ]
-#            cmd = " ".join(cmd)
-            
-            self.jvm = subprocess.Popen(cmd, shell=False, bufsize=0, stdout=subprocess.PIPE) #shell=True,
-            time.sleep(10)
-            self.jvm.stdout.flush()
-            socket_no = int(self.jvm.stdout.readline().strip()) 
+            self.jvm = JVM(java_classpath, dir_path)
+            socket_no = self.jvm.socket_no
             gatewayclient = GatewayClient('localhost', socket_no)
             self.gateway = JavaGateway(gatewayclient, auto_convert=True, auto_field=True)
             sys.stderr.write("Initialized global Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
@@ -90,7 +73,11 @@ class ExperimentConfigParser(ConfigParser):
                 java_classpath.add(self.get(section,"java_classpath"))
             except NoOptionError:
                 pass
-        return list(java_classpath)
+        if len(java_classpath) > 0:
+            path = os.path.abspath(__file__)
+            dir_path = os.path.dirname(path) #@todo: change location of the JavaServer to sth more universal
+            java_classpath.add(dir_path)
+        return list(java_classpath), dir_path
 
     def get_gatewayclient(self):
         try:
@@ -145,7 +132,7 @@ class ExperimentConfigParser(ConfigParser):
                     sys.stderr.write("initializing socket parser with grammar file {}\n".format(grammarfile))
                     
 #                    return BerkeleySocketFeatureGenerator(language, grammarfile, self.get_classpath())
-                    return BerkeleySocketFeatureGenerator(language, grammarfile, self.gateway)
+                    return BerkeleySocketFeatureGenerator(language, grammarfile, self.gatewayclient)
         return False
     
     
