@@ -8,6 +8,8 @@ from py4j.java_gateway import JavaGateway
 from py4j.java_gateway import GatewayClient
 from py4j.java_gateway import java_import
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from util.jvm import JVM
+import sys
 
 class MeteorGenerator(LanguageFeatureGenerator):
     '''
@@ -24,7 +26,7 @@ class MeteorGenerator(LanguageFeatureGenerator):
     @type scorer: edu.cmu.meteor.scorer.MeteorScorer
     '''
 
-    def __init__(self, lang, gateway):
+    def __init__(self, lang, java_classpath, dir_path):
         '''
         Constructor
         @param lang: The language code for the proper initialization of this language-dependent tool
@@ -33,7 +35,11 @@ class MeteorGenerator(LanguageFeatureGenerator):
         @type gateway: py4j.java_gateway.JavaGateway
         '''
         self.lang = lang
-        self.gateway = gateway
+        self.jvm = JVM(java_classpath, dir_path)
+        socket_no = self.jvm.socket_no
+        gatewayclient = GatewayClient('localhost', socket_no)
+        gateway = JavaGateway(gatewayclient, auto_convert=True, auto_field=True)
+        sys.stderr.write("Initialized global Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
     
         meteor_view = gateway.new_jvm_view()
         #import necessary java packages from meteor jar
