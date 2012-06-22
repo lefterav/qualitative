@@ -244,7 +244,6 @@ parallel_feature_functions.append(cross_bleu)
 
 @active_if(cfg.has_section("meteor"))
 @transform(truecase_target, suffix(".tc.%s.jcml" % target_language), ".meteor.%s.f.jcml" % target_language, target_language, cfg.get_classpath()[0], cfg.get_classpath()[1])
-@jobs_limit(1)
 def cross_meteor(input_file, output_file, target_language, classpath, dir_path):
     saxjcml.run_features_generator(input_file, output_file, [CrossMeteorGenerator(target_language, classpath, dir_path)])
 
