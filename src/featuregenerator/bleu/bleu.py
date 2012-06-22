@@ -73,7 +73,7 @@ def count_ngrams(words, n=4):
             ngram = tuple(words[i:i+k])
             counts[ngram] = counts.get(ngram, 0)+1
     return counts
-
+    
 def cook_refs(refs, n=4):
     '''Takes a list of reference sentences for a single segment
     and returns an object that encapsulates everything that BLEU
@@ -146,6 +146,8 @@ def score_sentence(translation, references):
     @type references: [str, ...]
     """
     n = len(references)
+    if n == 0:
+        return 0.00
     references = cook_refs(references, n)
     test_set = cook_test(translation, references, n)
     return score_cooked([test_set], n)
