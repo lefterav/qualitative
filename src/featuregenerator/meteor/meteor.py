@@ -39,7 +39,7 @@ class MeteorGenerator(LanguageFeatureGenerator):
         socket_no = self.jvm.socket_no
         gatewayclient = GatewayClient('localhost', socket_no)
         gateway = JavaGateway(gatewayclient, auto_convert=True, auto_field=True)
-        sys.stderr.write("Initialized global Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
+        sys.stderr.write("Initialized local Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
     
         meteor_view = gateway.new_jvm_view()
         #import necessary java packages from meteor jar
