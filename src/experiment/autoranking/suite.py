@@ -58,7 +58,15 @@ class AutorankingSuite(PyExperimentSuite):
             self.classifier_params = {}
         
         self.meta_attributes = params["meta_attributes"].split(",")
-        self.active_attributes = params[params["att"]].split(",")
+        
+        source_attributes = params["{}_source".format(params["att"])].split(",")
+        target_attributes = params["{}_target".format(params["att"])].split(",")
+        general_attributes = params["{}_general".format(params["att"])].split(",")
+        
+        self.active_attributes = general_attributes
+        self.active_attributes.extend(["src_{}".format(att) for att in source_attributes])
+        self.active_attributes.extend(["tgt-1_{}".format(att) for att in target_attributes])
+        self.active_attributes.extend(["tgt-2_{}".format(att) for att in target_attributes])
         
         if self.active_attributes == [""]:
             self.active_attributes = []
