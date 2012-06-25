@@ -156,6 +156,12 @@ class AutorankingSuite(PyExperimentSuite):
             input_file = "diff_trainset.jcml"
             self.trainset_orange_filename = "trainset.tab"
             
+            if os.path.isdir("/local"):
+                dir = "/local"
+            else:
+                dir = "."
+            
+            
             SaxJcml2Orange(input_file, 
                  self.class_name,
                  self.active_attributes, 
@@ -165,6 +171,7 @@ class AutorankingSuite(PyExperimentSuite):
                  discrete_attributes=self.discrete_attributes,
                  hidden_attributes=self.hidden_attributes,
                  get_nested_attributes=True,
+                 dir=dir
                  #filter_attributes={"rank" : "0"},
 #                 class_type=class_type
                 )
@@ -176,6 +183,11 @@ class AutorankingSuite(PyExperimentSuite):
             input_file = "diff_testset.jcml"
             self.testset_orange_filename = "testset.tab"
             
+            if os.path.isdir("/local"):
+                dir = "/local"
+            else:
+                dir = "."
+            
             SaxJcml2Orange(input_file, 
                  self.class_name,
                  self.active_attributes, 
@@ -185,6 +197,7 @@ class AutorankingSuite(PyExperimentSuite):
                  discrete_attributes=self.discrete_attributes,
                  hidden_attributes=self.hidden_attributes,
                  get_nested_attributes=True,
+                 dir=dir
                  #filter_attributes={"rank" : "0"},
 #                 class_type=class_type
                 )
