@@ -411,28 +411,33 @@ class SaxJcmlOrangeContent(ContentHandler):
             
             # print source and target sentence
             for attribute_name in self.attribute_names:
+                ps_nested_attributes = ps.get_nested_attributes()
                 if not attribute_name in self.hidden_attributes:
                     if attribute_name == self.class_name and self.class_discretize:
-                        attvalue = float(ps.get_nested_attributes()[attribute_name].strip())
+                        attvalue = float(ps_nested_attributes[attribute_name].strip())
                         attvalue = round(attvalue/self.class_discretize) * self.class_discretize
                         attvalue = str(attvalue)
-                        output.append(u'%s\t' % attvalue)                        
-                    elif attribute_name in ps.get_nested_attributes():
+                        output.append(attvalue)     
+                        output.append("\t")                  
+                    elif attribute_name in ps_nested_attributes:
                         # print attribute names
-                        attvalue = ps.get_nested_attributes()[attribute_name].strip()
+                        attvalue = ps_nested_attributes[attribute_name].strip()
                         attvalue.replace("inf", "99999999")
                         attvalue.replace("nan", "0")
-                        output.append(u'%s\t' % attvalue)
+                        output.append(attvalue)
+                        output.append("\t")
                         
                     else:
                         # even if attribute value exists or not, we have to tab
-                        output.append('0\t')
+                        output.append('\t')
             
             # print source sentence
-            output.append('%s\t' % ps.get_source().get_string())
+            output.append(ps.get_source().get_string())
+            output.append("\t")
             # print target sentences
             for tgt in ps.get_translations():
-                output.append('%s\t' % tgt.get_string())
+                output.append(tgt.get_string())
+                output.append('\t')
             # split parallel sentences by an additional tab and by a newline
             output.append('\t\n')
             self.o_file.write("".join(output))
