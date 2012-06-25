@@ -50,7 +50,7 @@ class CrossBleuGenerator(FeatureGenerator):
         del(alltranslations[current_system_name])
         references = alltranslations.values()
         bleu_value = bleu.score_sentence(translation.get_string(), references)
-        return {'bleu': '{:.4}'.format(bleu_value)}
+        return {'bleu_cross': '{:.4}'.format(bleu_value)}
         
             
             

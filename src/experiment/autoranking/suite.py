@@ -63,10 +63,14 @@ class AutorankingSuite(PyExperimentSuite):
         target_attributes = params["{}_target".format(params["att"])].split(",")
         general_attributes = params["{}_general".format(params["att"])].split(",")
         
-        self.active_attributes = general_attributes
-        self.active_attributes.extend(["src_{}".format(att) for att in source_attributes])
-        self.active_attributes.extend(["tgt-1_{}".format(att) for att in target_attributes])
-        self.active_attributes.extend(["tgt-2_{}".format(att) for att in target_attributes])
+        self.active_attributes = []
+        if general_attributes != [""]:
+            self.active_attributes.extend(general_attributes) #TODOL check whether ps prefix is needed
+        if source_attributes != [""]:
+            self.active_attributes.extend(["src_{}".format(att) for att in source_attributes])
+        if target_attributes != [""]:
+            self.active_attributes.extend(["tgt-1_{}".format(att) for att in target_attributes])
+            self.active_attributes.extend(["tgt-2_{}".format(att) for att in target_attributes])
         
         if self.active_attributes == [""]:
             self.active_attributes = []
@@ -160,7 +164,7 @@ class AutorankingSuite(PyExperimentSuite):
                  compact_mode = True, 
                  discrete_attributes=self.discrete_attributes,
                  hidden_attributes=self.hidden_attributes,
-                 get_nested_attributes=False,
+                 get_nested_attributes=True,
                  #filter_attributes={"rank" : "0"},
 #                 class_type=class_type
                 )
@@ -180,7 +184,7 @@ class AutorankingSuite(PyExperimentSuite):
                  compact_mode = True, 
                  discrete_attributes=self.discrete_attributes,
                  hidden_attributes=self.hidden_attributes,
-                 get_nested_attributes=False,
+                 get_nested_attributes=True,
                  #filter_attributes={"rank" : "0"},
 #                 class_type=class_type
                 )
