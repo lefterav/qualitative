@@ -266,7 +266,7 @@ class SaxJcmlOrangeHeader(ContentHandler):
                    ):
                 line_3 = line_3 + "m"
             elif "id" in attribute_name:
-                raise AttributeError('One of the given features seems to be a unique identifier')
+                sys.stderr.write('One of the given features, {} seems to be a unique identifier\n'.format(attribute_name))
             
             line_3 = line_3 + "\t"
 
