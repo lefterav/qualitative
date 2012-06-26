@@ -226,7 +226,7 @@ class SaxJcmlOrangeHeader(ContentHandler):
         # check if the desired attributes are in attribute names that we got from input file
         if set(self.desired_attributes) - self.attribute_names:
             notfound = set(self.desired_attributes) - self.attribute_names
-            sys.stderr.write('Warning: Following desired attributes werent found in input file:\n{0}'.format(notfound))
+            sys.stderr.write('Warning: Following desired attributes were not found in input file:\n{0}'.format(notfound))
             
         
         # first construct the lines for the declaration
