@@ -17,9 +17,12 @@ from suds.client import Client
 import base64
 import re
 import urllib
+import sys
+from urllib2 import URLError
 from xml.etree import ElementTree as ET
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 import os
+import time
 
 class IQFeatureGenerator(LanguageFeatureGenerator):
     """
@@ -233,8 +236,16 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
 #        
         # get session id
         print "trying get session by giving properties ", log_in_soap_properties
-        self.sessionIdStr = self.soap_client.service.requestClientSession(log_in_soap_properties)
         
+        connected = False
+        while not connected:
+            try:
+                self.sessionIdStr = self.soap_client.service.requestClientSession(log_in_soap_properties)
+                connected = True
+            except URLError:
+                sys.stderr.write("UrlError on initializing suds client. Trying again\n")
+                time.sleep(5)        
+                
             
         
         #print sessionIdStr
