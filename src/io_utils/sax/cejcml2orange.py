@@ -227,7 +227,7 @@ class CElementTreeJcml2Orange():
                 attributes = elem.attrib
                 tgt_text = [] 
                 attribute_list = []
-            
+                target_id = 0
             #new source sentence
             elif event == "start" and elem.tag == self.TAG_SRC:
                 source_attributes = [("src_{}".format(key), value) for key, value in elem.attrib.iteritems()]
