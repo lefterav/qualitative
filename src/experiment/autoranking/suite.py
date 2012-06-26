@@ -23,6 +23,7 @@ from io_utils.input.jcmlreader import JcmlReader
 #from sentence.coupleddataset import CoupledDataSet, OrangeCoupledDataSet, CoupledDataSetDisk
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
 from io_utils.sax.saxjcml2orange import SaxJcml2Orange
+from io_utils.sax.cejcml2orange import CElementTreeJcml2Orange 
 from classifier.classifier import OrangeClassifier
 from Orange.data import Table
 
@@ -30,7 +31,6 @@ from featuregenerator.diff_generator import DiffGenerator
 from sentence.pairwisedataset import AnalyticPairwiseDataset, CompactPairwiseDataset
 from sentence.dataset import DataSet
 from sentence.scoring import Scoring
-
 
 import time
 
@@ -162,7 +162,7 @@ class AutorankingSuite(PyExperimentSuite):
                 dir = "."
             
             
-            SaxJcml2Orange(input_file, 
+            CElementTreeJcml2Orange(input_file, 
                  self.class_name,
                  self.active_attributes, 
                  self.meta_attributes, 
@@ -188,7 +188,7 @@ class AutorankingSuite(PyExperimentSuite):
             else:
                 dir = "."
             
-            SaxJcml2Orange(input_file, 
+            CElementTreeJcml2Orange(input_file, 
                  self.class_name,
                  self.active_attributes, 
                  self.meta_attributes, 
@@ -334,6 +334,7 @@ class AutorankingSuite(PyExperimentSuite):
         
         if n > 50:
             self.pairwise_test_filename = "diff_testset.jcml"
+            self.trainset_orange_filename = "trainset.tab"
         
         if n > 70:
             self.testset_orange_filename = "testset.tab"
