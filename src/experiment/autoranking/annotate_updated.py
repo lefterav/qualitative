@@ -315,7 +315,7 @@ def features_gather(singledataset_annotations, gathered_singledataset_annotation
         print appended_file
         print [ps.get_attribute("id") for ps in appended_dataset.get_parallelsentences()]
         print 
-        original_dataset.merge_dataset_symmetrical(appended_dataset)
+        original_dataset.merge_dataset_symmetrical(appended_dataset, {}, "id")
     Parallelsentence2Jcml(original_dataset.get_parallelsentences()).write_to_file(gathered_singledataset_annotations)
 
     
