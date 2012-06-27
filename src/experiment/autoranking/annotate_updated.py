@@ -312,6 +312,9 @@ def features_gather(singledataset_annotations, gathered_singledataset_annotation
     original_dataset = JcmlReader(original_file).get_dataset()
     for appended_file in tobermerged[1:]:
         appended_dataset = JcmlReader(appended_file).get_dataset()
+        print appended_file
+        print [ps.get_attribute("id") for ps in appended_dataset.get_parallelsentences()]
+        print 
         original_dataset.merge_dataset_symmetrical(appended_dataset)
     Parallelsentence2Jcml(original_dataset.get_parallelsentences()).write_to_file(gathered_singledataset_annotations)
 
