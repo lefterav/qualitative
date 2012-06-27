@@ -203,16 +203,14 @@ def features_berkeley(input_file, output_file, language):
 @collate(features_berkeley_source, regex(r"([^.]+)\.(\d+)\.part.parsed.([^.]+).f.jcml"),  r"\1.parsed.\3.f.jcml")
 def merge_parse_parts_source(inputs, output):
     merge_parts(inputs, output)
-if (cfg.exists_parser(source_language)):
-    parallel_feature_functions.append(merge_parse_parts_source)
+parallel_feature_functions.append(merge_parse_parts_source)
 
 @active_if(cfg.exists_parser(target_language))
 #@merge(features_berkeley_target, "parsed.%s.f.jcml" % target_language)
 @collate(features_berkeley_target, regex(r"([^.]+)\.(\d+)\.part.parsed.([^.]+).f.jcml"),  r"\1.parsed.\3.f.jcml")
 def merge_parse_parts_target(inputs, output):
     merge_parts(inputs, output)
-if (cfg.exists_parser(target_language)):
-    parallel_feature_functions.append(merge_parse_parts_target)
+parallel_feature_functions.append(merge_parse_parts_target)
 
 
 def merge_parts(inputs, output):
