@@ -110,7 +110,7 @@ class GenericXmlReader(GenericReader):
             try:
                 print inputfilename
                 filename_prefix, filename_suffix = re.findall(re_split, inputfilename)[0]
-                filename = "%s.%d.part.%s" % (filename_prefix, partindex, filename_suffix)
+                filename = "%s.%2.d.part.%s" % (filename_prefix, partindex, filename_suffix)
                 Parallelsentence2Jcml(parallelsentences[start:end]).write_to_file(filename)
             except IndexError:
                 print "Please try to not have a dot in the test set name, cause you don't help me with splitting"
