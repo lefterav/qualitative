@@ -132,7 +132,7 @@ class ExperimentConfigParser(ConfigParser):
                     sys.stderr.write("initializing socket parser with grammar file {}\n".format(grammarfile))
                     
 #                    return BerkeleySocketFeatureGenerator(language, grammarfile, self.get_classpath())
-                    return BerkeleySocketFeatureGenerator(language, grammarfile, self.gatewayclient)
+                    return BerkeleySocketFeatureGenerator(language, grammarfile, self.gateway)
         return False
     
     

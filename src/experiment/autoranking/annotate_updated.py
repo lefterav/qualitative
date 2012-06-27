@@ -216,9 +216,10 @@ if (cfg.exists_parser(target_language)):
 
 
 def merge_parts(inputs, output):
+    print inputs
     parallelsentences = []
-    for input in inputs:
-        parallelsentences.extend(JcmlReader(input).get_parallelsentences())
+    for inp in inputs:
+        parallelsentences.extend(JcmlReader(inp).get_parallelsentences())
     Parallelsentence2Jcml(parallelsentences).write_to_file(output)    
 
 
