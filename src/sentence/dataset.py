@@ -212,7 +212,7 @@ class DataSet(object):
                 pass
             
     
-    def merge_dataset_symmetrical(self, dataset_for_merging_with, attribute_replacements = {"rank": "predicted_rank"}):
+    def merge_dataset_symmetrical(self, dataset_for_merging_with, attribute_replacements = {"rank": "predicted_rank"}, confirm_attribute = ""):
         """
         Merge the current dataset in place with another symmetrical dataset of the same size and the same original content, but
         possibly with different attributes per parallel sentence
@@ -224,6 +224,11 @@ class DataSet(object):
         incoming_parallelsentences = dataset_for_merging_with.get_parallelsentences()
         if len(self.parallelsentences) != len(incoming_parallelsentences):
             raise IndexError("Error, datasets not symmetrical")
+        if confirm_attribute != "":
+            vector1 = [ps.get_attribute(confirm_attribute) for ps in self.get_parallelsentences()]
+            vector2 = [ps.get_attribute(confirm_attribute) for ps in dataset_for_merging_with.get_parallelsentences()]
+            if vector1 != vector2:
+                raise IndexError("Error, datasets not symmetrical, concerning the identifier attribute {}".format(confirm_attribute))
         else:
             for i in range(len(self.parallelsentences)):
                 incoming_ps = incoming_parallelsentences[i]
