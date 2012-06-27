@@ -178,7 +178,7 @@ class CElementTreeJcml2Orange():
                    or attribute_name in self.meta_attributes)
                    ):
                 line_3.append("m")
-            elif "id" == attribute_name or "_id" in attribute_name:
+            elif "id" == attribute_name or "_id" in attribute_name or "-id" in attribute_name or ".id" in attribute_name:
                 sys.stderr.write('Warning: One of the given features, {} seems to be a unique identifier\n'.format(attribute_name))
                 line_3.append("")
             else:
