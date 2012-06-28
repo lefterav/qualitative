@@ -98,7 +98,7 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
                 if uni_prob == -99:
                     unk_count += 1
                     unk_tokens.append(token)
-                    sys.stderr.write("Unknown word: %s\n" % token)
+                    sys.stderr.write("Unknown word: %s of len %d\n" % (token, len(token)))
                 else:
                     uni_probs += uni_prob
 #            except: 
