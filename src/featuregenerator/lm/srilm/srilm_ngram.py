@@ -41,7 +41,7 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
         return atts        
     
     
-    def __prepare_sentence__(self, simplesentence):
+    def _prepare_sentence(self, simplesentence):
         sent_string = simplesentence.get_string().strip()
         if self.freqcaser:
             tokenized_string = self.freqcaser.freqcase(sent_string)
@@ -80,19 +80,19 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
     
     
     def get_features_simplesentence(self, simplesentence):
-        (tokens,sent_string) = self.__prepare_sentence__(simplesentence)
+        (tokens,sent_string) = self._prepare_sentence(simplesentence)
         unk_count = 0
         uni_probs = 1
         bi_probs = 1
         tri_probs = 1
         unk_tokens = []
         
-        prob = self._get_sentence_probability(sent_string)
+        prob = self._get_sentence_probability(sent_string.strip())
         
         #check for unknown words and collecting unigram probabilities:
         for token in tokens:
 #            try: 
-                uni_prob = self.server.getUnigramProb(token)
+                uni_prob = self.server.getUnigramProb(token.strip())
                 #uni_prob = self.server.getUnigramProb(base64.standard_b64encode(token))
                 if uni_prob == -99:
                     unk_count += 1
@@ -110,7 +110,7 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
             token = tokens[pos:pos+2]
             if (token[0] not in unk_tokens) and (token[1] not in unk_tokens):
 #                try:
-                    bi_prob = self.server.getBigramProb(' '.join(token))
+                    bi_prob = self.server.getBigramProb(' '.join(token).strip())
                     #bi_prob = self.server.getBigramProb(base64.standard_b64encode(' '.join(token)))
                     bi_probs += bi_prob
 #                except:
@@ -122,7 +122,7 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
             token = tokens[pos:pos+3]
             if (token[0] not in unk_tokens) and (token[1] not in unk_tokens) and (token[2] not in unk_tokens):
 #                try:
-                    tri_prob = self.server.getTrigramProb(' '.join(token))
+                    tri_prob = self.server.getTrigramProb(' '.join(token).strip())
                     tri_probs += tri_prob
 #                except:
                     #sys.stderr.write("Failed to retrieve trigram probability for tokens: '%s'\n" % ' '.join(token))
