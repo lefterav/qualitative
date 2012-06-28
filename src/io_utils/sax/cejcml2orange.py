@@ -146,7 +146,7 @@ class CElementTreeJcml2Orange():
         line_3 = [] # line for the definition of the class
 
         if self.desired_attributes == set([]):
-            self.desired_attributes = self.attribute_names
+            self.desired_attributes = self.attribute_names - self.meta_attributes
         
         # prepare heading
         for attribute_name in self.attribute_names:
