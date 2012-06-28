@@ -87,9 +87,11 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
         tri_probs = 1
         unk_tokens = []
         
+        prob = self._get_sentence_probability(sent_string)
+        
         #check for unknown words and collecting unigram probabilities:
         for token in tokens:
-            try: 
+#            try: 
                 uni_prob = self.server.getUnigramProb(token)
                 #uni_prob = self.server.getUnigramProb(base64.standard_b64encode(token))
                 if uni_prob == -99:
@@ -98,45 +100,46 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
                     sys.stderr.write("Unknown word: %s\n" % token)
                 else:
                     uni_probs += uni_prob
-            except: 
+#            except: 
                 #sys.stderr.write("Failed to retrieve unigram probability for token: '%s'\n" % token) 
-                pass
+#                pass
         
         
         #get bigram probabilities
         for pos in range ( len(tokens) -1 ):
             token = tokens[pos:pos+2]
             if (token[0] not in unk_tokens) and (token[1] not in unk_tokens):
-                try:
+#                try:
                     bi_prob = self.server.getBigramProb(' '.join(token))
                     #bi_prob = self.server.getBigramProb(base64.standard_b64encode(' '.join(token)))
                     bi_probs += bi_prob
-                except:
+#                except:
                     #sys.stderr.write("Failed to retrieve bigram probability for tokens: '%s'\n" % ' '.join(token)) 
-                    pass
+
          
         #get trigram probabilities
         for pos in range ( len(tokens) -2 ):
             token = tokens[pos:pos+3]
             if (token[0] not in unk_tokens) and (token[1] not in unk_tokens) and (token[2] not in unk_tokens):
-                try:
+#                try:
                     tri_prob = self.server.getTrigramProb(' '.join(token))
                     tri_probs += tri_prob
-                except:
+#                except:
                     #sys.stderr.write("Failed to retrieve trigram probability for tokens: '%s'\n" % ' '.join(token))
-                    pass 
+#                    pass 
         
-        attributes = { 'unk' : str(unk_count),
-                       'uni-prob' : str(uni_probs),
-                       'bi-prob' : str(bi_probs),
-                       'tri-prob' : str(tri_probs) }
+        attributes = { 'lm_unk' : str(unk_count),
+                       'lm_uni-prob' : str(uni_probs),
+                       'lm_bi-prob' : str(bi_probs),
+                       'lm_tri-prob' : str(tri_probs),
+                       'lm_prob' : str(prob) }
         
         return attributes
             
             
     
     
-    def __get_sentence_probability__(self, sent_string ):
+    def _get_sentence_probability(self, sent_string ):
         
         l = len(sent_string.split(" "))       
    
