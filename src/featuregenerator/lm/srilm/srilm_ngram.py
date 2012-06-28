@@ -53,7 +53,8 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
                 tokenized_string = PunktWordTokenizer().tokenize(sent_string)
                 sent_string = ' '.join(tokenized_string)
             else:
-                tokenized_string = sent_string.split(' ')
+                #split and remove empty tokens (due to multiple spaces)
+                tokenized_string = [tok for tok in sent_string.split(' ') if tok]
             
         
         return (tokenized_string, sent_string)
