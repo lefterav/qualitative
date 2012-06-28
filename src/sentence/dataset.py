@@ -229,10 +229,10 @@ class DataSet(object):
             vector2 = [ps.get_attribute(confirm_attribute) for ps in dataset_for_merging_with.get_parallelsentences()]
             if vector1 != vector2:
                 raise IndexError("Error, datasets not symmetrical, concerning the identifier attribute {}".format(confirm_attribute))
-        else:
-            for i in range(len(self.parallelsentences)):
-                incoming_ps = incoming_parallelsentences[i]
-                self.parallelsentences[i].merge_parallelsentence(incoming_ps, attribute_replacements)
+    
+        for i in range(len(self.parallelsentences)):
+            incoming_ps = incoming_parallelsentences[i]
+            self.parallelsentences[i].merge_parallelsentence(incoming_ps, attribute_replacements)
                
     def get_translations_count_vector(self):
         return [len(ps.get_translations()) for ps in self.get_parallelsentences()]
