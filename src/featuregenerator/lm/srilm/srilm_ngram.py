@@ -61,7 +61,7 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
     
     
     def prepare_sentence(self, simplesentence):
-        sent_string = simplesentence.get_string().strip()
+        sent_string = simplesentence.get_string().replace('-',' ').strip()
         if self.freqcaser:
             tokenized_string = self.freqcaser.freqcase(sent_string)
         else:
