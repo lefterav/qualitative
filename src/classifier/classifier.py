@@ -11,6 +11,8 @@ from Orange.classification import Classifier
 from Orange.classification.rules import rule_to_string
 from Orange.classification.rules import RuleLearner
 from Orange.classification.svm import get_linear_svm_weights
+from Orange import feature
+from Orange.statistics import distribution
 
 import sys
 
@@ -27,6 +29,8 @@ class OrangeClassifier(Classifier):
         self.classifier = wrapped
         for name, val in wrapped.__dict__.items():
             self.__dict__[name] = val
+            
+        self.discrete_features = [feature.Descriptor.make(feat.name,feat.var_type,[],feat.values,0) for feat in self.classifier.domain.features if isinstance(feat, feature.Discrete)]
 
     def __call__(self, example, what=Orange.core.GetBoth):
         example = Instance(self.classifier.domain, example)
@@ -44,12 +48,40 @@ class OrangeClassifier(Classifier):
         @rtype: [L{Orange.classification.Value}, ...] or [L{Orange.classification.Distribution}, ...] or [(L{Orange.classification.Value},L{Orange.classification.Distribution}), ...]    
         """
         #orange_table = Table()
+        
+        if self.classifier.__class__.__name__ == "NaiveClassifier":
+            orange_table = self.clean_discrete_features(orange_table)
+        
         resultvector = []
         for instance in orange_table:
             value, distribution = self.classifier.__call__(instance, return_type)
             resultvector.append((value.value, distribution))
         return resultvector 
+    
+    
+    def clean_discrete_features(self, orange_table):
+        #kill instances that do not fit training data
+        classifier_discrete_features = self.discrete_features
+        print len(orange_table)
+        i = 0
+        k = 0
+        for feat, status in classifier_discrete_features:
+            classifier_feat_values = set([val for val in feat.values])
+            table_feat_values = set([val for val in orange_table.domain[feat.name].values])
+            missing_values = table_feat_values - classifier_feat_values
             
+            if not missing_values:
+                continue
+            
+            modus = distribution.Distribution(feat.name, orange_table).modus()
+            instances = set(orange_table.filter_ref({feat.name:list(missing_values)}))
+            for inst in instances:
+                inst[feat.name] = modus
+            
+            i+=len(instances)
+            k+=1    
+        sys.stderr.write("Warning: Reset {} appearances of {} discrete attributes\n".format(i, k))
+        return orange_table
 
     def classify_dataset(self, dataset, return_type=Classifier.GetBoth):
         pass
