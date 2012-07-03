@@ -3,12 +3,14 @@ Created on 07 Mar 2012
 @author: lefterav
 '''
 
+import copy
 from Orange.regression.linear import LinearRegressionLearner 
 from Orange.regression.pls import PLSRegressionLearner
 from Orange.regression.lasso import LassoRegressionLearner
 from Orange.regression.earth import EarthLearner
 from Orange.regression.tree import TreeLearner
 from Orange.classification.rules import CN2Learner,  CN2UnorderedLearner, CN2SDUnorderedLearner, CN2EVCUnorderedLearner
+from Orange import feature
 
 from Orange.classification.bayes import NaiveLearner
 from Orange.classification.knn import kNNLearner
@@ -226,12 +228,16 @@ class AutorankingSuite(PyExperimentSuite):
             
         if n == 90:
             print "test_classifier"
+            
             input_file = self.testset_orange_filename
 #            output_file = "classified.tab"
             
             print "performing classification"
             orangedata = Table(input_file)
             
+            
+           
+                    
             classified_set_vector = self.classifier.classify_orange_table(orangedata)
             self.classified_values_vector = [str(v[0]) for v in classified_set_vector]
             self.classified_probs_vector = [(v[1]["-1"], v[1]["1"]) for v in classified_set_vector]
