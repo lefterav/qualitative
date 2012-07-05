@@ -65,6 +65,10 @@ class AutorankingSuite(PyExperimentSuite):
         target_attributes = params["{}_target".format(params["att"])].split(",")
         general_attributes = params["{}_general".format(params["att"])].split(",")
         
+        params["source_attributes"] = source_attributes
+        params["target_attributes"] = target_attributes
+        params["general_attributes"] = general_attributes
+        
         self.active_attributes = []
         if general_attributes != [""]:
             self.active_attributes.extend(general_attributes) #TODOL check whether ps prefix is needed
@@ -223,8 +227,8 @@ class AutorankingSuite(PyExperimentSuite):
             orangeData = Table(self.trainset_orange_filename)
             learner = self.learner(**self.classifier_params)
             cv = evaluation.testing.cross_validation([learner], orangeData, 10)
-            ret["CA"] = evaluation.scoring.CA(cv)
-            ret["AUC"] = evaluation.scoring.AUC(cv)
+            ret["CA"] = evaluation.scoring.CA(cv)[0]
+            ret["AUC"] = evaluation.scoring.AUC(cv)[0]
             
         if n == 90:
             print "test_classifier"
