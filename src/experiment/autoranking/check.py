@@ -90,7 +90,11 @@ def get_tabfile(results, preferred_params=[], display_header=True, delimiter="\t
             try:
                 onlyvalues.append(str(values[key][0]))
             except:
-                onlyvalues.append(str(values[key]))
+                try:
+                    onlyvalues.append(str(values[key]))
+                except KeyError:
+                    onlyvalues.append('')
+                    
         print delimiter.join(params) + delimiter + delimiter.join(onlyvalues)
             
             
@@ -98,7 +102,7 @@ if __name__ == "__main__":
     
     
     #dev example 
-    #python2.7 check.py --path /home/elav01/taraxu_data/selection-mechanism/emnlp/experiment/4b --reps 0 --config config/autoranking.suite.bernux.cfg --params name classifier att mode ties include_references  > test.csv
+    #python2.7 check.py --path /home/elav01/taraxu_data/selection-mechanism/emnlp/experiment/4b --reps 0 --config config/autoranking.suite.bernux.cfg --params experiment classifier att mode ties include_references  > test.csv
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('--path', nargs=1,
                    help='the path were experiments will be found')
