@@ -98,7 +98,7 @@ class CompactPairwiseDataset(PairwiseDataset):
         multirank_parallelsentences = []
         for sentence_id in self.pairwise_parallelsentence_sets:
             pairwise_parallelsentence_set = self.pairwise_parallelsentence_sets[sentence_id]
-            multirank_parallelsentence = pairwise_parallelsentence_set.get_multiranked_sentence(critical_attribute, new_rank_name)
+            multirank_parallelsentence = pairwise_parallelsentence_set.get_multiranked_sentence(critical_attribute, new_rank_name, False)
             multirank_parallelsentences.append(multirank_parallelsentence)
         try:
             multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute("id")))
