@@ -86,10 +86,9 @@ class AutorankingSuite(PyExperimentSuite):
 
         self.hidden_attributes = params["hidden_attributes"].split(",")
         self.discrete_attributes = params["discrete_attributes"].split(",")
-
-        self.original_class_name = params["class_name"]
-        self.class_name = "rank"
-        self.class_type = 'd'
+ 
+        self.class_name = params["class_name"]
+        self.class_type = params["class_type"]
         
         self.training_sets = params["training_sets"].format(**params).split(',')
         self.testset = params["test_set"].format(**params)
