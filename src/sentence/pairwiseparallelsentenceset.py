@@ -217,7 +217,7 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         print "filtered %d ties" % ties
         return ties
     
-    def get_multiranked_sentence(self, critical_attribute = None, new_rank_name = None):
+    def get_multiranked_sentence(self, critical_attribute = None, new_rank_name = None, del_orig_class_att = True):
         """
         It reconstructs a single parallel sentence object with a gathered discrete [1-9] 
         ranking out of the pairwise comparisons that exist in the pairwise parallel sentence instances
@@ -279,7 +279,8 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         source = deepcopy(self.pps_dict.values()[0].get_source())
         reference = deepcopy(self.pps_dict.values()[0].get_reference())
         attributes = deepcopy(self.pps_dict.values()[0].get_attributes())
-        del(attributes[self.rank_name])
+        if del_orig_class_att:
+            del(attributes[self.rank_name])
         
         return ParallelSentence(source, translations_new_rank, reference, attributes)         
         
