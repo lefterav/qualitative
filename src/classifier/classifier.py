@@ -29,8 +29,9 @@ class OrangeClassifier(Classifier):
         self.classifier = wrapped
         for name, val in wrapped.__dict__.items():
             self.__dict__[name] = val
-            
-        self.discrete_features = [feature.Descriptor.make(feat.name,feat.var_type,[],feat.values,0) for feat in self.classifier.domain.features if isinstance(feat, feature.Discrete)]
+        
+        if self.classifier.__class__.__name__ == "NaiveClassifier":    
+            self.discrete_features = [feature.Descriptor.make(feat.name,feat.var_type,[],feat.values,0) for feat in self.classifier.domain.features if isinstance(feat, feature.Discrete)]
 
     def __call__(self, example, what=Orange.core.GetBoth):
         example = Instance(self.classifier.domain, example)
