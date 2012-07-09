@@ -39,7 +39,7 @@ import time
 import random
 import sys
 import shutil
-import cPickle as pickle
+import pickle
 import os
 
 from expsuite import PyExperimentSuite
@@ -282,6 +282,7 @@ class AutorankingSuite(PyExperimentSuite):
             
         
         if n == 120:
+            print "Scoring correlation"
             scoringset = Scoring(self.reconstructed_hard_testset)
             ret["kendalltau-hard"]  = scoringset.get_kendall_tau("rank_hard", self.class_name)
             ret["b1-acc-hard-1"], ret["b1-acc-hard-any"] = scoringset.selectbest_accuracy("rank_hard", self.class_name)            
