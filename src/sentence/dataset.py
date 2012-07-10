@@ -180,7 +180,8 @@ class DataSet(object):
         merged_attribute_names = existing_attribute_names.union(new_attribute_names)
         self.attribute_names = list(merged_attribute_names)
     
-    def merge_dataset(self, dataset_for_merging_with, attribute_replacements = {"rank": "predicted_rank"}, merging_attributes = ["id"], merge_strict = False):
+    #attribute_replacements = {"rank": "predicted_rank"}
+    def merge_dataset(self, dataset_for_merging_with, attribute_replacements = {}, merging_attributes = ["id"], merge_strict = False):
         """
         It takes a dataset which contains the same parallelsentences, but with different attributes.
         Incoming parallel sentences are matched with the existing parallel sentences based on the "merging attribute". 
@@ -212,7 +213,8 @@ class DataSet(object):
                 pass
             
     
-    def merge_dataset_symmetrical(self, dataset_for_merging_with, attribute_replacements = {"rank": "predicted_rank"}, confirm_attribute = ""):
+    #attribute_replacements = {"rank": "predicted_rank"}
+    def merge_dataset_symmetrical(self, dataset_for_merging_with, attribute_replacements = {}, confirm_attribute = ""):
         """
         Merge the current dataset in place with another symmetrical dataset of the same size and the same original content, but
         possibly with different attributes per parallel sentence
