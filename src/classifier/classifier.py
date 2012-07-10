@@ -12,6 +12,7 @@ from Orange.classification.rules import rule_to_string
 from Orange.classification.rules import RuleLearner
 from Orange.classification.svm import get_linear_svm_weights
 from Orange import feature
+from Orange.classification import logreg
 from Orange.statistics import distribution
 
 import sys
@@ -164,7 +165,12 @@ class OrangeClassifier(Classifier):
         except:
             pass
             
-            
+        try:
+            textfilename = "{}.dump.txt".format(basename)
+            logreg.dump(self.classifier)
+        except:
+            pass    
+                    
 #    def _print_tree(self, x, fileobj):
 #        if isinstance(x, Orange.classification.tree.TreeClassifier):
 #            self._print_tree0(x.tree, 0, fileobj)
