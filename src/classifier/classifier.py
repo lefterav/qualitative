@@ -30,7 +30,7 @@ class OrangeClassifier(Classifier):
         for name, val in wrapped.__dict__.items():
             self.__dict__[name] = val
         
-        if self.classifier.__class__.__name__ == "NaiveClassifier":    
+        if self.classifier.__class__.__name__ in ["NaiveClassifier", "CN2UnorderedClassifier"]:    
             self.discrete_features = [feature.Descriptor.make(feat.name,feat.var_type,[],feat.values,0) for feat in self.classifier.domain.features if isinstance(feat, feature.Discrete)]
 
     def __call__(self, example, what=Orange.core.GetBoth):
@@ -50,7 +50,7 @@ class OrangeClassifier(Classifier):
         """
         #orange_table = Table()
         
-        if self.classifier.__class__.__name__ == "NaiveClassifier":
+        if self.classifier.__class__.__name__ in ["NaiveClassifier", "CN2UnorderedClassifier"]:
             orange_table = self.clean_discrete_features(orange_table)
         
         resultvector = []
