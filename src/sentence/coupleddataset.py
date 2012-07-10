@@ -45,8 +45,8 @@ class CoupledDataSet(DataSet):
             already_coupled_parallelsentences = dataset.get_parallelsentences()
             self.parallelsentences = [CoupledParallelSentence(ps) for ps in already_coupled_parallelsentences]
             
-            
-    def get_single_set(self, critical_attribute="predicted_rank"):
+    #critical_attribute="predicted_rank"
+    def get_single_set(self, critical_attribute=None):
         '''
         Reconstructs the original data set, with only one sentence per entry.
         @return: Simple dataset that contains the simplified parallel sentences
@@ -115,7 +115,9 @@ class CoupledDataSet(DataSet):
         return DataSet(sorted_ps)
         
     
-    def get_single_set_with_hard_ranks(self, critical_attribute="predicted_rank"):
+    
+    #critical_attribute="predicted_rank"
+    def get_single_set_with_hard_ranks(self, critical_attribute=None):
         '''
         Reconstructs the original data set, with only one sentence per entry.
         @return: Simple dataset that contains the simplified parallel sentences

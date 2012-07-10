@@ -279,8 +279,9 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         source = deepcopy(self.pps_dict.values()[0].get_source())
         reference = deepcopy(self.pps_dict.values()[0].get_reference())
         attributes = deepcopy(self.pps_dict.values()[0].get_attributes())
-        if del_orig_class_att:
-            del(attributes[self.rank_name])
+#        if del_orig_class_att:
+#            del(attributes[self.rank_name])
+        del(attributes[self.rank_name])
         
         return ParallelSentence(source, translations_new_rank, reference, attributes)         
         
