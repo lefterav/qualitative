@@ -276,7 +276,7 @@ class AutorankingSuite(PyExperimentSuite):
             self.simple_testset = AnalyticPairwiseDataset(self.simple_testset) #this 
             self.simple_testset = CompactPairwiseDataset(self.simple_testset) #and this should have no effect
             
-            self.reconstructed_hard_testset = self.simple_testset.get_single_set_with_hard_ranks("rank_predicted", "rank_hard")
+            self.reconstructed_hard_testset = self.simple_testset.get_single_set_with_hard_ranks("rank", "rank_hard")
             self.reconstructed_soft_testset = self.simple_testset.get_single_set_with_soft_ranks("prob_-1", "prob_1", "rank_soft_predicted", "rank_soft")
             self.simple_testset = None
             
