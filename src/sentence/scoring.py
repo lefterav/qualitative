@@ -136,38 +136,48 @@ class Scoring(MultiRankedDataset):
                 
 
     
+    def get_kendall_tau_a(self, predicted_rank_name, original_rank_name):
+        pass
+    
     """
     @todo: clean references and delete
     """
-    def get_kendall_tau(self, rank_name_1, rank_name_2):
+    def get_kendall_tau(self, predicted_rank_name, original_rank_name):
         from scipy.stats import kendalltau
+        from numpy import isnan
 
         segment_tau = 0.00
         didnt = 0
+        segment_pi = 1.00
         for parallesentence in self.parallelsentences:
-            rank_vector_1 = parallesentence.get_target_attribute_values(rank_name_1)
-            rank_vector_2 = parallesentence.get_target_attribute_values(rank_name_2)
+            predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
+            original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
             
-            print "\t".join(rank_vector_1), 
-            print "\t",
-            print "\t".join(rank_vector_2),
-            print "\t",
-            try:
-                tau = kendalltau(rank_vector_1, rank_vector_2)[0]
-            except:
-                tau = -1.00
-            if (tau >= -1 and tau <= 1):
-                segment_tau += tau
-                print tau
-            else:
-                didnt += 1
-                print "-1"
+            print "[{0}]".format(" , ".join(predicted_rank_vector)) 
+            print "[{0}]".format(" , ".join(original_rank_vector))
+            
+            #if had this denominator error, just provide the result of smoothing
+            tau, pi = kendalltau(original_rank_vector, predicted_rank_vector)
+            if isnan(tau) or isnan(pi):
+                tau = 0.00
+                pi = 1.00
+
+            segment_tau += tau
+            segment_pi *= pi
+            print tau
+#            if (tau >= -1 and tau <= 1):
+#                segment_tau += tau
+#                print tau
+#            else:
+#                didnt += 1
+#                print "-1000"
         #print "Didn't %s" % didnt
-        try:
-            avg_tau = segment_tau / (len(self.parallelsentences) - didnt)
-        except:
-            avg_tau = 0
-        return avg_tau
+        
+        avg_tau = 1.00 * segment_tau / len(self.parallelsentences)
+        
+        
+        print "Avg tau:  segment_tau / len(self.parallelsentences) \n= {0} / {1}  \n= {2}".format(segment_tau, len(self.parallelsentences), avg_tau)
+        return avg_tau, segment_pi
     
 
             
