@@ -8,6 +8,7 @@ from suite import AutorankingSuite
 import argparse 
 import sys
 import os
+import logging
 
 """
 Gathers the results from the experiment folders created with python Experiment Suite
@@ -34,6 +35,8 @@ def retrieve_results(mysuite, path, reps = [0]):
     
     results = []
     exps = mysuite.get_exps(path=path)
+    logging.info("Found %s experiments", len(exps))    
+    logging.debug("exps: %s", exps)
     result_names = set()
     
     #browse experiment directories one by one
@@ -45,6 +48,8 @@ def retrieve_results(mysuite, path, reps = [0]):
                 params = mysuite.get_params(exp)
                 params["experiment"] = os.path.basename(os.path.dirname(exp))
                 results.append((params, values))
+    logging.info("found %s experiments", len(results))
+    
     return results
 
                 
@@ -78,7 +83,7 @@ def get_tabfile(results, preferred_params=[], display_header=True, delimiter="\t
     
     for params, values in results:
 
-        #retain only the preferred params, if specified
+        #retain only the preferred params
         params = [str(params[param_name]) for param_name in preferred_params]
         
         
@@ -101,6 +106,7 @@ def get_tabfile(results, preferred_params=[], display_header=True, delimiter="\t
 if __name__ == "__main__":
     
     
+    
     #dev example 
     #python2.7 check.py --path /home/elav01/taraxu_data/selection-mechanism/emnlp/experiment/4b --reps 0 --config config/autoranking.suite.bernux.cfg --params experiment classifier att mode ties include_references  > test.csv
     parser = argparse.ArgumentParser(description='Process some integers.')
@@ -114,8 +120,17 @@ if __name__ == "__main__":
     
     parser.add_argument('--config', nargs=1,                   
                    help='the configuration file to be checked')
+                   
+    parser.add_argument('--logging', nargs="?", default = None,
+                   help='should logging be performed, if set to True writes the debug level to debug.log, ')
+
+
 
     args = parser.parse_args(sys.argv[1:])
+    
+    if args.logging:
+        logging.basicConfig(filename='debug.log',level=getattr(logging, args.logging.upper()))
+    
     sys.argv = [sys.argv[0]]
     sys.argv.extend(["--config", args.config])
     mysuite = AutorankingSuite()
