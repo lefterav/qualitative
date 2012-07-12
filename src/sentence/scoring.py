@@ -9,6 +9,60 @@
 from dataset import DataSet
 from multirankeddataset import MultiRankedDataset
 
+
+
+def get_kendall_tau(predicted_rank_vector, original_rank_vector):
+    """
+    Calculates Kendall tau of predicted vs human ranking according to WMT12 (Birch et. al 2012)
+    @param predicted_pairs: a list of integers representing the predicted ranks
+    @type predicted_rank_name: str 
+    @param original_rank_name: the name of the attribute containing the human rank
+    @type original_rank_name: str
+    @return: the Kendall tau score and the probability for the null hypothesis of X and Y being independent
+    @rtype: tuple(float, float)
+    """
+    
+    import numpy as np
+    from scipy import special
+    import itertools
+    
+    #the following will give positive int, if i > j, negative int if i < j and 0 for ties
+    predicted_pairs = [(i-j) for i, j in itertools.combinations(predicted_rank_vector, 2)]
+    original_pairs = [(i-j) for i, j in itertools.combinations(original_rank_vector, 2)]
+    all_pairs_count = len(predicted_pairs)
+    
+    concordant_count = 0
+    discordant_count = 0
+    ties = 0
+    
+    #count concordant and discordant pairs
+    for original_pair, predicted_pair in zip(original_pairs, predicted_pairs):
+        if original_pair * predicted_pair > 0 or (predicted_pair == 0 and original_pair == 0):
+            concordant_count += 1
+        #if there is a tie on the predicted side, this is counted as two discordants pairs
+        elif predicted_pair == 0:
+            discordant_count += 1
+            ties += 1
+        #if there is a tie on the original human annotation, this is not counted
+        elif original_pair == 0:
+            pass
+        #and finally when there is disagreement without a tie 
+        else:
+            discordant_count += 1
+    
+    print all_pairs_count
+    tau = 1.00 * (concordant_count - discordant_count - ties) / (all_pairs_count + ties)
+    
+    #probability of independence hypothesis
+    svar = (4.0 * all_pairs_count + 10.0) / (9.0 * all_pairs_count * (all_pairs_count - 1))
+    z = tau / np.sqrt(svar)
+    prob = special.erfc(np.abs(z) / 1.4142136)
+    
+    return tau, prob
+
+
+
+
 class Scoring(MultiRankedDataset):
     """
     classdocs
@@ -135,19 +189,51 @@ class Scoring(MultiRankedDataset):
         
                 
 
+       
+
     
-    def get_kendall_tau_a(self, predicted_rank_name, original_rank_name):
-        pass
-    
-    """
-    @todo: clean references and delete
-    """
     def get_kendall_tau(self, predicted_rank_name, original_rank_name):
+        """
+        Calculates Kendall tau of predicted vs human ranking according to WMT12 (Birch et. al 2012)
+        @param predicted_rank_name: the name of the attribute containing the predicted rank
+        @type predicted_rank_name: str 
+        @param original_rank_name: the name of the attribute containing the human rank
+        @type original_rank_name: str
+        @return: the Kendall tau score and the probability for the null hypothesis of X and Y being independent
+        @rtype: tuple(float, float)
+        """
+        import itertools
+        import numpy as np
+        
+        taus = []
+        probs = []
+        for parallesentence in self.parallelsentences:
+            predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
+            original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
+           
+            tau, prob = get_kendall_tau(predicted_rank_vector, original_rank_vector)
+            taus.append(tau)
+            probs.append(prob)            
+                 
+        return np.average(tau), np.product(prob)
+    
+    
+    
+    def get_kendall_tau_b(self, predicted_rank_name, original_rank_name):
+        """
+        Calculates Kendall tau beta of predicted vs human ranking according to the Knight (1966) 
+        [scipy implementation] taking account of ties    
+        @param predicted_rank_name: the name of the attribute containing the predicted rank
+        @type predicted_rank_name: str 
+        @param original_rank_name: the name of the attribute containing the human rank
+        @type original_rank_name: str
+        @return: the Kendall tau score and the probability for the null hypothesis of X and Y being independent
+        @rtype: tuple(float, float)
+        """
         from scipy.stats import kendalltau
         from numpy import isnan
 
         segment_tau = 0.00
-        didnt = 0
         segment_pi = 1.00
         for parallesentence in self.parallelsentences:
             predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
@@ -165,13 +251,6 @@ class Scoring(MultiRankedDataset):
             segment_tau += tau
             segment_pi *= pi
             print tau
-#            if (tau >= -1 and tau <= 1):
-#                segment_tau += tau
-#                print tau
-#            else:
-#                didnt += 1
-#                print "-1000"
-        #print "Didn't %s" % didnt
         
         avg_tau = 1.00 * segment_tau / len(self.parallelsentences)
         
