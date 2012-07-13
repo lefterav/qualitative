@@ -27,8 +27,8 @@ def get_kendall_tau(predicted_rank_vector, original_rank_vector):
     import itertools
     
     #the following will give positive int, if i > j, negative int if i < j and 0 for ties
-    predicted_pairs = [(i-j) for i, j in itertools.combinations(predicted_rank_vector, 2)]
-    original_pairs = [(i-j) for i, j in itertools.combinations(original_rank_vector, 2)]
+    predicted_pairs = [int(i)-int(j) for i, j in itertools.combinations(predicted_rank_vector, 2)]
+    original_pairs = [int(i)-int(j) for i, j in itertools.combinations(original_rank_vector, 2)]
     all_pairs_count = len(predicted_pairs)
     
     concordant_count = 0
@@ -50,14 +50,19 @@ def get_kendall_tau(predicted_rank_vector, original_rank_vector):
         else:
             discordant_count += 1
     
-    print all_pairs_count
     tau = 1.00 * (concordant_count - discordant_count - ties) / (all_pairs_count + ties)
     
     #probability of independence hypothesis
-    svar = (4.0 * all_pairs_count + 10.0) / (9.0 * all_pairs_count * (all_pairs_count - 1))
-    z = tau / np.sqrt(svar)
+    try:
+        svar = (4.0 * all_pairs_count + 10.0) / (9.0 * all_pairs_count * (all_pairs_count - 1))
+    except:
+        svar = 1
+    try: 
+        z = tau / np.sqrt(svar)
+    except:
+        z = 1
     prob = special.erfc(np.abs(z) / 1.4142136)
-    
+    print tau
     return tau, prob
 
 

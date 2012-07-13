@@ -96,8 +96,46 @@ class TestPairwiseParallelSentenceConversion(unittest.TestCase):
     def test_pairwise_reverse(self):
         pps_original = self.mydataset.get_parallelsentences()
         pps_new = AnalyticPairwiseDataset(self.mydataset).get_parallelsentences()
-        pps_rebuilt = RankHandler().get_multiclass_from_pairwise_set(pps_new, True)
-        self.assertEqual(len(pps_original), len(pps_rebuilt))
+        pps_rebuilt_old = RankHandler().get_multiclass_from_pairwise_set(pps_new, True)
+        self.assertEqual(len(pps_original), len(pps_rebuilt_old))
+
+    def test_pairwise_reverse_new_way(self):            
+        analytic_dataset = AnalyticPairwiseDataset(self.mydataset)
+        compact_dataset = CompactPairwiseDataset(analytic_dataset)
+        reconstructed_hard_testset = compact_dataset.get_single_set_with_hard_ranks("rank", "rank_hard")
+        self.assertEqual
+        
+    
+    def test_testset_handling(self):
+        
+        def equal_sentences(dataset1, dataset2):        
+            self.assertEqual(len(dataset1.get_parallelsentences()), len(dataset2.get_parallelsentences()))        
+        
+        
+        
+        #first perform typical cleanup of the test set
+        analytic_testset = AnalyticPairwiseDataset(self.mydataset) #this 
+        filtered_dataset = FilteredPairwiseDataset(analytic_testset, 1.00)
+        filtered_dataset.remove_ties()
+        reconstructed_dataset = filtered_dataset.get_multiclass_set()
+        reconstructed_dataset.remove_ties()
+        output_filename = "filtered.jcml"
+        Parallelsentence2Jcml(filtered_dataset.get_parallelsentences(), shuffle_translations=False).write_to_file(output_filename)
+        
+        #retrieve clean test set from the file and repeat the handling
+        simple_testset = JcmlReader(output_filename).get_dataset()
+        analytic_testset_2 = AnalyticPairwiseDataset(simple_testset) #this 
+        compact_testset_2 = FilteredPairwiseDataset(analytic_testset_2)
+        reconstructed_dataset_2 = compact_testset_2.get_multiclass_set()
+        output_filename = "refiltered.jcml"
+        Parallelsentence2Jcml(compact_testset_2.get_parallelsentences(), shuffle_translations=False).write_to_file(output_filename)
+        
+#        equal_sentences(reconstructed_dataset_2, reconstructed_dataset)
+        
+        #first see if number of sentences at the compact sets are equal
+        
+        
+    
 #        self.assertEqual(pps_original, pps_new)
     
     def test_pairwise_merge(self):
