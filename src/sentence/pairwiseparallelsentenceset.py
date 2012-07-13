@@ -230,10 +230,12 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         if not new_rank_name:
             new_rank_name = self.rank_name
         
+
+        
         #first iterate and make a sum of the rank per system name        
         for (system_a, system_b), parallelsentence in self.pps_dict.iteritems():
             #get the rank value (0, -1, 1)
-            
+                        
             if not critical_attribute:
                 rank = int(parallelsentence.get_rank())
             else:
@@ -241,14 +243,9 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
             
             #rank value adds up on the first system's rank
             #and subtracts from the seconds system's
-            try:
-                rank_per_system[system_a] += rank
-            except KeyError:
-                rank_per_system[system_a] = rank
-            try:
-                rank_per_system[system_b] -= rank
-            except KeyError:
-                rank_per_system[system_b] = -1 * rank
+
+            rank_per_system[system_a] = rank_per_system.setdefault(system_a, 0) + rank
+            rank_per_system[system_b] = rank_per_system.setdefault(system_b, 0) - rank
             
             #also gather in a dict the translations per system name, in order to have easy access later
             translations_per_system[system_b] = parallelsentence.get_translations()[1]
