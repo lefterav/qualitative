@@ -47,8 +47,8 @@ class PairwiseParallelSentence(ParallelSentence):
         comparison value, namely -1 if the first system is better, +1 if the second system output is better, 
         and 0 if they are equally good. 
         """
-        rank_a = self.tgt[0].get_attribute(self.rank_name)
-        rank_b = self.tgt[1].get_attribute(self.rank_name)
+        rank_a = float(self.tgt[0].get_attribute(self.rank_name))
+        rank_b = float(self.tgt[1].get_attribute(self.rank_name))
         
         if rank_a > rank_b:
             rank = 1
