@@ -63,7 +63,7 @@ class TestPairwiseParallelSentenceConversion(unittest.TestCase):
         #how many should there be?
         translation_count_vector = self.mydataset.get_translations_count_vector()
         print translation_count_vector
-        pairwise_translation_count_vector = [n*(n-1)/2 for n in translation_count_vector]
+        pairwise_translation_count_vector = [n*(n-1) for n in translation_count_vector]
         print pairwise_translation_count_vector
         pairwise_translations_altogether = sum(pairwise_translation_count_vector)
         
@@ -74,7 +74,7 @@ class TestPairwiseParallelSentenceConversion(unittest.TestCase):
     
     def test_pairwise_with_both_ways(self):
         pps_new = sorted(AnalyticPairwiseDataset(self.mydataset).get_parallelsentences())
-        pps_old = sorted(RankHandler().get_pairwise_from_multiclass_set(self.mydataset.get_parallelsentences(), True, False, False))
+        pps_old = sorted(RankHandler().get_pairwise_from_multiclass_set(self.mydataset.get_parallelsentences(), True, True, False))
         filename1 = "%s.pairnew" % self.filename
         filename2 = "%s.pairold" % self.filename
         Parallelsentence2Jcml(pps_new).write_to_file(filename1)
@@ -85,25 +85,20 @@ class TestPairwiseParallelSentenceConversion(unittest.TestCase):
 #        self.assertEqual(pps_new, pps_old)
         
         
-    def test_ties_removal_from_analytic(self):
+    def test_rankhandler_ties_removal_from_analytic(self):
         pd_new = AnalyticPairwiseDataset(self.mydataset)
         pd_new.remove_ties()
         pps_new = pd_new.get_parallelsentences()
-        pps_old = RankHandler().get_pairwise_from_multiclass_set(self.mydataset.get_parallelsentences(), False, False)
+        pps_old = RankHandler().get_pairwise_from_multiclass_set(self.mydataset.get_parallelsentences(), False, True)
         self.assertEqual(len(pps_new), len(pps_old))
 
 
-    def test_pairwise_reverse(self):
+    def test_rankhandler_pairwise_reverse(self):
         pps_original = self.mydataset.get_parallelsentences()
         pps_new = AnalyticPairwiseDataset(self.mydataset).get_parallelsentences()
         pps_rebuilt_old = RankHandler().get_multiclass_from_pairwise_set(pps_new, True)
         self.assertEqual(len(pps_original), len(pps_rebuilt_old))
 
-    def test_pairwise_reverse_new_way(self):            
-        analytic_dataset = AnalyticPairwiseDataset(self.mydataset)
-        compact_dataset = CompactPairwiseDataset(analytic_dataset)
-        reconstructed_hard_testset = compact_dataset.get_single_set_with_hard_ranks("rank", "rank_hard")
-        self.assertEqual
         
     
     def test_testset_handling(self):
@@ -120,7 +115,7 @@ class TestPairwiseParallelSentenceConversion(unittest.TestCase):
         reconstructed_dataset = filtered_dataset.get_multiclass_set()
         reconstructed_dataset.remove_ties()
         output_filename = "filtered.jcml"
-        Parallelsentence2Jcml(filtered_dataset.get_parallelsentences(), shuffle_translations=False).write_to_file(output_filename)
+        Parallelsentence2Jcml(reconstructed_dataset.get_parallelsentences(), shuffle_translations=False).write_to_file(output_filename)
         
         #retrieve clean test set from the file and repeat the handling
         simple_testset = JcmlReader(output_filename).get_dataset()
@@ -128,7 +123,7 @@ class TestPairwiseParallelSentenceConversion(unittest.TestCase):
         compact_testset_2 = FilteredPairwiseDataset(analytic_testset_2)
         reconstructed_dataset_2 = compact_testset_2.get_multiclass_set()
         output_filename = "refiltered.jcml"
-        Parallelsentence2Jcml(compact_testset_2.get_parallelsentences(), shuffle_translations=False).write_to_file(output_filename)
+        Parallelsentence2Jcml(reconstructed_dataset_2.get_parallelsentences(), shuffle_translations=False).write_to_file(output_filename)
         
 #        equal_sentences(reconstructed_dataset_2, reconstructed_dataset)
         
@@ -144,7 +139,7 @@ class TestPairwiseParallelSentenceConversion(unittest.TestCase):
         new_merged_sentences = new_merged.get_parallelsentences()
         
         parallelsentences = self.mydataset.get_parallelsentences()
-        old_unmerged_sentences = RankHandler().get_pairwise_from_multiclass_set(parallelsentences, True, False, False)
+        old_unmerged_sentences = RankHandler().get_pairwise_from_multiclass_set(parallelsentences, True, True, False)
         old_merged_sentences = RankHandler().merge_overlapping_pairwise_set(old_unmerged_sentences) 
     
         filename1 = "%s.mergednew" % self.filename
@@ -214,6 +209,7 @@ class TestPairwiseParallelSentenceConversion(unittest.TestCase):
             print "rank vector for sentence %s has %d unique comparisons "% (sentence_id, len(rank_pairs))
             unique += len(rank_pairs)
         
+        unique = 2*unique
         new_filtered = CompactPairwiseDataset(new_analytic)
         new_filtered_parallelsentences = new_filtered.get_parallelsentences()
         print "Should have", unique, "and have" , len(new_filtered_parallelsentences)

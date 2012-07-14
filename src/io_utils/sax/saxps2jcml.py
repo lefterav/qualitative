@@ -100,10 +100,9 @@ class Parallelsentence2Jcml(object):
         Provide a list of parallel sentences
         '''
         
-        self.shuffle_translations = False
-        if kwargs.has_key("shuffle_translations"):
-            self.shuffle_translations = kwargs["shuffle_translations"]
-        
+        self.shuffle_translations = kwargs.setdefault("shuffle_translations", False)
+        self.sort_attribute = kwargs.setdefault("sort_attribute", None)
+                    
         if isinstance (parallelsentences, DataSet):
             self.parallelsentences = parallelsentences.get_parallelsentences()
         else:
@@ -144,6 +143,9 @@ class Parallelsentence2Jcml(object):
             
             if self.shuffle_translations:
                 shuffle(translations)
+            
+            if self.sort_attribute:
+                translations = sorted(translations, key=lambda tgt: tgt.get_attribute(self.sort_attribute))
             
             for tgt in translations:
                 generator._write("\n\t\t")
