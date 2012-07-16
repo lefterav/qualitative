@@ -2,7 +2,7 @@
 Created on 07 Mar 2012
 @author: lefterav
 '''
-
+import logging
 import copy
 from Orange.regression.linear import LinearRegressionLearner 
 from Orange.regression.pls import PLSRegressionLearner
@@ -386,6 +386,7 @@ class AutorankingSuite(PyExperimentSuite):
             shutil.copy(test_filename, "testset.jcml")
 
 if __name__ == '__main__':
+    logging.basicConfig(filename='example.log',level=logging.DEBUG)
     mysuite = AutorankingSuite();
     mysuite.start()
     
