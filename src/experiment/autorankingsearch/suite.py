@@ -399,7 +399,7 @@ if __name__ == '__main__':
     logging.info("Original features are %d", len(orangedata.domain.features))
     
     allowed_features = filter_features(orangedata.domain.features)
-    featuresets = [[feature.name] for feature in allowed_features][:10]
+    featuresets = [[feature.name] for feature in allowed_features]
     previous_value = 0
     previous_len = 0
     
@@ -416,8 +416,9 @@ if __name__ == '__main__':
         mysuite.start()
         
         featureset_scores = get_scores(mysuite, path, experiment, critical_score)
+        
         logging.debug("Featureset scores: \n%s\n", featureset_scores)
-        logging.info("Best score for iteration %d = %s", repetition,  featureset_scores[0][1])
+        logging.info("-------------------------\nBest score for iteration %d = %s\n---------------------------------", repetition,  featureset_scores[0][1])
         logging.info("Featureset %s", featureset_scores[0][0])
         #the featureset to augment
         
