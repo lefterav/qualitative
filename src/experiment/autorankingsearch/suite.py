@@ -381,7 +381,10 @@ class StreamToLogger(object):
    def write(self, buf):
       for line in buf.rstrip().splitlines():
          self.logger.log(self.log_level, line.rstrip())
- 
+
+
+   def flush(self):
+      pass 
  
 if __name__ == '__main__':
     converged = False
