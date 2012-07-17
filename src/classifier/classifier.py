@@ -16,6 +16,7 @@ from Orange.classification import logreg
 from Orange.statistics import distribution
 
 import sys
+import logging
 
 class OrangeClassifier(Classifier):
     """
@@ -64,7 +65,7 @@ class OrangeClassifier(Classifier):
     def clean_discrete_features(self, orange_table):
         #kill instances that do not fit training data
         classifier_discrete_features = self.discrete_features
-        print len(orange_table)
+        logging.debug(len(orange_table))
         i = 0
         k = 0
         for feat, status in classifier_discrete_features:
@@ -106,7 +107,7 @@ class OrangeClassifier(Classifier):
                 
         classifier_type = self.classifier.__class__.__name__
         
-        print classifier_type
+        logging.debug("====\nProceeding with printing information for classifier [%s]", classifier_type)
         
         if classifier_type in ["NaiveClassifier", ]:
 #            textfilename = "{}.txt".format(basename)
