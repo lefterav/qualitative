@@ -67,7 +67,7 @@ class SVMEasyLearner(SVMLearner):
         
         if self.svm_type in [1,4]:
             numOfNuValues=9
-            if self.svm_type == self.SVMLearner.Nu_SVC:
+            if self.svm_type == self.learner.Nu_SVC:
                 maxNu = max(self.maxNu(newexamples) - 1e-7, 0.0)
             else:
                 maxNu = 1.0
