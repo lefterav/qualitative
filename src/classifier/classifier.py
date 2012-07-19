@@ -65,7 +65,7 @@ class OrangeClassifier(Classifier):
     def clean_discrete_features(self, orange_table):
         #kill instances that do not fit training data
         classifier_discrete_features = self.discrete_features
-        logging.debug(len(orange_table))
+#        logging.debug(len(orange_table))
         i = 0
         k = 0
         for feat, status in classifier_discrete_features:
