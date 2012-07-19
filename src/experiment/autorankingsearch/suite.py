@@ -391,7 +391,7 @@ if __name__ == '__main__':
     
     repetition = 0
     orangedata, config, experiment, critical_score, path = load_data()
-    FORMAT = "%(asctime)-15s %(message)s"
+    FORMAT = "%(asctime)-15s [%(process)d:%(thread)d] %(message) "
     logging.basicConfig(filename=os.path.join(path, experiment, 'search.log'),level=logging.DEBUG,format=FORMAT)
     
     stderr_logger = logging.getLogger('STDERR')
