@@ -402,12 +402,11 @@ class StreamToLogger(object):
          self.logger.log(self.log_level, line.rstrip())
          
    def flush(self):
-       path
+       pass
 
 if __name__ == '__main__':
     FORMAT = "%(asctime)-15s [%(process)d:%(thread)d] %(message) "
     logging.basicConfig(filename='autoranking.log',level=logging.DEBUG, format=FORMAT)
-    logger
     mysuite = AutorankingSuite();
     mysuite.start()
     
