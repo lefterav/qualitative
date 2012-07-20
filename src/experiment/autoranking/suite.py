@@ -407,7 +407,7 @@ class StreamToLogger(object):
        pass
 
 if __name__ == '__main__':
-    FORMAT = "%(asctime)-15s [%(process)d:%(thread)d] %(message) "
+    FORMAT = "%(asctime)-15s [%(process)d:%(thread)d] %(message)s "
     logging.basicConfig(filename='autoranking.log',level=logging.DEBUG, format=FORMAT)
     mysuite = AutorankingSuite();
     mysuite.start()
