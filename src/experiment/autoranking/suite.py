@@ -285,11 +285,13 @@ class AutorankingSuite(PyExperimentSuite):
             print "Scoring correlation"
             scoringset = Scoring(self.reconstructed_hard_testset)
             ret["kendalltau-hard"], ret["kendalltau-hard-pi"]  = scoringset.get_kendall_tau("rank_hard", self.class_name)
+            ret["kendalltau-hard-no-ties-penalty"], ret["kendalltau-hard-pi"]  = scoringset.get_kendall_tau("rank_hard", self.class_name, ties_penalty = False)
             ret["kendalltau_b-hard"], ret["kendalltau_b-hard-pi"]  = scoringset.get_kendall_tau_b("rank_hard", self.class_name)
             ret["b1-acc-hard-1"], ret["b1-acc-hard-any"] = scoringset.selectbest_accuracy("rank_hard", self.class_name)            
             
             scoringset = Scoring(self.reconstructed_soft_testset)
             ret["kendalltau-soft"], ret["kendalltau-soft-pi"] = scoringset.get_kendall_tau("rank_soft", self.class_name)
+            ret["kendalltau-soft-no-ties-penalty"], ret["kendalltau-hard-pi"]  = scoringset.get_kendall_tau("rank_soft", self.class_name, ties_penalty = False)
             ret["kendalltau_b-soft"], ret["kendalltau_b-soft-pi"] = scoringset.get_kendall_tau_b("rank_soft", self.class_name)
             ret["b1-acc-soft-1"], ret["b1-acc-soft-any"] = scoringset.selectbest_accuracy("rank_soft", self.class_name)        
             

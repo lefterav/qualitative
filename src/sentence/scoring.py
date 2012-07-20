@@ -8,10 +8,10 @@
 
 from dataset import DataSet
 from multirankeddataset import MultiRankedDataset
+import logging
 
 
-
-def get_kendall_tau(predicted_rank_vector, original_rank_vector):
+def get_kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
     """
     Calculates Kendall tau of predicted vs human ranking according to WMT12 (Birch et. al 2012)
     @param predicted_pairs: a list of integers representing the predicted ranks
@@ -26,6 +26,8 @@ def get_kendall_tau(predicted_rank_vector, original_rank_vector):
     from scipy import special
     import itertools
     
+    penalize_ties = kwargs.setdefault("penalize_ties", True)
+    
     #the following will give positive int, if i > j, negative int if i < j and 0 for ties
     predicted_pairs = [int(i)-int(j) for i, j in itertools.combinations(predicted_rank_vector, 2)]
     original_pairs = [int(i)-int(j) for i, j in itertools.combinations(original_rank_vector, 2)]
@@ -33,16 +35,17 @@ def get_kendall_tau(predicted_rank_vector, original_rank_vector):
     
     concordant_count = 0
     discordant_count = 0
-    ties = 0
     
     #count concordant and discordant pairs
     for original_pair, predicted_pair in zip(original_pairs, predicted_pairs):
         if original_pair * predicted_pair > 0 or (predicted_pair == 0 and original_pair == 0):
             concordant_count += 1
         #if there is a tie on the predicted side, this is counted as two discordants pairs
-        elif predicted_pair == 0:
+        elif predicted_pair == 0 and penalize_ties:
+            discordant_count += 2
+            concordant_count -= 1
+        elif predicted_pair == 0 and not penalize_ties:
             discordant_count += 1
-            ties += 1
         #if there is a tie on the original human annotation, this is not counted
         elif original_pair == 0:
             pass
@@ -50,7 +53,8 @@ def get_kendall_tau(predicted_rank_vector, original_rank_vector):
         else:
             discordant_count += 1
     
-    tau = 1.00 * (concordant_count - discordant_count - ties) / (all_pairs_count + ties)
+    logging.debug("conc = %d, disc= %s", concordant_count, discordant_count) 
+    tau = 1.00 * (concordant_count - discordant_count) / all_pairs_count
     
     #probability of independence hypothesis
     try:
@@ -197,7 +201,7 @@ class Scoring(MultiRankedDataset):
        
 
     
-    def get_kendall_tau(self, predicted_rank_name, original_rank_name):
+    def get_kendall_tau(self, predicted_rank_name, original_rank_name, **kwargs):
         """
         Calculates Kendall tau of predicted vs human ranking according to WMT12 (Birch et. al 2012)
         @param predicted_rank_name: the name of the attribute containing the predicted rank
@@ -216,7 +220,7 @@ class Scoring(MultiRankedDataset):
             predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
             original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
            
-            tau, prob = get_kendall_tau(predicted_rank_vector, original_rank_vector)
+            tau, prob = get_kendall_tau(predicted_rank_vector, original_rank_vector, kwargs)
             taus.append(tau)
             probs.append(prob)            
                  
@@ -264,8 +268,16 @@ class Scoring(MultiRankedDataset):
         return avg_tau, segment_pi
     
 
-            
-            
+def regenerate_tau():
+    """
+    Test script which should be run particularly from with the separate experiment folders, 
+    in order to reproduce results without re-executing the experiment script
+    """
+    
+    from io_utils.input.jcmlreader import JcmlReader
+    d = JcmlReader("testset.reconstructed.hard.jcml").get_dataset()
+    scoringset = Scoring(d)
+    scoringset.get_kendall_tau("rank_hard", "rank")
             
             
         
