@@ -3,7 +3,7 @@
 @author: lefterav
 '''
 
-from Orange.classification.svm import SVMLearner #, SVMClassifierClassEasyWrapper
+from Orange.classification.svm import SVMLearner, SVMClassifierWrapper
 from Orange.optimization import TuneMParameters
 from Orange.core import DomainContinuizer
 
@@ -15,7 +15,7 @@ class SVMEasyLearner(SVMLearner):
     def __init__(self, **kwds):
         self.folds=4
         self.verbose=True
-#        SVMLearner.__init__(self, **kwds)
+        SVMLearner.__init__(self, **kwds)
         self.learner = SVMLearner(**kwds)
         try: 
             self.multinomialTreatment = eval(kwds["multinomialTreatment"])
@@ -67,7 +67,7 @@ class SVMEasyLearner(SVMLearner):
         
         if self.svm_type in [1,4]:
             numOfNuValues=9
-            if self.svm_type == self.learner.Nu_SVC:
+            if self.svm_type == SVMLearner.Nu_SVC:
                 maxNu = max(self.maxNu(newexamples) - 1e-7, 0.0)
             else:
                 maxNu = 1.0
@@ -80,8 +80,8 @@ class SVMEasyLearner(SVMLearner):
         print "apply learner"
         appliedTunedLearner = tunedLearner(newexamples, verbose=self.verbose)
              
-        #return SVMClassifierClassEasyWrapper(appliedTunedLearner, newdomain, examples), appliedTunedLearner.fittedParameters
-        return appliedTunedLearner, appliedTunedLearner.fittedParameters
+        return SVMClassifierWrapper(appliedTunedLearner, newdomain, examples), appliedTunedLearner.fittedParameters
+#        return appliedTunedLearner, appliedTunedLearner.fittedParameters
 
 
             
