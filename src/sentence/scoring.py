@@ -220,7 +220,7 @@ class Scoring(MultiRankedDataset):
             predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
             original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
            
-            tau, prob = get_kendall_tau(predicted_rank_vector, original_rank_vector, kwargs)
+            tau, prob = get_kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs)
             taus.append(tau)
             probs.append(prob)            
                  
