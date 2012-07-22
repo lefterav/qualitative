@@ -78,9 +78,15 @@ class SVMEasyLearner(SVMLearner):
             parameters.append(("gamma", [2**a for a in range(-5,5,2)]+[0]))
         tunedLearner = TuneMParameters(object=self.learner, parameters=parameters, folds=self.folds)
         print "apply learner"
-        appliedTunedLearner = tunedLearner(newexamples, verbose=self.verbose)
+        import orngWrap
+        tunedLearner = orngWrap.TuneMParameters(object=self.learner,
+                                                parameters=parameters,
+                                                folds=self.folds)
+
              
-        return SVMClassifierWrapper(appliedTunedLearner, newdomain, examples), appliedTunedLearner.fittedParameters
+        return return SVMClassifierWrapper(tunedLearner(newexamples,
+                                                 verbose=self.verbose))
+
 #        return appliedTunedLearner, appliedTunedLearner.fittedParameters
 
 
