@@ -255,9 +255,9 @@ class Scoring(MultiRankedDataset):
             try:
                 tau, pi = kendalltau(original_rank_vector, predicted_rank_vector)
             except TypeError:
-                sys.stderr.write("Trying to figure out what's wrong")
                 tau = kendalltau(original_rank_vector, predicted_rank_vector)
                 pi = 1.00
+                sys.stderr.write("==============\nScipy gave an erroneous tau = {}\n==============".format(tau))
             if isnan(tau) or isnan(pi):
                 tau = 0.00
                 pi = 1.00
