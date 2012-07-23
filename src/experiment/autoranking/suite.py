@@ -59,6 +59,9 @@ class AutorankingSuite(PyExperimentSuite):
         except:
             self.classifier_params = {}
         
+        if classifier_name == "SVMEasyLearner":
+            self.classifier_params["verbose"] = True
+        
         self.meta_attributes = params["meta_attributes"].split(",")
         
         source_attributes = params["{}_source".format(params["att"])].split(",")
@@ -288,7 +291,7 @@ class AutorankingSuite(PyExperimentSuite):
         return ret
     
     
-    def _get_scoring(self, testset, id, featurename):
+    def get_scoring(self, testset, id, featurename):
         scoringset = Scoring(self.reconstructed_hard_testset)
         ret = {}
         ret["kendalltau-%s"%id], ret["kendalltau-%s-pi"%id]  = scoringset.get_kendall_tau(featurename, self.class_name)
