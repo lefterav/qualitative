@@ -283,21 +283,21 @@ class AutorankingSuite(PyExperimentSuite):
         
         if n == 120:
             print "Scoring correlation"
-            scoringset = Scoring(self.reconstructed_hard_testset)
-            ret["kendalltau-hard"], ret["kendalltau-hard-pi"]  = scoringset.get_kendall_tau("rank_hard", self.class_name)
-            ret["kendalltau-hard-no-ties-penalty"], ret["kendalltau-hard-pi"]  = scoringset.get_kendall_tau("rank_hard", self.class_name, ties_penalty = False)
-            ret["kendalltau_b-hard"], ret["kendalltau_b-hard-pi"]  = scoringset.get_kendall_tau_b("rank_hard", self.class_name)
-            ret["b1-acc-hard-1"], ret["b1-acc-hard-any"] = scoringset.selectbest_accuracy("rank_hard", self.class_name)            
-            
-            scoringset = Scoring(self.reconstructed_soft_testset)
-            ret["kendalltau-soft"], ret["kendalltau-soft-pi"] = scoringset.get_kendall_tau("rank_soft", self.class_name)
-            ret["kendalltau-soft-no-ties-penalty"], ret["kendalltau-hard-pi"]  = scoringset.get_kendall_tau("rank_soft", self.class_name, ties_penalty = False)
-            ret["kendalltau_b-soft"], ret["kendalltau_b-soft-pi"] = scoringset.get_kendall_tau_b("rank_soft", self.class_name)
-            ret["b1-acc-soft-1"], ret["b1-acc-soft-any"] = scoringset.selectbest_accuracy("rank_soft", self.class_name)        
-            
-            
+            ret.update(self._get_scoring(self.reconstructed_hard_testset, "hard", "rank_hard"))
+            ret.update(self._get_scoring(self.reconstructed_hard_testset, "soft", "rank_soft"))            
         return ret
-        
+    
+    
+    def _get_scoring(self, testset, id, featurename):
+        scoringset = Scoring(self.reconstructed_hard_testset)
+        ret = {}
+        ret["kendalltau-%s"%id], ret["kendalltau-%s-pi"%id]  = scoringset.get_kendall_tau(featurename, self.class_name)
+        ret["kendalltau-ntp-%s"%id], ret["kendalltau-ntp-%s-pi"%id]  = scoringset.get_kendall_tau(featurename, self.class_name, ties_penalty = False)
+        ret["kendalltau_b-%s"%id], ret["kendalltau_b-%s-pi"%id]  = scoringset.get_kendall_tau_b(featurename, self.class_name)
+        ret["b1-acc-1-%s"%id], ret["b1-acc-%s-any"%id] = scoringset.selectbest_accuracy(featurename, self.class_name)    
+        return ret
+    
+    
     def save_state(self, params, rep, n):
         if n == 0:
             Parallelsentence2Jcml(self.trainset).write_to_file("trainset.jcml") 
