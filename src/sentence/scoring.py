@@ -9,7 +9,7 @@
 from dataset import DataSet
 from multirankeddataset import MultiRankedDataset
 import logging
-
+import sys
 
 def get_kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
     """
@@ -41,10 +41,10 @@ def get_kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
         if original_pair * predicted_pair > 0 or (predicted_pair == 0 and original_pair == 0):
             concordant_count += 1
         #if there is a tie on the predicted side, this is counted as two discordants pairs
-        elif predicted_pair == 0 and penalize_ties:
+        elif predicted_pair == 0 and penalize_ties and concordant_count > 0:
             discordant_count += 2
             concordant_count -= 1
-        elif predicted_pair == 0 and not penalize_ties:
+        elif predicted_pair == 0 and ((not penalize_ties) or concordant_count <= 0) :
             discordant_count += 1
         #if there is a tie on the original human annotation, this is not counted
         elif original_pair == 0:
@@ -252,7 +252,12 @@ class Scoring(MultiRankedDataset):
             print "[{0}]".format(" , ".join(original_rank_vector))
             
             #if had this denominator error, just provide the result of smoothing
-            tau, pi = kendalltau(original_rank_vector, predicted_rank_vector)
+            try:
+                tau, pi = kendalltau(original_rank_vector, predicted_rank_vector)
+            except TypeError:
+                sys.stderr.write("Trying to figure out what's wrong")
+                tau = kendalltau(original_rank_vector, predicted_rank_vector)
+                pi = 1.00
             if isnan(tau) or isnan(pi):
                 tau = 0.00
                 pi = 1.00
