@@ -286,19 +286,12 @@ class AutorankingSuite(PyExperimentSuite):
         
         if n == 120:
             print "Scoring correlation"
-            ret.update(self._get_scoring(self.reconstructed_hard_testset, "hard", "rank_hard"))
-            ret.update(self._get_scoring(self.reconstructed_hard_testset, "soft", "rank_soft"))            
+            ret.update(get_scoring(self.reconstructed_hard_testset, self.class_name, "hard", "rank_hard"))
+            ret.update(get_scoring(self.reconstructed_hard_testset, self.class_name, "soft", "rank_soft"))            
         return ret
     
     
-    def get_scoring(self, testset, id, featurename):
-        scoringset = Scoring(self.reconstructed_hard_testset)
-        ret = {}
-        ret["kendalltau-%s"%id], ret["kendalltau-%s-pi"%id]  = scoringset.get_kendall_tau(featurename, self.class_name)
-        ret["kendalltau-ntp-%s"%id], ret["kendalltau-ntp-%s-pi"%id]  = scoringset.get_kendall_tau(featurename, self.class_name, ties_penalty = False)
-        ret["kendalltau_b-%s"%id], ret["kendalltau_b-%s-pi"%id]  = scoringset.get_kendall_tau_b(featurename, self.class_name)
-        ret["b1-acc-1-%s"%id], ret["b1-acc-%s-any"%id] = scoringset.selectbest_accuracy(featurename, self.class_name)    
-        return ret
+
     
     
     def save_state(self, params, rep, n):
@@ -376,7 +369,7 @@ class AutorankingSuite(PyExperimentSuite):
 #            self.reconstructed_soft_testset = JcmlReader("testset.reconstructed.org.soft.jcml").get_dataset()        
     ##############################
         
-        
+    
     
          
     def _get_testset(self, test_filename, mode = "", ratio=0.7):
@@ -392,7 +385,18 @@ class AutorankingSuite(PyExperimentSuite):
             Parallelsentence2Jcml(simple_testset).write_to_file("testset.jcml")
         else:
             shutil.copy(test_filename, "testset.jcml")
-            
+
+
+def get_scoring(testset, class_name, id, featurename):
+    scoringset = Scoring(testset)
+    ret = {}
+    ret["kendalltau-%s"%id], ret["kendalltau-%s-pi"%id]  = scoringset.get_kendall_tau(featurename, class_name)
+    ret["kendalltau-ntp-%s"%id], ret["kendalltau-ntp-%s-pi"%id]  = scoringset.get_kendall_tau(featurename, class_name, ties_penalty = False)
+    ret["kendalltau_b-%s"%id], ret["kendalltau_b-%s-pi"%id]  = scoringset.get_kendall_tau_b(featurename, class_name)
+    ret["b1-acc-1-%s"%id], ret["b1-acc-%s-any"%id] = scoringset.selectbest_accuracy(featurename, class_name)    
+    return ret
+
+
 class StreamToLogger(object):
    """
    Fake file-like stream object that redirects writes to a logger instance.
