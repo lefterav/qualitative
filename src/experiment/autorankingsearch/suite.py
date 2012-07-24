@@ -273,8 +273,10 @@ def load_data():
     shutil.rmtree(exppath, True)
     os.mkdir(exppath)
     
+    initial_featureset = eval(cparser.get(experiment, "initial_featureset")).split(",")
+    
     orangedata = Table(trainset_orange_filename)
-    return orangedata, cparser, experiment, critical_score, path
+    return orangedata, cparser, experiment, critical_score, path, initial_featureset
 
 
 def get_new_config(initial_config, path, featuresets, experiment, repetition):
@@ -390,10 +392,9 @@ if __name__ == '__main__':
     converged = False
     
     repetition = 0
-    orangedata, config, experiment, critical_score, path = load_data()
+    orangedata, config, experiment, critical_score, path, initial_featureset = load_data()
     FORMAT = "%(asctime)-15s [%(process)d:%(thread)d] %(message) "
     logging.basicConfig(filename=os.path.join(path, experiment, 'search.log'),level=logging.DEBUG,format=FORMAT)
-    
     stderr_logger = logging.getLogger('STDERR')
     sl = StreamToLogger(stderr_logger, logging.INFO)
     sys.stderr = sl
@@ -402,7 +403,17 @@ if __name__ == '__main__':
     logging.info("Original features are %d", len(orangedata.domain.features))
     
     allowed_features = filter_features(orangedata.domain.features)
-    featuresets = [[feature.name] for feature in allowed_features]
+        
+    featuresets = set()
+    
+    for feature in allowed_features:
+        newset = set(initial_featureset)
+        newset.update(initial_featureset)
+        newset.add(feature.name)
+        featuresets.add(newset)
+        
+    featuresets = list(featuresets)
+        
     previous_value = 0
     previous_len = 0
     

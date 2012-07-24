@@ -84,7 +84,7 @@ class SVMEasyLearner(SVMLearner):
                                                 folds=self.folds)
 
              
-        return return SVMClassifierWrapper(tunedLearner(newexamples,
+        return SVMClassifierWrapper(tunedLearner(newexamples,
                                                  verbose=self.verbose))
 
 #        return appliedTunedLearner, appliedTunedLearner.fittedParameters
