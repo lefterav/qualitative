@@ -287,7 +287,7 @@ class AutorankingSuite(PyExperimentSuite):
         if n == 120:
             print "Scoring correlation"
             ret.update(get_scoring(self.reconstructed_hard_testset, self.class_name, "hard", "rank_hard"))
-            ret.update(get_scoring(self.reconstructed_hard_testset, self.class_name, "soft", "rank_soft"))            
+            ret.update(get_scoring(self.reconstructed_soft_testset, self.class_name, "soft", "rank_soft"))            
         return ret
     
     
