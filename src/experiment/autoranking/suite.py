@@ -276,6 +276,8 @@ class AutorankingSuite(PyExperimentSuite):
             self.simple_testset.add_attribute_vector(att_prob_neg, "ps")
             self.simple_testset.add_attribute_vector(att_prob_pos, "ps")
             
+            Parallelsentence2Jcml(self.simple_testset).write_to_file("testset-pairwise-with-estranks.jcml")
+            
             self.simple_testset = AnalyticPairwiseDataset(self.simple_testset) #this 
             self.simple_testset = CompactPairwiseDataset(self.simple_testset) #and this should have no effect
             
