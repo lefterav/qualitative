@@ -20,7 +20,7 @@ from Orange.classification.knn import kNNLearner
 #from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
 from classifier.svmeasy import SVMEasyLearner
 from Orange.classification.tree import TreeLearner
-from Orange.classification.tree import C45Learner
+#from Orange.classification.tree import C45Learner
 from Orange.classification.logreg import LogRegLearner
 from Orange import evaluation
 
@@ -393,26 +393,24 @@ if __name__ == '__main__':
     
     repetition = 0
     orangedata, config, experiment, critical_score, path, initial_featureset = load_data()
-    FORMAT = "%(asctime)-15s [%(process)d:%(thread)d] %(message) "
-    logging.basicConfig(filename=os.path.join(path, experiment, 'search.log'),level=logging.DEBUG,format=FORMAT)
-    stderr_logger = logging.getLogger('STDERR')
-    sl = StreamToLogger(stderr_logger, logging.INFO)
-    sys.stderr = sl
+    FORMAT = "%(asctime)-15s [%(process)d:%(thread)d] %(message)s"
+#    logging.basicConfig(filename=os.path.join(path, experiment, 'search.log'),level=logging.DEBUG,format=FORMAT)
+#    stderr_logger = logging.getLogger('STDERR')
+#    sl = StreamToLogger(stderr_logger, logging.INFO)
+#    sys.stderr = sl
     
     logging.info("Working in path %s", path)
     logging.info("Original features are %d", len(orangedata.domain.features))
     
     allowed_features = filter_features(orangedata.domain.features)
         
-    featuresets = set()
+    featuresets = []
     
     for feature in allowed_features:
         newset = set(initial_featureset)
         newset.update(initial_featureset)
         newset.add(feature.name)
-        featuresets.add(newset)
-        
-    featuresets = list(featuresets)
+        featuresets.append(list(newset))
         
     previous_value = 0
     previous_len = 0

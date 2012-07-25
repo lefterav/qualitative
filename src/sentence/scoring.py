@@ -26,7 +26,7 @@ def get_kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
     from scipy import special
     import itertools
     
-    penalize_ties = kwargs.setdefault("penalize_ties", True)
+    penalize_ties = kwargs.setdefault("ties_penalty", True)
     
     #the following will give positive int, if i > j, negative int if i < j and 0 for ties
     predicted_pairs = [int(i)-int(j) for i, j in itertools.combinations(predicted_rank_vector, 2)]
