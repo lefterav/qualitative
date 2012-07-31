@@ -395,7 +395,10 @@ if __name__ == '__main__':
     repetition = 0
     orangedata, config, experiment, critical_score, path, initial_featureset = load_data()
     FORMAT = "%(asctime)-15s [%(process)d:%(thread)d] %(message)s"
-    logging.basicConfig(filename=os.path.join(path, experiment, 'search.log'),level=logging.DEBUG,format=FORMAT)
+    logfile = os.path.join(path, experiment, 'search.log')
+    sys.stderr.write("Log file {}".format(logfile))
+    
+    logging.basicConfig(filename=logfile,level=logging.DEBUG,format=FORMAT)
 #    stderr_logger = logging.getLogger('STDERR')
 #    sl = StreamToLogger(stderr_logger, logging.INFO)
 #    sys.stderr = sl
