@@ -92,6 +92,7 @@ class AutorankingSuite(PyExperimentSuite):
             new_attributes.append(self.class_name)
             newdomain = Domain(new_attributes, trainset.domain)
             newtrainset = Table(newdomain, trainset)
+            newtrainset.save("dataset.tab")
             logging.debug("Original domain reduced from %d features to %d features including class. \nFinal features = %s ", len(trainset.domain), len(newtrainset.domain), newtrainset.domain)
             
             
@@ -158,7 +159,7 @@ class AutorankingSuite(PyExperimentSuite):
                 
             
         return ret
-#        
+##        
 #    def save_state(self, params, rep, n):
 #        if n == 0:
 #            Parallelsentence2Jcml(self.trainset).write_to_file("trainset.jcml") 
@@ -233,7 +234,7 @@ class AutorankingSuite(PyExperimentSuite):
 ##            self.reconstructed_hard_testset = JcmlReader("testset.reconstructed.org.hard.jcml").get_dataset()
 ##            self.reconstructed_soft_testset = JcmlReader("testset.reconstructed.org.soft.jcml").get_dataset()        
 #    ##############################
-                
+               
     def _get_testset(self, test_filename, mode = "", ratio=0.7):
         if not test_filename == "":
             print "arbitrarily split given set to training and test sets 90% + 10%"
@@ -394,11 +395,11 @@ if __name__ == '__main__':
     repetition = 0
     orangedata, config, experiment, critical_score, path, initial_featureset = load_data()
     FORMAT = "%(asctime)-15s [%(process)d:%(thread)d] %(message)s"
-#    logging.basicConfig(filename=os.path.join(path, experiment, 'search.log'),level=logging.DEBUG,format=FORMAT)
+    logging.basicConfig(filename=os.path.join(path, experiment, 'search.log'),level=logging.DEBUG,format=FORMAT)
 #    stderr_logger = logging.getLogger('STDERR')
 #    sl = StreamToLogger(stderr_logger, logging.INFO)
 #    sys.stderr = sl
-    
+#    
     logging.info("Working in path %s", path)
     logging.info("Original features are %d", len(orangedata.domain.features))
     
