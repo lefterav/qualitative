@@ -11,9 +11,77 @@ from multirankeddataset import MultiRankedDataset
 import logging
 import sys
 
+def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
+    """
+    This is the refined calculation of Kendall tau of predicted vs human ranking according to WMT12 (Birch et. al 2012)
+    @param predicted_pairs: a list of integers representing the predicted ranks
+    @type predicted_rank_name: str 
+    @param original_rank_name: the name of the attribute containing the human rank
+    @type original_rank_name: str
+    @return: the Kendall tau score and the probability for the null hypothesis of X and Y being independent
+    @rtype: tuple(float, float)
+    """
+    import numpy as np
+    from scipy import special
+    import itertools
+    
+    logging.debug("\n* Segment tau *")
+    logging.debug("predicted vector: {}".format(predicted_rank_vector))
+    logging.debug("original vector : {}".format(original_rank_vector))
+    
+    #default wmt implementation excludes ties from the human (original) ranks
+    exclude_ties = kwargs.setdefault("exclude_ties", True)
+    
+    predicted_pairs = [(int(i), int(j)) for i, j in itertools.combinations(predicted_rank_vector, 2)]
+    original_pairs = [(int(i), int(j)) for i, j in itertools.combinations(original_rank_vector, 2)]
+    
+    concordant_count = 0
+    discordant_count = 0
+    
+    for original_pair, predicted_pair in zip(original_pairs, predicted_pairs):
+        original_i, original_j = original_pair
+        predicted_i, predicted_j = predicted_pair
+        #todo: filter _ref out of the ranks
+        
+        # don't include refs, human no-ranks (-1), human ties
+        if original_i == -1 or original_j == -1: 
+            pass
+        elif original_i == original_j and exclude_ties:
+            pass
+        elif (original_i > original_j and predicted_i > predicted_j) \
+          or (original_i < original_j and predicted_i < predicted_j) \
+          or (original_i == original_j and predicted_i == predicted_j):
+            #the former line will be true only if ties are not excluded 
+            concordant_count += 1
+        
+        else: 
+            discordant_count += 1
+        
+    all_pairs_count = concordant_count + discordant_count
+        
+    logging.debug("conc = %d, disc= %d", concordant_count, discordant_count) 
+    tau = 1.00 * (concordant_count - discordant_count) / all_pairs_count    
+    
+    try:
+        svar = (4.0 * all_pairs_count + 10.0) / (9.0 * all_pairs_count * (all_pairs_count - 1))
+    except:
+        svar = 1
+    try: 
+        z = tau / np.sqrt(svar)
+    except:
+        z = 1
+    prob = special.erfc(np.abs(z) / 1.4142136)
+    
+    logging.debug("tau = {}, prob = {}\n".format(tau, prob))
+    
+    return tau, prob       
+    
+    
+
 def get_kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
     """
-    Calculates Kendall tau of predicted vs human ranking according to WMT12 (Birch et. al 2012)
+    This is the old assumed calculation of Kendall tau of predicted vs human ranking, trying to follow 
+    description WMT12 (Birch et. al 2012). It has been re-written as get_kendall_tau_wmt
     @param predicted_pairs: a list of integers representing the predicted ranks
     @type predicted_rank_name: str 
     @param original_rank_name: the name of the attribute containing the human rank
@@ -66,7 +134,7 @@ def get_kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
     except:
         z = 1
     prob = special.erfc(np.abs(z) / 1.4142136)
-    print tau
+
     return tau, prob
 
 
@@ -203,7 +271,7 @@ class Scoring(MultiRankedDataset):
     
     def get_kendall_tau(self, predicted_rank_name, original_rank_name, **kwargs):
         """
-        Calculates Kendall tau of predicted vs human ranking according to WMT12 (Birch et. al 2012)
+        Calculates average Kendall tau of predicted vs human ranking according to WMT12 (Birch et. al 2012)
         @param predicted_rank_name: the name of the attribute containing the predicted rank
         @type predicted_rank_name: str 
         @param original_rank_name: the name of the attribute containing the human rank
@@ -220,7 +288,7 @@ class Scoring(MultiRankedDataset):
             predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
             original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
            
-            tau, prob = get_kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs)
+            tau, prob = get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs)
             taus.append(tau)
             probs.append(prob)            
                  
@@ -269,7 +337,7 @@ class Scoring(MultiRankedDataset):
         avg_tau = 1.00 * segment_tau / len(self.parallelsentences)
         
         
-        print "Avg tau:  segment_tau / len(self.parallelsentences) \n= {0} / {1}  \n= {2}".format(segment_tau, len(self.parallelsentences), avg_tau)
+        logging.debug("Avg tau:  segment_tau / len(self.parallelsentences) \n= {0} / {1}  \n= {2}".format(segment_tau, len(self.parallelsentences), avg_tau))
         return avg_tau, segment_pi
     
 
