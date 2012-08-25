@@ -393,27 +393,27 @@ def get_scoring(testset, class_name, id, featurename):
     scoringset = Scoring(testset)
     ret = {}
     ret["kendalltau-%s"%id], ret["kendalltau-%s-pi"%id]  = scoringset.get_kendall_tau(featurename, class_name)
-    ret["kendalltau-ntp-%s"%id], ret["kendalltau-ntp-%s-pi"%id]  = scoringset.get_kendall_tau(featurename, class_name, ties_penalty = False)
+    ret["kendalltau-ntp-%s"%id], ret["kendalltau-ntp-%s-pi"%id]  = scoringset.get_kendall_tau(featurename, class_name, exclude_ties = False)
     ret["kendalltau_b-%s"%id], ret["kendalltau_b-%s-pi"%id]  = scoringset.get_kendall_tau_b(featurename, class_name)
     ret["b1-acc-1-%s"%id], ret["b1-acc-%s-any"%id] = scoringset.selectbest_accuracy(featurename, class_name)    
     return ret
 
 
 class StreamToLogger(object):
-   """
-   Fake file-like stream object that redirects writes to a logger instance.
-   """
-   def __init__(self, logger, log_level=logging.INFO):
-      self.logger = logger
-      self.log_level = log_level
-      self.linebuf = ''
+    """
+    Fake file-like stream object that redirects writes to a logger instance.
+    """
+    def __init__(self, logger, log_level=logging.INFO):
+        self.logger = logger
+        self.log_level = log_level
+        self.linebuf = ''
  
-   def write(self, buf):
-      for line in buf.rstrip().splitlines():
-         self.logger.log(self.log_level, line.rstrip())
+    def write(self, buf):
+        for line in buf.rstrip().splitlines():
+            self.logger.log(self.log_level, line.rstrip())
          
-   def flush(self):
-       pass
+    def flush(self):
+        pass
 
 if __name__ == '__main__':
     FORMAT = "%(asctime)-15s [%(process)d:%(thread)d] %(message)s "
