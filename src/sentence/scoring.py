@@ -60,7 +60,11 @@ def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
     all_pairs_count = concordant_count + discordant_count
         
     logging.debug("conc = %d, disc= %d", concordant_count, discordant_count) 
-    tau = 1.00 * (concordant_count - discordant_count) / all_pairs_count    
+    
+    try:
+        tau = 1.00 * (concordant_count - discordant_count) / all_pairs_count
+    except ZeroDivisionError:
+        return None, None    
     
     try:
         svar = (4.0 * all_pairs_count + 10.0) / (9.0 * all_pairs_count * (all_pairs_count - 1))
@@ -276,21 +280,32 @@ class Scoring(MultiRankedDataset):
         @type predicted_rank_name: str 
         @param original_rank_name: the name of the attribute containing the human rank
         @type original_rank_name: str
+        @param filter_ref: don't include reference sentences when existing in the pairs
+        @type filter_ref: boolean
+        @param exclude_ties: don't include human ties in the calculation, even if correctly predicted
+        @type exclude_ties: boolean
         @return: the Kendall tau score and the probability for the null hypothesis of X and Y being independent
         @rtype: tuple(float, float)
         """
         import itertools
         import numpy as np
         
+        #filter references by default unles otherwise specified
+        filter_ref = kwargs.setdefault("filter_ref", True)
+        
         taus = []
         probs = []
         for parallesentence in self.parallelsentences:
-            predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
-            original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
-           
+            if filter_ref:
+                predicted_rank_vector = parallesentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
+                original_rank_vector = parallesentence.get_filtered_target_attribute_values(original_rank_name, "system", "_ref")
+            else:
+                predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
+                original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
             tau, prob = get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs)
-            taus.append(tau)
-            probs.append(prob)            
+            if tau and prob:
+                taus.append(tau)
+                probs.append(prob)            
                  
         return np.average(tau), np.product(prob)
     
