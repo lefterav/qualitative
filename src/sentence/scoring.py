@@ -11,6 +11,20 @@ from multirankeddataset import MultiRankedDataset
 import logging
 import sys
 
+def tauprob(tau, pairs):
+    import numpy as np
+    from scipy import special
+    try:
+        svar = (4.0 * pairs + 10.0) / (9.0 * pairs * (pairs - 1))
+    except:
+        svar = 1
+    try: 
+        z = tau / np.sqrt(svar)
+    except:
+        z = 1
+    return special.erfc(np.abs(z) / 1.4142136)
+    
+
 def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
     """
     This is the refined calculation of Kendall tau of predicted vs human ranking according to WMT12 (Birch et. al 2012)
@@ -21,8 +35,6 @@ def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
     @return: the Kendall tau score and the probability for the null hypothesis of X and Y being independent
     @rtype: tuple(float, float)
     """
-    import numpy as np
-    from scipy import special
     import itertools
     
     logging.debug("\n* Segment tau *")
@@ -31,6 +43,7 @@ def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
     
     #default wmt implementation excludes ties from the human (original) ranks
     exclude_ties = kwargs.setdefault("exclude_ties", True)
+    logging.debug("exclude_ties: {}", exclude_ties)
     
     predicted_pairs = [(int(i), int(j)) for i, j in itertools.combinations(predicted_rank_vector, 2)]
     original_pairs = [(int(i), int(j)) for i, j in itertools.combinations(original_rank_vector, 2)]
@@ -38,10 +51,20 @@ def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
     concordant_count = 0
     discordant_count = 0
     
+    original_ties = 0
+    predicted_ties = 0
+    pairs = 0
+    
     for original_pair, predicted_pair in zip(original_pairs, predicted_pairs):
         original_i, original_j = original_pair
         predicted_i, predicted_j = predicted_pair
-        #todo: filter _ref out of the ranks
+        
+        #general statistics
+        pairs +=1
+        if original_i == original_j:
+            original_ties +=1
+        if predicted_i == predicted_j:
+            predicted_ties += 1
         
         # don't include refs, human no-ranks (-1), human ties
         if original_i == -1 or original_j == -1: 
@@ -58,27 +81,22 @@ def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
             discordant_count += 1
         
     all_pairs_count = concordant_count + discordant_count
+
+    logging.debug("original_ties = %d, predicted_ties = %d", original_ties, predicted_ties) 
         
     logging.debug("conc = %d, disc= %d", concordant_count, discordant_count) 
     
     try:
         tau = 1.00 * (concordant_count - discordant_count) / all_pairs_count
     except ZeroDivisionError:
-        return None, None    
-    
-    try:
-        svar = (4.0 * all_pairs_count + 10.0) / (9.0 * all_pairs_count * (all_pairs_count - 1))
-    except:
-        svar = 1
-    try: 
-        z = tau / np.sqrt(svar)
-    except:
-        z = 1
-    prob = special.erfc(np.abs(z) / 1.4142136)
+        tau = None
+        prob = None
+    else:
+        prob = tauprob(tau, all_pairs_count)
     
     logging.debug("tau = {}, prob = {}\n".format(tau, prob))
     
-    return tau, prob       
+    return tau, prob, concordant_count, discordant_count, all_pairs_count, original_ties, predicted_ties, pairs
     
     
 
@@ -267,9 +285,38 @@ class Scoring(MultiRankedDataset):
         accuracy_firsteffort = truepositive_withfirsteffort/len(self.parallelsentences)
         accuracy_anyeffort = truepositive_withanyeffort / len(self.parallelsentences)
         return (accuracy_firsteffort, accuracy_anyeffort)
-        
-                
-
+    
+    
+    def avg_first_ranked(self, predicted_rank_name, original_rank_name):
+        """
+        Provide an integer that shows the predicted rank of the best system
+        It is averaged over all segments. Tied predictions are penalized
+        """
+        from numpy import average
+        corresponding_ranks = []
+        for parallesentence in self.parallelsentences:
+            predicted_rank_vector = parallesentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
+            original_rank_vector = parallesentence.get_filtered_target_attribute_values(original_rank_name, "system", "_ref")
+            
+            #make sure we are dealing with integeres      
+            predicted_rank_vector = [int(v) for v in predicted_rank_vector]
+            original_rank_vector = [int(v) for v in original_rank_vector]
+            
+            best_original_rank = min(original_rank_vector)
+            predicted_rank_correction = min(predicted_rank_vector)-1 #should be zero if no correction needed
+            
+            
+            for original_rank, predicted_rank in zip(original_rank_vector, predicted_rank_vector):
+                if original_rank == best_original_rank:
+                    #if counting of ranks starts higher than 1, then this should fix it
+                    corresponding_rank = predicted_rank - predicted_rank_correction
+                    #penalize ties
+                    #if the best system was found first, but was predicted another 4 times, then rank = 5
+                    penalized_rank = corresponding_rank + predicted_rank_vector.count(predicted_rank) -1
+                    corresponding_ranks.append(penalized_rank)
+                    
+        first_ranked = average(corresponding_ranks)
+        return first_ranked
        
 
     
@@ -292,9 +339,18 @@ class Scoring(MultiRankedDataset):
         
         #filter references by default unles otherwise specified
         filter_ref = kwargs.setdefault("filter_ref", True)
+        suffix = kwargs.setdefault("suffix", "")
         
-        taus = []
-        probs = []
+        segtaus = []
+        segprobs = []
+        
+        concordant = 0
+        discordant = 0
+        valid_pairs = 0
+        original_ties_overall = 0
+        predicted_ties_overall = 0
+        pairs_overall = 0
+        
         for parallesentence in self.parallelsentences:
             if filter_ref:
                 predicted_rank_vector = parallesentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
@@ -302,12 +358,42 @@ class Scoring(MultiRankedDataset):
             else:
                 predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
                 original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
-            tau, prob = get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs)
-            if tau and prob:
-                taus.append(tau)
-                probs.append(prob)            
-                 
-        return np.average(tau), np.product(prob)
+            segtau, segprob, concordant_count, discordant_count, all_pairs_count, original_ties, predicted_ties, pairs = get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs)
+            if segtau and segprob:
+                segtaus.append(segtau)
+                segprobs.append(segprob)
+                
+            concordant += concordant_count
+            discordant += discordant_count
+            valid_pairs += all_pairs_count
+            
+            original_ties_overall += original_ties
+            predicted_ties_overall += predicted_ties
+            pairs_overall += pairs
+            
+        
+        
+        
+        tau = (concordant - discordant) / (concordant + discordant)
+        prob = tauprob(tau, valid_pairs)
+        
+        avg_seg_tau = np.average(segtaus)               
+        avg_seg_prob = np.product(segprobs)
+        
+        stats = {'tau-%s' % suffix: tau,
+                 'prob-%s' % suffix: prob,
+                 'avg_seg_tau-%s' % suffix: avg_seg_tau,
+                 'avg_seg_prob-%s' % suffix: avg_seg_prob,
+                 'concordant-%s' % suffix: concordant,
+                 'discordant-%s' % suffix: discordant,
+                 'valid_pairs-%s' % suffix: valid_pairs,
+                 'all_pairs-%s' % suffix: pairs_overall,
+                 'original_ties-%s' % suffix: original_ties_overall,
+                 'predicted_ties-%s' % suffix: predicted_ties_overall,
+                 }
+        
+        
+        return stats
     
     
     
