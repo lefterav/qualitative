@@ -392,7 +392,7 @@ class AutorankingSuite(PyExperimentSuite):
 def get_scoring(testset, class_name, xid, featurename):
     scoringset = Scoring(testset)
     ret = {}
-    ret.update(scoringset.get_kendall_tau(featurename, class_name, suffix="-xid"))
+    ret.update(scoringset.get_kendall_tau(featurename, class_name, suffix=xid))
     ret.update(scoringset.get_kendall_tau(featurename, class_name, suffix="-ntp-{}".format(xid)))
     ret["kendalltau_b-%s"%xid], ret["kendalltau_b-%s-pi"%xid]  = scoringset.get_kendall_tau_b(featurename, class_name)
     ret["b1-acc-1-%s"%xid], ret["b1-acc-%s-any"%xid] = scoringset.selectbest_accuracy(featurename, class_name)
