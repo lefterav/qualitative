@@ -380,16 +380,16 @@ class Scoring(MultiRankedDataset):
         avg_seg_tau = np.average(segtaus)               
         avg_seg_prob = np.product(segprobs)
         
-        stats = {'tau-%s' % suffix: tau,
-                 'prob-%s' % suffix: prob,
-                 'avg_seg_tau-%s' % suffix: avg_seg_tau,
-                 'avg_seg_prob-%s' % suffix: avg_seg_prob,
-                 'concordant-%s' % suffix: concordant,
-                 'discordant-%s' % suffix: discordant,
-                 'valid_pairs-%s' % suffix: valid_pairs,
-                 'all_pairs-%s' % suffix: pairs_overall,
-                 'original_ties-%s' % suffix: original_ties_overall,
-                 'predicted_ties-%s' % suffix: predicted_ties_overall,
+        stats = {'tau%s' % suffix: tau,
+                 'prob%s' % suffix: prob,
+                 'avg_seg_tau%s' % suffix: avg_seg_tau,
+                 'avg_seg_prob%s' % suffix: avg_seg_prob,
+                 'concordant%s' % suffix: concordant,
+                 'discordant%s' % suffix: discordant,
+                 'valid_pairs%s' % suffix: valid_pairs,
+                 'all_pairs%s' % suffix: pairs_overall,
+                 'original_ties%s' % suffix: original_ties_overall,
+                 'predicted_ties%s' % suffix: predicted_ties_overall,
                  }
         
         
