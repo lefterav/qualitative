@@ -43,7 +43,7 @@ def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
     
     #default wmt implementation excludes ties from the human (original) ranks
     exclude_ties = kwargs.setdefault("exclude_ties", True)
-    logging.debug("exclude_ties: {}", exclude_ties)
+    logging.debug("exclude_ties: {}".format(exclude_ties))
     
     predicted_pairs = [(int(i), int(j)) for i, j in itertools.combinations(predicted_rank_vector, 2)]
     original_pairs = [(int(i), int(j)) for i, j in itertools.combinations(original_rank_vector, 2)]
@@ -374,7 +374,7 @@ class Scoring(MultiRankedDataset):
         
         
         
-        tau = (concordant - discordant) / (concordant + discordant)
+        tau = 1.00 * (concordant - discordant) / (concordant + discordant)
         prob = tauprob(tau, valid_pairs)
         
         avg_seg_tau = np.average(segtaus)               
