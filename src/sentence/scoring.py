@@ -59,6 +59,8 @@ def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
         original_i, original_j = original_pair
         predicted_i, predicted_j = predicted_pair
         
+        logging.debug(original_pair, predicted_pair)
+        
         #general statistics
         pairs +=1
         if original_i == original_j:
@@ -76,10 +78,10 @@ def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
           or (original_i == original_j and predicted_i == predicted_j):
             #the former line will be true only if ties are not excluded 
             concordant_count += 1
-        
+            logging.debug("\t\tCON")
         else: 
             discordant_count += 1
-        
+            logging.debug("\t\tDIS")
     all_pairs_count = concordant_count + discordant_count
 
     logging.debug("original_ties = %d, predicted_ties = %d", original_ties, predicted_ties) 
@@ -88,6 +90,9 @@ def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
     
     try:
         tau = 1.00 * (concordant_count - discordant_count) / all_pairs_count
+        logging.debug("tau = {0} - {1} / {0} + {1}".format(concordant_count, discordant_count))
+        logging.debug("tau = {0} / {1}".format(concordant_count - discordant_count, all_pairs_count))
+        
     except ZeroDivisionError:
         tau = None
         prob = None
