@@ -59,7 +59,7 @@ def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
         original_i, original_j = original_pair
         predicted_i, predicted_j = predicted_pair
         
-        logging.debug(original_pair, predicted_pair)
+        logging.debug("%s\t%s", original_pair,  predicted_pair)
         
         #general statistics
         pairs +=1
