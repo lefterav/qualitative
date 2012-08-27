@@ -8,16 +8,16 @@ Created on May 12, 2011
 from dataset import DataSet
 from pairwiseparallelsentenceset import AnalyticPairwiseParallelSentenceSet, CompactPairwiseParallelSentenceSet
 
-
 class PairwiseDataset(DataSet):
     '''
-    A data container that stores the entire dataset of parallel sentences, but internally this has been re-structured
+    Abstract class that defines the data container that stores the entire dataset of parallel sentences, but internally this has been re-structured
     so that every multiple ranking judgment (e.g. 1-5) has been split into pairwise comparisons (1,2; 1,3; ...).
     Every set of pairwise comparisons has been mapped to the sentence id of the original source sentence
     This allows for direct access to pairwise elements of each sentence   
     @ivar pairwise_parallelsentence_sets: A dictionary which keeps the pairwise sentences per (original) sentence id
     @type pairwise_parallelsentence_sets: {str: }
     '''
+    
     def get_all_parallelsentence_sets(self):
         return self.pairwise_parallelsentence_sets.values()
     
@@ -27,7 +27,6 @@ class PairwiseDataset(DataSet):
             all_parallel_sentences.extend(sentence_set.get_parallelsentences())
         return all_parallel_sentences
     
-     
     
     def get_sentence_ids(self):
         return self.pairwise_parallelsentence_sets.keys()
@@ -52,35 +51,12 @@ class PairwiseDataset(DataSet):
         return removed_ties
 
 
-class AnalyticPairwiseDataset(PairwiseDataset):
+class RevertablePairwiseDataset(PairwiseDataset):
+    """
+    Abstract class for pairwise datasets whose internal structure allows them to be reconstructed back to multi-class sets
+    It pre-supposes that there are unique pairs per entry (indexable either by judgment_id or sentence_id)
+    """
     
-    def __init__(self, plain_dataset = DataSet()):
-        """
-        @param plain_dataset
-        
-        """
-        self.pairwise_parallelsentence_sets = {}
-        pairwise_parallelsentences_per_sid = {}
-        
-        #first group by sentence ID
-        for parallelsentence in plain_dataset.get_parallelsentences():
-            sentence_id = parallelsentence.get_compact_id()
-            try:
-                pairwise_parallelsentences_per_sid[sentence_id].extend(parallelsentence.get_pairwise_parallelsentences(False))
-            except KeyError:
-                pairwise_parallelsentences_per_sid[sentence_id] = parallelsentence.get_pairwise_parallelsentences(False)
-        
-        for sentence_id, pairwiseparallelsentences in pairwise_parallelsentences_per_sid.iteritems():
-        #then convert each group to a Analytic Pairwise Parallel SentenceSet
-            self.pairwise_parallelsentence_sets[sentence_id] = AnalyticPairwiseParallelSentenceSet(pairwiseparallelsentences)
-
-
-class CompactPairwiseDataset(PairwiseDataset):  
-    def __init__(self, analytic_pairwise_dataset = AnalyticPairwiseDataset()):
-        self.pairwise_parallelsentence_sets = {}
-        for sentence_id, analytic_pairwise_parallelsentence_set in analytic_pairwise_dataset.get_pairwise_parallelsentence_sets().iteritems():
-            self.pairwise_parallelsentence_sets[sentence_id] = analytic_pairwise_parallelsentence_set.get_compact_pairwise_parallelsentence_set()
-        
     def get_multiclass_set(self):
         multirank_parallelsentences = []
         for sentence_id in self.pairwise_parallelsentence_sets:
@@ -106,8 +82,6 @@ class CompactPairwiseDataset(PairwiseDataset):
             pass
         return DataSet(multirank_parallelsentences)
     
-    
-    
     def get_single_set_with_soft_ranks(self, attribute1="", attribute2="", critical_attribute="rank_soft_predicted", new_rank_name = None):
         '''
         Reconstructs the original data set, with only one sentence per entry.
@@ -125,6 +99,83 @@ class CompactPairwiseDataset(PairwiseDataset):
             pass
         return DataSet(multirank_parallelsentences)
 
+
+
+class RawPairwiseDataset(RevertablePairwiseDataset):
+    """
+    A data set that contains pairwise comparisons organized by human judgment, i.e. there is a separate entry for each judgment,
+    even if there are more than one judgment per sentence
+    """
+    
+    
+    def __init__(self, plain_dataset = DataSet()):
+        """
+        @param plain_dataset
+        
+        """
+        self.pairwise_parallelsentence_sets = {}
+        pairwise_parallelsentences_per_sid = {}
+        
+        #first group by sentence ID or judgment ID
+        for parallelsentence in plain_dataset.get_parallelsentences():
+        
+            judgment_id = parallelsentence.get_compact_judgment_id()
+            pairwise_parallelsentences_per_sid[judgment_id] = parallelsentence.get_pairwise_parallelsentences(False)
+            
+        
+        for judgment_id, pairwiseparallelsentences in pairwise_parallelsentences_per_sid.iteritems():
+        #then convert each group to a Analytic Pairwise Parallel SentenceSet
+            self.pairwise_parallelsentence_sets[judgment_id] = CompactPairwiseParallelSentenceSet(pairwiseparallelsentences)
+
+  
+
+class AnalyticPairwiseDataset(PairwiseDataset):
+    """
+    A data set that contains pairwise comparisons organized by sentence id, i.e. if a sentence has multiple human judgments, 
+    these will be grouped together under the sentence id  
+    """
+    
+    
+    def __init__(self, plain_dataset = DataSet()):
+        """
+        @param plain_dataset
+        
+        """
+        self.pairwise_parallelsentence_sets = {}
+        pairwise_parallelsentences_per_sid = {}
+        
+        #first group by sentence ID or judgment ID
+        for parallelsentence in plain_dataset.get_parallelsentences():
+        
+            sentence_id = parallelsentence.get_compact_id()
+            try:
+                pairwise_parallelsentences_per_sid[sentence_id].extend(parallelsentence.get_pairwise_parallelsentences(False))
+            except KeyError:
+                pairwise_parallelsentences_per_sid[sentence_id] = parallelsentence.get_pairwise_parallelsentences(False)
+        
+        for sentence_id, pairwiseparallelsentences in pairwise_parallelsentences_per_sid.iteritems():
+        #then convert each group to a Analytic Pairwise Parallel SentenceSet
+            self.pairwise_parallelsentence_sets[sentence_id] = AnalyticPairwiseParallelSentenceSet(pairwiseparallelsentences)
+   
+    
+
+
+class CompactPairwiseDataset(RevertablePairwiseDataset):
+    """
+    A data set that contains pairwise comparisons merged by sentence id, i.e. if a sentence has multiple human judgments, 
+    these will be grouped together under the sentence id, and the overlapping pairwise judgments will be merged according
+    to soft or hard rank recomposition  
+    """
+    def __init__(self, analytic_pairwise_dataset = AnalyticPairwiseDataset()):
+        self.pairwise_parallelsentence_sets = {}
+        for sentence_id, analytic_pairwise_parallelsentence_set in analytic_pairwise_dataset.get_pairwise_parallelsentence_sets().iteritems():
+            self.pairwise_parallelsentence_sets[sentence_id] = analytic_pairwise_parallelsentence_set.get_compact_pairwise_parallelsentence_set()
+        
+
+    
+ 
+
+    
     
 class FilteredPairwiseDataset(CompactPairwiseDataset):
     def __init__(self, analytic_pairwise_dataset = AnalyticPairwiseDataset(), threshold = 1.00):    
