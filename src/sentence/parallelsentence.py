@@ -104,7 +104,12 @@ class ParallelSentence(object):
 #            sys.stderr.write("Warning: Could not add set id into compact sentence id %s\n" %  self.attributes["id"])
             return (self.attributes["id"])
     
-        
+    def get_compact_judgment_id(self):
+        try:
+            return "%s:%s" % (self.attributes["testset"], self.attributes["judgement_id"])
+        except:
+#            sys.stderr.write("Warning: Could not add set id into compact sentence id %s\n" %  self.attributes["id"])
+            return self.attributes["judgement_id"]        
                
     def get_judgment_id(self):
         return self.attributes["judgement_id"]

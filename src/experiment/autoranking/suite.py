@@ -28,9 +28,10 @@ from io_utils.sax.saxjcml2orange import SaxJcml2Orange
 from io_utils.sax.cejcml2orange import CElementTreeJcml2Orange 
 from classifier.classifier import OrangeClassifier
 from Orange.data import Table
+from datetime import datetime
 
 from featuregenerator.diff_generator import DiffGenerator
-from sentence.pairwisedataset import AnalyticPairwiseDataset, CompactPairwiseDataset
+from sentence.pairwisedataset import AnalyticPairwiseDataset, CompactPairwiseDataset, RawPairwiseDataset
 from sentence.dataset import DataSet
 from sentence.scoring import Scoring
 
@@ -278,8 +279,8 @@ class AutorankingSuite(PyExperimentSuite):
             
             Parallelsentence2Jcml(self.simple_testset).write_to_file("testset-pairwise-with-estranks.jcml")
             
-            self.simple_testset = AnalyticPairwiseDataset(self.simple_testset) #this 
-            self.simple_testset = CompactPairwiseDataset(self.simple_testset) #and this should have no effect
+            self.simple_testset = RawPairwiseDataset(self.simple_testset) #this 
+#            self.simple_testset = CompactPairwiseDataset(self.simple_testset) #and this should have no effect
             
             self.reconstructed_hard_testset = self.simple_testset.get_single_set_with_hard_ranks("rank_predicted", "rank_hard")
             self.reconstructed_soft_testset = self.simple_testset.get_single_set_with_soft_ranks("prob_-1", "prob_1", "rank_soft_predicted", "rank_soft")
@@ -418,7 +419,10 @@ class StreamToLogger(object):
 
 if __name__ == '__main__':
     FORMAT = "%(asctime)-15s [%(process)d:%(thread)d] %(message)s "
-    logging.basicConfig(filename='autoranking.log',level=logging.DEBUG, format=FORMAT)
+    now = datetime.strftime(datetime.now(), "%Y-%m-%d_%H-%M-%S")
+#    logging.basicConfig(filename='autoranking-{}.log'.format(now),level=logging.DEBUG, format=FORMAT)
+#    sys.stderr = StreamToLogger(logging.getLogger('STDERR'), logging.INFO)
+#    sys.stdout = StreamToLogger(logging.getLogger('STDOUT'), logging.INFO)
     mysuite = AutorankingSuite();
     mysuite.start()
     
