@@ -139,6 +139,20 @@ class ParallelSentence(object):
     def set_reference(self,ref):
         self.ref = ref
     
+    def get_nested_attribute_names(self):
+        attribute_names = []
+        attribute_names.extend(self.attributes.keys())
+        
+        source_attribute_names = [attribute_names.append("src_{}".format(att)) for att in self.src.get_attributes()]
+        attribute_names.extend(source_attribute_names)
+        
+        i=0
+        for tgtitem in self.tgt:
+            i += 1
+            target_attribute_names = [attribute_names.append("tgt-{}_{}".format(i,att)) for att in tgtitem.get_attributes()]
+            attribute_names.extend(target_attribute_names)
+        return attribute_names
+
     def get_nested_attributes(self):
         """
         function that gathers all the features of the nested sentences 
