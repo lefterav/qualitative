@@ -53,6 +53,41 @@ from classifier.svmrank import SvmRank
 class AutorankingSVMSuite(AutorankingSuite):
     restore_supported = False
     
+    
+    def reset(self, params, rep):
+        self.restore_supported = False
+                
+        self.meta_attributes = params["meta_attributes"].split(",")
+        
+        source_attributes = params["{}_source".format(params["att"])].split(",")
+        target_attributes = params["{}_target".format(params["att"])].split(",")
+        general_attributes = params["{}_general".format(params["att"])].split(",")
+        
+        params["source_attributes"] = source_attributes
+        params["target_attributes"] = target_attributes
+        params["general_attributes"] = general_attributes
+        
+        self.active_attributes = []
+        if general_attributes != [""]:
+            self.active_attributes.extend(general_attributes) #TODOL check whether ps prefix is needed
+        if source_attributes != [""]:
+            self.active_attributes.extend(["src_{}".format(att) for att in source_attributes])
+        if target_attributes != [""]:
+            self.active_attributes.extend(["tgt_{}".format(att) for att in target_attributes])
+        
+        if self.active_attributes == [""]:
+            self.active_attributes = []
+
+        self.hidden_attributes = params["hidden_attributes"].split(",")
+        self.discrete_attributes = params["discrete_attributes"].split(",")
+ 
+        self.class_name = params["class_name"]
+                
+        self.training_sets = params["training_sets"].format(**params).split(',')
+        self.testset = params["test_set"].format(**params)
+        self.ties = params["ties"]
+    
+    
     def iterate(self, params, rep, n):
         ret = {}
         
@@ -63,8 +98,8 @@ class AutorankingSVMSuite(AutorankingSuite):
                 parallelsentences.extend(JcmlReader(training_set).get_parallelsentences())
             
             self.trainset = DataSet(parallelsentences)  
-#            Parallelsentence2Jcml(self.trainset).write_to_file("trainset.jcml") 
-#            self.trainset = None
+            Parallelsentence2Jcml(self.trainset).write_to_file("trainset.jcml") 
+            self.trainset = None
         
         if n == 10:
             print "fetch test set"
@@ -75,21 +110,28 @@ class AutorankingSVMSuite(AutorankingSuite):
         if n == 60:
             print "produce trainset"
             
-            pysvmlight.convert_jcml_to_dat("trainset.jcml", "trainset.dat", meta_attributes = self.meta_attributes)
+            pysvmlight.convert_jcml_to_dat("trainset.jcml", "trainset.dat", desired_attributes = self.active_attributes, meta_attributes = self.meta_attributes)
 #            for i in self.traindata:
 #                print i
         if n == 80:
             print "learn model"
             self.svmrank = SvmRank()
-            self.svmrank.learn(training_filename="trainset.dat", model_filename="model.dat", v=3, y=3, c=2000)
+            self.svmrank.learn(training_filename="trainset.dat", 
+                               model_filename="model.dat", 
+                               c=params.setdefault("svm_c", 0.01), 
+                               o=params.setdefault("svm_o", 2), 
+                               p=params.setdefault("svm_p", 1),
+                               ) 
         
         if n == 90:
             print "classify"
-            pysvmlight.convert_jcml_to_dat("testset.jcml", "testset.dat", meta_attributes = self.meta_attributes)
+            pysvmlight.convert_jcml_to_dat("testset.jcml", "testset.dat", desired_attributes = self.active_attributes, meta_attributes = self.meta_attributes)
             
-            self.svmrank.classify(test_filename = "testset.dat", output_filename = "testset.out", v=3, y=3)
+            stats = self.svmrank.classify(test_filename = "testset.dat", output_filename = "testset.out")
+            allstats = dict([("test_{}".format(k),v) for k,v in stats.iteritems])
             
-            self.svmrank.classify(test_filename = "trainset.dat", output_filename = "train-error.out", v=3, y=3)
+            stats = self.svmrank.classify(test_filename = "trainset.dat", output_filename = "train-error.out")
+            allstats.update(dict([("trainerr_{}".format(k),v) for k,v in stats.iteritems]))
             
 #        if n == 87:
 #            self.testdata = pysvmlight.read_file_incremental("testset.jcml",  group_test=True, id_start=len(self.traindata), desired_attributes = self.active_attributes, meta_attributes = self.meta_attributes) 

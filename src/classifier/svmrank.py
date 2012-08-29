@@ -5,6 +5,8 @@ Created on 29 Aug 2012
 '''
 import os
 import subprocess
+import re
+import sys
 
 class SvmRank(object):
     '''
@@ -48,6 +50,21 @@ class SvmRank(object):
         commandline.append(test_filename)
         commandline.append(self.model_filename)
         commandline.append(output_filename)
-        print " ".join(commandline)
-        print subprocess.check_output(commandline)
+        sys.stderr.write(" ".join(commandline))
+        
+        #run command
+        output = subprocess.check_output(commandline)
+        
+        #process output to get statistics
+        stats = self._stats_to_dict(output)
+        return stats 
     
+    def _stats_to_dict(self, string):
+        """
+        Extracts the basic statistics from the verbal response of SVMRank
+        """
+        stats = {}
+        stats["runtime"] = float(re.findall("Runtime \(without IO\) in cpu-seconds: ([\d.]*)", string)[0])
+        stats["error"], stats["correct"], stats["incorrect"], stats["total"] = re.findall("Zero/one-error on test set: ([\d.]*)% \((\d*) correct, (\d*) incorrect, (\d*) total\)", string)
+        stats["total_swapped"] = re.findall("Total Num Swappedpairs  :   (\d*)", string)
+        return stats
