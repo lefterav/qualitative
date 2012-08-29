@@ -75,11 +75,20 @@ def get_attribute_names(input_filename):
     return set(attribute_names)
 
 
-def read_file_incremental(input_filename, meta_attributes, class_name = "tgt_rank", group_test=False, id_start = 0):
+def read_file_incremental(input_filename, **kwargs):
 
+    desired_attributes = kwargs.setdefault("desired_attributes", [])
+    class_name = kwargs.setdefault("class_name", "tgt_rank")
+    group_test = kwargs.setdefault("group_test", False)
+    id_start = kwargs.setdefault("id_start", 0)
     
-    attribute_names = get_attribute_names(input_filename) - set(meta_attributes)
-    attribute_names = sorted(list(attribute_names))
+    if desired_attributes:
+        attribute_names = sorted(desired_attributes)
+    else:
+        meta_attributes = kwargs.setdefault("meta_attributes", [])
+        attribute_names = get_attribute_names(input_filename) - set(meta_attributes)
+        attribute_names = sorted(list(attribute_names))
+    
     
     source_file = open(input_filename, "r")
     # get an iterable
@@ -121,7 +130,7 @@ def read_file_incremental(input_filename, meta_attributes, class_name = "tgt_ran
             new_attributes = []
             for att, value in attributes.iteritems():
                 try:
-                    att_id = int(attribute_names.index(att))
+                    att_id = int(attribute_names.index(att)+1)
                 except ValueError: #maybe it is a meta
                     continue
                 try:
@@ -146,3 +155,12 @@ def read_file_incremental(input_filename, meta_attributes, class_name = "tgt_ran
     if group_test:
         return instancegroups
     return instances
+
+def convert_jcml_to_dat(jcml_filename, dat_filename, **kwargs):
+    instances = read_file_incremental(jcml_filename, **kwargs)
+    dat = open(dat_filename, 'w')
+    for label, features, qid in instances:
+        featurestring = " ".join("{}:{}".format(name, value) for name, value in sorted(features))    
+        line = "{} qid:{} {}".format(label, qid, featurestring)
+        dat.write("{}\n".format(line))
+    dat.close()
