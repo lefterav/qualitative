@@ -10,6 +10,7 @@ TAG_SRC = 'src'
 TAG_TGT = 'tgt'
 TAG_DOC = 'jcml'
 import sys
+import math
 
 def get_svmlight_format(dataset):
     attribute_names = set()
@@ -82,17 +83,22 @@ def read_file_incremental(input_filename, **kwargs):
     class_name = kwargs.setdefault("class_name", "tgt_rank")
     group_test = kwargs.setdefault("group_test", False)
     id_start = kwargs.setdefault("id_start", 0)
+    impute = kwargs.setdefault("impute", True)
+    remove_inf = kwargs.setdefault("remove_inf", True)
+    
+    existing_attribute_names = get_attribute_names(input_filename)
     
     if desired_attributes:
         attribute_names = set(desired_attributes)
-        existing_attribute_names = get_attribute_names(input_filename)
         missing_attribute_names = attribute_names - existing_attribute_names
-        sys.stderr.write("could not find attributes {}".format(missing_attribute_names))
+        usable_attribute_names = attribute_names.intersection(existing_attribute_names)
+        if list(missing_attribute_names):
+            sys.stderr.write("could not find attributes {}".format("\n\t".join(list(missing_attribute_names))))
         attribute_names = desired_attributes
         
-    else:
+    if not desired_attributes or not usable_attribute_names:
         meta_attributes = kwargs.setdefault("meta_attributes", [])
-        attribute_names = get_attribute_names(input_filename) - set(meta_attributes)
+        attribute_names = existing_attribute_names - set(meta_attributes)
         attribute_names = sorted(list(attribute_names))
     
     
@@ -142,7 +148,15 @@ def read_file_incremental(input_filename, **kwargs):
                 try:
                     value = float(value)
                 except:
-                    continue
+                    if impute:
+                        value = 0
+                    else:
+                        continue
+                if remove_inf:
+                    if math.isnan(value):
+                        value = math.copysign(0, value)
+                    elif math.isinf(value):
+                        value = math.copysign(99999, value)
                 new_attributes.append((att_id, 1.0 * value))
             instance = (int(label), new_attributes, i)
             instances.append(instance)
