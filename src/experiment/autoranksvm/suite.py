@@ -128,10 +128,12 @@ class AutorankingSVMSuite(AutorankingSuite):
             pysvmlight.convert_jcml_to_dat("testset.jcml", "testset.dat", desired_attributes = self.active_attributes, meta_attributes = self.meta_attributes)
             
             stats = self.svmrank.classify(test_filename = "testset.dat", output_filename = "testset.out")
-            allstats = dict([("test_{}".format(k),v) for k,v in stats.iteritems])
+            allstats = dict([("test_{}".format(k),v) for k,v in stats.iteritems()])
             
             stats = self.svmrank.classify(test_filename = "trainset.dat", output_filename = "train-error.out")
-            allstats.update(dict([("trainerr_{}".format(k),v) for k,v in stats.iteritems]))
+            allstats.update(dict([("trainerr_{}".format(k),v) for k,v in stats.iteritems()]))
+            
+            ret.update(allstats)
             
 #        if n == 87:
 #            self.testdata = pysvmlight.read_file_incremental("testset.jcml",  group_test=True, id_start=len(self.traindata), desired_attributes = self.active_attributes, meta_attributes = self.meta_attributes) 
