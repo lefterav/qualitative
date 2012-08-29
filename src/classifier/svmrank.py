@@ -66,5 +66,5 @@ class SvmRank(object):
         stats = {}
         stats["runtime"] = float(re.findall("Runtime \(without IO\) in cpu-seconds: ([\d.]*)", string)[0])
         stats["error"], stats["correct"], stats["incorrect"], stats["total"] = re.findall("Zero/one-error on test set: ([\d.]*)% \((\d*) correct, (\d*) incorrect, (\d*) total\)", string)[0]
-        stats["total_swapped"] = re.findall("Total Num Swappedpairs  :   (\d*)", string)[0]
+        stats["total_swapped"] = re.findall("Total Num Swappedpairs\s*:\s*(\d*)", string)[0]
         return stats
