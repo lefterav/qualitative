@@ -119,8 +119,6 @@ class AutorankingSVMSuite(AutorankingSuite):
             self.svmrank.learn(training_filename="trainset.dat", 
                                model_filename="model.dat", 
                                c=params.setdefault("svm_c", 0.01), 
-                               o=params.setdefault("svm_o", 2), 
-                               p=params.setdefault("svm_p", 1),
                                ) 
         
         if n == 90:
