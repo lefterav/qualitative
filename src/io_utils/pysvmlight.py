@@ -9,6 +9,7 @@ TAG_SENT = 'judgedsentence'
 TAG_SRC = 'src'
 TAG_TGT = 'tgt'
 TAG_DOC = 'jcml'
+import sys
 
 def get_svmlight_format(dataset):
     attribute_names = set()
@@ -83,7 +84,12 @@ def read_file_incremental(input_filename, **kwargs):
     id_start = kwargs.setdefault("id_start", 0)
     
     if desired_attributes:
-        attribute_names = sorted(desired_attributes)
+        attribute_names = set(desired_attributes)
+        existing_attribute_names = get_attribute_names(input_filename)
+        missing_attribute_names = attribute_names - existing_attribute_names
+        sys.stderr.write("could not find attributes {}".format(missing_attribute_names))
+        attribute_names = desired_attributes
+        
     else:
         meta_attributes = kwargs.setdefault("meta_attributes", [])
         attribute_names = get_attribute_names(input_filename) - set(meta_attributes)
