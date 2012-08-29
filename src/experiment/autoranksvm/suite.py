@@ -47,7 +47,7 @@ from expsuite import PyExperimentSuite
 from experiment.autoranking.suite import AutorankingSuite
 
 from io_utils import pysvmlight
-import svmlight
+from classifier.svmrank import SvmRank
 
 
 class AutorankingSVMSuite(AutorankingSuite):
@@ -75,26 +75,32 @@ class AutorankingSVMSuite(AutorankingSuite):
         if n == 60:
             print "produce trainset"
             
-            self.traindata = pysvmlight.read_file_incremental("trainset.jcml", self.meta_attributes)
+            pysvmlight.convert_jcml_to_dat("trainset.jcml", "trainset.dat", meta_attributes = self.meta_attributes)
 #            for i in self.traindata:
 #                print i
-        if n == 80: 
-
-            self.model = svmlight.learn(self.traindata, verbosity=3, type="ranking")
+        if n == 80:
+            print "learn model"
+            self.svmrank = SvmRank()
+            self.svmrank.learn(training_filename="trainset.dat", model_filename="model.dat", v=3, y=3, c=2000)
         
-        
-        if n == 87:
-            self.testdata = pysvmlight.read_file_incremental("testset.jcml", self.meta_attributes, "tgt_rank", True, len(self.traindata)) 
-#            for i in self.testdata:
-#                for j in i:
-#                    print j
-#                print "]]"
         if n == 90:
-            print "test_classifier"
+            print "classify"
+            pysvmlight.convert_jcml_to_dat("testset.jcml", "testset.dat", meta_attributes = self.meta_attributes)
             
-            for testinstance in self.testdata:
-                self.classified_values_vector = svmlight.classify(self.model, testinstance)
-                print self.classified_values_vector          
+            self.svmrank.classify(test_filename = "testset.dat", output_filename = "testset.out", v=3, y=3)
+            
+#        if n == 87:
+#            self.testdata = pysvmlight.read_file_incremental("testset.jcml",  group_test=True, id_start=len(self.traindata), desired_attributes = self.active_attributes, meta_attributes = self.meta_attributes) 
+##            for i in self.testdata:
+##                for j in i:
+##                    print j
+##                print "]]"
+#        if n == 90:
+#            print "test_classifier"
+#            
+#            for testinstance in self.testdata:
+#                self.classified_values_vector = svmlight.classify(self.model, testinstance)
+#                print self.classified_values_vector          
                         
 #            print [str(v[1]["-1"]) for v in classified_set_vector]
 #            print classified_set_vector
