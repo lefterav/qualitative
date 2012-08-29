@@ -3,13 +3,15 @@ Created on May 6, 2011
 
 @author: Eleftherios Avramidis
 '''
-from orange import BayesLearner
-from orange import SVMClassifier
-from orange import SVMLearner
-from orngSVM import SVMLearnerEasy
-from orngTree import TreeLearner
-from orngLR import LogRegLearner
-from orange import kNNLearner
+from Orange.classification.bayes import NaiveLearner as BayesLearner
+from Orange.classification.knn import kNNLearner
+from Orange.classification.svm import SVMLearnerEasy
+#from orange import SVMClassifier
+#from orange import SVMLearner
+#from orngSVM import SVMLearnerEasy
+#from orngTree import TreeLearner
+#from orngLR import LogRegLearner
+#from orange import kNNLearner
 from io_utils.input.orangereader import OrangeData
 from io_utils.input.xmlreader import XmlReader
 from sentence.rankhandler import RankHandler
@@ -18,7 +20,7 @@ from sentence.scoring import Scoring
 from featuregenerator.diff_generator import DiffGenerator
 import sys
 import ConfigParser
-from classifier.svmeasy import SVMEasy
+#from classifier.svmeasy import SVMEasy
 
  
 
@@ -31,7 +33,7 @@ class AutoRankingExperiment(object):
         '''
         Constructor
         '''
-        self.classifiers = [SVMEasy, BayesLearner] #, , SVMClassifier, TreeLearner, LogRegLearner, kNNLearner]
+        self.classifiers = [BayesLearner] #, , SVMClassifier, TreeLearner, LogRegLearner, kNNLearner]
         self.attribute_sets = []
         self.training_filenames = None
         self.test_filename = None
