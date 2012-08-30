@@ -3,12 +3,12 @@
 '''
 Created on Jul 12, 2011
 
-@author: jogin
+@author: jogin, elav01
 '''
 from pairwiseparallelsentence import PairwiseParallelSentence
 from copy import deepcopy
 from parallelsentence import ParallelSentence
-
+import logging
 
     
 
@@ -283,6 +283,86 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         return ParallelSentence(source, translations_new_rank, reference, attributes)         
         
 
+    def get_multiranked_sentence_with_probfilter(self, attribute1="", attribute2="", critical_attribute="rank_soft_predicted", new_rank_name = None, threshold=0.1000):
+        """
+        It reconstructs a single parallel sentence object with a gathered discrete [1-9] 
+        ranking out of the pairwise comparisons that exist in the pairwise parallel sentence instances
+        @return: a parallel sentence
+        @rtype: L{ParallelSentence} 
+        """
+        rank_per_system = {}
+        translations_per_system = {}
+        
+        if not new_rank_name:
+            new_rank_name = self.rank_name
+        
+        fullrank = False
+                
+        while not fullrank:
+            #first iterate and make a sum of the rank per system name        
+            for (system_a, system_b), parallelsentence in self.pps_dict.iteritems():
+                logging.debug("threshold: {}".format(threshold))
+                
+                #get the rank probability                
+                prob_neg = float(parallelsentence.get_attribute(attribute1))
+                
+                #rank value adds up on the first system's rank
+                #only if it is "sure" enough
+                if abs(prob_neg-0.5) > threshold:
+                    try:
+                        rank_per_system[system_b] += prob_neg
+                    except KeyError:
+                        rank_per_system[system_b] = prob_neg
+    #            also gather in a dict the translations per system name, in order to have easy access later
+                translations_per_system[system_b] = parallelsentence.get_translations()[1]
+                translations_per_system[system_a] = parallelsentence.get_translations()[0]
+            
+                
+                fullrank = True
+                for system_a, system_b in self.get_system_names():
+                    if system_b not in rank_per_system:
+                        logging.debug("didn't fill in one rank")
+                        fullrank = False
+                        threshold = threshold - threshold/20
+                        break
+                    
+                #run one last time with threshold 1
+                if threshold < 0.002:
+                    threshold = 0
+                if threshold == 0:
+                    fullrank = True
+            
+        #normalize ranks
+        i = 0
+        prev_rank = None
+        translations_new_rank = [] #list that gathers all the translations
+                
+        #iterate through the system outputs, sorted by their rank
+        #and increment their rank only if there is no tie
+        systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
+        print systems
+        for system in systems:
+            #if there is no tie                
+            if rank_per_system[system] != prev_rank: 
+                i += 1
+                    
+            #print "system: %s\t%d -> %d" % (system, rank_per_system[system] , i)
+#                print i, system,
+            prev_rank = rank_per_system[system]
+            translation = deepcopy(translations_per_system[system])
+            translation.add_attribute(new_rank_name, str(i))
+            translations_new_rank.append(translation)
+        
+        #get the values of the first sentence as template
+        source = deepcopy(self.pps_dict.values()[0].get_source())
+        reference = deepcopy(self.pps_dict.values()[0].get_reference())
+        attributes = deepcopy(self.pps_dict.values()[0].get_attributes())
+        try:
+            del(attributes[new_rank_name])
+        except:
+            pass
+        
+        return ParallelSentence(source, translations_new_rank, reference, attributes)      
 
     def get_multiranked_sentence_with_soft_ranks(self, attribute1="", attribute2="", critical_attribute="rank_soft_predicted", new_rank_name = None):
         """
@@ -306,7 +386,7 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
             
             
             #rank value adds up on the first system's rank
-            #and subtracts from the seconds system's
+            #and subtracts from the seconds system's -> found out that this doesn't help
             try:
                 rank_per_system[system_b] += prob_neg
             except KeyError:
