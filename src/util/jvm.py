@@ -22,13 +22,17 @@ class JVM(object):
         #subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path])
             
         print "classpath = ", classpath
-         
+        
         #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
-        subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path ])
+        try:
+            subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path ])
+        except:
+            pass
         
         # prepare and run Java server
         #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
         cmd = ["java", "-cp", classpath, "JavaServer" ]
+        print cmd
 #            cmd = " ".join(cmd)
         
         self.jvm = subprocess.Popen(cmd, shell=False, bufsize=0, stdout=subprocess.PIPE) #shell=True,

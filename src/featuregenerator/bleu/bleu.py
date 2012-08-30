@@ -137,6 +137,43 @@ def score_cooked(allcomps, n=4):
     return math.exp(logbleu)
 
 
+def smoothed_score_cooked(allcomps, n=4):
+    totalcomps = {'testlen':0, 'reflen':0, 'guess':[0]*n, 'correct':[0]*n}
+    for comps in allcomps:
+        for key in ['testlen','reflen']:
+            totalcomps[key] += comps[key]
+        for key in ['guess','correct']:
+            for k in xrange(n):
+                totalcomps[key][k] += comps[key][k]
+    logbleu = 0.0
+    for k in xrange(n):
+        if totalcomps['correct'][k] == 0:
+            return 0.0
+#        log.write("%d-grams: %f\n" % (k,float(totalcomps['correct'][k])/totalcomps['guess'][k]))
+        logbleu += math.log(totalcomps['correct'][k]+1)-math.log(totalcomps['guess'][k])
+    logbleu /= float(n+1)
+#    log.write("Effective reference length: %d test length: %d\n" % (totalcomps['reflen'], totalcomps['testlen']))
+    logbleu += min(0,1-float(totalcomps['reflen'])/totalcomps['testlen'])
+    return math.exp(logbleu)
+
+
+
+
+def smoothed_score_sentence(translation, references):
+    """
+    Provides the single-sentence BLEU score for one sentence, given n references 
+    @param translation: Translation text that needs to be evaluated 
+    @type translation: str
+    @param references: List of reference translations to be used for the evaluation
+    @type references: [str, ...]
+    """
+    n = len(references)
+    if n == 0:
+        return 0.00
+    references = cook_refs(references, n)
+    test_set = cook_test(translation, references, n)
+    return smoothed_score_cooked([test_set], n)
+
 def score_sentence(translation, references):
     """
     Provides the single-sentence BLEU score for one sentence, given n references 
