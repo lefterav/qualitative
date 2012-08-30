@@ -4,7 +4,6 @@
 """
 from __future__ import division
 from featuregenerator import FeatureGenerator
-from nltk.tokenize.punkt import PunktWordTokenizer
 
 
 class DiffGenerator(FeatureGenerator):
