@@ -47,8 +47,8 @@ def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
     penalize_predicted_ties = kwargs.setdefault("penalize_predicted_ties", True)
     logging.debug("exclude_ties: {}".format(exclude_ties))
     
-    predicted_pairs = [(int(i), int(j)) for i, j in itertools.combinations(predicted_rank_vector, 2)]
-    original_pairs = [(int(i), int(j)) for i, j in itertools.combinations(original_rank_vector, 2)]
+    predicted_pairs = [(float(i), float(j)) for i, j in itertools.combinations(predicted_rank_vector, 2)]
+    original_pairs = [(float(i), float(j)) for i, j in itertools.combinations(original_rank_vector, 2)]
     
     concordant_count = 0
     discordant_count = 0
