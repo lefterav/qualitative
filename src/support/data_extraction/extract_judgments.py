@@ -95,8 +95,12 @@ class WMTEvalReader:
             #this will get a list of Simplsentences containing the translations provided by the several systems from the files
             translations = self.get_translations(row)
             
+            #this uses the same function for extracting source sentences, but asks for the target language id instead. this is the reference            
+            reference_text = self.extract_source(row["trglang"], row["testset"], row["srcIndex"])
+            reference = SimpleSentence(reference_text)
+            
             #initialize object and append it to the list
-            parallelsentence = ParallelSentence(source, translations, None, attributes)
+            parallelsentence = ParallelSentence(source, translations, reference, attributes)
             parallelsentences.append(parallelsentence)
         
         #sort sentences with sort criteria
@@ -216,6 +220,7 @@ class WMTEvalReader:
             print "Cannot resolve sentence [%d] in file %s" % (sentence_index, file.name)
         file.close()
         return result
+    
     
     def tokenize_file(self, file, lang):
         if self.tokenize_target:
