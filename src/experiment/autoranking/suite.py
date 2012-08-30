@@ -332,7 +332,7 @@ class AutorankingSuite(PyExperimentSuite):
 #            Parallelsentence2Jcml(self.reconstructed_soft_testset).write_to_file("testset.reconstructed.org.soft.jcml")
     
     def restore_state(self,params, rep, n):
-        
+        self.class_name = "rank" #TODO: hardcoded
         if n > 0 and n <=20 :
             self.trainset = JcmlReader("trainset.jcml").get_dataset()
         
@@ -357,7 +357,7 @@ class AutorankingSuite(PyExperimentSuite):
             self.classifier = OrangeClassifier(pickle.load(objectfile))
             objectfile.close()
         if n > 90:
-            self.class_name = "rank" #TODO: hardcoded fix
+            
             classified_vector_file = open("classified.hard.txt", 'r') 
             self.classified_values_vector = classified_vector_file.readlines()
             classified_vector_file.close()
