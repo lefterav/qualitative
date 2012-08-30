@@ -357,6 +357,7 @@ class AutorankingSuite(PyExperimentSuite):
             self.classifier = OrangeClassifier(pickle.load(objectfile))
             objectfile.close()
         if n > 90:
+            self.class_name = "rank" #TODO: hardcoded fix
             classified_vector_file = open("classified.hard.txt", 'r') 
             self.classified_values_vector = classified_vector_file.readlines()
             classified_vector_file.close()
