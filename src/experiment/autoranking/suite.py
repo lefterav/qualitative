@@ -270,7 +270,7 @@ class AutorankingSuite(PyExperimentSuite):
             att_vector = [{"rank_predicted": v} for v in self.classified_values_vector]
             att_prob_neg = [{"prob_-1": v[0]} for v in self.classified_probs_vector]
             att_prob_pos = [{"prob_1": v[1]} for v in self.classified_probs_vector]
-            print att_vector
+#            print att_vector
             
             print "adding guessed rank"
             self.simple_testset.add_attribute_vector(att_vector, "ps")
@@ -279,7 +279,7 @@ class AutorankingSuite(PyExperimentSuite):
             
             Parallelsentence2Jcml(self.simple_testset).write_to_file("testset-pairwise-with-estranks.jcml")
             
-            self.simple_testset = RawPairwiseDataset(self.simple_testset) #this 
+            self.simple_testset = RawPairwiseDataset(cast=self.simple_testset) #this 
 #            self.simple_testset = CompactPairwiseDataset(self.simple_testset) #and this should have no effect
             
             self.reconstructed_hard_testset = self.simple_testset.get_single_set_with_hard_ranks("rank_predicted", "rank_hard")
@@ -321,7 +321,7 @@ class AutorankingSuite(PyExperimentSuite):
             classified_vector_file.close()
             classified_prob_file = open("classified.soft.txt", 'w')
             for value1, value2 in self.classified_probs_vector:
-                classified_prob_file.write("{0}\t{1}\n".format(value1, value2))
+                classified_prob_file.write("{}\t{}\n".format(value1, value2))
             classified_prob_file.close()
         if n == 100:
 #            Parallelsentence2Jcml(self.simple_testset).write_to_file("testset.classified.jcml")
@@ -393,8 +393,9 @@ class AutorankingSuite(PyExperimentSuite):
 def get_scoring(testset, class_name, xid, featurename):
     scoringset = Scoring(testset)
     ret = {}
-    ret.update(scoringset.get_kendall_tau(featurename, class_name, suffix=xid))
-    ret.update(scoringset.get_kendall_tau(featurename, class_name, suffix="-ntp-{}".format(xid)))
+    ret.update(scoringset.get_kendall_tau(featurename, class_name, prefix="{}-".format(xid)))
+    ret.update(scoringset.get_kendall_tau(featurename, class_name, prefix="{}-".format(xid), suffix="-ntp", exclude_ties=False))
+    ret.update(scoringset.get_kendall_tau(featurename, class_name, prefix="{}-".format(xid), suffix="-nt", penalize_predicted_ties=False))
     ret["kendalltau_b-%s"%xid], ret["kendalltau_b-%s-pi"%xid]  = scoringset.get_kendall_tau_b(featurename, class_name)
     ret["b1-acc-1-%s"%xid], ret["b1-acc-%s-any"%xid] = scoringset.selectbest_accuracy(featurename, class_name)
     ret["fr-%s"%xid] = scoringset.avg_first_ranked(featurename, class_name)    

@@ -17,7 +17,7 @@ class PairwiseParallelSentence(ParallelSentence):
     A pairwise parallel sentence, is a parallel sentence that contains output produced by only two systems.  
     """
 
-    def __init__(self, source, translations, systems, reference=None, attributes={}, rank_name = u"rank"):
+    def __init__(self, source="", translations=[], systems=[], reference=None, attributes={}, rank_name = u"rank", **kwargs):
         """
         Constructor
         @type source: SimpleSentence
@@ -31,16 +31,33 @@ class PairwiseParallelSentence(ParallelSentence):
         @type systems: tuple of strings
         @param systems: names of target systems
         """
-        self.src = source 
-        self.tgt = translations
-        self.systems = systems
-        self.ref = reference
-        self.attributes = deepcopy(attributes)
-        self.rank_name = rank_name
-        self._normalize_ranks()
-#        self.ties_allowed = ties_allowed
-
         
+        cast = kwargs.setdefault("cast", None)
+        if cast:
+            self._cast(cast)
+        else:
+            self.src = source 
+            self.tgt = translations
+            self.systems = systems
+            self.ref = reference
+            self.attributes = deepcopy(attributes)
+            self.rank_name = rank_name
+            if self.tgt:
+                self._normalize_ranks()
+    #        self.ties_allowed = ties_allowed
+
+    def _cast(self, parallelsentence):
+        """
+        Reload a pairwise parallelsentence which has the type of a simple parallelsentence
+        """
+        self.src = parallelsentence.src
+        self.tgt = parallelsentence.tgt
+        self.systems = tuple([tgt.get_attribute("system") for tgt in self.tgt])
+        self.ref = parallelsentence.ref
+        self.attributes = parallelsentence.attributes
+        self.rank_name = parallelsentence.rank_name
+        
+    
     def _normalize_ranks(self):
         """
         Receives two rank scores for the two respective system outputs, compares them and returns a universal

@@ -137,10 +137,10 @@ class CElementTreeJcml2Orange():
         # check if the desired attributes are in attribute names that we got from input file
         if set(self.desired_attributes) - self.attribute_names:
             notfound = set(self.desired_attributes) - self.attribute_names
-            sys.stderr.write('Warning: Following desired attributes werent found in input file:\n{0}'.format(notfound))
+            sys.stderr.write('Warning: Following desired attributes weren\'t found in input file:\n\t{0}'.format("\n\t".join(list(notfound))))
             
         
-        # first construct the lines for the declaration
+        # first construct thecd /home/elav01/taraxu_data/selection-mechanism/emnlp/experiment/4b/autoranking_development/class_nameranklangpairde-eninclude_references0.0ties0.0trainset_modeannotatedattattset_2classifierNaive lines for the declaration
         line_1 = [] # line for the name of the arguments
         line_2 = [] # line for the type of the arguments
         line_3 = [] # line for the definition of the class
