@@ -244,7 +244,7 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
             #rank value adds up on the first system's rank
             #and subtracts from the seconds system's
 
-            rank_per_system[system_a] = rank_per_system.setdefault(system_a, 0) - rank
+            rank_per_system[system_a] = rank_per_system.setdefault(system_a, 0) + rank
             #rank_per_system[system_b] = rank_per_system.setdefault(system_b, 0) - rank
             
             #also gather in a dict the translations per system name, in order to have easy access later
@@ -301,8 +301,8 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         for (system_a, system_b), parallelsentence in self.pps_dict.iteritems():
             #get the rank value (0, -1, 1)
             
-            prob_neg = -1.00 * float(parallelsentence.get_attribute(attribute1))
-            prob_pos = -1.00 * float(parallelsentence.get_attribute(attribute2))
+            prob_neg = float(parallelsentence.get_attribute(attribute1))
+#            prob_pos = -1.00 * float(parallelsentence.get_attribute(attribute2))
             
             
             #rank value adds up on the first system's rank
@@ -311,11 +311,11 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
                 rank_per_system[system_b] += prob_neg
             except KeyError:
                 rank_per_system[system_b] = prob_neg
-            try:
-                rank_per_system[system_a] -= prob_pos
-            except KeyError:
-                rank_per_system[system_a] = -1 * prob_pos
-            
+#            try:
+#                rank_per_system[system_a] -= prob_pos
+#            except KeyError:
+#                rank_per_system[system_a] = -1 * prob_pos
+#            
             #also gather in a dict the translations per system name, in order to have easy access later
             translations_per_system[system_b] = parallelsentence.get_translations()[1]
             translations_per_system[system_a] = parallelsentence.get_translations()[0]

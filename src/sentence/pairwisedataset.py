@@ -7,6 +7,8 @@ Created on May 12, 2011
 
 from dataset import DataSet
 from pairwiseparallelsentenceset import AnalyticPairwiseParallelSentenceSet, CompactPairwiseParallelSentenceSet
+from pairwiseparallelsentence import PairwiseParallelSentence
+
 
 class PairwiseDataset(DataSet):
     '''
@@ -108,7 +110,7 @@ class RawPairwiseDataset(RevertablePairwiseDataset):
     """
     
     
-    def __init__(self, plain_dataset = DataSet()):
+    def __init__(self, plain_dataset = DataSet(), **kwargs):
         """
         @param plain_dataset
         
@@ -116,18 +118,41 @@ class RawPairwiseDataset(RevertablePairwiseDataset):
         self.pairwise_parallelsentence_sets = {}
         pairwise_parallelsentences_per_sid = {}
         
+        cast = kwargs.setdefault("cast", None)
+        if cast:
+            self._cast(cast)
+        else:
+            
+            #first group by sentence ID or judgment ID
+            for parallelsentence in plain_dataset.get_parallelsentences():
+            
+                judgment_id = parallelsentence.get_compact_judgment_id()
+                pairwise_parallelsentences_per_sid[judgment_id] = parallelsentence.get_pairwise_parallelsentences(False)
+                
+            
+            for judgment_id, pairwiseparallelsentences in pairwise_parallelsentences_per_sid.iteritems():
+            #then convert each group to a Analytic Pairwise Parallel SentenceSet
+                self.pairwise_parallelsentence_sets[judgment_id] = CompactPairwiseParallelSentenceSet(pairwiseparallelsentences)
+    
+    def _cast(self, analytic_dataset=DataSet()):
+        """
+        Typecast a DataSet that is in fact already analytic
+        """
+        self.pairwise_parallelsentence_sets = {}
+        pairwise_parallelsentences_per_sid = {}
+        
         #first group by sentence ID or judgment ID
-        for parallelsentence in plain_dataset.get_parallelsentences():
+        for parallelsentence in analytic_dataset.get_parallelsentences():
         
             judgment_id = parallelsentence.get_compact_judgment_id()
-            pairwise_parallelsentences_per_sid[judgment_id] = parallelsentence.get_pairwise_parallelsentences(False)
+            pairwiseparallelsentence = PairwiseParallelSentence(cast=parallelsentence)
+            pairwise_parallelsentences_per_sid.setdefault(judgment_id, []).append(pairwiseparallelsentence)
             
-        
         for judgment_id, pairwiseparallelsentences in pairwise_parallelsentences_per_sid.iteritems():
         #then convert each group to a Analytic Pairwise Parallel SentenceSet
             self.pairwise_parallelsentence_sets[judgment_id] = CompactPairwiseParallelSentenceSet(pairwiseparallelsentences)
-
-  
+    
+    
 
 class AnalyticPairwiseDataset(PairwiseDataset):
     """
