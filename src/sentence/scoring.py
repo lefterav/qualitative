@@ -307,9 +307,9 @@ class Scoring(MultiRankedDataset):
             predicted_rank_vector = parallesentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
             original_rank_vector = parallesentence.get_filtered_target_attribute_values(original_rank_name, "system", "_ref")
             
-            #make sure we are dealing with integeres      
-            predicted_rank_vector = [int(v) for v in predicted_rank_vector]
-            original_rank_vector = [int(v) for v in original_rank_vector]
+            #make sure we are dealing with numbers      
+            predicted_rank_vector = [float(v) for v in predicted_rank_vector]
+            original_rank_vector = [float(v) for v in original_rank_vector]
             
             best_original_rank = min(original_rank_vector)
             predicted_rank_correction = min(predicted_rank_vector)-1 #should be zero if no correction needed
