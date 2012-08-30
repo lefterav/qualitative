@@ -90,7 +90,7 @@ def get_tabfile(results, preferred_params=[], display_header=True, delimiter="\t
         onlyvalues = []
         
         #collect a list with the values
-        for key in result_keys:
+        for key in sorted(result_keys):
             #extract from array, if possible
             try:
                 onlyvalues.append(str(values[key][0]))
