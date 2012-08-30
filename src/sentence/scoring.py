@@ -43,6 +43,8 @@ def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
     
     #default wmt implementation excludes ties from the human (original) ranks
     exclude_ties = kwargs.setdefault("exclude_ties", True)
+    #ignore also predicted ties
+    penalize_predicted_ties = kwargs.setdefault("penalize_predicted_ties", True)
     logging.debug("exclude_ties: {}".format(exclude_ties))
     
     predicted_pairs = [(int(i), int(j)) for i, j in itertools.combinations(predicted_rank_vector, 2)]
@@ -79,6 +81,8 @@ def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
             #the former line will be true only if ties are not excluded 
             concordant_count += 1
             logging.debug("\t\tCON")
+        elif (predicted_i == predicted_j and not penalize_predicted_ties):
+            pass #ignore false predicted ties if requested
         else: 
             discordant_count += 1
             logging.debug("\t\tDIS")
@@ -345,6 +349,7 @@ class Scoring(MultiRankedDataset):
         #filter references by default unles otherwise specified
         filter_ref = kwargs.setdefault("filter_ref", True)
         suffix = kwargs.setdefault("suffix", "")
+        prefix = kwargs.setdefault("prefix", "")
         
         segtaus = []
         segprobs = []
@@ -385,18 +390,19 @@ class Scoring(MultiRankedDataset):
         avg_seg_tau = np.average(segtaus)               
         avg_seg_prob = np.product(segprobs)
         
-        stats = {'tau%s' % suffix: tau,
-                 'prob%s' % suffix: prob,
-                 'avg_seg_tau%s' % suffix: avg_seg_tau,
-                 'avg_seg_prob%s' % suffix: avg_seg_prob,
-                 'concordant%s' % suffix: concordant,
-                 'discordant%s' % suffix: discordant,
-                 'valid_pairs%s' % suffix: valid_pairs,
-                 'all_pairs%s' % suffix: pairs_overall,
-                 'original_ties%s' % suffix: original_ties_overall,
-                 'predicted_ties%s' % suffix: predicted_ties_overall,
+        stats = {'tau': tau,
+                 'prob': prob,
+                 'avg_seg_tau': avg_seg_tau,
+                 'avg_seg_prob': avg_seg_prob,
+                 'concordant': concordant,
+                 'discordant': discordant,
+                 'valid_pairs': valid_pairs,
+                 'all_pairs': pairs_overall,
+                 'original_ties': original_ties_overall,
+                 'predicted_ties': predicted_ties_overall,
                  }
         
+        stats = dict([("{}{}{}".format(prefix, key, suffix),value) for key,value in stats.iteritems()])
         
         return stats
     
