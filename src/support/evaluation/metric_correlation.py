@@ -31,4 +31,6 @@ if __name__ == '__main__':
     
     scoringset = Scoring(dataset)
     print scoringset.get_kendall_tau("bleu_ref_neg", "rank")
+    print scoringset.avg_first_ranked("bleu_ref_neg", "rank")  
     print scoringset.get_kendall_tau("meteor_ref_neg", "rank")
+    print scoringset.avg_first_ranked("meteor_ref_neg", "rank") 
