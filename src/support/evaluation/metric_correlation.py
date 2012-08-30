@@ -26,8 +26,8 @@ if __name__ == '__main__':
             neg_bleuscore = -bleu.smoothed_score_sentence(translation.get_string(), [reference.get_string()])
             translation.add_attribute("bleu_ref_neg", neg_bleuscore)
             
-            neg_meteor = -meteor.score(translation.get_string(), [reference.get_string()])
-            translation.add_attribute("meteor_ref_neg", neg_meteor)
+            neg_meteor = -float(meteor.score(translation.get_string(), [reference.get_string()])['meteor_score'])
+            translation.add_attribute("meteor_ref_neg", str(neg_meteor))
     
     scoringset = Scoring(dataset)
     print scoringset.get_kendall_tau("bleu_ref_neg", "rank")
