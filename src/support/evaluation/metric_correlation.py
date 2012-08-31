@@ -5,6 +5,8 @@ Created on 30 Aug 2012
 '''
 
 from io_utils.input.jcmlreader import JcmlReader
+from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
+
 from featuregenerator.bleu import bleu
 from featuregenerator.bleu.bleugenerator import BleuGenerator
 from featuregenerator.meteor.meteor import MeteorGenerator
@@ -24,10 +26,12 @@ if __name__ == '__main__':
         reference = parallelsentence.get_reference()
         for translation in parallelsentence.get_translations():
             neg_bleuscore = -bleu.smoothed_score_sentence(translation.get_string(), [reference.get_string()])
-            translation.add_attribute("bleu_ref_neg", neg_bleuscore)
+            translation.add_attribute("bleu_ref_neg", str(neg_bleuscore))
             
             neg_meteor = -float(meteor.score(translation.get_string(), [reference.get_string()])['meteor_score'])
             translation.add_attribute("meteor_ref_neg", str(neg_meteor))
+    
+    Parallelsentence2Jcml(dataset.parallelsentences).write_to_file( "toscore.jcml")
     
     scoringset = Scoring(dataset)
     print scoringset.get_kendall_tau("bleu_ref_neg", "rank")
