@@ -84,7 +84,7 @@ def get_tabfile(results, preferred_params=[], display_header=True, delimiter="\t
     for params, values in results:
 
         #retain only the preferred params
-        params = [str(params[param_name]) for param_name in preferred_params]
+        params = [str(params.setdefault(param_name,"")) for param_name in preferred_params]
         
         
         onlyvalues = []
