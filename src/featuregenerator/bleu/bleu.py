@@ -52,7 +52,7 @@ def normalize(s):
     if (nonorm):
         return s.split()
     
-    if type(s) is not str:
+    if not isinstance(s, basestring):
         s = " ".join(s)
     # language-independent part:
     for (pattern, replace) in normalize1:
@@ -159,7 +159,7 @@ def smoothed_score_cooked(allcomps, n=4):
 
 
 
-def smoothed_score_sentence(translation, references):
+def smoothed_score_sentence(translation, references, n=4):
     """
     Provides the single-sentence BLEU score for one sentence, given n references 
     @param translation: Translation text that needs to be evaluated 
@@ -167,14 +167,14 @@ def smoothed_score_sentence(translation, references):
     @param references: List of reference translations to be used for the evaluation
     @type references: [str, ...]
     """
-    n = len(references)
-    if n == 0:
+    r = len(references)
+    if r == 0:
         return 0.00
     references = cook_refs(references, n)
     test_set = cook_test(translation, references, n)
     return smoothed_score_cooked([test_set], n)
 
-def score_sentence(translation, references):
+def score_sentence(translation, references, n=4):
     """
     Provides the single-sentence BLEU score for one sentence, given n references 
     @param translation: Translation text that needs to be evaluated 
@@ -182,14 +182,34 @@ def score_sentence(translation, references):
     @param references: List of reference translations to be used for the evaluation
     @type references: [str, ...]
     """
-    n = len(references)
-    if n == 0:
+    r = len(references)
+    if r == 0:
         return 0.00
     references = cook_refs(references, n)
     test_set = cook_test(translation, references, n)
     return score_cooked([test_set], n)
     
-
+def score_sentences(sentence_tuples, n=4):
+    """
+    Provides BLEU calculation for many sentences.  
+    @param sentence_tuples: a list of tuples generated out of the translated sentences. Each
+    tuple should contain one translated sentence and its list of references.
+    @type sentence_tuples: [tuple(str(translation), [str(reference), ...]), ...] 
+    """
+    
+    cooked_tests = []
+     
+    for translation, references in sentence_tuples:
+        r = len(references)
+        if r == 0:
+            continue
+        cooked_references = cook_refs(references, n)
+        cooked_tests.append(cook_test(translation, cooked_references, n))
+    return score_cooked(cooked_tests, n)
+        
+        
+        
+    
 #def score_set(set, testid, refids, n=4):
 #    alltest = []
 #    for seg in set.segs():

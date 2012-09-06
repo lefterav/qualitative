@@ -218,14 +218,18 @@ class ParallelSentence(object):
         return newlistitems
     
 
-    def merge_parallelsentence(self, ps, attribute_replacements = {}):
+    def merge_parallelsentence(self, ps, attribute_replacements = {}, **kwargs):
         """
         Augment the parallelsentence with another parallesentence. 
         Merges attributes of source, target and reference sentences and adds target sentences whose system doesn't exist. 
         attributes of target sentences that have a common system.
         @param ps: Object of ParallelSentence() with one source sentence and more target sentences
-        @type ps: sentence.parallelsentence.ParallelSentence 
+        @type ps: sentence.parallelsentence.ParallelSentence
+        @param add_missing: If translation outputs are missing from the first file but exist in the second, add them (default: True)
+        @type add_missing: boolean  
         """
+        
+        add_missing = kwargs.setdefault("add_missing", True)
         
         #merge attributes on the ParallelSentence level and do the replacements
         incoming_attributes = ps.get_attributes()
@@ -256,7 +260,7 @@ class ParallelSentence(object):
                 if self.tgt[i].attributes["system"] == system:
                     self.tgt[i].merge_simplesentence(tgtPS, attribute_replacements)
                     merged = True
-            if not merged:
+            if not merged and add_missing:
                 #print tgtPS.get_attributes(), "not merged - unknown system!"
                 print "Target sentence was missing. Adding..."
                 self.tgt.append(tgtPS)

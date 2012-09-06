@@ -181,7 +181,7 @@ class DataSet(object):
         self.attribute_names = list(merged_attribute_names)
     
     #attribute_replacements = {"rank": "predicted_rank"}
-    def merge_dataset(self, dataset_for_merging_with, attribute_replacements = {}, merging_attributes = ["id"], merge_strict = False):
+    def merge_dataset(self, dataset_for_merging_with, attribute_replacements = {}, merging_attributes = ["id"], merge_strict = False, **kwargs):
         """
         It takes a dataset which contains the same parallelsentences, but with different attributes.
         Incoming parallel sentences are matched with the existing parallel sentences based on the "merging attribute". 
@@ -205,7 +205,7 @@ class DataSet(object):
                 key = "||".join([self.parallelsentences[i].get_attribute(att) for att in merging_attributes]) #hopefully this runs always in the same order
             try:
                 incoming_ps = incoming_parallelsentences_indexed[key]
-                self.parallelsentences[i].merge_parallelsentence(incoming_ps, attribute_replacements)
+                self.parallelsentences[i].merge_parallelsentence(incoming_ps, attribute_replacements, **kwargs)
             except:
                 sys.stderr.write( "Didn't find key while merging sentence %s " % key )
                 if merge_strict:
@@ -235,6 +235,15 @@ class DataSet(object):
         for i in range(len(self.parallelsentences)):
             incoming_ps = incoming_parallelsentences[i]
             self.parallelsentences[i].merge_parallelsentence(incoming_ps, attribute_replacements)
+            
+    
+    def merge_references_symmetrical(self, dataset_for_merging_with):
+        incoming_parallelsentences = dataset_for_merging_with.get_parallelsentences()
+        if len(self.parallelsentences) != len(incoming_parallelsentences):
+            raise IndexError("Error, datasets not symmetrical")
+        for i in range(len(self.parallelsentences)):
+            self.parallelsentences[i].ref = incoming_parallelsentences[i].ref
+    
                
     def get_translations_count_vector(self):
         return [len(ps.get_translations()) for ps in self.get_parallelsentences()]
@@ -370,4 +379,5 @@ class DataSet(object):
             
 
 
-        
+    def __iter__(self):
+        return self.parallelsentences.__iter__()
