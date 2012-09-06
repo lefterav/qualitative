@@ -92,3 +92,4 @@ class SimpleSentence(object):
                 del(incoming_attributes[incoming_attribute])     
         
         self.attributes.update(incoming_attributes)
+        self.string = ss.string
