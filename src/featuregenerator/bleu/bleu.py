@@ -207,7 +207,50 @@ def score_sentences(sentence_tuples, n=4):
         cooked_tests.append(cook_test(translation, cooked_references, n))
     return score_cooked(cooked_tests, n)
         
+
+def score_multitarget_sentences(sentence_tuples, n=4):
+
+    import numpy as np
+    cooked_tests = []
+    
+    for translations, references in sentence_tuples:
+        r = len(references)
+        if r == 0:
+            continue
+        cooked_references = cook_refs(references, n)
+
+        guess = {}
+        correct = {}
+        cooked_translations = []
         
+        for translation in translations:
+            cooked_translation = cook_test(translation, cooked_references, n)
+            cooked_translations.append(cooked_translation)
+#            guesses.append(cooked_translation['guess'])
+            i = 0
+            for value in cooked_translation['correct']:                
+                correct.setdefault(i, []).append(value)
+                i+=1
+            
+            i = 0 
+            for value in cooked_translation['guess']:                
+                guess.setdefault(i, []).append(value)
+                i+=1
+#            
+#            testlen.append(cooked_translation['testlen'])
+        
+            
+        
+        
+        avg_translation = {
+                           'guess' : [min(values) for key, values in guess.iteritems()],
+                           'testlen': min([t['testlen'] for t in cooked_translations]),
+                           'reflen': cooked_translation['reflen'],
+                           'correct': [min(values) for key, values in correct.iteritems()],
+                           }
+
+        cooked_tests.append(avg_translation)
+    return score_cooked(cooked_tests, n)
         
     
 #def score_set(set, testid, refids, n=4):
