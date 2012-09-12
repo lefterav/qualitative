@@ -25,6 +25,7 @@ class MeteorGenerator(LanguageFeatureGenerator):
     @ival scorer: The initialized object of the MeteorScorer
     @type scorer: edu.cmu.meteor.scorer.MeteorScorer
     '''
+    __name__ = "Meteor"
 
     def __init__(self, lang, java_classpath, dir_path):
         '''
@@ -41,25 +42,30 @@ class MeteorGenerator(LanguageFeatureGenerator):
         gateway = JavaGateway(gatewayclient, auto_convert=True, auto_field=True)
         sys.stderr.write("Initialized local Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
     
-        meteor_view = gateway.new_jvm_view()
+        self.meteor_view = gateway.new_jvm_view()
         #import necessary java packages from meteor jar
-        java_import(meteor_view, 'edu.cmu.meteor.scorer.*')
-        java_import(meteor_view, 'edu.cmu.meteor.util.*')
+        java_import(self.meteor_view, 'edu.cmu.meteor.scorer.*')
+        java_import(self.meteor_view, 'edu.cmu.meteor.util.*')
+        java_import(self.meteor_view, '')
         
         #pass the language setting into the meteor configuration object
-        config = meteor_view.MeteorConfiguration();
+        config = self.meteor_view.MeteorConfiguration();
         config.setLanguage(lang);
         #initialize object with the given config
-        self.scorer = meteor_view.MeteorScorer(config)
+        self.scorer = self.meteor_view.MeteorScorer(config)
 
     
     def get_features_tgt(self, translation, parallelsentence):
         references = [parallelsentence.get_reference().get_string()]
-        stats = self.score(translation.get_string(), references)
+        stats = self.score_sentence(translation.get_string(), references)
         return stats
 
-
+    @DeprecationWarning
     def score(self, target, references):
+        return self.score_sentence(target, references)
+
+    def score_sentence(self, target, references):
+
         '''
         Score using the METEOR metric given one translated sentence, given a list of reference translations
         @param target: The text of the (machine-generated) translation
@@ -75,6 +81,38 @@ class MeteorGenerator(LanguageFeatureGenerator):
                 'meteor_recall' : '{:.4}'.format(stats.recall), 
                 'meteor_fragPenalty' : '{:.4}'.format(stats.fragPenalty),  
                 'meteor_score' : '{:.4}'.format(stats.score)}
+    
+    def full_score_sentences(self, sentence_tuples):    
+        """
+        Score many sentences using METEOR and return all basic scores. 
+        @param sentence_tuples: a list of tuples generated out of the translated sentences. Each
+        tuple should contain one translated sentence and its list of references.
+        @type sentence_tuples: [tuple(str(translation), [str(reference), ...]), ...] 
+        @return: a dictionary containing METEOR scores, name and value
+        @rtype: dict(score_name,score_value)
+        """    
+        aggregated_stats = self.meteor_view.MeteorStats()
+        
+        for target, references in sentence_tuples:
+            stats = self.scorer.getMeteorStats(target, references)
+            aggregated_stats.addStats(stats)
+            
+        self.scorer.computeMetrics(aggregated_stats)
+        return {'meteor_precision' : '{:.4}'.format(stats.precision), 
+                'meteor_recall' : '{:.4}'.format(stats.recall), 
+                'meteor_fragPenalty' : '{:.4}'.format(stats.fragPenalty),  
+                'meteor_score' : '{:.4}'.format(stats.score)}
+    
+    def score_sentences(self, sentence_tuples):
+        """
+        Score many sentences using METEOR metrics and return a float for the many score
+        @param sentence_tuples: a list of tuples generated out of the translated sentences. Each
+        tuple should contain one translated sentence and its list of references.
+        @type sentence_tuples: [tuple(str(translation), [str(reference), ...]), ...] 
+        @return: the basic score float value
+        @rtype: float
+        """ 
+        return float(self.full_score_sentences(sentence_tuples)['meteor_score'])
 
 
 class CrossMeteorGenerator(MeteorGenerator):
@@ -89,7 +127,7 @@ class CrossMeteorGenerator(MeteorGenerator):
         alltranslations = dict([(t.get_attribute("system"), t.get_string()) for t in parallelsentence.get_translations()])
         del(alltranslations[current_system_name])
         references = alltranslations.values()
-        stats = self.score(translation.get_string(), references)
+        stats = self.score_sentence(translation.get_string(), references)
         return stats
 
 
