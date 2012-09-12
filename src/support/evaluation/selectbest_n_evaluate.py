@@ -21,6 +21,7 @@ def sort_sentences_per_system(dataset, predicted_rank_name, original_rank_name):
     for parallelsentence in dataset:
         
         reference = parallelsentence.get_reference()
+        reference_string = reference.get_string()
         
         predicted_rank_vector = [float(f) for f in parallelsentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")]
         original_rank_vector = [float(f) for f in parallelsentence.get_filtered_target_attribute_values(original_rank_name, "system", "_ref")]
@@ -31,31 +32,38 @@ def sort_sentences_per_system(dataset, predicted_rank_name, original_rank_name):
         
             
         predicted_best = False
+        
+        parallelsentence_strings = {} 
+        
         for translation in parallelsentence.get_translations():
             
             
             translation_string = translation.get_string()
-            reference_string = reference.get_string()
             
             #first gather based on the system name
             system = translation.get_attribute("system")
-            sentence_tuple = (translation_string, [reference_string])    
+            sentence_tuple = ([translation_string], [reference_string])    
             sentences_per_system.setdefault(system, []).append(sentence_tuple)
 
-            #then get best and worst human-ranked systems and best estimated system
-            if float(translation.get_attribute(predicted_rank_name)) == min_predicted and not predicted_best:
-                sentences_per_system.setdefault("-predicted_best", []).append(sentence_tuple)
-                predicted_best = True
-            if float(translation.get_attribute(original_rank_name)) == min_original:
-                sentences_per_system.setdefault("-human_best", []).append(sentence_tuple)
-            elif float(translation.get_attribute(original_rank_name)) == min_original+1:
-                sentences_per_system.setdefault("-human_second", []).append(sentence_tuple)
-            elif float(translation.get_attribute(original_rank_name)) == min_original+2:
-                sentences_per_system.setdefault("-human_third", []).append(sentence_tuple)
-            elif float(translation.get_attribute(original_rank_name)) == min_original+3:
-                sentences_per_system.setdefault("-human_fourth", []).append(sentence_tuple)
-            elif float(translation.get_attribute(original_rank_name)) == max_original:
-                sentences_per_system.setdefault("-human_worst", []).append(sentence_tuple)
+            system_categories = [
+                                 ('-predicted_best', predicted_rank_name, min_predicted),
+                                 ("-human_1", original_rank_name, min_original),
+                                 ("-human_2", original_rank_name, min_original+1),
+                                 ("-human_3", original_rank_name, min_original+2),
+                                 ("-human_4", original_rank_name, min_original+3),
+                                 ("-human_worst", original_rank_name, max_original)
+                                ]
+        
+            
+        
+            for id, attname, attvalue in system_categories:
+                if float(translation.get_attribute(attname)) == attvalue:
+                    parallelsentence_strings.setdefault(id, []).append(translation_string)
+        
+        for id, translation_strings in parallelsentence_strings.iteritems():
+            sentence_tuple = (translation_strings, reference_string)
+            sentences_per_system.setdefault(id, []).append(sentence_tuple)
+            
                 
     return sentences_per_system
 
@@ -65,9 +73,10 @@ if __name__ == '__main__':
         
     java_classpath = ["/home/elav01/taraxu_tools/meteor-1.3/meteor-1.3.jar","/home/elav01/taraxu_tools/meteor-1.3","/usr/share/py4j/py4j0.7.jar","/home/elav01/workspace/TaraXUscripts/src/experiment/autoranking"]
     dir_path = "/home/elav01/workspace/TaraXUscripts/src/experiment/autoranking"
-    meteor = MeteorGenerator("en", java_classpath, dir_path)
+    #meteor = MeteorGenerator("en", java_classpath, dir_path)
     
-    scorers = [bleu, meteor]
+    scorers = [bleu] 
+    #, meteor]
     
     dataset = JcmlReader(datafile).get_dataset()
     
@@ -88,9 +97,11 @@ if __name__ == '__main__':
     sentences_per_system = sort_sentences_per_system(dataset, predicted_rank_name, original_rank_name)        
     
     for scorer in scorers:
+        print
+        print "----------------"        
         print scorer.__name__
         print "----------------"
         for system, sentence_tuples in sorted(sentences_per_system.items()):
-            print system, "&", round(100.00*scorer.score_sentences(sentence_tuples),2), "&", len(sentence_tuples), " \\\\"
+            print system, "&", round(100.00*scorer.score_multitarget_sentences(sentence_tuples),2), "&", len(sentence_tuples), " \\\\"
         
         
