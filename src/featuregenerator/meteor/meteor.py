@@ -46,7 +46,7 @@ class MeteorGenerator(LanguageFeatureGenerator):
         #import necessary java packages from meteor jar
         java_import(self.meteor_view, 'edu.cmu.meteor.scorer.*')
         java_import(self.meteor_view, 'edu.cmu.meteor.util.*')
-        java_import(self.meteor_view, '')
+#        java_import(self.meteor_view, '')
         
         #pass the language setting into the meteor configuration object
         config = self.meteor_view.MeteorConfiguration();
@@ -58,6 +58,7 @@ class MeteorGenerator(LanguageFeatureGenerator):
     def get_features_tgt(self, translation, parallelsentence):
         references = [parallelsentence.get_reference().get_string()]
         stats = self.score_sentence(translation.get_string(), references)
+        stats = dict([("ref-{}".format(k),v) for k, v in stats.iteritems()])
         return stats
 
     @DeprecationWarning
@@ -128,6 +129,7 @@ class CrossMeteorGenerator(MeteorGenerator):
         del(alltranslations[current_system_name])
         references = alltranslations.values()
         stats = self.score_sentence(translation.get_string(), references)
+        stats = dict([("cross-{}".format(k),v) for k, v in stats.iteritems()])
         return stats
 
 
