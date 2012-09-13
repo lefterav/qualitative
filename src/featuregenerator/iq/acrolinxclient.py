@@ -293,12 +293,22 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
 #            print 'text64', text64
 #            print 'check_id', check_id
 #            print 'resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)'
-#            
-        try:
-            resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)
-        except Exception as inst:
-            print "Error from server: ", inst
-            raise inst
+#       
+        tries = 0
+        resp = None
+        while not resp:
+            try:
+                resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)
+            except Exception as inst:
+                sys.stderr.write("Error from server: {}\n".format(inst))
+                sys.stderr.write("original sentence: {}\n".format(text))
+                sys.stderr.write("b64 encoded sentence: {}\n".format(text64))
+                tries += 1
+                if tries > 5:
+                    raise inst
+                time.sleep(5)
+                sys.stderr.write("retrying...")
+                
         
         self._update_license(resp)
         
