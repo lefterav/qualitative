@@ -25,5 +25,5 @@ class LevenshteinGenerator(FeatureGenerator):
         
 
         wer_value = levenshtein_tok(target_untokenized, ref_untokenized)
-        return {'lev': str(wer_value)}
+        return {'ref-lev': str(wer_value)}
         
