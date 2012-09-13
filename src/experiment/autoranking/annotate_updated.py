@@ -299,6 +299,25 @@ parallel_feature_functions.append(features_length)
 #    saxjcml.run_features_generator(input_file, output_file, [ibmfeaturegenerator])
     
 
+@active_if(cfg.getboolean("annotation", "reference_features"))
+@transform(data_fetch, suffix(".orig.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
+def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_atts, classpath, dir_path):
+    analyzers = [LevenshteinGenerator(),
+                 BleuGenerator()]
+    
+    if cfg.has_section("meteor"):
+        analyzers.append(MeteorGenerator(target_language, classpath, dir_path))
+        
+#    analyzers.append(RatioGenerator())
+    
+#    for attribute in moreisbetter_atts:
+#        analyzers.append(AttributeRankGenerator(attribute, None, True))
+#    for attribute in lessisbetter_atts:
+#        analyzers.append(AttributeRankGenerator(attribute))
+#        
+    saxjcml.run_features_generator(input_file, output_file, analyzers)
+if cfg.getboolean("annotation", "reference_features"):
+    parallel_feature_functions.append(reference_features)
 
 #active_parallel_feature_functions = [function for function in parallel_feature_functions if function.is_active]
 
@@ -322,28 +341,11 @@ def analyze_external_features(input_file, output_file, source_language, target_l
     langpair = (source_language, target_language)
     analyzers = [LengthFeatureGenerator(),
                  ParserMatches(langpair),
-                 #LevenshteinGenerator(),
                  RatioGenerator()]
     saxjcml.run_features_generator(input_file, output_file, analyzers)
     
 
-@active_if(cfg.getboolean("annotation", "reference_features"))
-@transform(data_fetch, suffix(".orig.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(",")) 
-def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_atts):
-    analyzers = [LevenshteinGenerator(),
-                 BleuGenerator()]
-    
-    if cfg.has_section("meteor"):
-        analyzers.append(MeteorGenerator())
-        
-    analyzers.append(RatioGenerator())
-    
-    for attribute in moreisbetter_atts:
-        analyzers.append(AttributeRankGenerator(attribute, None, True))
-    for attribute in lessisbetter_atts:
-        analyzers.append(AttributeRankGenerator(attribute))
-        
-    saxjcml.run_features_generator(input_file, output_file, analyzers)
+
 
 
 def create_ranks():
