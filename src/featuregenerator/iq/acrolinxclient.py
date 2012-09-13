@@ -286,17 +286,17 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         @rtype: {str: str} 
         """
         
-        text64 = base64.standard_b64encode(text)
-        check_id, soap_properties = self._start_new_check()
+        tries = 0
+        resp = None
+        while not resp:
+            text64 = base64.standard_b64encode(text)
+            check_id, soap_properties = self._start_new_check()
             
 #            print 'soap_properties', soap_properties
 #            print 'text64', text64
 #            print 'check_id', check_id
 #            print 'resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)'
 #       
-        tries = 0
-        resp = None
-        while not resp:
             try:
                 resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)
             except Exception as inst:
