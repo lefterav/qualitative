@@ -170,7 +170,7 @@ class DataSet(object):
     
     def append_dataset(self, add_dataset):
         """
-        Appends a data set to the end of the current dataset in place
+        Appends a given data set to the end of the current dataset in place
         @param add_dataset: dataset to be appended
         @rtype add_dataset: L{DataSet}
         """
@@ -196,13 +196,13 @@ class DataSet(object):
         incoming_parallelsentences_indexed = {}        
         incoming_parallelsentences = dataset_for_merging_with.get_parallelsentences()
         for incoming_ps in incoming_parallelsentences:
-            key = "||".join([incoming_ps.get_attribute(att) for att in merging_attributes]) #hopefully this runs always in the same order
+            key = tuple([incoming_ps.get_attribute(att) for att in merging_attributes]) #hopefully this runs always in the same order
             incoming_parallelsentences_indexed[key] = incoming_ps
             
         
         for i in range(len(self.parallelsentences)):
             if self.parallelsentences[i]:
-                key = "||".join([self.parallelsentences[i].get_attribute(att) for att in merging_attributes]) #hopefully this runs always in the same order
+                key = tuple([self.parallelsentences[i].get_attribute(att) for att in merging_attributes]) #hopefully this runs always in the same order
             try:
                 incoming_ps = incoming_parallelsentences_indexed[key]
                 self.parallelsentences[i].merge_parallelsentence(incoming_ps, attribute_replacements, **kwargs)
@@ -380,4 +380,7 @@ class DataSet(object):
 
 
     def __iter__(self):
+        """
+        A DataSet iterates over its basic wrapped object, ParallelSentence
+        """
         return self.parallelsentences.__iter__()
