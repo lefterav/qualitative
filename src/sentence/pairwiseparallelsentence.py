@@ -14,22 +14,33 @@ from copy import deepcopy
 
 class PairwiseParallelSentence(ParallelSentence):
     """
-    A pairwise parallel sentence, is a parallel sentence that contains output produced by only two systems.  
+    A pairwise parallel sentence, is a parallel sentence that contains output produced by only two systems.
+    @ivar src: the source sentence
+    @type src: SimpleSentence
+    @ivar translations: a tuple of two target sentences
+    @type translations: tuple(Simplesentence, SimpleSentence)
+    @ival reference: the reference translation
+    @type reference: L{SimpleSentence}
+    @ival attributes: a dict with the attributes at the parallel sentence level
+    @type attributes: dict{str : str}
+    @ivar rank_name: the name of the attribute that serves as the rank
+    @type rank_name: str   
     """
 
-    def __init__(self, source="", translations=[], systems=[], reference=None, attributes={}, rank_name = u"rank", **kwargs):
+    def __init__(self, source=None, translations=[], systems=[], reference=None, attributes={}, rank_name = u"rank", **kwargs):
         """
         Constructor
-        @type source: SimpleSentence
         @param source: the source text of the parallel sentence
-        @type translations: tuple of translations (SimpleSentence, SimpleSentence)
+        @type source: SimpleSentence
         @param translations: a pair of translations
-        @type reference: SimpleSentence 
+        @type translations: tuple of translations (SimpleSentence, SimpleSentence)
         @param reference: The desired translation provided by the system
-        @type attributes: dict { String name , String value }
+        @type reference: SimpleSentence 
         @param the attributes: that describe the parallel sentence
-        @type systems: tuple of strings
+        @type attributes: dict { String name : String value }
         @param systems: names of target systems
+        @type systems: tuple of strings
+        @param cast: set True if you want to initialize a pairwise parallel sentence out of a simple parallel sentence
         """
         
         cast = kwargs.setdefault("cast", None)
@@ -48,7 +59,9 @@ class PairwiseParallelSentence(ParallelSentence):
 
     def _cast(self, parallelsentence):
         """
-        Reload a pairwise parallelsentence which has the type of a simple parallelsentence
+        Reload in place a pairwise parallelsentence which has the type of a simple parallelsentence
+        @param parellesenentence: the simple parallelsentence
+        @type parallelsentence: L{ParallelSentence}
         """
         self.src = parallelsentence.src
         self.tgt = parallelsentence.tgt
@@ -60,9 +73,9 @@ class PairwiseParallelSentence(ParallelSentence):
     
     def _normalize_ranks(self):
         """
-        Receives two rank scores for the two respective system outputs, compares them and returns a universal
+        Reads the two rank scores for the two respective system outputs, compares them and sets a universal
         comparison value, namely -1 if the first system is better, +1 if the second system output is better, 
-        and 0 if they are equally good. 
+        and 0 if they are equally good. The value is set as a new argument of the current object
         """
         rank_a = float(self.tgt[0].get_attribute(self.rank_name))
         rank_b = float(self.tgt[1].get_attribute(self.rank_name))
