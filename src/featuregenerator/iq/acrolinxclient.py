@@ -288,22 +288,24 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         
         tries = 0
         check_id = None
-        while not check_id:
-            text64 = base64.standard_b64encode(text)
-            try:
-                check_id, soap_properties = self._start_new_check()
-            except Exception as inst:
-                sys.stderr.write("\nWhile getting check ID, server reported error: {}\n".format(inst))
-                tries += 1
-                if tries > 5:
-                    raise inst
-                time.sleep(20)
-                sys.stderr.write("retrying...")
-#            print 'soap_properties', soap_properties
-#            print 'text64', text64
-#            print 'check_id', check_id
-#            print 'resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)'
-#       
+        resp = None
+        while not resp:
+            while not check_id:
+                text64 = base64.standard_b64encode(text)
+                try:
+                    check_id, soap_properties = self._start_new_check()
+                except Exception as inst:
+                    sys.stderr.write("\nWhile getting check ID, server reported error: {}\n".format(inst))
+                    tries += 1
+                    if tries > 5:
+                        raise inst
+                    time.sleep(20)
+                    sys.stderr.write("retrying...")
+    #            print 'soap_properties', soap_properties
+    #            print 'text64', text64
+    #            print 'check_id', check_id
+    #            print 'resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)'
+    #       
             try:
                 resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)
             except Exception as inst:
@@ -315,7 +317,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
                     raise inst
                 time.sleep(20)
                 sys.stderr.write("retrying...")
-                
+            
         
         self._update_license(resp)
         
