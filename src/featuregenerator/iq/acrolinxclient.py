@@ -286,9 +286,10 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         @rtype: {str: str} 
         """
         
-        tries = 0
+        tries_resp = 0
         resp = None
         while not resp:
+            tries = 0
             check_id = None
             while not check_id:
                 text64 = base64.standard_b64encode(text)
@@ -314,8 +315,8 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
                 sys.stderr.write("\nWhen submitted sentence, server reported error: {}\n".format(inst))
                 sys.stderr.write("original sentence: {}\n".format(text))
                 sys.stderr.write("b64 encoded sentence: {}\n".format(text64))
-                tries += 1
-                if tries > 5:
+                tries_resp += 1
+                if tries_resp > 5:
                     raise inst
                 time.sleep(20)
                 sys.stderr.write("retrying...")
