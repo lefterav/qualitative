@@ -287,11 +287,18 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         """
         
         tries = 0
-        resp = None
-        while not resp:
+        check_id = None
+        while not check_id:
             text64 = base64.standard_b64encode(text)
-            check_id, soap_properties = self._start_new_check()
-            
+            try:
+                check_id, soap_properties = self._start_new_check()
+            except Exception as inst:
+                sys.stderr.write("\nWhile getting check ID, server reported error: {}\n".format(inst))
+                tries += 1
+                if tries > 5:
+                    raise inst
+                time.sleep(20)
+                sys.stderr.write("retrying...")
 #            print 'soap_properties', soap_properties
 #            print 'text64', text64
 #            print 'check_id', check_id
@@ -300,13 +307,13 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
             try:
                 resp = self.soap_client.service.checkDocumentMtom(soap_properties, text64, "utf-8", check_id)
             except Exception as inst:
-                sys.stderr.write("Error from server: {}\n".format(inst))
+                sys.stderr.write("\nWhen submitted sentence, server reported error: {}\n".format(inst))
                 sys.stderr.write("original sentence: {}\n".format(text))
                 sys.stderr.write("b64 encoded sentence: {}\n".format(text64))
                 tries += 1
                 if tries > 5:
                     raise inst
-                time.sleep(5)
+                time.sleep(20)
                 sys.stderr.write("retrying...")
                 
         
