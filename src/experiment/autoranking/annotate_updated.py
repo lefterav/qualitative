@@ -61,7 +61,16 @@ def get_basename(filename):
     print basename
     return basename
 
-@transform(all_sets, regex(r".*([^\/]*).jcml"), r"\1.orig.jcml")
+params = []
+for external_file in all_sets:
+    basename = get_basename(external_file)
+    print "Found basename" 
+    basename = basename.replace(".", "-")
+    output_file = "{0}.{1}".format(basename, "orig.jcml")
+    params.append([external_file, output_file])
+    
+
+@files(params)
 def data_fetch(external_file, output_file):
     """
     Fetch training file and place it comfortably in the working directory
