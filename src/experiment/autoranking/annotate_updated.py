@@ -61,21 +61,21 @@ def get_basename(filename):
     print basename
     return basename
 
-@split(None, "*orig.jcml", all_sets)
-def data_fetch(input_file, output_files, external_files):
+@transform(all_sets, regex(r".*([^\/]*).jcml"), r"\1.orig.jcml")
+def data_fetch(external_file, output_file):
     """
     Fetch training file and place it comfortably in the working directory
     Files are expected to contain the set name, followed by the ending .jcml
     """
-    for external_file in external_files:
-        print "Moving here external file ", external_file
-        basename = get_basename(external_file)
-        print "Found basename" 
-        basename = basename.replace(".", "-")
-        
-        output_file = "{0}.{1}".format(basename, "orig.jcml")
-        print "output", output_file
-        shutil.copy(external_file, output_file)
+#    for external_file in external_files:
+    print "Moving here external file ", external_file
+#    basename = get_basename(external_file)
+#    print "Found basename" 
+#    basename = basename.replace(".", "-")
+    
+#    output_file = "{0}.{1}".format(basename, "orig.jcml")
+    print "output", output_file
+    shutil.copy(external_file, output_file)
 
 try:
     annotated_filenames = cfg.get("training", "annotated_filenames").split(",")
