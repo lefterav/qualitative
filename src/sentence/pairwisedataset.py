@@ -112,8 +112,9 @@ class RawPairwiseDataset(RevertablePairwiseDataset):
     
     def __init__(self, plain_dataset = DataSet(), **kwargs):
         """
-        @param plain_dataset
-        
+        @param plain_dataset: the dataset to be used for initializing the the pairwise dataset 
+        @type L{DataSet}
+        @param cast: 
         """
         self.pairwise_parallelsentence_sets = {}
         pairwise_parallelsentences_per_sid = {}
