@@ -49,7 +49,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         self.lang = lang
         self.host = host
         url = "{0}://{1}{2}".format(protocol, host, wsdl_path)
-        self.soap_client = Client(url)
+        self.soap_client = Client(url, timeout=60)
         license_file = "{}.dat".format(user_id)
         path = os.path.dirname(__file__) #keep license file in current directory for the moment
         self.license_data_filename = os.path.join(path, license_file)
