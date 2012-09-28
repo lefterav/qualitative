@@ -266,35 +266,70 @@ class ParallelSentence(object):
                 self.tgt.append(tgtPS)
 
 
-    def get_pairwise_parallelsentences(self, directed = True):
+    def get_pairwise_parallelsentences(self, replacement = True, **kwargs):
         """
         Create a set of all available parallel sentence pairs (in tgt) from one ParallelSentence object.
         @param ps: Object of ParallelSetnece() with one source sentence and more target sentences
         @type ps: sentence.parallelsentence.ParallelSentence
+
+        kwargs:
+        @param replacement: If enabled, creates pairs with all possible combinations with replacement
+        @type replacement: boolean
+        @param include_references: Include references as system translations from system "_ref" and lowest rank
+        @type include_references: boolean
+        @param filter_unassigned: If enabled, it filters out pairs with rank = "-1", which means no value was assigned
+        It should not be turned on for test-sets 
+        @type filter_unassigned: boolean
+        @param restrict_ranks: Filter pairs to keep only for the ones that include the given ranks. Don't filter if list empty. Before
+        using this, make sure that the ranks are normalized        
+        @type restrict_ranks: [int, ...] 
+        
         @return p: set of parallel sentence pairs from one PS object
         @type p: a list of PairwiseParallelSentence() objects
+        
         """
         from pairwiseparallelsentence import PairwiseParallelSentence
+        
+        replacement = kwargs.setdefault("replacement", replacement)
+        include_references = kwargs.setdefault("include_references", False)
+        restrict_ranks = kwargs.setdefault("restrict_ranks", [])
         
         systems = []
         targets = []
         systems_list = []
         targets_list = []
         
-        for targetA in self.get_translations():
+        translations = self.get_translations()
+        if kwargs.setdefault('filter_unassigned', False):
+            translations = [t for t in self.get_translations() if t.get_attribute(self.rank_name) != "-1"]    
+
+        #this is used in case we want to include references in the pairwising
+        #references are added as translations by system named _ref
+        #only single references supported at the moment
+        if include_references:
+            if "_ref" not in self.get_target_attribute_values("system"):    
+                reference = self.get_reference()
+                reference.add_attribute("system", "_ref")   
+                #get a rank value lower than all the existing ones and assign it to references
+                min_rank = min([float(t.get_attribute(self.rank_name)) for t in translations]) - 1 
+                reference.add_attribute(self.rank_name, str(int(min_rank)))
+                translations.append(reference)
+                    
+        #@todo: rewrite this function in more efficient way
+        for targetA in translations:
             system_nameA = targetA.get_attribute('system')
             for system_nameB in systems_list:
                 systems.append((system_nameA, system_nameB))
-                if not directed:
+                if replacement:
                     systems.append((system_nameB, system_nameA))
             for targetB in targets_list:
                 targets.append((targetA, targetB))
-                if not directed:
+                if replacement:
                     targets.append((targetB, targetA))
             systems_list.append(system_nameA)
             targets_list.append(targetA)
 
-        pps_list = [PairwiseParallelSentence(self.get_source(), targets[i], systems[i], self.get_reference(), self.attributes, self.rank_name) \
+        pps_list = [PairwiseParallelSentence(self.get_source(), targets[i], systems[i], None, self.attributes, self.rank_name) \
                         for i in range(len(systems))]
         return pps_list
 

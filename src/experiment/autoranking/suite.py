@@ -64,6 +64,12 @@ class AutorankingSuite(PyExperimentSuite):
             self.classifier_params["verbose"] = True
         
         self.meta_attributes = params["meta_attributes"].split(",")
+        self.include_references = params.setdefault("include_references", False)
+        self.replacement = params.setdefault("replacement", True)
+        self.filter_unassigned = params.setdefault("filter_unassigned", False)
+        self.restrict_ranks = params.setdefault("restrict_ranks", [])
+        if self.restrict_ranks:
+            self.restrict_ranks = self.restrict_ranks.split(",")
         
         source_attributes = params["{}_source".format(params["att"])].split(",")
         target_attributes = params["{}_target".format(params["att"])].split(",")
@@ -128,7 +134,12 @@ class AutorankingSuite(PyExperimentSuite):
         if n == 20:
             print "pairwise training set"
                 
-            self.trainset = AnalyticPairwiseDataset(self.trainset)
+            self.trainset = AnalyticPairwiseDataset(
+                                                    self.trainset, include_references = self.include_references, 
+                                                    replacement = self.replacement, 
+                                                    filter_unassigned = self.filter_unassigned,
+                                                    restrict_ranks = self.restrict_ranks
+                                                    )
             
             if not self.ties:  
                 self.trainset.remove_ties()
@@ -138,7 +149,7 @@ class AutorankingSuite(PyExperimentSuite):
             
         if n == 30:
             print "pairwise testset"
-            self.testset = AnalyticPairwiseDataset(self.testset)
+            self.testset = AnalyticPairwiseDataset(self.testset, replacement = self.replacement)
             
  
         

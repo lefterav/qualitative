@@ -293,8 +293,9 @@ class DataSet(object):
         Modifies the current dataset by removing ranking ties        
         """
         for ps in self.parallelsentences:
-            ps.remove_ties()  
-    
+            ps.remove_ties()
+            
+   
     def get_size(self):
         return len(self.parallelsentences)
     
