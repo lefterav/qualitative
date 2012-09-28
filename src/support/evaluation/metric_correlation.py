@@ -10,6 +10,7 @@ from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
 from featuregenerator.bleu import bleu
 from featuregenerator.bleu.bleugenerator import BleuGenerator
 from featuregenerator.meteor.meteor import MeteorGenerator
+from featuregenerator.levenshtein.levenshtein import levenshtein
 import sys
 from sentence.parallelsentence import ParallelSentence
 from sentence.scoring import Scoring
@@ -30,6 +31,9 @@ if __name__ == '__main__':
             
             neg_meteor = -float(meteor.score(translation.get_string(), [reference.get_string()])['meteor_score'])
             translation.add_attribute("meteor_ref_neg", str(neg_meteor))
+            
+            lev = levenshtein(translation.get_string(), reference.get_string())
+            translation.add_attribute("lev", str(lev))
     
     Parallelsentence2Jcml(dataset.parallelsentences).write_to_file( "toscore.jcml")
     
@@ -37,4 +41,6 @@ if __name__ == '__main__':
     print scoringset.get_kendall_tau("bleu_ref_neg", "rank")
     print scoringset.avg_first_ranked("bleu_ref_neg", "rank")  
     print scoringset.get_kendall_tau("meteor_ref_neg", "rank")
-    print scoringset.avg_first_ranked("meteor_ref_neg", "rank") 
+    print scoringset.avg_first_ranked("meteor_ref_neg", "rank")
+    print scoringset.get_kendall_tau("lev", "rank")
+    print scoringset.avg_first_ranked("lev", "rank")  

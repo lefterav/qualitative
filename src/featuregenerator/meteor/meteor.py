@@ -61,7 +61,6 @@ class MeteorGenerator(LanguageFeatureGenerator):
         stats = dict([("ref-{}".format(k),v) for k, v in stats.iteritems()])
         return stats
 
-    @DeprecationWarning
     def score(self, target, references):
         return self.score_sentence(target, references)
 

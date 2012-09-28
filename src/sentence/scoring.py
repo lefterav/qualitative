@@ -295,6 +295,11 @@ class Scoring(MultiRankedDataset):
         accuracy_anyeffort = truepositive_withanyeffort / len(self.parallelsentences)
         return (accuracy_firsteffort, accuracy_anyeffort)
     
+    def normalize_rank_list(self, rank_list):
+        """
+        Normalizes a rank list so that it doesn't contain gaps. E.g [1,3,3,4] will be converted to [1,2,2,3]
+        
+        """
     
     def avg_first_ranked(self, predicted_rank_name, original_rank_name):
         """
@@ -312,17 +317,23 @@ class Scoring(MultiRankedDataset):
             original_rank_vector = [float(v) for v in original_rank_vector]
             
             best_original_rank = min(original_rank_vector)
-            predicted_rank_correction = min(predicted_rank_vector)-1 #should be zero if no correction needed
+            predicted_rank_order = sorted(predicted_rank_vector)
+                        
             
+#            print original_rank_vector, predicted_rank_vector, 
             
             for original_rank, predicted_rank in zip(original_rank_vector, predicted_rank_vector):
                 if original_rank == best_original_rank:
                     #if counting of ranks starts higher than 1, then this should fix it
-                    corresponding_rank = predicted_rank - predicted_rank_correction
+                    predicted_rank_normalized =  predicted_rank_order.index(predicted_rank) 
                     #penalize ties
-                    #if the best system was found first, but was predicted another 4 times, then rank = 5
-                    penalized_rank = corresponding_rank + predicted_rank_vector.count(predicted_rank) -1
+                    #if the best system was found first, but the same rank was predicted for another 4 system outputs, then rank = 5
+                    penalized_rank = predicted_rank_normalized + predicted_rank_vector.count(predicted_rank) 
+#                    penalized_rank = corresponding_rank
                     corresponding_ranks.append(penalized_rank)
+#                    print predicted_rank, penalized_rank
+                    #it is enough to calculate this once per sentence
+                    break
                     
         first_ranked = average(corresponding_ranks)
         return first_ranked
