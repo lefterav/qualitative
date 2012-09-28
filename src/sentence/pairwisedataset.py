@@ -8,6 +8,7 @@ Created on May 12, 2011
 from dataset import DataSet
 from pairwiseparallelsentenceset import AnalyticPairwiseParallelSentenceSet, CompactPairwiseParallelSentenceSet
 from pairwiseparallelsentence import PairwiseParallelSentence
+import sys
 
 
 class PairwiseDataset(DataSet):
@@ -51,6 +52,8 @@ class PairwiseDataset(DataSet):
         #filter out sentences where nothing is left
         self.pairwise_parallelsentence_sets = dict([(id, ps) for (id, ps) in self.pairwise_parallelsentence_sets.iteritems() if ps.length() > 0])
         return removed_ties
+
+
 
 
 class RevertablePairwiseDataset(PairwiseDataset):
@@ -107,19 +110,33 @@ class RawPairwiseDataset(RevertablePairwiseDataset):
     """
     A data set that contains pairwise comparisons organized by human judgment, i.e. there is a separate entry for each judgment,
     even if there are more than one judgment per sentence
+    @ivar replacement: Defines whether pairs are done in all combinations without replacement (replacement=False) or with replacement (replacement=True)
+    @type replacement: boolean
+    @ivar include_references: Defines whether references need to be included in pairs, as sentences from system "_ref". 
+    Do not enable this for test-sets, as reverting this is not yet supported
+    @type include_references: boolean
     """
     
     
     def __init__(self, plain_dataset = DataSet(), **kwargs):
         """
-        @param plain_dataset: the dataset to be used for initializing the the pairwise dataset 
-        @type L{DataSet}
-        @param cast: 
+        @param plain_dataset: the simple dataset to be converted or wrapped to an analytic one. Casting of an already pairwise simple set is supported, see L{cast}
+        @type plain_dataset: L{DataSet}
+        @param replacement: Defines whether pairs are done in all combinations without replacement (replacement=False) or with replacement (replacement=True)
+        @type replacement: boolean
+        @param include_references: Defines whether references need to be included in pairs, as sentences from system "_ref". 
+        Do not enable this for test-sets, as reverting this is not yet supported
+        @type include_references: boolean  
+        @param cast: Cast (reload) an existing pairwise set of simple DataSet as RawPairwiseDataset. No pairwise conversions are done then
+        @type cast: boolean
         """
         self.pairwise_parallelsentence_sets = {}
         pairwise_parallelsentences_per_sid = {}
         
         cast = kwargs.setdefault("cast", None)
+        self.include_references = kwargs.setdefault("include_references", False)
+        self.replacement = kwargs.setdefault("replacement", False)
+        
         if cast:
             self._cast(cast)
         else:
@@ -128,12 +145,13 @@ class RawPairwiseDataset(RevertablePairwiseDataset):
             for parallelsentence in plain_dataset.get_parallelsentences():
             
                 judgment_id = parallelsentence.get_compact_judgment_id()
-                pairwise_parallelsentences_per_sid[judgment_id] = parallelsentence.get_pairwise_parallelsentences(False)
+                pairwise_parallelsentences_per_sid[judgment_id] = parallelsentence.get_pairwise_parallelsentences(replacement=self.replacement, include_references=self.include_references)
                 
             
             for judgment_id, pairwiseparallelsentences in pairwise_parallelsentences_per_sid.iteritems():
             #then convert each group to a Analytic Pairwise Parallel SentenceSet
                 self.pairwise_parallelsentence_sets[judgment_id] = CompactPairwiseParallelSentenceSet(pairwiseparallelsentences)
+    
     
     def _cast(self, analytic_dataset=DataSet()):
         """
@@ -159,32 +177,68 @@ class AnalyticPairwiseDataset(PairwiseDataset):
     """
     A data set that contains pairwise comparisons organized by sentence id, i.e. if a sentence has multiple human judgments, 
     these will be grouped together under the sentence id  
+    @ivar replacement: Defines whether pairs are done in all combinations without replacement (replacement=False) or with replacement (replacement=True)
+    @type replacement: boolean
+    @ivar include_references: Defines whether references need to be included in pairs, as sentences from system "_ref". 
+    Do not enable this for test-sets, as reverting this is not yet supported
+    @type include_references: boolean
     """
     
     
-    def __init__(self, plain_dataset = DataSet()):
+    def __init__(self, plain_dataset = DataSet(), **kwargs):
         """
-        @param plain_dataset
+        @param plain_dataset: the simple dataset to be converted to an analytic one.
+        @type plain_dataset: L{DataSet}
+        @param replacement: Defines whether pairs are done in all combinations without replacement (replacement=False) or with replacement (replacement=True)
+        @type replacement: boolean
+        @param include_references: Defines whether references need to be included in pairs, as sentences from system "_ref". 
+        Do not enable this for test-sets, as reverting this is not yet supported
+        @type include_references: boolean   
+        @param restrict_ranks: Filter pairs to keep only for the ones that include the given ranks. Don't filter if list empty. Before
+        using this, make sure that the ranks are normalized        
+        @type restrict_ranks: [int, ...] 
         
         """
         self.pairwise_parallelsentence_sets = {}
         pairwise_parallelsentences_per_sid = {}
         
+        self.include_references = kwargs.setdefault("include_references", False)
+        self.replacement = kwargs.setdefault("replacement", False)
+        self.filter_unassigned = kwargs.setdefault("filter_unassigned", False)
+        self.restrict_ranks = kwargs.setdefault("restrict_ranks", [])
+        
         #first group by sentence ID or judgment ID
         for parallelsentence in plain_dataset.get_parallelsentences():
-        
+            #get a universal sentence_id (@todo: this could be parametrized)
             sentence_id = parallelsentence.get_compact_id()
-            try:
-                pairwise_parallelsentences_per_sid[sentence_id].extend(parallelsentence.get_pairwise_parallelsentences(False))
-            except KeyError:
-                pairwise_parallelsentences_per_sid[sentence_id] = parallelsentence.get_pairwise_parallelsentences(False)
-        
+            pairwise_parallelsentences_per_sid.setdefault(sentence_id, []).extend(
+                                                                                  parallelsentence.get_pairwise_parallelsentences(
+                                                                                                                                  replacement=self.replacement, 
+                                                                                                                                  include_references=self.include_references,
+                                                                                                                                  filter_unassigned = self.filter_unassigned,
+#                                                                                                                                  restrict_ranks = self.restrict_ranks
+                                                                                                                                  )
+                                                                                  )
+            
         for sentence_id, pairwiseparallelsentences in pairwise_parallelsentences_per_sid.iteritems():
         #then convert each group to a Analytic Pairwise Parallel SentenceSet
             self.pairwise_parallelsentence_sets[sentence_id] = AnalyticPairwiseParallelSentenceSet(pairwiseparallelsentences)
+            if self.restrict_ranks: 
+                self.pairwise_parallelsentence_sets[sentence_id].restrict_ranks(self.restrict_ranks)
    
     
+    def restrict_ranks(self, restrict_ranks):
+        """
+        Modifies the current dataset by 
+        """
+        if self.restrict_ranks != restrict_ranks:
+            sys.stderr.write("Warning: trying to filter out rank values, although this has happenned before")
+        self.restrict_ranks = restrict_ranks
+        for p in self.pairwise_parallelsentence_sets.itervalues:
+            p.restrict_ranks(restrict_ranks)
+             
 
+        
 
 class CompactPairwiseDataset(RevertablePairwiseDataset):
     """
@@ -198,11 +252,7 @@ class CompactPairwiseDataset(RevertablePairwiseDataset):
             self.pairwise_parallelsentence_sets[sentence_id] = analytic_pairwise_parallelsentence_set.get_compact_pairwise_parallelsentence_set()
         
 
-    
- 
 
-    
-    
 class FilteredPairwiseDataset(CompactPairwiseDataset):
     def __init__(self, analytic_pairwise_dataset = AnalyticPairwiseDataset(), threshold = 1.00):    
         self.pairwise_parallelsentence_sets = {}
@@ -211,7 +261,7 @@ class FilteredPairwiseDataset(CompactPairwiseDataset):
 
 
 
-        
+
         
 
 
