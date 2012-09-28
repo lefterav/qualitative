@@ -79,6 +79,29 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         
         self.pps_dict = reformed_dict
         return removed_ties
+    
+    
+    def restrict_ranks(self, restrict_ranks):
+        pass
+        restrict_ranks = set([float(r) for r in restrict_ranks])
+        print
+        print restrict_ranks
+        for system_names in self.pps_dict.keys():
+            ps_restricted = []
+            for ps in self.pps_dict[system_names]:
+                target_ranks = set([float(r) for r in ps.get_target_attribute_values(self.rank_name)])
+                print target_ranks,
+                if not target_ranks.isdisjoint(restrict_ranks):
+                    ps_restricted.append(ps)
+                    print "ok"
+                else:
+                    print 
+            if ps_restricted:
+                self.pps_dict[system_names] = ps_restricted
+            else:
+                del self.pps_dict[system_names]
+                                
+            
 
     
     def get_pairwise_parallelsentences(self, system_names, directed = False):
