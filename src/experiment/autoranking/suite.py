@@ -411,6 +411,7 @@ def get_scoring(testset, class_name, xid, featurename):
     ret["kendalltau_b-%s"%xid], ret["kendalltau_b-%s-pi"%xid]  = scoringset.get_kendall_tau_b(featurename, class_name)
     ret["b1-acc-1-%s"%xid], ret["b1-acc-%s-any"%xid] = scoringset.selectbest_accuracy(featurename, class_name)
     ret["fr-%s"%xid] = scoringset.avg_first_ranked(featurename, class_name)    
+    ret["pr-%s"%xid] = scoringset.avg_predicted_ranked(featurename, class_name)
     return ret
 
 
