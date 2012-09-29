@@ -325,6 +325,7 @@ class Scoring(MultiRankedDataset):
             
 #            print original_rank_vector, predicted_rank_vector, 
             
+            current_corresponding_ranks = []
             for original_rank, predicted_rank in zip(original_rank_vector, predicted_rank_vector):
                 if original_rank == best_original_rank:
                     #if counting of ranks starts higher than 1, then this should fix it
@@ -333,11 +334,12 @@ class Scoring(MultiRankedDataset):
                     #if the best system was found first, but the same rank was predicted for another 4 system outputs, then rank = 5
                     penalized_rank = predicted_rank_normalized + predicted_rank_vector.count(predicted_rank) 
 #                    penalized_rank = corresponding_rank
-                    corresponding_ranks.append(penalized_rank)
+                    current_corresponding_ranks.append(penalized_rank)
 #                    print predicted_rank, penalized_rank
                     #it is enough to calculate this once per sentence
-                    break
-                    
+#            if current_corresponding_ranks :
+            corresponding_ranks.append(average(current_corresponding_ranks))
+                        
         first_ranked = average(corresponding_ranks)
         return first_ranked
        
