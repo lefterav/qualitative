@@ -39,11 +39,16 @@ if __name__ == '__main__':
     
     scoringset = Scoring(dataset)
     print scoringset.get_kendall_tau("bleu_ref_neg", "rank")
-    print scoringset.avg_first_ranked("bleu_ref_neg", "rank")
-    print scoringset.avg_predicted_ranked("bleu_ref_neg", "rank")
+#    print scoringset.avg_first_ranked("bleu_ref_neg", "rank")
+#    print scoringset.avg_predicted_ranked("bleu_ref_neg", "rank")
+    print scoringset.best_predicted_vs_human("bleu_ref_neg", "rank")
+    
     print scoringset.get_kendall_tau("meteor_ref_neg", "rank")
-    print scoringset.avg_first_ranked("meteor_ref_neg", "rank")
-    print scoringset.avg_predicted_ranked("meteor_ref_neg", "rank")
+#    print scoringset.avg_first_ranked("meteor_ref_neg", "rank")
+#    print scoringset.avg_predicted_ranked("meteor_ref_neg", "rank")
+    print scoringset.best_predicted_vs_human("meteor_ref_neg", "rank")
+    
     print scoringset.get_kendall_tau("lev", "rank")
-    print scoringset.avg_first_ranked("lev", "rank")
-    print scoringset.avg_predicted_ranked("lev", "rank")
+#    print scoringset.avg_first_ranked("lev", "rank")
+#    print scoringset.avg_predicted_ranked("lev", "rank")
+    print scoringset.best_predicted_vs_human("lev", "rank")
