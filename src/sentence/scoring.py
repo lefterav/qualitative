@@ -301,6 +301,37 @@ class Scoring(MultiRankedDataset):
         
         """
     
+    
+    def best_predicted_vs_human(self, predicted_rank_name, original_rank_name):
+        
+        actual_values_of_best_predicted = {}
+        
+        for parallesentence in self.parallelsentences:
+            predicted_rank_vector = parallesentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
+            original_rank_vector = parallesentence.get_filtered_target_attribute_values(original_rank_name, "system", "_ref")
+            
+            #make sure we are dealing with numbers      
+            predicted_rank_vector = [float(v) for v in predicted_rank_vector]
+            original_rank_vector = [float(v) for v in original_rank_vector]
+            
+            best_predicted_rank = min(predicted_rank_vector)
+            original_rank_order = sorted(original_rank_vector)
+            
+            
+                
+            for original_rank, predicted_rank in zip(original_rank_vector, predicted_rank_vector):
+                if predicted_rank == best_predicted_rank:
+                    corrected_original_rank = original_rank_order.index(original_rank) + 1
+                    a = actual_values_of_best_predicted.setdefault(corrected_original_rank, 0)
+                    actual_values_of_best_predicted[corrected_original_rank] = a + 1
+                    
+        n = len(self.parallelsentences)
+        percentage = {}
+        for rank, counts in  actual_values_of_best_predicted.iteritems():
+            percentage[rank] = 100.00 * counts/n
+        return percentage 
+        
+    
     def avg_predicted_ranked(self, predicted_rank_name, original_rank_name):
         return self.avg_first_ranked(original_rank_name, predicted_rank_name)
     
