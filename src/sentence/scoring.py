@@ -301,6 +301,9 @@ class Scoring(MultiRankedDataset):
         
         """
     
+    def avg_predicted_ranked(self, predicted_rank_name, original_rank_name):
+        return self.avg_first_ranked(original_rank_name, predicted_rank_name)
+    
     def avg_first_ranked(self, predicted_rank_name, original_rank_name):
         """
         Provide an integer that shows the predicted rank of the best system
