@@ -412,7 +412,7 @@ def get_scoring(testset, class_name, xid, featurename):
     ret["b1-acc-1-%s"%xid], ret["b1-acc-%s-any"%xid] = scoringset.selectbest_accuracy(featurename, class_name)
     ret["fr-%s"%xid] = scoringset.avg_first_ranked(featurename, class_name)    
     ret["pr-%s"%xid] = scoringset.avg_predicted_ranked(featurename, class_name)
-    ret["sb-%s"%xid] = scoringset.best_predicted_vs_human.best_predicted_vs_human(featurename, class_name)
+    ret["sb-%s"%xid] = scoringset.best_predicted_vs_human(featurename, class_name)
     return ret
 
 
