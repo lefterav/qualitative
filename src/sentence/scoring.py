@@ -303,7 +303,7 @@ class Scoring(MultiRankedDataset):
     
     
     def best_predicted_vs_human(self, predicted_rank_name, original_rank_name):
-        
+        from numpy import average
         actual_values_of_best_predicted = {}
         
         for parallesentence in self.parallelsentences:
@@ -319,16 +319,20 @@ class Scoring(MultiRankedDataset):
             
             
                 
+            original_ranks = []
             for original_rank, predicted_rank in zip(original_rank_vector, predicted_rank_vector):
                 if predicted_rank == best_predicted_rank:
                     corrected_original_rank = original_rank_order.index(original_rank) + 1
-                    a = actual_values_of_best_predicted.setdefault(corrected_original_rank, 0)
-                    actual_values_of_best_predicted[corrected_original_rank] = a + 1
+                    original_ranks.append(corrected_original_rank)
+                
+            selected_original_rank = max(original_ranks)
+            a = actual_values_of_best_predicted.setdefault(selected_original_rank, 0)
+            actual_values_of_best_predicted[corrected_original_rank] = a + 1
                     
         n = len(self.parallelsentences)
         percentage = {}
         for rank, counts in  actual_values_of_best_predicted.iteritems():
-            percentage[rank] = 100.00 * counts/n
+            percentage[rank] = round(100.00 * counts / n, 2)
         return percentage 
         
     
