@@ -324,15 +324,18 @@ class Scoring(MultiRankedDataset):
                 if predicted_rank == best_predicted_rank:
                     corrected_original_rank = original_rank_order.index(original_rank) + 1
                     original_ranks.append(corrected_original_rank)
+                    
                 
             selected_original_rank = max(original_ranks)
             a = actual_values_of_best_predicted.setdefault(selected_original_rank, 0)
-            actual_values_of_best_predicted[corrected_original_rank] = a + 1
+            actual_values_of_best_predicted[selected_original_rank] = a + 1
                     
         n = len(self.parallelsentences)
         percentage = {}
+        total = 0
         for rank, counts in  actual_values_of_best_predicted.iteritems():
-            percentage[rank] = round(100.00 * counts / n, 2)
+            percentage[rank] = round(100.00 * counts / n , 2 )
+            total += counts
         return percentage 
         
     
