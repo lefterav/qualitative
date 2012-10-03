@@ -116,10 +116,11 @@ class Parallelsentence2Jcml(object):
         XML output is written to the desired file
         '''
         tempfilename = "%s.tmp" % filename 
-        file = open(tempfilename, 'w')
-        generator = XMLGenerator(file, "utf-8")
+        f = open(tempfilename, 'w')
+        generator = XMLGenerator(f, "utf-8")
         generator.startDocument()
         generator.startElement(self.TAG["doc"], {})
+
         for parallelsentence in self.parallelsentences:
             generator.characters("\n\t")
             generator.startElement(self.TAG["sent"], parallelsentence.get_attributes())
@@ -144,8 +145,11 @@ class Parallelsentence2Jcml(object):
             if self.shuffle_translations:
                 shuffle(translations)
             
+
+            
             if self.sort_attribute:
                 translations = sorted(translations, key=lambda tgt: tgt.get_attribute(self.sort_attribute))
+            
             
             for tgt in translations:
                 generator._write("\n\t\t")
@@ -170,7 +174,7 @@ class Parallelsentence2Jcml(object):
         generator.endElement(self.TAG["doc"])
         generator.characters("\n")
         generator.endDocument()
-        file.close()
+        f.close()
         shutil.move(tempfilename, filename)
             
             
