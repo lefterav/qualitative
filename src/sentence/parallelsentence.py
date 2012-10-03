@@ -19,7 +19,7 @@ class ParallelSentence(object):
     """
     
 
-    def __init__(self, source, translations, reference = None, attributes = {}, rank_name = "rank"):
+    def __init__(self, source, translations, reference = None, attributes = {}, rank_name = "rank", **kwargs):
         """
         Constructor
         @type source SimpleSentence
@@ -32,10 +32,12 @@ class ParallelSentence(object):
         @param the attributes that describe the parallel sentence
         """
         self.src = source 
-        self.tgt = sorted(translations)
+        self.tgt = translations
         self.ref = reference
         self.attributes = deepcopy (attributes)
         self.rank_name = rank_name
+        if kwargs.setdefault("sort_translations", False):
+            self.tgt = sorted(translations, key=lambda t: t.get_attribute("system"))
         
     def __lt__(self, other):
         return self.get_compact_id() < other.get_compact_id()
