@@ -55,7 +55,7 @@ def retrieve_results(mysuite, path, reps = [0]):
                 
 
         
-def get_tabfile(results, preferred_params=[], display_header=True, delimiter="\t"):
+def get_tabfile(results, preferred_params=[], preferred_results=[], display_header=True, delimiter="\t"):
 
     
     #get a list with the result names
@@ -78,6 +78,9 @@ def get_tabfile(results, preferred_params=[], display_header=True, delimiter="\t
     if not preferred_params:
         preferred_params = param_keys
 
+    if not preferred_results:
+        preferred_results = result_keys
+
     if display_header:
         print delimiter.join(preferred_params) + delimiter + delimiter.join(sorted(list(result_keys)))
     
@@ -90,7 +93,7 @@ def get_tabfile(results, preferred_params=[], display_header=True, delimiter="\t
         onlyvalues = []
         
         #collect a list with the values
-        for key in sorted(result_keys):
+        for key in preferred_results:
             #extract from array, if possible
             try:
                 onlyvalues.append(str(values[key][0]))
@@ -118,6 +121,9 @@ if __name__ == "__main__":
     parser.add_argument('--params', nargs='*',                   
                    help='Names of parameters to be displayed (default: all)')
     
+    parser.add_argument('--metrics', nargs='*',                   
+                   help='Names of metrics to be displayed (default: all)')
+    
     parser.add_argument('--config', nargs=1,                   
                    help='the configuration file to be checked')
                    
@@ -138,9 +144,10 @@ if __name__ == "__main__":
     path = args.path[0]
     reps = args.reps
     preferred_params = args.params
+    preferred_results = args.metrics
     
     results = retrieve_results(mysuite, path, reps)
-    get_tabfile(results, preferred_params)
+    get_tabfile(results, preferred_params, preferred_results)
                 
         
         
