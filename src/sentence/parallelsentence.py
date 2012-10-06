@@ -331,7 +331,7 @@ class ParallelSentence(object):
             systems_list.append(system_nameA)
             targets_list.append(targetA)
 
-        pps_list = [PairwiseParallelSentence(self.get_source(), targets[i], systems[i], None, self.attributes, self.rank_name) \
+        pps_list = [PairwiseParallelSentence(self.get_source(), targets[i], systems[i], self.ref, self.attributes, self.rank_name) \
                         for i in range(len(systems))]
         return pps_list
 
