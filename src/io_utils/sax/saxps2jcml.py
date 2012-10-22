@@ -126,17 +126,18 @@ class Parallelsentence2Jcml(object):
             generator.startElement(self.TAG["sent"], parallelsentence.get_attributes())
             
             src = parallelsentence.get_source()
+            attributes = dict([(k,str(v)) for k,v in src.get_attributes()])
             
             if isinstance(src, SimpleSentence):            
                                     
                 generator._write("\n\t\t")
-                generator.startElement(self.TAG["src"], src.get_attributes())
+                generator.startElement(self.TAG["src"], attributes)
                 generator.characters(c(src.get_string()))
                 generator.endElement(self.TAG["src"])
             elif isinstance(src, tuple):
                 for src in parallelsentence.get_source():
                     generator._write("\n\t\t")
-                    generator.startElement(self.TAG["src"], src.get_attributes())
+                    generator.startElement(self.TAG["src"], attributes)
                     generator.characters(c(src.get_string()))
                     generator.endElement(self.TAG["src"])
             
@@ -153,7 +154,8 @@ class Parallelsentence2Jcml(object):
             
             for tgt in translations:
                 generator._write("\n\t\t")
-                generator.startElement(self.TAG["tgt"], tgt.get_attributes())
+                attributes = dict([(k,str(v)) for k,v in tgt.get_attributes()])
+                generator.startElement(self.TAG["tgt"], attributes)
                 generator.characters(c(tgt.get_string()))
                 generator.endElement(self.TAG["tgt"])
             
@@ -161,7 +163,8 @@ class Parallelsentence2Jcml(object):
             ref = parallelsentence.get_reference()
             if ref and ref.get_string() != "":
                 generator._write("\n\t\t")
-                generator.startElement(self.TAG["ref"], ref.get_attributes())
+                attributes = dict([(k,str(v)) for k,v in ref.get_attributes()])
+                generator.startElement(self.TAG["ref"], attributes)
                 generator.characters(c(ref.get_string()))
                 generator.endElement(self.TAG["ref"])
             
