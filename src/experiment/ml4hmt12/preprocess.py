@@ -92,13 +92,13 @@ if __name__ == '__main__':
     paramsCompile = re.compile('(\d+)..(\d+)](.*?)TRANSLATED AS:(.*?)WORD ALIGNED:(.*?)')
     reScoresCompile = re.compile('d: (-*\d+.\d+) w: (-*\d+.\d+) u: (-*\d+.\d+) d: (-*\d+.\d+) (-*\d+.\d+) (-*\d+.\d+) (-*\d+.\d+) (-*\d+.\d+) (-*\d+.\d+) lm: (-*\d+.\d+) tm: (-*\d+.\d+) (-*\d+.\d+) (-*\d+.\d+) (-*\d+.\d+) (-*\d+.\d+)')
 
-    # target sentence 4 - compilations
+    # target sentence 4 - compilations    
     reSpanCompile = re.compile('\[(\d+)..(\d+)\]:')
     reBracketsCompile = re.compile('(\[\d+..\d+\]=[^ ]+)')
     ruleCompile = re.compile('\[\d+..\d+\]=[^ ]+\s+: (.*?->.*?) :.*?: pC=')
     alignmentCompile = re.compile('\[\d+..\d+\]=[^ ]+\s+: .*?->.*? :(.*?): pC=')
-    repCCompile = re.compile('pC=(-*\d*.*\d+)')
-    recCompile = re.compile('c=(-*\d*.*\d+) (-*\d*.*\d+)')
+    repCCompile = re.compile('pC=([^ ,]*)')
+    recCompile = re.compile('c=([^ ,]*) ([^ ,<]*)')
     reValuesCompile = re.compile('<<(.*?)>>')
     subderivStartCompile = re.compile('\[(\d+)..\d+\]')
     subderivEndCompile = re.compile('\[\d+..(\d+)\]')
@@ -303,44 +303,57 @@ if __name__ == '__main__':
 #                atts_4["deriv_%s_subderiv_%s_head" % (z, y)] =  subderivHeadCompile.search(brackets[y]).group(1)
 #            atts_4["deriv_%s_rule" % z] = rule
 #            atts_4["deriv_%s_alignment" % z] = alignment
-            pC = repC.group(1)
+            pC = float(repC.group(1))
             list_pC.append(pC)
 #            atts_4["deriv_%s_pC" % z] = repC.group(1)
-            c1 = rec.group(1)
+            c1 = float(rec.group(1))
             list_c1.append(c1)
 #            atts_4["deriv_%s_c1" % z] = rec.group(1)    
-            c2 = rec.group(2)
+            c2 = float(rec.group(2))
             list_c2.append(c2)
 #            atts_4["deriv_%s_c2" % z] = rec.group(2)
             X = {}
 
             for x in range(1,9):
-                X[x](reValues[x-1])
+                X[x] = reValues[x-1]
             list_x.append(X)
+        
+        #now get averages, variations and standard deviations from the collected things
+        
+        atts_4["s4_derivations"] = z
         
         atts_4["s4_span_len_avg"] = average(list_span_len)
         atts_4["s4_span_len_var"] = var(list_span_len)
         atts_4["s4_span_len_std"] = std(list_span_len)
         
         atts_4["s4_subderivations_avg"] = average(list_subderivations)
+        atts_4["s4_subderivations_var"] = var(list_subderivations)
+        atts_4["s4_subderivations_std"] = std(list_subderivations)
         
         atts_4["s4_subderivation_len_avg"] = average(list_subderivation_len)
+        atts_4["s4_subderivation_len_var"] = var(list_subderivation_len)
+        atts_4["s4_subderivation_len_std"] = std(list_subderivation_len)
         
         atts_4["s4_pC_avg"] = average(list_pC)
+        atts_4["s4_pC_var"] = var(list_pC)
+        atts_4["s4_pC_std"] = std(list_pC)
         
         atts_4["s4_c1_avg"] = average(list_c1)
+        atts_4["s4_c1_var"] = var(list_c1)
+        atts_4["s4_c1_std"] = std(list_c1)                
         
-        atts_4["s4_c2_avg"] = average(list_c1)
+        atts_4["s4_c2_avg"] = average(list_c2)
+        atts_4["s4_c2_var"] = var(list_c2)
+        atts_4["s4_c2_std"] = std(list_c2)                
         
-        for x in list_x:
-             
-              
-        
+        for l in xrange (1,9):
+            col = [float(x[l]) for x in list_x]
+            atts_4["s4_x{}_avg".format(i)] = average(col)
+            
         
         
         
             
-        #now get averages, variations and standard deviations from the collected things
                 
         atts_4["system"] = 's4'
 
