@@ -314,6 +314,8 @@ class Scoring(MultiRankedDataset):
             predicted_rank_vector = [float(v) for v in predicted_rank_vector]
             original_rank_vector = [float(v) for v in original_rank_vector]
             
+            if not predicted_rank_vector:
+                continue
             best_predicted_rank = min(predicted_rank_vector)
             original_rank_order = sorted(original_rank_vector)
             
