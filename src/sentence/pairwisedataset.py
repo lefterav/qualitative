@@ -182,6 +182,8 @@ class AnalyticPairwiseDataset(PairwiseDataset):
     @ivar include_references: Defines whether references need to be included in pairs, as sentences from system "_ref". 
     Do not enable this for test-sets, as reverting this is not yet supported
     @type include_references: boolean
+    @ivar invert_ranks: Whether ranks should be considered the way round (highest value=best rank)
+    @type invert_ranks: boolean
     """
     
     
@@ -197,7 +199,8 @@ class AnalyticPairwiseDataset(PairwiseDataset):
         @param restrict_ranks: Filter pairs to keep only for the ones that include the given ranks. Don't filter if list empty. Before
         using this, make sure that the ranks are normalized        
         @type restrict_ranks: [int, ...] 
-        
+        @var invert_ranks: Whether ranks should be considered the way round (highest value=best rank)
+        @type invert_ranks: boolean
         """
         self.pairwise_parallelsentence_sets = {}
         pairwise_parallelsentences_per_sid = {}
@@ -206,6 +209,8 @@ class AnalyticPairwiseDataset(PairwiseDataset):
         self.replacement = kwargs.setdefault("replacement", False)
         self.filter_unassigned = kwargs.setdefault("filter_unassigned", False)
         self.restrict_ranks = kwargs.setdefault("restrict_ranks", [])
+        self.rank_name = kwargs.setdefault("rank_name", "rank")
+        self.invert_ranks = kwargs.setdefault("invert_ranks", False)
         
         #first group by sentence ID or judgment ID
         for parallelsentence in plain_dataset.get_parallelsentences():
@@ -216,13 +221,18 @@ class AnalyticPairwiseDataset(PairwiseDataset):
                                                                                                                                   replacement=self.replacement, 
                                                                                                                                   include_references=self.include_references,
                                                                                                                                   filter_unassigned = self.filter_unassigned,
-#                                                                                                                                  restrict_ranks = self.restrict_ranks
+                                                                                                                                  invert_ranks = self.invert_ranks,
+                                                                                                                                  rank_name = self.rank_name
+#                                                                                                                                  restrict_ranks = self.restrict_ranks    
                                                                                                                                   )
                                                                                   )
             
         for sentence_id, pairwiseparallelsentences in pairwise_parallelsentences_per_sid.iteritems():
         #then convert each group to a Analytic Pairwise Parallel SentenceSet
-            self.pairwise_parallelsentence_sets[sentence_id] = AnalyticPairwiseParallelSentenceSet(pairwiseparallelsentences)
+            self.pairwise_parallelsentence_sets[sentence_id] = AnalyticPairwiseParallelSentenceSet(
+                                                                                                   pairwiseparallelsentences,
+                                                                                                   rank_name = self.rank_name
+                                                                                                   )
             if self.restrict_ranks: 
                 self.pairwise_parallelsentence_sets[sentence_id].restrict_ranks(self.restrict_ranks)
    

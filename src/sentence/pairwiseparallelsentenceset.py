@@ -42,13 +42,14 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
     @ivar pps_dict: a dict that stores all the pairwise parallelsentences mapped to a tuple of strings containing the system names for the respective translations 
     @type pps_dict: {(str, str): [L{PairwiseParallelSentence}, ...]} 
     """
-    def __init__(self, pairwise_parallelsentences = [], rank_name = "rank"):
+    def __init__(self, pairwise_parallelsentences = [], rank_name = "rank", **kwargs):
         """
         @param pairwise_parallelsentences: a list of pairwise parallel sentences
         @type pairwise_parallelsentences: [L{sentence.pairwiseparallelsentence.PairwiseParallelSentence}, ...]
         """
         self.pps_dict = {}
-        self.rank_name = rank_name
+        self.rank_name = kwargs.setdefault("rank_name", rank_name)
+        
         for ps in pairwise_parallelsentences:
             system_names = ps.get_system_names()
             try:
