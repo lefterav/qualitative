@@ -10,12 +10,12 @@ from sys import argv
 import sys
 
 def split_dataset_files(source_file, target_file_1, target_file_2, ratio=0.1):
-    sys.stderr.write("Reading source file %s ..."% source_file)
+    sys.stderr.write("Reading source file %s ...\n"% source_file)
     source_dataset = JcmlReader(source_file).get_dataset()
     dataset_part1, dataset_part2 = source_dataset.split(ratio)
-    sys.stderr.write("Writing first target file %s ..."% target_file_1)
+    sys.stderr.write("Writing first target file %s ...\n"% target_file_1)
     Parallelsentence2Jcml(dataset_part1).write_to_file(target_file_1)
-    sys.stderr.write("Writing second target file %s ..."% target_file_2)
+    sys.stderr.write("Writing second target file %s ...\n"% target_file_2)
     Parallelsentence2Jcml(dataset_part2).write_to_file(target_file_2)
 
 if __name__ == '__main__':
