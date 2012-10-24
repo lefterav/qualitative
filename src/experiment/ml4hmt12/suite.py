@@ -152,7 +152,8 @@ class AutorankingSuite(PyExperimentSuite):
             
         if n == 30:
             print "pairwise testset"
-            self.testset = AnalyticPairwiseDataset(self.testset, replacement = self.replacement)
+            self.testset = AnalyticPairwiseDataset(self.testset, replacement = self.replacement,
+                                                   rank_name = self.class_name)
             
  
         
