@@ -99,7 +99,7 @@ class AutorankingSuite(PyExperimentSuite):
         self.discrete_attributes = params["discrete_attributes"].split(",")
  
         self.class_name = params["class_name"]
-        self.class_type = params["class_type"]
+#        self.class_type = params["class_type"]
         
         self.training_sets = params["training_sets"].format(**params).split(',')
         self.testset = params["test_set"].format(**params)
@@ -196,7 +196,7 @@ class AutorankingSuite(PyExperimentSuite):
                  get_nested_attributes=True,
                  dir=dir
                  #filter_attributes={"rank" : "0"},
-#                 class_type=class_type
+#                 class_type=
                 )
         
         
