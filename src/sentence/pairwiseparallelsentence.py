@@ -44,6 +44,9 @@ class PairwiseParallelSentence(ParallelSentence):
         """
         
         cast = kwargs.setdefault("cast", None)
+        invert_ranks = kwargs.setdefault("invert_ranks", False)
+        
+        
         if cast:
             self._cast(cast)
         else:
@@ -54,7 +57,7 @@ class PairwiseParallelSentence(ParallelSentence):
             self.attributes = deepcopy(attributes)
             self.rank_name = rank_name
             if self.tgt:
-                self._normalize_ranks()
+                self._normalize_ranks(invert_ranks)
     #        self.ties_allowed = ties_allowed
 
     def _cast(self, parallelsentence):
@@ -71,14 +74,22 @@ class PairwiseParallelSentence(ParallelSentence):
         self.rank_name = parallelsentence.rank_name
         
     
-    def _normalize_ranks(self):
+    def _normalize_ranks(self, invert_ranks=False):
         """
         Reads the two rank scores for the two respective system outputs, compares them and sets a universal
         comparison value, namely -1 if the first system is better, +1 if the second system output is better, 
         and 0 if they are equally good. The value is set as a new argument of the current object
+        @param invert_ranks: If set to True, it inverts the ranks (useful for non-penalty metrics)
+        @type invert_ranks: boolean
         """
-        rank_a = float(self.tgt[0].get_attribute(self.rank_name))
-        rank_b = float(self.tgt[1].get_attribute(self.rank_name))
+        
+        if invert_ranks:
+            factor = -1.00
+        else:
+            factor = 1.00 
+        
+        rank_a = float(self.tgt[0].get_attribute(self.rank_name)) * factor
+        rank_b = float(self.tgt[1].get_attribute(self.rank_name)) * factor
         
         if rank_a > rank_b:
             rank = 1

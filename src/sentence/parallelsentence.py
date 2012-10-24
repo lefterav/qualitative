@@ -295,6 +295,8 @@ class ParallelSentence(object):
         replacement = kwargs.setdefault("replacement", replacement)
         include_references = kwargs.setdefault("include_references", False)
         restrict_ranks = kwargs.setdefault("restrict_ranks", [])
+        invert_ranks = kwargs.setdefault("invert_ranks", [])
+        rank_name = kwargs.setdefault("rank_name", self.rank_name)
         
         systems = []
         targets = []
@@ -331,8 +333,16 @@ class ParallelSentence(object):
             systems_list.append(system_nameA)
             targets_list.append(targetA)
 
-        pps_list = [PairwiseParallelSentence(self.get_source(), targets[i], systems[i], self.ref, self.attributes, self.rank_name) \
-                        for i in range(len(systems))]
+        pps_list = [PairwiseParallelSentence(self.get_source(), 
+                                             targets[i], 
+                                             systems[i], 
+                                             self.ref, 
+                                             self.attributes, 
+                                             rank_name, 
+                                             invert_ranks = invert_ranks
+                                             ) \
+                        for i in range(len(systems))
+                    ]
         return pps_list
 
     def remove_ties(self):
