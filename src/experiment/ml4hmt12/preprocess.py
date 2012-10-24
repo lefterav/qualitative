@@ -20,6 +20,7 @@ def lucy_analyze_trees(tree_string, prefix):
     labels = re.findall(treeLabelsCompile, tree_string)
     counts = {}
     for label in labels:
+        label.replace("$", "DOLLAR")
         label = "{}_count_{}".format(prefix, label)
         counts[label] = counts.setdefault(label, 0) + 1  
     #convert integers to strings (otherwise writing breaks
@@ -137,6 +138,7 @@ if __name__ == '__main__':
         atts_1["s1_untranslated"] = target_line_1_annotation_1.count("^@")
         atts_1["s1_unanalyzed"] = target_line_1_annotation_1.count("^*")
         atts_1["s1_unmorph"] = target_line_1_annotation_1.count("^#")
+        atts_1["s1_multiword"] = target_line_1_annotation_1.count(">#")
         atts_1["s1_joined"] = target_line_1_annotation_1.count("+")
         tagsDict = {}
         for tag in reTagCompile.findall(target_line_1_annotation_1):
