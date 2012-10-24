@@ -21,8 +21,8 @@ if __name__ == '__main__':
 #                   #["src_grammar.*", "src_style.*", "tgt-1_lgt_.*"]
 #                   ["tgt-1_berkeley-n", "tgt-1_berkeley.*ratio"]           
 #                   ]
-    for expression in expressions:
-        attributes = dataset.select_attribute_names(expression)
+    attributes = dataset.select_attribute_names(expressions)
+    if attributes:
         print ",".join(attributes)
 #        print '["%s"]' % '","'.join(attributes)
         
