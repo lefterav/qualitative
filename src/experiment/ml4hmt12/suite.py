@@ -167,7 +167,7 @@ class AutorankingSuite(PyExperimentSuite):
         
         if n == 50:
 #            print "add difference feature : testset"
-#            self.pairwise_test_filename = "diff_testset.jcml"
+            self.pairwise_test_filename = "pairwise_testset.jcml"
 #            
 #            parallelsentences = self.testset.get_parallelsentences()
 #            parallelsentences = DiffGenerator().add_features_batch(parallelsentences)
