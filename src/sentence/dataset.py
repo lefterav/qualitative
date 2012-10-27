@@ -325,7 +325,9 @@ class DataSet(object):
     
     def select_attribute_names(self, expressions=[]):
         attribute_names = []
-        for expression in expressions:
+        #compile the list of expressions first, so that there is minimal overhead
+        compiled_expressions = [re.compile(expression) for expression in expressions]
+        for expression in compiled_expressions:
             attribute_names.extend([attribute_name 
                                     for attribute_name in self.get_all_attribute_names() 
                                     if re.match(expression, attribute_name)
