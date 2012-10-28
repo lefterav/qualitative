@@ -21,8 +21,12 @@ scores = [Orange.feature.scoring.Relief,
 if __name__ == '__main__':
     print 'Feature scores for best three features (with score_all):'
     for score in scores:
+        print score
+        print "---------"
         ma = Orange.feature.scoring.score_all(data, score=score)
         for m in ma:
             print "%5.4f\t%s" % (m[1], m[0])
+        print 
+        
     
     
