@@ -362,7 +362,7 @@ class AutorankingSuite(PyExperimentSuite):
             self.testset = JcmlReader("pairwise_testset.jcml").get_dataset()
         
         if n > 50:
-            self.pairwise_test_filename = "diff_testset.jcml"
+            self.pairwise_test_filename = "pairwise_testset.jcml"
             self.trainset_orange_filename = "trainset.tab"
         
         if n > 70:
