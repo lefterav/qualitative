@@ -55,15 +55,15 @@ def retrieve_results(mysuite, path, reps = [0]):
                 
 
         
-def get_tabfile(results, preferred_params=[], preferred_results=[], display_header=True, delimiter="\t"):
+def get_tabfile(results, preferred_params=[], preferred_scores=[], display_header=True, delimiter="\t"):
 
     
     #get a list with the result names
     param_keys = set()
-    result_keys = set()
+    score_keys = set()
     for params, values in results:
         param_keys.update(params.keys())
-        result_keys.update(values.keys())
+        score_keys.update(values.keys())
     
 #    keys_toremove = set([param_key for param_key in param_keys if param_key.startswith("attset_")])
 #    keys_toremove.add('iterations')
@@ -78,13 +78,13 @@ def get_tabfile(results, preferred_params=[], preferred_results=[], display_head
     if not preferred_params:
         preferred_params = param_keys
 
-    if not preferred_results:
-        preferred_results = result_keys
+    if not preferred_scores:
+        preferred_scores = score_keys
     
-    preferred_results = sorted(list(preferred_results))
+    preferred_scores = preferred_scores
 
     if display_header:
-        print delimiter.join(preferred_params) + delimiter + delimiter.join(preferred_results)
+        print delimiter.join(preferred_params) + delimiter + delimiter.join(preferred_scores)
     
     for params, values in results:
 
@@ -95,7 +95,7 @@ def get_tabfile(results, preferred_params=[], preferred_results=[], display_head
         onlyvalues = []
         
         #collect a list with the values
-        for key in preferred_results:
+        for key in preferred_scores:
             #extract from array, if possible
             try:
                 onlyvalues.append(str(values[key][0]))
@@ -146,10 +146,10 @@ if __name__ == "__main__":
     path = args.path[0]
     reps = args.reps
     preferred_params = args.params
-    preferred_results = args.metrics
+    preferred_scores = args.metrics
     
     results = retrieve_results(mysuite, path, reps)
-    get_tabfile(results, preferred_params, preferred_results)
+    get_tabfile(results, preferred_params, preferred_scores)
                 
         
         
