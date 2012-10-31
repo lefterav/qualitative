@@ -188,7 +188,7 @@ class Scoring(MultiRankedDataset):
         #get global setting for reversing ranks
         self.invert_ranks = kwargs.setdefault("invert_ranks", False)
         #fire parent constructor
-        super(Scoring, self).__init__(*params, **kwargs)
+        super(Scoring, self).__init__(*params)
     
     def get_systems_scoring_from_segment_ranks(self, rank_attribute_name):
         
