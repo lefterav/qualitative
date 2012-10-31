@@ -82,7 +82,7 @@ def get_tabfile(results, preferred_params=[], preferred_results=[], display_head
         preferred_results = result_keys
 
     if display_header:
-        print delimiter.join(preferred_params) + delimiter + delimiter.join(sorted(list(result_keys)))
+        print delimiter.join(preferred_params) + delimiter + delimiter.join(sorted(list(preferred_results)))
     
     for params, values in results:
 
