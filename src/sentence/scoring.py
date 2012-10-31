@@ -47,8 +47,14 @@ def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
     penalize_predicted_ties = kwargs.setdefault("penalize_predicted_ties", True)
     logging.debug("exclude_ties: {}".format(exclude_ties))
     
+    
+    if kwargs.setdefault("invert_ranks", False):
+        inv = -1.00
+    else:
+        inv = 1.00
+    
     predicted_pairs = [(float(i), float(j)) for i, j in itertools.combinations(predicted_rank_vector, 2)]
-    original_pairs = [(float(i), float(j)) for i, j in itertools.combinations(original_rank_vector, 2)]
+    original_pairs = [(inv*float(i), inv*float(j)) for i, j in itertools.combinations(original_rank_vector, 2)]
     
     concordant_count = 0
     discordant_count = 0
@@ -59,6 +65,9 @@ def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
     
     for original_pair, predicted_pair in zip(original_pairs, predicted_pairs):
         original_i, original_j = original_pair
+        #invert original ranks if required
+
+        
         predicted_i, predicted_j = predicted_pair
         
         logging.debug("%s\t%s", original_pair,  predicted_pair)
@@ -175,6 +184,11 @@ class Scoring(MultiRankedDataset):
     """
     classdocs
     """
+    def __init__(self, *params, **kwargs):
+        #get global setting for reversing ranks
+        self.invert_ranks = kwargs.setdefault("invert_ranks", False)
+        #fire parent constructor
+        super(Scoring, self).__init__(*params, **kwargs)
     
     def get_systems_scoring_from_segment_ranks(self, rank_attribute_name):
         
@@ -306,13 +320,18 @@ class Scoring(MultiRankedDataset):
         from numpy import average
         actual_values_of_best_predicted = {}
         
+        if self.invert_ranks:
+            inv = -1.00
+        else:
+            inv = 1.00
+        
         for parallesentence in self.parallelsentences:
             predicted_rank_vector = parallesentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
             original_rank_vector = parallesentence.get_filtered_target_attribute_values(original_rank_name, "system", "_ref")
             
             #make sure we are dealing with numbers      
             predicted_rank_vector = [float(v) for v in predicted_rank_vector]
-            original_rank_vector = [float(v) for v in original_rank_vector]
+            original_rank_vector = [inv*float(v) for v in original_rank_vector]
             
             if not predicted_rank_vector:
                 continue
@@ -351,13 +370,19 @@ class Scoring(MultiRankedDataset):
         """
         from numpy import average
         corresponding_ranks = []
+        
+        if self.invert_ranks:
+            inv = -1.00
+        else:
+            inv = 1.00
+        
         for parallesentence in self.parallelsentences:
             predicted_rank_vector = parallesentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
             original_rank_vector = parallesentence.get_filtered_target_attribute_values(original_rank_name, "system", "_ref")
             
             #make sure we are dealing with numbers      
             predicted_rank_vector = [float(v) for v in predicted_rank_vector]
-            original_rank_vector = [float(v) for v in original_rank_vector]
+            original_rank_vector = [inv*float(v) for v in original_rank_vector]
             
             best_original_rank = min(original_rank_vector)
             predicted_rank_order = sorted(predicted_rank_vector)
@@ -406,6 +431,7 @@ class Scoring(MultiRankedDataset):
         filter_ref = kwargs.setdefault("filter_ref", True)
         suffix = kwargs.setdefault("suffix", "")
         prefix = kwargs.setdefault("prefix", "")
+        kwargs["invert_ranks"] = self.invert_ranks
         
         segtaus = []
         segprobs = []
