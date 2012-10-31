@@ -298,8 +298,8 @@ class AutorankingSuite(PyExperimentSuite):
         
         if n == 120:
             print "Scoring correlation"
-            ret.update(get_scoring(self.reconstructed_hard_testset, self.class_name, "hard", "rank_hard"))
-            ret.update(get_scoring(self.reconstructed_soft_testset, self.class_name, "soft", "rank_soft"))            
+            ret.update(get_scoring(self.reconstructed_hard_testset, self.class_name, "hard", "rank_hard", self.invert_ranks))
+            ret.update(get_scoring(self.reconstructed_soft_testset, self.class_name, "soft", "rank_soft", self.invert_ranks))            
     
     
         if n == 130:
@@ -407,14 +407,14 @@ class AutorankingSuite(PyExperimentSuite):
             shutil.copy(test_filename, "testset.jcml")
 
 
-def get_scoring(testset, class_name, xid, featurename):
-    scoringset = Scoring(testset)
+def get_scoring(testset, class_name, xid, featurename, invert_ranks=False):
+    scoringset = Scoring(testset, invert_ranks=invert_ranks)
     ret = {}
     ret.update(scoringset.get_kendall_tau(featurename, class_name, prefix="{}-".format(xid)))
     ret.update(scoringset.get_kendall_tau(featurename, class_name, prefix="{}-".format(xid), suffix="-ntp", exclude_ties=False))
     ret.update(scoringset.get_kendall_tau(featurename, class_name, prefix="{}-".format(xid), suffix="-nt", penalize_predicted_ties=False))
-    ret["kendalltau_b-%s"%xid], ret["kendalltau_b-%s-pi"%xid]  = scoringset.get_kendall_tau_b(featurename, class_name)
-    ret["b1-acc-1-%s"%xid], ret["b1-acc-%s-any"%xid] = scoringset.selectbest_accuracy(featurename, class_name)
+#    ret["kendalltau_b-%s"%xid], ret["kendalltau_b-%s-pi"%xid]  = scoringset.get_kendall_tau_b(featurename, class_name)
+#    ret["b1-acc-1-%s"%xid], ret["b1-acc-%s-any"%xid] = scoringset.selectbest_accuracy(featurename, class_name)
     ret["fr-%s"%xid] = scoringset.avg_first_ranked(featurename, class_name)    
     ret["pr-%s"%xid] = scoringset.avg_predicted_ranked(featurename, class_name)
     
