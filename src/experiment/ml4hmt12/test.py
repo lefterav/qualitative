@@ -105,6 +105,8 @@ class AutorankingSuite(PyExperimentSuite):
         self.training_sets = params["training_sets"].format(**params).split(',')
         self.testset = params["test_set"].format(**params)
         self.ties = params["ties"]
+        
+        self.classifier_file = params["classifier_file"]
     
     
     def iterate(self, params, rep, n):
@@ -114,7 +116,7 @@ class AutorankingSuite(PyExperimentSuite):
 #        print "iteration", n
         
         if n == 80:
-            objectfile = open("classifier.clsf", 'r')
+            objectfile = open(self.classifier_file, 'r')
             self.classifier = OrangeClassifier(pickle.load(objectfile))
             objectfile.close() 
 #            import annotate_updated as annotate
