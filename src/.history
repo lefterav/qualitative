@@ -1,0 +1,6 @@
+2012-08-28.14-13-02 svn log
+2012-08-28.14-13-24 svn log
+2012-08-28.14-15-26 svn log | grep "Jul 2011" > ../../taraxu_wmt11/2011.log
+2012-08-28.14-15-35 svn log | grep "Apr 2011" > ../../taraxu_wmt11/Apr2011.log
+2012-08-28.14-16-20 less ../../taraxu_wmt11/2011.log
+2012-09-04.18-57-47 hgrep appraise
