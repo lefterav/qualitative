@@ -42,7 +42,7 @@ def sort_sentences_per_system(dataset, predicted_rank_name, original_rank_name):
             
             #first gather based on the system name
             system = translation.get_attribute("system")
-            sentence_tuple = ([translation_string], [reference_string])    
+            sentence_tuple = (translation_string, [reference_string])    
             sentences_per_system.setdefault(system, []).append(sentence_tuple)
 
             system_categories = [
@@ -58,12 +58,9 @@ def sort_sentences_per_system(dataset, predicted_rank_name, original_rank_name):
         
             for id, attname, attvalue in system_categories:
                 if float(translation.get_attribute(attname)) == attvalue:
-                    parallelsentence_strings.setdefault(id, []).append(translation_string)
+                    sentence_tuple = (translation_string, [reference_string])
+                    sentences_per_system.setdefault(id, []).append(sentence_tuple)
         
-        for id, translation_strings in parallelsentence_strings.iteritems():
-            sentence_tuple = (translation_strings, reference_string)
-            sentences_per_system.setdefault(id, []).append(sentence_tuple)
-            
                 
     return sentences_per_system
 
@@ -71,12 +68,11 @@ if __name__ == '__main__':
     datafile = sys.argv[1]
     
         
-    java_classpath = ["/home/elav01/taraxu_tools/meteor-1.3/meteor-1.3.jar","/home/elav01/taraxu_tools/meteor-1.3","/usr/share/py4j/py4j0.7.jar","/home/elav01/workspace/TaraXUscripts/src/experiment/autoranking"]
+    java_classpath = ["/share/emplus/software/meteor-1.3/meteor-1.3.jar","/home/elav01/taraxu_tools/meteor-1.3","/home/elav01/.local/share/py4j/py4j0.7.jar","/home/elav01/tools/TaraXUscripts/src/experiment/autoranking"]
     dir_path = "/home/elav01/workspace/TaraXUscripts/src/experiment/autoranking"
-    #meteor = MeteorGenerator("en", java_classpath, dir_path)
+    meteor = MeteorGenerator("en", java_classpath, dir_path)
     
-    scorers = [bleu] 
-    #, meteor]
+    scorers = [bleu, meteor]
     
     dataset = JcmlReader(datafile).get_dataset()
     
@@ -92,7 +88,7 @@ if __name__ == '__main__':
     original_last_sentences = []
     
     predicted_rank_name = "rank_soft"
-    original_rank_name = "rank"
+    original_rank_name = "ref-lev"
     
     sentences_per_system = sort_sentences_per_system(dataset, predicted_rank_name, original_rank_name)        
     
@@ -102,6 +98,6 @@ if __name__ == '__main__':
         print scorer.__name__
         print "----------------"
         for system, sentence_tuples in sorted(sentences_per_system.items()):
-            print system, "&", round(100.00*scorer.score_multitarget_sentences(sentence_tuples),2), "&", len(sentence_tuples), " \\\\"
+            print system, "&", round(100.00*scorer.score_sentences(sentence_tuples),2), "&", len(sentence_tuples), " \\\\"
         
         
