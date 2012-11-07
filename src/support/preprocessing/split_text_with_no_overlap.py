@@ -9,8 +9,9 @@ import sys
 if __name__ == '__main__':
     
     filename = sys.argv[1]
-    percentage = float(sys.argv[2])
-    
+    train_output_filename = sys.argv[2]
+    test_output_filename = sys.argv[3]
+    percentage = float(sys.argv[4])    
     
     f = open(filename, 'r')
     lines = [l.strip() for l in f.readlines()]
@@ -34,10 +35,19 @@ if __name__ == '__main__':
                 valid_test_lines.append(test_line)
         
         training_len = training_len - 10
-        
-        
-                
-        
     
-    pass
+    sys.stderr("Writing training sentences")
+    f = open(train_output_filename, 'w')
+    for training_line in lines[:training_len]:
+        f.write(training_line)
+        f.write('\n')
+    f.close()
+    
+    sys.stderr("Writing test sentences")
+    f = open(test_output_filename, 'w')
+    
+    for testline in valid_test_lines:
+        f.write(testline)
+        f.write('\n')
 
+    f.close()
