@@ -45,9 +45,11 @@ if __name__ == '__main__':
     while len(source_valid_test_lines) < target_test_len:
         sys.stderr.write("I already have {} test lines, whereas the aim is {}. Trainset will contain {} sentences\n".format(len(source_valid_test_lines), target_test_len, training_len))
         
+        source_traininglines = sourcelines[:training_len]
+        target_traininglines = targetlines[:training_len]
         for source_test_line, target_test_line in zip(sourcelines[training_len+1:], targetlines[training_len+1:]):
             test_line_valid = True
-            for source_training_line, target_training_line in zip(sourcelines[:training_len], targetlines[:training_len]):
+            for source_training_line, target_training_line in zip(source_traininglines, target_traininglines):
                 if source_training_line == source_test_line or target_training_line == target_test_line:
                     test_line_valid = False
                     break
@@ -58,7 +60,7 @@ if __name__ == '__main__':
         training_len = training_len - 10
     
     sys.stderr.write("Writing training sentences\n")
-    open(source_training_filename, 'w').write("\n".join(sourcelines[:training_len]))
-    open(target_training_filename, 'w').write("\n".join(targetlines[:training_len]))
+    open(source_training_filename, 'w').write("\n".join(source_traininglines))
+    open(target_training_filename, 'w').write("\n".join(target_traininglines))
     open(source_test_filename, 'w').write("\n".join(source_valid_test_lines))
     open(target_test_filename, 'w').write("\n".join(target_valid_test_lines))
