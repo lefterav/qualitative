@@ -57,19 +57,8 @@ if __name__ == '__main__':
         
         training_len = training_len - 10
     
-    sys.stderr("Writing training sentences")
-    f = open(source_training_filename, 'w')
-    f.write("\n".join(sourcelines[:training_len]))
-    f.close()
-    
-    f = open(target_training_filename, 'w')
-    f.write("\n".join(targetlines[:training_len]))
-    f.close()
-    
-    f = open(source_test_filename, 'w')
-    f.write("\n".join(source_valid_test_lines))
-    f.close()
-
-    f = open(target_test_filename, 'w')
-    f.write("\n".join(target_valid_test_lines))
-    f.close()
+    sys.stderr.write("Writing training sentences\n")
+    open(source_training_filename, 'w').write("\n".join(sourcelines[:training_len]))
+    open(target_training_filename, 'w').write("\n".join(targetlines[:training_len]))
+    open(source_test_filename, 'w').write("\n".join(source_valid_test_lines))
+    open(target_test_filename, 'w').write("\n".join(target_valid_test_lines))
