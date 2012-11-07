@@ -38,11 +38,12 @@ if __name__ == '__main__':
     
     target_test_len = int(float(args.percentage) * len(sourcelines))
     training_len = len(sourcelines) - target_test_len
+
     source_valid_test_lines = []
-    target_valid_test_lines = []
-    counter = 0
-    
+        
     while len(source_valid_test_lines) < target_test_len:
+        source_valid_test_lines = []
+        target_valid_test_lines = []
         filtered_count = 0
         sys.stderr.write("I already have {} test lines, whereas the aim is {}. Trainset will contain {} sentences\n".format(len(source_valid_test_lines), target_test_len, training_len))
         
