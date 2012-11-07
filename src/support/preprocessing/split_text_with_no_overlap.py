@@ -40,10 +40,10 @@ if __name__ == '__main__':
     training_len = len(sourcelines) - target_test_len
     source_valid_test_lines = []
     target_valid_test_lines = []
-    filtered_count = 0
     counter = 0
     
     while len(source_valid_test_lines) < target_test_len:
+        filtered_count = 0
         sys.stderr.write("I already have {} test lines, whereas the aim is {}. Trainset will contain {} sentences\n".format(len(source_valid_test_lines), target_test_len, training_len))
         
         source_traininglines = sourcelines[:training_len]
@@ -63,8 +63,8 @@ if __name__ == '__main__':
                 target_valid_test_lines.append(target_test_line)
             
         training_len = training_len - 10
+        sys.stderr.write("Filtered {} sentences\n".format(filtered_count))
     
-    sys.stderr.write("Filtered {} sentences\n".format(filtered_count))
     sys.stderr.write("Writing training sentences\n")
     open(source_training_filename, 'w').write("\n".join(source_traininglines))
     open(target_training_filename, 'w').write("\n".join(target_traininglines))
