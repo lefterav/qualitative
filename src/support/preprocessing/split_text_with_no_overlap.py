@@ -36,7 +36,7 @@ if __name__ == '__main__':
     
     assert(len(sourcelines)==len(targetlines))
     
-    target_test_len = int(args.percentage * len(sourcelines))
+    target_test_len = int(float(args.percentage) * len(sourcelines))
     training_len = len(sourcelines) - target_test_len
     source_valid_test_lines = []
     target_valid_test_lines = []
