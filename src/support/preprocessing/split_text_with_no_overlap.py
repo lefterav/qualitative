@@ -19,12 +19,12 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
     
-    source_filename = args.inputstem + args.sourcelang
-    target_filename = args.inputstem + args.sourcelang
-    source_training_filename = args.trainstem + args.sourcelang
-    target_training_filename = args.trainstem + args.targetlang
-    source_test_filename = args.teststem + args.sourcelang
-    target_test_filename = args.teststem + args.targetlang
+    source_filename = args.inputstem + "." + args.sourcelang
+    target_filename = args.inputstem + "." +  args.sourcelang
+    source_training_filename = args.trainstem + "." + args.sourcelang
+    target_training_filename = args.trainstem + "." + args.targetlang
+    source_test_filename = args.teststem + "." + args.sourcelang
+    target_test_filename = args.teststem + "." + args.targetlang
     
     f = open(source_filename, 'r')
     sourcelines = [l.strip() for l in f.readlines()]
