@@ -42,10 +42,10 @@ if __name__ == '__main__':
     source_valid_test_lines = []
         
     while len(source_valid_test_lines) < target_test_len:
+        sys.stderr.write("I already have {} test lines, whereas the aim is {}. Trainset will contain {} sentences\n".format(len(source_valid_test_lines), target_test_len, training_len))
+        filtered_count = 0
         source_valid_test_lines = []
         target_valid_test_lines = []
-        filtered_count = 0
-        sys.stderr.write("I already have {} test lines, whereas the aim is {}. Trainset will contain {} sentences\n".format(len(source_valid_test_lines), target_test_len, training_len))
         
         source_traininglines = sourcelines[:training_len]
         target_traininglines = targetlines[:training_len]
