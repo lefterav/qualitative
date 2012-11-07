@@ -10,12 +10,12 @@ import sys, argparse
 if __name__ == '__main__':
     
     parser = argparse.ArgumentParser(description='Process some integers.')
-    parser.add_argument('inputstem')
-    parser.add_argument('sourcelang')
-    parser.add_argument('targetlang')
-    parser.add_argument('trainstem')    
-    parser.add_argument('teststem')
-    parser.add_argument('percentage')
+    parser.add_argument('--inputstem')
+    parser.add_argument('--sourcelang')
+    parser.add_argument('--targetlang')
+    parser.add_argument('--trainstem')    
+    parser.add_argument('--teststem')
+    parser.add_argument('--percentage')
     
     args = parser.parse_args()
     
