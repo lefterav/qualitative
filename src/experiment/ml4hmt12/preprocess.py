@@ -108,6 +108,7 @@ class Moses2FeatureGenerator():
         
         # get source sentence
         srcLine = self.srcFile.readline().strip()
+        if not srcLine: return None, None, None, None
         
         # get reference sentence
         if self.refFile:
@@ -716,24 +717,3 @@ class ApertiumFeatureGenerator():
     '''
     def analyse_features(self, scoreDict):
         return scoreDict
-
-
-#inputPath = '/media/DATA/Arbeit/DFKI/120926_ML4HMT-12/testDataESEN/'
-#outputFilePath = '/media/DATA/Arbeit/DFKI/120926_ML4HMT-12/testDataESEN/newstest2011.s1-Apertium_.jcml'
-#ApertiumFeatureGenerator(inputPath, outputFilePath, 'es', 'en', 'newstest2011')
-#outputFilePath = '/media/DATA/Arbeit/DFKI/120926_ML4HMT-12/testDataESEN/newstest2011.s2-Lucy_.jcml'
-#LucyFeatureGenerator(inputPath, outputFilePath, 'es', 'en', 'newstest2011')
-#outputFilePath = '/media/DATA/Arbeit/DFKI/120926_ML4HMT-12/testDataESEN/newstest2011.s3-Moses_.jcml'
-#MosesFeatureGenerator(inputPath, outputFilePath, 'es', 'en', 'newstest2011')
-#outputFilePath = '/media/DATA/Arbeit/DFKI/120926_ML4HMT-12/testDataESEN/newstest2011.s4-Moses2_.jcml'
-#Moses2FeatureGenerator(inputPath, outputFilePath, 'es', 'en', 'newstest2011', 'testDataESEN')
-
-inputPath = '/media/DATA/Arbeit/DFKI/120926_ML4HMT-12/tuningDataESEN/'
-outputFilePath = '/media/DATA/Arbeit/DFKI/120926_ML4HMT-12/tuningDataESEN/20000.s1-Apertium_.jcml'
-ApertiumFeatureGenerator(inputPath, outputFilePath, 'es', 'en', '20000')
-outputFilePath = '/media/DATA/Arbeit/DFKI/120926_ML4HMT-12/tuningDataESEN/20000.s2-Lucy_.jcml'
-LucyFeatureGenerator(inputPath, outputFilePath, 'es', 'en', '20000')
-outputFilePath = '/media/DATA/Arbeit/DFKI/120926_ML4HMT-12/tuningDataESEN/20000.s3-Moses_.jcml'
-MosesFeatureGenerator(inputPath, outputFilePath, 'es', 'en', '20000')
-outputFilePath = '/media/DATA/Arbeit/DFKI/120926_ML4HMT-12/tuningDataESEN/20000.s4-Moses2_.jcml'
-Moses2FeatureGenerator(inputPath, outputFilePath, 'es', 'en', '20000', 'tuningDataESEN')
