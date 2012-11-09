@@ -63,7 +63,7 @@ if __name__ == '__main__':
                 source_valid_test_lines.append(source_test_line)
                 target_valid_test_lines.append(target_test_line)
             
-        training_len = training_len - 10
+        training_len = training_len - (len(source_valid_test_lines) - target_test_len +1)
         sys.stderr.write("Filtered {} sentences\n".format(filtered_count))
     
     sys.stderr.write("Writing training sentences\n")
