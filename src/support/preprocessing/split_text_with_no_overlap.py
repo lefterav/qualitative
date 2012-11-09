@@ -20,7 +20,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     source_filename = args.inputstem + "." + args.sourcelang
-    target_filename = args.inputstem + "." +  args.sourcelang
+    target_filename = args.inputstem + "." +  args.targetlang
     source_training_filename = args.trainstem + "." + args.sourcelang
     target_training_filename = args.trainstem + "." + args.targetlang
     source_test_filename = args.teststem + "." + args.sourcelang
@@ -55,7 +55,7 @@ if __name__ == '__main__':
         for source_test_line, target_test_line in zip(source_testlines, target_testlines):
             test_line_valid = True
             for source_training_line, target_training_line in zip(source_traininglines, target_traininglines):
-                if source_training_line == source_test_line or target_training_line == target_test_line:
+                if source_training_line.lower() == source_test_line.lower() or target_training_line.lower() == target_test_line.lower():
                     test_line_valid = False
                     filtered_count += 1
                     break
