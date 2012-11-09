@@ -11,8 +11,8 @@ if __name__ == '__main__':
     file2 = open(sys.argv[2], 'r')
     
     matched = []
-    i=0
     for line1 in file1:
+        i=0
         for line2 in file2:
             if line1 == line2:
                 matched.append(i) 
