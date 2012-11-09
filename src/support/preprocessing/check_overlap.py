@@ -14,6 +14,7 @@ if __name__ == '__main__':
     for line1 in file1:
         i=0
         for line2 in file2:
+            print ".",
             if line1 == line2:
                 matched.append(i) 
             i+=1
