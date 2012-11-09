@@ -27,11 +27,11 @@ if __name__ == '__main__':
     target_test_filename = args.teststem + "." + args.targetlang
     
     f = open(source_filename, 'r')
-    sourcelines = [l.strip() for l in f.readlines()]
+    sourcelines = [l.lower().strip() for l in f]
     f.close()
     
     f = open(target_filename, 'r')
-    targetlines = [l.strip() for l in f.readlines()]
+    targetlines = [l.lower().strip() for l in f]
     f.close()
     
     assert(len(sourcelines)==len(targetlines))
