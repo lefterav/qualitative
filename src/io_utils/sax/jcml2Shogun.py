@@ -4,6 +4,7 @@ Created on Sep 17, 2012
 @author: jogin
 '''
 from xml.etree.cElementTree import iterparse
+import numpy
 
 '''
 First this class extracts values from tgt sentences and saves them into a list.
