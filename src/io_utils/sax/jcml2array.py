@@ -3,6 +3,8 @@ Created on Nov 13, 2012
 
 @author: jogin
 '''
+
+
 from xml.etree.cElementTree import iterparse
 from numpy import *
 from optparse import OptionParser
@@ -13,31 +15,44 @@ import sys
 Convert jcml data format into numpy matrix of float values.
 '''
 class Jcml2Array():
-    def __init__(self, params, jcmlFile):
-        self.discreteX = {}
-        self.discreteY = {}
+    def __init__(self, globalAtts, srcAtts, tgtAtts, refAtts, className, jcmlFile):
+        self.discrete = {}
+        self.TAG_DOC = 'jcml'
         self.TAG_SENT = 'judgedsentence'
         self.TAG_SRC = 'src'
         self.TAG_TGT = 'tgt'
-        self.TAG_DOC = 'jcml'
-        self.stringCodeX = 0
-        self.stringCodeY = 0
+        self.TAG_REF = 'ref'
+        noOfXColumns = len(globalAtts)+len(srcAtts)+len(tgtAtts)+len(refAtts)
+        self.x = zeros((noOfXColumns))
+        self.y = zeros((1))
+        self.allAttsCheck = set(set(globalAtts) | set(srcAtts) | set(tgtAtts) \
+                                | set(refAtts) | set(className))
+        self.allAttsCheckSet = set()
+        self.actualSentId = 0
         
-        x, y = self.convert_jcml_attributes(params, jcmlFile)
-        print x
-        print self.discreteX
-        print y
-        print self.discreteY
+    
+    '''
+    Call conversion function and return matrices.
+    @return x, y: numpy matrices X (attribute values) and Y (class names)
+    '''
+    def get_array(self):
+        self.convert_jcml_attributes(globalAtts, srcAtts, tgtAtts, refAtts, \
+                                     className, jcmlFile)
+        return self.x, self.y, self.discrete
 
     
     '''
     Parse jcml file and convert parsed values into numpy matrix X (attribute
-    values) and Y (names of tags).
-    @param params: parameters to be parsed in jcml file (list of strings)
+    values) and Y (class names).
+    @param globalAtts: list of global attributes to be parsed in jcml file
+    @param sourceAtts: list of source attributes to be parsed in jcml file
+    @param targetAtts: list of target attributes to be parsed in jcml file
+    @param referenceAtts: list of reference attributes to be parsed in jcml file
+    @param className: class name to be parsed in jcml file
     @param jcmlFile: jcml filename
-    @return x, y: created numpy matrices
     '''
-    def convert_jcml_attributes(self, params, jcmlFile):
+    def convert_jcml_attributes(self, globalAtts, srcAtts, tgtAtts, refAtts, \
+                                className, jcmlFile):
         sourceFile = open(jcmlFile, "r")
         # get an iterable
         context = iterparse(sourceFile, events=("start", "end"))
@@ -46,32 +61,60 @@ class Jcml2Array():
         # get the root element
         event, root = context.next()
         
-        x = zeros((len(params)))
-        y = zeros((1))
+        globalRow = []
+        srcRow = []
+        tgtRows = []
+        refRow = []
         for event, elem in context:
-            # create new list
-            row = []
             if event == "start" and elem.tag == self.TAG_SENT:
-                for param in params:
-                    row.append(self.code_strsX(elem.attrib.get(param)))
-                x = vstack((x, row))
-                y = vstack((y, self.code_strsY(elem.tag)))
-            # get tgt values into a list
+                self.actualSentId = elem.attrib.get('id')
+                for attr in globalAtts:
+                    globalRow.append(self.encode_str(elem.attrib.get(attr), \
+                                                     attr))
+                    
             elif event == "start" and elem.tag == self.TAG_SRC:
-                for param in params:
-                    row.append(self.code_strsX(elem.attrib.get(param)))
-                x = vstack((x, row))
-                y = vstack((y, self.code_strsY(elem.tag)))
+                for attr in srcAtts:
+                    srcRow.append(self.encode_str(elem.attrib.get(attr), attr))
             elif event == "start" and elem.tag == self.TAG_TGT:
-                for param in params:
-                    row.append(self.code_strsX(elem.attrib.get(param)))
-                x = vstack((x, row))
-                y = vstack((y, self.code_strsY(elem.tag)))
-        
-        # delete first rows (left from matrix initialization)
-        x = delete(x, 0, 0)
-        y = delete(y, 0, 0)
-        return x, y
+                tgtRow = []
+                for attr in tgtAtts:
+                    tgtRow.append(self.encode_str(elem.attrib.get(attr), attr))
+                tgtRows.append(tgtRow)
+                for attr in className:
+                    self.y = vstack((self.y, self.encode_str(elem.attrib.get \
+                                                             (attr), attr)))
+            
+            elif event == "start" and elem.tag == self.TAG_REF:
+                for attr in refAtts:
+                    refRow.append(self.code_str(elem.attrib.get(attr), attr))
+            
+            elif event == "end" and elem.tag == self.TAG_SENT:
+                
+                for tgtRow in tgtRows:
+                    # summarize the whole row of X matrix
+                    row = []
+                    row.extend(globalRow)
+                    row.extend(srcRow)
+                    row.extend(tgtRow)
+                    row.extend(refRow)                        
+
+                    # check if all attributes were found in jcml sentence
+                    notFoundAtts = self.allAttsCheck - self.allAttsCheckSet
+                    if notFoundAtts:
+                        sys.exit("Following attributes weren't found: %s\nSentence id: %s" \
+                                 % (notFoundAtts, self.actualSentId))
+
+                    # insert row into X matrix
+                    self.x = vstack((self.x, row))
+                
+                # delete content of previous rows (previous sentence)
+                globalRow = []
+                srcRow = []
+                refRow = []
+                
+        # delete first rows in matrices (left from matrix initialization)
+        self.x = delete(self.x, 0, 0)
+        self.y = delete(self.y, 0, 0)
 
     
     '''
@@ -79,51 +122,74 @@ class Jcml2Array():
     in matrix X. Matrix X contains attribute values.
     Strings with an assigned numbers are saved into a dictionary.
     @param elem: attribute value gained from jcml file.
+    @param attr: attribute name
     @return: assigned unique number
     '''
-    def code_strsX(self, elem):
+    def encode_str(self, elem, attr):
+        # add attr to the check set
+        self.allAttsCheckSet.add(attr)
+        
+        # if elem is a number, return float
         try:
             return float(elem)
+        # if elem is not a number, convert elem to string and assign a value
         except:
+            if elem == None:
+                sys.exit('Attribute %s has a None value!\nSentence id: %s' \
+                         % (attr, self.actualSentId))
             s = str(elem)
-            if s in self.discreteX.keys():
-                return self.discreteX[s]
+            if attr in self.discrete.keys():
+                if elem in self.discrete[attr].keys():
+                    # return assigned int value
+                    return self.discrete[attr][elem]
+                else:
+                    # assign a number greater by 1 than the actual greatest one
+                    elemNo = 0
+                    for key, value in self.discrete[attr].items():
+                        if elemNo < value: elemNo = value
+                    elemNo += 1
+                    self.discrete[attr].update({elem:elemNo})
+                    # return assigned int value
+                    return self.discrete[attr][elem]
             else:
-                self.discreteX[s] = self.stringCodeX
-                self.stringCodeX += 1
-                return self.discreteX[s]
-    
-    '''
-    If elem is not a float, assign a unique number to a string that occurred
-    in matrix Y. Matrix Y contains names of tags.
-    Strings with an assigned numbers are saved into a dictionary.
-    @param elem: attribute value gained from jcml file.
-    @return: assigned unique number
-    '''
-    def code_strsY(self, elem):
-        try:
-            return float(elem)
-        except:
-            s = str(elem)
-            if s in self.discreteY.keys():
-                return self.discreteY[s]
-            else:
-                self.discreteY[s] = self.stringCodeY
-                self.stringCodeY += 1
-                return self.discreteY[s]
+                self.discrete[attr] = {elem:0}
+                # return assigned int value (always 0 in this case)
+                return self.discrete[attr][elem]
                 
 
 if __name__ == '__main__':
     # command line arguments definition
     parser = OptionParser()
-    parser.add_option("-p", '--params', dest='params', \
-    help="parameters to be extracted, multiple params are separated by comma")
+    parser.add_option("-g", '--globalAtts', dest='globalAtts', \
+    help="global attributes to be extracted, multiple parameters are separated by comma")
+    parser.add_option("-s", '--srcAtts', dest='srcAtts', \
+    help="source attributes to be extracted, multiple parameters are separated by comma")
+    parser.add_option("-t", '--tgtAtts', dest='tgtAtts', \
+    help="target attributes to be extracted, multiple parameters are separated by comma")
+    parser.add_option("-r", '--refAtts', dest='refAtts', \
+    help="reference attributes to be extracted, multiple parameters are separated by comma")
+    parser.add_option("-c", '--className', dest='className', \
+    help="class name, it can be only 1 parameter!")
     parser.add_option("-f", '--jcmlFile', dest='jcmlFile', \
     help="path to jcml file")
     
     # command line arguments check
     opt, args  = parser.parse_args()
-    if not opt.params: sys.exit('ERROR: Option --params is missing!')
-    if not opt.jcmlFile: sys.exit('ERROR: Option --jcmlFile is missing!')
-    params = opt.params.split(',')
-    Jcml2Array(params, opt.jcmlFile)
+    if not opt.jcmlFile: sys.exit('ERROR: Option --jcmlFilename is missing!')
+    #if not opt.globalAtts: sys.exit('ERROR: Option --global attributes are missing!')
+    #if not opt.srcAtts: sys.exit('ERROR: Option --source attributes are missing!')
+    #if not opt.tgtAtts: sys.exit('ERROR: Option --target attributes are missing!')
+    #if not opt.refAtts: sys.exit('ERROR: Option --reference attributes are missing!')
+    #if not opt.className: sys.exit('ERROR: Option --class name is missing!')
+    if opt.globalAtts: globalAtts = opt.globalAtts.split(',')
+    else: globalAtts = []
+    if opt.srcAtts: srcAtts = opt.srcAtts.split(',')
+    else: srcAtts = []
+    if opt.tgtAtts: tgtAtts = opt.tgtAtts.split(',')
+    else: tgtAtts = []
+    if opt.refAtts: refAtts = opt.refAtts.split(',')
+    else: refAtts = []
+    if opt.className: className = [opt.className]
+    else: className = []
+    Jcml2Array(globalAtts, srcAtts, tgtAtts, refAtts, className, \
+               opt.jcmlFile).get_array()
