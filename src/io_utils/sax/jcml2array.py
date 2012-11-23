@@ -33,13 +33,18 @@ class Jcml2Array():
     
     '''
     Call conversion function and return matrices.
+    @param returnDict: boolean value, if a string dictionary should be 
+    returned (True) or not (False) 
     @return x, y: numpy matrices X (attribute values) and Y (class names)
+    @return discrete: a dictionary with assigned numerical substitutions
+    of string values that were parsed from jcml file
     '''
-    def get_array(self):
+    def get_array(self, returnDict):
         self.convert_jcml_attributes(globalAtts, srcAtts, tgtAtts, refAtts, \
                                      className, jcmlFile)
-        return self.x, self.y, self.discrete
-
+        if returnDict: return self.x, self.y, self.discrete
+        else: return self.x, self.y
+    
     
     '''
     Parse jcml file and convert parsed values into numpy matrix X (attribute
@@ -172,6 +177,8 @@ if __name__ == '__main__':
     help="class name, it can be only 1 parameter!")
     parser.add_option("-f", '--jcmlFile', dest='jcmlFile', \
     help="path to jcml file")
+    parser.add_option("-d", "--returnDict", dest="returnDict", default=False, \
+    help="return dictionary with numerical string assignments (default False), for True type 'True' or '1'")
     
     # command line arguments check
     opt, args  = parser.parse_args()
@@ -181,6 +188,7 @@ if __name__ == '__main__':
     #if not opt.tgtAtts: sys.exit('ERROR: Option --target attributes are missing!')
     #if not opt.refAtts: sys.exit('ERROR: Option --reference attributes are missing!')
     #if not opt.className: sys.exit('ERROR: Option --class name is missing!')
+    #if not opt.returnDict: sys.exit('ERROR: Option --return dictionary is missing!')
     if opt.globalAtts: globalAtts = opt.globalAtts.split(',')
     else: globalAtts = []
     if opt.srcAtts: srcAtts = opt.srcAtts.split(',')
@@ -192,4 +200,4 @@ if __name__ == '__main__':
     if opt.className: className = [opt.className]
     else: className = []
     Jcml2Array(globalAtts, srcAtts, tgtAtts, refAtts, className, \
-               opt.jcmlFile).get_array()
+               opt.jcmlFile).get_array(opt.returnDict)
