@@ -358,7 +358,44 @@ class Scoring(MultiRankedDataset):
             percentage[rank] = round(100.00 * counts / n , 2 )
             total += counts
         return percentage 
+           
+    def mrr(self, predicted_rank_name, original_rank_name):
+        from numpy import average
+
+        if self.invert_ranks:
+            nv = -1.00
+        else:
+            inv = 1.00
         
+        reciprocal_ranks = []
+        
+        for parallesentence in self.parallelsentences:
+            predicted_rank_vector = parallesentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
+            original_rank_vector = parallesentence.get_filtered_target_attribute_values(original_rank_name, "system", "_ref")
+            
+            #make sure we are dealing with numbers      
+            predicted_rank_vector = [float(v) for v in predicted_rank_vector]
+            original_rank_vector = [inv*float(v) for v in original_rank_vector]
+            
+            if not predicted_rank_vector:
+                continue
+            best_original_rank = min(original_rank_vector)
+            predicted_rank_order = sorted(predicted_rank_vector)
+            
+                
+            predicted_ranks = []
+            for original_rank, predicted_rank in zip(original_rank_vector, predicted_rank_vector):
+                if predicted_rank == best_original_rank:
+                    corrected_predicted_rank = predicted_rank_order.index(original_rank) + 1
+                    predicted_ranks.append(corrected_predicted_rank)
+                    
+            #get the worse predicted (in case of ties)
+            selected_original_rank = max(predicted_ranks)
+            reciprocal_ranks.append(1.00/selected_original_rank)
+                    
+        n = len(self.parallelsentences)
+        return average(reciprocal_ranks)
+    
     
     def avg_predicted_ranked(self, predicted_rank_name, original_rank_name):
         return self.avg_first_ranked(original_rank_name, predicted_rank_name)
