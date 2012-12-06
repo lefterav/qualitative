@@ -7,6 +7,92 @@ from math import log
 from operator import mul
 from operator import itemgetter
 
+
+def calculate_gains(r, l, verbose=False):
+    """
+    Calculate the gain for each one of the predicted ranks
+    @param r: list of integers representing the predicted ranks
+    @type r: [int, ...]
+    @param l: list of integers containing the original ranks
+    @type l: [int, ...]
+    """
+    n = len(l)
+    expn = 2**n
+    gains = [-1]*n 
+
+    #added this line to get high gain for lower rank values
+    r = r[::-1]
+    for j in range(n):            
+        gains[r[j]-1] = (2**l[j]-1.0)/expn
+
+        if verbose:
+            print "j={}\nr[j]={}\nl[j]={}\n".format(j,r[j],l[j]) 
+            print "gains[j] = "
+            print "\t(2**l[j]-1.0) / 2**n ="
+            print "\t(2**{}-1.0) / 2**{}=".format(l[j], n)
+            print "\t{} / {} =".format((2**l[j]-1.0),expn)
+            print (2**l[j]-1.0)/expn
+            print "gains = ",gains
+    
+    assert min(gains)>=0, 'Not all ranks present'
+    return gains
+
+
+def idcg(gains, k):
+    """
+    Calculate the Ideal Discounted Cumulative Gain, for the given vector of ranking gains
+    @param gains: a list of integers pointing to the ranks 
+    """
+    #put the ranks in an order
+    gains.sort()
+    #invert the list
+    gains = gains[::-1]
+    ideal_dcg = sum([g/log(j+2) for (j,g) in enumerate(gains[:k])])
+    return ideal_dcg
+
+def ndgc_err(r, l, k):
+    """
+    Calculate the Normalized Discounted Cumulative Gain and the Expected Reciprocal Rank on a sentence level
+    This follows the definition of U{DCG<http://en.wikipedia.org/wiki/Discounted_cumulative_gain#Cumulative_Gain>} 
+    and U{ERR<http://research.yahoo.com/files/err.pdf>}, and the implementation of 
+    U{Yahoo Learning to Rank challenge<http://learningtorankchallenge.yahoo.com/evaluate.py.txt>}     
+    @param r: list of integers representing the predicted ranks
+    @type r: [int, ...]
+    @param l: list of integers containing the original ranks
+    @type l: [int, ...]
+    @return: a tuple containing the values for the two metrics
+    @rtype: tuple(float,float)
+    """
+    # Number of documents    
+    n = len(l)
+    
+    #make sure that the lists have the right dimensions 
+    assert len(r)==n, 'Expected {} ranks, but got {}.'.format(n,len(r))    
+    gains = calculate_gains(r, l)
+        
+    #ERR calculations
+    p = 1.0    
+    err = 0.0
+    for j in range(n):    
+        r = gains[j]
+        err += p*r/(j+1.0)
+        p *= 1-r
+    
+    #DCG calculation
+    dcg = sum([g/log(j+2) for (j,g) in enumerate(gains[:k])])
+    
+    #NDCG calculation
+    ideal_dcg = idcg(gains, k)
+      
+    if ideal_dcg:
+        ndcg = dcg / ideal_dcg
+    else:
+        ndcg = 1.0
+        
+    return err, ndcg
+
+
+
 def relevance_grade(predicted_rank_value, original_rank_vector):
     """ convert the rank to a relevance grade"""
     return (len(original_rank_vector) - predicted_rank_value)
@@ -59,10 +145,10 @@ def err(predicted_rank_vector, original_rank_vector):
 
             
 if __name__ == "__main__":
-    predicted_rank_vector = [4, 1, 2, 5, 3]
-    original_rank_vector = [2, 4, 5, 1, 3]
-    print "ERR =", err(predicted_rank_vector, original_rank_vector)
-    print "nDCG_p =", ndcgp(predicted_rank_vector, original_rank_vector)
+    predicted_rank_vector = [1,2,3,4]
+    original_rank_vector = [1, 2, 3, 4]
+    dcg, err = ndgc_err(predicted_rank_vector, original_rank_vector, 5)
+    print "ERR = {}\n nDCG_p = {}".format(dcg, err) 
     
     
     
