@@ -10,172 +10,7 @@ from dataset import DataSet
 from multirankeddataset import MultiRankedDataset
 import logging
 import sys
-
-def tauprob(tau, pairs):
-    import numpy as np
-    from scipy import special
-    try:
-        svar = (4.0 * pairs + 10.0) / (9.0 * pairs * (pairs - 1))
-    except:
-        svar = 1
-    try: 
-        z = tau / np.sqrt(svar)
-    except:
-        z = 1
-    return special.erfc(np.abs(z) / 1.4142136)
-    
-
-def get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs):
-    """
-    This is the refined calculation of Kendall tau of predicted vs human ranking according to WMT12 (Birch et. al 2012)
-    @param predicted_pairs: a list of integers representing the predicted ranks
-    @type predicted_rank_name: str 
-    @param original_rank_name: the name of the attribute containing the human rank
-    @type original_rank_name: str
-    @return: the Kendall tau score and the probability for the null hypothesis of X and Y being independent
-    @rtype: tuple(float, float)
-    """
-    import itertools
-    
-    logging.debug("\n* Segment tau *")
-    logging.debug("predicted vector: {}".format(predicted_rank_vector))
-    logging.debug("original vector : {}".format(original_rank_vector))
-    
-    #default wmt implementation excludes ties from the human (original) ranks
-    exclude_ties = kwargs.setdefault("exclude_ties", True)
-    #ignore also predicted ties
-    penalize_predicted_ties = kwargs.setdefault("penalize_predicted_ties", True)
-    logging.debug("exclude_ties: {}".format(exclude_ties))
-    
-    
-    if kwargs.setdefault("invert_ranks", False):
-        inv = -1.00
-    else:
-        inv = 1.00
-    
-    predicted_pairs = [(float(i), float(j)) for i, j in itertools.combinations(predicted_rank_vector, 2)]
-    original_pairs = [(inv*float(i), inv*float(j)) for i, j in itertools.combinations(original_rank_vector, 2)]
-    
-    concordant_count = 0
-    discordant_count = 0
-    
-    original_ties = 0
-    predicted_ties = 0
-    pairs = 0
-    
-    for original_pair, predicted_pair in zip(original_pairs, predicted_pairs):
-        original_i, original_j = original_pair
-        #invert original ranks if required
-
-        
-        predicted_i, predicted_j = predicted_pair
-        
-        logging.debug("%s\t%s", original_pair,  predicted_pair)
-        
-        #general statistics
-        pairs +=1
-        if original_i == original_j:
-            original_ties +=1
-        if predicted_i == predicted_j:
-            predicted_ties += 1
-        
-        # don't include refs, human no-ranks (-1), human ties
-        if original_i == -1 or original_j == -1: 
-            pass
-        elif original_i == original_j and exclude_ties:
-            pass
-        elif (original_i > original_j and predicted_i > predicted_j) \
-          or (original_i < original_j and predicted_i < predicted_j) \
-          or (original_i == original_j and predicted_i == predicted_j):
-            #the former line will be true only if ties are not excluded 
-            concordant_count += 1
-            logging.debug("\t\tCON")
-        elif (predicted_i == predicted_j and not penalize_predicted_ties):
-            pass #ignore false predicted ties if requested
-        else: 
-            discordant_count += 1
-            logging.debug("\t\tDIS")
-    all_pairs_count = concordant_count + discordant_count
-
-    logging.debug("original_ties = %d, predicted_ties = %d", original_ties, predicted_ties) 
-        
-    logging.debug("conc = %d, disc= %d", concordant_count, discordant_count) 
-    
-    try:
-        tau = 1.00 * (concordant_count - discordant_count) / all_pairs_count
-        logging.debug("tau = {0} - {1} / {0} + {1}".format(concordant_count, discordant_count))
-        logging.debug("tau = {0} / {1}".format(concordant_count - discordant_count, all_pairs_count))
-        
-    except ZeroDivisionError:
-        tau = None
-        prob = None
-    else:
-        prob = tauprob(tau, all_pairs_count)
-    
-    logging.debug("tau = {}, prob = {}\n".format(tau, prob))
-    
-    return tau, prob, concordant_count, discordant_count, all_pairs_count, original_ties, predicted_ties, pairs
-    
-    
-
-def get_kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
-    """
-    This is the old assumed calculation of Kendall tau of predicted vs human ranking, trying to follow 
-    description WMT12 (Birch et. al 2012). It has been re-written as get_kendall_tau_wmt
-    @param predicted_pairs: a list of integers representing the predicted ranks
-    @type predicted_rank_name: str 
-    @param original_rank_name: the name of the attribute containing the human rank
-    @type original_rank_name: str
-    @return: the Kendall tau score and the probability for the null hypothesis of X and Y being independent
-    @rtype: tuple(float, float)
-    """
-    
-    import numpy as np
-    from scipy import special
-    import itertools
-    
-    penalize_ties = kwargs.setdefault("ties_penalty", True)
-    
-    #the following will give positive int, if i > j, negative int if i < j and 0 for ties
-    predicted_pairs = [int(i)-int(j) for i, j in itertools.combinations(predicted_rank_vector, 2)]
-    original_pairs = [int(i)-int(j) for i, j in itertools.combinations(original_rank_vector, 2)]
-    all_pairs_count = len(predicted_pairs)
-    
-    concordant_count = 0
-    discordant_count = 0
-    
-    #count concordant and discordant pairs
-    for original_pair, predicted_pair in zip(original_pairs, predicted_pairs):
-        if original_pair * predicted_pair > 0 or (predicted_pair == 0 and original_pair == 0):
-            concordant_count += 1
-        #if there is a tie on the predicted side, this is counted as two discordants pairs
-        elif predicted_pair == 0 and penalize_ties and concordant_count > 0:
-            discordant_count += 2
-            concordant_count -= 1
-        elif predicted_pair == 0 and ((not penalize_ties) or concordant_count <= 0) :
-            discordant_count += 1
-        #if there is a tie on the original human annotation, this is not counted
-        elif original_pair == 0:
-            pass
-        #and finally when there is disagreement without a tie 
-        else:
-            discordant_count += 1
-    
-    logging.debug("conc = %d, disc= %s", concordant_count, discordant_count) 
-    tau = 1.00 * (concordant_count - discordant_count) / all_pairs_count
-    
-    #probability of independence hypothesis
-    try:
-        svar = (4.0 * all_pairs_count + 10.0) / (9.0 * all_pairs_count * (all_pairs_count - 1))
-    except:
-        svar = 1
-    try: 
-        z = tau / np.sqrt(svar)
-    except:
-        z = 1
-    prob = special.erfc(np.abs(z) / 1.4142136)
-
-    return tau, prob
+from evaluation.ranking import kendall_tau, kendall_tau_prob
 
 
 
@@ -352,12 +187,12 @@ class Scoring(MultiRankedDataset):
             actual_values_of_best_predicted[selected_original_rank] = a + 1
                     
         n = len(self.parallelsentences)
-        percentage = {}
+        percentages = {}
         total = 0
         for rank, counts in  actual_values_of_best_predicted.iteritems():
-            percentage[rank] = round(100.00 * counts / n , 2 )
+            percentages[rank] = round(100.00 * counts / n , 2 )
             total += counts
-        return percentage 
+        return percentages
            
     def mrr(self, predicted_rank_name, original_rank_name):
         from numpy import average
@@ -487,7 +322,7 @@ class Scoring(MultiRankedDataset):
             else:
                 predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
                 original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
-            segtau, segprob, concordant_count, discordant_count, all_pairs_count, original_ties, predicted_ties, pairs = get_kendall_tau_wmt(predicted_rank_vector, original_rank_vector, **kwargs)
+            segtau, segprob, concordant_count, discordant_count, all_pairs_count, original_ties, predicted_ties, pairs = kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs)
             if segtau and segprob:
                 segtaus.append(segtau)
                 segprobs.append(segprob)
@@ -504,7 +339,7 @@ class Scoring(MultiRankedDataset):
         
         
         tau = 1.00 * (concordant - discordant) / (concordant + discordant)
-        prob = tauprob(tau, valid_pairs)
+        prob = kendall_tau_prob(tau, valid_pairs)
         
         avg_seg_tau = np.average(segtaus)               
         avg_seg_prob = np.product(segprobs)
