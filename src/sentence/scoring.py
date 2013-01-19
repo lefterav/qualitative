@@ -10,7 +10,7 @@ from dataset import DataSet
 from multirankeddataset import MultiRankedDataset
 import logging
 import sys
-from evaluation.ranking import kendall_tau, kendall_tau_prob
+from evaluation.ranking.segment import kendall_tau, kendall_tau_prob
 
 
 
