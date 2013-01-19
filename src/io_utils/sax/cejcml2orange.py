@@ -155,6 +155,8 @@ class CElementTreeJcml2Orange():
             #skip hidden attributes
             if attribute_name in self.hidden_attributes:
                 continue
+            if self.compact_mode  and attribute_name not in self.desired_attributes and attribute_name != self.class_name:
+                continue
             line_1.append(attribute_name)
             
             #TODO: find a way to define continuous and discrete arg
@@ -184,16 +186,16 @@ class CElementTreeJcml2Orange():
             else:
                 line_3.append("")
 
-        # src
-        line_1.append("src")
-        line_2.append("string")
-        line_3.append("m")
-        #target
-
-        for i in range(self.number_of_targets):
-            line_1.append("tgt-{0}".format(i+1))
+        if not self.compact_mode:# src
+            line_1.append("src")
             line_2.append("string")
             line_3.append("m")
+            #target
+    
+            for i in range(self.number_of_targets):
+                line_1.append("tgt-{0}".format(i+1))
+                line_2.append("string")
+                line_3.append("m")
         #ref
 #        line_1 += "ref\t"
 #        line_2 += "string\t"
@@ -262,6 +264,8 @@ class CElementTreeJcml2Orange():
         output = []
         # print source and target sentence
         for attribute_name in self.attribute_names:
+            if self.compact_mode and attribute_name not in self.desired_attributes and attribute_name != self.class_name:
+                continue
             if not attribute_name in self.hidden_attributes:
                 if attribute_name == self.class_name and self.class_discretize:
                     attvalue = float(ps_nested_attributes[attribute_name].strip())
@@ -282,12 +286,13 @@ class CElementTreeJcml2Orange():
                     output.append('\t')
         
         # print source sentence
-        output.append(src_text)
-        output.append("\t")
-        # print target sentences
-        for tgt in tgt_text:
-            output.append(tgt)
-            output.append('\t')
+        if not self.compact_mode:
+            output.append(src_text)
+            output.append("\t")
+            # print target sentences
+            for tgt in tgt_text:
+                output.append(tgt)
+                output.append('\t')
         # split parallel sentences by an additional tab and by a newline
         output.append('\n')
         line =  "".join(output)
