@@ -191,7 +191,8 @@ class AutorankingSuite(PyExperimentSuite):
                  discrete_attributes=self.discrete_attributes,
                  hidden_attributes=self.hidden_attributes,
                  get_nested_attributes=True,
-                 dir=dir
+                 dir=dir,
+                 remove_infinite=True
                  #filter_attributes={"rank" : "0"},
 #                 class_type=class_type
                 )
@@ -217,7 +218,8 @@ class AutorankingSuite(PyExperimentSuite):
                  discrete_attributes=self.discrete_attributes,
                  hidden_attributes=self.hidden_attributes,
                  get_nested_attributes=True,
-                 dir=dir
+                 dir=dir,
+                 remove_infinite=True
                  #filter_attributes={"rank" : "0"},
 #                 class_type=class_type
                 )
