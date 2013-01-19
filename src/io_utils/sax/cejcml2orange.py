@@ -27,44 +27,23 @@ class CElementTreeJcml2Orange():
         @type desired_attributes: list of strings
         @param meta_attributes: meta attributes
         @type meta_attributes: list of strings
+         
         """
-        self.get_nested_attributes = False
-        self.compact_mode = False
-        self.discrete_attributes = []
-        self.hidden_attributes = []
-        self.filter_attributes = {} 
-        self.class_type = "d"
-        self.class_discretize = False
-        self.dir = "."
-        
+
         self.TAG_SENT = 'judgedsentence'
         self.TAG_SRC = 'src'
         self.TAG_TGT = 'tgt'
         self.TAG_DOC = 'jcml'
-        
-        if "compact_mode" in kwargs:
-            self.compact_mode = kwargs["compact_mode"]
-        
-        if "discrete_attributes" in kwargs:
-            self.discrete_attributes = set(kwargs["discrete_attributes"])
-        
-        if "hidden_attributes" in kwargs:
-            self.hidden_attributes = set(kwargs["hidden_attributes"])
-        
-        if "get_nested_attributes" in kwargs:
-            self.get_nested_attributes = kwargs["get_nested_attributes"]
-        
-        if "filter_attributes" in kwargs:
-            self.filter_attributes = kwargs["filter_attributes"]
-            
-        if "class_type" in kwargs:
-            self.class_type = kwargs["class_type"]
-        
-        if "class_discretize" in kwargs:
-            self.class_discretize = kwargs["class_discretize"]
-        
-        if "dir" in kwargs:
-            self.dir = kwargs["dir"]
+
+        #read kwargs
+        self.compact_mode = kwargs.setdefault('compact_mode', False)        
+        self.discrete_attributes = kwargs.setdefault('discrete_attributes', [])
+        self.hidden_attributes = kwargs.setdefault('hidden_attributes', [])
+        self.filter_attributes = kwargs.setdefault('filter_attributes', {})
+        self.class_type = kwargs.setdefault('class_type', 'd')
+        self.class_discretize = kwargs.setdefault('class_discretize', False)
+        self.dir = kwargs.setdefault('dir', '.')
+        self.remove_infinite = kwargs.setdefault('remove_infinite', False)
         
         self.input_filename = input_filename
         self.class_name = class_name
@@ -276,8 +255,9 @@ class CElementTreeJcml2Orange():
                 elif attribute_name in ps_nested_attributes:
                     # print attribute names
                     attvalue = ps_nested_attributes[attribute_name].strip()
-                    attvalue.replace("inf", "99999999")
-                    attvalue.replace("nan", "0")
+                    if self.remove_infinite:
+                        attvalue = attvalue.replace("inf", "99999999")
+                        attvalue = attvalue.replace("nan", "0")
                     output.append(attvalue)
                     output.append("\t")
                     
