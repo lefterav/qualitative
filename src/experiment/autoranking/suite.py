@@ -68,6 +68,10 @@ class AutorankingSuite(PyExperimentSuite):
         self.replacement = params.setdefault("replacement", True)
         self.filter_unassigned = params.setdefault("filter_unassigned", False)
         self.restrict_ranks = params.setdefault("restrict_ranks", [])
+        
+        self.delay_accuracy = params.setdefault("delay_accuracy", False)
+        self.remove_infinite = params.setdefualt("remove_infinite", False)
+        
         if self.restrict_ranks:
             self.restrict_ranks = self.restrict_ranks.split(",")
         
@@ -192,7 +196,7 @@ class AutorankingSuite(PyExperimentSuite):
                  hidden_attributes=self.hidden_attributes,
                  get_nested_attributes=True,
                  dir=dir,
-                 remove_infinite=True
+                 remove_infinite=self.remove_infinite
                  #filter_attributes={"rank" : "0"},
 #                 class_type=class_type
                 )
@@ -219,7 +223,7 @@ class AutorankingSuite(PyExperimentSuite):
                  hidden_attributes=self.hidden_attributes,
                  get_nested_attributes=True,
                  dir=dir,
-                 remove_infinite=True
+                 remove_infinite=self.remove_infinite
                  #filter_attributes={"rank" : "0"},
 #                 class_type=class_type
                 )
@@ -237,8 +241,8 @@ class AutorankingSuite(PyExperimentSuite):
             self.classifier.print_content()
             
         
-        
-        if n == 85:
+        #give the possibility to calculate classification accuracy in the end
+        if (n == 85 and not self.delay_accuracy) or (n == 185 and self.delay_accuracy):
             print "evaluate classifier with cross-fold validation"
             orangeData = Table(self.trainset_orange_filename)
             learner = self.learner(**self.classifier_params)
