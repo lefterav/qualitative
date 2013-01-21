@@ -70,7 +70,7 @@ class AutorankingSuite(PyExperimentSuite):
         self.restrict_ranks = params.setdefault("restrict_ranks", [])
         
         self.delay_accuracy = params.setdefault("delay_accuracy", False)
-        self.remove_infinite = params.setdefualt("remove_infinite", False)
+        self.remove_infinite = params.setdefault("remove_infinite", False)
         
         if self.restrict_ranks:
             self.restrict_ranks = self.restrict_ranks.split(",")
