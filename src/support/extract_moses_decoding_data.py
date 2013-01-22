@@ -18,8 +18,7 @@ class ExtractMosesDecodingData:
     @param filename: Name of input file with translation system analysis.
     @type filename: string
     """
-    def __init__(self, filename):
-        self.dictOfSntAttrs = []
+    def __init__(self):
         
         self.totTraOpt = re.compile('Total translation options: ([\d.-]+)\n')
         self.totTraOptPru = re.compile('Total translation options pruned: ([\d.-]+)\n')
@@ -46,17 +45,20 @@ class ExtractMosesDecodingData:
         self.pC = re.compile('[[].+?pC=([\d.-]+).+?[]]')
         self.c = re.compile('[[].+?c=([\d.-]+)[]]')
 
-        self.create_dicts_of_sentences_attributes(filename)
         
         #return self.dictOfSntAttrs
         
         
     """
     This function creates per 1 iteration 1 dictionary with parsed sentence attributes. 
+    Every dic gets added into a list
     @param filename: Name of input file with translation system analysis.
     @type filename: string 
+    @return: a list with one dictionary per sentence
+    @rtype: [{feature_name:feature_value, ...}, ...] 
     """       
     def create_dicts_of_sentences_attributes(self, filename):
+        dictOfSntAttrs = []
         f = file(filename)
         lineNo = 0
         lines = []
@@ -67,19 +69,20 @@ class ExtractMosesDecodingData:
                 lines.append(line)
             else: 
                 transPart = ''.join(lines)
-                self.dictOfSntAttrs.append(self.add_sentence_attributes(transPart))
+                dictOfSntAttrs.append(self.get_sentence_attributes(transPart))
                 lines = []
                 
         f.close()
-
+        return dictOfSntAttrs
     
     """
     This function parses attributes of 1 sentence. 
     @param transPart: translation system analysis for 1 line (1 sentence)
     @type transPart: string
-    @return: a dictionary with sentence attributes 
+    @return: a dictionary with sentence attributes
+    @rtype: {feature_name:feature_value, ...} 
     """
-    def add_sentence_attributes(self, transPart):
+    def get_sentence_attributes(self, transPart):
         attrs = {}
         # get 'Total translation options'
         attrs['total_transl_options'] = self.totTraOpt.search(transPart).group(1)
@@ -174,4 +177,5 @@ parser.add_option("-f", '--filename', dest='filename', \
 options, args = parser.parse_args()
 if not options.filename: sys.exit('ERROR: Option --filename is missing!')
 #filename = '/media/DATA/Arbeit/DFKI/120402_sentence_analysis/SERVICE_EXCELLENCE_cust_euDE_4.txt.log'
-ExtractMosesDecodingData(options.filename)
+extractor = ExtractMosesDecodingData()
+print extractor.create_dicts_of_sentences_attributes(options.filename)
