@@ -15,7 +15,7 @@ import sys
 Convert jcml data format into numpy matrix of float values.
 '''
 class Jcml2Array():
-    def __init__(self, globalAtts, srcAtts, tgtAtts, refAtts, className, jcmlFile):
+    def __init__(self, globalAtts, srcAtts, tgtAtts, refAtts, className):
         self.discrete = {}
         self.TAG_DOC = 'jcml'
         self.TAG_SENT = 'judgedsentence'
@@ -39,7 +39,7 @@ class Jcml2Array():
     @return discrete: a dictionary with assigned numerical substitutions
     of string values that were parsed from jcml file
     '''
-    def get_array(self, returnDict):
+    def get_array(self, returnDict, jcmlFile):
         self.convert_jcml_attributes(globalAtts, srcAtts, tgtAtts, refAtts, \
                                      className, jcmlFile)
         if returnDict: return self.x, self.y, self.discrete
@@ -116,6 +116,7 @@ class Jcml2Array():
                 globalRow = []
                 srcRow = []
                 refRow = []
+            root.clear()       
                 
         # delete first rows in matrices (left from matrix initialization)
         self.x = delete(self.x, 0, 0)
