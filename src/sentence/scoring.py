@@ -314,6 +314,7 @@ class Scoring(MultiRankedDataset):
         original_ties_overall = 0
         predicted_ties_overall = 0
         pairs_overall = 0
+        sentences_with_ties = 0
         
         for parallesentence in self.parallelsentences:
             if filter_ref:
@@ -333,6 +334,8 @@ class Scoring(MultiRankedDataset):
             
             original_ties_overall += original_ties
             predicted_ties_overall += predicted_ties
+            if predicted_ties > 0:
+                sentences_with_ties += 1
             pairs_overall += pairs
             
         
@@ -344,6 +347,9 @@ class Scoring(MultiRankedDataset):
         avg_seg_tau = np.average(segtaus)               
         avg_seg_prob = np.product(segprobs)
         
+        predicted_ties_avg = 100.00*predicted_ties / pairs_overall
+        sentence_ties_avg = 100.00*sentences_with_ties / len(self.parallelsentences)
+        
         stats = {'tau': tau,
                  'prob': prob,
                  'avg_seg_tau': avg_seg_tau,
@@ -354,6 +360,10 @@ class Scoring(MultiRankedDataset):
                  'all_pairs': pairs_overall,
                  'original_ties': original_ties_overall,
                  'predicted_ties': predicted_ties_overall,
+                 'predicted_ties_per': predicted_ties_avg,
+                 'sentence_ties': sentences_with_ties,
+                 'sentence_ties_per' : sentence_ties_avg
+                 
                  }
         
         stats = dict([("{}{}{}".format(prefix, key, suffix),value) for key,value in stats.iteritems()])
