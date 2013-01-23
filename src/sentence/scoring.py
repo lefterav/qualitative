@@ -221,8 +221,11 @@ class Scoring(MultiRankedDataset):
             predicted_ranks = []
             for original_rank, predicted_rank in zip(original_rank_vector, predicted_rank_vector):
                 if predicted_rank == best_original_rank:
-                    corrected_predicted_rank = predicted_rank_order.index(original_rank) + 1
-                    predicted_ranks.append(corrected_predicted_rank)
+                    try: #todo: check why this fails and may be reason for wrong calcs
+                        corrected_predicted_rank = predicted_rank_order.index(original_rank) + 1
+                        predicted_ranks.append(corrected_predicted_rank)
+                    except:
+                        pass
                     
             #get the worse predicted (in case of ties)
             selected_original_rank = max(predicted_ranks)
