@@ -416,7 +416,7 @@ def get_scoring(testset, class_name, xid, featurename):
     ret.update(scoringset.get_kendall_tau(featurename, class_name, prefix="{}-".format(xid)))
     ret.update(scoringset.get_kendall_tau(featurename, class_name, prefix="{}-".format(xid), suffix="-ntp", exclude_ties=False))
     ret.update(scoringset.get_kendall_tau(featurename, class_name, prefix="{}-".format(xid), suffix="-nt", penalize_predicted_ties=False))
-#    ret["mrr"] = scoringset.mrr(featurename, class_name)
+    ret["mrr"] = scoringset.mrr(featurename, class_name)
     ret["kendalltau_b-%s"%xid], ret["kendalltau_b-%s-pi"%xid]  = scoringset.get_kendall_tau_b(featurename, class_name)
     ret["b1-acc-1-%s"%xid], ret["b1-acc-%s-any"%xid] = scoringset.selectbest_accuracy(featurename, class_name)
     ret["fr-%s"%xid] = scoringset.avg_first_ranked(featurename, class_name)    
