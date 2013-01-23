@@ -60,8 +60,10 @@ class AutorankingSuite(PyExperimentSuite):
         except:
             self.classifier_params = {}
         
+        self.remove_infinite = False
         if classifier_name == "SVMEasyLearner":
             self.classifier_params["verbose"] = True
+            self.remove_infinite = True
         
         self.meta_attributes = params["meta_attributes"].split(",")
         self.include_references = params.setdefault("include_references", False)
