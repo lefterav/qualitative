@@ -27,18 +27,20 @@ if __name__ == '__main__':
                 print "Moses command for {}, {}, {} not found".format(dir, round, decoding_step)
                 continue
                 
-            output_file_pattern = "> (.*)"
 #            testset_name_pattern = "\/([^/]*).filtered"
             try:
-                output_filename = re.findall(output_file_pattern, moses_command)[0]
+                basic_command , output_filename = moses_command.split(",")
                 
-            except IndexError:
+                
+            except:
                 print "Moses command for {}, {}, {} not found".format(dir, round, decoding_step)
+                continue
             
             verbose_output_filename = output_filename.replace(".output.",".v2.output.")
             verbose_log_filename = verbose_output_filename.replace(".v2.output.", ".v2.output.log.")
             
-            new_moses_command = moses_command.sub()
+            new_moses_command = "{} > {} 2> {}".format(basic_command, verbose_output_filename, verbose_log_filename)
+            print new_moses_command
             
             
             
