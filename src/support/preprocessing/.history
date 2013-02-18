@@ -156,3 +156,32 @@
 2012-11-09.14-06-42 python check_overlap.py /share/taraxu/data/textnform/textnform.train.en /share/taraxu/data/textnform/textnform.dev.en > /share/taraxu/data/textnform/overlap.en
 2012-11-09.14-17-30 less /share/taraxu/data/textnform/overlap.en
 2012-11-09.14-17-34 wc -l /share/taraxu/data/textnform/overlap.en
+2012-11-09.14-44-49 svn commit -m "Improvements on the overlapping script"
+2012-11-09.14-46-57 svn update
+2012-11-09.14-47-09 python split_text_with_no_overlap.py --inputstem /share/taraxu/data/textnform/tm_data_de_us_export --sourcelang de --targetlang en --trainstem /share/taraxu/data/textnform/textnform.train --teststem /share/taraxu/data/textnform/textnform.dev --percentage 0.01596
+2012-11-09.14-47-13 ssh blade-3.dfki.uni-sb.de
+2012-11-09.14-53-37 python split_text_with_no_overlap.py --inputstem /share/taraxu/data/textnform/tm_data_de_us_export --sourcelang de --targetlang en --trainstem /share/taraxu/data/textnform/textnform.train --teststem /share/taraxu/data/textnform/textnform.dev --percentage 0.01596
+2012-11-09.14-55-00 python split_text_with_no_overlap.py --inputstem /share/taraxu/data/textnform/tm_data_de_us_export --sourcelang de --targetlang en --trainstem /share/taraxu/data/textnform/textnform.train --teststem /share/taraxu/data/textnform/textnform.dev --percentage 0.01596
+2012-11-09.14-55-05 svn update
+2012-11-09.15-01-30 python split_text_with_no_overlap.py --inputstem /share/taraxu/data/textnform/tm_data_de_us_export --sourcelang de --targetlang en --trainstem /share/taraxu/data/textnform/textnform.train --teststem /share/taraxu/data/textnform/textnform.dev --percentage 0.01596
+2012-11-09.15-01-31 python split_text_with_no_overlap.py --inputstem /share/taraxu/data/textnform/tm_data_de_us_export --sourcelang de --targetlang en --trainstem /share/taraxu/data/textnform/textnform.train --teststem /share/taraxu/data/textnform/textnform.dev --percentage 0.01596
+2012-11-09.15-01-51 svn update
+2012-11-09.15-09-27 python split_text_with_no_overlap.py --inputstem /share/taraxu/data/textnform/tm_data_de_us_export --sourcelang de --targetlang en --trainstem /share/taraxu/data/textnform/textnform.train --teststem /share/taraxu/data/textnform/textnform.dev --percentage 0.01596
+2012-11-09.15-43-27 hgrep split
+2012-11-09.15-43-35 hgrep 0.5
+2012-11-09.15-43-45 python split_text_with_no_overlap.py --inputstem /share/taraxu/data/textnform/textnform.dev --sourcelang de --targetlang en --trainstem /share/taraxu/data/textnform/textnform.devtest --teststem /share/taraxu/data/textnform/textnform.test --percentage 0.50
+2012-11-09.15-44-25 python split_text_with_no_overlap.py --inputstem /share/taraxu/data/textnform/textnform.dev --sourcelang de --targetlang en --trainstem /share/taraxu/data/textnform/textnform.devtest --teststem /share/taraxu/data/textnform/textnform.test --percentage 0.50
+2012-11-09.15-44-38 python split_text_with_no_overlap.py --inputstem /share/taraxu/data/textnform/textnform.dev --sourcelang de --targetlang en --trainstem /share/taraxu/data/textnform/textnform.devtest --teststem /share/taraxu/data/textnform/textnform.test --percentage 0.50
+2012-11-09.15-44-40 hgrep overlap
+2012-11-09.15-44-52 python check_overlap.py /share/taraxu/data/textnform/textnform.train.en /share/taraxu/data/textnform/textnform.dev.en > /share/taraxu/data/textnform/overlap.en
+2012-11-09.15-56-53 python check_overlap.py /share/taraxu/data/textnform/textnform.train.en /share/taraxu/data/textnform/textnform.dev.en > /share/taraxu/data/textnform/overlap.en
+2012-11-09.16-00-51 less /share/taraxu/data/textnform/overlap.en
+2012-11-09.16-04-09 less /share/taraxu/data/textnform/overlap.en
+2012-11-09.16-11-37 python split_text_with_no_overlap.py --inputstem /share/taraxu/data/textnform/tm_data_de_us_export --sourcelang de --targetlang en --trainstem /share/taraxu/data/textnform/textnform.train --teststem /share/taraxu/data/textnform/textnform.dev --percentage 0.01596 ; python split_text_with_no_overlap.py --inputstem /share/taraxu/data/textnform/textnform.dev --sourcelang de --targetlang en --trainstem /share/taraxu/data/textnform/textnform.devtest --teststem /share/taraxu/data/textnform/textnform.test --percentage 0.50
+2012-11-09.16-11-41 svn update
+2012-11-09.16-11-44 python split_text_with_no_overlap.py --inputstem /share/taraxu/data/textnform/tm_data_de_us_export --sourcelang de --targetlang en --trainstem /share/taraxu/data/textnform/textnform.train --teststem /share/taraxu/data/textnform/textnform.dev --percentage 0.01596 ; python split_text_with_no_overlap.py --inputstem /share/taraxu/data/textnform/textnform.dev --sourcelang de --targetlang en --trainstem /share/taraxu/data/textnform/textnform.devtest --teststem /share/taraxu/data/textnform/textnform.test --percentage 0.50
+2012-11-09.16-28-22 python split_text_with_no_overlap.py --inputstem /share/taraxu/data/textnform/tm_data_de_us_export --sourcelang de --targetlang en --trainstem /share/taraxu/data/textnform/textnform.train --teststem /share/taraxu/data/textnform/textnform.dev --percentage 0.01596 ; python split_text_with_no_overlap.py --inputstem /share/taraxu/data/textnform/textnform.dev --sourcelang de --targetlang en --trainstem /share/taraxu/data/textnform/textnform.devtest --teststem /share/taraxu/data/textnform/textnform.test --percentage 0.50
+2012-11-09.16-40-47 python check_overlap.py /share/taraxu/data/textnform/textnform.train.en /share/taraxu/data/textnform/textnform.dev.en > /share/taraxu/data/textnform/overlap.en
+2012-11-09.16-43-37 less /share/taraxu/data/textnform/overlap.en
+2012-11-09.16-54-57 python check_overlap.py /share/taraxu/data/textnform/textnform.train.de /share/taraxu/data/textnform/textnform.dev.de > /share/taraxu/data/textnform/overlap.de
+2012-11-09.16-59-58 less /share/taraxu/data/textnform/overlap.de
