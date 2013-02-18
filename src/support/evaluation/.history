@@ -48,3 +48,4 @@
 2012-11-05.18-31-41 cat /share/taraxu/selection-mechanism/autoranking/ml4hmt12/ml4hmt_veryshort/class_nameref-levlangpaires-eninclude_references0.0ties0.0trainset_modeannotatedattattset_1classifierSVMEasy/automatic-scores.txt
 2012-11-05.18-51-22 cat /share/taraxu/selection-mechanism/autoranking/ml4hmt12/ml4hmt_veryshort/class_nameref-levlangpaires-eninclude_references0.0ties0.0trainset_modeannotatedattattset_1classifierSVMEasy/automatic-scores.txt
 2012-11-05.18-55-25 commit -m "Functioning version of the script for calculating bleus and meteors scores. This doesn't support again multiple targets"
+2012-11-05.18-55-30 svn commit -m "Functioning version of the script for calculating bleus and meteors scores. This doesn't support again multiple targets"
