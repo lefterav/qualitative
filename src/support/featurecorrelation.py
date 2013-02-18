@@ -8,8 +8,8 @@ import Orange
 if __name__ == '__main__':
     voting = Orange.data.Table("trainset.tab")
     
-    new_domain = orange.Domain([a for a in voting.domain.variables if a.name != 'rank'], voting.domain['rank'])
-    new_data = orange.ExampleTable(new_domain, voting)
+    new_domain = Orange.data.Domain([a for a in voting.domain.variables if a.name != 'rank'], voting.domain['rank'])
+    new_data = Orange.data.Table(new_domain, voting)
     
     def print_best_100(ma):
         for m in ma[:100]:
