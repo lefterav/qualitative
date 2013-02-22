@@ -12,58 +12,57 @@ import os
 import fnmatch
 import re
 import sys
-import shutil
 
 rounds = []
-######ROUND 2
-##generic
-##find . -wholename '*/steps/*wmt*decode.?'
-#r2_executions_generic = [("de-en", 8),
-#              ("en-de", 3),
-#              ("de-fr", 1),
-#              ("fr-de", 1),
-#              ("de-es", 3),
-#              ("es-de", 1),
-#              ]
-#
-##openoffice
-##find . -wholename '*/steps/*openoffice3*decode.?'
-#r2_executions_technical = [("de-en", 8),
-#              ("de-es", 4),
-#              ("de-fr", 2),
-#              ("es-de", 3),
-#              ("fr-de", 2),
-#              ("en-de", 4),
-#              ]
-#
-#r2_all_executions = r2_executions_generic
-#r2_all_executions.extend(r2_executions_technical)
-#
-#r2_exclude_development = ["newstest2007", 
-#                       "newstest2009",                        
-#                       "openoffice-dev2011", 
-#                       "wmt11-reuse"]
-#
-#r2_directory_pattern = "/share/taraxu/systems/r2/{}/moses/steps"
-#
-#r2 = (r2_directory_pattern, r2_all_executions, r2_exclude_development, )
-#rounds.append(r2)
+#####ROUND 2
+#generic
+#find . -wholename '*/steps/*wmt*decode.?'
+r2_executions_generic = [("de-en", 8),
+              ("en-de", 3),
+              ("de-fr", 1),
+              ("fr-de", 1),
+              ("de-es", 3),
+              ("es-de", 1),
+              ]
+
+#openoffice
+#find . -wholename '*/steps/*openoffice3*decode.?'
+r2_executions_technical = [("de-en", 8),
+              ("de-es", 4),
+              ("de-fr", 2),
+              ("es-de", 3),
+              ("fr-de", 2),
+              ("en-de", 4),
+              ]
+
+r2_all_executions = r2_executions_generic
+r2_all_executions.extend(r2_executions_technical)
+
+r2_exclude_development = ["newstest2007", 
+                       "newstest2009",                        
+                       "openoffice-dev2011", 
+                       "wmt11-reuse"]
+
+r2_directory_pattern = "/share/taraxu/systems/r2/{}/moses/steps"
+
+r2 = (r2_directory_pattern, r2_all_executions, r2_exclude_development, )
+rounds.append(r2)
 
 
-###ROUND 1
+####ROUND 1
 #find -L . -wholename '*/steps/*openoffice_*_decode.?'
-r1_executions_generic = [("de-en", 8),
-                         ("en-de", 6),
-                         ("es-de", 3), 
-                         ]
-
-r1_exclude_development = ["newstest2009.",
-                          "newstest2010.",
-                          "MultiUN"]
-
-r1_directory_pattern = "/share/taraxu/systems/generic2010/{}/steps"
-r1 = (r1_directory_pattern, r1_executions_generic, r1_exclude_development, )
-rounds.append(r1)
+#r1_executions_generic = [("de-en", 8),
+#                         ("en-de", 6),
+#                         ("es-de", 3), 
+#                         ]
+#
+#r1_exclude_development = ["newstest2009.",
+#                          "newstest2010.",
+#                          "MultiUN"]
+#
+#r1_directory_pattern = "/share/taraxu/systems/generic2010/{}/steps"
+#r1 = (r1_directory_pattern, r1_executions_generic, r1_exclude_development, )
+#rounds.append(r1)
 
 
 
@@ -76,23 +75,6 @@ def _is_excluded(output_filename, exclude_development):
     return False
          
 
-def modify_moses_ini(command):
-    moses_ini_filepath = re.findall('([^ ]*moses.ini[^ ]*)',command)[0]
-    moses_ini_filepath_modified = moses_ini_filepath.replace(".ini", ".nobinlm.ini")
-#    shutil.copyfile(moses_ini_filepath, moses_ini_filepath_modified)
-    moses_ini_file = open(moses_ini_filepath,'r').readlines()
-    moses_ini_content = "".join(moses_ini_file.readlines())
-    moses_ini_file.close()
-    
-    moses_ini_content.replace('[lmodel-file]\n1 0 5', '[lmodel-file]\n0 0 5')
-    moses_ini_content.replace('interpolated-binlm.', 'interpolated-lm.')
-    
-    moses_ini_file_modified = open(moses_ini_filepath_modified, 'w')
-    moses_ini_file_modified.write(moses_ini_content)
-    moses_ini_file_modified.close()
-    
-    command.replace('.ini',".nobinlm.ini")
-    return command     
 
 
 if __name__ == '__main__':
@@ -130,14 +112,11 @@ if __name__ == '__main__':
                     continue
                 
                 
-                
                 verbose_output_filename = output_filename.replace(".output.",".v2.output.").strip()
                 verbose_log_filename = verbose_output_filename.replace(".v2.output.", ".v2.log.")
                 basic_command = basic_command.replace("-threads 8", "")
                 basic_command = basic_command.replace("-v 0", "-v 2")
                 basic_command = basic_command.replace("/home/elav01/tools/moses/moses-cmd/src/moses", "/share/emplus/software/moses/moses-cmd/src/moses")
-                basic_command = modify_moses_ini(basic_command)
-                
                 
                 #TODO: copy moses.ini and modify the lm settings to not use SRILM binarized for R1
     
