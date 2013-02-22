@@ -80,18 +80,18 @@ def modify_moses_ini(command):
     moses_ini_filepath = re.findall('([^ ]*moses.ini[^ ]*)',command)[0]
     moses_ini_filepath_modified = moses_ini_filepath.replace(".ini", ".nobinlm.ini")
 #    shutil.copyfile(moses_ini_filepath, moses_ini_filepath_modified)
-    moses_ini_file = open(moses_ini_filepath,'r').readlines()
+    moses_ini_file = open(moses_ini_filepath,'r')
     moses_ini_content = "".join(moses_ini_file.readlines())
     moses_ini_file.close()
     
-    moses_ini_content.replace('[lmodel-file]\n1 0 5', '[lmodel-file]\n0 0 5')
-    moses_ini_content.replace('interpolated-binlm.', 'interpolated-lm.')
+    moses_ini_content = moses_ini_content.replace('[lmodel-file]\n1 0 5', '[lmodel-file]\n0 0 5')
+    moses_ini_content = moses_ini_content.replace('interpolated-binlm.', 'interpolated-lm.')
     
     moses_ini_file_modified = open(moses_ini_filepath_modified, 'w')
     moses_ini_file_modified.write(moses_ini_content)
     moses_ini_file_modified.close()
     
-    command.replace('.ini',".nobinlm.ini")
+    command = command.replace('.ini',".nobinlm.ini")
     return command     
 
 

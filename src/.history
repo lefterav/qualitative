@@ -4,3 +4,5 @@
 2012-08-28.14-15-35 svn log | grep "Apr 2011" > ../../taraxu_wmt11/Apr2011.log
 2012-08-28.14-16-20 less ../../taraxu_wmt11/2011.log
 2012-09-04.18-57-47 hgrep appraise
+2013-02-22.21-56-30 svn update
+2013-02-22.23-16-53 svn commit -m "Fixes to the script for verbose rerunning R1"
