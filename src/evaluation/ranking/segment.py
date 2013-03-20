@@ -8,6 +8,7 @@ Created on Nov 25, 2012
 '''
 from math import log
 import logging
+from collections import namedtuple
 
 
 """""""""
@@ -39,11 +40,11 @@ def kendall_tau_prob(tau, pairs):
 
 def kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
     """
-    This is the refined calculation of Kendall tau of predicted vs human ranking according to WMT12 (Birch et. al 2012)
+    This is the refined calculation of segment-level Kendall tau of predicted vs human ranking according to WMT12 (Birch et. al 2012)
     @param predicted_rank_vector: a list of integers representing the predicted ranks
-    @type predicted_rank_vector: str 
+    @type predicted_rank_vector: [str, ..] 
     @param original_rank_vector: the name of the attribute containing the human rank
-    @type original_rank_vector: str
+    @type original_rank_vector: [str, ..]
     @kwarg invert_ranks: set to True, if you need the coefficient to be calculated on the inverted rank. Defaults to False
     @type invert_ranks: boolean 
     @return: the Kendall tau score,
@@ -54,7 +55,7 @@ def kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
      the count of original ties,
      the count of predicted ties,
      the count of all pairs
-    @rtype: tuple(float, float, int, int, int, int, int, int)
+    @rtype: namedtuple(float, float, int, int, int, int, int, int)
     """
     import itertools
     
@@ -139,7 +140,11 @@ def kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
     
     logging.debug("tau = {}, prob = {}\n".format(tau, prob))
     
-    return tau, prob, concordant_count, discordant_count, all_pairs_count, original_ties, predicted_ties, pairs
+    #wrap results in a named tuple
+    Result = namedtuple('Result', ['tau', 'prob', 'concordant_count', 'discordant_count', 'all_pairs_count', 'original_ties', 'predicted_ties', 'pairs'])
+    result = Result(tau, prob, concordant_count, discordant_count, all_pairs_count, original_ties, predicted_ties, pairs)
+    
+    return result 
 
 
 """""""""
