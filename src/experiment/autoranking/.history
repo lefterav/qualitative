@@ -92,3 +92,42 @@
 2013-02-21.16-30-23 nohup python -u suite.py --config ~/tools/TaraXUscripts/src/experiment/autoranking/config/autoranking.suite.morefeatures.mtjrev.cfg -e autoranking_featuresets_mtj1_svm_2 -n 6 &> /tmp/suite.de-en-mtj-svm.20130121-2.log
 2013-02-22.23-16-18 ψδ ..
 2013-02-22.23-16-21 up
+2013-03-01.11-51-00 python -u autoranking.py -n 1 --config autoranking.suite.ref.blades 
+2013-03-01.11-51-05 ssh berlin-188.b.dfki.de
+2013-03-01.11-51-11 screen 
+2013-03-01.11-53-29 screen 
+2013-03-01.12-36-33 ssh berlin-188.b.dfki.de
+2013-03-01.12-39-01 svn update ~/tools/TaraXUscripts/src/
+2013-03-01.12-39-24 python -u autoranking.py -n 4 --config autoranking.suite.ref.blades &> /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log 
+2013-03-01.12-39-27 ssh berlin-188.b.dfki.de
+2013-03-01.12-39-33 ls /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log
+2013-03-01.12-39-51 less /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log
+2013-03-01.12-40-51 python -u suite.py -n 4 --config autoranking.suite.ref.blades &> /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log 
+2013-03-01.12-41-02 python -u suite.py -n 4 --config autoranking.suite.ref.blades &> /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log 
+2013-03-01.12-41-11 less /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log
+2013-03-01.12-41-23 python -u suite.py -n 4 --config config/autoranking.suite.ref.blades &> /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log 
+2013-03-01.12-41-36 less /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log
+2013-03-01.12-42-06 python -u suite.py -n 4 --config config/autoranking.suite.ref.blades.cfg &> /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log 
+2013-03-01.12-42-17 pwd
+2013-03-01.12-42-32 python -u suite.py -n 4 --config /home/elav01/tools/TaraXUscripts/src/experiment/autoranking/config/autoranking.suite.ref.blades.cfg &> /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log 
+2013-03-01.12-42-35 pwd
+2013-03-01.12-44-39 less /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log
+2013-03-01.12-49-42 svn update ~/tools/TaraXUscripts/src/
+2013-03-01.12-49-54 python -u suite.py -n 4 --config /home/elav01/tools/TaraXUscripts/src/experiment/autoranking/config/autoranking.suite.ref.blades.cfg &> /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log 
+2013-03-01.12-52-16 svn update ~/tools/TaraXUscripts/src/
+2013-03-01.12-52-21 less /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log
+2013-03-01.12-52-28 python -u suite.py -n 4 --config /home/elav01/tools/TaraXUscripts/src/experiment/autoranking/config/autoranking.suite.ref.blades.cfg &> /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log 
+2013-03-01.12-53-34 less /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log
+2013-03-01.12-54-17 svn update ~/tools/TaraXUscripts/src/
+2013-03-01.13-24-29 python -u suite.py -n 4 --config /home/elav01/tools/TaraXUscripts/src/experiment/autoranking/config/autoranking.suite.ref.blades.cfg &> /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log 
+2013-03-01.14-32-44 python -u suite.py --config ~/tools/TaraXUscripts/src/experiment/autoranking/config/autoranking.suite.morefeatures.mtjrev.cfg -e autoranking_featuresets_mtj1_svm -n 1 &> /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_mtj1_svm/autoranking_featuresets_mtj1_svm-20130301.log 
+2013-03-01.16-28-50 python -u suite.py --config ~/tools/TaraXUscripts/src/experiment/autoranking/config/autoranking.suite.ref.blades.cfg -n 6 &> /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log 
+2013-03-01.20-07-20 screen -R
+2013-03-01.20-07-27 less /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log
+2013-03-01.20-09-48 screen -R 29638.pts-7.lns-87004
+2013-03-01.20-09-53 tail -f /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log
+2013-03-01.20-10-24 less /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log
+2013-03-01.20-19-42 less /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log
+2013-03-01.23-17-09 python -u suite.py -n 6 --config /home/elav01/tools/TaraXUscripts/src/experiment/autoranking/config/autoranking.suite.ref.blades.cfg &> /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log
+2013-03-16.12-48-23 python -u suite.py --config ~/tools/TaraXUscripts/src/experiment/autoranking/config/autoranking.suite.morefeatures.mtjrev.cfg -e autoranking_featuresets_mtj1_svm -n 1 &> /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_mtj1_svm/autoranking_featuresets_mtj1_svm-20130301.log 
+2013-03-18.23-42-46 nohup python suite.py --config ~/tools/TaraXUscripts/src/experiment/autoranking/config/autoranking.suite.morefeatures.mtjrev.cfg --n 2 &> /local/elav01/selection-mechanism/suite.de-en-mtj.20130110.log 
