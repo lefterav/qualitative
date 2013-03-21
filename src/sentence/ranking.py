@@ -15,13 +15,13 @@ class Ranking(object):
         @param ranking: a list of values representing a ranking
         @type ranking: list of integers or strings
         '''
-        self.ranking = ranking
+        self.list = ranking
         
     def __getitem__(self, key):
-        return self.ranking[key]
+        return self.list[key]
     
     def __iter__(self):
-        return self.ranking.__iter__() 
+        return self.list.__iter__() 
     
     def normalized(self, **kwargs):
         '''
@@ -30,7 +30,12 @@ class Ranking(object):
         @type inflate_ties: boolean 
         '''
         inflate_ties = kwargs.setdefault('inflate_ties', True)
-        
+        for rank in self.list:
+            pass
+            
+            
+            
+            
         
     
     
