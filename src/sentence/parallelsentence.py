@@ -1,21 +1,22 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-
 """
-
 @author: Eleftherios Avramidis
 """
 
 from copy import deepcopy
 import re
-import sys
-
+from ranking import Ranking
 
 
 class ParallelSentence(object):
     """
-    classdocs
+    A parallel sentence, that contains a source sentence, 
+    a number of target sentences, a reference and some attributes
+    @ivar src: the source sentence
+    @type src: SimpleSentence
+    @ivar tgt: a list of target sentences / translations
+    @type tgt: [SimpleSentence, ...]
+    @ivar ref: a reference translation
+    @type ref: SimpleSentence
     """
     
 
@@ -30,6 +31,8 @@ class ParallelSentence(object):
         @param reference The desired translation provided by the system
         @type attributes dict { String name , String value }
         @param the attributes that describe the parallel sentence
+        @keyword sort_translations: Whether translations should be sorted based on the system name
+        @type sort_translations: boolean 
         """
         self.src = source 
         self.tgt = translations
@@ -61,15 +64,44 @@ class ParallelSentence(object):
         
     
     def get_rank(self):
+        """
+        provide the rank value of the parallel sentence
+        return: the rank value 
+        rtype: string
+        """
         return self.attributes[self.rank_name]
+    
+    def get_ranking(self):
+        """
+        returns a ranking list, containing the ranks of the included
+        target translations
+        @return: the ranking list
+        @rtype: Ranking
+        """
+        return Ranking([s.get_rank() for s in self.tgt])
             
-    def get_attributes (self):
+    def get_attributes(self):
+        """
+        provide all attributes
+        @return: the parallel sentence attributes dictionary
+        @rtype: dict([(string,string), ...])
+        """
         return self.attributes
     
     def get_attribute_names (self):
+        """
+        provide all attribute names
+        @return: a set with the names of the attributes
+        @rtype: set([string, ...])
+        """
         return self.attributes.keys()
     
     def get_attribute(self, name):
+        """
+        provide the value of a particular attribute
+        @return: the value of the attribute with the specified name
+        @rtype: string
+        """
         return self.attributes[name]
     
     def get_target_attribute_values(self, attribute_name):
@@ -162,16 +194,16 @@ class ParallelSentence(object):
         """
         
         new_attributes = deepcopy (self.attributes)
-        new_attributes.update( self.__prefix__(self.src.get_attributes(), "src") )
+        new_attributes.update( self._prefix(self.src.get_attributes(), "src") )
         i=0
         for tgtitem in self.tgt:
             i += 1
-            prefixeditems = self.__prefix__( tgtitem.get_attributes(), "tgt-%d" % i )
-            #prefixeditems = self.__prefix__( tgtitem.get_attributes(), tgtitem.get_attributes()["system"] )
+            prefixeditems = self._prefix( tgtitem.get_attributes(), "tgt-%d" % i )
+            #prefixeditems = self._prefix( tgtitem.get_attributes(), tgtitem.get_attributes()["system"] )
             new_attributes.update( prefixeditems )
 
         try:
-            new_attributes.update( self.__prefix__( self.ref.get_attributes(), "ref" ) )
+            new_attributes.update( self._prefix( self.ref.get_attributes(), "ref" ) )
         except:
             pass
         return new_attributes
@@ -212,7 +244,7 @@ class ParallelSentence(object):
         return list
         
         
-    def __prefix__(self, listitems, prefix):
+    def _prefix(self, listitems, prefix):
         newlistitems = {}
         for item_key in listitems.keys():
             new_item_key = "_".join([prefix, item_key]) 
