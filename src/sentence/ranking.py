@@ -9,6 +9,8 @@ Created on 20 Mar 2013
 def indexes(ranking_list, neededrank):
     '''
     Returns the indexes of the particular ranks in the list
+    @param ranking_list: the list of ranks that will be searched
+    @type ranking_list: list
     @param rank: a rank value
     @type rank: float
     @return: the indexes where the given rank appears
@@ -19,6 +21,8 @@ def indexes(ranking_list, neededrank):
 
 def _handle_tie(ranking_list, original_rank, modified_rank, ties_handling):
     ''' Modifies the values of the tied items as specified by the parameters
+    @param ranking_list: the list of ranks
+    @type ranking_list: list
     @param original_rank: the original rank value
     @type original_rank: float
     @param modified_rank: the new normalized rank value that would have been assigned if there was no tie 
@@ -44,6 +48,8 @@ def _handle_tie(ranking_list, original_rank, modified_rank, ties_handling):
 def normalize(ranking_list, **kwargs):
     '''
     Convert a messy ranking like [1,3,5,4] to [1,2,4,3]
+    @param ranking_list: the list of ranks that will be normalized
+    @type ranking_list: list
     @keyword ties: Select how to handle ties. Accepted values are:
      - 'minimize', which reserves only one rank position for all tied items of the same rank
      - 'floor', which reserves all rank positions for all tied items of the same rank, but sets their value to the minimum tied rank position 
