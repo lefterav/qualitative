@@ -97,9 +97,14 @@ class Ranking(list):
             self.append(float(i))
         self.normalization = kwargs.setdefault('normalization', 'unknown')
         
-    def __set_item__(self, key, value):
+    def __setitem__(self, key, value):
         self.normalization = 'unknown'
-        super.__set_item__(key, float(value))
+        super(Ranking, self).__setitem__(key, value)
+        
+        
+    def __delitem__(self, key):
+        self.normalization = 'unknown'
+        super(Ranking, self).__delitem__(key)
         
     
     def normalized(self, **kwargs):
@@ -117,10 +122,15 @@ class Ranking(list):
         ties_handling = kwargs.setdefault('ties', 'minimize')
         return Ranking(normalize(self, ties=ties_handling), normalization=ties_handling)
 
+
+
+
+    
 #if __name__ == '__main__':
-#    original_ranking = Ranking([6,3,2,2,1])
-#    original_ranking[0] = '0'
-#    print original_ranking.normalized(ties='middle')
+#    r = Ranking([6,3,2,2,1])
+#    r[0] = '0'
+#    
+#    print r.normalized()
 #    
     
             
