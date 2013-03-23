@@ -1,12 +1,8 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
 """
 
 @author: Eleftherios Avramidis
 """
 
-from dataset import DataSet
 from multirankeddataset import MultiRankedDataset
 import logging
 import sys
@@ -24,6 +20,7 @@ class Scoring(MultiRankedDataset):
         self.invert_ranks = kwargs.setdefault("invert_ranks", False)
         #fire parent constructor
         super(Scoring, self).__init__(*params)
+        
     
     def get_systems_scoring_from_segment_ranks(self, rank_attribute_name):
         
@@ -80,6 +77,52 @@ class Scoring(MultiRankedDataset):
         #print rank_evaluation_1
         #print rank_evaluation_2
         return spearmanr(rank_evaluation_1, rank_evaluation_2)
+    
+    
+    def get_metrics_scores(self, metric_callbacks, predicted_rank_name, original_rank_name, **kwargs):
+        """
+        Calculates a metric 
+        @param predicted_rank_name: the name of the attribute containing the predicted rank
+        @type predicted_rank_name: str 
+        @param original_rank_name: the name of the attribute containing the human rank
+        @type original_rank_name: str
+        @param filter_ref: don't include reference sentences when existing in the pairs
+        @type filter_ref: boolean
+        @param exclude_ties: don't include human ties in the calculation, even if correctly predicted
+        @type exclude_ties: boolean
+        @return: the Kendall tau score and the probability for the null hypothesis of X and Y being independent
+        @rtype: tuple(float, float)
+        """
+
+        
+        #filter references by default unles otherwise specified
+        filter_ref = kwargs.setdefault("filter_ref", True)
+        suffix = kwargs.setdefault("suffix", "")
+        prefix = kwargs.setdefault("prefix", "")
+        kwargs["invert_ranks"] = self.invert_ranks
+        
+        predicted_rank_vectors = []
+        original_rank_vectors = []
+        
+        for parallesentence in self.parallelsentences:
+            if filter_ref:
+                predicted_rank_vector = parallesentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
+                original_rank_vector = parallesentence.get_filtered_target_attribute_values(original_rank_name, "system", "_ref")
+            else:
+                predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
+                original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
+            predicted_rank_vectors.append(predicted_rank_vector)
+            original_rank_vectors.append(original_rank_vector)
+        
+        stats = {}
+        for callback in metric_callbacks:
+            current_stats = callback(predicted_rank_vector, original_rank_vectors)
+            stats.update(current_stats)
+        
+        stats = dict([("{}{}{}".format(prefix, key, suffix),value) for key,value in stats.iteritems()])
+        
+        return stats
+    
     
     def get_kendall_tau_vector(self, rank_name_1, rank_name_2):
         from scipy.stats import kendalltau

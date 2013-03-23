@@ -6,6 +6,7 @@ Created on Nov 25, 2012
 
 @author: Eleftherios Avramidis
 '''
+
 from math import log
 import logging
 from collections import namedtuple
@@ -123,8 +124,7 @@ def kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
             logging.debug("\t\tDIS")
     all_pairs_count = concordant_count + discordant_count
 
-    logging.debug("original_ties = %d, predicted_ties = %d", original_ties, predicted_ties) 
-        
+    logging.debug("original_ties = %d, predicted_ties = %d", original_ties, predicted_ties)   
     logging.debug("conc = %d, disc= %d", concordant_count, discordant_count) 
     
     try:
@@ -267,9 +267,37 @@ def ndgc_err(predicted_rank_vector, original_rank_vector, k=None):
     else:
         ndcg = 1.0
         
-    return err, ndcg
+    return ndcg, err
 
 
+
+"""
+Reciprocal rank
+"""
+
+def reciprocal_rank(predicted_rank_vector, original_rank_vector):
+    predicted_rank_vector = predicted_rank_vector.normalize(ties="ceiling")
+    original_rank_vector = original_rank_vector.normalize(ties="ceiling")
+    
+    if not predicted_rank_vector:
+        continue
+    best_original_rank = min(original_rank_vector)
+    predicted_rank_order = sorted(predicted_rank_vector)
+    
+        
+    predicted_ranks = []
+    for original_rank, predicted_rank in zip(original_rank_vector, predicted_rank_vector):
+        if predicted_rank == best_original_rank:
+            try: #todo: check why this fails and may be reason for wrong calcs
+                corrected_predicted_rank = predicted_rank_order.index(original_rank) + 1
+                predicted_ranks.append(corrected_predicted_rank)
+            except:
+                pass
+            
+    #get the worse predicted (in case of ties)
+    selected_original_rank = max(predicted_ranks)
+    reciprocalrank = 1.00/selected_original_rank
+    return reciprocalrank
 
             
 if __name__ == "__main__":
