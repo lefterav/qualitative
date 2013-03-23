@@ -83,6 +83,16 @@ def normalize(ranking_list, **kwargs):
     assert(normalized_rank.count(0)==0)
     return normalized_rank
             
+def invert(ranking_list, **kwargs):
+    '''
+    Inverts a ranking list so that the best item becomes worse and vice versa
+    @param ranking_list: the list whose ranks are to be inverted
+    @type ranking_list: [float, ...]
+    @return: the inverted rank list
+    @rtype: [float, ...]
+    '''
+    inverted_ranking_list = [-1.0*item for item in ranking_list]
+    return normalize(inverted_ranking_list, kwargs)
             
 class Ranking(list):
     '''
@@ -115,7 +125,7 @@ class Ranking(list):
     
     def normalized(self, **kwargs):
         '''
-        Convert a messy ranking like [1,3,5,4] to [1,2,4,3]
+        Create a new normaliyed ranking out of a messy ranking like [1,3,5,4] to [1,2,4,3]
         @keyword ties: Select how to handle ties. Accepted values are:
          - 'minimize', which reserves only one rank position for all tied items of the same rank
          - 'floor', which reserves all rank positions for all tied items of the same rank, but sets their value to the minimum tied rank position 
@@ -128,7 +138,21 @@ class Ranking(list):
         ties_handling = kwargs.setdefault('ties', 'minimize')
         return Ranking(normalize(self, ties=ties_handling), normalization=ties_handling)
 
+    def inverse(self, **kwargs):
+        '''
+        Created an inverted ranking, so that the best item becomes worse
+        @keyword ties: Select how to handle ties. Accepted values are:
+         - 'minimize', which reserves only one rank position for all tied items of the same rank
+         - 'floor', which reserves all rank positions for all tied items of the same rank, but sets their value to the minimum tied rank position 
+         - 'ceiling', which reserves all rank positions for all tied items of the same rank, but sets their value to the maximum tied rank position
+         - 'middle', which reserves all rank positions for all tied items of the same rank, but sets their value to the middle of the tied rank positions
+        @return: the inverted ranking
+        @rtype: Ranking
+        '''
+        ties_handling = kwargs.setdefault('ties', 'minimize')
+        return Ranking(invert(self, ties=ties_handling), normalization=ties_handling)
 
+        
 
 
     
