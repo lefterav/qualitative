@@ -7,7 +7,7 @@ from multirankeddataset import MultiRankedDataset
 import logging
 import sys
 from evaluation.ranking.segment import kendall_tau, kendall_tau_prob
-
+from evaluation import ranking
 
 
 
@@ -79,7 +79,7 @@ class Scoring(MultiRankedDataset):
         return spearmanr(rank_evaluation_1, rank_evaluation_2)
     
     
-    def get_metrics_scores(self, metric_callbacks, predicted_rank_name, original_rank_name, **kwargs):
+    def get_metrics_scores(self, predicted_rank_name, original_rank_name, **kwargs):
         """
         Calculates a metric 
         @param predicted_rank_name: the name of the attribute containing the predicted rank
@@ -104,6 +104,10 @@ class Scoring(MultiRankedDataset):
         predicted_rank_vectors = []
         original_rank_vectors = []
         
+        import inspect
+
+        metric_functions = inspect.getmembers(ranking, inspect.isfunction)
+        
         for parallesentence in self.parallelsentences:
             if filter_ref:
                 predicted_rank_vector = parallesentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
@@ -115,7 +119,7 @@ class Scoring(MultiRankedDataset):
             original_rank_vectors.append(original_rank_vector)
         
         stats = {}
-        for callback in metric_callbacks:
+        for callback in metric_functions:
             current_stats = callback(predicted_rank_vector, original_rank_vectors)
             stats.update(current_stats)
         
@@ -477,7 +481,9 @@ def regenerate_tau():
             
         
              
-        
+if __name__ == '__main__':
+    #get_metrics_scores
+    pass
         
         
     
