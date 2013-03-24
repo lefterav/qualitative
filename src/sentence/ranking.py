@@ -67,7 +67,7 @@ def normalize(ranking_list, **kwargs):
     normalized_rank = [0]*length
     new_rank = 0
     #iterate through the ordered rank values in the list
-    for original_rank in set(sorted(ranking_list)):
+    for original_rank in sorted(set(ranking_list)):
         #this is incrementing the actual order of the rank
         new_rank += 1
         #find the positions where this particular rank value appears
@@ -121,7 +121,7 @@ class Ranking(list):
         
     def __setitem__(self, key, value):
         self.normalization = 'unknown'
-        super(Ranking, self).__setitem__(key, value)
+        super(Ranking, self).__setitem__(key, float(value))
         
         
     def __delitem__(self, key):
@@ -181,15 +181,15 @@ class Ranking(list):
             
 
 
-    
-if __name__ == '__main__':
-    r = Ranking([6,3,2,2,1])
-    r[0] = '0'
 #    
-    print r.integers()
+#if __name__ == '__main__':
+#    r = Ranking([1,2,3,2.2,4])
+#    r[0] = '0'
+##    
+#    print r.normalize(ties='ceiling').integers()
+##    
 #    
-    
-            
+#            
             
             
             

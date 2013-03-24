@@ -160,6 +160,8 @@ def avg_ndgc_err(predicted_rank_vectors, original_rank_vectors, **kwargs):
     @type predicted_rank_vectors: [Ranking, ..] 
     @param original_rank_vectors:  a list of the names of the attribute containing the human rank, one ranking for each segment
     @type original_rank_vectors: [Ranking, ..]
+    @keyword k: cut-off passed to the segment L{ndgc_err} function
+    @type k: int 
     @return: a dictionary with the name of the metric and the respective result
     @rtype: {string, float}
     """
@@ -170,10 +172,18 @@ def avg_ndgc_err(predicted_rank_vectors, original_rank_vectors, **kwargs):
         ndgc, err = segment.ndgc_err(predicted_rank_vector, original_rank_vector, k)
         ndgc_list.append(ndgc)
         err_list.append(err)
-    avg_ndgc = average(ndgc)
-    avg_err = average(err)
+    avg_ndgc = average(ndgc_list)
+    avg_err = average(err_list)
     return {'ndgc':avg_ndgc, 'err':avg_err}
 
-if __name__ == '__main__':
-    pass
+#if __name__ == '__main__':
+#    from sentence.ranking import Ranking
+#    a = Ranking([1,2,3,4])
+#    b = Ranking([2,3,1,4])
+#    
+#    c = [a,b,a,b,a,a]
+#    d = [b,a,a,b,a,]
+#    
+#    print avg_ndgc_err(c,d)
+    
     
