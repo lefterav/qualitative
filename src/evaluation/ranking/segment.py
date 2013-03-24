@@ -300,13 +300,14 @@ def reciprocal_rank(predicted_rank_vector, original_rank_vector, **kwargs):
 
 
             
-if __name__ == "__main__":
-    predicted_rank_vector = Ranking([1,1,3,4])
-    original_rank_vector =  Ranking([1,2,3,4])
-#    dcg, err = ndgc_err(predicted_rank_vector, original_rank_vector, 4)
-#    print "ERR = {}\n nDCG_p = {}".format(dcg, err) 
-    
-    print reciprocal_rank(predicted_rank_vector, original_rank_vector)
+#if __name__ == "__main__":
+#    predicted_rank_vector = Ranking([1,3,2.2,"0.1"])
+#    print predicted_rank_vector.normalize()
+#    original_rank_vector =  Ranking([1,2,3,4])
+##    dcg, err = ndgc_err(predicted_rank_vector, original_rank_vector, 4)
+##    print "ERR = {}\n nDCG_p = {}".format(dcg, err) 
+#    
+#    print ndgc_err(predicted_rank_vector, original_rank_vector)
     
     
     
