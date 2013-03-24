@@ -109,8 +109,14 @@ class Ranking(list):
         @type ranking: list of floats, integers or strings
         '''
         #convert to float, in order to support intermediate positions
+        
+        integers = kwargs.setdefault('integers', False)
+        
         for i in ranking:
-            self.append(float(i))
+            if not integers:
+                self.append(float(i))
+            else: 
+                self.append(int(round(float(i),0)))
         self.normalization = kwargs.setdefault('normalization', 'unknown')
         
     def __setitem__(self, key, value):
@@ -123,7 +129,7 @@ class Ranking(list):
         super(Ranking, self).__delitem__(key)
         
     
-    def normalized(self, **kwargs):
+    def normalize(self, **kwargs):
         '''
         Create a new normaliyed ranking out of a messy ranking like [1,3,5,4] to [1,2,4,3]
         @keyword ties: Select how to handle ties. Accepted values are:
@@ -137,6 +143,18 @@ class Ranking(list):
         '''
         ties_handling = kwargs.setdefault('ties', 'minimize')
         return Ranking(normalize(self, ties=ties_handling), normalization=ties_handling)
+    
+    def indexes(self, neededrank):
+        '''
+        Returns the indexes of the particular ranks in the list
+        @param ranking_list: the list of ranks that will be searched
+        @type ranking_list: list
+        @param rank: a rank value
+        @type rank: float
+        @return: the indexes where the given rank appears
+        @rtype: [int, ...]
+        '''
+        return indexes(self, neededrank)   
 
     def inverse(self, **kwargs):
         '''
@@ -152,15 +170,23 @@ class Ranking(list):
         ties_handling = kwargs.setdefault('ties', 'minimize')
         return Ranking(invert(self, ties=ties_handling), normalization=ties_handling)
 
+    def integers(self):
+        '''
+        Return a version of the ranking, only with integers. It would be nice if the Ranking is normalized
+        @return: a new ranking with integers
+        @rtype: Ranking
+        ''' 
         
+        return Ranking(self, integers=True)
+            
 
 
     
-#if __name__ == '__main__':
-#    r = Ranking([6,3,2,2,1])
-#    r[0] = '0'
+if __name__ == '__main__':
+    r = Ranking([6,3,2,2,1])
+    r[0] = '0'
 #    
-#    print r.normalized()
+    print r.integers()
 #    
     
             
