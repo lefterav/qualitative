@@ -427,6 +427,9 @@ def get_scoring(testset, class_name, xid, featurename):
         ret["sb-{}-{}".format(rank,xid)] = str(percentage)
     return ret
 
+def score(testset, class_name, xid, featurename):
+    scoringset = Scoring(testset)
+    return scoringset.get_metrics_scores(featurename, class_name, prefix=xid)
 
 class StreamToLogger(object):
     """
