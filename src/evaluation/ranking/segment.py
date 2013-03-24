@@ -10,10 +10,10 @@ Created on Nov 25, 2012
 from math import log
 import logging
 from collections import namedtuple
-
+from sentence.ranking import Ranking
 
 """""""""
-Kendall
+Kendall tau
 """""""""
 
 def kendall_tau_prob(tau, pairs):
@@ -46,8 +46,8 @@ def kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
     @type predicted_rank_vector: [str, ..] 
     @param original_rank_vector: the name of the attribute containing the human rank
     @type original_rank_vector: [str, ..]
-    @kwarg invert_ranks: set to True, if you need the coefficient to be calculated on the inverted rank. Defaults to False
-    @type invert_ranks: boolean 
+    @kwarg ties: way of handling ties, passed to L{sentence.ranking.Ranking} object
+    @type ties: string
     @return: the Kendall tau score,
      the probability for the null hypothesis of X and Y being independent
      the count of concordant pairs,
@@ -59,6 +59,11 @@ def kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
     @rtype: namedtuple(float, float, int, int, int, int, int, int)
     """
     import itertools
+    ties_handling = kwargs.setdefault('ties','ceiling')
+    
+    #do necessary normalization of rank vectors
+    predicted_rank_vector = predicted_rank_vector.normalize(ties=ties_handling)
+    original_rank_vector = original_rank_vector.normalize(ties=ties_handling)
     
     logging.debug("\n* Segment tau *")
     logging.debug("predicted vector: {}".format(predicted_rank_vector))
@@ -149,16 +154,7 @@ def kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
 
 """""""""
 DCG
-"""""""""
-
-def _penalize_ties(predicted_rank_vector):
-    r = predicted_rank_vector
-    n = len(r)
-    for i in range(n):
-        pass
-    #convert [1,2,2,4] and [1,2,2,3] to [1,3,3,4]
-    
-                    
+"""""""""                    
 
 def _calculate_gains(predicted_rank_vector, original_rank_vector, verbose=True):
     """
@@ -220,24 +216,23 @@ def idcg(gains, k):
 
 def ndgc_err(predicted_rank_vector, original_rank_vector, k=None):
     """
-    Calculate the Normalized Discounted Cumulative Gain and the Expected Reciprocal Rank on a sentence level
+    Calculate the normalize Discounted Cumulative Gain and the Expected Reciprocal Rank on a sentence level
     This follows the definition of U{DCG<http://en.wikipedia.org/wiki/Discounted_cumulative_gain#Cumulative_Gain>} 
     and U{ERR<http://research.yahoo.com/files/err.pdf>}, and the implementation of 
     U{Yahoo Learning to Rank challenge<http://learningtorankchallenge.yahoo.com/evaluate.py.txt>}     
     @param predicted_rank_vector: list of integers representing the predicted ranks
     @type predicted_rank_vector: [int, ...]
     @param original_rank_vector: list of integers containing the original ranks.
-    This doesn't have to be normalized, since also decimal relevance values are supported by the metric.
     @type original_rank_vector: [int, ...]
-    @param k: the cut-off for the calculation of the gains
+    @param k: the cut-off for the calculation of the gains. If not specified, the length of the ranking is used
     @type k: int 
     @return: a tuple containing the values for the two metrics
     @rtype: tuple(float,float)
     """
     # Number of documents    
     
-    r = predicted_rank_vector
-    l = original_rank_vector
+    r = predicted_rank_vector.normalize(ties='ceiling').integers()
+    l = original_rank_vector.normalize(ties='ceiling').integers()
     n = len(l)
     
     #if user doesn't specify k, set equal to the ranking length
@@ -275,37 +270,43 @@ def ndgc_err(predicted_rank_vector, original_rank_vector, k=None):
 Reciprocal rank
 """
 
-def reciprocal_rank(predicted_rank_vector, original_rank_vector):
-    predicted_rank_vector = predicted_rank_vector.normalize(ties="ceiling")
-    original_rank_vector = original_rank_vector.normalize(ties="ceiling")
+def reciprocal_rank(predicted_rank_vector, original_rank_vector, **kwargs):
+    """
+    Calculates the First Answer Reciprocal Rank according to Radev et. al (2002) 
+    @param predicted_rank_vector: list of integers representing the predicted ranks
+    @type predicted_rank_vector: [int, ...]
+    @param original_rank_vector: list of integers containing the original ranks.
+    @type original_rank_vector: [int, ...]
+    @kwarg ties: way of handling ties, passed to L{sentence.ranking.Ranking} object
+    @type ties: string
+    @return: the reciprocal rank value
+    @type: float
+    """
+    ties_handling = kwargs.setdefault('ties','ceiling')
     
-    if not predicted_rank_vector:
-        continue
-    best_original_rank = min(original_rank_vector)
-    predicted_rank_order = sorted(predicted_rank_vector)
+    predicted_rank_vector = predicted_rank_vector.normalize(ties=ties_handling)
+    original_rank_vector = original_rank_vector.normalize(ties=ties_handling)
     
-        
-    predicted_ranks = []
-    for original_rank, predicted_rank in zip(original_rank_vector, predicted_rank_vector):
-        if predicted_rank == best_original_rank:
-            try: #todo: check why this fails and may be reason for wrong calcs
-                corrected_predicted_rank = predicted_rank_order.index(original_rank) + 1
-                predicted_ranks.append(corrected_predicted_rank)
-            except:
-                pass
-            
-    #get the worse predicted (in case of ties)
-    selected_original_rank = max(predicted_ranks)
-    reciprocalrank = 1.00/selected_original_rank
-    return reciprocalrank
+    best_original_rank = min(original_rank_vector)    
+    best_original_rank_indexes = original_rank_vector.indexes(best_original_rank)
+    
+    predicted_values_for_best_rank = [predicted_rank_vector[index] for index in best_original_rank_indexes]
+    
+    #if there is a tie for the best rank, this will return our best choice for it
+    best_predicted_value_for_best_rank = min(predicted_values_for_best_rank)
+    
+    reciprocal_rank = 1.00/best_predicted_value_for_best_rank
+    return reciprocal_rank
+
 
             
 if __name__ == "__main__":
-    predicted_rank_vector = [1,2,2,3]
-    original_rank_vector =  [1,3,2,4]
-    dcg, err = ndgc_err(predicted_rank_vector, original_rank_vector, 4)
-    print "ERR = {}\n nDCG_p = {}".format(dcg, err) 
+    predicted_rank_vector = Ranking([1,1,3,4])
+    original_rank_vector =  Ranking([1,2,3,4])
+#    dcg, err = ndgc_err(predicted_rank_vector, original_rank_vector, 4)
+#    print "ERR = {}\n nDCG_p = {}".format(dcg, err) 
     
+    print reciprocal_rank(predicted_rank_vector, original_rank_vector)
     
     
     
