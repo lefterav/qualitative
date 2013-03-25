@@ -6,10 +6,17 @@
 from multirankeddataset import MultiRankedDataset
 import logging
 import sys
+from ranking import Ranking
 from evaluation.ranking.segment import kendall_tau, kendall_tau_prob
-from evaluation import ranking
+from evaluation.ranking.set import *
+from collections import OrderedDict
 
-
+SET_METRIC_FUNCTIONS = [kendall_tau_set, 
+                        mrr,
+                        avg_ndgc_err, 
+                        best_predicted_vs_human,
+                        avg_predicted_ranked 
+                        ]
 
 class Scoring(MultiRankedDataset):
     """
@@ -104,9 +111,9 @@ class Scoring(MultiRankedDataset):
         predicted_rank_vectors = []
         original_rank_vectors = []
         
-        import inspect
+        
 
-        metric_functions = inspect.getmembers(ranking, inspect.isfunction)
+        
         
         for parallesentence in self.parallelsentences:
             if filter_ref:
@@ -115,16 +122,18 @@ class Scoring(MultiRankedDataset):
             else:
                 predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
                 original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
-            predicted_rank_vectors.append(predicted_rank_vector)
-            original_rank_vectors.append(original_rank_vector)
+            predicted_rank_vectors.append(Ranking(predicted_rank_vector))
+            original_rank_vectors.append(Ranking(original_rank_vector))
         
         stats = {}
-        for callback in metric_functions:
-            current_stats = callback(predicted_rank_vector, original_rank_vectors)
+        for callback in SET_METRIC_FUNCTIONS:
+            current_stats = callback(predicted_rank_vectors, original_rank_vectors)
             stats.update(current_stats)
+            
+#                sys.stderr.write("Error with {}\n".format(name))
         
-        stats = dict([("{}{}{}".format(prefix, key, suffix),value) for key,value in stats.iteritems()])
-        
+        stats = dict([("{}-{}{}".format(prefix, key, suffix),value) for key,value in stats.iteritems()])
+        print stats
         return stats
     
     

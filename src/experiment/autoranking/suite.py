@@ -4,6 +4,7 @@ Created on 07 Mar 2012
 '''
 import logging
 import copy
+from collections import OrderedDict
 from Orange.regression.linear import LinearRegressionLearner 
 from Orange.regression.pls import PLSRegressionLearner
 from Orange.regression.lasso import LassoRegressionLearner
@@ -36,6 +37,7 @@ from sentence.dataset import DataSet
 from sentence.scoring import Scoring
 
 import time
+
 
 import random
 import sys
@@ -308,8 +310,11 @@ class AutorankingSuite(PyExperimentSuite):
         
         if n == 120:
             print "Scoring correlation"
-            ret.update(get_scoring(self.reconstructed_hard_testset, self.class_name, "hard", "rank_hard"))
-            ret.update(get_scoring(self.reconstructed_soft_testset, self.class_name, "soft", "rank_soft"))            
+            ret.update(score(self.reconstructed_hard_testset, self.class_name, "hard", "rank_hard"))
+            ret.update(score(self.reconstructed_soft_testset, self.class_name, "soft", "rank_soft"))
+            ret = OrderedDict(sorted(ret.items(), key=lambda t: t[0]))
+         
+            print ret   
         return ret
     
     
