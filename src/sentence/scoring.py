@@ -9,7 +9,6 @@ import sys
 from ranking import Ranking
 from evaluation.ranking.segment import kendall_tau, kendall_tau_prob
 from evaluation.ranking.set import *
-from collections import OrderedDict
 
 SET_METRIC_FUNCTIONS = [kendall_tau_set, 
                         mrr,
