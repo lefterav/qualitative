@@ -183,14 +183,13 @@ def _calculate_gains(predicted_rank_vector, original_rank_vector, verbose=True):
     for j in range(n):            
         gains[r[j]-1] = (2**l[j]-1.0)/expn
 
-        if verbose:
-            print "j={}\nr[j]={}\nl[j]={}\n".format(j,r[j],l[j]) 
-            print "gains[{}] = ".format(r[j]-1)
-            print "\t(2**l[j]-1.0) / 2**n ="
-            print "\t(2**{}-1.0) / 2**{}=".format(l[j], n)
-            print "\t{} / {} =".format((2**l[j]-1.0),expn)
-            print (2**l[j]-1.0)/expn
-            print "gains = ",gains
+        logging.debug("j={}\nr[j]={}\nl[j]={}\n".format(j,r[j],l[j])) 
+        logging.debug("gains[{}] = ".format(r[j]-1))
+        logging.debug("\t(2**l[j]-1.0) / 2**n =")
+        logging.debug("\t(2**{}-1.0) / 2**{}=".format(l[j], n))
+        logging.debug("\t{} / {} =".format((2**l[j]-1.0),expn))
+        logging.debug("{}".format((2**l[j]-1.0)/expn))
+        logging.debug("gains = {}".format(gains))
     
     assert min(gains)>=0, 'Not all ranks present'
     return gains
