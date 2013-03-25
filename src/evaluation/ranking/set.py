@@ -182,7 +182,7 @@ def avg_predicted_ranked(predicted_rank_vectors, original_rank_vectors, **kwargs
         #in case of ties get the worst one
         original_ranks.append(max(mapped_original_ranks))
     
-    return {'avg_predicted_ranked', average(original_ranks)}
+    return {'avg_predicted_ranked': average(original_ranks)}
         
         
 
