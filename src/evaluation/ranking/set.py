@@ -13,7 +13,7 @@ from numpy import average
 
 import numpy as np
 
-def kendall_tau(predicted_rank_vectors, original_rank_vectors, **kwargs):
+def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
     """
     This is the refined calculation of set-level Kendall tau of predicted vs human ranking according to WMT12 (Birch et. al 2012)
     It returns both set-level Kendall tau and average segment-level Kendall tau
@@ -74,18 +74,18 @@ def kendall_tau(predicted_rank_vectors, original_rank_vectors, **kwargs):
     sentence_ties_avg = 100.00*sentences_with_ties / len(predicted_rank_vector)
     
     stats = {'tau': tau,
-             'prob': prob,
-             'avg_seg_tau': avg_seg_tau,
-             'avg_seg_prob': avg_seg_prob,
-             'concordant': concordant,
-             'discordant': discordant,
-             'valid_pairs': valid_pairs,
-             'all_pairs': pairs_overall,
-             'original_ties': original_ties_overall,
-             'predicted_ties': predicted_ties_overall,
-             'predicted_ties_per': predicted_ties_avg,
-             'sentence_ties': sentences_with_ties,
-             'sentence_ties_per' : sentence_ties_avg
+             'tau_prob': prob,
+             'tau_avg_seg': avg_seg_tau,
+             'tau_avg_seg_prob': avg_seg_prob,
+             'tau_concordant': concordant,
+             'tau_discordant': discordant,
+             'tau_valid_pairs': valid_pairs,
+             'tau_all_pairs': pairs_overall,
+             'tau_original_ties': original_ties_overall,
+             'tau_predicted_ties': predicted_ties_overall,
+             'tau_predicted_ties_per': predicted_ties_avg,
+             'tau_sentence_ties': sentences_with_ties,
+             'tau_sentence_ties_per' : sentence_ties_avg
              
              }
 
@@ -151,6 +151,40 @@ def best_predicted_vs_human(predicted_rank_vectors, original_rank_vectors):
         percentages["bph_" + str(rank)] = round(100.00 * counts / n , 2 )
         total += counts
     return percentages
+
+def avg_predicted_ranked(predicted_rank_vectors, original_rank_vectors, **kwargs):
+    
+    """
+    It will provide the average human rank of the item chosen by the system as best
+    @param predicted_rank_vectors: a list of lists containing integers representing the predicted ranks, one ranking for each segment
+    @type predicted_rank_vectors: [Ranking, ..] 
+    @param original_rank_vectors:  a list of the names of the attribute containing the human rank, one ranking for each segment
+    @type original_rank_vectors: [Ranking, ..]
+    @return: a dictionary with the name of the metric and its value
+    @rtype: {string, float}
+    """
+    
+    original_ranks = []
+    
+    for predicted_rank_vector, original_rank_vector in zip(predicted_rank_vectors, original_rank_vectors):        
+        
+        #make sure vectors are normalized
+        predicted_rank_vector = predicted_rank_vector.normalize(ties='ceiling')
+        original_rank_vector = original_rank_vector.normalize(ties='ceiling')
+        
+        best_predicted_rank = min(predicted_rank_vector)
+        mapped_original_ranks = []
+        
+        for original_rank, predicted_rank in zip(original_rank_vector, predicted_rank_vector):
+            if predicted_rank == best_predicted_rank:
+                mapped_original_ranks.append(original_rank)
+        
+        #in case of ties get the worst one
+        original_ranks.append(max(mapped_original_ranks))
+    
+    return {'avg_predicted_ranked', average(original_ranks)}
+        
+        
 
 
 def avg_ndgc_err(predicted_rank_vectors, original_rank_vectors, **kwargs):
