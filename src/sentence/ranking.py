@@ -43,7 +43,7 @@ def _handle_tie(ranking_list, original_rank, modified_rank, ties_handling):
         return modified_rank+count-1, modified_rank+count-1
     if ties_handling == 'middle':
         return modified_rank-1 + (count+1.00)/2, modified_rank+count-1
-    return modified_rank
+    return modified_rank, modified_rank
 
 def normalize(ranking_list, **kwargs):
     '''
