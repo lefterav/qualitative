@@ -1,0 +1,295 @@
+
+# /
+/*.pyc
+/*~
+
+# /config/
+/config/*.pyc
+/config/*~
+
+# /data/
+/data/*.pyc
+/data/*~
+
+# /data/multiclass/
+/data/multiclass/*.pyc
+/data/multiclass/*~
+
+# /data/oo-preparation/
+/data/oo-preparation/*.pyc
+/data/oo-preparation/*~
+
+# /data/oo-preparation/scripts/
+/data/oo-preparation/scripts/*.pyc
+/data/oo-preparation/scripts/*~
+
+# /loonybin-mt-toolpack/
+/loonybin-mt-toolpack/*.pyc
+/loonybin-mt-toolpack/*~
+
+# /loonybin-mt-toolpack/analyzers/
+/loonybin-mt-toolpack/analyzers/*.pyc
+/loonybin-mt-toolpack/analyzers/*~
+
+# /loonybin-mt-toolpack/descriptors/
+/loonybin-mt-toolpack/descriptors/*.pyc
+/loonybin-mt-toolpack/descriptors/*~
+
+# /loonybin-mt-toolpack/descriptors/cdec/
+/loonybin-mt-toolpack/descriptors/cdec/*.pyc
+/loonybin-mt-toolpack/descriptors/cdec/*~
+
+# /loonybin-mt-toolpack/descriptors/chaski/
+/loonybin-mt-toolpack/descriptors/chaski/*.pyc
+/loonybin-mt-toolpack/descriptors/chaski/*~
+
+# /loonybin-mt-toolpack/descriptors/glc/
+/loonybin-mt-toolpack/descriptors/glc/*.pyc
+/loonybin-mt-toolpack/descriptors/glc/*~
+
+# /loonybin-mt-toolpack/descriptors/joshua/
+/loonybin-mt-toolpack/descriptors/joshua/*.pyc
+/loonybin-mt-toolpack/descriptors/joshua/*~
+
+# /loonybin-mt-toolpack/descriptors/lm/
+/loonybin-mt-toolpack/descriptors/lm/*.pyc
+/loonybin-mt-toolpack/descriptors/lm/*~
+
+# /loonybin-mt-toolpack/descriptors/memt/
+/loonybin-mt-toolpack/descriptors/memt/*.pyc
+/loonybin-mt-toolpack/descriptors/memt/*~
+
+# /loonybin-mt-toolpack/descriptors/metrics/
+/loonybin-mt-toolpack/descriptors/metrics/*.pyc
+/loonybin-mt-toolpack/descriptors/metrics/*~
+
+# /loonybin-mt-toolpack/descriptors/monocorpus/
+/loonybin-mt-toolpack/descriptors/monocorpus/*.pyc
+/loonybin-mt-toolpack/descriptors/monocorpus/*~
+
+# /loonybin-mt-toolpack/descriptors/moses/
+/loonybin-mt-toolpack/descriptors/moses/*.pyc
+/loonybin-mt-toolpack/descriptors/moses/*~
+
+# /loonybin-mt-toolpack/descriptors/parallelcorpus/
+/loonybin-mt-toolpack/descriptors/parallelcorpus/*.pyc
+/loonybin-mt-toolpack/descriptors/parallelcorpus/*~
+
+# /loonybin-mt-toolpack/descriptors/parsing/
+/loonybin-mt-toolpack/descriptors/parsing/*.pyc
+/loonybin-mt-toolpack/descriptors/parsing/*~
+
+# /loonybin-mt-toolpack/descriptors/samt/
+/loonybin-mt-toolpack/descriptors/samt/*.pyc
+/loonybin-mt-toolpack/descriptors/samt/*~
+
+# /loonybin-mt-toolpack/descriptors/visualization/
+/loonybin-mt-toolpack/descriptors/visualization/*.pyc
+/loonybin-mt-toolpack/descriptors/visualization/*~
+
+# /loonybin-mt-toolpack/descriptors/wordalign/
+/loonybin-mt-toolpack/descriptors/wordalign/*.pyc
+/loonybin-mt-toolpack/descriptors/wordalign/*~
+
+# /loonybin-mt-toolpack/helpers/
+/loonybin-mt-toolpack/helpers/*.pyc
+/loonybin-mt-toolpack/helpers/*~
+
+# /loonybin-mt-toolpack/workflows/
+/loonybin-mt-toolpack/workflows/*.pyc
+/loonybin-mt-toolpack/workflows/*~
+
+# /metawp2/
+/metawp2/*.pyc
+/metawp2/*~
+
+# /metawp2/converters/
+/metawp2/converters/*.pyc
+/metawp2/converters/*~
+
+# /metawp2/docs/
+/metawp2/docs/*.pyc
+/metawp2/docs/*~
+
+# /metawp2/joshua-workflows/
+/metawp2/joshua-workflows/*.pyc
+/metawp2/joshua-workflows/*~
+
+# /metawp2/joshua-workflows/tmp/
+/metawp2/joshua-workflows/tmp/*.pyc
+/metawp2/joshua-workflows/tmp/*~
+
+# /metawp2/lucy-code/
+/metawp2/lucy-code/*.pyc
+/metawp2/lucy-code/*~
+
+# /metawp2/originalformat/
+/metawp2/originalformat/*.pyc
+/metawp2/originalformat/*~
+
+# /metawp3/
+/metawp3/*.pyc
+/metawp3/*~
+
+# /metawp3/joshua-workflows/
+/metawp3/joshua-workflows/*.pyc
+/metawp3/joshua-workflows/*~
+
+# /papers/tasks/
+/papers/tasks/*.pyc
+/papers/tasks/*~
+
+# /src/
+/src/*.pyc
+
+# /src/classifier/
+/src/classifier/*.pyc
+
+# /src/exec/
+/src/exec/*.pyc
+
+# /src/experiment/
+/src/experiment/*.pyc
+
+# /src/experiment/autoranking/
+/src/experiment/autoranking/*.pyc
+
+# /src/experiment/autoranking/config/
+/src/experiment/autoranking/config/*.pyc
+
+# /src/experiment/qualityestimation/
+/src/experiment/qualityestimation/*.pyc
+
+# /src/experiment/setranking/
+/src/experiment/setranking/*.pyc
+
+# /src/experiment/tasks/
+/src/experiment/tasks/*.pyc
+
+# /src/experiment/utils/
+/src/experiment/utils/*.pyc
+
+# /src/featuregenerator/
+/src/featuregenerator/*.pyc
+/src/featuregenerator/*~
+/src/featuregenerator/*.history
+
+# /src/featuregenerator/bleu/
+/src/featuregenerator/bleu/*.pyc
+
+# /src/featuregenerator/iq/
+/src/featuregenerator/iq/*.pyc
+/src/featuregenerator/iq/*.dat
+
+# /src/featuregenerator/languagechecker/
+/src/featuregenerator/languagechecker/*.pyc
+
+# /src/featuregenerator/levenshtein/
+/src/featuregenerator/levenshtein/*.pyc
+
+# /src/featuregenerator/lm/
+/src/featuregenerator/lm/*.pyc
+
+# /src/featuregenerator/lm/morph/
+/src/featuregenerator/lm/morph/*.pyc
+
+# /src/featuregenerator/lm/srilm/
+/src/featuregenerator/lm/srilm/*.pyc
+
+# /src/featuregenerator/morph/
+/src/featuregenerator/morph/*.pyc
+
+# /src/featuregenerator/parser/
+/src/featuregenerator/parser/*.pyc
+
+# /src/featuregenerator/parser/berkeley/
+/src/featuregenerator/parser/berkeley/*.pyc
+
+# /src/featuregenerator/parser/berkeley/socket/
+/src/featuregenerator/parser/berkeley/socket/*.pyc
+
+# /src/featuregenerator/wer/
+/src/featuregenerator/wer/*.pyc
+
+# /src/gui/
+/src/gui/*.pyc
+
+# /src/gui/main/
+/src/gui/main/*.pyc
+
+# /src/io_utils/
+/src/io_utils/*.pyc
+
+# /src/io_utils/dataformat/
+/src/io_utils/dataformat/*.pyc
+
+# /src/io_utils/input/
+/src/io_utils/input/*.pyc
+
+# /src/io_utils/output/
+/src/io_utils/output/*.pyc
+
+# /src/io_utils/sax/
+/src/io_utils/sax/*.pyc
+
+# /src/sentence/
+/src/sentence/*.pyc
+/src/sentence/.history
+
+# /src/support/
+/src/support/*.pyc
+
+# /src/support/berkeley-server/
+/src/support/berkeley-server/*.pyc
+
+# /src/support/berkeley-server/lib/
+/src/support/berkeley-server/lib/*.pyc
+
+# /src/support/berkeley-server/src/
+/src/support/berkeley-server/src/*.pyc
+
+# /src/support/data_extraction/
+/src/support/data_extraction/*.pyc
+/src/support/data_extraction/*.history
+
+# /src/support/data_extraction/old/
+/src/support/data_extraction/old/*.pyc
+
+# /src/support/evaluation/
+/src/support/evaluation/*.pyc
+
+# /src/support/evaluation/wmt12/
+/src/support/evaluation/wmt12/*.pyc
+
+# /src/support/lm-server/
+/src/support/lm-server/*.pyc
+
+# /src/support/preprocessing/
+/src/support/preprocessing/*.pyc
+
+# /src/support/preprocessing/DG_conversion/
+/src/support/preprocessing/DG_conversion/*.pyc
+
+# /src/support/preprocessing/TaraXUformats/
+/src/support/preprocessing/TaraXUformats/*.pyc
+
+# /src/support/preprocessing/berlekeyParser_format/
+/src/support/preprocessing/berlekeyParser_format/*.pyc
+
+# /src/support/preprocessing/jcml/
+/src/support/preprocessing/jcml/*.pyc
+
+# /src/support/preprocessing/newstest2010_conversion/
+/src/support/preprocessing/newstest2010_conversion/*.pyc
+
+# /src/support/srilm/
+/src/support/srilm/*.pyc
+
+# /src/test/
+/src/test/*.pyc
+
+# /src/util/
+/src/util/*.pyc
+
+# /src/util/nonbreaking_prefixes/
+/src/util/nonbreaking_prefixes/*.pyc
