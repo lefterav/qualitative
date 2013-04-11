@@ -13,7 +13,7 @@ import sys
 This class reads txt file with translation system analysis for a few sentences
 and parses as much information as possible into a dictionary.
 """
-class ExtractMosesDecodingData:
+class MosesGlassboxExtractor:
     """
     @param filename: Name of input file with translation system analysis.
     @type filename: string
@@ -170,12 +170,13 @@ class ExtractMosesDecodingData:
         return attrs
         
 
-# check command line arguments
-parser = OptionParser()
-parser.add_option("-f", '--filename', dest='filename', \
-                    help="Name of input file with translation system analysis")
-options, args = parser.parse_args()
-if not options.filename: sys.exit('ERROR: Option --filename is missing!')
-#filename = '/media/DATA/Arbeit/DFKI/120402_sentence_analysis/SERVICE_EXCELLENCE_cust_euDE_4.txt.log'
-extractor = ExtractMosesDecodingData()
-print extractor.create_dicts_of_sentences_attributes(options.filename)
+if __name__ == '__main__':
+    # check command line arguments
+    parser = OptionParser()
+    parser.add_option("-f", '--filename', dest='filename', \
+                        help="Name of input file with translation system analysis")
+    options, args = parser.parse_args()
+    if not options.filename: sys.exit('ERROR: Option --filename is missing!')
+    #filename = '/media/DATA/Arbeit/DFKI/120402_sentence_analysis/SERVICE_EXCELLENCE_cust_euDE_4.txt.log'
+    extractor = ExtractMosesDecodingData()
+    print extractor.create_dicts_of_sentences_attributes(options.filename)
