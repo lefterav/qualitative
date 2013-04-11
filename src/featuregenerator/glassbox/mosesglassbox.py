@@ -178,5 +178,5 @@ if __name__ == '__main__':
     options, args = parser.parse_args()
     if not options.filename: sys.exit('ERROR: Option --filename is missing!')
     #filename = '/media/DATA/Arbeit/DFKI/120402_sentence_analysis/SERVICE_EXCELLENCE_cust_euDE_4.txt.log'
-    extractor = ExtractMosesDecodingData()
+    extractor = MosesGlassboxExtractor()
     print extractor.create_dicts_of_sentences_attributes(options.filename)
