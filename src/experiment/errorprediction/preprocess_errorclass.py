@@ -101,7 +101,7 @@ def sync_erroclass_ids():
         for source_sentence in sourcefile:
             old_id += 1
             
-            source_sentence = tokenizer.process_string(source_sentence)
+            #source_sentence = tokenizer.process_string(source_sentence)
                         
             uid = retrieve_uid(source_sentence, previous_ids, filters)
             if not uid:
