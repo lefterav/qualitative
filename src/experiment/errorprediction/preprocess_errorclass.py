@@ -9,14 +9,14 @@ Created on 11 Apr 2013
 import os
 from collections import namedtuple 
 from db import retrieve_uid, db_add_entries
-from featuregenerator.preprocessor import Detokenizer
 
 langpairs = [("de", "en"), ("en","de"), ("de","fr"), ("fr","de"), ("de","es"), ("es","de")]
 testsets = ["wmt"] #"openoffice", "wmt", "cust"]
 systems = ["moses", "lucy"]
 
-directory_annotated = "/home/elav01/taraxu_data/r2/evaluation/errorprediction/errorClassification/annotated"
-directory_source = "/home/elav01/taraxu_data/r2/evaluation/errorprediction/errorClassification"
+directory_annotated = os.path.expanduser("~/taraxu_data/r2/evaluation/errorprediction/errorClassification/annotated")
+directory_source = os.path.expanduser("~/taraxu_data/r2/evaluation/errorprediction/errorClassification")
+
 directory_hyp = directory_source
 directory_edit = directory_source
 
@@ -83,9 +83,10 @@ def get_filenames():
 
 
 def sync_erroclass_ids():
-    dbentries = []
+    dbentries = []  
     
-    
+    from featuregenerator.preprocessor import Tokenizer
+
     
     for task in get_filenames():
         previous_ids = []
@@ -94,10 +95,13 @@ def sync_erroclass_ids():
         filters = [('source_lang', task.sourcelang), 
                    ('target_lang', task.targetlang)]
         
+        tokenizer = Tokenizer(task.sourcelang)
         
         old_id = 0
         for source_sentence in sourcefile:
             old_id += 1
+            
+            source_sentence = tokenizer.process_string(source_sentence)
                         
             uid = retrieve_uid(source_sentence, previous_ids, filters)
             if not uid:
