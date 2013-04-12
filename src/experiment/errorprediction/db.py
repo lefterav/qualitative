@@ -12,6 +12,7 @@ Created on 11 Apr 2013
 
 import MySQLdb as mdb
 import sys
+import cgi
 
 MYSQL_HOST = 'localhost'
 MYSQL_USER = 'features_fetcher'
@@ -25,7 +26,7 @@ def db_add_entries(dbentries, table):
     Receive a list of tuples (column, value) and insert them to the specified mysql table
     """
     
-    con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB)
+    con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB,  charset="utf8")
     
     with con:
         cur = con.cursor()
@@ -34,13 +35,46 @@ def db_add_entries(dbentries, table):
             values = [] 
             for col, value in dbentry:
                 cols.append(col)
-                values.append("'{}'".format(value))
+                values.append("{}".format(value))
             colquery = ",".join(cols)
-            valquery = ",".join(values)
+            valquery = "','".join(values)
                         
-            cur.execute("INSERT INTO %s (%s) VALUES (%s)", table, colquery, valquery)
+            query = "INSERT INTO `{}` ({}) VALUES ('{}')".format(table, colquery, valquery)
+            print query
+            cur.execute(query)
+            
             print ">",
             
+
+def db_add_tokenized_sources():
+    con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB,  charset="utf8")
+    
+    from featuregenerator.preprocessor import Tokenizer
+    import HTMLParser
+    
+    htmlparser = HTMLParser.HTMLParser()
+    
+    with con:
+        #fetch all sentences and their languages
+        cur = con.cursor()
+        query = "SELECT `id`, `source_sentence`, `source_lang` FROM `translation_all` ORDER BY `id`,`source_lang`"
+        cur.execute(query)
+        
+        tokenizer = None
+        
+        for sid, source_sentence, source_lang in cur.fetchall():
+            
+            #load the tokenizer if needed
+            if not tokenizer or tokenizer.lang != source_lang:
+                tokenizer = Tokenizer(source_lang)
+                
+            escaped_sentence = htmlparser.unescape(source_sentence)
+            processed_sentence = tokenizer.process_string(escaped_sentence)
+            reescaped_sentence = htmlparser.unescape(processed_sentence)
+            
+            query = "UPDATE `featuresR2`.`translation_all` SET `source_sentence_tok` = %s WHERE `translation_all`.`id` = %s"
+            cur.execute(query, (reescaped_sentence, sid))
+        
 
 def retrieve_uid(source_sentence, previous_ids=[], filters=[]):
     """
@@ -56,23 +90,29 @@ def retrieve_uid(source_sentence, previous_ids=[], filters=[]):
     """
     
     con = None
+#    print source_sentence
+    unprocessed_sentence = source_sentence
     source_sentence = source_sentence.strip()
+#    print source_sentence
+    
     filterquery = ''
     
     if filters:
         filterstring = " AND ".join(["{} = '{}'".format(col, val) for col,val in filters]) 
         filterquery = "AND {}".format(filterstring)
     
+    
     try:
-        con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB)
+        con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB, charset="utf8")
         cur = con.cursor()
         if previous_ids:
-            print "SELECT sentence_id FROM translation_all WHERE source_sentence LIKE '%s' AND sentence_id NOT IN %s {} ORDER BY id".format(filterquery) % (source_sentence, ",".join(previous_ids))
-            cur.execute("SELECT sentence_id FROM translation_all WHERE source_sentence LIKE %s AND sentence_id NOT IN %s {} ORDER BY id".format(filterquery), (source_sentence, ",".join(previous_ids)))
+            query = "SELECT sentence_id FROM translation_all WHERE source_sentence_tok LIKE %s AND sentence_id NOT IN ('{}') {} ORDER BY id".format("','".join(previous_ids), filterquery)
+            params = source_sentence  
         else:
-            print "SELECT sentence_id FROM translation_all WHERE source_sentence LIKE '%s' {} ORDER BY id".format(filterquery) % (source_sentence)
-            cur.execute("SELECT sentence_id FROM translation_all WHERE source_sentence LIKE %s {} ORDER BY id".format(filterquery), (source_sentence))
+            query = "SELECT sentence_id FROM translation_all WHERE source_sentence_tok LIKE %s {} ORDER BY id".format(filterquery)
+            params = source_sentence
             
+        cur.execute(query, params)
         uid = cur.fetchone()
 #        print uid
     except mdb.Error, e:
@@ -84,12 +124,16 @@ def retrieve_uid(source_sentence, previous_ids=[], filters=[]):
     
     try:
         uid = uid[0]
-        print "<",
+#        print "<",
         return uid
     except:
+        print
         print "v",
+        print unprocessed_sentence
+        print source_sentence
+        print query
         return None
     
 if __name__ == '__main__':
-    print retrieve_uid("%Barack Obama%")
+    db_add_tokenized_sources()
         
