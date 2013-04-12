@@ -14,7 +14,7 @@ import MySQLdb as mdb
 import sys
 import cgi
 
-MYSQL_HOST = 'localhost'
+MYSQL_HOST = 'berlin-188.b.dfki.de'
 MYSQL_USER = 'features_fetcher'
 MYSQL_PASSWORD = 'dDWyadA3xHQB79yP'
 MYSQL_DB = 'featuresR2'
@@ -70,13 +70,13 @@ def db_add_tokenized_sources():
                 
             escaped_sentence = htmlparser.unescape(source_sentence)
             processed_sentence = tokenizer.process_string(escaped_sentence)
-            reescaped_sentence = htmlparser.unescape(processed_sentence)
+            #reescaped_sentence = htmlparser.unescape(processed_sentence)
             
             query = "UPDATE `featuresR2`.`translation_all` SET `source_sentence_tok` = %s WHERE `translation_all`.`id` = %s"
-            cur.execute(query, (reescaped_sentence, sid))
+            cur.execute(query, (processed_sentence, sid))
         
 
-def retrieve_uid(source_sentence, previous_ids=[], filters=[]):
+def retrieve_uid(source_sentence, previous_ids=[], filters=[], **kwargs):
     """
     Retrieve the unique id of the sentence from the database, 
     or return fals
@@ -88,6 +88,13 @@ def retrieve_uid(source_sentence, previous_ids=[], filters=[]):
     @return: the unique ID of the sentence or False
     @rtype: str or None 
     """
+    
+    tokenized = kwargs.setdefault("tokenized", True)    
+    
+    if tokenized: 
+        table = "source_sentence_tok"
+    else:
+        table = "source_sentence"
     
     con = None
 #    print source_sentence
@@ -106,10 +113,10 @@ def retrieve_uid(source_sentence, previous_ids=[], filters=[]):
         con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB, charset="utf8")
         cur = con.cursor()
         if previous_ids:
-            query = "SELECT sentence_id FROM translation_all WHERE source_sentence_tok LIKE %s AND sentence_id NOT IN ('{}') {} ORDER BY id".format("','".join(previous_ids), filterquery)
+            query = "SELECT sentence_id FROM translation_all WHERE {} LIKE %s AND sentence_id NOT IN ('{}') {} ORDER BY id".format(table, "','".join(previous_ids), filterquery)
             params = source_sentence  
         else:
-            query = "SELECT sentence_id FROM translation_all WHERE source_sentence_tok LIKE %s {} ORDER BY id".format(filterquery)
+            query = "SELECT sentence_id FROM translation_all WHERE {} LIKE %s {} ORDER BY id".format(table, filterquery)
             params = source_sentence
             
         cur.execute(query, params)
