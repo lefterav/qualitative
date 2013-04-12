@@ -13,7 +13,7 @@ Created on 11 Apr 2013
 import MySQLdb as mdb
 import sys
 
-MYSQL_HOST = '172.16.150.188'
+MYSQL_HOST = 'localhost'
 MYSQL_USER = 'features_fetcher'
 MYSQL_PASSWORD = 'dDWyadA3xHQB79yP'
 MYSQL_DB = 'featuresR2'
@@ -74,7 +74,7 @@ def retrieve_uid(source_sentence, previous_ids=[], filters=[]):
             cur.execute("SELECT sentence_id FROM translation_all WHERE source_sentence LIKE %s {} ORDER BY id".format(filterquery), (source_sentence))
             
         uid = cur.fetchone()
-        print uid
+#        print uid
     except mdb.Error, e:
         print "Error %d: %s" % (e.args[0],e.args[1])
         sys.exit(1)
