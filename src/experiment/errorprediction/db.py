@@ -13,7 +13,7 @@ Created on 11 Apr 2013
 import MySQLdb as mdb
 import sys
 
-MYSQL_HOST = 'localhost' #172.16.150.188'
+MYSQL_HOST = '172.16.150.188'
 MYSQL_USER = 'features_fetcher'
 MYSQL_PASSWORD = 'dDWyadA3xHQB79yP'
 MYSQL_DB = 'featuresR2'
@@ -67,11 +67,11 @@ def retrieve_uid(source_sentence, previous_ids=[], filters=[]):
         con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB)
         cur = con.cursor()
         if previous_ids:
-            print "SELECT sentence_id FROM translation_all WHERE source_sentence LIKE '%s' AND sentence_id NOT IN (%s) %s ORDER BY id" % (source_sentence, ",".join(previous_ids), filterquery)
-            cur.execute("SELECT sentence_id FROM translation_all WHERE source_sentence LIKE \"%s\" AND sentence_id NOT IN (%s) %s ORDER BY id", (source_sentence, ",".join(previous_ids), filterquery))
+            print "SELECT sentence_id FROM translation_all WHERE source_sentence LIKE '%s' AND sentence_id NOT IN %s {} ORDER BY id".format(filterquery) % (source_sentence, ",".join(previous_ids))
+            cur.execute("SELECT sentence_id FROM translation_all WHERE source_sentence LIKE %s AND sentence_id NOT IN %s {} ORDER BY id".format(filterquery), (source_sentence, ",".join(previous_ids)))
         else:
-            print "SELECT sentence_id FROM translation_all WHERE source_sentence LIKE '%s' %s ORDER BY id" % (source_sentence, filterquery)
-            cur.execute("SELECT sentence_id FROM translation_all WHERE source_sentence LIKE '%s' %s ORDER BY id", (source_sentence[-15:], filterquery))
+            print "SELECT sentence_id FROM translation_all WHERE source_sentence LIKE '%s' {} ORDER BY id".format(filterquery) % (source_sentence)
+            cur.execute("SELECT sentence_id FROM translation_all WHERE source_sentence LIKE %s {} ORDER BY id".format(filterquery), (source_sentence))
             
         uid = cur.fetchone()
         print uid
