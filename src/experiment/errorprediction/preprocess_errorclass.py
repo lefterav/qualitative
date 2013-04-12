@@ -9,6 +9,7 @@ Created on 11 Apr 2013
 import os
 from collections import namedtuple 
 from db import retrieve_uid, db_add_entries
+from featuregenerator.preprocessor import Detokenizer
 
 langpairs = [("de", "en"), ("en","de"), ("de","fr"), ("fr","de"), ("de","es"), ("es","de")]
 testsets = ["wmt"] #"openoffice", "wmt", "cust"]
@@ -23,7 +24,6 @@ pattern_annotated = "{sourcelang}-{targetlang}.{testset}.{system}.sent-error-rat
 pattern_source = "{sourcelang}-{targetlang}.{testset}.{system}.source"
 pattern_edit = "{sourcelang}-{targetlang}.{testset}.{system}.edit"
 pattern_hyp = "{sourcelang}-{targetlang}.{testset}.{system}.hyp"
-
 
 def get_filenames():
     tasks = []
@@ -78,23 +78,27 @@ def get_filenames():
                 
     return tasks
 
-
+    
         
 
 
 def sync_erroclass_ids():
-    previous_ids = []
     dbentries = []
+    
+    
+    
     for task in get_filenames():
+        previous_ids = []
         sourcefile = open(task.filename_source, 'r')
     
         filters = [('source_lang', task.sourcelang), 
                    ('target_lang', task.targetlang)]
         
+        
         old_id = 0
         for source_sentence in sourcefile:
             old_id += 1
-            
+                        
             uid = retrieve_uid(source_sentence, previous_ids, filters)
             if not uid:
                 continue

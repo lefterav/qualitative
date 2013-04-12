@@ -93,6 +93,11 @@ class CommandlinePreprocessor(Preprocessor):
         self.process.stdout.flush()
         
         output = self.process.stdout.readline().strip()
+        
+        #some preprocessors occasionally return an empty string. In that case read once more
+        if output == "" and len(string) > 1:
+            output = self.process.stdout.readline().strip()
+        
         return output
     
     def close(self):
@@ -159,6 +164,14 @@ class Tokenizer(CommandlinePreprocessor):
         path = os.path.join(path, "tokenizer.perl")
         command_template = "perl {path} -b -l {lang}"
         super(Tokenizer, self).__init__(path, lang, {}, command_template)
+
+class Detokenizer(CommandlinePreprocessor):
+    def __init__(self, lang):
+        path = util.__path__[0]
+        path = os.path.join(path, "detokenizer.perl")
+        command_template = "perl {path} -l {lang}"
+        super(Detokenizer, self).__init__(path, lang, {}, command_template)
+    
 
 class Truecaser(CommandlinePreprocessor):
     def __init__(self, lang, model):
