@@ -81,19 +81,19 @@ def get_filenames():
 
     
 def add_errorclass_per_sentence():
-    anotfile = open(pattern_annotated, 'r')
-    
-    for line in anotfile:
-        pattern = "(\d*)::(\w*):\s*(\d*)"
-        try:
-            old_id, errtype, count = re.findall(pattern, line)[0]
-        except IndexError:
-            continue
-        
-        dbentry = (errtype, int(count))
-        dbfilter = ("id", old_id)
-        
-        db_update("auto_error_classification",dbentry,dbfilter)
+    for task in get_filenames():
+        anotfile = open(task.filename_annotated, 'r')
+        for line in anotfile:
+            pattern = "(\d*)::(\w*):\s*(\d*)"
+            try:
+                old_id, errtype, count = re.findall(pattern, line)[0]
+            except IndexError:
+                continue
+            
+            dbentry = (errtype, int(count))
+            dbfilter = ("id", old_id)
+            
+            db_update("auto_error_classification",dbentry,dbfilter)
 
 
 def sync_erroclass_ids():
