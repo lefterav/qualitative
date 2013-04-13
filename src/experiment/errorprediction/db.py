@@ -21,6 +21,9 @@ MYSQL_DB = 'featuresR2'
 
 
 
+def retrieve_manual_error_classification(uid):
+    pass
+
 def db_add_entries(dbentries, table):
     """
     Receive a list of tuples (column, value) and insert them to the specified mysql table
@@ -82,7 +85,27 @@ def db_add_tokenized_sources():
             
             query = "UPDATE `featuresR2`.`translation_all` SET `source_sentence_tok` = %s WHERE `translation_all`.`id` = %s"
             cur.execute(query, (processed_sentence, sid))
+
+
+
+def retrieve_auto_error_classification(uid):
+    con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB,  charset="utf8")
+    with con:
+        #fetch all sentences and their languages
+        cur = con.cursor()
+        query = """SELECT  `Wer` ,  `Rper` ,  `Hper` ,  `rINFer` ,  `hINFer` ,  `rRer` ,  `hRer` ,  `MISer` ,  `EXTer` ,  `rLEXer` , `hLEXer` ,  `brINFer` ,  `bhINFer` ,  `brRer` ,  `bhRer` ,  `bMISer` ,  `bEXTer` ,  `brLEXer` ,  `bhLEXer`  
+                    FROM  `auto_error_classification` a 
+                    JOIN `translation_all` t ON (a.old_id =t.old_id) 
+                    WHERE `sentence_id` = %s"""
+        cur.execute(query, uid)
+        result = cur.fetchone()
+        desc = cur.description[0]
         
+        results = dict([(key, value) for key, value in zip(desc, result)])
+        
+    return results
+    
+    
 
 def retrieve_uid(source_sentence, previous_ids=[], filters=[], **kwargs):
     """
