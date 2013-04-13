@@ -44,8 +44,16 @@ def db_add_entries(dbentries, table):
             cur.execute(query)
             
             print ">",
-            
-
+        
+def db_update(table, dbentry, dbfilter):
+    con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB,  charset="utf8")
+    with con:
+        cur = con.cursor()
+        query = "UPDATE `featuresR2`.`{}` SET `{}` = {} WHERE `{}` = {}".format(table, dbentry[0], dbfilter[0], dbfilter[1])
+        cur.execute(query)
+        print ".",
+    
+    
 def db_add_tokenized_sources():
     con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB,  charset="utf8")
     
