@@ -21,7 +21,7 @@ directory_source = os.path.expanduser("~/taraxu_data/r2/evaluation/errorpredicti
 directory_hyp = directory_source
 directory_edit = directory_source
 
-pattern_annotated = "{sourcelang}-{targetlang}.{testset}.{system}.sent-error-rates"
+pattern_annotated = "{sourcelang}-{targetlang}.{testset}.{system}.hyp.sent-error-rates"
 pattern_source = "{sourcelang}-{targetlang}.{testset}.{system}.source"
 pattern_edit = "{sourcelang}-{targetlang}.{testset}.{system}.edit"
 pattern_hyp = "{sourcelang}-{targetlang}.{testset}.{system}.hyp"
