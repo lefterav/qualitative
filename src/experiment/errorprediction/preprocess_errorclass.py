@@ -7,8 +7,9 @@ Created on 11 Apr 2013
 '''
 
 import os
+import re
 from collections import namedtuple 
-from db import retrieve_uid, db_add_entries
+from db import retrieve_uid, db_add_entries, db_update
 
 langpairs = [("de", "en"), ("en","de"), ("de","fr"), ("fr","de"), ("de","es"), ("es","de")]
 testsets = ["wmt"] #"openoffice", "wmt", "cust"]
@@ -79,7 +80,20 @@ def get_filenames():
     return tasks
 
     
+def add_errorclass_per_sentence():
+    anotfile = open(pattern_annotated, 'r')
+    
+    for line in anotfile:
+        pattern = "(\d*)::(\w*):\s*(\d*)"
+        try:
+            old_id, errtype, count = re.findall(pattern, line)[0]
+        except IndexError:
+            continue
         
+        dbentry = (errtype, int(count))
+        dbfilter = ("id", old_id)
+        
+        db_update("auto_error_classification",dbentry,dbfilter)
 
 
 def sync_erroclass_ids():
@@ -128,6 +142,7 @@ def sync_erroclass_ids():
             
 
 if __name__ == '__main__':
-    sync_erroclass_ids()
+#    sync_erroclass_ids()
+    add_errorclass_per_sentence()
     
     
