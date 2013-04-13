@@ -50,6 +50,11 @@ def extract_glassbox_features_moses(source_filename, target_filename, log_filena
         attributes = features_dict
         attributes["uid"] = uid
         
+#        auto_error_class_attributes = retrieve_auto_error_classification(uid)
+        manual_error_class_attributes = 
+        #attributes.update(auto_error_class_attributes)
+        
+        
         #create ParallelSentence object and write to XML
         parallelsentence = ParallelSentence(SimpleSentence(source_sentence),
                                             SimpleSentence(target_sentence),
