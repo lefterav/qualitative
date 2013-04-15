@@ -92,15 +92,19 @@ class MosesGlassboxExtractor:
         
         # get 'translation options spanning'
         traOptSpa = self.traOptSpa.findall(transPart)
-        if not traOptSpa: sys.exit('translation options spanning not found!')
-        for item in traOptSpa:
-            attrs['transl_options_spanning', item[0], item[1]] = item[2]
+        if not traOptSpa: 
+            sys.stderr.write('translation options spanning not found!\n')
+        else:
+            for item in traOptSpa:
+                attrs['transl_options_spanning', item[0], item[1]] = item[2]
         
         # get 'future cost'
         futCos = self.futCos.findall(transPart)
-        if not futCos: sys.exit('future cost not found!')
-        for item in futCos:
-            attrs['future_cost', item[0], item[1]] = item[2]
+#        if not futCos: 
+#            sys.stderr.write('future cost not found!')
+#        else:
+#            for item in traOptSpa:
+#                attrs['future_cost', item[0], item[1]] = item[2]
         
         # get 'total hypothesis considered'
         attrs['total_hypothesis'] = self.totHypCon.search(transPart).group(1)
@@ -121,26 +125,26 @@ class MosesGlassboxExtractor:
         attrs['hypothesis_pruned'] = self.hypPru.search(transPart).group(1)
         
         # get 'time to collect options'
-        attrs['time_collect_opt'] = self.timColOpt.search(transPart).group(1,2)
-        
-        # get 'time to create hypothesis'
-        attrs['time_create_hypothesis'] = self.timCreHyp.search(transPart).group(1,2)
-        
-        # get 'time to estimate score'
-        attrs['time_estimate_score'] = self.timEstSco.search(transPart).group(1,2)
-        
-        # get 'time to calculate lm'
-        attrs['time_calculate_lm'] = self.timCalLm.search(transPart).group(1,2)
-        
-        # get 'time to other hypothesis score'
-        attrs['time_other_hypothesis_score'] = self.timOthHypSco \
-                                                  .search(transPart).group(1,2)
-        
-        # get 'time to manage stacks'
-        attrs['time_manage_stacks'] = self.timManSta.search(transPart).group(1,2)
-        
-        # get 'time to other'
-        attrs['time_other'] = self.timOth.search(transPart).group(1,2)
+#        attrs['time_collect_opt'] = self.timColOpt.search(transPart).group(1,2)
+#        
+#        # get 'time to create hypothesis'
+#        attrs['time_create_hypothesis'] = self.timCreHyp.search(transPart).group(1,2)
+#        
+#        # get 'time to estimate score'
+#        attrs['time_estimate_score'] = self.timEstSco.search(transPart).group(1,2)
+#        
+#        # get 'time to calculate lm'
+#        attrs['time_calculate_lm'] = self.timCalLm.search(transPart).group(1,2)
+#        
+#        # get 'time to other hypothesis score'
+#        attrs['time_other_hypothesis_score'] = self.timOthHypSco \
+#                                                  .search(transPart).group(1,2)
+#        
+#        # get 'time to manage stacks'
+#        attrs['time_manage_stacks'] = self.timManSta.search(transPart).group(1,2)
+#        
+#        # get 'time to other'
+#        attrs['time_other'] = self.timOth.search(transPart).group(1,2)
         
         # get 'total source words'
         attrs['total_source_words'] = self.totSouWor.search(transPart).group(1)
@@ -155,14 +159,14 @@ class MosesGlassboxExtractor:
         attrs['best_trans_total'] = self.besTraTot.search(transPart).group(1)
         
         # get 'best translation - values' 
-        attrs['best_trans_values'] = re.findall('([\d.-]+)', self.besTraVal \
-                                                   .search(transPart).group(1))
-        
-        # get 'pC parameters'
-        attrs['pC'] = self.pC.findall(transPart)
-        
-        # get 'c parameters'
-        attrs['c'] = self.c.findall(transPart)
+#        attrs['best_trans_values'] = re.findall('([\d.-]+)', self.besTraVal \
+#                                                   .search(transPart).group(1))
+#        
+#        # get 'pC parameters'
+#        attrs['pC'] = self.pC.findall(transPart)
+#        
+#        # get 'c parameters'
+#        attrs['c'] = self.c.findall(transPart)
         
         attrsReadable = '\n'.join(['%s = %s' % (str(item), str(value)) for item, value in attrs.items()])
         print attrsReadable, '\n'
