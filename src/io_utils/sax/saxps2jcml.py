@@ -45,7 +45,9 @@ class IncrementalJcml(object):
         
     def add_parallelsentence(self, parallelsentence):
         self.generator.characters("\n\t")
-        self.generator.startElement(self.TAG["sent"], parallelsentence.get_attributes())
+        #convert all attribute values to string, otherwise it breaks
+        attributes = dict([(key,str(val)) for key,val in parallelsentence.get_attributes().iteritems()])
+        self.generator.startElement(self.TAG["sent"], attributes)
         
         src = parallelsentence.get_source()
         
