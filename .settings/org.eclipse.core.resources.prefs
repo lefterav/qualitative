@@ -1,5 +1,6 @@
-#Sat Dec 11 18:27:29 CET 2010
 eclipse.preferences.version=1
+encoding//src/experiment/errorprediction/db.py=utf-8
+encoding//src/featuregenerator/hjerson.py=utf8
 encoding//src/io/input/orangereader.py=utf-8
 encoding//src/io/input/schemabasedreader.py=utf-8
 encoding//src/io/input/xmlreader.py=utf-8
@@ -19,3 +20,4 @@ encoding//src/support/sort_judgments.py=utf-8
 encoding//src/tara-noorange.py=utf-8
 encoding//src/tara-sax.py=utf-8
 encoding//src/tara.py=utf-8
+encoding//src/util/treetaggerwrapper.py=utf-8
