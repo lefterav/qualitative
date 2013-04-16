@@ -13,11 +13,13 @@ Created on 11 Apr 2013
 import MySQLdb as mdb
 import sys
 import cgi
+from collections import OrderedDict
 
 MYSQL_HOST = 'berlin-188.b.dfki.de'
 MYSQL_USER = 'features_fetcher'
 MYSQL_PASSWORD = 'dDWyadA3xHQB79yP'
 MYSQL_DB = 'featuresR2'
+
 
 
 
@@ -87,7 +89,35 @@ def db_add_tokenized_sources():
             
             query = "UPDATE `featuresR2`.`translation_all` SET `source_sentence_tok` = %s WHERE `translation_all`.`id` = %s"
             cur.execute(query, (processed_sentence, sid))
+
+
+def retrieve_manual_error_classification(uid):
+    pass
+
+
+
+def retrieve_auto_error_classification(uid, system, testset, source_lang, target_lang):
+    con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB,  charset="utf8")
+    with con:
+        #fetch all sentences and their languages
+        cur = con.cursor()
+        query = """SELECT  `Wer` ,  `Rper` ,  `Hper` ,  `rINFer` ,  `hINFer` ,  `rRer` ,  `hRer` ,  `MISer` ,  `EXTer` ,  `rLEXer` , `hLEXer` ,  `brINFer` ,  `bhINFer` ,  `brRer` ,  `bhRer` ,  `bMISer` ,  `bEXTer` ,  `brLEXer` ,  `bhLEXer`  
+                    FROM  `auto_error_classification`  
+                    WHERE `sentence_id` = %s
+                    AND `system` = %s
+                    AND `testset` = %s
+                    AND `source_lang` = %s
+                    AND `target_lang` = %s
+                    """
+        cur.execute(query, (uid, system, testset, source_lang, target_lang))
+        result = cur.fetchone()
+        desc = [item[0] for item in cur.description]
         
+        results = OrderedDict([(key, int(value)) for key, value in zip(desc, result)])
+        
+    return results
+    
+    
 
 def retrieve_uid(source_sentence, previous_ids=[], filters=[], **kwargs):
     """
@@ -155,5 +185,5 @@ def retrieve_uid(source_sentence, previous_ids=[], filters=[], **kwargs):
         return None
     
 if __name__ == '__main__':
-    db_add_tokenized_sources()
+    print retrieve_auto_error_classification('wmt10-idnes.cz/2009/12/10/74900-1', 'moses', 'wmt', 'de', 'en')
         

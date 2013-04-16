@@ -12,8 +12,7 @@ class Ranker(object):
     def __init__(self, **kwargs):
         '''
         Constructor
-        '''
-        
+        '''    
     def set_data(self, **kwargs):
         pass
     
@@ -23,6 +22,8 @@ class Ranker(object):
     def train(self, **kwargs):
         pass
     
+    def __reduce__(self):
+        pass
     
         
 
