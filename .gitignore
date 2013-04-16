@@ -293,3 +293,5 @@
 
 # /src/util/nonbreaking_prefixes/
 /src/util/nonbreaking_prefixes/*.pyc
+
+.settings/org.eclipse.core.resources.prefs
