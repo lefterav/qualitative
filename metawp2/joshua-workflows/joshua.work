@@ -1,1 +1,354 @@
-/home/elav01/taraxu_tools/loonybin/tool-packs/machine-translation/workflows/joshua.work
+#!/usr/bin/env loon
+
+home.baseDir=/home/elav01/experiments/metawp2/joshua
+home.pathDir=/home/elav01/tools/loonybin/paths
+
+
+[NOTES]
+
+[MACHINES]
+localhost: HomeCommandLine
+
+
+[VERTICES]
+FS-parallel-corpus: ON localhost efs
+   fCorpus=/share/emplus/corpora/Acquis/aligned-corpus/de-en/acquis.de-en.de
+   eCorpus=/share/emplus/corpora/Acquis/aligned-corpus/de-en/acquis.de-en.en
+   monoCorpus=/share/emplus/corpora/Acquis/aligned-corpus/de-en/acquis.de-en.en
+   dev.e=/share/emplus/shared-tasks/wmt10/data/dev/test2008.enshared-tasks/wmt10/data/dev/test2008.en
+   dev.f=/share/emplus/shared-tasks/wmt10/data/dev/test2008.enshared-tasks/wmt10/data/dev/test2008.de
+   paramConfigFile=/home/elav01/experiments/metawp2/joshua/de-en/params.txt
+
+1-BuildLM.500-tokenize-lm: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   numSplitPieces=1
+
+   FROM 2-Preproc.100-tokenize-e
+     targetLanguageSuffix <- targetLanguageSuffix
+
+   FROM FS-parallel-corpus
+     inputCorpus < monoCorpus
+
+1-BuildLM.510-lowercase-lm: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
+
+   FROM 1-BuildLM.500-tokenize-lm
+     tokenizedCorpus < tokenizedCorpus
+
+1-BuildLM.530-build-lm: ON localhost machine-translation/descriptors/lm/BuildLanguageModel.py
+   order=5
+   smoothingType=kndiscount
+   interpolate=true
+
+   FROM 1-BuildLM.510-lowercase-lm
+     corpusIn < normalizedCorpus
+
+2-Preproc.100-tokenize-e: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   targetLanguageSuffix=en
+   numSplitPieces=1
+
+   FROM FS-parallel-corpus
+     inputCorpus < eCorpus
+
+2-Preproc.110-tokenize-f: ON localhost machine-translation/descriptors/joshua/TokenizerJoshua.py
+   targetLanguageSuffix=fr
+   numSplitPieces=1
+
+   FROM FS-parallel-corpus
+     inputCorpus < fCorpus
+
+2-Preproc.150-lowercase-e: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
+
+   FROM 2-Preproc.100-tokenize-e
+     tokenizedCorpus < tokenizedCorpus
+
+2-Preproc.160-lowercase-f: ON localhost machine-translation/descriptors/joshua/LowercaserJoshua.py
+
+   FROM 2-Preproc.110-tokenize-f
+     tokenizedCorpus < tokenizedCorpus
+
+2-Preproc.190-concatenate-f: ON localhost machine-translation/descriptors/monocorpus/Cat.py
+   numFiles=2
+
+   FROM FS-parallel-corpus
+     corpus1 < fCorpus
+     corpus2 < dev.f
+
+3-BuildTM.200-subsample-for-tm: ON localhost machine-translation/descriptors/joshua/SubsampleJoshua.py
+   ratio=0.9
+   heapSizeInMegs=16000
+
+   FROM 2-Preproc.160-lowercase-f
+     foreignCorpus < normalizedCorpus
+
+   FROM 2-Preproc.150-lowercase-e
+     englishCorpus < normalizedCorpus
+
+   FROM 2-Preproc.190-concatenate-f
+     testData < corpusOut
+
+3-BuildTM.300-berkeley-aligner: ON localhost machine-translation/descriptors/wordalign/BerkeleyAligner.py
+   heapSizeInMegs=16G
+   otherJVMOptions=-XX:+UseCompressedOops
+   numThreads=8
+
+   FROM 3-BuildTM.200-subsample-for-tm
+     englishCorpus < englishSubsample
+     foreignCorpus < foreignSubsample
+
+3-BuildTM.400-build-suffix-array-for-tm: ON localhost machine-translation/descriptors/joshua/SuffixArrayBuilderJoshua.py
+   JVMOptions=-Xmx16G
+
+   FROM 3-BuildTM.300-berkeley-aligner
+     alignmentMap < alignmentMap
+
+   FROM 3-BuildTM.200-subsample-for-tm
+     englishCorpus < englishSubsample
+     foreignCorpus < foreignSubsample
+
+3-BuildTM.410-extract-hiero-grammar: ON localhost machine-translation/descriptors/joshua/GrammarExtractorJoshua.py
+   JVMOptions=-Xmx16G
+
+   FROM 3-BuildTM.400-build-suffix-array-for-tm
+     englishBinaryCorpus < englishBinaryCorpus
+     commonSymbolTable < commonSymbolTable
+     alignmentGrids < alignmentGrids
+     foreignBinaryCorpus < foreignBinaryCorpus
+     englishSuffixArray < englishSuffixArray
+     lexprobs < lexprobs
+     foreignSuffixArray < foreignSuffixArray
+
+   FROM 3-BuildTM.200-subsample-for-tm
+     englishCorpus < englishSubsample
+
+4-TrainRecaser.600-split-recasing-data: ON localhost machine-translation/descriptors/parallelcorpus/ParallelSplit.py
+   nHeadLines=600
+
+   FROM 1-BuildLM.500-tokenize-lm
+     eCorpus < tokenizedCorpus
+
+   FROM 1-BuildLM.510-lowercase-lm
+     fCorpus < normalizedCorpus
+
+4-TrainRecaser.605-subsample-for-recaser: ON localhost machine-translation/descriptors/joshua/SubsampleJoshua.py
+   ratio=0.9
+   heapSizeInMegs=16000
+
+   FROM 2-Preproc.100-tokenize-e
+     testData < tokenizedCorpus
+
+   FROM 4-TrainRecaser.600-split-recasing-data
+     foreignCorpus < fTail
+     englishCorpus < eTail
+
+4-TrainRecaser.610-generate-mono-alignment: ON localhost machine-translation/descriptors/parallelcorpus/GenerateMonotoneAlignment.py
+
+   FROM 4-TrainRecaser.605-subsample-for-recaser
+     eCorpus < englishSubsample
+     fCorpus < foreignSubsample
+
+4-TrainRecaser.620-build-suffix-array-for-recaser: ON localhost machine-translation/descriptors/joshua/SuffixArrayBuilderJoshua.py
+   JVMOptions=-Xmx16000M
+
+   FROM 4-TrainRecaser.610-generate-mono-alignment
+     alignmentMap < alignment
+
+   FROM 4-TrainRecaser.605-subsample-for-recaser
+     englishCorpus < englishSubsample
+     foreignCorpus < foreignSubsample
+
+4-TrainRecaser.630-extract-recasing-rules: ON localhost machine-translation/descriptors/joshua/GrammarExtractorJoshua.py
+
+   FROM 4-TrainRecaser.605-subsample-for-recaser
+     englishCorpus < englishSubsample
+
+   FROM 4-TrainRecaser.620-build-suffix-array-for-recaser
+     alignmentGrids < alignmentGrids
+     englishBinaryCorpus < englishBinaryCorpus
+     lexprobs < lexprobs
+     commonSymbolTable < commonSymbolTable
+     foreignBinaryCorpus < foreignBinaryCorpus
+     englishSuffixArray < englishSuffixArray
+     foreignSuffixArray < foreignSuffixArray
+     JVMOptions <- JVMOptions
+
+4-TrainRecaser.640-build-recasing-lm: ON localhost machine-translation/descriptors/lm/BuildLanguageModel.py
+   order=5
+   smoothingType=kndiscount
+   interpolate=true
+
+   FROM 1-BuildLM.500-tokenize-lm
+     corpusIn < tokenizedCorpus
+
+4-TrainRecaser.650-tune-recaser: ON localhost machine-translation/descriptors/joshua/ZMERTJoshua.py
+   includeAlign=false
+   useDefaultGlue=true
+   markOovs=false
+
+   FROM 4-TrainRecaser.630-extract-recasing-rules
+     tmFile < englishGrammar
+
+   FROM 5-Tune.700-tune
+     heapSizeInMegs <- heapSizeInMegs
+     defaultNonterm <- defaultNonterm
+     uniqueNBest <- uniqueNBest
+     metric <- metric
+     maxItemsPerBin <- maxItemsPerBin
+     stopSig <- stopSig
+     nbestSize <- nbestSize
+     randomRestarts <- randomRestarts
+     maxIts <- maxIts
+     numThreads <- numThreads
+     itemRelativeThreshold <- itemRelativeThreshold
+     lmOrder <- lmOrder
+     treeNBest <- treeNBest
+     nBest <- nBest
+     spanLimit <- spanLimit
+
+   FROM 4-TrainRecaser.640-build-recasing-lm
+     lmFile < arpaLM
+
+   FROM FS-parallel-corpus
+     paramConfigFile < paramConfigFile
+
+   FROM 4-TrainRecaser.600-split-recasing-data
+     fDevSents < fTail
+     eRefSents < eTail
+
+5-Tune.700-tune: ON localhost machine-translation/descriptors/joshua/ZMERTJoshua.py
+   lmOrder=5
+   spanLimit=10
+   defaultNonterm=X
+   maxItemsPerBin=40
+   itemRelativeThreshold=10.0
+   uniqueNBest=true
+   treeNBest=false
+   includeAlign=false
+   useDefaultGlue=true
+   markOovs=false
+   nBest=300
+   numThreads=1
+   heapSizeInMegs=2000
+   metric=BLEU 4 closest
+   maxIts=10
+   randomRestarts=4
+   nbestSize=300
+   stopSig=0.0001
+
+   FROM 1-BuildLM.530-build-lm
+     lmFile < arpaLM
+
+   FROM 3-BuildTM.410-extract-hiero-grammar
+     tmFile < englishGrammar
+
+   FROM FS-parallel-corpus
+     paramConfigFile < paramConfigFile
+     eRefSents < dev.e
+     fDevSents < dev.f
+
+6-Test.5-800-decode: ON localhost machine-translation/descriptors/joshua/Joshua.py
+   includeAlign=false
+   useDefaultGlue=true
+   markOovs=false
+
+   FROM 5-Tune.700-tune
+     weightsFile < finalParams
+     maxItemsPerBin <- maxItemsPerBin
+     spanLimit <- spanLimit
+     numThreads <- numThreads
+     heapSizeInMegs <- heapSizeInMegs
+     lmOrder <- lmOrder
+     nBest <- nBest
+     treeNBest <- treeNBest
+     itemRelativeThreshold <- itemRelativeThreshold
+     uniqueNBest <- uniqueNBest
+     defaultNonterm <- defaultNonterm
+
+   FROM 1-BuildLM.530-build-lm
+     lmFile < arpaLM
+
+   FROM 3-BuildTM.410-extract-hiero-grammar
+     tmFile < englishGrammar
+
+   FROM FS-parallel-corpus
+     fSentsIn < fCorpus
+
+6-Test.900-take-topbest: ON localhost machine-translation/descriptors/joshua/ExtractTopBestJoshua.py
+
+   FROM 6-Test.5-800-decode
+     nbestIn < eNBestOut
+
+6-Test.910-recasing-decoder: ON localhost machine-translation/descriptors/joshua/Joshua.py
+   includeAlign=false
+   useDefaultGlue=true
+   markOovs=false
+
+   FROM 6-Test.900-take-topbest
+     fSentsIn < topbestOut
+
+   FROM 4-TrainRecaser.650-tune-recaser
+     weightsFile < finalParams
+     numThreads <- numThreads
+     maxItemsPerBin <- maxItemsPerBin
+     uniqueNBest <- uniqueNBest
+     itemRelativeThreshold <- itemRelativeThreshold
+     treeNBest <- treeNBest
+     spanLimit <- spanLimit
+     nBest <- nBest
+     heapSizeInMegs <- heapSizeInMegs
+     defaultNonterm <- defaultNonterm
+     lmOrder <- lmOrder
+
+   FROM 4-TrainRecaser.630-extract-recasing-rules
+     tmFile < englishGrammar
+
+   FROM 4-TrainRecaser.640-build-recasing-lm
+     lmFile < arpaLM
+
+6-Test.920-detokenizer: ON localhost machine-translation/descriptors/joshua/DetokenizerJoshua.py
+   targetLanguageSuffix=en
+
+   FROM 6-Test.920-take-topbest-recasings
+     recasedOutput < topbestOut
+
+6-Test.920-take-topbest-recasings: ON localhost machine-translation/descriptors/joshua/ExtractTopBestJoshua.py
+
+   FROM 6-Test.910-recasing-decoder
+     nbestIn < eNBestOut
+
+
+[INSPECTORS]
+Meteor X-RAY (English): machine-translation/descriptors/visualization/VisualizeSystems.py
+   lang=en
+
+[SELECTIONS]
+all: 6-Test.920-detokenizer
+   FROM default SELECT default
+
+# The following entries contain position data for the visual interface. You should never need to modify this. 
+[GUI]
+FS-parallel-corpus: -317 394
+1-BuildLM.500-tokenize-lm: -206 263
+1-BuildLM.510-lowercase-lm: -88 248
+1-BuildLM.530-build-lm: 33 192
+2-Preproc.100-tokenize-e: -156 466
+2-Preproc.110-tokenize-f: -97 571
+2-Preproc.150-lowercase-e: -92 410
+2-Preproc.160-lowercase-f: -21 515
+2-Preproc.190-concatenate-f: -133 353
+3-BuildTM.200-subsample-for-tm: 117 396
+3-BuildTM.300-berkeley-aligner: 319 382
+3-BuildTM.400-build-suffix-array-for-tm: 330 330
+3-BuildTM.410-extract-hiero-grammar: 365 261
+4-TrainRecaser.600-split-recasing-data: 15 56
+4-TrainRecaser.605-subsample-for-recaser: 72 -9
+4-TrainRecaser.610-generate-mono-alignment: 202 -37
+4-TrainRecaser.620-build-suffix-array-for-recaser: 206 -81
+4-TrainRecaser.630-extract-recasing-rules: 215 -120
+4-TrainRecaser.640-build-recasing-lm: 122 -189
+4-TrainRecaser.650-tune-recaser: 425 -136
+5-Tune.700-tune: 405 148
+6-Test.5-800-decode: 521 64
+6-Test.900-take-topbest: 562 35
+6-Test.910-recasing-decoder: 652 -17
+6-Test.920-detokenizer: 720 -118
+6-Test.920-take-topbest-recasings: 693 -83
+
