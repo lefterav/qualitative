@@ -7,6 +7,7 @@ Created on Apr 2, 2012
 from optparse import OptionParser
 from collections import OrderedDict, defaultdict
 import re
+import logging
 import sys
 from numpy import average, var, std, min, max
 
@@ -99,7 +100,7 @@ class MosesGlassboxExtractor:
         # get 'translation options spanning'
         traOptSpa = self.traOptSpa.findall(transPart)
         if not traOptSpa: 
-            sys.stderr.write('translation options spanning not found!\n')
+            logging.warn('translation options spanning not found!\n')
         else:
             for item in traOptSpa:
                 attrs['transopt_spanning', item[0], item[1]] = item[2]
@@ -107,7 +108,7 @@ class MosesGlassboxExtractor:
         # get 'future cost'
         futCos = self.futCos.findall(transPart)
         if not futCos: 
-            sys.stderr.write('future cost not found!')
+            sys.stderr.write('future cost not found!\n')
         else:
             for item in traOptSpa:
                 attrs['future_cost', item[0], item[1]] = item[2]
@@ -367,7 +368,7 @@ class MosesGlassboxExtractor:
         attrs['alt_c_high_avg'] = 1.00*pChigh / alt_count_all
         
         attrsReadable = '\n'.join(['%s = %s' % (str(item), str(value)) for item, value in attrs.items()])
-        print attrsReadable, '\n'
+        logging.debug('{}\n'.format(attrsReadable))
         
         return attrs
         

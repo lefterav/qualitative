@@ -83,6 +83,8 @@ def get_filenames():
 def add_errorclass_per_sentence():
     for task in get_filenames():
         anotfile = open(task.filename_annotated, 'r')
+        current_id = None
+        dbentries = []
         for line in anotfile:
             pattern = "(\d*)::(\w*):\s*(\d*)"
             try:
@@ -90,11 +92,33 @@ def add_errorclass_per_sentence():
             except IndexError:
                 continue
             
-            dbentry = (errtype, int(count))
-            dbfilter = ("id", old_id)
+            if old_id != current_id:
+            #send one query for every sentence ID to speed up
+                if dbentries:
+                    
+                    dbfilters = [("id", current_id),
+                        ("testset", task.testset),
+                        ("system", task.system),
+                        ("source_lang", task.sourcelang),
+                        ("target_lang", task.targetlang)
+                       ]
+                    db_update("auto_error_classification", dbentries, dbfilters)
+                dbentries = []
+                print current_id
+                current_id = old_id
             
-            db_update("auto_error_classification",dbentry,dbfilter)
+            dbentries.append((errtype, int(count)))
 
+                       
+
+                        
+
+            
+            #print dbentries
+            #print dbfilters
+            
+
+        anotfile.close()
 
 def sync_erroclass_ids():
     dbentries = []  

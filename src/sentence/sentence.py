@@ -9,17 +9,17 @@ from copy import deepcopy
 
 class SimpleSentence(object):
     """
-    classdocs
+    A simple (shallow) sentence object, which wraps both a sentence and its attributes
     """
 
 
     def __init__(self, string="", attributes={}):
         """
         Initializes a simple (shallow) sentence object, which wraps both a sentence and its attributes
-        @type string: string
         @param string: the string that the simple sentence will consist of
-        @type attribute: {String key, String value}
-        @type string: a dictionary of arguments that describe properties of the simple sentence
+        @type string: string
+        @param attributes: a dictionary of arguments that describe properties of the simple sentence
+        @type attributes: {String key, String value}
         
         """
         
@@ -41,16 +41,16 @@ class SimpleSentence(object):
     def get_string(self):
         """
         Get the string of this simple sentence
-        @rtype: String
         @return: the text contained in the simple sentence
+        @rtype: String
         """
         return self.string
     
     def get_attributes(self):
         """
         Get the attributes of this sentence
-        @rtype: dict
         @return: a dictionary of attributes that describe properties of the sentence
+        @rtype: dict
         """
         return self.attributes
 
@@ -78,7 +78,7 @@ class SimpleSentence(object):
     
     def merge_simplesentence(self, ss, attribute_replacements = {}):
         """
-        Add the attributes to the object SimpleSentence().
+        Add the attributes to the object SimpleSentence(). In place
         @param attr: attributes of a simple sentence
         @type attr: dict 
         """

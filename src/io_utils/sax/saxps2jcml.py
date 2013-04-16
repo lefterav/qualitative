@@ -1,7 +1,7 @@
 '''
 Created on 14 Dec 2011
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 import shutil
@@ -33,8 +33,12 @@ def c(string):
 
 
 class IncrementalJcml(object):
-    def __init__(self, filename, format = JcmlFormat()):
-        self.TAG = format.TAG
+    """
+    Write line by line incrementally on an XML file, without loading anything in the memory.
+    Don't forget the close function. Object sentences cannot be edited after written
+    """
+    def __init__(self, filename, xmlformat=JcmlFormat):
+        self.TAG = xmlformat.TAG
         self.filename = filename
         self.file = tempfile.NamedTemporaryFile(mode='w',delete=False,suffix='.jcml', prefix='tmp_', dir='.') #"/tmp/%s.tmp" % os.path.basename(filename)
         self.tempfilename = self.file.name
@@ -54,19 +58,22 @@ class IncrementalJcml(object):
         if isinstance(src, SimpleSentence):            
                                 
             self.generator._write("\n\t\t")
-            self.generator.startElement(self.TAG["src"], src.get_attributes())
+            src_attributes = dict([(key,str(val)) for key,val in src.get_attributes().iteritems()])
+            self.generator.startElement(self.TAG["src"], src_attributes)
             self.generator.characters(c(src.get_string()))
             self.generator.endElement(self.TAG["src"])
         elif isinstance(src, tuple):
             for src in parallelsentence.get_source():
                 self.generator._write("\n\t\t")
-                self.generator.startElement(self.TAG["src"], src.get_attributes())
+                src_attributes = dict([(key,str(val)) for key,val in src.get_attributes().iteritems()])
+                self.generator.startElement(self.TAG["src"], src_attributes)
                 self.generator.characters(c(src.get_string()))
                 self.generator.endElement(self.TAG["src"])
         
         for tgt in parallelsentence.get_translations():
             self.generator._write("\n\t\t")
-            self.generator.startElement(self.TAG["tgt"], tgt.get_attributes())
+            tgt_attributes = dict([(key,str(val)) for key,val in tgt.get_attributes().iteritems()])
+            self.generator.startElement(self.TAG["tgt"], tgt_attributes)
             self.generator.characters(c(tgt.get_string()))
             self.generator.endElement(self.TAG["tgt"])
         
@@ -74,7 +81,8 @@ class IncrementalJcml(object):
         ref = parallelsentence.get_reference()
         if ref and ref.get_string() != "":
             self.generator._write("\n\t\t")
-            self.generator.startElement(self.TAG["ref"], ref.get_attributes())
+            ref_attributes = dict([(key,str(val)) for key,val in ref.get_attributes().iteritems()])
+            self.generator.startElement(self.TAG["ref"], ref_attributes)
             self.generator.characters(c(ref.get_string()))
             self.generator.endElement(self.TAG["ref"])
         
@@ -89,6 +97,7 @@ class IncrementalJcml(object):
         self.generator.endDocument()
         self.file.close()
         shutil.move(self.tempfilename, self.filename)
+        
 
 class Parallelsentence2Jcml(object):
     '''
