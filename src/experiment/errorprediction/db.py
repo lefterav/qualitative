@@ -45,11 +45,16 @@ def db_add_entries(dbentries, table):
             
             print ">",
         
-def db_update(table, dbentry, dbfilter):
+def db_update(table, dbentries, dbfilters):
     con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB,  charset="utf8")
     with con:
         cur = con.cursor()
-        query = "UPDATE `featuresR2`.`{}` SET `{}` = {} WHERE `{}` = {}".format(table, dbentry[0], dbfilter[0], dbfilter[1])
+        
+        columnquery = ", ".join(["`{}`={}".format(k,v) for k,v in dbentries])
+        filterquery = " AND ".join(["`{}`='{}'".format(k,v) for k,v in dbfilters])
+        
+        query = "UPDATE `{}`.`{}` SET {} WHERE {}".format(MYSQL_DB, table, columnquery, filterquery)
+
         cur.execute(query)
         print ".",
     
