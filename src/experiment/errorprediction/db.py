@@ -19,8 +19,35 @@ MYSQL_HOST = 'berlin-188.b.dfki.de'
 MYSQL_USER = 'features_fetcher'
 MYSQL_PASSWORD = 'dDWyadA3xHQB79yP'
 MYSQL_DB = 'featuresR2'
+import logging
 
-
+class DbConnector:
+    """
+    Class that maintains an open connection with mysql, in order to execute
+    consequent queries without having to authenticate again and again
+    """
+    def __init__(self):
+        self.con = mdb.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB,  charset="utf8")
+        with self.con:
+            self.cur = self.con.cursor()
+    
+    def fetch_postediting(self, uid, system, source_lang, target_lang):
+        """
+        Retrieve the post-edited system output for the given sentence id
+        """ 
+        logging.warn("Trying to retrieve post-editing for sentence_id={}".format(uid))
+        query = "SELECT `sentence` FROM `post_edit_all` WHERE `sentence_id`=%s AND {}=1 AND `source_lang`=%s AND `target_lang`=%s".format(system)
+        
+        self.cur.execute(query, (uid, source_lang, target_lang))
+        logging.warn(query % self.con.literal((uid, source_lang, target_lang)))
+        try:
+            sentence = self.cur.fetchone()[0]
+            logging.warn("Found")
+            return sentence
+        except:
+            logging.warn("Not found :(")
+            return None
+            
 
 
 def db_add_entries(dbentries, table):
@@ -185,5 +212,8 @@ def retrieve_uid(source_sentence, previous_ids=[], filters=[], **kwargs):
         return None
     
 if __name__ == '__main__':
-    print retrieve_auto_error_classification('wmt10-idnes.cz/2009/12/10/74900-1', 'moses', 'wmt', 'de', 'en')
+#    print retrieve_auto_error_classification('wmt10-idnes.cz/2009/12/10/74900-1', 'moses', 'wmt', 'de', 'en')
+    c = DbConnector()
+    print c.db_fetch_postediting("069592001_cust1-069592001-1", "moses", "de", "en")
+    
         
