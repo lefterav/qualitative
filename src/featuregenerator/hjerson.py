@@ -99,8 +99,11 @@ class Hjerson(LanguageFeatureGenerator):
         bases = []
         for string_tagged in strings_tagged:
             tag, base = string_tagged.split("\t")[1:]
+            if tag == "" or tag == " " or tag == None:
+                tag = "nan"
             tags.append(tag)
             bases.append(base)
+            
         return " ".join(tags), " ".join(bases)
     
     def get_features_strings(self, target_string, references):
@@ -597,6 +600,7 @@ def wer_errors(index, werwords, weradd, wererr, words, add, error):
     wererr.append(error)
 
 def hyp_ref_errors(rline, rbaseline, hwords, hbases, error):
+    
     rwords = rline.split()
     rbases = rbaseline.split()
     errors = []
