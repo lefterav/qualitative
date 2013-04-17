@@ -95,28 +95,34 @@ class Hjerson(LanguageFeatureGenerator):
     
     def _tag(self, string):
         strings_tagged = self.treetager.TagText(string, encoding='utf-8')
+        tokens = []
         tags = []
         bases = []
         for string_tagged in strings_tagged:
-            tag, base = string_tagged.split("\t")[1:]
-            if tag == "" or tag == " " or tag == None:
-                tag = "nan"
+            token, tag, base = string_tagged.split("\t")
+            tokens.append(token)
             tags.append(tag)
             bases.append(base)
             
-        return " ".join(tags), " ".join(bases)
+        return " ".join(tokens), " ".join(tags), " ".join(bases)
     
     def get_features_strings(self, target_string, references):
         """
         Process one sentence, given the translated sentence (hypothesis) and the corresponding reference
-        
+        @param target_string: the translation hypothesis produced by the system
+        @type target_string: str
+        @param references: a list of strings, containing the correct translations
+        @type references: list(str)
         """
                 
         if self.tokenize:
             target_string = self.tokenizer.process_string(target_string)
             references = [self.tokenizer.process_string(reference) for reference in references]
         
-        target_tag, target_base = self._tag(target_string)
+        #replace target string with the one from the tagger, and also get tags and base forms
+        target_string, target_tag, target_base = self._tag(target_string)
+        
+        #separate references list into two lists, one for tags and one for base forms
         reference_tuples = [self._tag(reference) for reference in references]
         reference_tags = [r[0] for r in reference_tuples]
         reference_bases = [r[1] for r in reference_tuples]
@@ -704,4 +710,10 @@ def write_error_words(text, addtext, errors, words, add, title):
     text.write("\n")
 
 
+if __name__ == '__main__':
+    h = Hjerson(lang="en")
+    hyp = "Instead of 3,500 kronor per month to rent the son next year for a two-room flat with kitchen-4100 kronor fork out the second category."
+    ref = "Instead of 3,500 kronor per month in rent, the son is next year expoected to fork out 4100 kronor for a second-category, two-room flat with kitchen."
+    print h.get_features_strings(hyp, [ref])
+    
     
