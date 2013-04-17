@@ -6,6 +6,7 @@ Created on 14 Dec 2011
 
 import shutil
 import sys
+import os
 import re
 import tempfile
 from random import shuffle
@@ -191,6 +192,5 @@ class Parallelsentence2Jcml(object):
         generator.endDocument()
         f.close()
         shutil.move(tempfilename, filename)
-            
             
             
