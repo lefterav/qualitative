@@ -39,6 +39,16 @@ class Hjerson(LanguageFeatureGenerator):
     This is a class that wraps the Hjerson functionality on a sentence level.
     """
     def __init__(self, **kwargs):
+        """
+        By initializing Hjerson, we maintain a tokenizer (if needed) and a treetager object
+        so that they are available for sentence-level calls
+        @keyword tokenize: specify if tokenizer should be run by Hjerson, false if it has already happened
+        @type tokenize: boolean
+        @keyword lang: specify which language is the content using the language 2-letter iso code
+        @type lang: str
+        @keyword tagdir: specify the directory where the treetager bin folder exists
+        @type tagdir: str 
+        """
         self.tokenize = kwargs.setdefault('tokenize', True)
         self.lang = kwargs.setdefault('lang', 'en')
         tagdir = kwargs.setdefault('tagdir', os.path.expanduser(TAGDIR))
@@ -99,7 +109,17 @@ class Hjerson(LanguageFeatureGenerator):
         tags = []
         bases = []
         for string_tagged in strings_tagged:
-            token, tag, base = string_tagged.split("\t")
+            #try net to catch failed tagging
+            try:
+                token, tag, base = string_tagged.split("\t")
+            except ValueError:
+                try:
+                    token, tag = string_tagged.split("\t")
+                    base = token
+                except ValueError:
+                    token = string_tagged
+                    base = token
+                    tag = "NaN"
             tokens.append(token)
             tags.append(tag)
             bases.append(base)
@@ -712,8 +732,8 @@ def write_error_words(text, addtext, errors, words, add, title):
 
 if __name__ == '__main__':
     h = Hjerson(lang="en")
-    hyp = "Instead of 3,500 kronor per month to rent the son next year for a two-room flat with kitchen-4100 kronor fork out the second category."
-    ref = "Instead of 3,500 kronor per month in rent, the son is next year expoected to fork out 4100 kronor for a second-category, two-room flat with kitchen."
+    hyp = "The citizens association BytyOKD.cz that the new rental conditions than ‘ incorrect and immoral ’, advises the tenants who simply refuse to sign new contracts and to wait until 7 December in which it intends to publish guidance on how to take action against such contracts."
+    ref = "The citizens association BytyOKD.cz, which labelled the new rental conditions â€˜ incorrect and immoral â€™, advises the tenants to simply refuse to sign new contracts and to wait until 7 December, when it intends to publish guidance on how to take action against such contracts."
     print h.get_features_strings(hyp, [ref])
     
     
