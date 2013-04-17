@@ -123,8 +123,12 @@ class Hjerson(LanguageFeatureGenerator):
             tokens.append(token)
             tags.append(tag)
             bases.append(base)
+        
+        results = (" ".join(tokens), " ".join(tags), " ".join(bases))
+        if (len(results[0].split())!=len(results[1].split()) or len(results[1].split())!=len(results[2].split()) or len(results[0].split())!=len(results[2].split())):
+            print results
             
-        return " ".join(tokens), " ".join(tags), " ".join(bases)
+        return results
     
     def get_features_strings(self, target_string, references):
         """
@@ -144,10 +148,11 @@ class Hjerson(LanguageFeatureGenerator):
         
         #separate references list into two lists, one for tags and one for base forms
         reference_tuples = [self._tag(reference) for reference in references]
-        reference_tags = [r[0] for r in reference_tuples]
-        reference_bases = [r[1] for r in reference_tuples]
+        reference_strings = [r[0] for r in reference_tuples]
+        reference_tags = [r[1] for r in reference_tuples]
+        reference_bases = [r[2] for r in reference_tuples]
         
-        return self.analyze(target_string, target_base, target_tag, references, reference_bases, reference_tags)
+        return self.analyze(target_string, target_base, target_tag, reference_strings, reference_bases, reference_tags)
     
     
     def analyze(self, hline, basehline, addhline, refs, baserefs, addrefs):
@@ -628,6 +633,8 @@ def wer_errors(index, werwords, weradd, wererr, words, add, error):
 def hyp_ref_errors(rline, rbaseline, hwords, hbases, error):
     
     rwords = rline.split()
+    print len(hwords), hwords
+    print len(hbases), hbases
     rbases = rbaseline.split()
     errors = []
     errorcount = 0.0
@@ -730,10 +737,10 @@ def write_error_words(text, addtext, errors, words, add, title):
     text.write("\n")
 
 
-if __name__ == '__main__':
-    h = Hjerson(lang="en")
-    hyp = "The citizens association BytyOKD.cz that the new rental conditions than ‘ incorrect and immoral ’, advises the tenants who simply refuse to sign new contracts and to wait until 7 December in which it intends to publish guidance on how to take action against such contracts."
-    ref = "The citizens association BytyOKD.cz, which labelled the new rental conditions â€˜ incorrect and immoral â€™, advises the tenants to simply refuse to sign new contracts and to wait until 7 December, when it intends to publish guidance on how to take action against such contracts."
-    print h.get_features_strings(hyp, [ref])
+#if __name__ == '__main__':
+#    h = Hjerson(lang="en")
+#    ref = "Shattered into 6,000, 7,000 pieces."
+#    hyp = "Shattered in 6,000 to 7,000 pieces."
+#    print h.get_features_strings(hyp, [ref])
     
     
