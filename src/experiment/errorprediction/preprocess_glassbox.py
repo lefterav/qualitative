@@ -84,10 +84,10 @@ def extract_glassbox_features_moses(source_filename, ids_filename, testset_type,
                                             SimpleSentence(postedited_sentence),
                                             atts)
          
-        output_xml.add_parallelsentence(parallelsentence)
         
         #the rest of the features will be fetched by feature processors on sentence-level
         parallelsentence = hjerson.add_features_parallelsentence(parallelsentence)
+        output_xml.add_parallelsentence(parallelsentence)
         
     sourcefile.close()
     moses_targetfile.close()
