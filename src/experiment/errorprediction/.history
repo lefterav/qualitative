@@ -33,3 +33,8 @@
 2013-04-17.18-24-26 less preprocess_glassbox.percival.py 
 2013-04-17.18-24-46 vim preprocess_glassbox.percival.py 
 2013-04-17.18-25-07 vim preprocess_glassbox.percival.py 
+2013-04-17.18-27-36 git add .
+2013-04-17.18-27-39 git add *
+2013-04-17.18-46-37 git commit -m "Script with local glassbox preprocessing tags for percival"
+2013-04-17.18-52-41 git push
+2013-04-17.18-52-51 rm src/experiment/errorprediction/*.jcml
