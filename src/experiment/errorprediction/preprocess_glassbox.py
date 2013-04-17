@@ -1,5 +1,6 @@
 '''
 Preprocessing functions for the data on the predicting errors from glassbox MT features 
+Highly adapted on TaraXU file structure (particularly eval round 2)
 
 Created on 11 Apr 2013
 @author: Eleftherios Avramidis
