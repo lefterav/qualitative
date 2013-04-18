@@ -1,4 +1,9 @@
 '''
+Draft script one-for-all. Gets one argument from commandline
+which contains sentences and error analysis
+
+it prints feature correlation and results of logistic regression
+
 Created on 17 Apr 2013
 
 @author: Eleftherios Avramidis
@@ -6,11 +11,13 @@ Created on 17 Apr 2013
 
 from io_utils.sax.cejcml2orange import CElementTreeJcml2Orange
 import sys
-import Orange
+from Orange.data import Table, Domain
+from Orange.classification.logreg import LogRegLearner
+from Orange.evaluation.scoring import CA
+from Orange.evaluation.testing import cross_validation
+from Orange.feature.scoring import Relief
 
-error_scores = ['wer',
-                    'hper', 
-                    'rper',
+error_category_names = [
                     'iHper',
                     'iRper',
                     'missErr',
@@ -18,7 +25,7 @@ error_scores = ['wer',
                     'rLexErr',
                     'hLexErr',
                     'rRer',
-                    'hRer',
+                    'hRer',  
                     'biHper',
                     'biRper',
                     'rbRer',
@@ -27,12 +34,23 @@ error_scores = ['wer',
                     'bextErr',
                     'rbLexErr',
                     'hbLexErr']
-merged_names = ['tgt-1_{}'.format(name) for name in error_scores]
+
+
+metric_names = ['wer',
+                    'hper', 
+                    'rper',]
 
 general_meta_attributes = ['uid', 'langsrc', 'langtgt']
 
+
+#add prefix
+error_category_names = ['tgt-1_{}'.format(name) for name in error_category_names]
+metric_names = ['tgt-1_{}'.format(name) for name in metric_names]
+
+general_meta_attributes.extend(metric_names)
+
 meta_attributes = []
-meta_attributes.extend(merged_names)
+meta_attributes.extend(error_category_names)
 meta_attributes.extend(general_meta_attributes)
 
 print meta_attributes
@@ -40,27 +58,9 @@ print meta_attributes
 desired_attributes = []
 
 
-if __name__ == '__main__':
-
-  for class_name in merged_names:    
-    #class_name = "tgt-1_hLexErr"
-    print "[[[[", class_name
-
-    input_filename = sys.argv[1]
-    output_file = "/tmp/orange.tab"
-    orangeconvertor = CElementTreeJcml2Orange(input_filename, 
-                                     class_name, 
-                                     desired_attributes, 
-                                     meta_attributes, 
-                                     output_file,
-                                     compact_mode=True)
-
- 
-    
-    table = Orange.data.Table(output_file)
-    
-    new_domain = Orange.data.Domain([a for a in table.domain.variables if a.name != class_name], table.domain[class_name])
-    new_data = Orange.data.Table(new_domain, table)
+def print_featureselection(table):
+    new_domain = Domain([a for a in table.domain.variables if a.name != class_name], table.domain[class_name])
+    new_data = Table(new_domain, table)
     
     def print_best_100(ma):
         for m in ma[:100]:
@@ -69,14 +69,35 @@ if __name__ == '__main__':
 
     
     print 'Relief:\n'
-    meas = Orange.feature.scoring.Relief(k=20, m=50)
-    mr = [ (a.name, meas(a, new_data)) for a in new_data.domain.attributes]
+    meas = Relief(k=20, m=50)
+    mr = [(a.name, meas(a, new_data)) for a in new_data.domain.attributes]
     mr.sort(key=lambda x: -x[1]) #sort decreasingly by the score
     print_best_100(mr)
+
+
+
+if __name__ == '__main__':
+
+    for class_name in error_category_names:    
+
+        print
+        print "[[[[", class_name, "]]]]"
     
-    #print "InfoGain\n"
-    print
-    #meas = Orange.feature.scoring.InfoGain()
-    #mr = [ (a.name, meas(a, new_data)) for a in new_data.domain.attributes]
-    #mr.sort(key=lambda x: -x[1]) #sort decreasingly by the score
-    #print_best_100(mr)
+        input_filename = sys.argv[1]
+        output_file = "/tmp/orange.tab"
+        orangeconvertor = CElementTreeJcml2Orange(input_filename, 
+                                         class_name, 
+                                         desired_attributes, 
+                                         meta_attributes, 
+                                         output_file,
+                                         compact_mode=True)
+    
+        table = Table(output_file)
+        print_featureselection()
+
+        learner = LogRegLearner(stepwise_lr=True)
+        
+        cv = cross_validation([learner], table, 10)        
+        ca = CA(cv)
+        print "CA: ", ca
+
