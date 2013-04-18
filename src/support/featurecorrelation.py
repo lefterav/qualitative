@@ -1,15 +1,18 @@
 '''
 Created on Jan 23, 2013
 
-@author: dupo
+@author: Eleftherios Avramidis
 '''
 
 import Orange
+
+import sys
 if __name__ == '__main__':
-    voting = Orange.data.Table("trainset.tab")
+    table = Orange.data.Table(sys.argv[1])
+    classname = sys.argv[2]
     
-    new_domain = Orange.data.Domain([a for a in voting.domain.variables if a.name != 'rank'], voting.domain['rank'])
-    new_data = Orange.data.Table(new_domain, voting)
+    new_domain = Orange.data.Domain([a for a in table.domain.variables if a.name != classname], table.domain[classname])
+    new_data = Orange.data.Table(new_domain, table)
     
     def print_best_100(ma):
         for m in ma[:100]:
