@@ -39,6 +39,16 @@ class Hjerson(LanguageFeatureGenerator):
     This is a class that wraps the Hjerson functionality on a sentence level.
     """
     def __init__(self, **kwargs):
+        """
+        By initializing Hjerson, we maintain a tokenizer (if needed) and a treetager object
+        so that they are available for sentence-level calls
+        @keyword tokenize: specify if tokenizer should be run by Hjerson, false if it has already happened
+        @type tokenize: boolean
+        @keyword lang: specify which language is the content using the language 2-letter iso code
+        @type lang: str
+        @keyword tagdir: specify the directory where the treetager bin folder exists
+        @type tagdir: str 
+        """
         self.tokenize = kwargs.setdefault('tokenize', True)
         self.lang = kwargs.setdefault('lang', 'en')
         tagdir = kwargs.setdefault('tagdir', os.path.expanduser(TAGDIR))
@@ -95,30 +105,54 @@ class Hjerson(LanguageFeatureGenerator):
     
     def _tag(self, string):
         strings_tagged = self.treetager.TagText(string, encoding='utf-8')
+        tokens = []
         tags = []
         bases = []
         for string_tagged in strings_tagged:
-            tag, base = string_tagged.split("\t")[1:]
+            #try net to catch failed tagging
+            try:
+                token, tag, base = string_tagged.split("\t")
+            except ValueError:
+                try:
+                    token, tag = string_tagged.split("\t")
+                    base = token
+                except ValueError:
+                    token = string_tagged
+                    base = token
+                    tag = "NaN"
+            tokens.append(token)
             tags.append(tag)
             bases.append(base)
-        return " ".join(tags), " ".join(bases)
+        
+        results = (" ".join(tokens), " ".join(tags), " ".join(bases))
+        if (len(results[0].split())!=len(results[1].split()) or len(results[1].split())!=len(results[2].split()) or len(results[0].split())!=len(results[2].split())):
+            print results
+            
+        return results
     
     def get_features_strings(self, target_string, references):
         """
         Process one sentence, given the translated sentence (hypothesis) and the corresponding reference
-        
+        @param target_string: the translation hypothesis produced by the system
+        @type target_string: str
+        @param references: a list of strings, containing the correct translations
+        @type references: list(str)
         """
                 
         if self.tokenize:
             target_string = self.tokenizer.process_string(target_string)
             references = [self.tokenizer.process_string(reference) for reference in references]
         
-        target_tag, target_base = self._tag(target_string)
-        reference_tuples = [self._tag(reference) for reference in references]
-        reference_tags = [r[0] for r in reference_tuples]
-        reference_bases = [r[1] for r in reference_tuples]
+        #replace target string with the one from the tagger, and also get tags and base forms
+        target_string, target_tag, target_base = self._tag(target_string)
         
-        return self.analyze(target_string, target_base, target_tag, references, reference_bases, reference_tags)
+        #separate references list into two lists, one for tags and one for base forms
+        reference_tuples = [self._tag(reference) for reference in references]
+        reference_strings = [r[0] for r in reference_tuples]
+        reference_tags = [r[1] for r in reference_tuples]
+        reference_bases = [r[2] for r in reference_tuples]
+        
+        return self.analyze(target_string, target_base, target_tag, reference_strings, reference_bases, reference_tags)
     
     
     def analyze(self, hline, basehline, addhline, refs, baserefs, addrefs):
@@ -597,7 +631,10 @@ def wer_errors(index, werwords, weradd, wererr, words, add, error):
     wererr.append(error)
 
 def hyp_ref_errors(rline, rbaseline, hwords, hbases, error):
+    
     rwords = rline.split()
+    print len(hwords), hwords
+    print len(hbases), hbases
     rbases = rbaseline.split()
     errors = []
     errorcount = 0.0
@@ -700,4 +737,10 @@ def write_error_words(text, addtext, errors, words, add, title):
     text.write("\n")
 
 
+#if __name__ == '__main__':
+#    h = Hjerson(lang="en")
+#    ref = "Shattered into 6,000, 7,000 pieces."
+#    hyp = "Shattered in 6,000 to 7,000 pieces."
+#    print h.get_features_strings(hyp, [ref])
+    
     

@@ -1,5 +1,6 @@
 '''
 Preprocessing functions for the data on the predicting errors from glassbox MT features 
+Highly adapted on TaraXU file structure (particularly eval round 2)
 
 Created on 11 Apr 2013
 @author: Eleftherios Avramidis
@@ -64,6 +65,7 @@ def extract_glassbox_features_moses(source_filename, ids_filename, testset_type,
     mydb = DbConnector()
     
     no_postediting_count = 0
+    reference_backoff_count = 0
     
     for source_sentence, id_line, target_sentence, features_dict in zip(sourcefile, idsfile, moses_targetfile, features_dicts):
         uid = _get_id_from_line(testset_type, id_line)
@@ -73,27 +75,32 @@ def extract_glassbox_features_moses(source_filename, ids_filename, testset_type,
         atts = {"uid": uid}
         
         #fetch post-edited output, to be used as reference for extracting error classification
-        postedited_sentence = mydb.fetch_postediting(uid, system, source_lang, target_lang)
-        if not postedited_sentence:
-            no_postediting_count+=1
-            continue
+        reference = mydb.fetch_postediting(uid, system, source_lang, target_lang)
+        if not reference:
+            reference = mydb.fetch_reference(uid, target_lang)
+            if reference:
+                reference_backoff_count +=1
+            else:
+                no_postediting_count +=1
+                continue
             
         #create ParallelSentence object and write to XML
         parallelsentence = ParallelSentence(SimpleSentence(source_sentence),
                                             [SimpleSentence(target_sentence, tgt_attributes)],
-                                            SimpleSentence(postedited_sentence),
+                                            SimpleSentence(reference),
                                             atts)
          
-        output_xml.add_parallelsentence(parallelsentence)
         
         #the rest of the features will be fetched by feature processors on sentence-level
         parallelsentence = hjerson.add_features_parallelsentence(parallelsentence)
+        output_xml.add_parallelsentence(parallelsentence)
         
     sourcefile.close()
     moses_targetfile.close()
     idsfile.close()
     output_xml.close()
-    logging.warning("{} sentences where skipped because no post-editing found".format(no_postediting_count))
+    logging.warning("{} references were used instead, because no post-editing found".format(reference_backoff_count))
+    logging.warning("{} sentences were skipped because no references found".format(no_postediting_count))
 
 
 def extract_glassbox_features_lucy():

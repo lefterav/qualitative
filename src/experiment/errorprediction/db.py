@@ -47,7 +47,21 @@ class DbConnector:
         except:
             logging.warn("Not found :(")
             return None
-            
+    
+    
+    def fetch_reference(self, uid, target_lang):
+        """
+        Retrieve a reference for the given sentence id
+        """
+        query = "SELECT `source_sentence` FROM `translation_all` WHERE `sentence_id`=%s  AND `source_lang`=%s "
+        self.cur.execute(query, (uid, target_lang))
+        try:
+            sentence = self.cur.fetchone()[0]
+            logging.warn("Found")
+            return sentence
+        except:
+            logging.warn("Not found :(")
+            return None
 
 
 def db_add_entries(dbentries, table):
