@@ -53,6 +53,8 @@ class CElementTreeJcml2Orange():
         self.orange_filename = output_file
         self.temporary_filename = tempfile.mktemp(dir=self.dir, suffix='.tab')
         #self.dataset = XmlReader(self.input_filename).get_dataset()
+    
+    def convert(self):
         self.object_file = codecs.open(self.temporary_filename, encoding='utf-8', mode = 'w')
 
         # get orange header

@@ -203,7 +203,7 @@ class AutorankingSuite(PyExperimentSuite):
                  remove_infinite=self.remove_infinite
                  #filter_attributes={"rank" : "0"},
 #                 class_type=class_type
-                )
+                ).convert()
         
         
         if n == 70:
@@ -230,7 +230,7 @@ class AutorankingSuite(PyExperimentSuite):
                  remove_infinite=self.remove_infinite
                  #filter_attributes={"rank" : "0"},
 #                 class_type=class_type
-                )
+                ).convert()
             
         if n == 80:
             print "train classifier"
