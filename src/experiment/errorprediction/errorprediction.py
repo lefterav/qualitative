@@ -12,7 +12,7 @@ Created on 17 Apr 2013
 from io_utils.sax.cejcml2orange import CElementTreeJcml2Orange
 import sys
 from Orange.data import Table, Domain
-from Orange.classification.logreg import LogRegLearner
+from Orange.classification.logreg import LogRegLearner, dump
 from Orange.evaluation.scoring import CA
 from Orange.evaluation.testing import cross_validation
 from Orange.feature.scoring import Relief
@@ -58,7 +58,7 @@ print meta_attributes
 desired_attributes = []
 
 
-def print_featureselection(table):
+def print_featureselection(table, class_name):
     new_domain = Domain([a for a in table.domain.variables if a.name != class_name], table.domain[class_name])
     new_data = Table(new_domain, table)
     
@@ -78,13 +78,11 @@ def print_featureselection(table):
 
 if __name__ == '__main__':
 
-    for class_name in error_category_names:    
 
-        print
-        print "[[[[", class_name, "]]]]"
     
-        input_filename = sys.argv[1]
-        output_file = "/tmp/orange.tab"
+    input_filename = sys.argv[1]
+    output_file = "/tmp/orange.tab"
+    for class_name in error_category_names:    
         orangeconvertor = CElementTreeJcml2Orange(input_filename, 
                                          class_name, 
                                          desired_attributes, 
@@ -93,11 +91,20 @@ if __name__ == '__main__':
                                          compact_mode=True)
     
         table = Table(output_file)
-        print_featureselection()
+    
+        print "\n\n[[[[", class_name, "]]]]\n"
+        #print_featureselection(table,class_name)
 
         learner = LogRegLearner(stepwise_lr=True)
+        model = learner(table)
+
+        textfilename = "{}.logreg.dump.txt".format(class_name)
+        f = open(textfilename, 'w')
+        f.write(dump(model))
+        f.close()
         
+
         cv = cross_validation([learner], table, 10)        
         ca = CA(cv)
-        print "CA: ", ca
+        print "CA [{}] = {}".format(class_name, ca[0])
 
