@@ -15,13 +15,13 @@ sth = logging.StreamHandler()
 sth.setLevel(logging.DEBUG)
 
 source = "{basepath}/test-data/{set}/{set}.*{targetlang}.{sourcelang}"
-ids = "{basepath}/r2/test-data/{set}/{set}.*{targetlang}.{sourcelang}.links"
+ids = "{basepath}/test-data/{set}/{set}.*{targetlang}.{sourcelang}.links"
 target = "{basepath}/system-outputs/{system}/{langpair}/*{set}*"
 log = "{basepath}/logs/{langpair}/{system}/wmt11.*"
 
 output = "/share/taraxu/selection_mechanism/errorprediction/preprocessing/{set}-{langpair}{system}.jcml"
  
-params = {"basepath":"/share/taraxu/evaluation-rounds/r2/"}
+params = {"basepath":"/share/taraxu/evaluation-rounds/r2"}
 testsets = ["wmt11"]
 systems = ["moses"]
 langpairs = [('de','en')]
@@ -32,7 +32,7 @@ def _find_filename(fullpattern, params):
     directory, basename_pattern = os.path.split(filepattern)
     dir_files = os.listdir(directory)
     filename = fnmatch.filter(dir_files, basename_pattern).pop()
-    return filename
+    return os.path.join(directory,filename)
             
                 
 
@@ -47,8 +47,8 @@ if __name__ == '__main__':
                 params["targetlang"] = targetlang
                 params["langpair"] = "{sourcelang}-{targetlang}".format(**params)
                 
-                source_filename = source.format(**params)
-                ids_filename = ids.format(**params)
+                source_filename = _find_filename(source, params)
+                ids_filename = _find_filename(ids, params)
                 
                 target_filename = _find_filename(target, params)
                 log_filename = _find_filename(log,params)
