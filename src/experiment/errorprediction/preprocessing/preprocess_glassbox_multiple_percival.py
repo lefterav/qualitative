@@ -23,15 +23,19 @@ output = "/share/taraxu/selection_mechanism/errorprediction/preprocessing/{set}-
  
 params = {"basepath":"/share/taraxu/evaluation-rounds/r2"}
 testsets = ["wmt11"]
-systems = ["moses"]
+systems = ["moses", "rbmt1"]
 langpairs = [('de','en')]
 
 def _find_filename(fullpattern, params):
     #this needs fnmatch substitution
     filepattern = fullpattern.format(**params)
     directory, basename_pattern = os.path.split(filepattern)
-    dir_files = os.listdir(directory)
-    filename = fnmatch.filter(dir_files, basename_pattern).pop()
+    try:
+        dir_files = os.listdir(directory)
+        filename = fnmatch.filter(dir_files, basename_pattern).pop()
+    except:
+        logging.warn("{set} of {langpair} by {system} not found".format(**params))
+        return None
     return os.path.join(directory,filename)
             
                 
@@ -52,6 +56,9 @@ if __name__ == '__main__':
                 
                 target_filename = _find_filename(target, params)
                 log_filename = _find_filename(log,params)
+                if not log_filename:
+                    continue
+
                 
                 output_filename = output.format(**params)
                 
