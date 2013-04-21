@@ -1,12 +1,16 @@
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=4f32983edba1d0b498896d90b391b9b2ba727e3c
 eclipse.preferences.version=1
-encoding//src/experiment/errorprediction/db.py=utf-8
-<<<<<<< HEAD
+encoding//metawp2/lucy-code/LucyTrees.py=utf-8
+encoding//metawp2/lucy-code/extract_lucy_trees.py=utf-8
 encoding//src/featuregenerator/hjerson.py=utf8
-=======
->>>>>>> 4f32983edba1d0b498896d90b391b9b2ba727e3c
 encoding//src/io/input/orangereader.py=utf-8
 encoding//src/io/input/schemabasedreader.py=utf-8
 encoding//src/io/input/xmlreader.py=utf-8
+encoding//src/io_utils/input/genericxmlreader.py=utf-8
+encoding//src/io_utils/input/jcmlreader.py=utf-8
+encoding//src/io_utils/saxjcml.py=utf-8
 encoding//src/sentence/dataset.py=utf-8
 encoding//src/sentence/parallelsentence.py=utf-8
 encoding//src/sentence/sentence.py=utf-8
