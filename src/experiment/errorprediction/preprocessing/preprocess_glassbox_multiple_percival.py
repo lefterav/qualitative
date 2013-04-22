@@ -14,17 +14,17 @@ from preprocess_glassbox import extract_glassbox_features_moses
 sth = logging.StreamHandler()
 sth.setLevel(logging.DEBUG)
 
-source = "{basepath}/test-data/{set}/{set}.*{targetlang}.{sourcelang}"
-ids = "{basepath}/test-data/{set}/{set}.*{targetlang}.{sourcelang}.links"
+source = "{basepath}/test-data/{set}/*{targetlang}*.{sourcelang}"
+ids = "{basepath}/test-data/{set}/*{targetlang}*.{sourcelang}.links"
 target = "{basepath}/system-outputs/{system}/{langpair}/*{set}*"
 log = "{basepath}/logs/{langpair}/{system}/wmt11.*"
 
 output = "/share/taraxu/selection_mechanism/errorprediction/preprocessing/{set}-{langpair}{system}.jcml"
  
 params = {"basepath":"/share/taraxu/evaluation-rounds/r2"}
-testsets = ["wmt11"]
-systems = ["moses", "rbmt1"]
-langpairs = [('de','en')]
+testsets = ["wmt11", "openoffice3"]
+systems = ["moses"]
+langpairs = [('de','en'),('en','de'),('de','fr'),('fr','de'),('de','es'),('es','de')]
 
 def _find_filename(fullpattern, params):
     #this needs fnmatch substitution
@@ -35,6 +35,8 @@ def _find_filename(fullpattern, params):
         filename = fnmatch.filter(dir_files, basename_pattern).pop()
     except:
         logging.warn("{set} of {langpair} by {system} not found".format(**params))
+	logging.warn("pattern {} in directory {}".format(basename_pattern, directory))
+
         return None
     return os.path.join(directory,filename)
             
@@ -52,7 +54,7 @@ if __name__ == '__main__':
                 params["langpair"] = "{sourcelang}-{targetlang}".format(**params)
                 
                 source_filename = _find_filename(source, params)
-                ids_filename = _find_filename(ids, params)
+		ids_filename = _find_filename(ids, params)
                 
                 target_filename = _find_filename(target, params)
                 log_filename = _find_filename(log,params)
