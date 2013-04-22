@@ -6,7 +6,7 @@ Created on 19 Apr 2013
 '''
 
 from ml import classifier
-
+import logging
 
 def _read_attributes(params):
     """
@@ -18,7 +18,7 @@ def _read_attributes(params):
     """
     source_attributes = params["{}_source".format(params["att"])].split(",")
     target_attributes = params["{}_target".format(params["att"])].split(",")
-    general_attributes = params["{}_general".format(params["att"])].split(",")
+    general_attributes = params["{}_general".format(params["att"])].split(",") 
         
     active_attributes = []
     if general_attributes != [""]:
@@ -56,6 +56,51 @@ class ErrorPredictionSuite(object):
         
         self.training_sets = params["training_sets"].format(**params).split(',')
         self.testset = params["test_set"].format(**params)
+    
+        self.training_jcml = "training.jcml"
+        
+    
+    def iterate(self, params, rep, n):
+        ret = {}
+        
+        from io_utils.input.jcmlreader import JcmlReader
+        from io_utils.sax.saxps2jcml import IncrementalJcml
         
         
-         
+        if n == 0:
+            logging.info("fetch training set")
+
+            xmlfile = IncrementalJcml(self.training_jcml)
+            for training_set in self.training_sets:
+                for parallelsentence in JcmlReader(training_set).get_parallelsentences():
+                    xmlfile.add_parallelsentence(parallelsentence)
+            xmlfile.close()
+        
+        if n == 20:
+            logging.info("convert data")
+            self.learner.set_training_data(self.training_jcml, 
+                  self.class_name, 
+                  self.desired_attributes,
+                  self.meta_attributes,
+                  get_nested_attributes=True,
+                  remove_infinite=self.remove_infinite
+                  )
+        if n == 40:
+            logging.info("train model")
+            self.learner.load_training_data()
+            self.learner.train()
+            self.learner.write_model_description()
+            self.learner.unload()
+        
+        if n == 60:
+            logging.info("score learner")
+            ret = self.cross_validation_scores()
+        return ret
+    
+    def restore_state(self, params, rep, n):
+        #no variables to restore, everything done in files
+        pass
+        
+            
+        
+                    

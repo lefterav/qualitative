@@ -4,19 +4,21 @@ Created on 19 Apr 2013
 @author: Eleftherios Avramidis
 '''
 
+import pickle
+
 from io_utils.sax.cejcml2orange import CElementTreeJcml2Orange 
+from ml.classifier import Classifier
+
 from Orange.data import Table
-from Orange.evaluation.scoring import CA
+from Orange.evaluation.scoring import CA, Precision, Recall, F1 
 from Orange.evaluation.testing import cross_validation
 from Orange.classification.rules import rule_to_string
 from Orange.classification.svm import get_linear_svm_weights
 from Orange.classification import logreg
-from ml.classifier import Classifier
 
 #import Orange Learners
 from Orange.classification.bayes import NaiveLearner
 from Orange.classification.knn import kNNLearner
- 
 from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
 from Orange.classification.tree import TreeLearner
 from Orange.classification.tree import C45Learner
@@ -66,7 +68,7 @@ class OrangeClassifier(Classifier):
                   class_name, 
                   desired_attributes,
                   meta_attributes,
-                  output_file,
+                  
                   **kwargs):
         '''
         Read the data from an XML file, convert them to the proper format
@@ -80,6 +82,8 @@ class OrangeClassifier(Classifier):
         @param meta_attributes: meta attributes
         @type meta_attributes: list of strings
         '''
+        
+        output_file = jcml_filename.replace(".jmcl", ".tab")
         
         convertor = CElementTreeJcml2Orange(jcml_filename, 
                                          class_name, 
@@ -120,7 +124,9 @@ class OrangeClassifier(Classifier):
     
     def train(self):
         self.model = self.learner(self.training_table)
-     
+        objectfile = self.training_data_filename.replace(".tab", ".clsf")
+        pickle.dump(self.model, objectfile)
+        
 
 
     def _write_model_svm(self, basename):
@@ -219,6 +225,6 @@ class OrangeClassifier(Classifier):
         self.test_table = None
         
     def unload(self):
-        self.load_test_data()
+        self.unload_training_data()
         self.unload_test_data()
         self.model = None
