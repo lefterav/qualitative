@@ -12,8 +12,8 @@ import sys
 from numpy import average, var, std, min, max
 
 """
-This class reads txt file with translation system analysis for a few sentences
-and parses as much information as possible into a dictionary.
+This class reads Moses verbose output with translation system analysis 
+and parses as much information as possible into a flat dictionary.
 """
 class MosesGlassboxExtractor:
     """

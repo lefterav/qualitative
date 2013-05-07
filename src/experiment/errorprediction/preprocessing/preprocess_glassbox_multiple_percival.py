@@ -1,4 +1,6 @@
 '''
+TaraXU specific script for gathering data of round 2
+and wrapping them on a sentence level
 Created on Apr 21, 2013
 
 @author: Eleftherios Avramidis
