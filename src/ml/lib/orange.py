@@ -128,6 +128,8 @@ class OrangeClassifier(Classifier):
         pickle.dump(self.model, objectfile)
         
 
+    #The following are algorithm-specific functions to write down details
+    #about the produced model
 
     def _write_model_svm(self, basename):
         try:         
