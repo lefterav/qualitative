@@ -98,10 +98,11 @@ if __name__ == '__main__':
     base_dir = sys.argv[1]
     output_dir = sys.argv[2]
     file_prefix = sys.argv.setdefault(3, "wmt")
-    if "--ref" in sys.argv:
-        
+    
+    extract_references = "--ref" in sys.argv
+    
     for langpair in langpairs:
-        pss = WmtReader().read_parallelsentences(base_dir, langpair)
+        pss = WmtReader().read_parallelsentences(base_dir, langpair, extract_references)
         filename = "{}.{}.jcml".format(file_prefix, langpair)
         filename = os.path.join(output_dir, filename)
         Parallelsentence2Jcml(pss).write_to_file(filename)
