@@ -97,7 +97,7 @@ if __name__ == '__main__':
     langpairs = ["en-de", "de-en", "en-fr", "fr-en", "en-es", "es-en", "en-cs", "cs-en", "en-ru", "ru-en"]
     base_dir = sys.argv[1]
     output_dir = sys.argv[2]
-    file_prefix = sys.argv.setdefault(3, "wmt")
+    file_prefix = sys.argv[3]
     
     extract_references = "--ref" in sys.argv
     
