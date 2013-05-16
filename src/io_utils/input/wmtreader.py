@@ -7,9 +7,9 @@ import re
 import codecs
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
+import logging
 
-
-class Wmt11Reader():
+class WmtReader():
     '''
     classdocs
     '''
@@ -20,19 +20,29 @@ class Wmt11Reader():
         Constructor
         '''
         
-    def read_parallelsentences(self, base_dir, langpair):
+    def read_parallelsentences(self, base_dir, langpair, extract_references=False):
         source_dir = "%s/plain/sources/" % base_dir
         system_outputs_dir = "%s/plain/system-outputs/" % base_dir
+        reference_dir = "%s/plain/references/" % base_dir
         testsets = os.listdir(system_outputs_dir)
         
         parallelsentences = []
         
         for testset in testsets:
             source_filename ="%s/%s-src.%s" % (source_dir, testset, langpair.split("-")[0])
+            reference_filename = "%s/%s-ref.%s" % (reference_dir, testset, langpair.split("-")[1])
             try:
                 source_file = codecs.open(source_filename, 'r', 'utf-8')
             except:
-                continue
+                logging.warn("Source file '{}' could not be opened".format(source_file))
+                
+            
+            if extract_references:
+                try:
+                    reference_file = codecs.open(reference_filename, 'r', 'utf-8')
+                except:
+                    logging.warn("Reference file '{}' could not be opened".format(reference_file))
+                
 
             submissions = []           
             testset_dir = "%s/%s" % (system_outputs_dir, testset)
@@ -52,6 +62,7 @@ class Wmt11Reader():
             k = 0
             for sourceline in source_file:
                 translations = []
+                
                 for i in range(len(submissions)):
                     translation_text = submissions[i][0].readline()
                     system_name = submissions[i][1]
@@ -63,9 +74,16 @@ class Wmt11Reader():
                 attributes = {"id" : str(k+1),
                               "langsrc" : langpair.split("-")[0],
                               "langtgt" : langpair.split("-")[1],
-                              "testset" : testset 
+                              "testset" : testset
                               }
-                parallelsentence = ParallelSentence(source, translations, None, attributes)
+                
+                if extract_references:
+                    referenceline = reference_file.readline();
+                    reference = SimpleSentence(referenceline, {})
+                else:
+                    reference = None
+                
+                parallelsentence = ParallelSentence(source, translations, reference, attributes)
                 parallelsentences.append(parallelsentence)
                 k += 1
                 
@@ -75,14 +93,16 @@ class Wmt11Reader():
 if __name__ == '__main__':
     import sys
     from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
-    import os
     
-    langpairs = ["en-de", "de-en", "en-fr", "fr-en", "en-es", "es-en", "en-cs", "cs-en"]
+    langpairs = ["en-de", "de-en", "en-fr", "fr-en", "en-es", "es-en", "en-cs", "cs-en", "en-ru", "ru-en"]
     base_dir = sys.argv[1]
     output_dir = sys.argv[2]
+    file_prefix = sys.argv.setdefault(3, "wmt")
+    if "--ref" in sys.argv:
+        
     for langpair in langpairs:
-        pss = Wmt11Reader().read_parallelsentences(base_dir, langpair)
-        filename = "wmt12.{}.jcml".format(langpair)
+        pss = WmtReader().read_parallelsentences(base_dir, langpair)
+        filename = "{}.{}.jcml".format(file_prefix, langpair)
         filename = os.path.join(output_dir, filename)
         Parallelsentence2Jcml(pss).write_to_file(filename)
     

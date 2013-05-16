@@ -21,6 +21,7 @@ LANGUAGES = {
              'German' : 'de',
              'French' : 'fr',
              'Hungarian' : 'hu',
+             'Russian' : 'ru',
              'All': 'All'
              }
 
