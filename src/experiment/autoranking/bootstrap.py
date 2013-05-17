@@ -34,7 +34,6 @@ from util.jvm import JVM
 #from experiment.utils.ruffus_utils import (touch, sys_call,
 #                                           main_logger as log,
 #                                           main_mutex as log_mtx)
-import subprocess
 
 from py4j.java_gateway import GatewayClient, JavaGateway
 
