@@ -32,14 +32,14 @@ class WmtReader():
             source_filename ="%s/%s-src.%s" % (source_dir, testset, langpair.split("-")[0])
             reference_filename = "%s/%s-ref.%s" % (reference_dir, testset, langpair.split("-")[1])
             try:
-                source_file = codecs.open(source_filename, 'r', 'utf-8')
+                source_file = open(source_filename, 'r')
             except:
                 logging.warn("Source file '{}' could not be opened".format(source_file))
                 
             
             if extract_references:
                 try:
-                    reference_file = codecs.open(reference_filename, 'r', 'utf-8')
+                    reference_file = open(reference_filename, 'r')
                 except:
                     logging.warn("Reference file '{}' could not be opened".format(reference_file))
                 
@@ -56,7 +56,7 @@ class WmtReader():
                 match = re.search("\.([^.]*)$", filename)
                 system_name = match.group(1)
                 full_filename = "%s/%s" % (langpair_dir, filename)
-                submission_file = codecs.open(full_filename, 'r', 'utf-8')
+                submission_file = open(full_filename, 'r')
                 submissions.append((submission_file, system_name))
             
             k = 0
