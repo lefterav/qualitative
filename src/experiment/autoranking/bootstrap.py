@@ -57,7 +57,7 @@ class ExperimentConfigParser(ConfigParser):
         
         if java_classpath:
             
-            self.jvm = JVM(java_classpath, dir_path)
+            self.jvm = JVM(java_classpath)
             socket_no = self.jvm.socket_no
             self.gatewayclient = GatewayClient('localhost', socket_no)
             self.gateway = JavaGateway(self.gatewayclient, auto_convert=True, auto_field=True)
