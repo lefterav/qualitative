@@ -34,27 +34,26 @@ class BerkeleyParserSocket():
 #    def __init__(self, grammarfile, classpath):
     def __init__(self, grammarfile, gateway):
         """
-        @param berkeley_parser_jar: Location of BerkeleyParser.jar; a modified java library that
-        fetches full parsing details from the Berkeley Engine and calculates full features upon request
-        @type berkeley_parser_jar: string
-        @param py4j_jar: Location of py4j.jar; java library responsible for connecting to java from python
-        through a socket connection.
-        @type py4j_jar: string
-        @param java_server_loc: Location of JavaServer.class
-        @type java_server_loc: string
-        
-        Example use
-        
-        grammarfile = "/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr"
-        berkleyjar = "/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar"
-        py4jjar = "/usr/share/py4j/py4j0.7.jar"
-        bps = BerkeleyParserSocket(grammarfile, berkleyjar, py4jjar)
-        print bps.parse("This is a sentence")
-        bps.close() #optional, but better to do
-        
+        fetches full parsing details from the Berkeley Engine and  calculates full features upon request
+        @param grammarfile: Location of grammar file to be loaded
+        @type grammarfile: string
+        @param gateway: Initialize a java gateway
+        @type gateway: Py4J java gateway object        
         """
         self.grammarfile = grammarfile
         
+        bparser_class = os.path.dirname(__file__)
+        dir_socket = os.path.dirname(bparser_class)                
+        dir_berkeley = os.path.dirname(dir_socket)
+        dir_parser = os.path.dirname(dir_berkeley)
+        dir_featuregenerator = os.path.dirname(dir_parser)
+        dir_src = os.path.dirname(dir_featuregenerator)
+        dir_lib = os.path.join(dir_src, "support", "berkeleyserver", "lib")
+        
+        
+        self.classpath = []
+        self.classpath.append(dir_lib)
+        self.classpath.append(bparser_class)
 #        print "initializing Berkeley client"
 ##        try:
 #        # connect to the JVM
