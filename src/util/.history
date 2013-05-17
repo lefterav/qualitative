@@ -1,0 +1,4 @@
+2013-04-12.15-30-41 wget https://github.com/moses-smt/mosesdecoder/raw/master/scripts/tokenizer/detokenizer.perl
+2013-04-12.15-30-47 less detokenizer.perl 
+2013-04-12.15-31-04 perl detokenizer.perl 
+2013-04-12.15-31-35 perl detokenizer.perl -l en -b
