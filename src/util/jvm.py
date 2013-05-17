@@ -5,6 +5,7 @@ Created on 22 Jun 2012
 '''
 import subprocess
 import time
+import os
 
 class JVM(object):
     '''
@@ -12,17 +13,21 @@ class JVM(object):
     '''
 
 
-    def __init__(self, java_classpath, dir_path):
+    def __init__(self, java_classpath):
         '''
         Constructor
         '''
-        classpath  = ":".join(java_classpath) 
         
         #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
         #subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path])
             
-        print "classpath = ", classpath
         
+        path = os.path.abspath(__file__)
+        dir_path = os.path.dirname(path)
+        
+        java_classpath.append(dir_path)        
+        classpath  = ":".join(java_classpath) 
+        print "classpath = ", classpath
         #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
         try:
             subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path ])
