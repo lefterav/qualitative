@@ -16,6 +16,8 @@ import os
 import sys
 import random
 import signal
+from util.jvm import JVM
+
 
 #def handler(self, signum):
 #    sys.stderr.write("Parsing timeout\n")
@@ -59,7 +61,7 @@ class BerkeleyParserSocket():
 #        classpath, dir_path = classpath
 #
         #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
-#        subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path])
+        #subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path])
 #        
 #        # prepare and run Java server
 #        #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
@@ -180,13 +182,19 @@ class BerkeleyParserSocket():
 #        self.process.terminate()
         
 
+if __name__ == "__main__":
+    java_classpath = "/home/elav01/.local/share/py4j/py4j0.7.jar:/home/elav01/tools/qualitative/src/support/berkeley-server/lib/BerkeleyParser.jar:/home/elav01/tools/qualitative/src/featuregenerator/parser/berkeley/socket"
+    dir_path = "/home/elav01/workspace/qualitative/src/util"
+    jvm = JVM(java_classpath)
+    socket_no = jvm.socket_no
+    gatewayclient = GatewayClient('localhost', socket_no)
+    gateway = JavaGateway(gatewayclient, auto_convert=True, auto_field=True)
 
-
-#bps = BerkeleyParserSocket("/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr", "/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar")
+    bps = BerkeleyParserSocket("/home/elav01/tools/berkeleyparser/grammars/eng_sm6.gr", gateway)
 #bps2 = BerkeleyParserSocket("/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr", "/home/elav01/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar")
 #print bps2.parse("This is a sentence")
 #bps2.close()
-#print bps.parse("This is another sentence")
+    print bps.parse("This is another sentence")
 #bps.close()
 
 
