@@ -36,7 +36,7 @@ class MeteorGenerator(LanguageFeatureGenerator):
         @type gateway: py4j.java_gateway.JavaGateway
         '''
         self.lang = lang
-        self.jvm = JVM(java_classpath, dir_path)
+        self.jvm = JVM(java_classpath)
         socket_no = self.jvm.socket_no
         gatewayclient = GatewayClient('localhost', socket_no)
         gateway = JavaGateway(gatewayclient, auto_convert=True, auto_field=True)
