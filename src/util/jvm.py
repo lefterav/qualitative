@@ -23,8 +23,8 @@ class JVM(object):
             
         
         path = os.path.abspath(__file__)
-        dir_path = os.path.dirname(path)
-        classpath = "{}:{}".format(java_classpath, dir_path)        
+        java_classpath.append(os.path.dirname(path))
+        classpath = ":".join(java_classpath)
         print "classpath = ", classpath
 
         #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
