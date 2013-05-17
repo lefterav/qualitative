@@ -1,27 +1,24 @@
 =\=\=\=\=\=\=
 <<<<<<<=HEAD
->>>>>>>=4f32983edba1d0b498896d90b391b9b2ba727e3c
+>>>>>>>=d3730f85e2dfa65e73f903e4a6142c32cdaf3f36
 eclipse.preferences.version=1
-<<<<<<< HEAD
-encoding//src/experiment/errorprediction/preprocessing/db.py=utf-8
-=======
 encoding//metawp2/lucy-code/LucyTrees.py=utf-8
 encoding//metawp2/lucy-code/extract_lucy_trees.py=utf-8
->>>>>>> d3730f85e2dfa65e73f903e4a6142c32cdaf3f36
+encoding//src/experiment/errorprediction/preprocessing/db.py=utf-8
 encoding//src/featuregenerator/hjerson.py=utf8
 encoding//src/io/input/orangereader.py=utf-8
 encoding//src/io/input/schemabasedreader.py=utf-8
 encoding//src/io/input/xmlreader.py=utf-8
-<<<<<<< HEAD
-encoding//src/io_utils/sax/saxjcml2orange.py=utf-8
-=======
 encoding//src/io_utils/input/genericxmlreader.py=utf-8
 encoding//src/io_utils/input/jcmlreader.py=utf-8
+encoding//src/io_utils/sax/saxjcml2orange.py=utf-8
 encoding//src/io_utils/saxjcml.py=utf-8
->>>>>>> d3730f85e2dfa65e73f903e4a6142c32cdaf3f36
 encoding//src/sentence/dataset.py=utf-8
+encoding//src/sentence/pairwiseparallelsentence.py=utf-8
+encoding//src/sentence/pairwiseparallelsentenceset.py=utf-8
 encoding//src/sentence/parallelsentence.py=utf-8
 encoding//src/sentence/sentence.py=utf-8
+encoding//src/support/data_extraction/old/extract_judgments_2sets.py=utf-8
 encoding//src/support/extract_judgments.py=utf-8
 encoding//src/support/extract_judgments08-onefile.py=utf-8
 encoding//src/support/extract_judgments08.py=utf-8
