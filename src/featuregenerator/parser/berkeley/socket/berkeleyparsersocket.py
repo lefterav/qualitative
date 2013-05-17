@@ -183,6 +183,10 @@ class BerkeleyParserSocket():
 
 if __name__ == "__main__":
     java_classpath = ["/home/elav01/.local/share/py4j/py4j0.7.jar:/home/elav01/tools/qualitative/src/support/berkeleyserver/lib/BerkeleyParser.jar:/home/elav01/tools/qualitative/src/featuregenerator/parser/berkeley/socket"]
+<<<<<<< HEAD
+=======
+    dir_path = "/home/elav01/workspace/qualitative/src/util"
+>>>>>>> refs/remotes/origin/master
     jvm = JVM(java_classpath)
     socket_no = jvm.socket_no
     gatewayclient = GatewayClient('localhost', socket_no)
