@@ -131,3 +131,25 @@
 2013-03-01.23-17-09 python -u suite.py -n 6 --config /home/elav01/tools/TaraXUscripts/src/experiment/autoranking/config/autoranking.suite.ref.blades.cfg &> /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_ref/autoranking_ref-20130301.log
 2013-03-16.12-48-23 python -u suite.py --config ~/tools/TaraXUscripts/src/experiment/autoranking/config/autoranking.suite.morefeatures.mtjrev.cfg -e autoranking_featuresets_mtj1_svm -n 1 &> /share/taraxu/selection-mechanism/autoranking/autoranking_featuresets_mtj1_svm/autoranking_featuresets_mtj1_svm-20130301.log 
 2013-03-18.23-42-46 nohup python suite.py --config ~/tools/TaraXUscripts/src/experiment/autoranking/config/autoranking.suite.morefeatures.mtjrev.cfg --n 2 &> /local/elav01/selection-mechanism/suite.de-en-mtj.20130110.log 
+2013-05-17.19-54-28 python decode.py --config config/autoranking.decode.wmt13.cfg &> /share/taraxu/selection-mechanism/wmt13/metric/decode.log
+2013-05-17.19-55-15 python decode.py --config config/autoranking.decode.wmt13.cfg &> /share/taraxu/selection-mechanism/wmt13/metric/decode.log
+2013-05-17.19-55-24 python decode.py --config config/autoranking.decode.wmt13.cfg &> /share/taraxu/selection-mechanism/wmt13/metric/decode.log
+2013-05-17.19-55-37 python decode.py --config config/autoranking.decode.wmt13.cfg &> /share/taraxu/selection-mechanism/wmt13/metric/decode.log
+2013-05-17.19-57-46 python decode.py --config config/autoranking.decode.wmt13.cfg &> /share/taraxu/selection-mechanism/wmt13/metric/decode.log
+2013-05-17.20-14-40 python decode.py --config config/autoranking.decode.wmt13.cfg &> /share/taraxu/selection-mechanism/wmt13/metric/decode.log
+2013-05-17.20-19-17 python decode.py --config config/autoranking.decode.wmt13.cfg &> /share/taraxu/selection-mechanism/wmt13/metric/decode.log
+2013-05-17.20-22-07 python decode.py --config config/autoranking.decode.wmt13.cfg &> /share/taraxu/selection-mechanism/wmt13/metric/decode.log
+2013-05-17.20-26-37 python decode.py --config config/autoranking.decode.wmt13.cfg &> /share/taraxu/selection-mechanism/wmt13/metric/decode.log
+2013-05-17.20-32-23 python decode.py --config config/autoranking.decode.wmt13.cfg &> /share/taraxu/selection-mechanism/wmt13/metric/decode.log
+2013-05-17.20-36-51 python decode.py --config config/autoranking.decode.wmt13.cfg &> /share/taraxu/selection-mechanism/wmt13/metric/decode.log
+2013-05-17.20-59-11 python decode.py --config config/autoranking.decode.wmt13.cfg &> /share/taraxu/selection-mechanism/wmt13/metric/decode.log
+2013-05-17.20-59-54 python decode.py --config config/autoranking.decode.wmt13.cfg &> /share/taraxu/selection-mechanism/wmt13/metric/decode.log
+2013-05-18.18-38-51 less /share/taraxu/selection-mechanism/wmt13/metric/decode.log
+2013-05-18.18-39-00 less /share/taraxu/selection-mechanism/wmt13/metric/decode.log
+2013-05-18.18-56-22 python decode.py --config config/autoranking.decode.wmt13.cfg &> /share/taraxu/selection-mechanism/wmt13/metric/decode.log
+2013-05-18.19-00-29 python decode.py --config config/autoranking.decode.wmt13.cfg &> /share/taraxu/selection-mechanism/wmt13/metric/decode.log
+2013-05-18.19-01-04 vim decode.py 
+2013-05-18.19-03-41 vim ../../io_utils/output/wmt11tabwriter.py
+2013-05-18.19-03-49 vim ../../io_utils/output/wmt11tabwriter.py
+2013-05-18.19-03-51 vim ../../io_utils/output/wmt11tabwriter.py
+2013-05-18.19-05-04 python decode.py --config config/autoranking.decode.wmt13.cfg &> /share/taraxu/selection-mechanism/wmt13/metric/decode.log

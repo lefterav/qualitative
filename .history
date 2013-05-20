@@ -65,3 +65,13 @@
 2013-05-17.16-45-24 git checkout -- .gitignore
 2013-05-17.16-45-30 git fetch
 2013-05-17.16-45-31 git merge
+2013-05-17.19-37-17 git reset --hard origin/master
+2013-05-17.19-37-43 git pull
+2013-05-17.20-27-33 git pull
+2013-05-20.14-34-36 git add src/experiment/autoranking/config/autoranking.decode.wmt13.cfg
+2013-05-20.14-34-44 git add src/experiment/autoranking/decode.py
+2013-05-20.14-34-55 git add src/experiment/autoranking/decode.py
+2013-05-20.14-35-03 git commit -m "Serveer-side changes"
+2013-05-20.14-35-11 git pull
+2013-05-20.14-36-12 vim src/experiment/autoranking/config/autoranking.decode.wmt13.cfg
+2013-05-20.14-36-20 git commit -m "Fixed conflict"
