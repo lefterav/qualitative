@@ -11,12 +11,13 @@ class Wmt11TabWriter(object):
     """
     
 
-    def __init__(self, data=None ,name="dfki", testset="testset"):
+    def __init__(self, data=None ,name="dfki", testset="testset", att_name="rank"):
         """
         Constructor
         """
         self.metric_name = name
         self.testset = testset
+        self.att_name = att_name
         
         if isinstance(data, list):
             self.content = None
@@ -43,7 +44,7 @@ class Wmt11TabWriter(object):
                 testset = self.testset
             for tgt in ps.get_translations():
                 t_att = tgt.get_attributes()                
-                entry = "\t".join([self.metric_name, "%s-%s" % (ps_att["langsrc"], ps_att["langtgt"]), testset, t_att["system"], ps_att["id"], t_att["rank"]])
+                entry = "\t".join([self.metric_name, "%s-%s" % (ps_att["langsrc"], ps_att["langtgt"]), testset, t_att["system"], ps_att["id"], t_att[self.att_name]])
                 entries.append(entry)  
             
         #entries = sorted (entries, key=lambda entry: entry.split("\t")[4])
@@ -67,7 +68,7 @@ class Wmt11TabWriter(object):
                 testset = self.testset
             for tgt in ps.get_translations():
                 t_att = tgt.get_attributes()                
-                entry = "\t".join([self.metric_name, "%s-%s" % (ps_att["langsrc"], ps_att["langtgt"]), testset, t_att["system"], ps_att["id"], t_att["rank"]])
+                entry = "\t".join([self.metric_name, "%s-%s" % (ps_att["langsrc"], ps_att["langtgt"]), testset, t_att["system"], ps_att["id"], t_att[self.att_name]])
                 entry = "%s\n" % entry
                 file_object.write(entry)  
             

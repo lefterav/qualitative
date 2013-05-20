@@ -202,6 +202,13 @@ class AutorankingSuite(PyExperimentSuite):
             writer = Wmt11TabWriter(self.reconstructed_soft_testset, "dfki_{}".format(params["att"]), "testset", "rank_soft")
             writer.write_to_file("ranked.tab")
        
+        if n == 120:
+            print "Scoring correlation"
+            ret.update(score(self.reconstructed_soft_testset, self.class_name, "soft", "rank_soft"))
+            ret = OrderedDict(sorted(ret.items(), key=lambda t: t[0]))
+         
+            print ret   
+       
         return ret
     
     
