@@ -187,6 +187,13 @@ class AutorankingSuite(PyExperimentSuite):
             self.simple_testset = None
             
        
+        if n == 120:
+            print "Scoring correlation"
+            ret.update(score(self.reconstructed_soft_testset, self.class_name, "soft", "rank_soft"))
+            ret = OrderedDict(sorted(ret.items(), key=lambda t: t[0]))
+         
+            print ret   
+       
         return ret
     
     
