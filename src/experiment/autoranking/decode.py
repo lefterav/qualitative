@@ -27,6 +27,7 @@ from io_utils.input.jcmlreader import JcmlReader
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
 from io_utils.sax.saxjcml2orange import SaxJcml2Orange
 from io_utils.sax.cejcml2orange import CElementTreeJcml2Orange 
+from io_utils.output.wmt11tabwriter import Wmt11TabWriter
 from classifier.classifier import OrangeClassifier
 from Orange.data import Table
 from datetime import datetime
@@ -55,17 +56,7 @@ class AutorankingSuite(PyExperimentSuite):
     def reset(self, params, rep):
         self.restore_supported = True
         
-        classifier_name = params["classifier"] + "Learner"
-        self.learner = eval(classifier_name)
-        try:
-            self.classifier_params = eval(params["params_%s" % params["classifier"]])
-        except:
-            self.classifier_params = {}
-        
         self.remove_infinite = False
-        if classifier_name == "SVMEasyLearner":
-            self.classifier_params["verbose"] = True
-            self.remove_infinite = True
         
         self.meta_attributes = params["meta_attributes"].split(",")
         self.include_references = params.setdefault("include_references", False)
@@ -165,7 +156,6 @@ class AutorankingSuite(PyExperimentSuite):
             
         if n == 90:
             print "test_classifier"
-            
             input_file = self.testset_orange_filename
 #            output_file = "classified.tab"
             
@@ -176,16 +166,48 @@ class AutorankingSuite(PyExperimentSuite):
            
                     
             classified_set_vector = self.classifier.classify_orange_table(orangedata)
+            
             self.classified_values_vector = [str(v[0]) for v in classified_set_vector]
             self.classified_probs_vector = [(v[1]["-1"], v[1]["1"]) for v in classified_set_vector]
             
         
         if n == 100:
-            print "Exporting results"
-
+            print "reloading coupled test set"
+            self.simple_testset = JcmlReader(self.pairwise_test_filename).get_dataset()
+            
+            print "reconstructing test set"
+            att_vector = [{"rank_predicted": v} for v in self.classified_values_vector]
+            att_prob_neg = [{"prob_-1": v[0]} for v in self.classified_probs_vector]
+            att_prob_pos = [{"prob_1": v[1]} for v in self.classified_probs_vector]
+#            print att_vector
+            
+            print "adding guessed rank"
+            self.simple_testset.add_attribute_vector(att_vector, "ps")
+            self.simple_testset.add_attribute_vector(att_prob_neg, "ps")
+            self.simple_testset.add_attribute_vector(att_prob_pos, "ps")
+            
+            Parallelsentence2Jcml(self.simple_testset).write_to_file("testset-pairwise-with-estranks.jcml")
+            
+            self.simple_testset = RawPairwiseDataset(cast=self.simple_testset) #this 
+#            self.simple_testset = CompactPairwiseDataset(self.simple_testset) #and this should have no effect
+            
+            self.reconstructed_hard_testset = self.simple_testset.get_single_set_with_hard_ranks("rank_predicted", "rank_hard")
             self.reconstructed_soft_testset = self.simple_testset.get_single_set_with_soft_ranks("prob_-1", "prob_1", "rank_soft_predicted", "rank_soft")
             self.simple_testset = None
+        
+        
+        if n == 110:
             
+            print "Exporting results"
+            writer = Wmt11TabWriter(self.reconstructed_soft_testset, "dfki_{}".format(params["att"]), "testset", "rank_soft")
+            writer.write_to_file("ranked.tab")
+       
+        if n == 120:
+            print "Scoring correlation"
+            ret.update(score(self.reconstructed_soft_testset, self.class_name, "soft", "rank_soft"))
+            ret = OrderedDict(sorted(ret.items(), key=lambda t: t[0]))
+         
+            print ret   
        
         return ret
     
@@ -212,7 +234,8 @@ class AutorankingSuite(PyExperimentSuite):
                 classified_prob_file.write("{}\t{}\n".format(value1, value2))
             classified_prob_file.close()
         if n == 100:
-#            Parallelsentence2Jcml(self.simple_testset).write_to_file("testset.classified.jcml")
+            Parallelsentence2Jcml(self.reconstructed_hard_testset).write_to_file("testset.reconstructed.hard.jcml")
+
             Parallelsentence2Jcml(self.reconstructed_soft_testset).write_to_file("testset.reconstructed.soft.jcml")
 #        if n == 110:
 #            Parallelsentence2Jcml(self.reconstructed_hard_testset).write_to_file("testset.reconstructed.org.hard.jcml")
@@ -236,12 +259,14 @@ class AutorankingSuite(PyExperimentSuite):
             self.testset_orange_filename = "testset.tab"
         
         if n > 90:
-            
+            classified_vector_file = open("classified.hard.txt", 'r') 
+            self.classified_values_vector = classified_vector_file.readlines()
+            classified_vector_file.close()
             classified_prob_file = open("classified.soft.txt", 'r') 
             self.classified_probs_vector = [tuple(line.split('\t')) for line in classified_prob_file]
             classified_prob_file.close()
         if n > 100:
-#            self.simple_testset = JcmlReader("testset.classified.jcml").get_dataset
+            self.reconstructed_hard_testset = JcmlReader("testset.reconstructed.hard.jcml").get_dataset()
             self.reconstructed_soft_testset = JcmlReader("testset.reconstructed.soft.jcml").get_dataset()
 #        if n == 10:
 #            self.reconstructed_hard_testset = JcmlReader("testset.reconstructed.org.hard.jcml").get_dataset()
