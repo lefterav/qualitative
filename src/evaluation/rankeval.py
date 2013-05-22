@@ -33,7 +33,6 @@ if __name__ == '__main__':
     
     #get all ranks in a list
     for parallelsentence in JcmlReader(filename).get_parallelsentences(): 
-        print parallelsentence.get_attribute("id")
         
         gold_ranks = Ranking(parallelsentence.get_target_attribute_values(gold_rank_name))
         gold_ranklist.append(gold_ranks)
