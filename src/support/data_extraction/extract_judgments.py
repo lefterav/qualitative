@@ -18,6 +18,7 @@ LANGUAGES = {
              'Spanish' : 'es',
              'English' : 'en',
              'Czech' : 'cz',
+             'Czech' : 'cs',
              'German' : 'de',
              'French' : 'fr',
              'Hungarian' : 'hu',
