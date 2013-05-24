@@ -13,14 +13,15 @@ import fnmatch
 
 if __name__ == '__main__':
         
-        langpairs = [("de", "en"), 
+        langpairs = [
+                     ("de", "en"), 
                      ("en", "de"),
                      ("en", "fr"),
                      ("fr", "en"), 
                      ("en", "es"), 
                      ("es", "en"), 
-                     ("cz", "en"), 
-                     ("en", "cz")
+                     ("cs", "en"),  #Caution: for some years, this works with cz. 
+                     ("en", "cs")
                     ]
         template_language = ("de", "en")
         path = os.curdir
@@ -31,6 +32,9 @@ if __name__ == '__main__':
         for (srclang, tgtlang) in langpairs:
             print (srclang, tgtlang)
 
+            
+            #get all "year" description files in current directory.
+            #if you want only one year, then move the config file to an empty dir and run script from there
             for config_file in os.listdir(path):
                 if fnmatch.fnmatch(config_file, config_template):    
             
