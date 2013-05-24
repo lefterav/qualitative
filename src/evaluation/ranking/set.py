@@ -7,10 +7,8 @@ Created on 18 Dec 2012
 @author: Eleftherios Avramidis
 '''
 
-from collections import namedtuple
 import segment
 from numpy import average
-
 import numpy as np
 
 def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
@@ -209,6 +207,15 @@ def avg_ndgc_err(predicted_rank_vectors, original_rank_vectors, **kwargs):
     avg_ndgc = average(ndgc_list)
     avg_err = average(err_list)
     return {'ndgc':avg_ndgc, 'err':avg_err}
+
+
+def allmetrics(predicted_rank_vectors, original_rank_vectors,  **kwargs):
+    stats = {}
+    functions = [kendall_tau_set, mrr, best_predicted_vs_human, avg_predicted_ranked, avg_ndgc_err]
+    for function in functions:
+        stats.update(function(predicted_rank_vectors, original_rank_vectors, **kwargs))
+    
+    return stats
 
 #if __name__ == '__main__':
 #    from sentence.ranking import Ranking
