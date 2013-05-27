@@ -75,6 +75,7 @@ class AutorankingSuite(PyExperimentSuite):
         
         self.delay_accuracy = params.setdefault("delay_accuracy", False)
         self.remove_infinite = params.setdefault("remove_infinite", False)
+        self.nullimputation = params.setdefault("nullimputation", False)
         
         if self.restrict_ranks:
             self.restrict_ranks = self.restrict_ranks.split(",")
@@ -200,7 +201,8 @@ class AutorankingSuite(PyExperimentSuite):
                  hidden_attributes=self.hidden_attributes,
                  get_nested_attributes=True,
                  dir=dir,
-                 remove_infinite=self.remove_infinite
+                 remove_infinite=self.remove_infinite,
+                 nullimputation=self.nullimputation,
                  #filter_attributes={"rank" : "0"},
 #                 class_type=class_type
                 ).convert()
@@ -227,7 +229,8 @@ class AutorankingSuite(PyExperimentSuite):
                  hidden_attributes=self.hidden_attributes,
                  get_nested_attributes=True,
                  dir=dir,
-                 remove_infinite=self.remove_infinite
+                 remove_infinite=self.remove_infinite,
+                 nullimputation=self.nullimputation,
                  #filter_attributes={"rank" : "0"},
 #                 class_type=class_type
                 ).convert()
