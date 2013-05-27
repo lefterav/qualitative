@@ -44,6 +44,7 @@ class CElementTreeJcml2Orange():
         self.class_discretize = kwargs.setdefault('class_discretize', False)
         self.dir = kwargs.setdefault('dir', '.')
         self.remove_infinite = kwargs.setdefault('remove_infinite', False)
+        self.nullimputation = kwargs.setdefault('nullimputation', False)
         
         self.input_filename = input_filename
         self.class_name = class_name
@@ -261,6 +262,8 @@ class CElementTreeJcml2Orange():
                     if self.remove_infinite:
                         attvalue = attvalue.replace("inf", "99999999")
                         attvalue = attvalue.replace("nan", "0")
+                    if self.nullimputation and attvalue == "":
+                        attvalue = '0'
                     output.append(attvalue)
                     output.append("\t")
                     
