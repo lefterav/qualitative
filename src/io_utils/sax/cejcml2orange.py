@@ -262,7 +262,7 @@ class CElementTreeJcml2Orange():
                     if self.remove_infinite:
                         attvalue = attvalue.replace("inf", "99999999")
                         attvalue = attvalue.replace("nan", "0")
-                    if self.nullimputation and attvalue == "":
+                    if self.nullimputation and (attvalue == "" or not attvalue):
                         attvalue = '0'
                     output.append(attvalue)
                     output.append("\t")
