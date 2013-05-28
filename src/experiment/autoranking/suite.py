@@ -163,26 +163,28 @@ class AutorankingSuite(PyExperimentSuite):
  
         
         if n == 40:
-            print "add difference features : trainset"
-            parallelsentences = self.trainset.get_parallelsentences()
-            parallelsentences = DiffGenerator().add_features_batch(parallelsentences)
-            Parallelsentence2Jcml(parallelsentences).write_to_file("diff_trainset.jcml")  
+            #print "add difference features : trainset"
+            #parallelsentences = self.trainset.get_parallelsentences()
+            #parallelsentences = DiffGenerator().add_features_batch(parallelsentences)
+            #Parallelsentence2Jcml(parallelsentences).write_to_file("diff_trainset.jcml")  
+            pass
 
         
         
         if n == 50:
-            print "add difference feature : testset"
-            self.pairwise_test_filename = "diff_testset.jcml"
+            #print "add difference feature : testset"
+            self.pairwise_test_filename = "pairwise_testset.jcml"
             
-            parallelsentences = self.testset.get_parallelsentences()
-            parallelsentences = DiffGenerator().add_features_batch(parallelsentences)
-            Parallelsentence2Jcml(parallelsentences).write_to_file(self.pairwise_test_filename)  
+            #parallelsentences = self.testset.get_parallelsentences()
+            #parallelsentences = DiffGenerator().add_features_batch(parallelsentences)
+            #Parallelsentence2Jcml(parallelsentences).write_to_file(self.pairwise_test_filename)  
+            pass
             
         
         if n == 60:
             print "produce orange trainset"
             
-            input_file = "diff_trainset.jcml"
+            input_file = "pairwise_trainset.jcml"
             self.trainset_orange_filename = "trainset.tab"
             
             if os.path.isdir("/local"):
@@ -211,7 +213,7 @@ class AutorankingSuite(PyExperimentSuite):
         if n == 70:
             print "produce orange testset"
             
-            input_file = "diff_testset.jcml"
+            input_file = "pairwise_testset.jcml"
             self.testset_orange_filename = "testset.tab"
             
             if os.path.isdir("/local"):
@@ -373,7 +375,7 @@ class AutorankingSuite(PyExperimentSuite):
             self.testset = JcmlReader("pairwise_testset.jcml").get_dataset()
         
         if n > 50:
-            self.pairwise_test_filename = "diff_testset.jcml"
+            self.pairwise_test_filename = "pairwise_testset.jcml"
             self.trainset_orange_filename = "trainset.tab"
         
         if n > 70:
