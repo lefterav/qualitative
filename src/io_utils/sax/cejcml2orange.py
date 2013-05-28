@@ -45,7 +45,7 @@ class CElementTreeJcml2Orange():
         self.dir = kwargs.setdefault('dir', '.')
         self.remove_infinite = kwargs.setdefault('remove_infinite', False)
         self.nullimputation = kwargs.setdefault('nullimputation', False)
-        
+        sys.stderr.write("Imputation {}\n".format(self.nullimputation)) 
         self.input_filename = input_filename
         self.class_name = class_name
         self.desired_attributes = set(desired_attributes)
@@ -262,12 +262,12 @@ class CElementTreeJcml2Orange():
                     if self.remove_infinite:
                         attvalue = attvalue.replace("inf", "99999999")
                         attvalue = attvalue.replace("nan", "0")
-                    if self.nullimputation and (attvalue == "" or not attvalue):
-                        attvalue = '0'
                     output.append(attvalue)
                     output.append("\t")
                     
                 else:
+                    if self.nullimputation:
+                        output.append('0')
                     # even if attribute value exists or not, we have to tab
                     output.append('\t')
         
