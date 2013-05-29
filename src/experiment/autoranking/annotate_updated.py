@@ -245,6 +245,9 @@ def truecase(input_file, output_file, language, model):
     from featuregenerator.preprocessor import Truecaser
     truecaser = Truecaser(language, model)
     saxjcml.run_features_generator(input_file, output_file, [truecaser])
+    
+
+
 
 @transform(truecase_target, suffix(".tc.%s.jcml" % target_language), ".bleu.%s.f.jcml" % target_language)
 def cross_bleu(input_file, output_file):
@@ -306,7 +309,20 @@ parallel_feature_functions.append(features_length)
 #def features_ibm(input_file, output_file, ibm1lexicon):
 #    ibmfeaturegenerator = Ibm1FeatureGenerator(ibm1lexicon)
 #    saxjcml.run_features_generator(input_file, output_file, [ibmfeaturegenerator])
-    
+
+"""
+Quest
+"""
+@transform(truecase_source, suffix(".tok.jcml"), ".tc.%s-%s.jcml" % (source_language, target_language), target_language, cfg.get_truecaser_model(target_language))
+def truecase_target_append(input_file, output_file, language, model):
+    truecase(input_file, output_file, language, model)
+
+@active_if(cfg.has_section('quest'))
+@transform(truecase_target_append, suffix(".tc.%s-%s.jcml" % (source_language, target_language)), ".tc.%s.jcml" % target_language, source_language, target_language, cfg.get('quest', 'commandline'))
+def features_quest(input_file, output_file, source_language, target_language, commandline):
+    import subprocess
+    subprocess.check_call(commandline.format(sourcelang=source_language, targetlang=target_language, inputfile=input_file, outputfile=output_file)
+
 
 @active_if(cfg.getboolean("annotation", "reference_features"))
 @transform(data_fetch, suffix(".orig.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
@@ -348,7 +364,7 @@ def features_gather(singledataset_annotations, gathered_singledataset_annotation
 @transform(features_gather, suffix(".all.f.jcml"), ".all.analyzed.f.jcml", cfg.get("general", "source_language"), cfg.get("general", "target_language"))    
 def analyze_external_features(input_file, output_file, source_language, target_language):
     langpair = (source_language, target_language)
-    analyzers = [LengthFeatureGenerator(),
+    analyzers = [
                  ParserMatches(langpair),
                  RatioGenerator()]
     saxjcml.run_features_generator(input_file, output_file, analyzers)
