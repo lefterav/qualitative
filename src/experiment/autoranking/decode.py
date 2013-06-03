@@ -26,6 +26,7 @@ from io_utils.input.jcmlreader import JcmlReader
 #from sentence.coupleddataset import CoupledDataSet, OrangeCoupledDataSet, CoupledDataSetDisk
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
 from io_utils.sax.saxjcml2orange import SaxJcml2Orange
+from io_utils.sax.cejcml import CEJcmlReader
 from io_utils.sax.cejcml2orange import CElementTreeJcml2Orange 
 from io_utils.output.wmt11tabwriter import Wmt11TabWriter
 from classifier.classifier import OrangeClassifier
@@ -116,22 +117,22 @@ class AutorankingSuite(PyExperimentSuite):
             
         if n == 30:
             print "pairwise testset"
-            self.testset = AnalyticPairwiseDataset(self.testset, replacement = self.replacement)
+            self.testset = AnalyticPairwiseDataset(self.testset, replacement = self.replacement, rankless=True)
             
         
         if n == 50:
-            print "add difference feature : testset"
-            self.pairwise_test_filename = "diff_testset.jcml"
+            #print "add difference feature : testset"
+            self.pairwise_test_filename = "pairwise_testset.jcml"
             
-            parallelsentences = self.testset.get_parallelsentences()
-            parallelsentences = DiffGenerator().add_features_batch(parallelsentences)
-            Parallelsentence2Jcml(parallelsentences).write_to_file(self.pairwise_test_filename)  
+            #parallelsentences = self.testset.get_parallelsentences()
+            #parallelsentences = DiffGenerator().add_features_batch(parallelsentences)
+            #Parallelsentence2Jcml(parallelsentences).write_to_file(self.pairwise_test_filename)  
             
         
         if n == 70:
             print "produce orange testset"
             
-            input_file = "diff_testset.jcml"
+            input_file = "pairwise_testset.jcml"
             self.testset_orange_filename = "testset.tab"
             
             if os.path.isdir("/local"):
@@ -173,7 +174,7 @@ class AutorankingSuite(PyExperimentSuite):
         
         if n == 100:
             print "reloading coupled test set"
-            self.simple_testset = JcmlReader(self.pairwise_test_filename).get_dataset()
+            self.simple_testset = CEJcmlReader(self.pairwise_test_filename).get_dataset()
             
             print "reconstructing test set"
             att_vector = [{"rank_predicted": v} for v in self.classified_values_vector]
@@ -200,7 +201,10 @@ class AutorankingSuite(PyExperimentSuite):
             
             print "Exporting results"
             writer = Wmt11TabWriter(self.reconstructed_soft_testset, "dfki_{}".format(params["att"]), "testset", "rank_soft")
-            writer.write_to_file("ranked.tab")
+            writer.write_to_file("ranked.soft.tab")
+ 
+            writer = Wmt11TabWriter(self.reconstructed_hard_testset, "dfki_{}".format(params["att"]), "testset", "rank_hard")
+            writer.write_to_file("ranked.hard.tab")
        
         if n == 120:
             print "Scoring correlation"
@@ -220,7 +224,8 @@ class AutorankingSuite(PyExperimentSuite):
         if n == 30:
             Parallelsentence2Jcml(self.testset).write_to_file("pairwise_testset.jcml")   
         if n == 50:
-            Parallelsentence2Jcml(self.testset).write_to_file(self.pairwise_test_filename) 
+            #Parallelsentence2Jcml(self.testset).write_to_file(self.pairwise_test_filename) 
+            pass
         
 
         if n == 90:
@@ -250,10 +255,10 @@ class AutorankingSuite(PyExperimentSuite):
         
             
         if n > 30 and n <=50:
-            self.testset = JcmlReader("pairwise_testset.jcml").get_dataset()
-        
+            #self.testset = JcmlReader("pairwise_testset.jcml").get_dataset()
+            pass 
         if n > 50:
-            self.pairwise_test_filename = "diff_testset.jcml"
+            self.pairwise_test_filename = "pairwise_testset.jcml"
         
         if n > 70:
             self.testset_orange_filename = "testset.tab"

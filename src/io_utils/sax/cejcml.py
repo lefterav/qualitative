@@ -38,10 +38,9 @@ class CEJcmlReader():
         self.TAG_TGT = 'tgt'
         self.TAG_DOC = 'jcml'
 
-        self.desired_general = kwargs.setdefault('desired_general', ["rank"])
+        self.desired_general = kwargs.setdefault('desired_general', ["rank","langsrc","langtgt","id"])
         self.desired_target = kwargs.setdefault('desired_target', ["system"])
-
-      
+        self.input_filename = input_filename
     
     def get_dataset(self):
         parallelsentences = []

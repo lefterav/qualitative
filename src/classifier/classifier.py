@@ -168,7 +168,9 @@ class OrangeClassifier(Classifier):
             
         try:
             textfilename = "{}.dump.txt".format(basename)
-            logreg.dump(self.classifier)
+            f = open(textfilename, "w")
+            f.write(logreg.dump(self.classifier))
+            f.close()
         except:
             pass    
                     
