@@ -8,10 +8,14 @@ import codecs
 import sys
 import tempfile
 import shutil
+import numpy
+
+from collections import defaultdict
 from xml.etree.cElementTree import iterparse
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 from sentence.dataset import DataSet
+
 
 class CEJcmlReader():
     """
@@ -88,5 +92,69 @@ class CEJcmlReader():
         
         
         return DataSet(parallelsentences)       
+
+
+class CEJcmlStats:
+    """calculates statistics about specified attributes on an annotated JCML corpus. Low memory load"""
+    
+    def __init__(self, input_filename, **kwargs):
+        self.input_filename = input_filename
+        self.desired_general = kwargs.setdefault("desired_general", [])
+        self.desired_source = kwargs.setdefault("desired_source", [])
+        self.desired_target = kwargs.setdefault("desired_target", [])
+        self.desired_ref = kwargs.setdefault("desired_ref", [])
+        
+    
+    def get_attribute_statistics(self, attributes):
+        for key, values in attributes:
+            avg = numpy.average(values)
+            
+        
     
     
+    def get_attribute_vectors(self):
+        """
+        Extract a list of values for each attribute
+        """
+        
+        source_file = open(self.input_filename, "r")
+        # get an iterable
+        context = iterparse(source_file, events=("start", "end"))
+        # turn it into an iterator
+        context = iter(context)
+        # get the root element
+        event, root = context.next()
+        
+        general_attributes = defaultdict(list)
+        source_attributes = defaultdict(list)
+        target_attributes = defaultdict(list)
+        ref_attributes = defaultdict(list)
+        
+        for event, elem in context:
+            #new sentence: get attributes
+            if event == "start" and elem.tag == self.TAG_SENT:
+                for key, value in elem.attrib.iteritems():
+                    if key in self.desired_general:
+                        general_attributes[key].append(float(value))
+                    
+            #new source sentence
+            elif event == "start" and elem.tag == self.TAG_SRC:
+                for key, value in elem.attrib.iteritems():
+                    if key in self.desired_source:
+                        source_attributes[key].append(float(value))
+
+            #new target sentence
+            elif event == "start" and elem.tag == self.TAG_TGT:
+                for key, value in elem.attrib.iteritems():
+                    if key in self.desired_target:
+                        target_attributes[key].append(float(value))
+                        
+            elif event == "start" and elem.tag == self.TAG_REF:
+                for key, value in elem.attrib.iteritems():
+                    if key in self.desired_ref:
+                        ref_attributes[key].append(float(value))
+
+            root.clear()
+        
+        
+        return general_attributes, source_attributes, target_attributes, ref_attributes 
