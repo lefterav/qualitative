@@ -299,7 +299,7 @@ def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, l
 
 #language_checker_source = cfg.get_checker(source_language)
 
-@transform(preprocess_data, suffix(".tok.jcml"), ".l.jcml")
+@transform(preprocess_data, suffix(".tok.jcml"), ".l.f.jcml")
 def features_length(input_file, output_file):
     saxjcml.run_features_generator(input_file, output_file, [LengthFeatureGenerator()])
 parallel_feature_functions.append(features_length)
@@ -313,16 +313,25 @@ parallel_feature_functions.append(features_length)
 """
 Quest
 """
-@transform(truecase_source, suffix(".tok.jcml"), ".tc.%s-%s.jcml" % (source_language, target_language), target_language, cfg.get_truecaser_model(target_language))
+@transform(truecase_source, suffix(".tc.%s.jcml" % source_language), ".tc.%s-%s.jcml" % (source_language, target_language), target_language, cfg.get_truecaser_model(target_language))
 def truecase_target_append(input_file, output_file, language, model):
     truecase(input_file, output_file, language, model)
 
 @active_if(cfg.has_section('quest'))
-@transform(truecase_target_append, suffix(".tc.%s-%s.jcml" % (source_language, target_language)), ".tc.%s.jcml" % target_language, source_language, target_language, cfg.get('quest', 'commandline'))
+@transform(truecase_target_append, suffix(".tc.%s-%s.jcml" % (source_language, target_language)), ".quest.f.jcml", source_language, target_language, cfg.get('quest', 'commandline'))
 def features_quest(input_file, output_file, source_language, target_language, commandline):
-    import subprocess
-    subprocess.check_call(commandline.format(sourcelang=source_language, targetlang=target_language, inputfile=input_file, outputfile=output_file)
+    import subprocess, os, shutil
+    input_file = os.path.abspath(input_file)
+    output_file = os.path.abspath(output_file)
+    output_file_tmp = "{}.tmp".format(output_file)
+    previous_path = os.path.abspath(os.curdir)
+    os.chdir(cfg.get('quest', 'path'))
+    subprocess.check_call(commandline.format(sourcelang=source_language, targetlang=target_language, inputfile=input_file, outputfile=output_file_tmp).split())
+    os.chdir(previous_path)    
+    shutil.move(output_file_tmp, output_file)
 
+if cfg.has_section('quest'):
+    parallel_feature_functions.append(features_quest)
 
 @active_if(cfg.getboolean("annotation", "reference_features"))
 @transform(data_fetch, suffix(".orig.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 

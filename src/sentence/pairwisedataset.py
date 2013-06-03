@@ -211,6 +211,7 @@ class AnalyticPairwiseDataset(PairwiseDataset):
         self.restrict_ranks = kwargs.setdefault("restrict_ranks", [])
         self.rank_name = kwargs.setdefault("rank_name", "rank")
         self.invert_ranks = kwargs.setdefault("invert_ranks", False)
+        self.rankless = kwargs.setdefault("rankless", False)
         
         #first group by sentence ID or judgment ID
         for parallelsentence in plain_dataset.get_parallelsentences():
@@ -222,8 +223,9 @@ class AnalyticPairwiseDataset(PairwiseDataset):
                                                                                                                                   include_references=self.include_references,
                                                                                                                                   filter_unassigned = self.filter_unassigned,
                                                                                                                                   invert_ranks = self.invert_ranks,
-                                                                                                                                  rank_name = self.rank_name
+                                                                                                                                  rank_name = self.rank_name,
 #                                                                                                                                  restrict_ranks = self.restrict_ranks    
+                                                                                                                                  rankless = self.rankless
                                                                                                                                   )
                                                                                   )
             
