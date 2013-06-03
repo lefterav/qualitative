@@ -339,6 +339,7 @@ class ParallelSentence(object):
         restrict_ranks = kwargs.setdefault("restrict_ranks", [])
         invert_ranks = kwargs.setdefault("invert_ranks", [])
         rank_name = kwargs.setdefault("rank_name", self.rank_name)
+        rankless = kwargs.setdefault("rankless", False)
         
         systems = []
         targets = []
@@ -355,11 +356,12 @@ class ParallelSentence(object):
         if include_references:
             if "_ref" not in self.get_target_attribute_values("system"):    
                 reference = self.get_reference()
-                reference.add_attribute("system", "_ref")   
-                #get a rank value lower than all the existing ones and assign it to references
-                min_rank = min([float(t.get_attribute(self.rank_name)) for t in translations]) - 1 
-                reference.add_attribute(self.rank_name, str(int(min_rank)))
-                translations.append(reference)
+                reference.add_attribute("system", "_ref") 
+                if not rankless: 
+                    #get a rank value lower than all the existing ones and assign it to references
+                    min_rank = min([float(t.get_attribute(self.rank_name)) for t in translations]) - 1 
+                    reference.add_attribute(self.rank_name, str(int(min_rank)))
+                    translations.append(reference)
                     
         #@todo: rewrite this function in more efficient way
         for targetA in translations:
@@ -381,7 +383,8 @@ class ParallelSentence(object):
                                              self.ref, 
                                              self.attributes, 
                                              rank_name, 
-                                             invert_ranks = invert_ranks
+                                             invert_ranks = invert_ranks,
+                                             rankless = rankless
                                              ) \
                         for i in range(len(systems))
                     ]

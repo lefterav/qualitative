@@ -44,6 +44,7 @@ class PairwiseParallelSentence(ParallelSentence):
         """
         
         cast = kwargs.setdefault("cast", None)
+        rankless = kwargs.setdefault("rankless",False)
         invert_ranks = kwargs.setdefault("invert_ranks", False)
         
         
@@ -56,7 +57,7 @@ class PairwiseParallelSentence(ParallelSentence):
             self.ref = reference
             self.attributes = deepcopy(attributes)
             self.rank_name = rank_name
-            if self.tgt:
+            if self.tgt and not rankless:
                 self._normalize_ranks(invert_ranks)
     #        self.ties_allowed = ties_allowed
 

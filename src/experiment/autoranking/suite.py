@@ -20,6 +20,7 @@ from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
 from Orange.classification.tree import TreeLearner
 from Orange.classification.tree import C45Learner
 from Orange.classification.logreg import LogRegLearner
+from Orange.classification.logreg import LibLinearLogRegLearner
 from Orange import evaluation
 
 from io_utils.input.jcmlreader import JcmlReader
@@ -58,10 +59,11 @@ class AutorankingSuite(PyExperimentSuite):
         classifier_name = params["classifier"] + "Learner"
         self.learner = eval(classifier_name)
         try:
-            self.classifier_params = eval(params["params_%s" % params["classifier"]])
+            self.classifier_params = eval(params["params_{}".format(params["classifier"]).lower()])
         except:
             self.classifier_params = {}
         
+        sys.stderr.write("Accepted classifier parameters: {}\n".format(self.classifier_params))
         self.remove_infinite = False
         if classifier_name == "SVMEasyLearner":
             self.classifier_params["verbose"] = True
