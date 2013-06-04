@@ -265,11 +265,11 @@ class AutorankingSuite(PyExperimentSuite):
         
         if n > 90:
             classified_vector_file = open("classified.hard.txt", 'r') 
-            self.classified_values_vector = [float(line[:-5]) for line in classified_vector_file]
+            self.classified_values_vector = [int(line.strip()) for line in classified_vector_file]
             classified_vector_file.close()
             classified_prob_file = open("classified.soft.txt", 'r') 
-            self.classified_probs_vector = [tuple(line.split('\t')) for line in classified_prob_file]
-            self.classified_probs_vector = [(float(a), float(b[:-5])) for a,b in self.classified_probs_vector]
+            self.classified_probs_vector = [tuple(line.strip().split('\t')) for line in classified_prob_file]
+            self.classified_probs_vector = [(float(a),float(b)) for a,b in self.classified_probs_vector]
             classified_prob_file.close()
         if n > 100:
             self.reconstructed_hard_testset = JcmlReader("testset.reconstructed.hard.jcml").get_dataset()
