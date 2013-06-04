@@ -6,6 +6,7 @@ Created on Apr 15, 2011
 
 from parallelsentence import ParallelSentence
 from dataset import DataSet
+import sys
 
 class RankHandler(object):
     '''
@@ -171,6 +172,7 @@ class RankHandler(object):
             if "judgment_id" in parallelsentence.get_attributes():
                 judgement_id = parallelsentence.get_attribute("judgment_id")
             else:
+                sys.stderr.write("Warning: no judgment id. We will assign an incremental one, which may result in unwanted behaviour if the original id was lost on the way")
                 judgement_id = str(j)
             pairwise_parallelsentences.extend( self.get_pairwise_from_multiclass_sentence(parallelsentence, judgement_id, allow_ties, exponential, rename_rank) )
         #pairwise_parallelsentences = self.merge_overlapping_pairwise_set(pairwise_parallelsentences)
