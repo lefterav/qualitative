@@ -175,6 +175,7 @@ class AutorankingSuite(PyExperimentSuite):
         if n == 100:
             print "reloading coupled test set"
             self.simple_testset = CEJcmlReader(self.pairwise_test_filename).get_dataset()
+            Parallelsentence2Jcml(self.simple_testset).write_to_file("testset-pairwise.reloaded.debug.jcml")
             
             print "reconstructing test set"
             att_vector = [{"rank_predicted": v} for v in self.classified_values_vector]
