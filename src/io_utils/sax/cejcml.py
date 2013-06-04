@@ -76,7 +76,7 @@ class CEJcmlReader():
             elif event == "start" and elem.tag == self.TAG_TGT:
                 target_id += 1
                 target_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_target])
-                targets.append(SimpleSentence(None, target_attributes))
+                targets.append(SimpleSentence("", target_attributes))
             
 #            elif event == "end" and elem.tag == self.TAG_SRC:
 #                src_text = elem.text
@@ -85,7 +85,7 @@ class CEJcmlReader():
 #                tgt_text.append(elem.text)
             
             elif event == "end" and elem.tag in self.TAG_SENT:
-                source = SimpleSentence(None,{})
+                source = SimpleSentence("",{})
                 parallelsentence = ParallelSentence(source,targets,None,attributes)
                 parallelsentences.append(parallelsentence)
             root.clear()
