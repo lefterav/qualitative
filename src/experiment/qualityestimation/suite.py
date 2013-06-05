@@ -59,6 +59,7 @@ class QualityEstimationSuite(PyExperimentSuite):
         self.discrete_attributes = params["discrete_attributes"].split(",")
         self.class_name = params["class_name"]
         self.class_type = params["class_type"]
+        self.test_ratio = params.setdefault("test_ratio",0.9)
     
     def iterate(self, params, rep, n):
         ret = {}
