@@ -7,6 +7,7 @@ from optparse import OptionParser
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
+from featuregenerator.glassbox.moses.extractor import MosesGlassboxExtractor
 
 if __name__ == '__main__':
 
@@ -45,11 +46,16 @@ if __name__ == '__main__':
     parser.add_option("-u", "--testset", dest="testset",
                       help="set name")
     
+    parser.add_option("-g", "--moseslog", dest="moseslog",
+                      help="verbose log of moses decoding")
     
     (opt, args) = parser.parse_args()
     
     source_file = open(opt.source_filename, 'r')
     target_file = open(opt.target_filename, 'r')
+    
+    feature_file_objects = [open(f, 'r') for f in opt.feature_files]
+    
     try:
         reference_file = open(opt.reference_filename, 'r')
     except:
@@ -59,8 +65,10 @@ if __name__ == '__main__':
     except:
         score_file = None
     
+    if opt.moseslog:
+        extractor = MosesGlassboxExtractor()
+        glassbox_features_dicts = extractor.create_dicts_of_sentences_attributes(opt.moseslog)
 
-    
     parallelsentences = []
     i = 0
     
@@ -69,6 +77,8 @@ if __name__ == '__main__':
         atts = {}
         source_line = source_line.strip()
         target_line = target_file.readline().strip()
+        
+        
         if reference_file:
             reference_line = reference_file.readline().strip()
             reference_sentence = SimpleSentence(reference_line)
@@ -81,16 +91,29 @@ if __name__ == '__main__':
         
         atts["system"] = opt.system_name
         
+        if opt.moseslog:
+            atts.update(glassbox_features_dicts[i-1])
+        
         source_sentence = SimpleSentence(source_line)
         target_sentences = [SimpleSentence(target_line, atts)]
         
+        additional_atts = {}
+        for feature_name, file_object in zip(opt.feature_names, feature_file_objects):
+            value = file_object.readline().strip()
+            additional_atts[feature_name] = value
+                
         ps_atts =  {"langsrc" : opt.langsrc ,
                      "langtgt" : opt.langtgt ,
                      "testset" : opt.testset ,
                      "id" : str(i)}
         
+        ps_atts.update(additional_atts)
+        
         ps = ParallelSentence(source_sentence, target_sentences, reference_sentence, ps_atts)
         parallelsentences.append(ps)
+    
+    for file_object in feature_file_objects:
+        file_object.close()
     
     Parallelsentence2Jcml(parallelsentences).write_to_file(opt.output_filename)
     
