@@ -238,9 +238,14 @@ class DataSet(object):
             self.parallelsentences[i].merge_parallelsentence(incoming_ps, attribute_replacements)
             
     
-    def import_target_attributes_symmetrical_onsystem(self, dataset, target_attribute_names):
+    def import_target_attributes_onsystem(self, dataset, target_attribute_names, keep_attributes_general=[], keep_attributes_source=[], keep_attributes_target=[]):
+        
         new_parallelsentences = []
-        for existing_parallelsentence, incoming_parallelsentence in zip(self.parallelsentences, dataset.get_parallelsentences()):
+        incoming_parallelsentences = dict([(p.get_attribute("judgement_id"), p) for p in dataset.get_parallelsentences()])
+                
+        for existing_parallelsentence in self.parallelsentences:
+            jid = existing_parallelsentence.get_attribute("judgement_id")
+            incoming_parallelsentence = incoming_parallelsentences[jid]
             existing_parallelsentence.import_indexed_parallelsentence(incoming_parallelsentence, target_attribute_names)
             new_parallelsentences.append(existing_parallelsentence)
         self.parallelsentences = new_parallelsentences        
