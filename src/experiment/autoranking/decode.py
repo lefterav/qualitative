@@ -194,8 +194,16 @@ class AutorankingSuite(PyExperimentSuite):
             self.simple_testset = RawPairwiseDataset(cast=self.simple_testset) #this 
 #            self.simple_testset = CompactPairwiseDataset(self.simple_testset) #and this should have no effect
             
-            self.reconstructed_hard_testset = self.simple_testset.get_single_set_with_hard_ranks("rank_predicted", "rank_hard")
-            self.reconstructed_soft_testset = self.simple_testset.get_single_set_with_soft_ranks("prob_-1", "prob_1", "rank_soft_predicted", "rank_soft")
+            reconstructed_hard_testset = self.simple_testset.get_single_set_with_hard_ranks("rank_predicted", "rank_hard")
+            reconstructed_soft_testset = self.simple_testset.get_single_set_with_soft_ranks("prob_-1", "prob_1", "rank_soft_predicted", "rank_soft")
+            
+            self.testset = JcmlReader("testset.jcml").get_dataset() 
+            self.final_reconstructed_hard = deepcopy(self.testset)
+            self.final_reconstructed_hard.import_target_attributes_symmetrical_onsystem(reconstructed_hard_testset, ["rank"])
+            self.final_reconstructed_soft = deepcopy(self.testset)
+            self.final_reconstructed_soft.import_target_attributes_symmetrical_onsystem(reconstructed_soft_testset, ["rank"])
+        
+            
             self.simple_testset = None
         
         
@@ -241,13 +249,10 @@ class AutorankingSuite(PyExperimentSuite):
                 classified_prob_file.write("{}\t{}\n".format(value1, value2))
             classified_prob_file.close()
         if n == 100:
-            final_reconstructed_hard = deepcopy(self.testset)
-            final_reconstructed_hard.import_target_attributes_symmetrical_onsystem(self.reconstructed_hard_testset, ["rank"])
-            Parallelsentence2Jcml(final_reconstructed_hard).write_to_file("testset.reconstructed.hard.jcml")
+        
+            Parallelsentence2Jcml(self.final_reconstructed_hard).write_to_file("testset.reconstructed.hard.jcml")
 
-            final_reconstructed_soft = deepcopy(self.testset)
-            final_reconstructed_soft.import_target_attributes_symmetrical_onsystem(self.reconstructed_soft_testset, ["rank"])
-            Parallelsentence2Jcml(final_reconstructed_soft).write_to_file("testset.reconstructed.soft.jcml")
+            Parallelsentence2Jcml(self.final_reconstructed_soft).write_to_file("testset.reconstructed.soft.jcml")
 #        if n == 110:
 #            Parallelsentence2Jcml(self.reconstructed_hard_testset).write_to_file("testset.reconstructed.org.hard.jcml")
 #            Parallelsentence2Jcml(self.reconstructed_soft_testset).write_to_file("testset.reconstructed.org.soft.jcml")
