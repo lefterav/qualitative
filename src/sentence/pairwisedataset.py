@@ -69,10 +69,10 @@ class RevertablePairwiseDataset(PairwiseDataset):
             pairwise_parallelsentence_set = self.pairwise_parallelsentence_sets[sentence_id]
             multirank_parallelsentence = pairwise_parallelsentence_set.get_multiranked_sentence()
             multirank_parallelsentences.append(multirank_parallelsentence)
-        try:
-            multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute("id")))
-        except:
-            pass
+#        try:
+#            multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute("id")))
+#        except:
+#            pass
         return DataSet(multirank_parallelsentences)
         
     def get_single_set_with_hard_ranks(self, critical_attribute=None, new_rank_name=None, **kwargs):
