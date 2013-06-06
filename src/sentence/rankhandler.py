@@ -6,6 +6,7 @@ Created on Apr 15, 2011
 
 from parallelsentence import ParallelSentence
 from dataset import DataSet
+from collections import OrderedDict
 import sys
 
 class RankHandler(object):
@@ -27,7 +28,7 @@ class RankHandler(object):
             parallelsentences = parallelsentences.get_parallelsentences()
             
             
-        sentences_per_judgment = {}
+        sentences_per_judgment = OrderedDict()
         #constract groups of pairwise sentences, based on their judgment id, which is unique per group
         for parallelsentence in parallelsentences:
             jid = int(parallelsentence.get_attribute("judgement_id"))
@@ -41,8 +42,8 @@ class RankHandler(object):
         
         for jid in sentences_per_judgment:
             pairwise_sentences = sentences_per_judgment[jid]
-            rank_per_system = {}
-            tranlsations_per_system = {}
+            rank_per_system = OrderedDict()
+            tranlsations_per_system = OrderedDict()
             for pairwise_sentence in pairwise_sentences:
                 rank = int(pairwise_sentence.get_attribute(self.rank_name))
                 
@@ -79,7 +80,8 @@ class RankHandler(object):
 #                    rank_per_system[best_ranked_system] += new_rank
 #                print "second pass best rank" , rank_per_system
 #            
-            for system in sorted(rank_per_system, key=lambda system: rank_per_system[system]):                
+#            for system in sorted(rank_per_system, key=lambda system: rank_per_system[system]):     
+            for system in rank_per_system.keys():            
                 if rank_per_system[system] != prev_rank:
                     i += 1
                     
@@ -183,7 +185,7 @@ class RankHandler(object):
     
     
     def merge_overlapping_pairwise_set(self, parallelsentences):
-        sets = {}
+        sets = OrderedDict()
         merged_parallelsentences = []
         merged = 0
         
