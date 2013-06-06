@@ -199,9 +199,9 @@ class AutorankingSuite(PyExperimentSuite):
             
             self.testset = JcmlReader("testset.jcml").get_dataset() 
             self.final_reconstructed_hard = deepcopy(self.testset)
-            self.final_reconstructed_hard.import_target_attributes_symmetrical_onsystem(reconstructed_hard_testset, ["rank"])
+            self.final_reconstructed_hard.import_target_attributes_onsystem(reconstructed_hard_testset, ["rank"])
             self.final_reconstructed_soft = deepcopy(self.testset)
-            self.final_reconstructed_soft.import_target_attributes_symmetrical_onsystem(reconstructed_soft_testset, ["rank"])
+            self.final_reconstructed_soft.import_target_attributes_onsystem(reconstructed_soft_testset, ["rank"])
         
             
             self.simple_testset = None
