@@ -166,8 +166,8 @@ class RawPairwiseDataset(RevertablePairwiseDataset):
         """
         Typecast a DataSet that is in fact already analytic
         """
-        self.pairwise_parallelsentence_sets = {}
-        pairwise_parallelsentences_per_sid = {}
+        self.pairwise_parallelsentence_sets = OrderedDict()
+        pairwise_parallelsentences_per_sid = OrderedDict()
         
         #first group by sentence ID or judgment ID
         for parallelsentence in analytic_dataset.get_parallelsentences():
@@ -211,8 +211,8 @@ class AnalyticPairwiseDataset(PairwiseDataset):
         @var invert_ranks: Whether ranks should be considered the way round (highest value=best rank)
         @type invert_ranks: boolean
         """
-        self.pairwise_parallelsentence_sets = {}
-        pairwise_parallelsentences_per_sid = {}
+        self.pairwise_parallelsentence_sets = OrderedDict()
+        pairwise_parallelsentences_per_sid = OrderedDict()
         
         self.include_references = kwargs.setdefault("include_references", False)
         self.replacement = kwargs.setdefault("replacement", False)
@@ -268,7 +268,7 @@ class CompactPairwiseDataset(RevertablePairwiseDataset):
     to soft or hard rank recomposition  
     """
     def __init__(self, analytic_pairwise_dataset = AnalyticPairwiseDataset()):
-        self.pairwise_parallelsentence_sets = {}
+        self.pairwise_parallelsentence_sets = OrderedDict()
         for sentence_id, analytic_pairwise_parallelsentence_set in analytic_pairwise_dataset.get_pairwise_parallelsentence_sets().iteritems():
             self.pairwise_parallelsentence_sets[sentence_id] = analytic_pairwise_parallelsentence_set.get_compact_pairwise_parallelsentence_set()
         
@@ -276,7 +276,7 @@ class CompactPairwiseDataset(RevertablePairwiseDataset):
 
 class FilteredPairwiseDataset(CompactPairwiseDataset):
     def __init__(self, analytic_pairwise_dataset = AnalyticPairwiseDataset(), threshold = 1.00):    
-        self.pairwise_parallelsentence_sets = {}
+        self.pairwise_parallelsentence_sets = OrderedDict()
         for sentence_id, analytic_pairwise_parallelsentence_set in analytic_pairwise_dataset.get_pairwise_parallelsentence_sets().iteritems():
             self.pairwise_parallelsentence_sets[sentence_id] = analytic_pairwise_parallelsentence_set.get_filtered_pairwise_parallelsentence_set(threshold)
 
@@ -315,7 +315,7 @@ class FilteredPairwiseDataset(CompactPairwiseDataset):
 #        @param dataset: the dataset to be converted
 #        @type dataset: sentence.dataset.DataSet
 #        """
-#        ranking_entries = {}
+#        ranking_entries = OrderedDict()
 #        for judgement_id, parallelsentence in dataset.get_parallelsentences_with_judgment_ids().iteritems():
 #            #get the pairwise representation of the current ranking judgment 
 #            pairwise_parallel_sentences = parallelsentence.get_pairwise_parallelsentence_set()
@@ -327,7 +327,7 @@ class FilteredPairwiseDataset(CompactPairwiseDataset):
 #        return self.pairwise_parallelsentence_set[judgement_id]
     
 #    def get_pairs_per_sentence_id(self):
-#        ps_sid = {}
+#        ps_sid = OrderedDict()
 #        for pairwise_parallelsentence_set in self.pairwise_parallelsentence_sets:
 #            for pairwise_parallelsentence in pairwise_parallelsentence_set.get_parallelsentences():
 #                #get the id of the particular multiple ranking (judgment) or create a new one

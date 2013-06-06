@@ -255,7 +255,7 @@ class ParallelSentence(object):
         
         
     def _prefix(self, listitems, prefix):
-        newlistitems = {}
+        newlistitems = OrderedDict()
         for item_key in listitems.keys():
             new_item_key = "_".join([prefix, item_key]) 
             newlistitems[new_item_key] = listitems[item_key]
