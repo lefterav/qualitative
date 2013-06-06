@@ -9,6 +9,7 @@
 import sys
 import re
 from compiler.ast import Raise
+from collections import OrderedDict
 
 class DataSet(object):
     """
@@ -193,7 +194,7 @@ class DataSet(object):
         @param merging_attributes: the names of the attributes that signify that two parallelsentences are the same, though with possibly different attributes
         @type merging_attributes: list of strings  
         """
-        incoming_parallelsentences_indexed = {}        
+        incoming_parallelsentences_indexed = OrderedDict()        
         incoming_parallelsentences = dataset_for_merging_with.get_parallelsentences()
         for incoming_ps in incoming_parallelsentences:
             key = tuple([incoming_ps.get_attribute(att) for att in merging_attributes]) #hopefully this runs always in the same order
@@ -236,6 +237,14 @@ class DataSet(object):
             incoming_ps = incoming_parallelsentences[i]
             self.parallelsentences[i].merge_parallelsentence(incoming_ps, attribute_replacements)
             
+    
+    def import_target_attributes_symmetrical_onsystem(self, dataset, target_attribute_names):
+        new_parallelsentences = []
+        for existing_parallelsentence, incoming_parallelsentence in zip(self.parallelsentences, dataset.get_parallelsentences()):
+            existing_parallelsentence.import_indexed_parallelsentence(incoming_parallelsentence, target_attribute_names)
+            new_parallelsentences.append(existing_parallelsentence)
+        self.parallelsentences = new_parallelsentences        
+    
     
     def merge_references_symmetrical(self, dataset_for_merging_with):
         incoming_parallelsentences = dataset_for_merging_with.get_parallelsentences()
