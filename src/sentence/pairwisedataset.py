@@ -86,10 +86,10 @@ class RevertablePairwiseDataset(PairwiseDataset):
         if sort_attribute:
             multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute(sort_attribute)))
         else:
-            try:
-                multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute("judgement_id")))
-            except:
-                pass
+#            try:
+#                multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute("judgement_id")))
+#            except:
+            pass
         return DataSet(multirank_parallelsentences)
     
     def get_single_set_with_soft_ranks(self, attribute1="", attribute2="", critical_attribute="rank_soft_predicted", new_rank_name = None, **kwargs):
@@ -107,10 +107,10 @@ class RevertablePairwiseDataset(PairwiseDataset):
         if sort_attribute:
             multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute(sort_attribute)))
         else:
-            try:
-                multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute("judgement_id")))
-            except:
-                pass
+#            try:
+#                multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute("judgement_id")))
+#            except:
+            pass
         return DataSet(multirank_parallelsentences)
 
 

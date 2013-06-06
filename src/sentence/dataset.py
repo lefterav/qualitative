@@ -326,9 +326,9 @@ class DataSet(object):
     def add_attribute_vector(self, att_vector, target="tgt", item=0):
         att_vector.reverse()
         
-        for ps in self.parallelsentences:
-            atts = att_vector.pop()
-            atts = dict([(k, str(v)) for k,v in atts.iteritems()])
+        for ps, atts in zip(self.parallelsentences, att_vector):
+#            atts = att_vector.pop()
+            atts = OrderedDict([(k, str(v)) for k,v in atts.iteritems()])
             if target == "ps":
                 ps.add_attributes(atts)
             elif target == "tgt":
