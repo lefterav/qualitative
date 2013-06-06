@@ -2,6 +2,7 @@
 @author: Eleftherios Avramidis
 """
 
+from collections import OrderedDict
 from copy import deepcopy
 import re
 import sys
@@ -389,6 +390,28 @@ class ParallelSentence(object):
                         for i in range(len(systems))
                     ]
         return pps_list
+    
+
+    def import_indexed_parallelsentence(self, parallelsentence, target_attribute_names):
+        """
+        """
+        targets = self.get_translations()
+        
+        incoming_targets = parallelsentence.get_translations()
+        incoming_translations = dict([(tgt.get_attribute("system"), tgt) for tgt in incoming_targets])
+        
+        new_targets = []
+        
+        for target in targets:
+            system_id = target.get_attribute("system")
+            matched_incoming = incoming_translations[system_id]
+            for attribute_name in target_attribute_names:
+                value = matched_incoming.get_attribute(attribute_name)
+                target.add_attribute(attribute_name, value)
+            new_targets.append(target)
+                
+        self.tgt = new_targets
+
 
     def remove_ties(self):
         """
