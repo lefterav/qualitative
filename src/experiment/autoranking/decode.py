@@ -32,6 +32,7 @@ from io_utils.output.wmt11tabwriter import Wmt11TabWriter
 from classifier.classifier import OrangeClassifier
 from Orange.data import Table
 from datetime import datetime
+from copy import deepcopy
 
 from featuregenerator.diff_generator import DiffGenerator
 from sentence.pairwisedataset import AnalyticPairwiseDataset, CompactPairwiseDataset, RawPairwiseDataset
@@ -240,9 +241,13 @@ class AutorankingSuite(PyExperimentSuite):
                 classified_prob_file.write("{}\t{}\n".format(value1, value2))
             classified_prob_file.close()
         if n == 100:
-            Parallelsentence2Jcml(self.reconstructed_hard_testset).write_to_file("testset.reconstructed.hard.jcml")
+            final_reconstructed_hard = deepcopy(self.testset)
+            final_reconstructed_hard.import_target_attributes_symmetrical_onsystem(self.reconstructed_hard_testset, ["rank"])
+            Parallelsentence2Jcml(final_reconstructed_hard).write_to_file("testset.reconstructed.hard.jcml")
 
-            Parallelsentence2Jcml(self.reconstructed_soft_testset).write_to_file("testset.reconstructed.soft.jcml")
+            final_reconstructed_soft = deepcopy(self.testset)
+            final_reconstructed_soft.import_target_attributes_symmetrical_onsystem(self.reconstructed_soft_testset, ["rank"])
+            Parallelsentence2Jcml(final_reconstructed_soft).write_to_file("testset.reconstructed.soft.jcml")
 #        if n == 110:
 #            Parallelsentence2Jcml(self.reconstructed_hard_testset).write_to_file("testset.reconstructed.org.hard.jcml")
 #            Parallelsentence2Jcml(self.reconstructed_soft_testset).write_to_file("testset.reconstructed.org.soft.jcml")
