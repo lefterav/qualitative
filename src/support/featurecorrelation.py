@@ -38,21 +38,39 @@ def getDiscretizedData(data, intervals):
 
 
 if __name__ == '__main__':
-    meta_attributes = "testset,judgement_id,langsrc,langtgt,ps1_judgement_id,ps2_judgement_id,id,tgt-1_score,tgt-1_system,tgt-2_score,tgt-2_system,document_id,judge_id,segment_id".split(',')
+
+    try:
+        pairwise = not (sys.argv[3]=='--nopairs')
+    except:
+        pairwise = True
+
+    #if pairwise:
+    meta_attributes = "testset,judgement_id,langsrc,langtgt,ps1_judgement_id,ps2_judgement_id,id,tgt-1_system,tgt-2_system,document_id,judge_id,segment_id,translator_id,doc_id".split(',')
     hidden_attributes = "tgt-1_berkeley-tree,tgt-2_berkeley-tree,src_berkeley-tree,rank_diff,tgt-1_ref-lev,tgt-1_ref-meteor_score,tgt-1_ref-meteor_fragPenalty,tgt-1_ref-meteor_recall,tgt-1_ref-meteor_precision,tgt-1_ref-bleu,tgt-2_ref-lev,tgt-2_ref-meteor_score,tgt-2_ref-meteor_fragPenalty,tgt-2_ref-meteor_recall,tgt-2_ref-meteor_precision,tgt-2_ref-bleu,tgt-1_rank,tgt-2_rank".split(',')
     hidden_attributes.extend(meta_attributes)
+    #else:
+    #    meta_attributes = ""
+
 
     tempdir = "/tmp"
 
     input_filename = sys.argv[1]
+
+    if pairwise:
+        class_type = "d"
+    else:
+        class_type = "c"
+ 
     if input_filename.endswith(".jcml"):
         pairwise_filename = os.path.join(tempdir, os.path.basename(input_filename.replace(".jcml",".pair.jcml")))
         
         tab_filename = os.path.join(tempdir, os.path.basename(input_filename.replace(".jcml",".tab")))
         
-        sys.stderr.write('pairwising XML file {} to {} ...\n'.format(input_filename,pairwise_filename))
-        Parallelsentence2Jcml(AnalyticPairwiseDataset(XmlReader(input_filename)).get_parallelsentences()).write_to_file(pairwise_filename)
-        
+        if pairwise:
+            sys.stderr.write('pairwising XML file {} to {} ...\n'.format(input_filename,pairwise_filename))
+            Parallelsentence2Jcml(AnalyticPairwiseDataset(XmlReader(input_filename)).get_parallelsentences()).write_to_file(pairwise_filename)
+        else:
+            pairwise_filename = input_filename
         sys.stderr.write('converting XML file {} to tab ...\n'.format(pairwise_filename))
         CElementTreeJcml2Orange(pairwise_filename, 
                                                  sys.argv[2], 
@@ -60,7 +78,8 @@ if __name__ == '__main__':
                                                  meta_attributes, 
                                                  tab_filename,
                                                  hidden_attributes=hidden_attributes,
-                                                 nullimputation=True).convert()
+                                                 nullimputation=True,
+                                                 class_type=class_type).convert()
         input_filename = tab_filename
         sys.stderr.write('created converted file {} ...'.format(input_filename))
     table = Orange.data.Table(input_filename)

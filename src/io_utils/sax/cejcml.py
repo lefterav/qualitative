@@ -43,7 +43,7 @@ class CEJcmlReader():
         self.TAG_DOC = 'jcml'
 
         self.desired_general = kwargs.setdefault('desired_general', ["rank","langsrc","langtgt","id","judgement_id"])
-        self.desired_target = kwargs.setdefault('desired_target', ["system"])
+        self.desired_target = kwargs.setdefault('desired_target', ["system","rank"])
         self.input_filename = input_filename
     
     def get_dataset(self):

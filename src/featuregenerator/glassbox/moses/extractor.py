@@ -46,8 +46,11 @@ class MosesGlassboxExtractor:
         self.worDel = re.compile('words deleted = ([\d.-]+)')
         self.worIns = re.compile('words inserted = ([\d.-]+)')
         self.besTraTot = re.compile('BEST TRANSLATION:.+?[[]total=([\d.-]+)[]]')
+        self.besTraTot2 = re.compile('Source and Target Units:.+?[[]total=([\d.-]+)[]]')
         self.besTraVal = re.compile('BEST TRANSLATION:.+?<<(.+?)>>')
+        self.besTraVal2 = re.compile('Source and Target Units:.+?<<(.+?)>>')
         self.besTrans = re.compile('BEST TRANSLATION:(.*)\[11')
+        self.besTrans2 = re.compile('Source and Target Units:(.*)')
         self.pC = re.compile('[[].+?pC=([\d.-]+).+?[]]')
         self.bestPhrBoundaries = re.compile('\[\[(\d*)\.\.(\d*)\]:([^::]*)')
         self.c = re.compile('[[].+?c=([\d.-]+)[]]')
@@ -176,15 +179,25 @@ class MosesGlassboxExtractor:
         attrs['words_inserted'] = self.worIns.search(transPart).group(1)
         
         # get 'best translation - total'
-        attrs['best_trans_total'] = self.besTraTot.search(transPart).group(1)
+        try:
+            attrs['best_trans_total'] = self.besTraTot.search(transPart).group(1)
+            best_trans_values = re.findall('([\d.-]+)', self.besTraVal \
+                                                   .search(transPart).group(1))
+            #best trans values is fixed, equal to the number of weights
+            for i, trans_value in enumerate(best_trans_values):
+                attrs['best_trans_val_{}'.format(i)] = trans_value
+        except:
+            pass
+            #attrs['best_trans_total'] = self.besTraTot2.search(transPart).group(1)
+            #best_trans_values = re.findall('([\d.-]+)', self.besTraVal2 \
+            #                                       .search(transPart).group(1))
+            #best trans values is fixed, equal to the number of weights
+            #for i, trans_value in enumerate(best_trans_values):
+            #    attrs['best_trans_val_{}'.format(i)] = trans_value
+
         
         # get 'best translation - values' 
-        best_trans_values = re.findall('([\d.-]+)', self.besTraVal \
-                                                   .search(transPart).group(1))
         
-        #best trans values is fixed, equal to the number of weights
-        for i, trans_value in enumerate(best_trans_values):
-            attrs['best_trans_val_{}'.format(i)] = trans_value
 #        
 #        # get 'pC parameters'
         pC = [float(i) for i in self.pC.findall(transPart)]
@@ -242,7 +255,10 @@ class MosesGlassboxExtractor:
             
         attrs['phrases'] = phrases
         
-        translation_string = self.besTrans.search(transPart).group(1)
+        try:
+            translation_string = self.besTrans.search(transPart).group(1)
+        except:
+            translation_string = self.besTrans2.search(transPart).group(1)
         token_list = translation_string.strip().split()
         tokens = len(token_list)
         attrs['tgt_tokens'] = tokens

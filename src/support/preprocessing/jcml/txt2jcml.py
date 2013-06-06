@@ -28,11 +28,11 @@ if __name__ == '__main__':
     parser.add_option("-l", "--score", dest="score_filename",
                       help="read one score per line from FILE", metavar="FILE")
     
-    parser.add_option("-a", "--feature-names", dest="feature_names", action="append", type="str",
-                      help="a list of feature names")
+    parser.add_option("-a", "--feature-names", action="append", dest="feature_names", type="str",
+                      help="a list of feature names", default=[])
     
-    parser.add_option("-q", "--feature-files", dest="feature_files", action="append", type="str",
-                      help="a list of feature FILEs in respective order", metavar="FILE")
+    parser.add_option("-q", "--feature-files", action="append", dest="feature_files", type="str", default=[],
+                      help="a list of feature FILEs in respective order")
     
     parser.add_option("-o", "--output", dest="output_filename",
                       help="write output to this jcml FILE", metavar="FILE")
@@ -55,7 +55,7 @@ if __name__ == '__main__':
     target_file = open(opt.target_filename, 'r')
     
     feature_file_objects = [open(f, 'r') for f in opt.feature_files]
-    
+    print opt.feature_files, opt.feature_names
     try:
         reference_file = open(opt.reference_filename, 'r')
     except:
