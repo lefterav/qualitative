@@ -399,7 +399,14 @@ class ParallelSentence(object):
         
         incoming_targets = parallelsentence.get_translations()
         incoming_translations = dict([(tgt.get_attribute("system"), tgt) for tgt in incoming_targets])
+        print parallelsentence.get_attribute("judgement_id")
+        print self.get_attribute("judgement_id")
         
+        print [t.get_attribute("system") for t in incoming_targets]
+        print [t.get_attribute("system") for t in targets]
+       
+        print 
+ 
         new_targets = []
         
         for target in targets:
