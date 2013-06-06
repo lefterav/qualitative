@@ -284,8 +284,8 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
                 
         #iterate through the system outputs, sorted by their rank
         #and increment their rank only if there is no tie
-        systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
-        for system in systems:
+#        systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
+        for system in rank_per_system.keys():
             #if there is no tie                
             if rank_per_system[system] != prev_rank: 
                 i += 1
@@ -367,9 +367,9 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
                 
         #iterate through the system outputs, sorted by their rank
         #and increment their rank only if there is no tie
-        systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
-        print systems
-        for system in systems:
+        #systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
+        #print systems
+        for system in rank_per_system.keys():
             #if there is no tie                
             if rank_per_system[system] != prev_rank: 
                 i += 1
@@ -436,9 +436,9 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
                 
         #iterate through the system outputs, sorted by their rank
         #and increment their rank only if there is no tie
-        systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
-        print systems
-        for system in systems:
+#        systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
+#        print systems
+        for system in rank_per_system.keys():
             #if there is no tie                
             if rank_per_system[system] != prev_rank: 
                 i += 1
