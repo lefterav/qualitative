@@ -427,6 +427,31 @@ class ParallelSentence(object):
                 del(self.attributes[name])
         self.ref = None
 
+    def import_missing_parallelsentence(self, target_attribute_names, keep_attributes_general=[], keep_attributes_source=[], keep_attributes_target=[]):
+        targets = self.get_translations()
+        
+        
+        
+
+        new_targets = []
+        self.src.keep_only_attributes(keep_attributes_source)
+
+        for target in targets:
+            system_id = target.get_attribute("system")
+            for attribute_name in target_attribute_names:
+                #only for rank
+                value = '1'
+                target.keep_only_attributes(keep_attributes_target)
+                target.add_attribute(attribute_name, value)
+            new_targets.append(target)
+                
+        self.tgt = new_targets
+        
+        for name in self.attributes.keys():
+            if name not in keep_attributes_general:
+                del(self.attributes[name])
+        self.ref = None
+        
 
     def remove_ties(self):
         """
