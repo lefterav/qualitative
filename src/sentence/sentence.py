@@ -60,8 +60,14 @@ class SimpleSentence(object):
     def add_attribute(self, key, value):
         self.attributes[key] = value
 
-    def get_attribute(self, key):
-        return self.attributes[key]
+    def get_attribute(self, key, sub=None):
+        try:
+            return self.attributes[key]
+        except:
+            if sub:
+                return sub
+            else:
+                raise AttributeError
     
     def add_attributes(self, attributes):
         self.attributes.update(attributes)
