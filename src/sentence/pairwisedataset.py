@@ -51,7 +51,7 @@ class PairwiseDataset(DataSet):
         for myset in self.pairwise_parallelsentence_sets.values():
             removed_ties += myset.remove_ties()
         #filter out sentences where nothing is left
-        self.pairwise_parallelsentence_sets = dict([(id, ps) for (id, ps) in self.pairwise_parallelsentence_sets.iteritems() if ps.length() > 0])
+        self.pairwise_parallelsentence_sets = OrderedDict([(id, ps) for (id, ps) in self.pairwise_parallelsentence_sets.iteritems() if ps.length() > 0])
         return removed_ties
 
 
