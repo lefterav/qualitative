@@ -205,7 +205,7 @@ class GenericXmlReader(GenericReader):
         """
         @return: a dictionary of the attributes of the current sentence {name:value}
         """
-        attributes = OrderedDict()
+        attributes = {} 
         attributeKeys = xml_entry.attributes.keys()
         for attributeKey in attributeKeys:
             myAttributeKey = attributeKey #.encode('utf8')
