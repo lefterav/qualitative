@@ -72,6 +72,12 @@ class SimpleSentence(object):
         
     def del_attribute(self, attribute):
         del(self.attributes[attribute])
+
+    def keep_only_attributes(self, attribute_names):
+        for name in self.attributes.keys():
+            if name not in attribute_names:
+                del(self.attributes[name])
+            
         
     def __str__(self):
         return self.string + ": " + str(self.attributes)
