@@ -392,32 +392,39 @@ class ParallelSentence(object):
         return pps_list
     
 
-    def import_indexed_parallelsentence(self, parallelsentence, target_attribute_names):
+    def import_indexed_parallelsentence(self, parallelsentence, target_attribute_names, keep_attributes_general=[], keep_attributes_source=[], keep_attributes_target=[]):
         """
         """
         targets = self.get_translations()
         
         incoming_targets = parallelsentence.get_translations()
         incoming_translations = dict([(tgt.get_attribute("system"), tgt) for tgt in incoming_targets])
-        print parallelsentence.get_attribute("judgement_id")
-        print self.get_attribute("judgement_id")
+        #print parallelsentence.get_attribute("judgement_id")
+        #print self.get_attribute("judgement_id")
         
-        print [t.get_attribute("system") for t in incoming_targets]
-        print [t.get_attribute("system") for t in targets]
+        #print [t.get_attribute("system") for t in incoming_targets]
+        #print [t.get_attribute("system") for t in targets]
        
-        print 
+        #print 
  
         new_targets = []
-        
+        self.src.keep_only_attributes(keep_attributes_source)
+
         for target in targets:
             system_id = target.get_attribute("system")
             matched_incoming = incoming_translations[system_id]
             for attribute_name in target_attribute_names:
                 value = matched_incoming.get_attribute(attribute_name)
+                target.keep_only_attributes(keep_attributes_target)
                 target.add_attribute(attribute_name, value)
             new_targets.append(target)
                 
         self.tgt = new_targets
+        
+        for name in self.attributes.keys():
+            if name not in keep_attributes_general:
+                del(self.attributes[name])
+        self.ref = None
 
 
     def remove_ties(self):
