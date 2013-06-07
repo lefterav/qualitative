@@ -204,7 +204,7 @@ class AutorankingSuite(PyExperimentSuite):
             self.final_reconstructed_hard = deepcopy(self.testset)
             self.final_reconstructed_hard.import_target_attributes_onsystem(reconstructed_hard_testset, ["rank_hard"],['langsrc','id','langtgt'],[],['rank','system'])
             self.final_reconstructed_soft = deepcopy(self.testset)
-            self.final_reconstructed_soft.import_target_attributes_onsystem(reconstructed_soft_testset, ["rank_soft"],['langsrc','id','langtgt'])
+            self.final_reconstructed_soft.import_target_attributes_onsystem(reconstructed_soft_testset, ["rank_soft"],['langsrc','id','langtgt'],[],['rank','system'])
         
             
             self.simple_testset = None
