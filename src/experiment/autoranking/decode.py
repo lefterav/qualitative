@@ -196,12 +196,15 @@ class AutorankingSuite(PyExperimentSuite):
             
             reconstructed_hard_testset = self.simple_testset.get_single_set_with_hard_ranks("rank_predicted", "rank_hard")
             reconstructed_soft_testset = self.simple_testset.get_single_set_with_soft_ranks("prob_-1", "prob_1", "rank_soft_predicted", "rank_soft")
-            
+           
+            Parallelsentence2Jcml(reconstructed_hard_testset).write_to_file("reconstructed.hard.light.jcml")
+            Parallelsentence2Jcml(reconstructed_soft_testset).write_to_file("reconstructed.soft.light.jcml")
+ 
             self.testset = JcmlReader("testset.jcml").get_dataset() 
             self.final_reconstructed_hard = deepcopy(self.testset)
-            self.final_reconstructed_hard.import_target_attributes_onsystem(reconstructed_hard_testset, ["rank"])
+            self.final_reconstructed_hard.import_target_attributes_onsystem(reconstructed_hard_testset, ["rank_hard"],['langsrc','id','langtgt'],[],['rank','system'])
             self.final_reconstructed_soft = deepcopy(self.testset)
-            self.final_reconstructed_soft.import_target_attributes_onsystem(reconstructed_soft_testset, ["rank"])
+            self.final_reconstructed_soft.import_target_attributes_onsystem(reconstructed_soft_testset, ["rank_soft"],['langsrc','id','langtgt'])
         
             
             self.simple_testset = None
@@ -210,15 +213,15 @@ class AutorankingSuite(PyExperimentSuite):
         if n == 110:
             
             print "Exporting results"
-            writer = Wmt11TabWriter(self.reconstructed_soft_testset, "dfki_{}".format(params["att"]), "testset", "rank_soft")
+            writer = Wmt11TabWriter(self.final_reconstructed_soft, "dfki_{}".format(params["att"]), "testset", "rank_soft")
             writer.write_to_file("ranked.soft.tab")
  
-            writer = Wmt11TabWriter(self.reconstructed_hard_testset, "dfki_{}".format(params["att"]), "testset", "rank_hard")
+            writer = Wmt11TabWriter(self.final_reconstructed_hard, "dfki_{}".format(params["att"]), "testset", "rank_hard")
             writer.write_to_file("ranked.hard.tab")
        
         if n == 120:
             print "Scoring correlation"
-            ret.update(score(self.reconstructed_soft_testset, self.class_name, "soft", "rank_soft"))
+            ret.update(score(self.final_reconstructed_soft, self.class_name, "soft", "rank_soft"))
             ret = OrderedDict(sorted(ret.items(), key=lambda t: t[0]))
          
             print ret   
@@ -283,8 +286,9 @@ class AutorankingSuite(PyExperimentSuite):
             self.classified_probs_vector = [(float(a),float(b)) for a,b in self.classified_probs_vector]
             classified_prob_file.close()
         if n > 100:
-            self.reconstructed_hard_testset = JcmlReader("testset.reconstructed.hard.jcml").get_dataset()
-            self.reconstructed_soft_testset = JcmlReader("testset.reconstructed.soft.jcml").get_dataset()
+            pass
+            #self.reconstructed_hard_testset = JcmlReader("testset.reconstructed.hard.jcml").get_dataset()
+            #self.reconstructed_soft_testset = JcmlReader("testset.reconstructed.soft.jcml").get_dataset()
 #        if n == 10:
 #            self.reconstructed_hard_testset = JcmlReader("testset.reconstructed.org.hard.jcml").get_dataset()
 #            self.reconstructed_soft_testset = JcmlReader("testset.reconstructed.org.soft.jcml").get_dataset()        

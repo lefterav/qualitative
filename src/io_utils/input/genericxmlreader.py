@@ -188,6 +188,7 @@ class GenericXmlReader(GenericReader):
         for xml_entry in sentenceList:
             curJudgedSentence = self.get_parallelsentence(xml_entry)
             newssentences.append(curJudgedSentence)
+        print "read {} sentences".format(len(newssentences))
         return newssentences
     
     def _read_simplesentence(self, xml_entry):
