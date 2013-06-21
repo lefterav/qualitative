@@ -23,6 +23,8 @@ from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
 from Orange.classification.tree import TreeLearner
 from Orange.classification.tree import C45Learner
 from Orange.classification.logreg import LogRegLearner #,LibLinearLogRegLearner
+from Orange.data import Instance, Value
+from Orange.feature import Continuous
 
 
 def forname(name, **kwargs):
@@ -33,7 +35,20 @@ def forname(name, **kwargs):
     orangeclass = eval(name)
     return orangeclass(**kwargs)
 
-
+def get_instance_object(domain, parallelsentence):
+    """
+    Convert a parallel sentence into an orange instance 
+    """
+    attributes = parallelsentence.get_nested_attributes()
+    values = []
+    for name, value in attributes.iteritems():
+        orange_variable = Continuous(name)
+        orange_value = Value(orange_variable, value)
+        values.append(orange_value)
+    instance = Instance(domain, values)                                            
+    
+    return instance
+    
 
 
 class OrangeClassifier(Classifier):
