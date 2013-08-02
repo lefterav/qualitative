@@ -13,13 +13,22 @@ if __name__ == '__main__':
     base_xml_filename = sys.argv[2]
     incoming_xml_filename = sys.argv[3]
     output_filename = sys.argv[4]
+    try:   
+        blind = (sys.argv[5] == "--blind")
+    except:
+        blind = False
     
     base_dataset = JcmlReader(base_xml_filename).get_dataset()
     incoming_dataset = JcmlReader(incoming_xml_filename).get_dataset()
     
-    keep_attributes_general = ["judgement_id","langsrc","testset","id","langtgt"]
+    if not blind:
+        keep_attributes_general = ["judgement_id","langsrc","testset","id","langtgt"]
+        keep_attributes_target = ['system','rank']
+    else:
+        keep_attributes_general = ["langsrc","id","langtgt"]
+        keep_attributes_target = []
+    
     keep_attributes_source = []
-    keep_attributes_target = ['system','rank',]
     
     base_dataset.import_target_attributes_onsystem(incoming_dataset,
                                                    target_attribute_names, 

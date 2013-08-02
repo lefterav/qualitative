@@ -29,7 +29,7 @@ class JVM(object):
 
         #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
         try:
-            subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path ])
+            subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % os.path.dirname(path) ])
         except:
             pass
         

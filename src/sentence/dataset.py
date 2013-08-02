@@ -250,7 +250,7 @@ class DataSet(object):
                 existing_parallelsentence.import_indexed_parallelsentence(incoming_parallelsentence, target_attribute_names, keep_attributes_general, keep_attributes_source, keep_attributes_target)
             except:
                 sys.stderr.write("Warning: could not get a sentence for judgement_id={}".format(jid))
-                existing_parallelsentence.import_missing_parallelsentence(target_attribute_names, keep_attributes_general, keep_attributes_source, keep_attributes_target)
+                #existing_parallelsentence.import_missing_parallelsentence(target_attribute_names, keep_attributes_general, keep_attributes_source, keep_attributes_target)
             new_parallelsentences.append(existing_parallelsentence)
         self.parallelsentences = new_parallelsentences        
     
