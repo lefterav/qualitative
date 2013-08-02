@@ -27,7 +27,7 @@ from featuregenerator.preprocessor import Normalizer
 from featuregenerator.preprocessor import Tokenizer
 from featuregenerator.preprocessor import Truecaser
 
-from ml.lib import orange
+
 
 class Autoranking:
 
@@ -95,8 +95,8 @@ if __name__ == "__main__":
     
     classifier_filename = "/share/taraxu/selection-mechanism/wmt13/sentenceranking/autoranking_wmt13_newfeatures1_de_en/class_nameranklangpairde-eninclude_references0.0ties0.0trainset_modeannotatedattattset_24classifierLogReg/classifier.clsf"
     configfilenames = [
-                       '/home/elav01/workspace/qualitative/src/experiment/autoranking/config/pipeline.cfg'
-                       '/home/elav01/workspace/qualitative/src/experiment/autoranking/config/pipeline.blades.cfg',
+                       '/home/elav01/workspace/qualitative/src/experiment/autoranking/config/pipeline.cfg',
+                       '/home/elav01/workspace/qualitative/src/experiment/autoranking/config/pipeline.blades.cfg'
                        ]
             
     
