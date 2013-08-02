@@ -34,3 +34,41 @@
 2013-06-07.05-34-04 tail -f /share/taraxu/selection-mechanism/wmt13/metric/log/decode_de-en.33.log
 2013-06-07.05-44-02 tail -f /share/taraxu/selection-mechanism/wmt13/metric/log/decode_de-en.24.log
 2013-06-07.05-44-05 tail -f /share/taraxu/selection-mechanism/wmt13/metric/log/decode_de-en.411.log
+2013-08-02.20-12-56 python xmlrpcserver.py 
+2013-08-02.20-13-10 python xmlrpcserver.py 
+2013-08-02.20-13-40 vim xmlrpcserver.py 
+2013-08-02.20-13-41 python xmlrpcserver.py 
+2013-08-02.20-14-03 vim xmlrpcserver.py 
+2013-08-02.20-14-06 python xmlrpcserver.py 
+2013-08-02.20-15-09 vim /home/elav01/tools/qualitative/src/ml/classifier.py
+2013-08-02.20-15-11 python xmlrpcserver.py 
+2013-08-02.20-15-23 vim /home/elav01/tools/qualitative/src/ml/classifier.py
+2013-08-02.20-15-37 python xmlrpcserver.py 
+2013-08-02.21-15-41 python xmlrpcserver.py 
+2013-08-02.21-15-51 git checkout autoranking.py
+2013-08-02.21-16-14 git checkout xmlrpcserver.py
+2013-08-02.21-17-10 git pull
+2013-08-02.21-22-37 git pull
+2013-08-02.21-22-49 python autoranking.py 
+2013-08-02.21-36-18 git pull
+2013-08-02.21-36-24 python autoranking.py 
+2013-08-02.21-43-53 git pull
+2013-08-02.21-43-59 python autoranking.py 
+2013-08-02.21-45-15 vim autoranking.py 
+2013-08-02.21-45-20 python autoranking.py 
+2013-08-02.21-46-15 vim autoranking.py 
+2013-08-02.21-47-31 python autoranking.py 
+2013-08-02.21-52-44 git pull
+2013-08-02.21-52-55 git checkout autoranking.py
+2013-08-02.21-53-04 git pull
+2013-08-02.21-54-03 python autoranking.py 
+2013-08-02.21-55-57 git pull
+2013-08-02.21-56-11 python autoranking.py 
+2013-08-02.21-58-52 vim autoranking.py 
+2013-08-02.21-59-07 python autoranking.py 
+2013-08-02.22-00-09 vim autoranking.py 
+2013-08-02.22-00-25 python autoranking.py 
+2013-08-02.22-00-59 vim autoranking.py 
+2013-08-02.22-04-31 vim autoranking.py 
+2013-08-02.22-05-18 mv autoranking.py experiment/autoranking/autoranking/application.py
+2013-08-02.22-05-33 mv autoranking.py experiment/autoranking/application.py
