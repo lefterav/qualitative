@@ -38,6 +38,7 @@ class OrangeClassifier(Classifier):
     def __call__(self, example, what=Orange.core.GetBoth):
         example = Instance(self.classifier.domain, example)
         return self.classifier(example, what)
+    
         
     def classify_orange_table(self, orange_table, return_type=Classifier.GetBoth):
     
