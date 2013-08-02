@@ -174,12 +174,9 @@ def _calculate_gains(predicted_rank_vector, original_rank_vector, verbose=True):
     #the relevance of each rank is inv proportional to its rank index
     l = [n-i+1 for i in original_rank_vector]
     
-    
     expn = 2**n
     gains = [0]*n 
 
-    #added this line to get high gain for lower rank values
-#    r = r[::-1]
     for j in range(n):            
         gains[r[j]-1] = (2**l[j]-1.0)/expn
 
