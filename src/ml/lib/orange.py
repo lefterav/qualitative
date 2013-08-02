@@ -4,13 +4,18 @@ Created on 19 Apr 2013
 @author: Eleftherios Avramidis
 '''
 
-import pickle
+import cPickle as pickle
 
 from io_utils.sax.cejcml2orange import CElementTreeJcml2Orange 
 from ml.classifier import Classifier
 
+from sentence.dataset import DataSet
+from sentence.pairwisedataset import AnalyticPairwiseDataset
+from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentenceSet
+
 from Orange.data import Table
-from Orange.evaluation.scoring import CA, Precision, Recall, F1 
+from Orange.data import Instance, Value
+#from Orange.evaluation.scoring import CA, Precision, Recall, F1 
 from Orange.evaluation.testing import cross_validation
 from Orange.classification.rules import rule_to_string
 from Orange.classification.svm import get_linear_svm_weights
@@ -23,7 +28,7 @@ from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
 from Orange.classification.tree import TreeLearner
 from Orange.classification.tree import C45Learner
 from Orange.classification.logreg import LogRegLearner #,LibLinearLogRegLearner
-from Orange.data import Instance, Value
+from Orange.classification import Classifier
 from Orange.feature import Continuous
 
 
@@ -35,9 +40,18 @@ def forname(name, **kwargs):
     orangeclass = eval(name)
     return orangeclass(**kwargs)
 
-def get_instance_object(domain, parallelsentence):
+
+def runtime_ranker_forname(name, **kwargs):
+    orangeclass = eval(name)
+    return OrangeRuntimeRanker(orangeclass(**kwargs))
+
+
+def parallelsentence_to_instance(domain, parallelsentence):
     """
-    Convert a parallel sentence into an orange instance 
+    Receive a parallel sentence and convert it into a memory instance for
+    the machine learner. 
+    @param parallelsentence:
+    @type parallelsentence: L{sentence.parallelsentence.ParallelSentence}    
     """
     attributes = parallelsentence.get_nested_attributes()
     values = []
@@ -49,6 +63,68 @@ def get_instance_object(domain, parallelsentence):
     
     return instance
     
+def dataset_to_instances(domain, dataset):
+    """
+    Receive a dataset and convert it into a memory table for the machine learner
+    """
+    for parallelsentence in dataset:
+        instances = parallelsentence_to_instance(parallelsentence)
+    return Table(instances) 
+
+
+class OrangeRuntimeRanker:
+    
+    
+    def load(self, classifier_filename):
+        """
+        Load previously trained classifier given existing filename
+        @param classifier_filename: the filename which contains the trained classifier
+        @type classifier_filename: str  
+        """
+        classifier_file = open(classifier_filename)
+        self.classifier = pickle.load(classifier_file)
+    
+    def rank_sentence(self, parallelsentence):
+        """
+        Receive a parallel sentence with features and perform ranking
+        @param parallelsentence: an object containing the parallel sentence
+        @type parallelsentence: L{sentence.parallelsentence.ParallelSentence}    
+        """
+        return_type = Classifier.GetBoth
+        
+        domain = self.classifier.domain
+        
+#         if self.classifier.__class__.__name__ in ["NaiveClassifier", "CN2UnorderedClassifier"]:
+#             orange_table = self.clean_discrete_features(orange_table)
+        
+        resultvector = []
+        
+        pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences()
+        classified_pairwise_parallelsentences = []
+        
+        for pairwise_parallelsentence in pairwise_parallelsentences.get_parallelsentences():
+            instance = parallelsentence_to_instance(domain, pairwise_parallelsentence)
+            value, distribution = self.classifier(instance, return_type)
+            resultvector.append((value.value, distribution))
+            pairwise_parallelsentence.add_attributes({"rank_predicted":value,
+                                                       "prob_-1":distribution[0],
+                                                       "prob_1":distribution[1]
+                                                       })
+            
+            classified_pairwise_parallelsentences.append(pairwise_parallelsentence)
+            
+        sentenceset = CompactPairwiseParallelSentenceSet(classified_pairwise_parallelsentences)
+        ranked_sentence = sentenceset.get_multiranked_sentence("rank_predicted")
+        return ranked_sentence.get_target_attribute_values("rank_predicted")
+        
+        
+                           
+        
+        
+        
+        
+        
+        
 
 
 class OrangeClassifier(Classifier):
@@ -78,6 +154,8 @@ class OrangeClassifier(Classifier):
         self.training_data_filename = None
         self.training_table = None
         self.model = None
+    
+    
     
     def set_training_data(self, jcml_filename, 
                   class_name, 
