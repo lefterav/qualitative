@@ -113,14 +113,14 @@ class ExperimentConfigParser(ConfigParser):
 #        return getattr(Orange, name)
     
     def exists_parser(self, language):
-        for parser_name in [section for section in cfg.sections() if section.startswith("parser:")]:
-            if cfg.get(parser_name, "language") == language:
+        for parser_name in [section for section in self.sections() if section.startswith("parser:")]:
+            if self.get(parser_name, "language") == language:
                 return True
         return False
     
     def get_parser(self, language):
         #this is reading the configuration, maybe move elsewher
-        for parser_name in [section for section in cfg.sections() if section.startswith("parser:")]:
+        for parser_name in [section for section in self.sections() if section.startswith("parser:")]:
             if self.get(parser_name, "language") == language:
                 tokenize = self.getboolean(parser_name, "tokenize")
                 if self.get(parser_name, "type") == "xmlrpc":
