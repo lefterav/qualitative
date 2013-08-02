@@ -94,7 +94,10 @@ class Autoranking:
 if __name__ == "__main__":
     
     classifier_filename = "/share/taraxu/selection-mechanism/wmt13/sentenceranking/autoranking_wmt13_newfeatures1_de_en/class_nameranklangpairde-eninclude_references0.0ties0.0trainset_modeannotatedattattset_24classifierLogReg/classifier.clsf"
-    configfilenames = ["/share/taraxu/selection-mechanism/wmt13/sentenceranking/autoranking_wmt13_newfeatures1_de_en/class_nameranklangpairde-eninclude_references0.0ties0.0trainset_modeannotatedattattset_24classifierLogReg/experiment.cfg"]
+    configfilenames = [
+                       '/home/elav01/workspace/qualitative/src/experiment/autoranking/config/pipeline.cfg'
+                       '/home/elav01/workspace/qualitative/src/experiment/autoranking/config/pipeline.blades.cfg',
+                       ]
             
     
     source = "Wir müssen diese Lösung diskutieren"
