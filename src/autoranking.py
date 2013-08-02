@@ -31,12 +31,13 @@ from ml.lib import orange
 
 class Autoranking:
 
-    def __init__(self, configfilename, attset, classifiername):
+    def __init__(self, configfilenames, classifiername):
         cfg = ExperimentConfigParser()
-        cfg.read(configfilename)
+        for config_filename in configfilenames:
+            cfg.read(config_filename)
 
         self.featuregenerators = self.initialize_featuregenerators(cfg)
-        self.attset = attset
+#         self.attset = attset
         self.ranker = OrangeRuntimeRanker(classifiername)
         
         
@@ -93,12 +94,13 @@ class Autoranking:
 if __name__ == "__main__":
     
     classifier_filename = "/share/taraxu/selection-mechanism/wmt13/sentenceranking/autoranking_wmt13_newfeatures1_de_en/class_nameranklangpairde-eninclude_references0.0ties0.0trainset_modeannotatedattattset_24classifierLogReg/classifier.clsf"
-    
+    configfilenames = ["/share/taraxu/selection-mechanism/wmt13/sentenceranking/autoranking_wmt13_newfeatures1_de_en/class_nameranklangpairde-eninclude_references0.0ties0.0trainset_modeannotatedattattset_24classifierLogReg/experiment.cfg"]
+            
     
     source = "Wir müssen diese Lösung diskutieren"
     target1 = "We have to discuss this solution"
     target2 = "This solution have we to discuss"
     target3 = "We must this solution discuss"
 
-    autoranker = Autoranking(classifier_filename)
+    autoranker = Autoranking(configfilenames, classifier_filename)
     print autoranker.rank(source, [target1, target2, target3])
