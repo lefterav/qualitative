@@ -18,6 +18,7 @@ from sentence.sentence import SimpleSentence
 from xml.sax.saxutils import unescape
 from io_utils.input.genericreader import GenericReader
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
+from collections import OrderedDict
 
 class GenericXmlReader(GenericReader):
     """
@@ -48,7 +49,7 @@ class GenericXmlReader(GenericReader):
             
             
     def get_tags(self):
-        return {}
+        return OrderedDict()
  
     
     def load_str(self, input):
@@ -187,6 +188,7 @@ class GenericXmlReader(GenericReader):
         for xml_entry in sentenceList:
             curJudgedSentence = self.get_parallelsentence(xml_entry)
             newssentences.append(curJudgedSentence)
+        print "read {} sentences".format(len(newssentences))
         return newssentences
     
     def _read_simplesentence(self, xml_entry):
@@ -203,7 +205,7 @@ class GenericXmlReader(GenericReader):
         """
         @return: a dictionary of the attributes of the current sentence {name:value}
         """
-        attributes = {}
+        attributes = {} 
         attributeKeys = xml_entry.attributes.keys()
         for attributeKey in attributeKeys:
             myAttributeKey = attributeKey #.encode('utf8')

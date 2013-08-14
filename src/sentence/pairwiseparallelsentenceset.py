@@ -9,6 +9,7 @@ from pairwiseparallelsentence import PairwiseParallelSentence
 from copy import deepcopy
 from parallelsentence import ParallelSentence
 import logging
+from collections import OrderedDict
 
     
 
@@ -47,7 +48,7 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         @param pairwise_parallelsentences: a list of pairwise parallel sentences
         @type pairwise_parallelsentences: [L{sentence.pairwiseparallelsentence.PairwiseParallelSentence}, ...]
         """
-        self.pps_dict = {}
+        self.pps_dict = OrderedDict()
         self.rank_name = kwargs.setdefault("rank_name", rank_name)
         
         for ps in pairwise_parallelsentences:
@@ -72,7 +73,7 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         @rtype: int
         @todo: test
         """
-        reformed_dict = {}
+        reformed_dict = OrderedDict()
         removed_ties = 0  
         for system_names in self.pps_dict:
             reformed_dict[system_names] = [ps for ps in self.pps_dict[system_names] if int(ps.get_attribute(self.rank_name)) != 0]
@@ -228,7 +229,7 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         @return: the number of ties filtered
         @rtype: int
         """
-        reformed_dict = {}
+        reformed_dict = OrderedDict()
         ties = 0
         for system_names in self.pps_dict:
             ps = self.pps_dict[system_names]
@@ -248,8 +249,8 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         @return: a parallel sentence
         @rtype: L{ParallelSentence} 
         """
-        rank_per_system = {}
-        translations_per_system = {}
+        rank_per_system = OrderedDict()
+        translations_per_system = OrderedDict()
         
         if not new_rank_name:
             new_rank_name = self.rank_name
@@ -283,8 +284,8 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
                 
         #iterate through the system outputs, sorted by their rank
         #and increment their rank only if there is no tie
-        systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
-        for system in systems:
+#        systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
+        for system in rank_per_system.keys():
             #if there is no tie                
             if rank_per_system[system] != prev_rank: 
                 i += 1
@@ -317,8 +318,8 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         @return: a parallel sentence
         @rtype: L{ParallelSentence} 
         """
-        rank_per_system = {}
-        translations_per_system = {}
+        rank_per_system = OrderedDict()
+        translations_per_system = OrderedDict()
         
         if not new_rank_name:
             new_rank_name = self.rank_name
@@ -366,9 +367,9 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
                 
         #iterate through the system outputs, sorted by their rank
         #and increment their rank only if there is no tie
-        systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
-        print systems
-        for system in systems:
+        #systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
+        #print systems
+        for system in rank_per_system.keys():
             #if there is no tie                
             if rank_per_system[system] != prev_rank: 
                 i += 1
@@ -398,8 +399,8 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         @return: a parallel sentence
         @rtype: L{ParallelSentence} 
         """
-        rank_per_system = {}
-        translations_per_system = {}
+        rank_per_system = OrderedDict()
+        translations_per_system = OrderedDict()
         
         if not new_rank_name:
             new_rank_name = self.rank_name
@@ -435,9 +436,9 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
                 
         #iterate through the system outputs, sorted by their rank
         #and increment their rank only if there is no tie
-        systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
-        print systems
-        for system in systems:
+#        systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
+#        print systems
+        for system in rank_per_system.keys():
             #if there is no tie                
             if rank_per_system[system] != prev_rank: 
                 i += 1

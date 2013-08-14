@@ -13,3 +13,62 @@
 2013-05-29.18-26-14 git pull
 2013-05-31.06-32-11 vim experiment/autoranking/config/autoranking-wmt13.suite.cfg 
 2013-05-31.06-34-28 vim experiment/autoranking/suite.py
+2013-06-06.22-38-48 git pull
+2013-06-06.22-50-20 git pull
+2013-06-06.22-53-06 git pull
+2013-06-06.23-20-16 git pull
+2013-06-07.00-18-21 git pull
+2013-06-07.00-25-14 git pull
+2013-06-07.00-51-26 git add -u
+2013-06-07.00-51-44 git commit -m "server-side changes for the issue with unmatched system ids"
+2013-06-07.00-51-50 git push
+2013-06-07.01-03-28 git push
+2013-06-07.01-03-32 git pull
+2013-06-07.01-04-18 git pull
+2013-06-07.01-04-51 git pull
+2013-06-07.01-13-16 git pull
+2013-06-07.04-06-02 vim io_utils/input/
+2013-06-07.04-10-06 vim io_utils/input/genericxmlreader.py
+2013-06-07.04-53-11 tail -f /share/taraxu/selection-mechanism/wmt13/metric/log/decode_de-en.33.log
+2013-06-07.04-56-03 tail -f /share/taraxu/selection-mechanism/wmt13/metric/log/decode_de-en.33.log
+2013-06-07.05-34-04 tail -f /share/taraxu/selection-mechanism/wmt13/metric/log/decode_de-en.33.log
+2013-06-07.05-44-02 tail -f /share/taraxu/selection-mechanism/wmt13/metric/log/decode_de-en.24.log
+2013-06-07.05-44-05 tail -f /share/taraxu/selection-mechanism/wmt13/metric/log/decode_de-en.411.log
+2013-08-02.20-12-56 python xmlrpcserver.py 
+2013-08-02.20-13-10 python xmlrpcserver.py 
+2013-08-02.20-13-40 vim xmlrpcserver.py 
+2013-08-02.20-13-41 python xmlrpcserver.py 
+2013-08-02.20-14-03 vim xmlrpcserver.py 
+2013-08-02.20-14-06 python xmlrpcserver.py 
+2013-08-02.20-15-09 vim /home/elav01/tools/qualitative/src/ml/classifier.py
+2013-08-02.20-15-11 python xmlrpcserver.py 
+2013-08-02.20-15-23 vim /home/elav01/tools/qualitative/src/ml/classifier.py
+2013-08-02.20-15-37 python xmlrpcserver.py 
+2013-08-02.21-15-41 python xmlrpcserver.py 
+2013-08-02.21-15-51 git checkout autoranking.py
+2013-08-02.21-16-14 git checkout xmlrpcserver.py
+2013-08-02.21-17-10 git pull
+2013-08-02.21-22-37 git pull
+2013-08-02.21-22-49 python autoranking.py 
+2013-08-02.21-36-18 git pull
+2013-08-02.21-36-24 python autoranking.py 
+2013-08-02.21-43-53 git pull
+2013-08-02.21-43-59 python autoranking.py 
+2013-08-02.21-45-15 vim autoranking.py 
+2013-08-02.21-45-20 python autoranking.py 
+2013-08-02.21-46-15 vim autoranking.py 
+2013-08-02.21-47-31 python autoranking.py 
+2013-08-02.21-52-44 git pull
+2013-08-02.21-52-55 git checkout autoranking.py
+2013-08-02.21-53-04 git pull
+2013-08-02.21-54-03 python autoranking.py 
+2013-08-02.21-55-57 git pull
+2013-08-02.21-56-11 python autoranking.py 
+2013-08-02.21-58-52 vim autoranking.py 
+2013-08-02.21-59-07 python autoranking.py 
+2013-08-02.22-00-09 vim autoranking.py 
+2013-08-02.22-00-25 python autoranking.py 
+2013-08-02.22-00-59 vim autoranking.py 
+2013-08-02.22-04-31 vim autoranking.py 
+2013-08-02.22-05-18 mv autoranking.py experiment/autoranking/autoranking/application.py
+2013-08-02.22-05-33 mv autoranking.py experiment/autoranking/application.py

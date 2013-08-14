@@ -60,8 +60,14 @@ class SimpleSentence(object):
     def add_attribute(self, key, value):
         self.attributes[key] = value
 
-    def get_attribute(self, key):
-        return self.attributes[key]
+    def get_attribute(self, key, sub=None):
+        try:
+            return self.attributes[key]
+        except:
+            if sub:
+                return sub
+            else:
+                raise AttributeError
     
     def add_attributes(self, attributes):
         self.attributes.update(attributes)
@@ -72,6 +78,12 @@ class SimpleSentence(object):
         
     def del_attribute(self, attribute):
         del(self.attributes[attribute])
+
+    def keep_only_attributes(self, attribute_names):
+        for name in self.attributes.keys():
+            if name not in attribute_names:
+                del(self.attributes[name])
+            
         
     def __str__(self):
         return self.string + ": " + str(self.attributes)
