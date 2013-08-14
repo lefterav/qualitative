@@ -2,6 +2,7 @@
 @author: Eleftherios Avramidis
 """
 
+from collections import OrderedDict
 from copy import deepcopy
 import re
 import sys
@@ -114,8 +115,9 @@ class ParallelSentence(object):
         """
         return self.attributes[name]
     
-    def get_target_attribute_values(self, attribute_name):
-        attribute_values = [target.get_attribute(attribute_name) for target in self.tgt]        
+    def get_target_attribute_values(self, attribute_name, sub=None):
+        print [t.attributes for t in self.tgt]
+        attribute_values = [target.get_attribute(attribute_name, sub) for target in self.tgt]        
         return attribute_values
 
     def get_filtered_target_attribute_values(self, attribute_name, filter_attribute_name, filter_attribute_value):
@@ -255,7 +257,7 @@ class ParallelSentence(object):
         
         
     def _prefix(self, listitems, prefix):
-        newlistitems = {}
+        newlistitems = OrderedDict()
         for item_key in listitems.keys():
             new_item_key = "_".join([prefix, item_key]) 
             newlistitems[new_item_key] = listitems[item_key]
@@ -389,6 +391,67 @@ class ParallelSentence(object):
                         for i in range(len(systems))
                     ]
         return pps_list
+    
+
+    def import_indexed_parallelsentence(self, parallelsentence, target_attribute_names, keep_attributes_general=[], keep_attributes_source=[], keep_attributes_target=[]):
+        """
+        """
+        targets = self.get_translations()
+        
+        incoming_targets = parallelsentence.get_translations()
+        incoming_translations = dict([(tgt.get_attribute("system"), tgt) for tgt in incoming_targets])
+        #print parallelsentence.get_attribute("judgement_id")
+        #print self.get_attribute("judgement_id")
+        
+        #print [t.get_attribute("system") for t in incoming_targets]
+        #print [t.get_attribute("system") for t in targets]
+       
+        #print 
+ 
+        new_targets = []
+        self.src.keep_only_attributes(keep_attributes_source)
+
+        for target in targets:
+            system_id = target.get_attribute("system")
+            matched_incoming = incoming_translations[system_id]
+            for attribute_name in target_attribute_names:
+                value = matched_incoming.get_attribute(attribute_name)
+                target.keep_only_attributes(keep_attributes_target)
+                target.add_attribute(attribute_name, value)
+            new_targets.append(target)
+                
+        self.tgt = new_targets
+        
+        for name in self.attributes.keys():
+            if name not in keep_attributes_general:
+                del(self.attributes[name])
+        self.ref = None
+
+    def import_missing_parallelsentence(self, target_attribute_names, keep_attributes_general=[], keep_attributes_source=[], keep_attributes_target=[]):
+        targets = self.get_translations()
+        
+        
+        
+
+        new_targets = []
+        self.src.keep_only_attributes(keep_attributes_source)
+
+        for target in targets:
+            system_id = target.get_attribute("system")
+            for attribute_name in target_attribute_names:
+                #only for rank
+                value = '1'
+                target.keep_only_attributes(keep_attributes_target)
+                target.add_attribute(attribute_name, value)
+            new_targets.append(target)
+                
+        self.tgt = new_targets
+        
+        for name in self.attributes.keys():
+            if name not in keep_attributes_general:
+                del(self.attributes[name])
+        self.ref = None
+        
 
     def remove_ties(self):
         """

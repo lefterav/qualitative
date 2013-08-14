@@ -37,7 +37,7 @@ if __name__ == '__main__':
         gold_ranks = Ranking(parallelsentence.get_target_attribute_values(gold_rank_name))
         gold_ranklist.append(gold_ranks)
         
-        predicted_ranks = Ranking(parallelsentence.get_target_attribute_values(predicted_rank_name))
+        predicted_ranks = Ranking(parallelsentence.get_target_attribute_values(predicted_rank_name, 1))
         predicted_ranklist.append(predicted_ranks)
         
     _display(allmetrics (predicted_ranklist, gold_ranklist))

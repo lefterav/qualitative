@@ -113,14 +113,14 @@ class ExperimentConfigParser(ConfigParser):
 #        return getattr(Orange, name)
     
     def exists_parser(self, language):
-        for parser_name in [section for section in cfg.sections() if section.startswith("parser:")]:
-            if cfg.get(parser_name, "language") == language:
+        for parser_name in [section for section in self.sections() if section.startswith("parser:")]:
+            if self.get(parser_name, "language") == language:
                 return True
         return False
     
     def get_parser(self, language):
         #this is reading the configuration, maybe move elsewher
-        for parser_name in [section for section in cfg.sections() if section.startswith("parser:")]:
+        for parser_name in [section for section in self.sections() if section.startswith("parser:")]:
             if self.get(parser_name, "language") == language:
                 tokenize = self.getboolean(parser_name, "tokenize")
                 if self.get(parser_name, "type") == "xmlrpc":
@@ -292,49 +292,50 @@ class ExperimentConfigParser(ConfigParser):
 #    configfilename = CONFIG_FILENAME
 
 
+def get_cfg():
 
+    # global configuration
+    cfg = ExperimentConfigParser()
+    cfg.readfp(StringIO.StringIO(CONFIG_TEMPLATE))  # set up defaults
+    #cfg.read(CONFIG_FILENAME)  # add user-specified settings
+    #cfg.read(configfilename)  # add user-specified settings
     
-# global configuration
-cfg = ExperimentConfigParser()
-cfg.readfp(StringIO.StringIO(CONFIG_TEMPLATE))  # set up defaults
-#cfg.read(CONFIG_FILENAME)  # add user-specified settings
-#cfg.read(configfilename)  # add user-specified settings
-
-parser = argparse.ArgumentParser(description='')
-parser.add_argument('--config', nargs='*', default=['cfg/pipeline.cfg'], help="Configuration files")
-parser.add_argument('--sourcelang', '-s', help="Source language code")
-parser.add_argument('--targetlang', '-t', help="Target language code")
-parser.add_argument('--selectpath', help="""If source and target language are set, 
-                                            then use all files in the indicated directory 
-                                            that have these language codes in their filename""")
-parser.add_argument('--cont', help="""If you want to resume an existing experiment, 
-                                      specify its folder name heres. This must be 
-                                      an existing dir name""")
-parser.add_argument('--cores',  help='How many cores should be parallelized')
-
-args = parser.parse_args()
-
-for config_filename in args.config:
-    cfg.read(config_filename)
-
-continue_experiment = args.cont
-if args.sourcelang and args.targetlang and args.selectpath:
-    #source-target lang code separated with hyphen
-    filepattern = "*{}-{}*".format(args.sourcelang, args.targetlang) 
-    available_files = os.listdir(args.selectpath)
-    print available_files
-    chosen_files = fnmatch.filter(available_files, filepattern)
-    print chosen_files
-    #prepend path
-    chosen_files = [os.path.join(args.selectpath, f) for f in chosen_files] 
-    cfg.set("general", "source_language", args.sourcelang)
-    cfg.set("general", "target_language", args.targetlang)
-    cfg.set("training", "filenames", ",".join(chosen_files))
-
-if args.cores:
-    cfg.set("general", "cores", args.cores)
-
-path = cfg.prepare_dir(continue_experiment)
-
-#os.chdir(path)
-
+    parser = argparse.ArgumentParser(description='')
+    parser.add_argument('--config', nargs='*', default=['cfg/pipeline.cfg'], help="Configuration files")
+    parser.add_argument('--sourcelang', '-s', help="Source language code")
+    parser.add_argument('--targetlang', '-t', help="Target language code")
+    parser.add_argument('--selectpath', help="""If source and target language are set, 
+                                                then use all files in the indicated directory 
+                                                that have these language codes in their filename""")
+    parser.add_argument('--cont', help="""If you want to resume an existing experiment, 
+                                          specify its folder name heres. This must be 
+                                          an existing dir name""")
+    parser.add_argument('--cores',  help='How many cores should be parallelized')
+    
+    args = parser.parse_args()
+    
+    for config_filename in args.config:
+        cfg.read(config_filename)
+    
+    continue_experiment = args.cont
+    if args.sourcelang and args.targetlang and args.selectpath:
+        #source-target lang code separated with hyphen
+        filepattern = "*{}-{}*".format(args.sourcelang, args.targetlang) 
+        available_files = os.listdir(args.selectpath)
+        print available_files
+        chosen_files = fnmatch.filter(available_files, filepattern)
+        print chosen_files
+        #prepend path
+        chosen_files = [os.path.join(args.selectpath, f) for f in chosen_files] 
+        cfg.set("general", "source_language", args.sourcelang)
+        cfg.set("general", "target_language", args.targetlang)
+        cfg.set("training", "filenames", ",".join(chosen_files))
+    
+    if args.cores:
+        cfg.set("general", "cores", args.cores)
+    
+    path = cfg.prepare_dir(continue_experiment)
+    
+    #os.chdir(path)
+    return cfg
+    
