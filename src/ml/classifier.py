@@ -6,7 +6,7 @@ Created on 19 Apr 2013
 
 @author: Eleftherios Avramidis
 '''
-from ml.lib import orange
+import orange
 
 
 def forname(name, library='orange', **kwargs):

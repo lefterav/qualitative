@@ -6,8 +6,6 @@ import codecs
 from types import *
 #import base64
 import unicodedata
-from sentence.sentence import SimpleSentence
-from sentence.parallelsentence import ParallelSentence
 
 
 _baseclass = SimpleXMLRPCServer
@@ -35,76 +33,51 @@ class StoppableServer(_baseclass):
 
 
 
-class Qualitative:
 
-    
-    def __init__(self, featuregenerators, attset, classifierfilename):
-        self.featuregenerators = featuregenerators
-        self.attset = attset
-        
-        classifierfile = open(classifierfilename)
-        self.classifier = OrangeClassifier(pickle.load(classifierfile))
-        classifierfile.close()
-        
-    
-    def rank(self, source, translations):
-        sourcesentence = SimpleSentence(source)
-        translationsentences = [SimpleSentence(t) for t in translations]
-        parallelsentence = ParallelSentence(sourcesentence, translationsentences)
-        
-        annotated_parallelsentence = self._annotate(parallelsentence)
-        ranking = []
-        return ranking
-        
-    def _annotate(self, parallelsentence):
-        for featuregenerator in self.featuregenerators:
-            parallelsentence = featuregenerator.add_features_parallelsentence(parallelsentence)
-        return parallelsentence
-    
 
 # Get command line arguments
-args = sys.argv[1:]
-if len(args) != 1:
-    sys.stderr.write('Usage: lmserver.py <configfile>\n')
-    sys.exit(1)
-else:
-    configfile = open(args[0],'r')
-
-# Initialize all needed variables to None
-address = None
-port = None
-lmfilename = None
-lmorder = None
-
-# Source the config file
-exec(configfile)
-
-# Make sure all needed variables got set properly
-missing = []
-for var in ['address', 'port', 'lmfilename', 'lmorder']:
-    if eval(var) is None:
-        missing.append(var)
-if missing:
-    sys.stderr.write('The following options are missing in the configuration file: %s\n' % ', '.join(missing))
-    sys.exit(1)
-
-#initialize qualitative
-qualitative = Qualitative()
-
-# Create a server that is built on top of this LM data structure
-try:
-    server = StoppableServer((address, port))
-    
-except:
-    sys.stderr.write('Error: Could not create server\n')
-    sys.exit(1)
-
-# Register introspection functions with the server
-server.register_introspection_functions()
-
-# Register the qualitative instance with the server 
-server.register_instance(qualitative)
-sys.stderr.write('Server ready\n')
-
-# Start the server
-server.serve_forever()
+# args = sys.argv[1:]
+# if len(args) != 1:
+#     sys.stderr.write('Usage: lmserver.py <configfile>\n')
+#     sys.exit(1)
+# else:
+#     configfile = open(args[0],'r')
+# 
+# # Initialize all needed variables to None
+# address = None
+# port = None
+# lmfilename = None
+# lmorder = None
+# 
+# # Source the config file
+# exec(configfile)
+# 
+# # Make sure all needed variables got set properly
+# missing = []
+# for var in ['address', 'port', 'lmfilename', 'lmorder']:
+#     if eval(var) is None:
+#         missing.append(var)
+# if missing:
+#     sys.stderr.write('The following options are missing in the configuration file: %s\n' % ', '.join(missing))
+#     sys.exit(1)
+# 
+# #initialize qualitative
+# qualitative = Qualitative()
+# 
+# # Create a server that is built on top of this LM data structure
+# try:
+#     server = StoppableServer((address, port))
+#     
+# except:
+#     sys.stderr.write('Error: Could not create server\n')
+#     sys.exit(1)
+# 
+# # Register introspection functions with the server
+# server.register_introspection_functions()
+# 
+# # Register the qualitative instance with the server 
+# server.register_instance(qualitative)
+# sys.stderr.write('Server ready\n')
+# 
+# # Start the server
+# server.serve_forever()

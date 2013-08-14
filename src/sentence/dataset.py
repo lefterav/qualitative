@@ -9,6 +9,7 @@
 import sys
 import re
 from compiler.ast import Raise
+from collections import OrderedDict
 
 class DataSet(object):
     """
@@ -193,7 +194,7 @@ class DataSet(object):
         @param merging_attributes: the names of the attributes that signify that two parallelsentences are the same, though with possibly different attributes
         @type merging_attributes: list of strings  
         """
-        incoming_parallelsentences_indexed = {}        
+        incoming_parallelsentences_indexed = OrderedDict()        
         incoming_parallelsentences = dataset_for_merging_with.get_parallelsentences()
         for incoming_ps in incoming_parallelsentences:
             key = tuple([incoming_ps.get_attribute(att) for att in merging_attributes]) #hopefully this runs always in the same order
@@ -236,6 +237,23 @@ class DataSet(object):
             incoming_ps = incoming_parallelsentences[i]
             self.parallelsentences[i].merge_parallelsentence(incoming_ps, attribute_replacements)
             
+    
+    def import_target_attributes_onsystem(self, dataset, target_attribute_names, keep_attributes_general=[], keep_attributes_source=[], keep_attributes_target=[]):
+        
+        new_parallelsentences = []
+        incoming_parallelsentences = dict([(p.get_attribute("judgement_id"), p) for p in dataset.get_parallelsentences()])
+                
+        for existing_parallelsentence in self.parallelsentences:
+            jid = existing_parallelsentence.get_attribute("judgement_id")
+            try:
+                incoming_parallelsentence = incoming_parallelsentences[jid]
+                existing_parallelsentence.import_indexed_parallelsentence(incoming_parallelsentence, target_attribute_names, keep_attributes_general, keep_attributes_source, keep_attributes_target)
+            except:
+                sys.stderr.write("Warning: could not get a sentence for judgement_id={}".format(jid))
+                #existing_parallelsentence.import_missing_parallelsentence(target_attribute_names, keep_attributes_general, keep_attributes_source, keep_attributes_target)
+            new_parallelsentences.append(existing_parallelsentence)
+        self.parallelsentences = new_parallelsentences        
+    
     
     def merge_references_symmetrical(self, dataset_for_merging_with):
         incoming_parallelsentences = dataset_for_merging_with.get_parallelsentences()
@@ -312,9 +330,9 @@ class DataSet(object):
     def add_attribute_vector(self, att_vector, target="tgt", item=0):
         att_vector.reverse()
         
-        for ps in self.parallelsentences:
-            atts = att_vector.pop()
-            atts = dict([(k, str(v)) for k,v in atts.iteritems()])
+        for ps, atts in zip(self.parallelsentences, att_vector):
+#            atts = att_vector.pop()
+            atts = OrderedDict([(k, str(v)) for k,v in atts.iteritems()])
             if target == "ps":
                 ps.add_attributes(atts)
             elif target == "tgt":
