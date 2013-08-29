@@ -195,6 +195,8 @@ class DataSet(object):
         """
         incoming_parallelsentences_indexed = {}        
         incoming_parallelsentences = dataset_for_merging_with.get_parallelsentences()
+        
+        #index incoming parallelsentences based on a particular attribute into a dic 
         for incoming_ps in incoming_parallelsentences:
             key = tuple([incoming_ps.get_attribute(att) for att in merging_attributes]) #hopefully this runs always in the same order
             incoming_parallelsentences_indexed[key] = incoming_ps
@@ -206,8 +208,8 @@ class DataSet(object):
             try:
                 incoming_ps = incoming_parallelsentences_indexed[key]
                 self.parallelsentences[i].merge_parallelsentence(incoming_ps, attribute_replacements, **kwargs)
-            except:
-                sys.stderr.write( "Didn't find key while merging sentence %s " % key )
+            except KeyError:
+                sys.stderr.write( "Didn't find key while merging sentence %s \n" % key )
                 if merge_strict:
                     self.parallelsentences[i] = None
                 pass
