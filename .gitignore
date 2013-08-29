@@ -1,7 +1,7 @@
+*.pyc
 
 /.history
 /src/experiment/errorprediction/.history
-/src/.history
 
 .settings/org.eclipse.core.resources.prefs
 
