@@ -75,7 +75,7 @@ def dataset_to_instances(domain, dataset):
 class OrangeRuntimeRanker:
     
     
-    def load(self, classifier_filename):
+    def __init__(self, classifier_filename):
         """
         Load previously trained classifier given existing filename
         @param classifier_filename: the filename which contains the trained classifier
@@ -83,6 +83,7 @@ class OrangeRuntimeRanker:
         """
         classifier_file = open(classifier_filename)
         self.classifier = pickle.load(classifier_file)
+        classifier_file.close()
     
     def rank_sentence(self, parallelsentence):
         """

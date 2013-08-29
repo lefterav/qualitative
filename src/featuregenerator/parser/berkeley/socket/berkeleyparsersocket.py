@@ -46,14 +46,18 @@ class BerkeleyParserSocket():
         dir_socket = os.path.dirname(bparser_class)                
         dir_berkeley = os.path.dirname(dir_socket)
         dir_parser = os.path.dirname(dir_berkeley)
-        dir_featuregenerator = os.path.dirname(dir_parser)
-        dir_src = os.path.dirname(dir_featuregenerator)
+        ####MODIFIED FOR USE WITH COMMANDLINE THING CHECK IF RUFFUS VERSION FAILS
+        dir_src = os.path.dirname(dir_parser)
+#        dir_featuregenerator = os.path.dirname(dir_parser)
+#        dir_src = os.path.dirname(dir_featuregenerator)
         dir_lib = os.path.join(dir_src, "support", "berkeleyserver", "lib")
         
+        print "Berkeley directory:" ,dir_lib
         
-        self.classpath = []
-        self.classpath.append(dir_lib)
-        self.classpath.append(bparser_class)
+        #self.classpath = []
+        #self.classpath.append(dir_lib)
+        #self.classpath.append(bparser_class)
+        #print "final classpath " , self.classpath
 #        print "initializing Berkeley client"
 ##        try:
 #        # connect to the JVM
@@ -81,9 +85,6 @@ class BerkeleyParserSocket():
         self.parsername = random.randint(1,10000)
         self._connect(gateway, grammarfile)
     
-
-    
-
     
     
     def _connect(self, gateway, grammarfile):        
@@ -129,9 +130,14 @@ class BerkeleyParserSocket():
         
 #        signal.signal(signal.SIGALRM, handler)
 #        signal.alarm(20)
-        
-#        try:
-        parseresult = self.parse_msg(sentence_string)
+        parseresult = None        
+        while not parseresult:
+            try:
+                parseresult = self.parse_msg(sentence_string)
+            except:
+                sys.stderr.write("Connection failed. Retrying ...")
+                time.sleep(5)
+         
 #        except Exception, exc: 
 #            sys.stderr.write("Exception: {0}\n".format(exc))
 #            parseresult = {}
