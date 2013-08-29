@@ -26,7 +26,7 @@ from featuregenerator.languagechecker.languagetool_socket import LanguageToolSoc
 from featuregenerator.preprocessor import Normalizer
 from featuregenerator.preprocessor import Tokenizer
 from featuregenerator.preprocessor import Truecaser
-
+import time
 
 
 class Autoranking:
@@ -73,7 +73,10 @@ class Autoranking:
             Tokenizer(source_language),
             Tokenizer(target_language),
             
+            time.sleep(10)
+            
             cfg.get_parser(source_language),
+        
             cfg.get_parser(target_language),
             
             #truecase

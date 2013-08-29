@@ -49,3 +49,7 @@
 2012-11-05.18-51-22 cat /share/taraxu/selection-mechanism/autoranking/ml4hmt12/ml4hmt_veryshort/class_nameref-levlangpaires-eninclude_references0.0ties0.0trainset_modeannotatedattattset_1classifierSVMEasy/automatic-scores.txt
 2012-11-05.18-55-25 commit -m "Functioning version of the script for calculating bleus and meteors scores. This doesn't support again multiple targets"
 2012-11-05.18-55-30 svn commit -m "Functioning version of the script for calculating bleus and meteors scores. This doesn't support again multiple targets"
+2013-08-28.17-19-29 ssh -lelav01 percival.sb.dfki.de
+2013-08-28.17-19-36 python interannotator.py 
+2013-08-28.17-19-56 python interannotator.py 
+2013-08-29.11-35-47 python interannotator.py 

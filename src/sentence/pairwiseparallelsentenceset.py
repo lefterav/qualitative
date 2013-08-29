@@ -9,7 +9,7 @@ from pairwiseparallelsentence import PairwiseParallelSentence
 from copy import deepcopy
 from parallelsentence import ParallelSentence
 import logging
-
+from os import sys
     
 
 class PairwiseParallelSentenceSet():
@@ -481,8 +481,8 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
                     system_names_reversed = (system_names[1], system_names[0])
                     return self.pps_dict[system_names_reversed]
                 except:
-                    print "At least one of system names is missing."
+                    sys.stderr.write("At least one of system names is missing.\n")
             else:
-                print "At least one of system names is missing."
+                sys.stderr.write("At least one of system names is missing.\n")
 
 

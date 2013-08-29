@@ -306,7 +306,7 @@ class ParallelSentence(object):
                     merged = True
             if not merged and add_missing:
                 #print tgtPS.get_attributes(), "not merged - unknown system!"
-                print "Target sentence was missing. Adding..."
+                sys.stderr.write("Warning: Target sentence was missing. Adding...\n")
                 self.tgt.append(tgtPS)
 
 
