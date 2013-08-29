@@ -72,3 +72,11 @@
 2013-08-02.22-04-31 vim autoranking.py 
 2013-08-02.22-05-18 mv autoranking.py experiment/autoranking/autoranking/application.py
 2013-08-02.22-05-33 mv autoranking.py experiment/autoranking/application.py
+2013-08-14.17-30-13 python xmlrpcserver.py 
+2013-08-14.17-37-12 python xmlrpcserver.py 127.0.0.0.1 23444
+2013-08-14.17-37-45 python xmlrpcserver.py 127.0.0.0.1 23444
+2013-08-14.17-37-58 python xmlrpcserver.py 127.0.0.0.1 23444
+2013-08-14.17-38-00 python xmlrpcserver.py 127.0.0.0.1 23444
+2013-08-14.17-38-36 python xmlrpcserver.py 127.0.0.0.1 23444
+2013-08-14.17-38-44 python xmlrpcserver.py 127.0.0.1 23444
+2013-08-14.17-38-56 python xmlrpcserver.py 127.0.0.1 23444
