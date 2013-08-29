@@ -2,3 +2,8 @@
 2013-04-12.15-30-47 less detokenizer.perl 
 2013-04-12.15-31-04 perl detokenizer.perl 
 2013-04-12.15-31-35 perl detokenizer.perl -l en -b
+2013-08-02.22-59-54 javac JavaServer.java 
+2013-08-02.23-00-13 javac -classpath /share/emplus/software/language_tool/LanguageTool.jar:/home/elav01/.local/share/py4j/py4j0.7.jar:/home/elav01/tools/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar:/home/elav01/tools/TaraXUscripts/src/featuregenerator/parser/berkeley/socket:/share/emplus/software/language_tool/LanguageTool.jar:/home/elav01/tools/qualitative/src/experiment/autoranking:/share/emplus/software/meteor-1.3:/share/emplus/software/meteor-1.3/meteor-1.3.jar:/home/elav01/tools/qualitative/src/util
+2013-08-02.23-00-20 javac -classpath /share/emplus/software/language_tool/LanguageTool.jar:/home/elav01/.local/share/py4j/py4j0.7.jar:/home/elav01/tools/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar:/home/elav01/tools/TaraXUscripts/src/featuregenerator/parser/berkeley/socket:/share/emplus/software/language_tool/LanguageTool.jar:/home/elav01/tools/qualitative/src/experiment/autoranking:/share/emplus/software/meteor-1.3:/share/emplus/software/meteor-1.3/meteor-1.3.jar:/home/elav01/tools/qualitative/src/util JavaServer.java 
+2013-08-02.23-04-04 vim JavaServer.java 
+2013-08-02.23-04-39 vim jvm.py

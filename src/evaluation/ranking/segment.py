@@ -246,7 +246,7 @@ def ndgc_err(predicted_rank_vector, original_rank_vector, k=None):
         r = gains[j]
         err += p*r/(j+1.0)
         p *= 1-r
-    4
+
     #DCG calculation
     dcg = sum([g/log(j+2) for (j,g) in enumerate(gains[:k])])
     
