@@ -89,8 +89,12 @@ class PairwiseParallelSentence(ParallelSentence):
         else:
             factor = 1.00 
         
-        rank_a = float(self.tgt[0].get_attribute(self.rank_name)) * factor
-        rank_b = float(self.tgt[1].get_attribute(self.rank_name)) * factor
+        try:
+            rank_a = float(self.tgt[0].get_attribute(self.rank_name)) * factor
+            rank_b = float(self.tgt[1].get_attribute(self.rank_name)) * factor
+        except AttributeError:
+            #this happens if for some reasons no rank values have been written
+            return
         
         if rank_a > rank_b:
             rank = 1

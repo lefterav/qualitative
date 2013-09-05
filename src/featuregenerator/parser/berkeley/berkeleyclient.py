@@ -7,6 +7,10 @@ import socket
 from nltk import PunktWordTokenizer, PunktSentenceTokenizer
 from featuregenerator.parser.berkeley.socket.berkeleyparsersocket import BerkeleyParserSocket
 
+from py4j.java_gateway import JavaGateway
+from py4j.java_gateway import GatewayClient
+from py4j.java_gateway import java_import
+
 
 class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
 
@@ -180,16 +184,30 @@ class BerkeleySocketFeatureGenerator(BerkeleyFeatureGenerator):
         self.lang = lang
         self.tokenize = tokenize
 #        self.berkeleyparser = BerkeleyParserSocket(grammarfile, socket_no)
-        self.berkeleyparser = BerkeleyParserSocket(grammarfile, gateway)
+        print "berkeleyclient.py: initializing BerkeleyParserSocket"
+        #self.berkeleyparser = BerkeleyParserSocket(grammarfile, gateway)
+
+        
+        self.gateway = gateway
+        self.module_view = self.gateway.new_jvm_view()      
+        java_import(self.module_view, 'BParser')
+        
+        # get the application instance
+        self.berkeleyparser = self.module_view.BParser(grammarfile)
+        #print self.berkeleyparser.parse("This is a test")
+        sys.stderr.write("got BParser object\n")
+       
     
     def parse(self, string):
-        return self.berkeleyparser.parse(string)
+        parse = self.berkeleyparser.parse(string)
+        return parse
     
 #    def __del__(self):
 #        try:
 #            self.berkeleyparser.__del__()
 #        except:
 #            pass
+
     
         
 
