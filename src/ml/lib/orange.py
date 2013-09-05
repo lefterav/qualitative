@@ -14,7 +14,7 @@ from sentence.pairwisedataset import AnalyticPairwiseDataset
 from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentenceSet
 
 from Orange.data import Table
-from Orange.data import Instance, Value
+from Orange.data import Instance, Value, Domain
 #from Orange.evaluation.scoring import CA, Precision, Recall, F1 
 from Orange.evaluation.testing import cross_validation
 from Orange.classification.rules import rule_to_string
@@ -55,11 +55,32 @@ def parallelsentence_to_instance(domain, parallelsentence):
     """
     attributes = parallelsentence.get_nested_attributes()
     values = []
-    for name, value in attributes.iteritems():
-        orange_variable = Continuous(name)
-        orange_value = Value(orange_variable, value)
+    
+    #print "Attributes"
+    #print attributes
+    
+    #print "Domain"
+    #print domain
+    
+    domain_features = domain.features
+    
+    classless_domain = Domain(domain_features, False)
+    
+    #domain.get_metas()
+    for feature in domain_features:
+        feature_type = feature.var_type
+        feature_name = feature.name
+        
+        #orange_variable = feature.get_value_from()
+        try:
+            value = attributes[feature_name]
+        except KeyError:
+            sys.exit("Feature '{}' not given by the enabled generators".format(feature_name))
+        #orange_value = Value(orange_variable, str(value))
+        orange_value = feature(value)
         values.append(orange_value)
-    instance = Instance(domain, values)                                            
+    
+    instance = Instance(classless_domain, values)                                            
     
     return instance
     
@@ -103,10 +124,11 @@ class OrangeRuntimeRanker:
         pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences()
         classified_pairwise_parallelsentences = []
         
-        for pairwise_parallelsentence in pairwise_parallelsentences.get_parallelsentences():
+        for pairwise_parallelsentence in pairwise_parallelsentences:
             instance = parallelsentence_to_instance(domain, pairwise_parallelsentence)
             value, distribution = self.classifier(instance, return_type)
-            resultvector.append((value.value, distribution))
+            print pairwise_parallelsentence.get_system_names(), value, distribution
+            resultvector.append((float(value.value), distribution))
             pairwise_parallelsentence.add_attributes({"rank_predicted":value,
                                                        "prob_-1":distribution[0],
                                                        "prob_1":distribution[1]
@@ -115,8 +137,13 @@ class OrangeRuntimeRanker:
             classified_pairwise_parallelsentences.append(pairwise_parallelsentence)
             
         sentenceset = CompactPairwiseParallelSentenceSet(classified_pairwise_parallelsentences)
+#        print "\n\nSentence set\n---\n", sentenceset       
+        
         ranked_sentence = sentenceset.get_multiranked_sentence("rank_predicted")
-        return ranked_sentence.get_target_attribute_values("rank_predicted")
+#        print "\n\nRanked sent\n---\n", ranked_sentence.get_translations()
+        result = [(t.get_attribute("system"),t.get_attribute("rank")) for t in ranked_sentence.get_translations()]
+#        return ranked_sentence.get_target_attribute_values("rank")
+        return result
         
         
                            

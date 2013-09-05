@@ -131,12 +131,12 @@ class BerkeleyParserSocket():
 #        signal.signal(signal.SIGALRM, handler)
 #        signal.alarm(20)
         parseresult = None        
-        while not parseresult:
-            try:
-                parseresult = self.parse_msg(sentence_string)
-            except:
-                sys.stderr.write("Connection failed. Retrying ...")
-                time.sleep(5)
+#        while not parseresult:
+#            try:
+        parseresult = self.bp_obj.parse(sentence_string)
+#            except:
+#        sys.stderr.write("Connection failed. Retrying ...")
+#        time.sleep(5)
          
 #        except Exception, exc: 
 #            sys.stderr.write("Exception: {0}\n".format(exc))
