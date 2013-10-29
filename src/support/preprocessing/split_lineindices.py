@@ -10,9 +10,8 @@ if __name__ == '__main__':
     
     filename_original = sys.argv[1]
     filename_indices = sys.argv[2]
-    filename_output_stem = sys.argv[3]
-    filename_output_1 = "{}.1".format(filename_output_stem)
-    filename_output_2 = "{}.2".format(filename_output_stem)
+    filename_output_1 = "../split/{}.1".format(filename_original)
+    filename_output_2 = "../split/{}.2".format(filename_original)
     
     file_original = open(filename_original, 'r')
     file_indices = open(filename_indices, 'r')
@@ -21,11 +20,14 @@ if __name__ == '__main__':
     
     i = 1 
     
-    for line_id in file_indices:
-        line = file_original.readline()
-        if i==int(line_id):
+    indices = [int(index) for index in file_indices.readlines()]
+    
+    for line in file_original:
+        if i in indices:
+            print ">"
             file_output_1.write(line)
         else:
+            print "<"
             file_output_2.write(line)
         
         i+=1
