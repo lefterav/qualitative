@@ -65,9 +65,11 @@ class AutorankingSuite(PyExperimentSuite):
         
         sys.stderr.write("Accepted classifier parameters: {}\n".format(self.classifier_params))
         self.remove_infinite = False
+        self.delay_accuracy =  False
         if classifier_name == "SVMEasyLearner":
             self.classifier_params["verbose"] = True
             self.remove_infinite = True
+            self.delay_accuracy = True
         
         self.meta_attributes = params["meta_attributes"].split(",")
         self.include_references = params.setdefault("include_references", False)
@@ -75,10 +77,11 @@ class AutorankingSuite(PyExperimentSuite):
         self.filter_unassigned = params.setdefault("filter_unassigned", False)
         self.restrict_ranks = params.setdefault("restrict_ranks", [])
         
-        self.delay_accuracy = params.setdefault("delay_accuracy", False)
+        self.delay_accuracy = params.setdefault("delay_accuracy", self.delay_accuracy)
         self.remove_infinite = params.setdefault("remove_infinite", False)
         self.nullimputation = params.setdefault("nullimputation", False)
         
+        self.invert_ranks = params.setdefault("invert_ranks", False)
         self.evaluation_invert_ranks = params.setdefault("evaluation_invert_ranks", False)
         
         if self.restrict_ranks:
@@ -151,7 +154,8 @@ class AutorankingSuite(PyExperimentSuite):
                                                     self.trainset, include_references = self.include_references, 
                                                     replacement = self.replacement, 
                                                     filter_unassigned = self.filter_unassigned,
-                                                    restrict_ranks = self.restrict_ranks
+                                                    restrict_ranks = self.restrict_ranks,
+                                                    invert_ranks = self.invert_ranks
                                                     )
             
             if not self.ties:  
@@ -162,7 +166,7 @@ class AutorankingSuite(PyExperimentSuite):
             
         if n == 30:
             print "pairwise testset"
-            self.testset = AnalyticPairwiseDataset(self.testset, replacement = self.replacement)
+            self.testset = AnalyticPairwiseDataset(self.testset, replacement = self.replacement, invert_ranks = self.invert_ranks)
             
  
         
