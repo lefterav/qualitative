@@ -121,6 +121,10 @@ class Scoring(MultiRankedDataset):
             else:
                 predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
                 original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
+            if self.invert_ranks:
+                predicted_rank_vector = predicted_rank_vector.inverse()
+                original_rank_vector = predicted_rank_vector.inverse()
+                
             predicted_rank_vectors.append(Ranking(predicted_rank_vector))
             original_rank_vectors.append(Ranking(original_rank_vector))
         
