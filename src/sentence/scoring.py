@@ -10,7 +10,8 @@ from ranking import Ranking
 from evaluation.ranking.segment import kendall_tau, kendall_tau_prob
 from evaluation.ranking.set import *
 
-SET_METRIC_FUNCTIONS = [kendall_tau_set, 
+SET_METRIC_FUNCTIONS = [kendall_tau_set,
+                        kendall_tau_set_no_ties,
                         mrr,
                         avg_ndgc_err, 
                         best_predicted_vs_human,
