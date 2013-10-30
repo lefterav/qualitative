@@ -62,7 +62,7 @@ class Autoranking:
         #annotate the parallelsentence
         annotated_parallelsentence = self._annotate(parallelsentence)
         print "line annotated"
-        ranking = self.ranker.rank_sentence(annotated_parallelsentence)
+        ranking, description = self.ranker.rank_sentence(annotated_parallelsentence)
         
         #put things in the original order given by the user
         #because the ranker scrambles the order
@@ -71,7 +71,7 @@ class Autoranking:
         #return only ranks without system ids
         ranking = [r[1] for r in ranking]
         
-        return ranking
+        return ranking, description
         
         
     def _annotate(self, parallelsentence):
@@ -161,6 +161,8 @@ if __name__ == "__main__":
     target3 = "We must this solution discuss"
 
     autoranker = Autoranking(configfilenames, classifier_filename)
-    print autoranker.rank(source, [target1, target2, target3])
+    result, description = autoranker.rank(source, [target1, target2, target3])
+    print result
+    print description
 
 

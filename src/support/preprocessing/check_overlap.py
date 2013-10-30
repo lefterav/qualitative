@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
     matched = []
     threshold = 0.8
-    min_length = 2
+    min_length = 1
     highmatched = []
     k = -1
 #    print  "Length of file" ,len(file1.readlines())

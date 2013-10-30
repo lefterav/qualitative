@@ -83,7 +83,7 @@ if __name__ == '__main__':
     if Input.settype == "srcset":
         langtag = 'srclang="%s"' % Input.lang
     elif Input.settype == "refset":
-        langtag = 'trglang="%s"' % Input.lang
+        langtag = 'trglang="%s" SrcLang="%s"' % (Input.lang, Input.origlang)
         sysidtag = ' sysid="ref"'
     elif Input.setname == "trgset":
         langtag = 'trglang="%s"' % Input.lang
