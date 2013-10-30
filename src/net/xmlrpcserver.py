@@ -15,7 +15,7 @@ configfilenames = [
 
 # Create 
 autoranker = Autoranking(configfilenames, classifier_filename)
-server = SimpleXMLRPCServer(("localhost", 8089),
+server = SimpleXMLRPCServer(("lns-87004.sb.dfki.de", 8089),
                             requestHandler=RequestHandler)
 server.register_introspection_functions()
 
@@ -33,11 +33,11 @@ def rank(source, mosestranslation, lucytranslation, googletranslation, langsrc, 
 
 def qualityRank(source, mosestranslation, lucytranslation, googletranslation, langsrc, langtgt):
 
-    ranking = autoranker.rank(source, [mosestranslation, lucytranslation, googletranslation])
+    ranking, description = autoranker.rank(source, [mosestranslation, lucytranslation, googletranslation])
     result="{rank1}$##${rank2}$##${rank3}$##${description}".format(rank1=ranking[0],
                                                                    rank2=ranking[1],
                                                                    rank3=ranking[2],
-                                                                   description="")
+                                                                   description=description)
     return result
     
 

@@ -5,6 +5,7 @@ Created on 19 Apr 2013
 '''
 
 import cPickle as pickle
+import sys
 
 from io_utils.sax.cejcml2orange import CElementTreeJcml2Orange 
 from ml.classifier import Classifier
@@ -36,12 +37,20 @@ def forname(name, **kwargs):
     """
     Pythonic way to initialize and return an orange learner. 
     Pass any parameters needed for the initialization
+    @param name: the name of the learner to be returned
+    @type name: string
+    @return: an orange learner
+    @rtype: Orange.classification.Classifier    
     """
     orangeclass = eval(name)
     return orangeclass(**kwargs)
 
 
 def runtime_ranker_forname(name, **kwargs):
+    """
+    Return particular ranker class given a string
+    
+    """
     orangeclass = eval(name)
     return OrangeRuntimeRanker(orangeclass(**kwargs))
 
@@ -51,38 +60,35 @@ def parallelsentence_to_instance(domain, parallelsentence):
     Receive a parallel sentence and convert it into a memory instance for
     the machine learner. 
     @param parallelsentence:
-    @type parallelsentence: L{sentence.parallelsentence.ParallelSentence}    
+    @type parallelsentence: L{sentence.parallelsentence.ParallelSentence}
+    @return: an orange instance    
+    @type: Orange.data.Instance
     """
     attributes = parallelsentence.get_nested_attributes()
     values = []
     
-    #print "Attributes"
-    #print attributes
-    
-    #print "Domain"
-    #print domain
-    
+    #features required by the model need to be retrieved from the 
+    #dic attributes containing feature values for this sentence 
     domain_features = domain.features
     
-    classless_domain = Domain(domain_features, False)
-    
-    #domain.get_metas()
     for feature in domain_features:
         feature_type = feature.var_type
         feature_name = feature.name
         
-        #orange_variable = feature.get_value_from()
         try:
             value = attributes[feature_name]
         except KeyError:
             sys.exit("Feature '{}' not given by the enabled generators".format(feature_name))
-        #orange_value = Value(orange_variable, str(value))
+
+        #this casts the feature value we produced, in an orange value object
         orange_value = feature(value)
         values.append(orange_value)
-    
+
+    #create a model without the class value and use it for the new instance
+    classless_domain = Domain(domain_features, False)    
     instance = Instance(classless_domain, values)                                            
-    
     return instance
+    
     
 def dataset_to_instances(domain, dataset):
     """
@@ -93,8 +99,15 @@ def dataset_to_instances(domain, dataset):
     return Table(instances) 
 
 
+
 class OrangeRuntimeRanker:
-    
+    """
+    This class represents a ranker implemented over pairwise orange classifiers. 
+    This ranker is loaded into the memory from a dump file which contains an already trained
+    model and provides functions to rank one source sentence + translations at a time
+    @ivar classifier: the orange classifier object
+    @type classifier: Orange.classification.Classifier
+    """    
     
     def __init__(self, classifier_filename):
         """
@@ -105,6 +118,31 @@ class OrangeRuntimeRanker:
         classifier_file = open(classifier_filename)
         self.classifier = pickle.load(classifier_file)
         classifier_file.close()
+        
+    
+    def _get_description(self, resultvector):
+        output = []
+        output.append("Used linear regression with Stepwise Feature Selection with the following weights")
+        coefficients = logreg.dump(self.classifier)
+        output.append(coefficients)
+        
+        output.append("\n\n")        
+        output.append("domain: {}\n\n".format(self.classifier.domain))
+        
+        for resultentry in resultvector:
+            system_names = resultentry['systems']
+            value = resultentry['value']
+            instance = resultentry['instance']
+            distribution = resultentry['distribution']
+            
+        
+            if value == -1:   
+                output.append("System{} < System{}".format(system_names[0], system_names[1]))
+            else:
+                output.append("System{} > System{}".format(system_names[0], system_names[1]))
+            output.append(" \n instance: {} \n probabilities: {}\n".format(instance, distribution))
+                
+        return "".join(output)
     
     def rank_sentence(self, parallelsentence):
         """
@@ -112,38 +150,57 @@ class OrangeRuntimeRanker:
         @param parallelsentence: an object containing the parallel sentence
         @type parallelsentence: L{sentence.parallelsentence.ParallelSentence}    
         """
+        
+        #this will instruct orange to provide both binary decision and probability
         return_type = Classifier.GetBoth
         
+        #follow the feature description as needed by the loaded classifier
         domain = self.classifier.domain
         
-#         if self.classifier.__class__.__name__ in ["NaiveClassifier", "CN2UnorderedClassifier"]:
-#             orange_table = self.clean_discrete_features(orange_table)
+        #this is a clean-up fixing orange's bug, needed only for some classifiers
+        #if self.classifier.__class__.__name__ in ["NaiveClassifier", "CN2UnorderedClassifier"]:
+        #     orange_table = self.clean_discrete_features(orange_table)
         
         resultvector = []
         
+        #de-compose multiranked sentence into pairwise comparisons
         pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences()
+        
+        #list that will hold the pairwise parallel sentences including the classifier's decision
         classified_pairwise_parallelsentences = []
         
         for pairwise_parallelsentence in pairwise_parallelsentences:
+            
+            #conver pairwise parallel sentence into an orange instance
             instance = parallelsentence_to_instance(domain, pairwise_parallelsentence)
+            
+            #run classifier for this instance
             value, distribution = self.classifier(instance, return_type)
-            print pairwise_parallelsentence.get_system_names(), value, distribution
-            resultvector.append((float(value.value), distribution))
-            pairwise_parallelsentence.add_attributes({"rank_predicted":value,
+
+            sys.stderr.write("{}, {}, {}\n".format(pairwise_parallelsentence.get_system_names(), value, distribution))
+            
+            resultvector.append({'systems' : pairwise_parallelsentence.get_system_names(),
+                                 'value' : (float(value.value)),
+                                 'distribution': distribution,
+                                 'instance' : instance})
+            pairwise_parallelsentence.add_attributes({"rank_predicted":float(value.value),
                                                        "prob_-1":distribution[0],
                                                        "prob_1":distribution[1]
                                                        })
             
             classified_pairwise_parallelsentences.append(pairwise_parallelsentence)
-            
-        sentenceset = CompactPairwiseParallelSentenceSet(classified_pairwise_parallelsentences)
-#        print "\n\nSentence set\n---\n", sentenceset       
         
+        
+        
+        #gather all classified pairwise comparisons into one sentence again
+        sentenceset = CompactPairwiseParallelSentenceSet(classified_pairwise_parallelsentences)
         ranked_sentence = sentenceset.get_multiranked_sentence("rank_predicted")
-#        print "\n\nRanked sent\n---\n", ranked_sentence.get_translations()
+
         result = [(t.get_attribute("system"),t.get_attribute("rank")) for t in ranked_sentence.get_translations()]
 #        return ranked_sentence.get_target_attribute_values("rank")
-        return result
+        description = self._get_description(resultvector)
+
+        return result, description
         
         
                            
