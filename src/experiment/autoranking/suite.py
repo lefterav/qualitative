@@ -320,8 +320,9 @@ class AutorankingSuite(PyExperimentSuite):
         
         if n == 120:
             print "Scoring correlation"
-            ret.update(score(self.reconstructed_hard_testset, self.class_name, "hard", "rank_hard"), invert_ranks=self.evaluation_invert_ranks)
-            ret.update(score(self.reconstructed_soft_testset, self.class_name, "soft", "rank_soft"), invert_ranks=self.evaluation_invert_ranks)
+            print "ranks inverted ", self.evaluation_invert_ranks
+            ret.update(score(self.reconstructed_hard_testset, self.class_name, "hard", "rank_hard", self.evaluation_invert_ranks))
+            ret.update(score(self.reconstructed_soft_testset, self.class_name, "soft", "rank_soft", self.evaluation_invert_ranks))
             ret = OrderedDict(sorted(ret.items(), key=lambda t: t[0]))
          
             print ret   
@@ -442,8 +443,8 @@ def get_scoring(testset, class_name, xid, featurename):
         ret["sb-{}-{}".format(rank,xid)] = str(percentage)
     return ret
 
-def score(testset, class_name, xid, featurename, **kwargs):
-    scoringset = Scoring(testset, **kwargs)
+def score(testset, class_name, xid, featurename, invert_ranks=False):
+    scoringset = Scoring(testset, invert_ranks=invert_ranks)
     return scoringset.get_metrics_scores(featurename, class_name, prefix=xid)
 
 class StreamToLogger(object):
