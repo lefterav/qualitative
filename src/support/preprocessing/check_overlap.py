@@ -24,6 +24,10 @@ if __name__ == '__main__':
     except:
        filtering = False 
 
+    len_file2 = len(file2.readlines())
+    file2.close()
+    file2 = open(sys.argv[3], 'r')
+
     matched = []
     threshold = 0.8
     min_length = 1
@@ -59,7 +63,11 @@ if __name__ == '__main__':
             set2 = set(line2_clean.split())
             intersection = set2.intersection(set1)
             matched.append(len(intersection))
-            overlap = (1.00*len(intersection))/len(set2)
+            try:
+                overlap = (1.00*len(intersection))/len(set2)
+            except:
+                overlap = 0
+            
             if overlap > threshold:
             #    highmatched.append((k, i, 1.00*len(intersection)/len(set2), line1, line2 ))
             #if line1_clean == line2_clean:
@@ -95,4 +103,11 @@ if __name__ == '__main__':
     for h in highmatched:
         h = [str(j) for j in h]
         print "\t".join(h)
+
+    targetcount = set()
+    for k,i,p,l1,l2 in highmatched:
+        targetcount.add(i)
+        #targetcount[i] = True #targetcount.setdefault(i, 0) + 1
+    print (100.00*len(targetcount))/(1.00*len_file2) , "% of the test-set sentences were found in the training set"
+    
     print 1.00*sum(matched)/len(matched)
