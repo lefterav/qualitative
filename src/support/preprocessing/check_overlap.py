@@ -1,5 +1,5 @@
 '''
-Split a parallel document into a training and a test set
+Remove from a parallel document sentences that are found in a test set
 
 Created on 9 Nov 2012
 
@@ -8,15 +8,25 @@ Created on 9 Nov 2012
 
 import sys
 
+'''
+parameters:
+source-language side of parallel set
+target-language side of parallel set
+source-language side of test set
+preferred name of source language side of parallel set after test sentences removed
+preferred name of target language side of parallel set after test sentences removed
+
+'''
 
 
 
 if __name__ == '__main__':
-        
+    #open files    
     file1_src = open(sys.argv[1], 'r')
     file1_tgt = open(sys.argv[2], 'r')
     file2 = open(sys.argv[3], 'r')
     
+    #these parameters should be always given
     try:
        filtering = (sys.argv[4] == '--filter')
        filteredfile_src = open(sys.argv[5], 'w')
@@ -28,26 +38,39 @@ if __name__ == '__main__':
     file2.close()
     file2 = open(sys.argv[3], 'r')
 
+    #basic settings
     matched = []
     threshold = 0.8
     min_length = 1
+    min_length_tgt = 1
     highmatched = []
     k = -1
 #    print  "Length of file" ,len(file1.readlines())
     highmatchedlines = []
     nonmatchedlines = []
     approvedlines = []
+
+    #browse the sentences of the big corpus one by one
     for line1 in file1_src:
         line1_tgt = file1_tgt.readline()
         i=0
         k+=1
         file2.seek(0)
         line1_clean = line1.lower().strip()
-        set1 = set(line1_clean.split()) 
+        set1 = line1_clean.split()
+
+        line1_tgt_clean = line1.lower().strip()
+        set1_tgt = line1_tgt_clean.split()
+
         if min_length and len(set1) < min_length:
             print k, "sentence too small: ", len(set1)
             continue
-            
+        
+        if min_length and len(set1_tgt) < min_length_tgt:
+            print k, "sentence too small: ", len(set1_tgt)
+            continue
+
+             
         if line1_clean in approvedlines:
             print k, "line already there"
             continue 
@@ -56,6 +79,7 @@ if __name__ == '__main__':
         
         line2 = file2.readline()
         
+        #if line is not too small or dupped, compare it one by one with the sentences of the second set
         while approvedline and line2:
         
             line2_clean = line2.lower().strip()
