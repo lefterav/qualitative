@@ -18,7 +18,7 @@ if __name__ == '__main__':
     parser.add_option("-t", "--translation", dest="target_filename",
                       help="read one translation output sentence per line from FILE", metavar="FILE")
     
-    parser.add_option("-m", "--system", dest="system_name",
+    parser.add_option("-m", "--sys sbsbtem", dest="system_name",
                       help="system name")
     
   
@@ -31,6 +31,7 @@ if __name__ == '__main__':
     parser.add_option("-a", "--feature-names", action="append", dest="feature_names", type="str",
                       help="a list of feature names", default=[])
     
+        
     parser.add_option("-q", "--feature-files", action="append", dest="feature_files", type="str", default=[],
                       help="a list of feature FILEs in respective order")
     
