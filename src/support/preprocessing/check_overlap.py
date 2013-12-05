@@ -42,7 +42,6 @@ if __name__ == '__main__':
     matched = []
     threshold = 0.8
     min_length = 1
-    min_length_tgt = 1
     highmatched = []
     k = -1
 #    print  "Length of file" ,len(file1.readlines())
@@ -56,24 +55,25 @@ if __name__ == '__main__':
         i=0
         k+=1
         file2.seek(0)
+        
+        # process src sentence
         line1_clean = line1.lower().strip()
-        set1 = line1_clean.split()
-
-        line1_tgt_clean = line1.lower().strip()
-        set1_tgt = line1_tgt_clean.split()
-
-        if min_length and len(set1) < min_length:
-            print k, "sentence too small: ", len(set1)
+        set1 = set(line1_clean.split())
+        list1 = line1_clean.split()
+        if min_length and len(list1) < min_length:
+            print k, "sentence in src file too small: ", len(list1)
+            continue
+        if line1_clean in approvedlines:
+            print k, "line already there in src"
             continue
         
-        if min_length and len(set1_tgt) < min_length_tgt:
-            print k, "sentence too small: ", len(set1_tgt)
+        # process tgt sentence
+        line1_tgt_clean = line1_tgt.lower().strip()
+        set1_tgt = set(line1_tgt_clean.split())
+        list1_tgt = line1_tgt_clean.split()
+        if min_length and len(list1_tgt) < min_length:
+            print k, "sentence in tgt too small: ", len(list1_tgt)
             continue
-
-             
-        if line1_clean in approvedlines:
-            print k, "line already there"
-            continue 
             
         approvedline = True
         
