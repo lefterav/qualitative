@@ -29,8 +29,12 @@ class BaseTree(object):
         __start = datetime.now()
         self.__code__ = code
         self.__attr__ = attr
+        self.dct = {}
+        self.dct['max-tree-depth'] = 0
+        self.dct['nodes-total'] = 0
+        self.dct['leaves-total'] = 0
         self.__parse_text__(BaseTree.__cleanup__(text))
-        self.__build_tree__()
+        #self.__build_tree__()
         __end = datetime.now()
         
         if self.__debug_tree__:
@@ -142,6 +146,7 @@ class BaseTree(object):
         call this method directly, the __init__ method does already!
         """
         self.__list__ = []
+        self.__tags__ = []
         
         # We start at depth -1 as we want our depth to be starting at 0.
         depth = -1
@@ -151,6 +156,7 @@ class BaseTree(object):
         # Add a leading and a trailing space to ease computation.
         text = " %s " % text
         
+        relativeDepth = 0
         for index in xrange(len(text)):
             # Check whether we are entering/exiting String mode.
             if text[index] == '"' and text[index-1] != '\\':
@@ -161,6 +167,8 @@ class BaseTree(object):
                 if text[index] == '(':
                     depth += 1
                     last = index
+                    self.dct['nodes-total'] += 1
+                    relativeDepth += 1
                 
                 elif text[index] == ')':
                     chunk = text[last+1:index].strip()
@@ -174,8 +182,10 @@ class BaseTree(object):
                         
                         if match:
                             category = match.group(1)
+                            wordField = re.search(r'ALO "([^"]+)"', chunk)
                             if not category in self.__tags__:
                                 self.__tags__.append(category)
+                                self.save_features(category, depth, relativeDepth, wordField)
                             
                             items = [depth+1, category, chunk]
                             attributes = {}
@@ -203,7 +213,9 @@ class BaseTree(object):
                             self.__list__.append(tuple(items))
                         
                         else:
+                            relativeDepth = 0
                             continue
+                        relativeDepth = 0
                     
                     else:
                         # Only add a "closing" list entry if the next symbol
@@ -249,7 +261,33 @@ class BaseTree(object):
         """
         return (node.tag, node.attrib)
     
-    
+
+    def save_features(self, category, depth, relativeDepth, wordField):
+        if not '%s-total'%category in self.dct.keys():
+            self.dct['%s-depth-absolute'%(category)] = depth+1
+            self.dct['%s-depth-relative'%(category)] = relativeDepth-1
+            if wordField:
+                count = wordField.group(1).count(' ')+1
+                self.dct['%s-words-total'%(category)] = count
+            self.dct['%s-total'%(category)] = 1
+
+            self.dct['leaves-total'] += 1                                
+            if depth+1 > self.dct['max-tree-depth']:
+                self.dct['max-tree-depth'] = depth+1
+        else:
+            self.dct['%s-depth-absolute'%(category)] = float(self.dct['%s-depth-absolute'%(category)]*self.dct['%s-total'%(category)]+depth+1)/(self.dct['%s-total'%(category)]+1)
+            
+            self.dct['%s-depth-relative'%(category)] = float(self.dct['%s-depth-relative'%(category)]*self.dct['%s-total'%(category)]+relativeDepth-1)/(self.dct['%s-total'%(category)]+1)
+
+            if wordField:
+                count = wordField.group(1).count(' ')+1
+                self.dct['%s-words-total'%(category)] = float(self.dct['%s-words-total'%(category)]*self.dct['%s-total'%(category)]+count)/(self.dct['%s-total'%(category)]+1)
+
+            if depth+1 > self.dct['max-tree-depth']:
+                self.dct['max-tree-depth'] = depth+1
+            self.dct['%s-total'%(category)] += 1
+
+
     def contains(self, node, child):
         """ Takes two nodes from the underlying ElementTree and checks whether
         node contains the given child, i.e. whether child is contained within
@@ -517,3 +555,4 @@ class GenerationTree(BaseTree):
         text from the surface attribute iff available.
         """
         return super(GenerationTree, self).text(node, attr)
+
