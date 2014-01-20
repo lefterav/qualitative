@@ -4,6 +4,7 @@ import re
 import sys
 import xml.etree.cElementTree as CT
 from datetime import datetime
+import warnings
 
 
 class BaseTree(object):
@@ -99,7 +100,7 @@ class BaseTree(object):
                 
                 # Fix to prevent failure for degenerated Lucy data.
                 if not len(parents):
-                    raise AssertionError('parents should never be empty!')
+                    warnings.warn('parents should never be empty!')
 
         # Fix range attribute for root element.
         root.attrib['range'] = str((0, _position))
@@ -156,7 +157,6 @@ class BaseTree(object):
         # Add a leading and a trailing space to ease computation.
         text = " %s " % text
         
-        relativeDepth = 0
         for index in xrange(len(text)):
             # Check whether we are entering/exiting String mode.
             if text[index] == '"' and text[index-1] != '\\':
@@ -166,26 +166,36 @@ class BaseTree(object):
             if not _in_string:
                 if text[index] == '(':
                     depth += 1
+                    chunk = text[last+1:index].strip()
                     last = index
                     self.dct['nodes-total'] += 1
-                    relativeDepth += 1
+                    relativeDepth = text[index:-1].partition(')')[0].count('(')
+
+                    if len(chunk):
+                        # All Lucy tree nodes should include a category!
+                        pattern = re.compile(r"CAT ([A-Z\-$]+)")
+                        match = pattern.search(chunk)
+                        if match:
+                            category = match.group(1)
+                            wordField = re.search(r'ALO "([^"]+)"', chunk)
+                            self.save_features(category, depth, relativeDepth, wordField, leave=False)
                 
                 elif text[index] == ')':
                     chunk = text[last+1:index].strip()
                     depth -= 1
                     last = index
-                    
+
                     if len(chunk):
                         # All Lucy tree nodes should include a category!
                         pattern = re.compile(r"CAT ([A-Z\-$]+)")
-                        match = pattern.search(chunk)
-                        
+                        match = pattern.search(chunk)                        
                         if match:
                             category = match.group(1)
                             wordField = re.search(r'ALO "([^"]+)"', chunk)
+                            self.save_features(category, depth, 0, wordField, leave=True)
+
                             if not category in self.__tags__:
                                 self.__tags__.append(category)
-                                self.save_features(category, depth, relativeDepth, wordField)
                             
                             items = [depth+1, category, chunk]
                             attributes = {}
@@ -211,11 +221,8 @@ class BaseTree(object):
                             
                             items.append(attributes)
                             self.__list__.append(tuple(items))
-                        
                         else:
-                            relativeDepth = 0
                             continue
-                        relativeDepth = 0
                     
                     else:
                         # Only add a "closing" list entry if the next symbol
@@ -262,29 +269,33 @@ class BaseTree(object):
         return (node.tag, node.attrib)
     
 
-    def save_features(self, category, depth, relativeDepth, wordField):
+    def save_features(self, category, depth, relativeDepth, wordField, leave):        
+        category = category.replace('$', 'END') # XML doesn't accept ampersand
+
         if not '%s-total'%category in self.dct.keys():
+            if leave: self.dct['leaves-total'] += 1                                
             self.dct['%s-depth-absolute'%(category)] = depth+1
-            self.dct['%s-depth-relative'%(category)] = relativeDepth-1
+            self.dct['%s-depth-relative'%(category)] = relativeDepth
             if wordField:
                 count = wordField.group(1).count(' ')+1
                 self.dct['%s-words-total'%(category)] = count
+            else: self.dct['%s-words-total'%(category)] = 0
             self.dct['%s-total'%(category)] = 1
-
-            self.dct['leaves-total'] += 1                                
-            if depth+1 > self.dct['max-tree-depth']:
-                self.dct['max-tree-depth'] = depth+1
+        
+            if depth > self.dct['max-tree-depth']:
+                self.dct['max-tree-depth'] = depth
         else:
+            if leave: self.dct['leaves-total'] += 1                                
             self.dct['%s-depth-absolute'%(category)] = float(self.dct['%s-depth-absolute'%(category)]*self.dct['%s-total'%(category)]+depth+1)/(self.dct['%s-total'%(category)]+1)
             
-            self.dct['%s-depth-relative'%(category)] = float(self.dct['%s-depth-relative'%(category)]*self.dct['%s-total'%(category)]+relativeDepth-1)/(self.dct['%s-total'%(category)]+1)
+            self.dct['%s-depth-relative'%(category)] = float(self.dct['%s-depth-relative'%(category)]*self.dct['%s-total'%(category)]+relativeDepth)/(self.dct['%s-total'%(category)]+1)
 
             if wordField:
                 count = wordField.group(1).count(' ')+1
                 self.dct['%s-words-total'%(category)] = float(self.dct['%s-words-total'%(category)]*self.dct['%s-total'%(category)]+count)/(self.dct['%s-total'%(category)]+1)
 
             if depth+1 > self.dct['max-tree-depth']:
-                self.dct['max-tree-depth'] = depth+1
+                self.dct['max-tree-depth'] = depth
             self.dct['%s-total'%(category)] += 1
 
 
