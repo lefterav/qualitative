@@ -10,6 +10,7 @@ from featuregenerator.parser.berkeley.socket.berkeleyparsersocket import Berkele
 from py4j.java_gateway import JavaGateway
 from py4j.java_gateway import GatewayClient
 from py4j.java_gateway import java_import
+from py4j.protocol import Py4JError
 
 
 class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
@@ -187,14 +188,18 @@ class BerkeleySocketFeatureGenerator(BerkeleyFeatureGenerator):
         print "berkeleyclient.py: initializing BerkeleyParserSocket"
         #self.berkeleyparser = BerkeleyParserSocket(grammarfile, gateway)
 
-        
-        self.gateway = gateway
-        self.module_view = self.gateway.new_jvm_view()      
-        java_import(self.module_view, 'BParser')
-        
-        # get the application instance
-        self.berkeleyparser = self.module_view.BParser(grammarfile)
-        #print self.berkeleyparser.parse("This is a test")
+        try:
+            self.gateway = gateway
+            self.module_view = self.gateway.new_jvm_view()      
+            java_import(self.module_view, 'BParser')
+            
+            # get the application instance
+            self.berkeleyparser = self.module_view.BParser(grammarfile)
+            #print self.berkeleyparser.parse("This is a test")
+        except Py4JError:
+            self.berkeleyparser = BerkeleyParserSocket(grammarfile, gateway)
+            sys.stderr.write("avoided BParser exception\n")
+            
         sys.stderr.write("got BParser object\n")
        
     
