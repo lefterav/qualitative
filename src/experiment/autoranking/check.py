@@ -89,7 +89,7 @@ def get_tabfile(results, preferred_params=[], preferred_scores=[], display_heade
     for params, values in results:
 
         #retain only the preferred params
-        params = [str(params.setdefault(param_name,"")) for param_name in preferred_params]
+        params = [str(params.setdefault(param_name,"None")) for param_name in preferred_params]
         
         
         onlyvalues = []
