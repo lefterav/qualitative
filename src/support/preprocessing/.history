@@ -188,3 +188,43 @@
 2013-10-29.12-22-48 git add split_lineindices.py
 2013-10-29.12-23-03 git commit -m "Fixes to the set splitting script"
 2013-10-29.12-23-08 git push
+2013-11-28.14-31-47 vim check_overlap.py 
+2013-11-28.14-32-06 vim check_overlap.py 
+2013-11-28.14-32-11 vim check_overlap.py 
+2013-11-28.14-38-32 vim check_overlap.py 
+2013-11-28.14-39-04 vim check_overlap.py 
+2013-11-28.14-39-32 python check_overlap.py /share/taraxu/systems/bmmt/vw/de-zh/training/corpus.8.de /share/taraxu/systems/bmmt/vw/de-zh/training/corpus.8.zh /share/taraxu/systems/bmmt/vw/de-zh/evaluation/vw-test-bremsen.input.tc.11 &> /share/taraxu/systems/bmmt/vw/de-zh/overlap.log
+2013-11-28.14-40-16 vim check_overlap.py 
+2013-11-28.14-45-30 python check_overlap.py /share/taraxu/systems/bmmt/vw/de-zh/training/corpus.8.de /share/taraxu/systems/bmmt/vw/de-zh/training/corpus.8.zh /share/taraxu/systems/bmmt/vw/de-zh/evaluation/vw-test-bremsen.input.tc.11 &> /share/taraxu/systems/bmmt/vw/de-zh/overlap.log --filter /share/taraxu/systems/bmmt/vw/de-zh/training/corpus.8.filtered.de /share/taraxu/systems/bmmt/vw/de-zh/training/corpus.8.filtered.zh 
+2013-11-28.14-47-27 less /share/taraxu/systems/bmmt/vw/de-zh/overlap.log
+2013-11-28.14-47-41 grep -c 'overlap' /share/taraxu/systems/bmmt/vw/de-zh/overlap.log
+2013-11-28.14-47-59 wc -l /share/taraxu/systems/bmmt/vw/de-zh/evaluation/vw-test-bremsen.input.tc.11
+2013-11-28.14-50-19 vim check_overlap.py 
+2013-11-28.14-50-22 vim check_overlap.py 
+2013-11-28.14-51-23 less /share/taraxu/systems/bmmt/vw/de-zh/overlap.log
+2013-11-28.15-14-24 less /share/taraxu/systems/bmmt/vw/de-zh/overlap.log
+2013-11-28.15-14-58 less /share/taraxu/systems/bmmt/vw/de-zh/overlap.log
+2013-11-28.15-15-03 less /share/taraxu/systems/bmmt/vw/de-zh/overlap.log
+2013-11-28.15-15-10 less /share/taraxu/systems/bmmt/vw/de-zh/overlap.log
+2013-11-28.15-17-59 vim check_overlap.py 
+2013-11-28.15-23-04 vim check_overlap.py 
+2013-11-28.15-23-08 wc -l /share/taraxu/systems/bmmt/vw/de-zh/training/corpus.8.de
+2013-11-28.15-26-07 wc -l /share/taraxu/systems/bmmt/vw/de-zh/training/corpus.8.de
+2013-11-28.15-48-03 vim check_overlap.py
+2013-11-28.15-49-17 vim check_overlap.py
+2013-11-28.15-49-21 vim check_overlap.py
+2013-11-28.15-53-28 * vim check_overlap.p
+2013-11-28.15-56-21 * vim check_overlap.p
+2013-11-28.15-57-58 vim check_overlap.py
+2013-11-28.15-58-22 vim check_overlap.py
+2013-12-04.15-34-17 git add check_overlap.py
+2013-12-04.15-34-44 git commit -m "Fixes on the overlap script"
+2013-12-04.15-34-58 git push 
+2013-12-04.15-52-34 git add dedupe.py
+2013-12-04.15-52-46 git commit -m "Adding dedupper"
+2013-12-04.15-52-57 git push 
+2013-12-05.12-25-20 git add check_overlap.py
+2013-12-05.12-25-30 git pull
+2013-12-05.12-25-57 git commit -m "Lukas' improvements to check overlap"
+2013-12-05.12-27-16 git push
+2014-01-08.17-04-21 git pull
