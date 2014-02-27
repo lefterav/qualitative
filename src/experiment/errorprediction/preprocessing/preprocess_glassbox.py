@@ -72,7 +72,7 @@ def extract_glassbox_features_moses(source_filename, ids_filename, testset_type,
         
         #prepare existing attributes
         tgt_attributes = features_dict 
-        atts = {"uid": uid}
+        atts = {"uid": uid, "langsrc" : source_lang, "langtgt" : target_lang }
         
         #fetch post-edited output, to be used as reference for extracting error classification
         reference = mydb.fetch_postediting(uid, system, source_lang, target_lang)
