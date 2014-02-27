@@ -48,7 +48,7 @@ class ParallelSentence(object):
             self.attributes["langsrc"] = kwargs.setdefault("langsrc", self.attributes["langsrc"])
             self.attributes["langtgt"] = kwargs.setdefault("langtgt", self.attributes["langtgt"])
         except KeyError:
-            sys.stderr.write('Source or target language not specified in parallelsentence: [{}]'.format(self.__str__()))
+            sys.exit('Source or target language not specified in parallelsentence: [{}]'.format(self.__str__()))
     
     def __str__(self):
         return [s.__str__() for s in self.serialize()]
