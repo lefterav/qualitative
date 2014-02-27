@@ -301,3 +301,4 @@
 /src/util/nonbreaking_prefixes/*.pyc
 
 .settings/org.eclipse.core.resources.prefs
+src/support/preprocessing/.history
