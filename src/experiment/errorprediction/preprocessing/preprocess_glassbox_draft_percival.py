@@ -16,4 +16,4 @@ if __name__ == '__main__':
     sth = logging.StreamHandler()
     sth.setLevel(logging.DEBUG)
 
-    extract_glassbox_features_moses(source_filename, ids_filename, testset_type, target_filename, log_filename, output_filename, source_lang, target_lang)
+    extract_glassbox_features_moses(source_filename, ids_filename, testset_type, target_filename, log_filename, output_filename, source_lang, target_lang, backoff_reference=False)

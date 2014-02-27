@@ -35,7 +35,7 @@ def _get_id_from_line(testset_type, id_line):
         return uid
     
 
-def extract_glassbox_features_moses(source_filename, ids_filename, testset_type, moses_target_filename, log_filename, output_filename, source_lang, target_lang):
+def extract_glassbox_features_moses(source_filename, ids_filename, testset_type, moses_target_filename, log_filename, output_filename, source_lang, target_lang, backoff_reference=True):
     """
     Extract the glassbox features from Moses
     @param source_filename: the filename of a plain text file with one source sentence per line
@@ -78,7 +78,7 @@ def extract_glassbox_features_moses(source_filename, ids_filename, testset_type,
         reference = mydb.fetch_postediting(uid, system, source_lang, target_lang)
         if not reference:
             reference = mydb.fetch_reference(uid, target_lang)
-            if reference:
+            if reference and backoff_reference:
                 reference_backoff_count +=1
             else:
                 no_postediting_count +=1
