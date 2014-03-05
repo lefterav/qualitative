@@ -19,6 +19,7 @@ from Orange.regression.lasso import LassoRegressionLearner
 from Orange.evaluation.scoring import CA, Precision, Recall, F1, MCC
 from Orange.evaluation.testing import cross_validation
 from Orange.feature.scoring import Relief
+import logging
 
 DELIMITER = " % "
 NEWLINE = " \\\\ \n"
