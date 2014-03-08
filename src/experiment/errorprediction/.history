@@ -40,3 +40,6 @@
 2013-04-17.18-52-51 rm src/experiment/errorprediction/*.jcml
 2013-04-17.23-16-48 ssh percival.sb.dfki.de
 2013-04-20.17-51-24 git add config
+2014-03-03.18-46-51 python preprocess_glassbox.percival.py
+2014-03-05.20-29-44 mdkir /share/taraxu/selection-mechanism/errorprediction/learning
+2014-03-05.20-29-48 mkdir /share/taraxu/selection-mechanism/errorprediction/learning

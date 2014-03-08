@@ -9,8 +9,10 @@ Created on 17 Apr 2013
 @author: Eleftherios Avramidis
 '''
 
-from io_utils.sax.cejcml2orange import CElementTreeJcml2Orange
 import sys, logging
+import glob, os
+from io_utils.sax.cejcml2orange import CElementTreeJcml2Orange
+from io_utils.sax.utils import join_jcml
 from Orange.data import Table, Domain
 from Orange.classification.logreg import LogRegLearner, dump
 from Orange.classification.logreg import LibLinearLogRegLearner
@@ -92,14 +94,23 @@ def print_featureselection(table, class_name):
 
 if __name__ == '__main__':
 
-    input_filename = sys.argv[1]
+
+    #input_filename_pattern = sys.argv[1]
+    # glob.glob(input_filename_pattern)
+    input_filenames = sys.argv[1:]
+    
+    print "Input filenames:", input_filenames
+    
+    input_filename = "train.jcml"
+    join_jcml(input_filenames, input_filename)
+    
     output_file = "orange.tab"
     coefficients = {}
     evaluation = {}
     evaluation_metrics = [CA, Precision, Recall, F1, MCC]
     
     for class_name in classes:    
-        
+        logging.info(class_name)
         coefficients[class_name] = {}
         evaluation[class_name] = {}
         
@@ -114,23 +125,23 @@ if __name__ == '__main__':
         orangeconvertor.convert()
         logging.info(class_name)
         table = Table(output_file)
-        learner = LibLinearLogRegLearner()
+        learner = LogRegLearner(stepwise_lr=True)
         model = learner(table)
         
         #store classifier somewhere for future use
-        #logging.info("store classifier somewhere for future use")
-        #textfilename = "{}.logreg.dump.txt".format(class_name)
-        #f = open(textfilename, 'w')
-        #f.write(dump(model))
-        #f.close()
+        logging.info("store classifier somewhere for future use")
+        textfilename = "{}.logreg.dump.txt".format(class_name)
+        f = open(textfilename, 'w')
+        f.write(dump(model))
+        f.close()
         
         #store weights into results table
-        logging.info("store weights into results table")
-        coefficients_filename = "{}.logreg.coeff.csv".format(class_name)
-        f = open(coefficients_filename, 'w')
-        for feat, weight in zip(model.domain.features, model.weights[0]):
-            f.write("{} {} {} {}".format(feat.name, DELIMITER, weight, NEWLINE))
-            coefficients[class_name][feat.name] = weight
+        #logging.info("store weights into results table")
+        #coefficients_filename = "{}.logreg.coeff.csv".format(class_name)
+        #f = open(coefficients_filename, 'w')
+        #for feat, weight in zip(model.domain.features, model.weights[0]):
+        #    f.write("{} {} {} {}".format(feat.name, DELIMITER, weight, NEWLINE))
+        #    coefficients[class_name][feat.name] = weight
         
         #perform cross validation to see quality of model
         logging.info("perform cross validation to see quality of model")

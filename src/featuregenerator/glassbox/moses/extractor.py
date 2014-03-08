@@ -79,7 +79,13 @@ class MosesGlassboxExtractor:
                 lines.append(line)
             else: 
                 transPart = ''.join(lines)
-                dictOfSntAttrs.append(self.get_sentence_attributes(transPart))
+                try:
+                    dictOfSntAttrs.append(self.get_sentence_attributes(transPart))
+                except ZeroDivisionError:
+                    #sys.exit("ZeroDivisionError occurred on line {}\nPlease check the verbose output yourself:\n\n{}".format(lineNo, transPart))
+                    logging.warn("Probably no phrases found. Maybe we need to skip this sentence")
+                    dictOfSntAttrs.append({})
+                    
                 lines = []
                 
         f.close()
@@ -101,20 +107,20 @@ class MosesGlassboxExtractor:
         attrs['total_transopt_pruned'] = self.totTraOptPru.search(transPart).group(1)
         
         # get 'translation options spanning'
-        traOptSpa = self.traOptSpa.findall(transPart)
-        if not traOptSpa: 
-            logging.warn('translation options spanning not found!\n')
-        else:
-            for item in traOptSpa:
-                attrs['transopt_spanning', item[0], item[1]] = item[2]
+        #traOptSpa = self.traOptSpa.findall(transPart)
+        #if not traOptSpa: 
+        #    logging.warn('translation options spanning not found!\n')
+        #else:
+        #    for item in traOptSpa:
+        #        attrs['transopt_spanning', item[0], item[1]] = item[2]
         
         # get 'future cost'
-        futCos = self.futCos.findall(transPart)
-        if not futCos: 
-            sys.stderr.write('future cost not found!\n')
-        else:
-            for item in traOptSpa:
-                attrs['future_cost', item[0], item[1]] = item[2]
+        #futCos = self.futCos.findall(transPart)
+        #if not futCos: 
+        #    logging.warn('future cost not found!\n')
+        #else:
+        #    for item in traOptSpa:
+        #        attrs['future_cost', item[0], item[1]] = item[2]
         
         # get 'total hypothesis considered'
         attrs['total_hypotheses'] = self.totHypCon.search(transPart).group(1)
@@ -205,11 +211,18 @@ class MosesGlassboxExtractor:
         attrs['pC_avg'] = average(pC)
         attrs['pC_var'] = var(pC)
         attrs['pC_std'] = std(pC)
+        
+        if phrases == 0:
+            logging.warn("No phrases found. I won't produce any more attributes for this sentence")
+            return attrs
+        
+
         attrs['pC_min'] = min(pC)
         attrs['pC_min_pos'] = (1.00*pC.index(attrs['pC_min']))/phrases
         attrs['pC_max'] = max(pC)
         attrs['pC_max_pos'] = (1.00*pC.index(attrs['pC_max']))/phrases
         
+            
         pClow = 0
         pChigh = 0
         
@@ -254,6 +267,8 @@ class MosesGlassboxExtractor:
         
             
         attrs['phrases'] = phrases
+            
+        #end if not phrases == 0
         
         try:
             translation_string = self.besTrans.search(transPart).group(1)
@@ -375,13 +390,20 @@ class MosesGlassboxExtractor:
         attrs['alt_pC_min_minus_std_all'] = average(alt_pC_min_minus_std_all)
         attrs['alt_c_min_minus_std_all'] = average(alt_c_min_minus_std_all)
         attrs['alt_pC_low'] = pClow
-        attrs['alt_pC_low_avg'] = 1.00*pClow / alt_count_all
         attrs['alt_pC_high'] = pChigh
-        attrs['alt_pC_high_avg'] = 1.00*pChigh / alt_count_all
         attrs['alt_c_low'] = clow
-        attrs['alt_c_low_avg'] = 1.00*clow / alt_count_all
         attrs['alt_c_high'] = chigh
-        attrs['alt_c_high_avg'] = 1.00*pChigh / alt_count_all
+        if alt_count_all!=0:
+            attrs['alt_pC_low_avg'] = 1.00*pClow / alt_count_all
+            attrs['alt_pC_high_avg'] = 1.00*pChigh / alt_count_all
+            attrs['alt_c_low_avg'] = 1.00*clow / alt_count_all
+            attrs['alt_c_high_avg'] = 1.00*pChigh / alt_count_all
+        else:
+            logging.warn('Zero number of alternative trans')
+            attrs['alt_pC_low_avg'] = float("NaN")
+            attrs['alt_pC_high_avg'] = float("NaN")
+            attrs['alt_c_low_avg'] = float("NaN")
+            attrs['alt_c_high_avg'] = float("NaN")
         
         attrsReadable = '\n'.join(['%s = %s' % (str(item), str(value)) for item, value in attrs.items()])
         logging.debug('{}\n'.format(attrsReadable))

@@ -6,7 +6,7 @@ Created on 11 Apr 2013
 @author: Eleftherios Avramidis
 '''
 
-from featuregenerator.glassbox.mosesglassbox import MosesGlassboxExtractor
+from featuregenerator.glassbox.moses.extractor import MosesGlassboxExtractor
 from io_utils.sax.saxps2jcml import IncrementalJcml
 from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence
@@ -28,11 +28,13 @@ def _get_id_from_line(testset_type, id_line):
     @type testset_type: str
     """
     
-    if testset_type == "wmt11":
-        testset_type = "wmt11"
-        segment_id, document_id = id_line.split('\t')[1:]
-        uid = "{}-{}-{}".format(testset_type, document_id.strip(), segment_id)
-        return uid
+    segment_id, document_id = id_line.split('\t')[1:]
+#    if testset_type in ["wmt11", "openoffice3", "wmt10"]:
+    uid = "{}-{}-{}".format(testset_type, document_id.strip(), segment_id)
+#    else:
+#        uid = "{}-{}-{}".format(testset_type, document_id.strip(), segment_id)
+    return uid
+        
     
 
 def extract_glassbox_features_moses(source_filename, ids_filename, testset_type, moses_target_filename, log_filename, output_filename, source_lang, target_lang, backoff_reference=True):
@@ -69,6 +71,9 @@ def extract_glassbox_features_moses(source_filename, ids_filename, testset_type,
     
     for source_sentence, id_line, target_sentence, features_dict in zip(sourcefile, idsfile, moses_targetfile, features_dicts):
         uid = _get_id_from_line(testset_type, id_line)
+        
+        if uid==None:
+            sys.exit("Empty unique sentence id {}".format(id_line))
         
         #prepare existing attributes
         tgt_attributes = features_dict 
