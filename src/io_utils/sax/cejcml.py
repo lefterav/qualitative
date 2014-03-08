@@ -44,6 +44,8 @@ class CEJcmlReader():
 
         self.desired_general = kwargs.setdefault('desired_general', ["rank","langsrc","langtgt","id","judgement_id"])
         self.desired_target = kwargs.setdefault('desired_target', ["system","rank"])
+        self.all_general = kwargs.setdefault('all_general', False)
+        self.all_target = kwargs.setdefault('all_target', False)        
         self.input_filename = input_filename
     
     def get_dataset(self):
@@ -92,6 +94,50 @@ class CEJcmlReader():
         
         
         return DataSet(parallelsentences)       
+
+    def get_parallelsentences(self, compact=True):
+        parallelsentences = []
+        source_file = open(self.input_filename, "r")
+        # get an iterable
+        context = iterparse(source_file, events=("start", "end"))
+        # turn it into an iterator
+        context = iter(context)
+        # get the root element
+        event, root = context.next()
+        
+        attributes = []
+        target_id = 0
+        try:
+            for event, elem in context:
+                #new sentence: get attributes
+                if event == "start" and elem.tag == self.TAG_SENT:
+                    attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_general or self.all_general])
+                    targets = []
+                #new source sentence
+                elif event == "start" and elem.tag == self.TAG_SRC:
+                    source_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in desired_source or self.all_target])
+                
+                #new target sentence
+                elif event == "start" and elem.tag == self.TAG_TGT:
+                    target_id += 1
+                    target_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_target or self.all_target])
+                    targets.append(SimpleSentence("", target_attributes))
+
+                elif not compact and event == "end" and elem.tag == self.TAG_SRC:
+                    src_text = elem.text
+                
+                elif not compact and event == "end" and elem.tag == self.TAG_TGT:
+                    tgt_text.append(elem.text)
+                
+                elif event == "end" and elem.tag in self.TAG_SENT:
+                    source = SimpleSentence("",source_attributes)
+                    parallelsentence = ParallelSentence(source,targets,None,attributes)
+                    yield parallelsentence
+                root.clear()      
+        except:
+            sys.exit(self.input_filename)    
+              
+        
 
 
 class CEJcmlStats:
