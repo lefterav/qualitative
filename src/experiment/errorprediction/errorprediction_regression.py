@@ -14,11 +14,12 @@ import glob, os
 from io_utils.sax.cejcml2orange import CElementTreeJcml2Orange
 from io_utils.sax.utils import join_jcml
 from Orange.data import Table, Domain
+from Orange.regression.lasso import LassoRegressionLearner
 from Orange.classification.logreg import LogRegLearner, dump
 from Orange.classification.logreg import LibLinearLogRegLearner
 from Orange.regression.pls import PLSRegressionLearner
 from Orange.regression.lasso import LassoRegressionLearner
-from Orange.evaluation.scoring import CA, Precision, Recall, F1, MCC
+from Orange.evaluation.scoring import CA, Precision, Recall, F1, MCC, RMSE, MAE, R2
 from Orange.evaluation.testing import cross_validation
 from Orange.feature.scoring import Relief
 
@@ -33,11 +34,13 @@ NEWLINE = "\n"
 error_category_names = [
                     #'iHper',
                     #'iRper',
-                    'missErr',
-                    'extErr',
-                    'rLexErr',
+                    
+                    'arLexErr',
+                    'aMissErr',
+                    'aExtErr',
+                    'arRer',
                     #'hLexErr',
-                    'rRer',
+                   
                     #'hRer',  
                     #'biHper',
                     #'biRper',
@@ -48,8 +51,7 @@ error_category_names = [
                     #'rbLexErr',
                     #'hbLexErr'
                     ]
-                    
-                    
+
 excluded_error_category_names = ['iHper',
                     'iRper',
                     'hLexErr',
@@ -62,15 +64,20 @@ excluded_error_category_names = ['iHper',
                     'bextErr',
                     'rbLexErr',
                     'hbLexErr',
+                    'rLexErr',
+                    'missErr',
+                    'extErr',
+                    'rRer',
 
                 
                     ]
-
+                    
 metric_names = ['wer',
                     'hper', 
                     'rper',]
 
 general_meta_attributes = ['uid', 'langsrc', 'langtgt']
+                    
 
 
 #add prefix
@@ -88,27 +95,9 @@ meta_attributes.extend(general_meta_attributes)
 classes = error_category_names
 
 
-print meta_attributes
+print "meta_attributes =", meta_attributes
         
 desired_attributes = []
-
-
-def print_featureselection(table, class_name):
-    new_domain = Domain([a for a in table.domain.variables if a.name != class_name], table.domain[class_name])
-    new_data = Table(new_domain, table)
-    
-    def print_best_100(ma):
-        for m in ma[:100]:
-            print "%5.3f %s" % (m[1], m[0])
-    
-
-    
-    print 'Relief:\n'
-    meas = Relief(k=20, m=50)
-    mr = [(a.name, meas(a, new_data)) for a in new_data.domain.attributes]
-    mr.sort(key=lambda x: -x[1]) #sort decreasingly by the score
-    print_best_100(mr)
-
 
 
 if __name__ == '__main__':
@@ -126,7 +115,7 @@ if __name__ == '__main__':
     output_file = "orange.tab"
     coefficients = {}
     evaluation = {}
-    evaluation_metrics = [CA, Precision, Recall, F1, MCC]
+    evaluation_metrics = [RMSE, MAE, R2]
     
     for class_name in classes:    
         logging.info(class_name)
@@ -140,20 +129,23 @@ if __name__ == '__main__':
                                          meta_attributes, 
                                          output_file,
                                          compact_mode=True,
-                                         allowmissingclass=False)
+                                         nullimputation=True,
+                                         allowmissingclass=False,
+                                         remove_infinite=True,
+                                         class_type='c')
         orangeconvertor.convert()
         logging.info(class_name)
         table = Table(output_file)
-        learner = LogRegLearner(stepwise_lr=True)
+        learner = LassoRegressionLearner()
         model = learner(table)
         
         #store classifier somewhere for future use
         logging.info("store classifier somewhere for future use")
         textfilename = "{}.logreg.dump.txt".format(class_name)
         f = open(textfilename, 'w')
-        f.write(dump(model))
+        f.write(str(model))
         f.close()
-        
+        print "done"
         #store weights into results table
         #logging.info("store weights into results table")
         #coefficients_filename = "{}.logreg.coeff.csv".format(class_name)

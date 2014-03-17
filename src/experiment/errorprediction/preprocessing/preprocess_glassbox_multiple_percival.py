@@ -24,7 +24,8 @@ sth.setLevel(logging.WARN)
 if sys.argv[1] == "generic":
     source = "{basepath}/test-data/{set}/*{targetlang}*.{sourcelang}"
     #    testsets = ["wmt11", "openoffice3", "wmt10"]
-    testsets = ["wmt11", "wmt10"]
+    testsets = ["wmt11", "wmt10", "openoffice3"]
+    #testsets = ["openoffice3"]
     ids = source + ".links"
 elif sys.argv[1] == "client":
     source = "/share/taraxu/data/r2-testSets/client/plain/{langpair}/{set}*.txt"
@@ -73,17 +74,21 @@ params = {"basepath":"/share/taraxu/evaluation-rounds/r2"}
 
 backoff_reference = True
 try:
-    if sys.argv[2] == "--noreference":
+    if "--hjersoncounts" in sys.argv[1:]:
+        logging.warn("Counting total errors per sentence")
+        hjersoncounts = True                
+        output = output.replace(".jcml", ".counts.jcml")
+        
+    if "--noreference" in sys.argv[1:]:
         logging.warn("Disabled reference substitution")
         backoff_reference = False
-        output = "/share/taraxu/selection-mechanism/errorprediction/preprocessing/combined/{set}.{langpair}.{system}.noref.jcml"
-                
+        output = output.replace(".jcml", ".noref.jcml")
 except:
     pass
 
 
 systems = ["moses"]
-langpairs = [('es','de')]
+langpairs = [('de','en'),('en','de'),('de','fr'),('fr','de'),('de','es'),('es','de')]
 
 def _find_filename(fullpattern, params):
     #this needs fnmatch substitution
@@ -136,7 +141,7 @@ if __name__ == '__main__':
                 counter+=1
                 counter_langpair+=1
                 if not "--testlist" in sys.argv:
-                    extract_glassbox_features_moses(source_filename, ids_filename, testset, target_filename, log_filename, output_filename, sourcelang, targetlang, backoff_reference)
+                    extract_glassbox_features_moses(source_filename, ids_filename, testset, target_filename, log_filename, output_filename, sourcelang, targetlang, backoff_reference, hjersoncounts)
             logging.warn("{}-{}-{}".format(sourcelang, targetlang, counter_langpair))
          
 logging.warn("Located {} filename tuples".format(counter)) 

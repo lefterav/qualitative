@@ -11,7 +11,7 @@ from io_utils.sax.saxps2jcml import IncrementalJcml
 from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence
 from db import DbConnector
-from featuregenerator.hjerson import BinaryHjerson
+from featuregenerator.hjerson import BinaryHjerson, Hjerson
 import re
 import os
 import sys
@@ -37,7 +37,7 @@ def _get_id_from_line(testset_type, id_line):
         
     
 
-def extract_glassbox_features_moses(source_filename, ids_filename, testset_type, moses_target_filename, log_filename, output_filename, source_lang, target_lang, backoff_reference=True):
+def extract_glassbox_features_moses(source_filename, ids_filename, testset_type, moses_target_filename, log_filename, output_filename, source_lang, target_lang, backoff_reference=True, hjersoncounts=False):
     """
     Extract the glassbox features from Moses
     @param source_filename: the filename of a plain text file with one source sentence per line
@@ -55,7 +55,10 @@ def extract_glassbox_features_moses(source_filename, ids_filename, testset_type,
     features_dicts = extractor.create_dicts_of_sentences_attributes(log_filename)
     
     #initialize feature generators
-    hjerson = BinaryHjerson(lang = target_lang)
+    if not hjersoncounts:
+        hjerson = BinaryHjerson(lang = target_lang)
+    else:
+        hjerson = Hjerson(lang = target_lang)
     
     #open readers for input files and a writer for xml
     sourcefile = open(source_filename, 'r')
