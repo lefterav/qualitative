@@ -554,6 +554,12 @@ class Hjerson(LanguageFeatureGenerator):
             for metricname in ['extErr', 'hLexErr', 'hRer', 'biHper', 'hbRer', 'bextErr', 'hbLexErr']:
                 res[metricname] = float("Inf")
 
+
+        res['aMissErr'] = sentMissCount
+        res['aExtErr'] = sentExtCount
+        res['arLexErr'] = sentRefLexCount
+        res['arRer'] = sentRefReordCount
+        
         return res
     
     def calculate_total_scores(self):
