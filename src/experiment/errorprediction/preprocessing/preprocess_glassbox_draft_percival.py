@@ -1,5 +1,5 @@
 from preprocess_glassbox import extract_glassbox_features_moses
-import os
+import os, sys
 import logging
 
 if __name__ == '__main__':
@@ -9,9 +9,16 @@ if __name__ == '__main__':
     target_filename = os.path.expanduser("/share/taraxu/evaluation-rounds/r2/system-outputs/moses/en-de/wmt11.truecased.3.dehp.detok")
     log_filename = os.path.expanduser("/share/taraxu/evaluation-rounds/r2/logs/en-de/moses/wmt11.v2.log.3")
     testset_type = "wmt11"
+<<<<<<< .merge_file_SjB4NV
     output_filename = os.path.expanduser("~/wmt11.moses.gb.jcml")
     source_lang = "en"
     target_lang = "de"
+=======
+    output_filename = sys.argv[1]
+#    output_filename = os.path.expanduser("/wmt11.moses.gb.jcml")
+    source_lang = "de"
+    target_lang = "en"
+>>>>>>> .merge_file_JhX9x1
 
     sth = logging.StreamHandler()
     sth.setLevel(logging.DEBUG)
