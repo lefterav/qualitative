@@ -5,7 +5,7 @@ Created on 22 March 2011
 '''
 
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
-
+from numpy import average, std
 
 
 class ParserMatches(LanguageFeatureGenerator):
@@ -68,10 +68,16 @@ class ParserMatches(LanguageFeatureGenerator):
     
     def _count_nodetags(self, treestring="", taglist=[]):
         match_count = 0
+        match_pos = [] 
+        labels = treestring.split() 
         for parse_tag in taglist:
             parse_tag = "(%s" %parse_tag #get the bracket so that you can search in the parse string
-            match_count += treestring.count(parse_tag)
-        return match_count
+            match_count += labels.count(parse_tag)
+            for pos, label in enumerate(labels, start=1):
+                if parse_tag == label:
+                    match_pos.append(pos)
+            
+        return match_count, match_pos
 
     def get_features_src(self, simplesentence, parallelsentence):
         attributes = {}
@@ -81,9 +87,11 @@ class ParserMatches(LanguageFeatureGenerator):
             print "error reading berkeley tree"
             return {}
         for (src_map, tgt_map) in self.mappings:
-            src_map_count = self._count_nodetags(src_parse, src_map)
+            src_map_count, src_match_pos = self._count_nodetags(src_parse, src_map)
             src_label = self._canonicalize(src_map[0])
-            attributes["parse-%s" % src_label] = str(src_map_count)    
+            attributes["parse-%s" % src_label] = str(src_map_count)   
+            attributes["parse-%s-pos-avg" % tgt_label] = average(src_map_pos)
+            attributes["parse-%s-pos-std" % tgt_label] = std(srcgit _map_pos) 
         return attributes
             
             
@@ -102,9 +110,11 @@ class ParserMatches(LanguageFeatureGenerator):
             for (src_map, tgt_map) in self.mappings:
                 #src_label = self._canonicalize(src_map[0])
                 #src_map_count = int(parallelsentence.get_source().get_attribute("parse-%s" % src_label))
-                tgt_map_count = self._count_nodetags(tgt_parse, tgt_map)
+                tgt_map_count, tgt_map_pos = self._count_nodetags(tgt_parse, tgt_map)
                 tgt_label = self._canonicalize(src_map[0])
                 attributes["parse-%s" % tgt_label] = str(tgt_map_count)
+                attributes["parse-%s-pos-avg" % tgt_label] = average(tgt_map_pos)
+                attributes["parse-%s-pos-std" % tgt_label] = std(tgt_map_pos)
 #                if tgt_map_count != 0:
 #                    attributes["parse-%s_ratio" % tgt_label] = str(1.0 * src_map_count / tgt_map_count)
 #                else:
