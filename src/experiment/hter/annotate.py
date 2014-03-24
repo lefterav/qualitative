@@ -354,6 +354,15 @@ def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_
     saxjcml.run_features_generator(input_file, output_file, analyzers)
 if cfg.getboolean("annotation", "reference_features"):
     parallel_feature_functions.append(reference_features)
+    
+
+@active_if(cfg.has_section("ter"))
+@transform(data_fetch, suffix(".orig.%s.jcml" % target_language), ".ter.%s.f.jcml" % target_language, cfg.get("ter", "path"))
+def reference_ter(input_file, output_file, path):
+    saxjcml.run_features_generator(input_file, output_file, [TerWrapper(target_language, path)])
+
+if cfg.has_section("ter"):    
+    parallel_feature_functions.append(reference_ter)
 
 #active_parallel_feature_functions = [function for function in parallel_feature_functions if function.is_active]
 
