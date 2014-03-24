@@ -1,4 +1,4 @@
-'''
+ls *ter*'''
 Created on 17 Jan 2012
 Modified 22 Mar 2012 for autoranking experiment
 @author: lefterav
@@ -357,7 +357,7 @@ if cfg.getboolean("annotation", "reference_features"):
     
 
 @active_if(cfg.has_section("ter"))
-@transform(data_fetch, suffix(".orig.%s.jcml" % target_language), ".ter.%s.f.jcml" % target_language, cfg.get("ter", "path"))
+@transform(data_fetch, suffix(".orig.jcml"), ".ter.%s.f.jcml" % target_language, cfg.get("ter", "path"))
 def reference_ter(input_file, output_file, path):
     saxjcml.run_features_generator(input_file, output_file, [TerWrapper(target_language, path)])
 
