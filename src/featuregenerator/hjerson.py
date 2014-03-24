@@ -560,6 +560,8 @@ class Hjerson(LanguageFeatureGenerator):
         res['arLexErr'] = sentRefLexCount
         res['arRer'] = sentRefReordCount
         
+        res["refLength"] = bestWerRefLength
+        res['TER'] = (sentMissCount + sentExtCount + sentRefLexCount + sentRefReordCount)*1.00/bestWerRefLength
         return res
     
     def calculate_total_scores(self):
@@ -757,10 +759,8 @@ def write_error_words(text, addtext, errors, words, add, title):
     text.write("\n")
 
 
-#if __name__ == '__main__':
-#    h = Hjerson(lang="en")
-#    ref = "Shattered into 6,000, 7,000 pieces."
-#    hyp = "Shattered in 6,000 to 7,000 pieces."
-#    print h.get_features_strings(hyp, [ref])
-    
-    
+if __name__ == '__main__':
+    h = Hjerson(lang="en")
+    hyp = 'En lugar de ello , es algo tan terrible como " un condenado estrangulado en secreto " .'
+    ref = 'En lugar de ello , es terriblemente como " un condenado estrangulados en secreto . "'
+    print h.get_features_strings(hyp, [ref])
