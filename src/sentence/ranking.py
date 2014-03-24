@@ -92,7 +92,7 @@ def invert(ranking_list, **kwargs):
     @rtype: [float, ...]
     '''
     inverted_ranking_list = [-1.0*item for item in ranking_list]
-    return normalize(inverted_ranking_list, kwargs)
+    return normalize(inverted_ranking_list, **kwargs)
             
 class Ranking(list):
     '''

@@ -185,3 +185,6 @@
 2012-11-09.16-43-37 less /share/taraxu/data/textnform/overlap.en
 2012-11-09.16-54-57 python check_overlap.py /share/taraxu/data/textnform/textnform.train.de /share/taraxu/data/textnform/textnform.dev.de > /share/taraxu/data/textnform/overlap.de
 2012-11-09.16-59-58 less /share/taraxu/data/textnform/overlap.de
+2013-10-29.12-22-48 git add split_lineindices.py
+2013-10-29.12-23-03 git commit -m "Fixes to the set splitting script"
+2013-10-29.12-23-08 git push
