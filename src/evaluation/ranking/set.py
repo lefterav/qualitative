@@ -11,6 +11,15 @@ import segment
 from numpy import average
 import numpy as np
 
+def kendall_tau_set_no_ties(predicted_rank_vectors, original_rank_vectors, **kwargs):
+    kwargs["penalize_predicted_ties"] = False
+    result = kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs)
+    newresult = {}
+    for key, value in result.iteritems():
+        newkey = key.replace("tau", "tau-nt")
+        newresult[newkey] = value
+    return newresult
+
 def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
     """
     This is the refined calculation of set-level Kendall tau of predicted vs human ranking according to WMT12 (Birch et. al 2012)

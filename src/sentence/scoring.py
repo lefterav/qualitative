@@ -10,7 +10,8 @@ from ranking import Ranking
 from evaluation.ranking.segment import kendall_tau, kendall_tau_prob
 from evaluation.ranking.set import *
 
-SET_METRIC_FUNCTIONS = [kendall_tau_set, 
+SET_METRIC_FUNCTIONS = [kendall_tau_set,
+                        kendall_tau_set_no_ties,
                         mrr,
                         avg_ndgc_err, 
                         best_predicted_vs_human,
@@ -110,10 +111,6 @@ class Scoring(MultiRankedDataset):
         predicted_rank_vectors = []
         original_rank_vectors = []
         
-        
-
-        
-        
         for parallesentence in self.parallelsentences:
             if filter_ref:
                 predicted_rank_vector = parallesentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
@@ -121,8 +118,13 @@ class Scoring(MultiRankedDataset):
             else:
                 predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
                 original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
-            predicted_rank_vectors.append(Ranking(predicted_rank_vector))
-            original_rank_vectors.append(Ranking(original_rank_vector))
+            predicted_ranking = Ranking(predicted_rank_vector)
+            original_ranking = Ranking(original_rank_vector)
+            if self.invert_ranks:
+                predicted_ranking = predicted_ranking.inverse()
+                original_ranking = original_ranking.inverse()
+            predicted_rank_vectors.append(predicted_ranking)
+            original_rank_vectors.append(original_ranking)
         
         stats = {}
         for callback in SET_METRIC_FUNCTIONS:
