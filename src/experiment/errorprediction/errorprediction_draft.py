@@ -89,7 +89,7 @@ if __name__ == '__main__':
                                          meta_attributes, 
                                          output_file,
                                          compact_mode=True)
-    
+        orangeconvertor.convert()
         table = Table(output_file)
     
         print "\n\n[[[[", class_name, "]]]]\n"

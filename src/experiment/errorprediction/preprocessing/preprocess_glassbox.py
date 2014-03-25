@@ -6,12 +6,12 @@ Created on 11 Apr 2013
 @author: Eleftherios Avramidis
 '''
 
-from featuregenerator.glassbox.mosesglassbox import MosesGlassboxExtractor
+from featuregenerator.glassbox.moses.extractor import MosesGlassboxExtractor
 from io_utils.sax.saxps2jcml import IncrementalJcml
 from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence
 from db import DbConnector
-from featuregenerator.hjerson import BinaryHjerson
+from featuregenerator.hjerson import BinaryHjerson, Hjerson
 import re
 import os
 import sys
@@ -28,14 +28,16 @@ def _get_id_from_line(testset_type, id_line):
     @type testset_type: str
     """
     
-    if testset_type == "wmt11":
-        testset_type = "wmt11"
-        segment_id, document_id = id_line.split('\t')[1:]
-        uid = "{}-{}-{}".format(testset_type, document_id.strip(), segment_id)
-        return uid
+    segment_id, document_id = id_line.split('\t')[1:]
+#    if testset_type in ["wmt11", "openoffice3", "wmt10"]:
+    uid = "{}-{}-{}".format(testset_type, document_id.strip(), segment_id)
+#    else:
+#        uid = "{}-{}-{}".format(testset_type, document_id.strip(), segment_id)
+    return uid
+        
     
 
-def extract_glassbox_features_moses(source_filename, ids_filename, testset_type, moses_target_filename, log_filename, output_filename, source_lang, target_lang):
+def extract_glassbox_features_moses(source_filename, ids_filename, testset_type, moses_target_filename, log_filename, output_filename, source_lang, target_lang, backoff_reference=True, hjersoncounts=False):
     """
     Extract the glassbox features from Moses
     @param source_filename: the filename of a plain text file with one source sentence per line
@@ -53,7 +55,10 @@ def extract_glassbox_features_moses(source_filename, ids_filename, testset_type,
     features_dicts = extractor.create_dicts_of_sentences_attributes(log_filename)
     
     #initialize feature generators
-    hjerson = BinaryHjerson(lang = target_lang)
+    if not hjersoncounts:
+        hjerson = BinaryHjerson(lang = target_lang)
+    else:
+        hjerson = Hjerson(lang = target_lang)
     
     #open readers for input files and a writer for xml
     sourcefile = open(source_filename, 'r')
@@ -70,15 +75,18 @@ def extract_glassbox_features_moses(source_filename, ids_filename, testset_type,
     for source_sentence, id_line, target_sentence, features_dict in zip(sourcefile, idsfile, moses_targetfile, features_dicts):
         uid = _get_id_from_line(testset_type, id_line)
         
+        if uid==None:
+            sys.exit("Empty unique sentence id {}".format(id_line))
+        
         #prepare existing attributes
         tgt_attributes = features_dict 
-        atts = {"uid": uid}
+        atts = {"uid": uid, "langsrc" : source_lang, "langtgt" : target_lang }
         
         #fetch post-edited output, to be used as reference for extracting error classification
         reference = mydb.fetch_postediting(uid, system, source_lang, target_lang)
         if not reference:
             reference = mydb.fetch_reference(uid, target_lang)
-            if reference:
+            if reference and backoff_reference:
                 reference_backoff_count +=1
             else:
                 no_postediting_count +=1

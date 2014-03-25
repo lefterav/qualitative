@@ -56,10 +56,13 @@ class MeteorGenerator(LanguageFeatureGenerator):
 
     
     def get_features_tgt(self, translation, parallelsentence):
-        references = [parallelsentence.get_reference().get_string()]
-        stats = self.score_sentence(translation.get_string(), references)
-        stats = dict([("ref-{}".format(k),v) for k, v in stats.iteritems()])
-        return stats
+        try:
+            references = [parallelsentence.get_reference().get_string()]
+            stats = self.score_sentence(translation.get_string(), references)
+            stats = dict([("ref-{}".format(k),v) for k, v in stats.iteritems()])
+            return stats
+        except:
+            return {}
 
     def score(self, target, references):
         return self.score_sentence(target, references)

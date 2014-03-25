@@ -21,9 +21,12 @@ class LevenshteinGenerator(FeatureGenerator):
         @return: dictionary containing Levenshtein distance as an attribute 
         """
         target_untokenized = target.get_string()
-        ref_untokenized = parallelsentence.get_reference().get_string()
+	try:
+	    ref_untokenized = parallelsentence.get_reference().get_string()
         
 
-        wer_value = levenshtein_tok(target_untokenized, ref_untokenized)
-        return {'ref-lev': str(wer_value)}
+            wer_value = levenshtein_tok(target_untokenized, ref_untokenized)
+            return {'ref-lev': str(wer_value)}
+        except:
+            return {}
         
