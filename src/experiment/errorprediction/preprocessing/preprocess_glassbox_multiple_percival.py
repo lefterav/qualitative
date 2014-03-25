@@ -18,12 +18,18 @@ sth = logging.StreamHandler()
 sth.setLevel(logging.WARN)
 
 
+
+
 #PATTERNS
 if sys.argv[1] == "generic":
     source = "{basepath}/test-data/{set}/*{targetlang}*.{sourcelang}"
-    testsets = ["wmt11", "openoffice3", "wmt10"]
+    #    testsets = ["wmt11", "openoffice3", "wmt10"]
+    testsets = ["wmt11", "wmt10", "openoffice3"]
+    #testsets = ["openoffice3"]
+    ids = source + ".links"
 elif sys.argv[1] == "client":
-    source = "{basepath}/test-data/client/raw/{langpair_upper}/{set}*xml"
+    source = "/share/taraxu/data/r2-testSets/client/plain/{langpair}/{set}*.txt"
+    ids = "{basepath}/test-data/client/raw/{langpair_upper}/{set}*.links"
     testsets = [
 "cust_euDE_4",
 "Green Fact Sheet_cust_euDE_4",
@@ -60,14 +66,25 @@ elif sys.argv[1] == "client":
 "355006001__1_cust_euDE_2"]
 
 target = "{basepath}/system-outputs/{system}/{langpair}/*{set}*"
-log = "{basepath}/logs/{langpair}/{system}/wmt11.*"
-ids = source + ".links"
+log = "{basepath}/logs/{langpair}/{system}/*{set}*"
 
 output = "/share/taraxu/selection-mechanism/errorprediction/preprocessing/combined/{set}.{langpair}.{system}.jcml"
  
 params = {"basepath":"/share/taraxu/evaluation-rounds/r2"}
 
-
+backoff_reference = True
+try:
+    if "--hjersoncounts" in sys.argv[1:]:
+        logging.warn("Counting total errors per sentence")
+        hjersoncounts = True                
+        output = output.replace(".jcml", ".counts.jcml")
+        
+    if "--noreference" in sys.argv[1:]:
+        logging.warn("Disabled reference substitution")
+        backoff_reference = False
+        output = output.replace(".jcml", ".noref.jcml")
+except:
+    pass
 
 
 systems = ["moses"]
@@ -123,7 +140,8 @@ if __name__ == '__main__':
                        )
                 counter+=1
                 counter_langpair+=1
+                if not "--testlist" in sys.argv:
+                    extract_glassbox_features_moses(source_filename, ids_filename, testset, target_filename, log_filename, output_filename, sourcelang, targetlang, backoff_reference, hjersoncounts)
             logging.warn("{}-{}-{}".format(sourcelang, targetlang, counter_langpair))
          
 logging.warn("Located {} filename tuples".format(counter)) 
-#                extract_glassbox_features_moses(source_filename, ids_filename, testset, target_filename, log_filename, output_filename, sourcelang, targetlang)

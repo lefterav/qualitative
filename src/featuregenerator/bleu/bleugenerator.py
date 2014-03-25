@@ -32,10 +32,13 @@ class BleuGenerator(FeatureGenerator):
         @return: dictionary containing Levenshtein distance as an attribute 
         """
         target_untokenized = target.get_string()
-        ref_untokenized = parallelsentence.get_reference().get_string()
+        try:
+            ref_untokenized = parallelsentence.get_reference().get_string()
 
-        bleu_value = bleu.score_sentence(target_untokenized, [ref_untokenized])
-        return {'ref-bleu': '{:.4}'.format(bleu_value)}
+            bleu_value = bleu.score_sentence(target_untokenized, [ref_untokenized])
+            return {'ref-bleu': '{:.4}'.format(bleu_value)}
+        except:
+            return {}
 
 
 
