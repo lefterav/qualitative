@@ -1,10 +1,5 @@
-Orange library:
 
-
-Ubuntu/Debian
-=============
-
-1. Orange ML toolkit
+Orange ML toolkit
 --------------------
 sudo apt-get install python-dev g++ build-essential python-pip 
 sudo pip install --upgrade pip  
@@ -13,13 +8,13 @@ sudo pip install orange *
 * There is also a debian package / repository called orangesvn ( sudo apt-get install orangesvn) but works only with python 2.5. If you use it, you may have to tackle pythonpath issues
 
 No root access:
-- Go to http://orange.biolab.si/nightly_builds.html and download Nightly packed sources
+- Go to http://orange.biolab.si/ and download packed sources
 - python setup.py install --user
 
 
 
 Other platforms
-===============
+
 
 Use the standard way to install pip at your operating system or get pip from here: 
 http://pypi.python.org/pypi/pip
@@ -39,8 +34,14 @@ sudo apt-get install python python-dev gcc gfortran g++ libblas-dev libatlas-cpp
 sudo pip install numpy
 sudo pip install scipy 
 
-ruffus :
 
+
+ruffus :
+----------
+
+Ruffus is a pipeline execution framework for Python, that is used for the preprocessing of the data in scripts such as src/exexperiment/autoranking/annotate_updated. If you already have annotated data you can skip this
+
+Ruffus can be installed also by using pip install. If you have problems check the following:
 
 wget http://launchpadlibrarian.net/11726755/pypy-lib_1.0.0-svn51091-1_all.deb
 wget https://launchpad.net/ubuntu/+source/pypy/1.0.0-svn51091-1/+build/503581/+files/pypy_1.0.0-svn51091-1_amd64.deb
@@ -48,3 +49,10 @@ wget https://launchpad.net/ubuntu/+source/pypy/1.0.0-svn51091-1/+build/503581/+f
 dpkg -i 
 
 
+Python ExpSuite
+---------------
+Expsuite is a set of scripts that parallelizes the training of a big numbers of systems, with various parameters, and allows monitoring the results. Please check out the latest version of expsuite and add it to the python path
+
+https://github.com/lefterav/expsuite
+
+Check out -

@@ -6,12 +6,12 @@ from xml import sax
 
 
 
-input_filename = argv[1]
+input_xml_filename = argv[1]
 output_filename = argv[2]
-#dataset = XliffReader(input_filename).get_dataset()
+#dataset = XliffReader(input_xml_filename).get_dataset()
 #XmlWriter(dataset).write_to_file(output_filename)
 saxwrapper = SaxWrapper("trans-unit", reader = XliffReader, writer = XmlWriter, filename_out = output_filename)
-source = open(input_filename)
+source = open(input_xml_filename)
 sax.parse(source, saxwrapper)
 source.close()
 

@@ -15,17 +15,17 @@ class GenericReader:
     '''
     
     
-    def __init__(self, input_filename, load = True):
+    def __init__(self, input_xml_filename, load = True):
         """
         Constructor. Creates a memory object that handles file data
-        @param input_filename: the name of file
-        @type input_filename: string
+        @param input_xml_filename: the name of file
+        @type input_xml_filename: string
         @param load: by turning this option to false, the instance will be 
                      initialized without loading everything into memory. This can be
                      done later by calling .load() function
         @type load: boolean 
         """
-        self.input_filename = input_filename
+        self.input_filename = input_xml_filename
         self.loaded = load
         if load:
             self.load()

@@ -40,14 +40,14 @@ def get_instance_from_parallelsentence(parallelsentence, attribute_names):
     return instance
 
 
-def get_attribute_names(input_filename):
+def get_attribute_names(input_xml_filename):
     '''
     Parse once the given XML file and return a set with the attribute names
-    @param input_filename: The XML file to be parsed
+    @param input_xml_filename: The XML file to be parsed
     '''
-    source_file = open(input_filename, "r")
+    source_xml_file = open(input_xml_filename, "r")
     # get an iterable
-    context = iterparse(source_file, events=("start", "end"))
+    context = iterparse(source_xml_file, events=("start", "end"))
     # turn it into an iterator
     context = iter(context)
     # get the root element
@@ -73,11 +73,11 @@ def get_attribute_names(input_filename):
             if target_id > number_of_targets:
                 number_of_targets = target_id
         root.clear()
-    source_file.close()
+    source_xml_file.close()
     return set(attribute_names)
 
 
-def read_file_incremental(input_filename, **kwargs):
+def read_file_incremental(input_xml_filename, **kwargs):
 
     desired_attributes = kwargs.setdefault("desired_attributes", [])
     class_name = kwargs.setdefault("class_name", "tgt_rank")
@@ -86,7 +86,7 @@ def read_file_incremental(input_filename, **kwargs):
     impute = kwargs.setdefault("impute", True)
     remove_inf = kwargs.setdefault("remove_inf", True)
     
-    existing_attribute_names = get_attribute_names(input_filename)
+    existing_attribute_names = get_attribute_names(input_xml_filename)
     
     if desired_attributes:
         attribute_names = set(desired_attributes)
@@ -102,9 +102,9 @@ def read_file_incremental(input_filename, **kwargs):
         attribute_names = sorted(list(attribute_names))
     
     
-    source_file = open(input_filename, "r")
+    source_xml_file = open(input_xml_filename, "r")
     # get an iterable
-    context = iterparse(source_file, events=("start", "end"))
+    context = iterparse(source_xml_file, events=("start", "end"))
     # turn it into an iterator
     context = iter(context)
     # get the root element
@@ -171,7 +171,7 @@ def read_file_incremental(input_filename, **kwargs):
                 instances = []
         
         root.clear()
-    source_file.close()
+    source_xml_file.close()
     if group_test:
         return instancegroups
     return instances

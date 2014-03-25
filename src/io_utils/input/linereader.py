@@ -37,7 +37,7 @@ class LineReader(GenericReader):
         
     def get_parallelsentences(self):
         parallelsentences = []
-        source_file = open(self.source_filename, 'r')
+        source_xml_file = open(self.source_filename, 'r')
 
         submissions = []           
         
@@ -50,7 +50,7 @@ class LineReader(GenericReader):
             submissions.append((submission_file, system_name))
         
         k = 0
-        for sourceline in source_file:
+        for sourceline in source_xml_file:
             translations = []
             for i in range(len(submissions)):
                 translation_text = submissions[i][0].readline()
@@ -83,7 +83,7 @@ class AttributeLineReader(GenericReader):
     
     def get_parallelsentences(self):
         parallelsentences = []
-        source_file = open(self.source_filename, 'r')
+        source_xml_file = open(self.source_filename, 'r')
 
         submissions = []           
         
@@ -96,7 +96,7 @@ class AttributeLineReader(GenericReader):
             submissions.append((submission_file, system_name))
         
         k = 0
-        for sourceline in source_file:
+        for sourceline in source_xml_file:
             translations = []
             for i in range(len(submissions)):
                 translation_text = submissions[i][0].readline()
