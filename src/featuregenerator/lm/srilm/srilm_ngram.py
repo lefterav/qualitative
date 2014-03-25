@@ -164,8 +164,13 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
 #                except:
                     #sys.stderr.write("Failed to retrieve trigram probability for tokens: '%s'\n" % ' '.join(token))
 #                    pass 
-        unk_rel_pos = (unk_pos * 1.00) / len(tokens)
-        
+        unk_rel_pos = [(unk_pos_item * 1.00) / len(tokens) for unk_pos_item in unk_pos]
+        unk_len = sum([len(token) for token in unk_tokens])
+
+        if len(unk_pos) == 0:
+            unk_pos = [0]
+            unk_rel_pos = [0]        
+ 
         attributes = { 'lm_unk_pos_abs_avg' : str(average(unk_pos)),
                        'lm_unk_pos_abs_std' : str(std(unk_pos)),
                        'lm_unk_pos_abs_min' : str(min(unk_pos)),
@@ -175,12 +180,13 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
                        'lm_unk_pos_rel_min' : str(min(unk_rel_pos)),
                        'lm_unk_pos_rel_max' : str(max(unk_rel_pos)),
                        'lm_unk' : str(unk_count),
-                       
+                       'lm_unk_len' : unk_len,   
+                    
                        'lm_uni-prob' : str(uni_probs),                    
                        'lm_uni-prob_avg' : str(average(uni_probs_vector)),
                        'lm_uni-prob_std' : str(std(uni_probs_vector)),
                        'lm_uni-prob_low' : self._standouts(uni_probs_vector, -1),
-                       #'lm_uni-prob_high' : self._standouts(uni_probs_vector, +1),
+                       'lm_uni-prob_high' : self._standouts(uni_probs_vector, +1),
                        'lm_uni-prob_low_pos_avg': average(self._standout_pos(uni_probs_vector, -1)),
                        'lm_uni-prob_low_pos_std': std(self._standout_pos(uni_probs_vector, -1)),
 
@@ -188,7 +194,7 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
                        'lm_bi-prob_avg' : str(average(bi_probs_vector)),
                        'lm_bi-prob_std' : str(std(bi_probs_vector)),
                        'lm_bi-prob_low' : self._standouts(bi_probs_vector, -1),
-                       #'lm_bi-prob_high' : self._standouts(bi_probs_vector, +1),
+                       'lm_bi-prob_high' : self._standouts(bi_probs_vector, +1),
                        'lm_bi-prob_low_pos_avg': average(self._standout_pos(bi_probs_vector, -1)),
                        'lm_bi-prob_low_pos_std': std(self._standout_pos(bi_probs_vector, -1)),
                        
@@ -196,7 +202,7 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
                        'lm_tri-prob_avg' : str(average(tri_probs_vector)),
                        'lm_tri-prob_std' : str(std(tri_probs_vector)),
                        'lm_tri-prob_low' : self._standouts(tri_probs_vector, -1),
-                       #'lm_tri-prob_high' : self._standouts(tri_probs_vector, +1),
+                       'lm_tri-prob_high' : self._standouts(tri_probs_vector, +1),
                        'lm_tri-prob_low_pos_avg': average(self._standout_pos(tri_probs_vector, -1)),
                        'lm_tri-prob_low_pos_std': std(self._standout_pos(tri_probs_vector, -1)),
                        'lm_prob' : str(prob) }
