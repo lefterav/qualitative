@@ -11,8 +11,8 @@ First this class extracts values from tgt sentences and saves them into a list.
 Second the extracted values are used for SVMlight classifier. 
 '''
 class Jcml2Shogun():
-    def __init__(self, input_filename):
-        self.input_filename = input_filename
+    def __init__(self, input_xml_filename):
+        self.input_filename = input_xml_filename
         self.TAG_SENT = 'judgedsentence'
         self.TAG_SRC = 'src'
         self.TAG_TGT = 'tgt'
@@ -23,9 +23,9 @@ class Jcml2Shogun():
         
         
     def get_jcml_attribute_values(self):
-        source_file = open(self.input_filename, "r")
+        source_xml_file = open(self.input_filename, "r")
         # get an iterable
-        context = iterparse(source_file, events=("start", "end"))
+        context = iterparse(source_xml_file, events=("start", "end"))
         # turn it into an iterator
         context = iter(context)
         # get the root element
