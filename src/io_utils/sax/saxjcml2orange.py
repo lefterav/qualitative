@@ -23,12 +23,12 @@ class SaxJcml2Orange():
     This class converts jcml format to tab format (orange format).
     The output file is saved to the same folder where input file is.
     """
-    def __init__(self, input_filename, class_name, desired_attributes, meta_attributes, output_file, **kwargs):
+    def __init__(self, input_xml_filename, class_name, desired_attributes, meta_attributes, output_file, **kwargs):
         """
         Init calls class SaxJcmlOrangeHeader for creating header and 
         SaxJcmlOrangeContent for creating content.
-        @param input_filename: name of input jcml file
-        @type input_filename: string
+        @param input_xml_filename: name of input jcml file
+        @type input_xml_filename: string
         @param class_name: name of class
         @type class_name: string
         @param desired_attributes: desired attributes
@@ -69,14 +69,14 @@ class SaxJcml2Orange():
         if "dir" in kwargs:
             self.dir = kwargs["dir"]
         
-        self.input_filename = input_filename
+        self.input_filename = input_xml_filename
         self.class_name = class_name
         self.desired_attributes = set(desired_attributes)
         self.meta_attributes = set(meta_attributes)
         
         self.orange_filename = output_file
         self.temporary_filename = tempfile.mktemp(dir=self.dir, suffix='.tab')
-        #self.dataset = XmlReader(self.input_filename).get_dataset()
+        #self.dataset = XmlReader(self.input_xml_filename).get_dataset()
         self.object_file = codecs.open(self.temporary_filename, encoding='utf-8', mode = 'w')
 
         # get orange header
