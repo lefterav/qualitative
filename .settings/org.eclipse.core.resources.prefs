@@ -5,6 +5,7 @@ eclipse.preferences.version=1
 encoding//metawp2/lucy-code/LucyTrees.py=utf-8
 encoding//metawp2/lucy-code/extract_lucy_trees.py=utf-8
 encoding//src/experiment/errorprediction/preprocessing/db.py=utf-8
+encoding//src/experiment/hter/questlearner/learn_model.py=utf-8
 encoding//src/featuregenerator/hjerson.py=utf8
 encoding//src/featuregenerator/parser/berkeley/berkeleyclient.py=utf-8
 encoding//src/io/input/orangereader.py=utf-8
