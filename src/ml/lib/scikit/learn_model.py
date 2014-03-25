@@ -35,11 +35,14 @@ from sklearn.metrics.metrics import mean_squared_error, f1_score, \
 from sklearn.svm.classes import SVR, SVC
 from sklearn_utils import scale_datasets, open_datasets, assert_number, \
     assert_string
+from sklearn import cross_validation
 import logging as log
 import numpy as np
 import os
 import sys
 import yaml
+from sklearn_utils import open_datasets_crossvalidation,\
+    scale_datasets_crossvalidation
 
 __all__ = []
 __version__ = 0.1
@@ -333,6 +336,50 @@ def fit_predict(config, X_train, y_train, X_test=None, y_test=None):
         for scorer_name, scorer_func in scorers:
             v = scorer_func(y_test, y_hat)
             log.info("%s = %s" % (scorer_name, v))
+            
+            
+
+def cross_validate(config, X_train, y_train):
+    '''
+    Uses the configuration dictionary settings to train a model using the
+    specified training algorithm. If set, also evaluates the trained model 
+    in a test set. Additionally, performs feature selection and model parameters
+    optimization.
+    
+    @param config: the configuration dictionary obtained parsing the 
+    configuration file.
+    @param X_train: the np.array object for the matrix containing the feature
+    values for each instance in the training set.
+    @param y_train: the np.array object for the response values of each instance
+    in the training set.
+    @param X_test: the np.array object for the matrix containing the feature
+    values for each instance in the test set. Default is None.
+    @param y_test: the np.array object for the response values of each instance
+    in the test set. Default is None.
+    '''
+    # sets the selection method
+    transformer = set_selection_method(config)
+
+    # if the system is configured to run feature selection
+    # runs it and modifies the datasets to the new dimensions
+    if transformer is not None:
+        log.info("Running feature selection %s" % str(transformer))
+        
+        log.debug("X_train dimensions before fit_transform(): %s,%s" % X_train.shape)
+        log.debug("y_train dimensions before fit_transform(): %s" % y_train.shape)
+        
+        X_train = transformer.fit_transform(X_train, y_train)
+        
+        log.debug("Dimensions after fit_transform(): %s,%s" % X_train.shape)
+        
+
+    
+    
+    # sets learning algorithm and runs it over the training data
+    estimator, scorers = set_learning_method(config, X_train, y_train)
+    log.info("Running cross validator with %s" % str(estimator))
+    scores = cross_validation.cross_val_score(estimator, X_train, y_train, cv=10, scoring=scorers)
+    return scores
 
 
 def run(config):
@@ -386,6 +433,56 @@ def run(config):
 
     # fits training data and predicts the test set using the trained model
     y_hat = fit_predict(config, X_train, y_train, X_test, y_test)
+    
+    
+    
+    
+def run_crossvalidation(config):
+    '''
+    Runs the main code of the only cross validation. Checks for mandatory parameters, opens
+    input files and performs the learning steps.
+    '''
+    # check if the mandatory parameters are set in the config file
+    x_train_path = config.get("x_train", None)
+    if not x_train_path:
+        msg = "'x_train' option not found in the configuration file. \
+        The training dataset is mandatory."
+        raise Exception(msg)
+
+    y_train_path = config.get("y_train", None)
+    if not y_train_path:
+        msg = "'y_train' option not found in the configuration file. \
+        The training dataset is mandatory."
+        raise Exception(msg)
+        
+    learning = config.get("learning", None)
+    if not learning:
+        msg = "'learning' option not found. At least one \
+        learning method must be set."
+        raise Exception(msg)
+
+    separator = config.get("separator", DEFAULT_SEP)
+    
+    labels_path = config.get("labels", None)
+        
+    scale = config.get("scale", True)
+
+    log.info("Opening input files ...")
+    log.debug("X_train: %s" % x_train_path)
+    log.debug("y_train: %s" % y_train_path)
+
+    # open feature and response files    
+    X_train, y_train, X_test, y_test, labels = \
+    open_datasets_crossvalidation(x_train_path, y_train_path, separator, labels_path)
+
+    if scale:
+        # preprocess and execute mean removal
+        X_train = scale_datasets_crossvalidation(X_train)
+
+    # fits training data and predicts the test set using the trained model
+    scores = cross_validate(config, X_train, y_train)
+    print scores 
+    
     
     
 def main(argv=None): # IGNORE:C0111

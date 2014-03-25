@@ -14,6 +14,7 @@ Utilities to read from text files to numpy arrays used by sklearn.
 
 from features_file_utils import read_labels_file, read_features_file, \
     read_reference_file
+
 from sklearn import preprocessing
 import logging as log
 import numpy as np
@@ -36,6 +37,8 @@ def assert_string(generic_list):
         if not isinstance(i, str):
             return False
     return True
+
+
 
 def open_datasets(train_path, train_ref_path, test_path, 
                   test_ref_path, delim, labels_path=None):
@@ -83,6 +86,31 @@ def open_datasets(train_path, train_ref_path, test_path,
     return X_train, y_train, X_test, y_test, labels
 
 
+def open_datasets_crossvalidation(train_path, train_ref_path, delim, labels_path=None):
+    if not os.path.isfile(os.path.abspath(train_path)):
+        raise IOError("training dataset path is not valid: %s" % train_path)
+    
+    if not os.path.isfile(os.path.abspath(train_ref_path)):
+        raise IOError("training references path is not valid: %s" % train_ref_path)
+    
+    labels = []
+    if labels_path is not None:
+        if not os.path.isfile(os.path.abspath(labels_path)):
+            raise IOError("labels file is not valid: %s" % labels_path)
+
+        labels = read_labels_file(labels_path, delim)
+
+    X_train = read_features_file(train_path, delim)
+    y_train = read_reference_file(train_ref_path, delim)
+    
+    if len(X_train.shape) != 2:
+        raise IOError("the training dataset must be in the format of a matrix with M lines and N columns.")
+        
+    if X_train.shape[0] != y_train.shape[0]:
+        raise IOError("the number of instances in the train features file does not match the number of references given.")
+
+    return X_train, y_train, labels
+    
 
 def scale_datasets(X_train, X_test):
     log.info("Scaling datasets...")
@@ -103,6 +131,24 @@ def scale_datasets(X_train, X_test):
     log.debug("X_test after scaling = %s,%s" % X_test.shape)
 
     return X_train, X_test
+
+def scale_datasets_crossvalidation(X_train):
+    log.info("Scaling datasets...")
+
+    log.debug("X_train shape = %s,%s" % X_train.shape)
+    
+    # concatenates the whole dataset so that the scaling is
+    # done over the same distribution
+    dataset = X_train
+    scaled_dataset = preprocessing.scale(dataset)
+    
+    # gets the scaled datasets splits back
+    X_train = scaled_dataset[:X_train.shape[0]]
+
+    log.debug("X_train after scaling = %s,%s" % X_train.shape)
+    
+
+    return X_train
 
 if __name__ == '__main__':
     pass
