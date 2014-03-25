@@ -80,10 +80,10 @@ if __name__ == '__main__':
 
 
     
-    input_filename = sys.argv[1]
+    input_xml_filename = sys.argv[1]
     output_file = "/tmp/orange.tab"
     for class_name in error_category_names:    
-        orangeconvertor = CElementTreeJcml2Orange(input_filename, 
+        orangeconvertor = CElementTreeJcml2Orange(input_xml_filename, 
                                          class_name, 
                                          desired_attributes, 
                                          meta_attributes, 
