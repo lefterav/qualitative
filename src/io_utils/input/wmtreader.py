@@ -32,9 +32,9 @@ class WmtReader():
             source_filename ="%s/%s-src.%s" % (source_dir, testset, langpair.split("-")[0])
             reference_filename = "%s/%s-ref.%s" % (reference_dir, testset, langpair.split("-")[1])
             try:
-                source_file = open(source_filename, 'r')
+                source_xml_file = open(source_filename, 'r')
             except:
-                logging.warn("Source file '{}' could not be opened".format(source_file))
+                logging.warn("Source file '{}' could not be opened".format(source_xml_file))
                 
             
             if extract_references:
@@ -60,7 +60,7 @@ class WmtReader():
                 submissions.append((submission_file, system_name))
             
             k = 0
-            for sourceline in source_file:
+            for sourceline in source_xml_file:
                 translations = []
                 
                 for i in range(len(submissions)):

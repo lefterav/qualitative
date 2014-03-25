@@ -35,7 +35,17 @@ class ParserMatches(LanguageFeatureGenerator):
               (["JJ"], ["A"]),
               (["."], ["."]),
               ([","], [","])]
-
+    
+    mapping[("de","fr")] = [(["NP"], ["NP"]),
+              (["S"], ["SENT", "Srel", "Ssub"]),
+              (["ART"], ["D"]),
+              (["VP", "VZ"], ["VP", "VPinf"]),
+              (["VVFIN", "VAFIN",  "VMFIN", "VAINF", "VVINF" ,"VVPP" ], ["V"]),
+              (["NN", "NE"], ["N"] ),
+              (["PP"], ["PP"]),
+              (["$."], ["."]),
+              (["$,"], [","])]
+    
     mapping[("es","en")] = [(["sn"], ["NP"]),
               (["grup.verb"], ["VP"]),
               (["S"], ["S"]),
@@ -47,6 +57,7 @@ class ParserMatches(LanguageFeatureGenerator):
               (["a"], ["JJ"]),
               (["d"], ["DT", "PRP$"]),
               ([","], [","])]
+
 
 
     
