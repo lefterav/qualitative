@@ -1,0 +1,3 @@
+2014-03-24.02-30-27 less pipeline.wmt13metric.blade6.de.de-en.cfg 
+2014-03-24.02-36-19 mv pipeline.wmt13metric.blade6.de.de-en.cfg pipeline.hter.basic.cfg
+2014-03-24.02-40-42 vim pipeline.hter.basic.cfg 

@@ -54,23 +54,23 @@ if __name__ == '__main__':
 
     tempdir = "/tmp"
 
-    input_filename = sys.argv[1]
+    input_xml_filename = sys.argv[1]
 
     if pairwise:
         class_type = "d"
     else:
         class_type = "c"
  
-    if input_filename.endswith(".jcml"):
-        pairwise_filename = os.path.join(tempdir, os.path.basename(input_filename.replace(".jcml",".pair.jcml")))
+    if input_xml_filename.endswith(".jcml"):
+        pairwise_filename = os.path.join(tempdir, os.path.basename(input_xml_filename.replace(".jcml",".pair.jcml")))
         
-        tab_filename = os.path.join(tempdir, os.path.basename(input_filename.replace(".jcml",".tab")))
+        tab_filename = os.path.join(tempdir, os.path.basename(input_xml_filename.replace(".jcml",".tab")))
         
         if pairwise:
-            sys.stderr.write('pairwising XML file {} to {} ...\n'.format(input_filename,pairwise_filename))
-            Parallelsentence2Jcml(AnalyticPairwiseDataset(XmlReader(input_filename)).get_parallelsentences()).write_to_file(pairwise_filename)
+            sys.stderr.write('pairwising XML file {} to {} ...\n'.format(input_xml_filename,pairwise_filename))
+            Parallelsentence2Jcml(AnalyticPairwiseDataset(XmlReader(input_xml_filename)).get_parallelsentences()).write_to_file(pairwise_filename)
         else:
-            pairwise_filename = input_filename
+            pairwise_filename = input_xml_filename
         sys.stderr.write('converting XML file {} to tab ...\n'.format(pairwise_filename))
         CElementTreeJcml2Orange(pairwise_filename, 
                                                  sys.argv[2], 
@@ -80,9 +80,9 @@ if __name__ == '__main__':
                                                  hidden_attributes=hidden_attributes,
                                                  nullimputation=True,
                                                  class_type=class_type).convert()
-        input_filename = tab_filename
-        sys.stderr.write('created converted file {} ...'.format(input_filename))
-    table = Orange.data.Table(input_filename)
+        input_xml_filename = tab_filename
+        sys.stderr.write('created converted file {} ...'.format(input_xml_filename))
+    table = Orange.data.Table(input_xml_filename)
     classname = sys.argv[2]
     
     #new_domain = Orange.data.Domain([a for a in table.domain.variables if a.name != classname], table.domain[classname])

@@ -26,23 +26,23 @@ class GenericXmlReader(GenericReader):
     """
 
     
-    def __init__(self, input_filename, load = True, stringmode = False, **kwargs):
+    def __init__(self, input_xml_filename, load = True, stringmode = False, **kwargs):
         """
         Constructor. Creates an XML object that handles ranking file data
-        @param input_filename: the name of XML file
-        @type input_filename: string
+        @param input_xml_filename: the name of XML file
+        @type input_xml_filename: string
         @param load: by turning this option to false, the instance will be 
                      initialized without loading everything into memory
         @type load: boolean 
         """
         
         self.bare = kwargs.setdefault('bare', False)
-        self.input_filename = input_filename
+        self.input_filename = input_xml_filename
         self.loaded = load
         self.TAG = self.get_tags()
         if load:
             if stringmode:
-                self.load_str(input_filename)
+                self.load_str(input_xml_filename)
             else:
                 self.load()
         

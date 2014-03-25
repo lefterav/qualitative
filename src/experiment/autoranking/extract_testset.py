@@ -46,6 +46,6 @@ if __name__ == '__main__':
     
     for setid in args.setid:
         for langpair in args.langpair:
-            input_filename = args.input.format(setid=setid, langpair=langpair)
+            input_xml_filename = args.input.format(setid=setid, langpair=langpair)
             output_filename = args.output.format(setid=setid, langpair=langpair)
-            get_clean_testset(input_filename, output_filename)
+            get_clean_testset(input_xml_filename, output_filename)

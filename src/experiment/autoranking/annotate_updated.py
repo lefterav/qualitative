@@ -27,6 +27,7 @@ from featuregenerator.ibm1featuregenerator import Ibm1FeatureGenerator
 from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenerator
 from featuregenerator.bleu.bleugenerator import CrossBleuGenerator, BleuGenerator
 from featuregenerator.meteor.meteor import CrossMeteorGenerator, MeteorGenerator
+from featuregenerator.ter import TerWrapper 
 from featuregenerator.attribute_rank import AttributeRankGenerator
 from io_utils.input.xmlreader import XmlReader
 from featuregenerator.languagechecker.languagetool_socket import LanguageToolSocketFeatureGenerator
@@ -264,6 +265,9 @@ def cross_meteor(input_file, output_file, target_language, classpath, dir_path):
 if cfg.has_section("meteor"):    
     parallel_feature_functions.append(cross_meteor)
     
+
+
+
     
 #    parallelsentences = JcmlReader(input_file).get_parallelsentences()
 #    parallelsentences = truecaser.add_features_batch(parallelsentences)
@@ -339,9 +343,13 @@ if cfg.has_section('quest'):
 def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_atts, classpath, dir_path):
     analyzers = [LevenshteinGenerator(),
                  BleuGenerator()]
+    saxjcml.run_features_generator(input_file, output_file, analyzers)
     
     if cfg.has_section("meteor"):
         analyzers.append(MeteorGenerator(target_language, classpath, dir_path))
+        
+if cfg.getboolean("annotation", "reference_features"):
+    parallel_feature_functions.append(reference_features)
         
 #    analyzers.append(RatioGenerator())
     
@@ -350,9 +358,6 @@ def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_
 #    for attribute in lessisbetter_atts:
 #        analyzers.append(AttributeRankGenerator(attribute))
 #        
-    saxjcml.run_features_generator(input_file, output_file, analyzers)
-if cfg.getboolean("annotation", "reference_features"):
-    parallel_feature_functions.append(reference_features)
 
 #active_parallel_feature_functions = [function for function in parallel_feature_functions if function.is_active]
 

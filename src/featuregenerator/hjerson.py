@@ -28,6 +28,7 @@
 from languagefeaturegenerator import LanguageFeatureGenerator
 from preprocessor import Tokenizer
 from util.treetaggerwrapper import TreeTagger
+import logging
 import os
 sent = False
 
@@ -126,8 +127,7 @@ class Hjerson(LanguageFeatureGenerator):
         
         results = (" ".join(tokens), " ".join(tags), " ".join(bases))
         if (len(results[0].split())!=len(results[1].split()) or len(results[1].split())!=len(results[2].split()) or len(results[0].split())!=len(results[2].split())):
-            print results
-            
+            logging.debug("{}".format(results))
         return results
     
     def get_features_strings(self, target_string, references):
@@ -368,7 +368,11 @@ class Hjerson(LanguageFeatureGenerator):
             # best (minimum) sentence WER => best reference => best WER errors
     
             sentWerCount = sentSubCount + sentDelCount + sentInsCount
-            sentWer = sentWerCount/len(refWords)
+            try:
+                sentWer = sentWerCount/len(refWords)
+            except ZeroDivisionError:
+                logging.warn("Division by zero when calculating sentence WER")
+                sentWer = float("Inf")
             if sentWer < minSentWer:
                 minSentWer = sentWer
                 bestWerRefIndex = ir
@@ -432,22 +436,21 @@ class Hjerson(LanguageFeatureGenerator):
         sentInflRperCount = 0.0
                 
         rperErrors, sentRperCount, sentInflRperCount = hyp_ref_errors(hline, basehline, refWords, baseRefWords, "rerr")
-    
-        sentRper = sentRperCount/len(refWords)
-        sentInflRper = sentInflRperCount/len(refWords)
         
-    
+        try:
+            sentRper = sentRperCount/len(refWords)
+            sentInflRper = sentInflRperCount/len(refWords)
+        except ZeroDivisionError:
+            logging.warn("Division by zero when calculating sentence Rper and sentInflRper")
+            sentRper = float("Inf")          
+            sentInflRper = float("Inf")    
     
         self.totalHperCount += sentHperCount
         self.totalRperCount += sentRperCount
         self.totalInflRperCount += sentInflRperCount
         self.totalInflHperCount += sentInflHperCount
-      
-    
      
         # preparations for error categorisation
-              
-    
         refErrorCats = []
         hypErrorCats = []
         
@@ -523,23 +526,42 @@ class Hjerson(LanguageFeatureGenerator):
  
         res['iHper'] = 100*sentInflHper
         res['iRper'] = 100*sentInflRper
-        res['missErr'] = 100*sentMissCount/bestWerRefLength
-        res['extErr'] = 100*sentExtCount/hLen
-        res['rLexErr'] = 100*sentRefLexCount/bestWerRefLength
-        res['hLexErr'] = 100*sentHypLexCount/hLen
-        res['rRer'] = 100*sentRefReordCount/bestWerRefLength
-        res['hRer'] = 100*sentHypReordCount/hLen
-
-        res['biHper'] = 100*sentBlockInflHperCount/hLen
-        res['biRper'] = 100*sentBlockInflRperCount/bestWerRefLength
-        res['rbRer'] =  100*sentRefBlockReordCount/bestWerRefLength
-        res['hbRer'] = 100*sentHypBlockReordCount/hLen
-        res['bmissErr'] = 100*sentBlockMissCount/bestWerRefLength
-        res['bextErr'] = 100*sentBlockExtCount/hLen
-        res['rbLexErr'] = 100*sentRefBlockLexCount/bestWerRefLength
-        res['hbLexErr'] = 100*sentHypBlockLexCount/hLen
-            
         
+        try:
+            res['missErr'] = 100*sentMissCount/bestWerRefLength
+            res['rLexErr'] = 100*sentRefLexCount/bestWerRefLength
+            res['rRer'] = 100*sentRefReordCount/bestWerRefLength
+            res['biRper'] = 100*sentBlockInflRperCount/bestWerRefLength
+            res['rbRer'] =  100*sentRefBlockReordCount/bestWerRefLength
+            res['bmissErr'] = 100*sentBlockMissCount/bestWerRefLength
+            res['rbLexErr'] = 100*sentRefBlockLexCount/bestWerRefLength
+        except ZeroDivisionError:
+            logging.warn("Divison by zero when calculating missErr, rLexErr, rRer, biRper, rbRer, bmissErr, rbLexErr")
+            for metricname in ['missErr', 'rLexErr', 'rRer', 'biRper', 'rbRer', 'bmissErr', 'rbLexErr']:
+                res[metricname] = float("Inf")
+
+        try:
+            res['extErr'] = 100*sentExtCount/hLen
+            res['hLexErr'] = 100*sentHypLexCount/hLen
+            res['hRer'] = 100*sentHypReordCount/hLen
+            res['biHper'] = 100*sentBlockInflHperCount/hLen
+            res['hbRer'] = 100*sentHypBlockReordCount/hLen
+            res['bextErr'] = 100*sentBlockExtCount/hLen
+            res['hbLexErr'] = 100*sentHypBlockLexCount/hLen
+        except ZeroDivisionError:
+            logging.warn("Divison by zero when calculating 'extErr', 'hLexErr', 'hRer', 'biHper', 'hbRer', 'bextErr', 'hbLexErr'")
+
+            for metricname in ['extErr', 'hLexErr', 'hRer', 'biHper', 'hbRer', 'bextErr', 'hbLexErr']:
+                res[metricname] = float("Inf")
+
+
+        res['aMissErr'] = sentMissCount
+        res['aExtErr'] = sentExtCount
+        res['arLexErr'] = sentRefLexCount
+        res['arRer'] = sentRefReordCount
+        
+        res["refLength"] = bestWerRefLength
+        res['TER'] = (sentMissCount + sentExtCount + sentRefLexCount + sentRefReordCount)*1.00/bestWerRefLength
         return res
     
     def calculate_total_scores(self):
@@ -633,8 +655,8 @@ def wer_errors(index, werwords, weradd, wererr, words, add, error):
 def hyp_ref_errors(rline, rbaseline, hwords, hbases, error):
     
     rwords = rline.split()
-    print len(hwords), hwords
-    print len(hbases), hbases
+    logging.debug("{}\t{}".format(len(hwords), hwords))
+    logging.debug("{}\t{}".format(len(hbases), hbases))
     rbases = rbaseline.split()
     errors = []
     errorcount = 0.0
@@ -737,10 +759,8 @@ def write_error_words(text, addtext, errors, words, add, title):
     text.write("\n")
 
 
-#if __name__ == '__main__':
-#    h = Hjerson(lang="en")
-#    ref = "Shattered into 6,000, 7,000 pieces."
-#    hyp = "Shattered in 6,000 to 7,000 pieces."
-#    print h.get_features_strings(hyp, [ref])
-    
-    
+if __name__ == '__main__':
+    h = Hjerson(lang="en")
+    hyp = 'En lugar de ello , es algo tan terrible como " un condenado estrangulado en secreto " .'
+    ref = 'En lugar de ello , es terriblemente como " un condenado estrangulados en secreto . "'
+    print h.get_features_strings(hyp, [ref])

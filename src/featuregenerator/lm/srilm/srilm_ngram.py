@@ -4,7 +4,7 @@ from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 from nltk.tokenize.punkt import PunktWordTokenizer
 import sys
 from util.freqcaser import FreqCaser
-
+from numpy import average, std
 
 
 
@@ -79,6 +79,29 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
         
         return unicode(tokenized_string)
     
+    def _standouts(self, vector, sign):
+        std_value = std(vector)
+        avg_value = average(vector)
+        standout = 0
+        
+        for value in vector:
+            if value*sign > (avg_value + sign*std_value):
+                standout += 1
+            
+        return standout
+    
+    def _standout_pos(self, vector, sign):
+        std_value = std(vector)
+        avg_value = average(vector)
+        standout = []
+        
+        
+        for pos, value in enumerate(vector, start=1):
+            if value*sign > (avg_value + sign*std_value):
+                standout.append(pos)
+            
+        return standout
+                
     
     def get_features_simplesentence(self, simplesentence):
         (tokens,sent_string) = self._prepare_sentence(simplesentence)
@@ -91,15 +114,25 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
         prob = self._get_sentence_probability(sent_string)
         
         #check for unknown words and collecting unigram probabilities:
+        pos = 0
+        unk_pos = [] #keep the positions of unknown words
+        uni_probs_vector = []
+        bi_probs_vector = []
+        tri_probs_vector = []
+        quint_probs_vector = []
+        
         for token in tokens:
+                pos+=1
 #            try: 
                 uni_prob = self.server.getUnigramProb(token)
                 #uni_prob = self.server.getUnigramProb(base64.standard_b64encode(token))
                 if uni_prob == -99:
                     unk_count += 1
+                    unk_pos.append(pos)
                     unk_tokens.append(token)
                     sys.stderr.write("Unknown word: %s of len %d\n" % (token, len(token)))
                 else:
+                    uni_probs_vector.append(uni_prob)
                     uni_probs += uni_prob
 #            except: 
                 #sys.stderr.write("Failed to retrieve unigram probability for token: '%s'\n" % token) 
@@ -114,6 +147,7 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
                     bi_prob = self.server.getBigramProb(' '.join(token))
                     #bi_prob = self.server.getBigramProb(base64.standard_b64encode(' '.join(token)))
                     bi_probs += bi_prob
+                    bi_probs_vector.append(bi_prob)
 #                except:
                     #sys.stderr.write("Failed to retrieve bigram probability for tokens: '%s'\n" % ' '.join(token)) 
 
@@ -125,14 +159,46 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
 #                try:
                     tri_prob = self.server.getTrigramProb(' '.join(token))
                     tri_probs += tri_prob
+                    tri_probs_vector.append(tri_prob)
+                            
 #                except:
                     #sys.stderr.write("Failed to retrieve trigram probability for tokens: '%s'\n" % ' '.join(token))
 #                    pass 
+        unk_rel_pos = (unk_pos * 1.00) / len(tokens)
         
-        attributes = { 'lm_unk' : str(unk_count),
-                       'lm_uni-prob' : str(uni_probs),
+        attributes = { 'lm_unk_pos_abs_avg' : str(average(unk_pos)),
+                       'lm_unk_pos_abs_std' : str(std(unk_pos)),
+                       'lm_unk_pos_abs_min' : str(min(unk_pos)),
+                       'lm_unk_pos_abs_max' : str(max(unk_pos)),
+                       'lm_unk_pos_rel_avg' : str(average(unk_rel_pos)),
+                       'lm_unk_pos_rel_std' : str(std(unk_rel_pos)),
+                       'lm_unk_pos_rel_min' : str(min(unk_rel_pos)),
+                       'lm_unk_pos_rel_max' : str(max(unk_rel_pos)),
+                       'lm_unk' : str(unk_count),
+                       
+                       'lm_uni-prob' : str(uni_probs),                    
+                       'lm_uni-prob_avg' : str(average(uni_probs_vector)),
+                       'lm_uni-prob_std' : str(std(uni_probs_vector)),
+                       'lm_uni-prob_low' : self._standouts(uni_probs_vector, -1),
+                       #'lm_uni-prob_high' : self._standouts(uni_probs_vector, +1),
+                       'lm_uni-prob_low_pos_avg': average(self._standout_pos(uni_probs_vector, -1)),
+                       'lm_uni-prob_low_pos_std': std(self._standout_pos(uni_probs_vector, -1)),
+
                        'lm_bi-prob' : str(bi_probs),
+                       'lm_bi-prob_avg' : str(average(bi_probs_vector)),
+                       'lm_bi-prob_std' : str(std(bi_probs_vector)),
+                       'lm_bi-prob_low' : self._standouts(bi_probs_vector, -1),
+                       #'lm_bi-prob_high' : self._standouts(bi_probs_vector, +1),
+                       'lm_bi-prob_low_pos_avg': average(self._standout_pos(bi_probs_vector, -1)),
+                       'lm_bi-prob_low_pos_std': std(self._standout_pos(bi_probs_vector, -1)),
+                       
                        'lm_tri-prob' : str(tri_probs),
+                       'lm_tri-prob_avg' : str(average(tri_probs_vector)),
+                       'lm_tri-prob_std' : str(std(tri_probs_vector)),
+                       'lm_tri-prob_low' : self._standouts(tri_probs_vector, -1),
+                       #'lm_tri-prob_high' : self._standouts(tri_probs_vector, +1),
+                       'lm_tri-prob_low_pos_avg': average(self._standout_pos(tri_probs_vector, -1)),
+                       'lm_tri-prob_low_pos_std': std(self._standout_pos(tri_probs_vector, -1)),
                        'lm_prob' : str(prob) }
         
         return attributes

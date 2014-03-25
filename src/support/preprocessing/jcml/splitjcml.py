@@ -9,9 +9,9 @@ from io_utils.input.jcmlreader import JcmlReader
 from sys import argv
 import sys
 
-def split_dataset_files(source_file, target_file_1, target_file_2, ratio=0.1):
-    sys.stderr.write("Reading source file %s ...\n"% source_file)
-    source_dataset = JcmlReader(source_file).get_dataset()
+def split_dataset_files(source_xml_file, target_file_1, target_file_2, ratio=0.1):
+    sys.stderr.write("Reading source file %s ...\n"% source_xml_file)
+    source_dataset = JcmlReader(source_xml_file).get_dataset()
     dataset_part1, dataset_part2 = source_dataset.split(ratio)
     sys.stderr.write("Writing first target file %s ...\n"% target_file_1)
     Parallelsentence2Jcml(dataset_part1).write_to_file(target_file_1)
