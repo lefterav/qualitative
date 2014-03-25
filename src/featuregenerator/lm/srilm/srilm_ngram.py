@@ -119,7 +119,6 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
         uni_probs_vector = []
         bi_probs_vector = []
         tri_probs_vector = []
-        quint_probs_vector = []
         
         for token in tokens:
                 pos+=1
@@ -170,8 +169,8 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
         if len(unk_pos) == 0:
             unk_pos = [0]
             unk_rel_pos = [0]        
- 
-        attributes = { 'lm_unk_pos_abs_avg' : str(average(unk_pos)),
+        
+	attributes = { 'lm_unk_pos_abs_avg' : str(average(unk_pos)),
                        'lm_unk_pos_abs_std' : str(std(unk_pos)),
                        'lm_unk_pos_abs_min' : str(min(unk_pos)),
                        'lm_unk_pos_abs_max' : str(max(unk_pos)),
