@@ -87,11 +87,11 @@ class ParserMatches(LanguageFeatureGenerator):
             print "error reading berkeley tree"
             return {}
         for (src_map, tgt_map) in self.mappings:
-            src_map_count, src_match_pos = self._count_nodetags(src_parse, src_map)
+            src_map_count, src_map_pos = self._count_nodetags(src_parse, src_map)
             src_label = self._canonicalize(src_map[0])
             attributes["parse-%s" % src_label] = str(src_map_count)   
-            attributes["parse-%s-pos-avg" % tgt_label] = average(src_map_pos)
-            attributes["parse-%s-pos-std" % tgt_label] = std(srcgit _map_pos) 
+            attributes["parse-%s-pos-avg" % src_label] = str(average(src_map_pos))
+            attributes["parse-%s-pos-std" % src_label] = str(std(src_map_pos))
         return attributes
             
             
@@ -113,8 +113,8 @@ class ParserMatches(LanguageFeatureGenerator):
                 tgt_map_count, tgt_map_pos = self._count_nodetags(tgt_parse, tgt_map)
                 tgt_label = self._canonicalize(src_map[0])
                 attributes["parse-%s" % tgt_label] = str(tgt_map_count)
-                attributes["parse-%s-pos-avg" % tgt_label] = average(tgt_map_pos)
-                attributes["parse-%s-pos-std" % tgt_label] = std(tgt_map_pos)
+                attributes["parse-%s-pos-avg" % tgt_label] = str(average(tgt_map_pos))
+                attributes["parse-%s-pos-std" % tgt_label] = str(std(tgt_map_pos))
 #                if tgt_map_count != 0:
 #                    attributes["parse-%s_ratio" % tgt_label] = str(1.0 * src_map_count / tgt_map_count)
 #                else:
