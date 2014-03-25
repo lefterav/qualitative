@@ -16,24 +16,11 @@ if __name__ == '__main__':
     parser.add_option("-s", "--source", dest="source_filename",
                       help="read one source sentence per line from FILE", metavar="FILE")
     
-<<<<<<< HEAD
-<<<<<<< HEAD
-    parser.add_option("-t", "--translation", dest="target_filename",
-                      help="read one translation output sentence per line from FILE", metavar="FILE")
-    
-    parser.add_option("-m", "--sys sbsbtem", dest="system_name",
-                      help="system name")
-=======
-    parser.add_option("-t", "--translation", nargs=4,  dest="target_filenames", type="str",
-                      help="read one translation output sentence per line from FILE s", metavar="FILE")
->>>>>>> 908ddf29f668d20056dda86c58b2df2b112c3a17
-=======
     parser.add_option("-t", "--translation", dest="target_filename",
                       help="read one translation output sentence per line from FILE", metavar="FILE")
     
     parser.add_option("-m", "--system", dest="system_name",
                       help="system name")
->>>>>>> a7215bd3893b88902636e6c05e0f3c4faa7e30fc
     
   
     parser.add_option("-r", "--reference", dest="reference_filename",
@@ -45,16 +32,7 @@ if __name__ == '__main__':
     parser.add_option("-a", "--feature-names", action="append", dest="feature_names", type="str",
                       help="a list of feature names", default=[])
     
-<<<<<<< HEAD
-<<<<<<< HEAD
-        
     parser.add_option("-q", "--feature-files", action="append", dest="feature_files", type="str", default=[],
-=======
-    parser.add_option("-q", "--feature-files", nargs=4,  dest="feature_files", type="str", default=[],
->>>>>>> 908ddf29f668d20056dda86c58b2df2b112c3a17
-=======
-    parser.add_option("-q", "--feature-files", action="append", dest="feature_files", type="str", default=[],
->>>>>>> a7215bd3893b88902636e6c05e0f3c4faa7e30fc
                       help="a list of feature FILEs in respective order")
 
     parser.add_option("-b", "--target-features-tab", dest="target_features_tab", type="str", 
