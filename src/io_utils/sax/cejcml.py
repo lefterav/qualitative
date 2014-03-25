@@ -22,12 +22,12 @@ class CEJcmlReader():
     This class converts jcml format to tab format (orange format).
     The output file is saved to the same folder where input file is.
     """
-    def __init__(self, input_filename, **kwargs):
+    def __init__(self, input_xml_filename, **kwargs):
         """
         Init calls class SaxJcmlOrangeHeader for creating header and 
         SaxJcmlOrangeContent for creating content.
-        @param input_filename: name of input jcml file
-        @type input_filename: string
+        @param input_xml_filename: name of input jcml file
+        @type input_xml_filename: string
         @param class_name: name of class
         @type class_name: string
         @param desired_attributes: desired attributes
@@ -44,13 +44,13 @@ class CEJcmlReader():
 
         self.desired_general = kwargs.setdefault('desired_general', ["rank","langsrc","langtgt","id","judgement_id"])
         self.desired_target = kwargs.setdefault('desired_target', ["system","rank"])
-        self.input_filename = input_filename
+        self.input_filename = input_xml_filename
     
     def get_dataset(self):
         parallelsentences = []
-        source_file = open(self.input_filename, "r")
+        source_xml_file = open(self.input_filename, "r")
         # get an iterable
-        context = iterparse(source_file, events=("start", "end"))
+        context = iterparse(source_xml_file, events=("start", "end"))
         # turn it into an iterator
         context = iter(context)
         # get the root element
@@ -97,8 +97,8 @@ class CEJcmlReader():
 class CEJcmlStats:
     """calculates statistics about specified attributes on an annotated JCML corpus. Low memory load"""
     
-    def __init__(self, input_filename, **kwargs):
-        self.input_filename = input_filename
+    def __init__(self, input_xml_filename, **kwargs):
+        self.input_filename = input_xml_filename
         self.desired_general = kwargs.setdefault("desired_general", [])
         self.desired_source = kwargs.setdefault("desired_source", [])
         self.desired_target = kwargs.setdefault("desired_target", [])
@@ -117,9 +117,9 @@ class CEJcmlStats:
         Extract a list of values for each attribute
         """
         
-        source_file = open(self.input_filename, "r")
+        source_xml_file = open(self.input_filename, "r")
         # get an iterable
-        context = iterparse(source_file, events=("start", "end"))
+        context = iterparse(source_xml_file, events=("start", "end"))
         # turn it into an iterator
         context = iter(context)
         # get the root element
