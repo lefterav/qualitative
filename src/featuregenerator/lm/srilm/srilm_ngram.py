@@ -119,7 +119,6 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
         uni_probs_vector = []
         bi_probs_vector = []
         tri_probs_vector = []
-        quint_probs_vector = []
         
         for token in tokens:
                 pos+=1
@@ -165,6 +164,7 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
                     #sys.stderr.write("Failed to retrieve trigram probability for tokens: '%s'\n" % ' '.join(token))
 #                    pass 
         unk_rel_pos = (unk_pos * 1.00) / len(tokens)
+        unk_len = sum([len(token) for token in unk_tokens])
         
         attributes = { 'lm_unk_pos_abs_avg' : str(average(unk_pos)),
                        'lm_unk_pos_abs_std' : str(std(unk_pos)),
@@ -175,6 +175,7 @@ class SRILMngramGenerator(LanguageFeatureGenerator):
                        'lm_unk_pos_rel_min' : str(min(unk_rel_pos)),
                        'lm_unk_pos_rel_max' : str(max(unk_rel_pos)),
                        'lm_unk' : str(unk_count),
+                       'lm_unk_len' : unk_len,
                        
                        'lm_uni-prob' : str(uni_probs),                    
                        'lm_uni-prob_avg' : str(average(uni_probs_vector)),
