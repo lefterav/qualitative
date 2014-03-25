@@ -2,8 +2,8 @@ from xml.etree import cElementTree
 import sys
 import codecs
 
-input_filename = sys.argv[1]
-input_filename_fixed = input_filename.replace('.sgm', '.fixed.sgm') 
+input_xml_filename = sys.argv[1]
+input_filename_fixed = input_xml_filename.replace('.sgm', '.fixed.sgm') 
 
 try:
     limit = int(sys.argv[2])
@@ -17,12 +17,12 @@ except:
 
 
 
-output_filename = input_filename.replace('.sgm', '.src')
-ids_filename = input_filename.replace('.sgm', '.ids')
+output_filename = input_xml_filename.replace('.sgm', '.src')
+ids_filename = input_xml_filename.replace('.sgm', '.ids')
 
 
 #fix illegal chars
-input_file = open(input_filename, 'r')
+input_file = open(input_xml_filename, 'r')
 input_fixed_file = open(input_filename_fixed, 'w')
 
 for line in input_file:

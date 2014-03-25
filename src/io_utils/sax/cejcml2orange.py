@@ -15,12 +15,12 @@ class CElementTreeJcml2Orange():
     This class converts jcml format to tab format (orange format).
     The output file is saved to the same folder where input file is.
     """
-    def __init__(self, input_filename, class_name, desired_attributes, meta_attributes, output_file, **kwargs):
+    def __init__(self, input_xml_filename, class_name, desired_attributes, meta_attributes, output_file, **kwargs):
         """
         Init calls class SaxJcmlOrangeHeader for creating header and 
         SaxJcmlOrangeContent for creating content.
-        @param input_filename: name of input jcml file
-        @type input_filename: string
+        @param input_xml_filename: name of input jcml file
+        @type input_xml_filename: string
         @param class_name: name of class
         @type class_name: string
         @param desired_attributes: desired attributes
@@ -46,14 +46,14 @@ class CElementTreeJcml2Orange():
         self.remove_infinite = kwargs.setdefault('remove_infinite', False)
         self.nullimputation = kwargs.setdefault('nullimputation', False)
         sys.stderr.write("Imputation {}\n".format(self.nullimputation)) 
-        self.input_filename = input_filename
+        self.input_filename = input_xml_filename
         self.class_name = class_name
         self.desired_attributes = set(desired_attributes)
         self.meta_attributes = set(meta_attributes)
         
         self.orange_filename = output_file
         self.temporary_filename = tempfile.mktemp(dir=self.dir, suffix='.tab')
-        #self.dataset = XmlReader(self.input_filename).get_dataset()
+        #self.dataset = XmlReader(self.input_xml_filename).get_dataset()
     
     def convert(self):
         self.object_file = codecs.open(self.temporary_filename, encoding='utf-8', mode = 'w')
@@ -81,11 +81,11 @@ class CElementTreeJcml2Orange():
     def _get_attribute_names(self):
         '''
         Parse once the given XML file and return a set with the attribute names
-        @param input_filename: The XML file to be parsed
+        @param input_xml_filename: The XML file to be parsed
         '''
-        source_file = open(self.input_filename, "r")
+        source_xml_file = open(self.input_filename, "r")
         # get an iterable
-        context = iterparse(source_file, events=("start", "end"))
+        context = iterparse(source_xml_file, events=("start", "end"))
         # turn it into an iterator
         context = iter(context)
         # get the root element
@@ -111,7 +111,7 @@ class CElementTreeJcml2Orange():
                 if target_id > number_of_targets:
                     number_of_targets = target_id
             root.clear()
-        source_file.close()
+        source_xml_file.close()
         return set(attribute_names), number_of_targets
     
     
@@ -196,9 +196,9 @@ class CElementTreeJcml2Orange():
 
     def get_orange_content(self):
         
-        source_file = open(self.input_filename, "r")
+        source_xml_file = open(self.input_filename, "r")
         # get an iterable
-        context = iterparse(source_file, events=("start", "end"))
+        context = iterparse(source_xml_file, events=("start", "end"))
         # turn it into an iterator
         context = iter(context)
         # get the root element

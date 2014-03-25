@@ -29,7 +29,7 @@ from sklearn.ensemble.forest import ExtraTreesClassifier
 from sklearn.grid_search import GridSearchCV
 from sklearn.linear_model.coordinate_descent import LassoCV
 from sklearn.linear_model.least_angle import LassoLarsCV, LassoLars
-from sklearn.linear_model.randomized_l1 import RandomizedLasso
+from sklearn.linear_model. randomized_l1 import RandomizedLasso
 from sklearn.metrics.metrics import mean_squared_error, f1_score, \
     precision_score, recall_score
 from sklearn.svm.classes import SVR, SVC

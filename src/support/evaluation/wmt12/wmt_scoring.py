@@ -104,10 +104,10 @@ if __name__ == '__main__':
     clean_str = " ".join(["{0}:{1}".format(k,v) for k,v in ret.iteritems()])
     if sys.argv[5] == "--fix-output":
         current_path = os.path.dirname(classified_jcml)
-        input_filename = os.path.join(current_path, '0.log')
+        input_xml_filename = os.path.join(current_path, '0.log')
         output_filename = os.path.join(current_path, '1.log')
         
-        input_file = open(input_filename, 'r')
+        input_file = open(input_xml_filename, 'r')
         log = input_file.readlines()
         input_file.close()
         log[8] =  "%s\n" % clean_str #repair results line
