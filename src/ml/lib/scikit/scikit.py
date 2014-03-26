@@ -4,7 +4,7 @@ Created on 25 Mar 2014
 @author: Eleftherios Avramidis
 '''
 import numpy as np
-from ml.learner import Regressor 
+from ml.learner import Regressor
 from learn_model import set_learning_method, set_selection_method, scale_datasets_crossvalidation
 from sklearn import cross_validation
 import logging as log
@@ -111,9 +111,8 @@ class SkRegressor(Regressor):
         scores = cross_validation.cross_val_score(self.estimator, self.X_train, self.y_train, cv=cv, scoring=self.scorers)
         return scores
         
-        
-        
-        
+
+    
         
         
     
