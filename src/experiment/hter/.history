@@ -1,5 +1,0 @@
-2014-03-24.02-29-03 mkdir config
-2014-03-24.02-29-51 cp ../autoranking/config/pipeline.cfg config/
-2014-03-24.02-30-00 cp ../autoranking/config/pipeline.wmt13metric.blade6.de.de-en.cfg config/
-2014-03-24.02-32-48 ln -s ../autoranking/bootstrap.py .
-2014-03-24.02-35-21 less config/pipeline.wmt13metric.blade6.de.de-en.cfg 

@@ -9,6 +9,7 @@ import sys
 import tempfile
 import shutil
 import numpy
+import logging as log
 
 from collections import defaultdict
 from xml.etree.cElementTree import iterparse
@@ -43,8 +44,8 @@ class CEJcmlReader():
         self.TAG_DOC = 'jcml'
 
         self.desired_general = kwargs.setdefault('desired_general', ["rank","langsrc","langtgt","id","judgement_id"])
+        self.desired_source = kwargs.setdefault("desired_source", [])
         self.desired_target = kwargs.setdefault('desired_target', ["system","rank"])
-        
         self.all_general = kwargs.setdefault('all_general', False)
         self.all_target = kwargs.setdefault('all_target', False)        
         self.input_filename = input_xml_filename
@@ -69,8 +70,8 @@ class CEJcmlReader():
         for event, elem in context:
             #new sentence: get attributes
             if event == "start" and elem.tag == self.TAG_SENT:
-                attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_general])
-                targets = []
+                if not self.all_general:
+                    attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if (key in self.desired_general or self.all_general)])
             #new source sentence
 #            elif event == "start" and elem.tag == self.TAG_SRC:
 #                source_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in desired_source])
@@ -78,9 +79,9 @@ class CEJcmlReader():
             #new target sentence
             elif event == "start" and elem.tag == self.TAG_TGT:
                 target_id += 1
-                target_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_target])
+                target_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if (key in self.desired_target or self.all_target)])
                 targets.append(SimpleSentence("", target_attributes))
-            
+
 #            elif event == "end" and elem.tag == self.TAG_SRC:
 #                src_text = elem.text
             
@@ -91,6 +92,7 @@ class CEJcmlReader():
                 source = SimpleSentence("",{})
                 parallelsentence = ParallelSentence(source,targets,None,attributes)
                 parallelsentences.append(parallelsentence)
+
             root.clear()
         
         
@@ -108,35 +110,35 @@ class CEJcmlReader():
         
         attributes = []
         target_id = 0
-        try:
-            for event, elem in context:
-                #new sentence: get attributes
-                if event == "start" and elem.tag == self.TAG_SENT:
-                    attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_general or self.all_general])
-                    targets = []
-                #new source sentence
-                elif event == "start" and elem.tag == self.TAG_SRC:
-                    source_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_source or self.all_target])
-                
-                #new target sentence
-                elif event == "start" and elem.tag == self.TAG_TGT:
-                    target_id += 1
-                    target_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_target or self.all_target])
-                    targets.append(SimpleSentence("", target_attributes))
+
+        for event, elem in context:
+            #new sentence: get attributes
+            if event == "start" and elem.tag == self.TAG_SENT:
+                attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_general or self.all_general])
+                targets = []
+            #new source sentence
+            elif event == "start" and elem.tag == self.TAG_SRC:
+                source_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_source or self.all_target])
+            
+            #new target sentence
+            elif event == "start" and elem.tag == self.TAG_TGT:
+                target_id += 1
+                target_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_target or self.all_target])
+                targets.append(SimpleSentence("", target_attributes))
 
 #                 elif not compact and event == "end" and elem.tag == self.TAG_SRC:
 #                     src_text = elem.text
 #                 
 #                 elif not compact and event == "end" and elem.tag == self.TAG_TGT:
 #                     tgt_text.append(elem.text)
-                
-                elif event == "end" and elem.tag in self.TAG_SENT:
-                    source = SimpleSentence("",source_attributes)
-                    parallelsentence = ParallelSentence(source,targets,None,attributes)
-                    yield parallelsentence
-                root.clear()      
-        except:
-            sys.exit(self.input_filename)    
+            
+            elif event == "end" and elem.tag in self.TAG_SENT:
+                source = SimpleSentence("",source_attributes)
+                parallelsentence = ParallelSentence(source,targets,None,attributes)
+                log.debug("cejml.py: Just process sentence {}".format(parallelsentence.get_attribute("judgement_id")))
+                yield parallelsentence
+            root.clear()      
+        
               
         
 
