@@ -13,7 +13,7 @@ cfg_path = "/home/elav01/workspace/qualitative/src/experiment/hter/config/svr.cf
 class_name = "score"
 desired_parallel_attributes = []
 desired_source_attributes = []
-desired_target_attributes = []
+desired_target_attributes = ["lm_unk", "lm_prob"]
 meta_attributes = []
 
 if __name__ == '__main__':
@@ -42,4 +42,4 @@ if __name__ == '__main__':
     print regressor.cross_validate_start()
     
     
-    
+
