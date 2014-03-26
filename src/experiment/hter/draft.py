@@ -19,7 +19,6 @@ desired_target_attributes = ["q_1022_1","q_1012_1","q_1015_1","q_1001_1","q_1002
 #["qb_1022","qb_1012","qb_1015","qb_1001","qb_1002","qb_1006","qb_1036","qb_1009","qb_1057","qb_1054","qb_1053","qb_1050","qb_1049","qb_1075","qb_1074","qb_1046"]
 
 
-meta_attributes = []
 
 if __name__ == '__main__':
     
@@ -48,6 +47,4 @@ if __name__ == '__main__':
     log.info("Performing cross validation")
     scores = regressor.cross_validate_start(cv=5)
     print scores
-    
-    
     
