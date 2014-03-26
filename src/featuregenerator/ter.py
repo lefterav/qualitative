@@ -47,8 +47,11 @@ class TerWrapper(FeatureGenerator):
         return atts
     
     def get_features_tgt(self, simplesentence, parallelsentence):
-        return self.process_item(simplesentence.get_string(), parallelsentence.get_reference().get_string())
-    
+        try:
+            return self.process_item(simplesentence.get_string(), parallelsentence.get_reference().get_string())
+        except AttributeError:
+            sys.stderr.write("Warning: no reference sentences found")
+            return {}
         
 if __name__ == '__main__':
     terpath = "/home/elav01/workspace/qualitative/lib/terSimple.jar"

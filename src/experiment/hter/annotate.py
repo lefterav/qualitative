@@ -1,7 +1,7 @@
-ls *ter*'''
+'''
 Created on 17 Jan 2012
-Modified 22 Mar 2012 for autoranking experiment
-@author: lefterav
+Modified 22 Mar 2014 for autoranking experiment
+@author: Eleftherios Avramidis
 '''
 
 import shutil
@@ -27,6 +27,7 @@ from featuregenerator.ibm1featuregenerator import Ibm1FeatureGenerator
 from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenerator
 from featuregenerator.bleu.bleugenerator import CrossBleuGenerator, BleuGenerator
 from featuregenerator.meteor.meteor import CrossMeteorGenerator, MeteorGenerator
+from featuregenerator.ter import TerWrapper
 from featuregenerator.attribute_rank import AttributeRankGenerator
 from io_utils.input.xmlreader import XmlReader
 from featuregenerator.languagechecker.languagetool_socket import LanguageToolSocketFeatureGenerator
@@ -359,7 +360,7 @@ if cfg.getboolean("annotation", "reference_features"):
 @active_if(cfg.has_section("ter"))
 @transform(data_fetch, suffix(".orig.jcml"), ".ter.%s.f.jcml" % target_language, cfg.get("ter", "path"))
 def reference_ter(input_file, output_file, path):
-    saxjcml.run_features_generator(input_file, output_file, [TerWrapper(target_language, path)])
+    saxjcml.run_features_generator(input_file, output_file, [TerWrapper(path)])
 
 if cfg.has_section("ter"):    
     parallel_feature_functions.append(reference_ter)
