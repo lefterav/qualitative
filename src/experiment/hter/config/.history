@@ -1,3 +1,11 @@
 2014-03-24.02-30-27 less pipeline.wmt13metric.blade6.de.de-en.cfg 
 2014-03-24.02-36-19 mv pipeline.wmt13metric.blade6.de.de-en.cfg pipeline.hter.basic.cfg
 2014-03-24.02-40-42 vim pipeline.hter.basic.cfg 
+2014-03-25.17-42-16 ls `pwd`/svr.cfg
+2014-03-25.18-12-37 ls `pwd`/svr.cfg
+2014-03-25.18-12-43 ssh -lelav01 percival.sb.dfki.de
+2014-03-25.18-20-35 ssh -l elav01 ssh-gate.sb.dfki.de
+2014-03-26.00-44-31 ssh -lelav01 percival.sb.dfki.de
+2014-03-26.15-29-56 ssh -l lns-87247
+2014-03-26.15-29-58 ssh  lns-87247
+2014-03-26.16-27-06 ssh -l elav01 ssh-gate.sb.dfki.de
