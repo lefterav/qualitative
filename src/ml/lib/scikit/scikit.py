@@ -120,16 +120,44 @@ class SkRegressor(Regressor):
         self.estimator, self.scorers = set_learning_method(self.config, self.X_train, self.y_train)
     
     
-    def cross_validate_start(self, cv=10):
+    def cross_validate_start(self, cv=10, scorer=None):
+        if not scorer:
+            scorer = make_scorer(self.scorers[0][1]) 
         log.info("Running cross validator with %s" % str(self.estimator))
-        scores = cross_validation.cross_val_score(self.estimator, self.X_train, self.y_train, cv=cv, n_jobs=10, scoring=make_scorer(self.scorers[0][1]))
+        scores = cross_validation.cross_val_score(self.estimator, self.X_train, self.y_train, cv=cv, n_jobs=10, scoring=scorer)
         return scores.mean(), scores.std()
-        
 
+
+from sklearn.cross_validation import is_classifier, check_cv
+                
+
+class TerRegressor(SkRegressor):
+    def __init__(self, config, skregressors):
+        self.config = config
+        self.estimator = TerSVR([skregressor.estimator for skregressor in skregressors])
     
+
+
+from sklearn.svm import SVR
+
+class TerSVR(SVR):
+    def __init__(self, estimators):
+        self.estimators = estimators
         
-        
+    def fit(self, Xs, ys):
+        for estimator, X, y in zip(self.estimators, Xs[:-1], ys[:-1]):
+            estimator.fit(X,y)
+        return self 
     
+    def predict(self, Xs):
+        estimate = []
+        for estimator, X in zip(self.estimators, Xs[:-1]):
+            estimate.append(estimator.predict(X))
+        ter = sum(estimate[:-1])*1.00 / Xs[-1][0]
+        return ter
         
+        
+            
+            
         
     
