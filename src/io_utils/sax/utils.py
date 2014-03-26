@@ -7,6 +7,6 @@ def join_jcml(filenames, output_filename):
         reader = CEJcmlReader(filename, all_general=True, all_target=True)
         for parallelsentence in reader.get_parallelsentences():
             writer.add_parallelsentence(parallelsentence)
-        print "_"     
+
     writer.close()
 
