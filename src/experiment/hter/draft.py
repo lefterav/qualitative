@@ -4,12 +4,14 @@ Created on 25 Mar 2014
 '''
 import sys
 import yaml
-from io_utils.sax.utils import join_jcml, CEJcmlReader
+from io_utils.sax.utils import join_filter_jcml, CEJcmlReader, join_jcml
 from io_utils.input.jcmlreader import JcmlReader
 from ml.lib.scikit.scikit import SkRegressor, TerRegressor, dataset_to_instances, FixedFolds
 import logging as log
 import numpy as np
 from numpy import array
+from expsuite import PyExperimentSuite
+
 
 #todo: this should be read from config file (or expsuite)
 cfg_path = "/home/elav01/workspace/qualitative/src/experiment/hter/config/svr.cfg"
@@ -91,6 +93,27 @@ desired_target_attributes = ["l_tokens","berkeley-n","berkley-loglikelihood","l_
 #["qb_1022","qb_1012","qb_1015","qb_1001","qb_1002","qb_1006","qb_1036","qb_1009","qb_1057","qb_1054","qb_1053","qb_1050","qb_1049","qb_1075","qb_1074","qb_1046"]
 
 
+def filter_sentence_ter(parallelsentence, **kwargs):
+    """
+    Calback which returns true, if given parallelsentence has less than 
+    specific number of specific TER edits
+    @keyword ter_deletions: maximum number of allowed deletions
+    @keyword ter_insertions: maximum number of allowed insertions
+    @keyword ter_substitutions: maximum number of allowed substitutions
+    @keyword ter_shifts: maximum number of allowed shifts
+    @keyword ter_edits: maximum number of allowed edits
+    @return: True if all specified filters hold
+    @rtype: boolean
+    """
+    atts = parallelsentence.get_translations()[0].get_attributes()
+    return (atts["ter_deletions"] <= float(kwargs.setdefault("deletions", "Inf"))
+            and atts["ter_insertions"] <= float(kwargs.setdefault("insertions", "Inf"))
+            and atts["ter_substitutions"] <= float(kwargs.setdefault("substitutions", "Inf"))
+            and atts["ter_shifts"] <= float(kwargs.setdefault("shifts", "Inf"))
+            and atts["ter_edits"] <= float(kwargs.setdefault("shifts", "Inf"))
+           )
+    
+    
 
 def train_regressor(config, dataset, class_name, desired_parallel_attributes, desired_source_attributes, desired_target_attributes):
     regressor = SkRegressor(config)
@@ -111,7 +134,6 @@ def train_ter_separately(config, dataset, class_name, desired_parallel_attribute
 
 
     
-    
 
     
 #    scores = parallel(
@@ -119,44 +141,79 @@ def train_ter_separately(config, dataset, class_name, desired_parallel_attribute
 #                                         X, y, scorer, train, test, verbose, fit_params)
 #    for train, test in cv)    
     
-                    
 
 
-if __name__ == '__main__':
-    #logging
-    log.basicConfig(level=log.INFO)
-    
-    #load and join filenames
-    log.info("Creating joined file")
-    input_filenames = sys.argv[1:]
-    print "Input filenames:", input_filenames
-    input_xml_filename = "train.jcml"
-    join_jcml(input_filenames, input_xml_filename)
-#    dataset = JcmlReader(input_xml_filename)
-    dataset = CEJcmlReader(input_xml_filename, all_general=True, all_target=True)
-    
-    # open the config file for scikit
-    config = None
-    with open(cfg_path, "r") as cfg_file:
-        config = yaml.load(cfg_file.read())
+class HTERSuite(PyExperimentSuite):
+    def reset(self, params, rep):
+        self.learner_configfile = params["learner_configfile"]
+        self.source_attributes = params["{}_source".format(params["att"])].split(",")
+        self.target_attributes = params["{}_target".format(params["att"])].split(",")
+        self.general_attributes = params["{}_general".format(params["att"])].split(",")
+        self.class_name = params["class_name"]
+        self.training_sets = params["training_sets"].format(**params).split(',')
+        self.training_sets_tofilter = params["training_sets_tofilter"].format(**params).split(',')
+        self.filters = dict([(key, value) for key, value in params.iteritems() if key.startswith("filter_")])
+        
+        #self.existing_folds = eval(params["test_folds"])
+        self.existing_folds = TEST_FOLDS
+        #self.n_folds = eval(params["n_folds"])
+        self.n_folds = N_FOLDS
     
     
-    #initialize the generic regressor
-    regressor = SkRegressor(config)
-    log.info("Loading data")
-    regressor.load_training_dataset(dataset, class_name, desired_parallel_attributes, desired_source_attributes, desired_target_attributes)
-    regressor.set_learning_method()
-    log.info("Performing cross validation")
-    scores1 = regressor.cross_validate_start(cv=N_FOLDS, fixed_folds=TEST_FOLDS)
+    def iterate(self, params, rep, n):
+        
+        ret = {}
+        #logging
+        log.basicConfig(level=log.INFO)
+        
+        additional_training_filename = "training.additional.filtered.jcml"
+        
+        log.info("Filtering addiitional files")                
+        ret["used_sentences"], ret["total_sentences"] = join_filter_jcml(self.training_sets_tofilter, self.additional_training_filename, filter_sentence_ter, **self.filters)
     
-    ter_regressor = train_ter_separately(config, dataset, class_name, desired_parallel_attributes, desired_source_attributes, desired_target_attributes)
-    scores2 = ter_regressor.cross_validate_start(cv=N_FOLDS, fixed_folds=TEST_FOLDS)
+        #load and join filenames
+        log.info("Creating joined file")        
+        self.training_sets.add(additional_training_filename)
+        log.info("Input filenames: {}".format(self.training_sets))
+        basic_xml_filename = "train.jcml"
+        join_jcml(self.training_sets, basic_xml_filename)
+            
+        dataset = CEJcmlReader(basic_xml_filename, all_general=True, all_target=True)
     
-    print "one classifier\t{:.3f}\t{:.3f}\t[{}]".format(np.average(scores1), np.std(scores1), ",".join(["{:.3f}".format(s) for s in scores1]))
-    print "separate classifiers\t{:.3f}\t{:.3f}\t[{}]".format(np.average(scores2), np.std(scores2), ",".join(["{:.3f}".format(s) for s in scores2]))
-
+        # open the config file for scikit
+        config = None
+        with open(self.learner_configfile, "r") as cfg_file:
+            config = yaml.load(cfg_file.read())
+        
+        
+        #initialize the generic regressor
+        regressor = SkRegressor(config)
+        log.info("Loading data")
+        regressor.load_training_dataset(dataset, class_name, 
+                                        self.general_attributes, 
+                                        self.source_attributes, 
+                                        self.target_attributes)
+        regressor.set_learning_method()
+        log.info("Single regressor: Performing cross validation")
+        scores1 = regressor.cross_validate_start(cv=self.n_folds, fixed_folds=self.existing_folds)
+        ret["EVAL_1reg_mae_avg"] = "{:.3f}".format(np.average(scores1))
+        ret["EVAL_1reg_mae_std"] = "{:.3f}".format(np.std(scores1))
+        ret.update(dict([("EVAL_1reg_mae_fold_{}".format(i-2), "{:.3f}".format(value)) for i, value in enumerate(scores1[2:])])) 
+        print "one classifier\t{:.3f}\t{:.3f}\t[{}]".format(np.average(scores1), np.std(scores1), ",".join(["{:.3f}".format(s) for s in scores1]))
+        
+        log.info("Combined regressors: Training")        
+        ter_regressor = train_ter_separately(config, dataset, class_name, 
+                                        self.general_attributes, 
+                                        self.source_attributes, 
+                                        self.target_attributes)
+        log.info("Combined regressors: Performing cross validation")        
+        scores2 = ter_regressor.cross_validate_start(cv=self.n_folds, fixed_folds=self.existing_folds)
+        ret["EVAL_combireg_mae_avg"] = "{:.3f}".format(np.average(scores2))
+        ret["EVAL_combireg_mae_std"] = "{:.3f}".format(np.std(scores2))
+        ret.update(dict([("EVAL_combireg_mae_fold_{}".format(i-2), "{:.3f}".format(value)) for i, value in enumerate(scores2[2:])])) 
+        print "separate classifiers\t{:.3f}\t{:.3f}\t[{}]".format(np.average(scores2), np.std(scores2), ",".join(["{:.3f}".format(s) for s in scores2]))
     
-
+        return ret
 
 
 

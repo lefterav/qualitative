@@ -30,7 +30,7 @@ def join_filter_jcml(filenames, output_filename, callback, **kwargs):
     count = 0
     everything = 0
     for filename in filenames:
-        reader = CEJcmlReader(input_filename, all_general=True, all_target=True)
+        reader = CEJcmlReader(filename, all_general=True, all_target=True)
         for parallelsentence in reader.get_parallelsentences():
             everything+=1
             if callback(parallelsentence, **kwargs):
@@ -38,3 +38,4 @@ def join_filter_jcml(filenames, output_filename, callback, **kwargs):
                 count+=1
     log.info("Left {} out of {}".format(count, everything))
     writer.close()
+    return count, everything
