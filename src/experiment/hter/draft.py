@@ -6,7 +6,7 @@ import sys
 import yaml
 from io_utils.sax.utils import join_filter_jcml, CEJcmlReader, join_jcml
 from io_utils.input.jcmlreader import JcmlReader
-from ml.lib.scikit.scikit import SkRegressor, TerRegressor, dataset_to_instances, FixedFolds
+from ml.lib.scikit.scikit import SkRegressor, TerRegressor, dataset_to_instances
 import logging as log
 import numpy as np
 from numpy import array
@@ -153,6 +153,8 @@ class HTERSuite(PyExperimentSuite):
         self.training_sets = params["training_sets"].format(**params).split(',')
         self.training_sets_tofilter = params["training_sets_tofilter"].format(**params).split(',')
         self.filters = dict([(key, value) for key, value in params.iteritems() if key.startswith("filter_")])
+        self.roundup = params["roundup"]
+        self.mode = params["mode"]
         
         #self.existing_folds = eval(params["test_folds"])
         self.existing_folds = TEST_FOLDS
@@ -187,37 +189,41 @@ class HTERSuite(PyExperimentSuite):
         
         
         #initialize the generic regressor
-        regressor = SkRegressor(config)
-        log.info("Loading data")
-        regressor.load_training_dataset(dataset, class_name, 
-                                        self.general_attributes, 
-                                        self.source_attributes, 
-                                        self.target_attributes)
-        regressor.set_learning_method()
-        log.info("Single regressor: Performing cross validation")
-        scores1 = regressor.cross_validate_start(cv=self.n_folds, fixed_folds=self.existing_folds)
-        ret["EVAL_1reg_mae_avg"] = "{:.3f}".format(np.average(scores1))
-        ret["EVAL_1reg_mae_std"] = "{:.3f}".format(np.std(scores1))
-        ret.update(dict([("EVAL_1reg_mae_fold_{}".format(i-2), "{:.3f}".format(value)) for i, value in enumerate(scores1[2:])])) 
-        print "one classifier\t{:.3f}\t{:.3f}\t[{}]".format(np.average(scores1), np.std(scores1), ",".join(["{:.3f}".format(s) for s in scores1]))
+        if self.mode=="single":
+            regressor = SkRegressor(config)
+            log.info("Loading data")
+            regressor.load_training_dataset(dataset, class_name, 
+                                            self.general_attributes, 
+                                            self.source_attributes, 
+                                            self.target_attributes)
+            regressor.set_learning_method()
+            log.info("Single regressor: Performing cross validation")
+            scores = regressor.cross_validate_start(cv=self.n_folds, fixed_folds=self.existing_folds)
+        else: 
+            log.info("Combined regressors: Training")        
+            ter_regressor = train_ter_separately(config, dataset, class_name, 
+                                                self.general_attributes, 
+                                                self.source_attributes, 
+                                                self.target_attributes)
+            log.info("Combined regressors: Performing cross validation")        
+            scores = ter_regressor.cross_validate_start(cv=self.n_folds, 
+                                                        fixed_folds=self.existing_folds,
+                                                        roundup = self.roundup)
+            
+        ret["mae_avg"] = "{:.3f}".format(np.average(scores))
+        ret["mae_std"] = "{:.3f}".format(np.std(scores))
+        ret.update(dict([("mae_fold_{}".format(i-2), "{:.3f}".format(value)) for i, value in enumerate(scores[2:])])) 
+        log.info("[{}]\t{:.3f}\t{:.3f}\t[{}]".format(self.mode, 
+                                                     np.average(scores), 
+                                                     np.std(scores),
+                                                     ",".join(["{:.3f}".format(s) for s in scores]))
+                                                     )
         
-        log.info("Combined regressors: Training")        
-        ter_regressor = train_ter_separately(config, dataset, class_name, 
-                                        self.general_attributes, 
-                                        self.source_attributes, 
-                                        self.target_attributes)
-        log.info("Combined regressors: Performing cross validation")        
-        scores2 = ter_regressor.cross_validate_start(cv=self.n_folds, fixed_folds=self.existing_folds)
-        ret["EVAL_combireg_mae_avg"] = "{:.3f}".format(np.average(scores2))
-        ret["EVAL_combireg_mae_std"] = "{:.3f}".format(np.std(scores2))
-        ret.update(dict([("EVAL_combireg_mae_fold_{}".format(i-2), "{:.3f}".format(value)) for i, value in enumerate(scores2[2:])])) 
-        print "separate classifiers\t{:.3f}\t{:.3f}\t[{}]".format(np.average(scores2), np.std(scores2), ",".join(["{:.3f}".format(s) for s in scores2]))
     
         return ret
 
 
-
-from sklearn.cross_validation import check_cv, check_arrays, check_random_state, is_classifier
-from sklearn.metrics import make_scorer
-
+if __name__ == '__main__':
+    mysuite = HTERSuite();
+    mysuite.start()
     
