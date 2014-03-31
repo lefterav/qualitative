@@ -10,6 +10,10 @@ from sklearn import cross_validation
 from sklearn.metrics import make_scorer
 import logging as log
 
+from sklearn.externals.joblib import Parallel, delayed
+from sklearn.base import is_classifier, clone
+import numbers 
+from sklearn.cross_validation import is_classifier, check_cv, _PartitionIterator, KFold
 
 def dataset_to_instances(dataset, 
                          class_name,
@@ -25,7 +29,7 @@ def dataset_to_instances(dataset,
     f=open("data.tab", 'w')
 
     for parallelsentence in dataset.get_parallelsentences():
-        log.info("Parallelsentence {}".format(parallelsentence.get_attribute("id")))
+        log.debug("Parallelsentence {}".format(parallelsentence.get_attribute("id")))
         #get the class value
         if class_name:
             if class_level=="target":
@@ -35,6 +39,19 @@ def dataset_to_instances(dataset,
             
         #get all features in a row and then in a table
         att_row = []
+        for att_name in desired_target_attributes:
+            for translation in parallelsentence.get_translations():
+                try:
+                    att_value = translation.get_attribute(att_name)
+                    att_value = att_value.replace("inf", "99999999")
+                    att_value = att_value.replace("nan", "0")                                
+                    att_row.append(float(att_value))
+                    f.write(str(att_value))
+                    f.write("\t")
+                except AttributeError:
+                    #log.warning("attribute {} could not be found, skipping sentence with id={}".format(att_name, parallelsentence.get_attribute("id")))
+                    att_row.append(0)
+                    #continue
         for att_name in desired_parallel_attributes:
             att_value = parallelsentence.get_attribute(att_name)
             att_row.append(float(att_value))
@@ -43,16 +60,6 @@ def dataset_to_instances(dataset,
             att_value = parallelsentence.get_source().get_attribute(att_name)
             att_row.append(float(att_value))
         
-        for att_name in desired_target_attributes:
-            for translation in parallelsentence.get_translations():
-                try:
-                    att_value = translation.get_attribute(att_name)
-                    att_row.append(float(att_value))
-                    f.write(str(att_value))
-                    f.write("\t")
-                except AttributeError:
-                    log.warning("attribute {} could not be found, skipping sentence with id={}".format(att_name, parallelsentence.get_attribute("id")))
-                    continue
         f.write("\n")
         att_table.append(att_row)
 
@@ -120,23 +127,115 @@ class SkRegressor(Regressor):
         self.estimator, self.scorers = set_learning_method(self.config, self.X_train, self.y_train)
     
     
-    def cross_validate_start(self, cv=10, scorer=None):
+    def cross_validate_start(self, cv=10, n_jobs=15, scorer=None, fixed_folds=None):
         if not scorer:
             scorer = make_scorer(self.scorers[0][1]) 
         log.info("Running cross validator with %s" % str(self.estimator))
-        scores = cross_validation.cross_val_score(self.estimator, self.X_train, self.y_train, cv=cv, n_jobs=10, scoring=scorer)
-        return scores.mean(), scores.std()
+        if not fixed_folds:
+            cv = KFold(len(self.y_train), n_folds=cv, indices=True)
+            print "test instances:\n", [fold[1] for fold in cv]
+        else:
+            log.info("proceeding with fixed folds provided")
+            cv = FixedFolds(len(self.y_train), fixed_folds)
+            
+        scores = cross_validation.cross_val_score(self.estimator, self.X_train, self.y_train, cv=cv, n_jobs=n_jobs, scoring=scorer)
+        return scores
+#        return scores
+        
+        
 
 
-from sklearn.cross_validation import is_classifier, check_cv
+class FixedFolds(_PartitionIterator):
+    def __init__(self, n, existing_test_indices):
+        self.test_folds = existing_test_indices
+        self.indices=True
+        self.n = n 
+
+    def _iter_test_indices(self):
+        for test_folds in self.test_folds:
+            yield test_folds
+        
+    def __repr__(self):
+        return '{}.{} (n={})'.format(
+            self.__class__.__module__,
+            self.__class__.__name__,
+            len(self.test_folds)
+        )
+    
+    def __len__(self):
+        return len(self.test_folds)
+        
+        
                 
+                
+def ter_cross_validate_fold(estimators, X_dic, y_dic, denominator, tergold, scorer, train, test, verbose, fit_params, roundup=False):
+    estimations = []
+    denom_test = denominator[test]
+    tergold_test = tergold[test]
+    for estimator in estimators:
+        X = X_dic[estimator]
+        y = y_dic[estimator]
+        X_train = [X[idx] for idx in train]
+        X_test = [X[idx] for idx in test]
+        y_train = y[train]
+        y_test = y[test]
+        estimator.fit(X_train, y_train)
+        y_predict = estimator.predict(X_test)
+        if roundup:
+            y_predict = np.rint(y_predict)
+        estimations.append(y_predict)
+        
+    all_estimations = np.column_stack(estimations)
+    log.info("all_estimations.shape = {}".format(all_estimations.shape))
+    
+    sum_estimations = np.sum(all_estimations, axis=1)
+    log.info("sum_estimations.shape = {}".format(sum_estimations.shape))
+#    log.info("tokens.shape = {}".format(X[:,0].shape))
+            
+    ter = np.divide(sum_estimations, denom_test)
+    for i in range (0,10):
+        log.info("ter{} = {:.3g} + {:.3g} + {:.3g} + {:.3g} / {} = {:.3g} [{:.3g}]".format(i, estimations[0][i], estimations[1][i], estimations[2][i], estimations[3][i], X[i,0], ter[i], tergold_test[i]))
+    
+#    print ter.shape,
+#    print y_test.shape,
+    
+#    print ter
+#    print tergold_test
+    score = scorer(ter, tergold_test)
+    return score
+
 
 class TerRegressor(SkRegressor):
-    def __init__(self, config, skregressors):
+    def __init__(self, config, skregressors, tergold):
+        self.tergold = tergold
         self.config = config
-        self.estimator = TerSVR([skregressor.estimator for skregressor in skregressors])
-    
+        self.estimators = [skregressor.estimator for skregressor in skregressors]
+        self.scorers = skregressors[0].scorers
+        self.X_train = {}
+        self.y_train = {}
+        for skregressor in skregressors:
+            self.X_train[skregressor.estimator] = skregressor.X_train
+            self.y_train[skregressor.estimator] = skregressor.y_train
+        self.size = len(self.y_train[skregressors[0].estimator])
+        self.denominator = self.X_train[skregressors[0].estimator][:,0]
+   
+    def cross_validate_start(self, cv=10, n_jobs=15, verbose=0, pre_dispatch='2*n_jobs', fit_params=None, fixed_folds=None):
+        if not fixed_folds:
+            cvfolds = KFold(self.size, n_folds=cv, indices=True)
+        else:
+            log.info("proceeding with fixed folds provided")
+            cvfolds = FixedFolds(self.size, fixed_folds)
+        parallel = Parallel(n_jobs=n_jobs, verbose=verbose,
+                        pre_dispatch=pre_dispatch)
+        scorer = self.scorers[0][1]
+        scores = parallel(
+            delayed(ter_cross_validate_fold)(self.estimators, self.X_train, self.y_train, self.denominator, self.tergold, scorer, train, test, verbose, fit_params)
+        for train, test in cvfolds)
+        scores = np.array(scores)
+        return scores
 
+        
+        
 
 from sklearn.svm import SVR
 
@@ -144,19 +243,45 @@ class TerSVR(SVR):
     def __init__(self, estimators):
         self.estimators = estimators
         
-    def fit(self, Xs, ys):
-        for estimator, X, y in zip(self.estimators, Xs[:-1], ys[:-1]):
+    def fit(self, X, y):
+#        for estimator, X, y in zip(self.estimators, Xs[:-1], ys[:-1]):
+        for estimator in self.estimators:
             estimator.fit(X,y)
         return self 
     
-    def predict(self, Xs):
-        estimate = []
-        for estimator, X in zip(self.estimators, Xs[:-1]):
-            estimate.append(estimator.predict(X))
-        ter = sum(estimate[:-1])*1.00 / Xs[-1][0]
+    def predict(self, X):
+        estimations = []
+#        print "X: ", X
+#        for estimator, X in zip(self.estimators, Xs[:-1]):
+        for estimator in self.estimators:       
+            ex = estimator.predict(X) 
+#            print ex
+            estimation = np.rint(ex)
+#            print estimation
+            log.info("estimation.shape = {}".format(estimation.shape))
+            estimations.append(estimation)
+            #log.info("Estimate: {}".format(estimate))
+
+        #each estimation on numpy row
+        all_estimations = np.column_stack(estimations)
+        log.info("all_estimations.shape = {}".format(all_estimations.shape))
+        
+        sum_estimations = np.sum(all_estimations, axis=1)
+        log.info("sum_estimations.shape = {}".format(sum_estimations.shape))
+        log.info("tokens.shape = {}".format(X[:,0].shape))
+                
+        ter = np.divide(sum_estimations, X[:,0])
+        for i in range (0,10):
+            log.info("ter{} = {:.3g} + {:.3g} + {:.3g} + {:.3g} / {} = {:.3g}".format(i, estimations[0][i], estimations[1][i], estimations[2][i], estimations[3][i], X[i,0], ter[i]))
+        
+#        print "x: ", [x[0] for x in X]
+#        print "Ter: ", ter
         return ter
+
         
+    
         
+   
             
             
         
