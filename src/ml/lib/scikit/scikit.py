@@ -219,7 +219,7 @@ class TerRegressor(SkRegressor):
         self.size = len(self.y_train[skregressors[0].estimator])
         self.denominator = self.X_train[skregressors[0].estimator][:,0]
    
-    def cross_validate_start(self, cv=10, n_jobs=15, verbose=0, pre_dispatch='2*n_jobs', fit_params=None, fixed_folds=None):
+    def cross_validate_start(self, cv=10, n_jobs=15, verbose=0, pre_dispatch='2*n_jobs', fit_params=None, fixed_folds=None, ):
         if not fixed_folds:
             cvfolds = KFold(self.size, n_folds=cv, indices=True)
         else:
@@ -229,7 +229,7 @@ class TerRegressor(SkRegressor):
                         pre_dispatch=pre_dispatch)
         scorer = self.scorers[0][1]
         scores = parallel(
-            delayed(ter_cross_validate_fold)(self.estimators, self.X_train, self.y_train, self.denominator, self.tergold, scorer, train, test, verbose, fit_params)
+            delayed(ter_cross_validate_fold)(self.estimators, self.X_train, self.y_train, self.denominator, self.tergold, scorer, train, test, verbose, fit_params, roundup)
         for train, test in cvfolds)
         scores = np.array(scores)
         return scores
