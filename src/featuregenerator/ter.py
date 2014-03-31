@@ -25,13 +25,18 @@ def wrap_sgml(text):
     return tmpfile.name
 
 class TerWrapper(FeatureGenerator):
-    def __init__(self, ter_path):
+    def __init__(self, ter_path, reverse=True):
         self.path = ter_path
+        self.reverse = reverse
         
     def process_item(self, target_text, reference_text):
         hypothesis_filename = wrap_sgml(target_text)
         reference_filename = wrap_sgml(reference_text)
-        command = "java -jar {} -h {} -r {}".format(self.path, hypothesis_filename, reference_filename)
+        if self.reverse:
+            command = "java -jar {} -r {} -h {}".format(self.path, hypothesis_filename, reference_filename)
+        else:
+            command = "java -jar {} -h {} -r {}".format(self.path, hypothesis_filename, reference_filename)
+        
         #java -jar terSimple.jar -h /home/elav01/taraxu_data/wmt14/1.2/tr.translation.seg -r /home/elav01/taraxu_data/wmt14/1.2/tr.suggestion.seg
         
         #print command
