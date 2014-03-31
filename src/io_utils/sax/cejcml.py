@@ -8,10 +8,10 @@ import codecs
 import sys
 import tempfile
 import shutil
-import numpy
+import numpy as np
 import logging as log
 
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 from xml.etree.cElementTree import iterparse
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
@@ -137,9 +137,18 @@ class CEJcmlReader():
                 parallelsentence = ParallelSentence(source,targets,None,attributes)
                 log.debug("cejml.py: Just process sentence {}".format(parallelsentence.get_attribute("judgement_id")))
                 yield parallelsentence
-            root.clear()      
+            root.clear() 
+        source_file.close()
         
-              
+
+    def fix(self, value):
+        if self.remove_infinite:
+            value = value.replace("inf", "9999999")
+            value = value.replace("nan", "0")
+        return value
+           
+
+   
         
 
 
@@ -147,16 +156,49 @@ class CEJcmlStats:
     """calculates statistics about specified attributes on an annotated JCML corpus. Low memory load"""
     
     def __init__(self, input_xml_filename, **kwargs):
+    
+        self.TAG_SENT = 'judgedsentence'
+        self.TAG_SRC = 'src'
+        self.TAG_TGT = 'tgt'
+        self.TAG_DOC = 'jcml'
+    
         self.input_filename = input_xml_filename
         self.desired_general = kwargs.setdefault("desired_general", [])
         self.desired_source = kwargs.setdefault("desired_source", [])
         self.desired_target = kwargs.setdefault("desired_target", [])
         self.desired_ref = kwargs.setdefault("desired_ref", [])
         
+       
+    def _print_statistics(key, values):
+        try:
+            values = np.asarray([float(v) for v in values])
+            print "{}\t{:5.3f}\t{:5.3f}\t{:5.3f}\t{:5.3f}".format(key,
+                np.average(values),
+                np.std(values),
+                np.min(values),
+                np.max(values)
+            )
+        except ValueError:
+            print "[{}] : distinct values ".format(key)
+   
     
-    def get_attribute_statistics(self, attributes):
-        for key, values in attributes:
-            avg = numpy.average(values)
+    def get_attribute_statistics(self):
+        general_attributes, source_attributes, target_attributes, ref_attributes = self.get_attribute_vectors()
+        target_attributes = OrderedDict(sorted(target_attributes.iteritems(), key=lambda t: t[0]))
+        print '"{}"'.format('","'.join([key for key in target_attributes.iterkeys() if not key.endswith("_ratio") and not key.startswith("q_")]))
+        print
+        
+        for key, values in general_attributes.iteritems():
+            print "General attributes:\n"
+            self._print_statistics(key, value)            
+        
+        for key, values in source_attributes.iteritems():
+            print "Source attributes:\n"        
+            self._print_statistics(key, value)
+        
+        for key, values in target_attributes.iteritems():
+            print "Target attributes:\n"        
+            self._print_statistics(key, value)            
             
         
     
@@ -183,27 +225,28 @@ class CEJcmlStats:
             #new sentence: get attributes
             if event == "start" and elem.tag == self.TAG_SENT:
                 for key, value in elem.attrib.iteritems():
-                    if key in self.desired_general:
-                        general_attributes[key].append(float(value))
+
+                        general_attributes[key].append(value)
                     
             #new source sentence
             elif event == "start" and elem.tag == self.TAG_SRC:
                 for key, value in elem.attrib.iteritems():
-                    if key in self.desired_source:
-                        source_attributes[key].append(float(value))
+
+                        source_attributes[key].append(value)
 
             #new target sentence
             elif event == "start" and elem.tag == self.TAG_TGT:
                 for key, value in elem.attrib.iteritems():
-                    if key in self.desired_target:
-                        target_attributes[key].append(float(value))
+
+                        target_attributes[key].append(value)
                         
             elif event == "start" and elem.tag == self.TAG_REF:
                 for key, value in elem.attrib.iteritems():
-                    if key in self.desired_ref:
-                        ref_attributes[key].append(float(value))
+
+                        ref_attributes[key].append(value)
 
             root.clear()
         
+        source_xml_file.close()
         
-        return general_attributes, source_attributes, target_attributes, ref_attributes 
+        return general_attributes, source_attributes, target_attributes, ref_attributes

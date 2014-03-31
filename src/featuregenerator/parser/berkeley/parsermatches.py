@@ -87,7 +87,8 @@ class ParserMatches(LanguageFeatureGenerator):
             for pos, label in enumerate(labels, start=1):
                 if parse_tag == label:
                     match_pos.append(pos)
-            
+        if not match_pos:
+            match_pos = [0]
         return match_count, match_pos
 
     def get_features_src(self, simplesentence, parallelsentence):
