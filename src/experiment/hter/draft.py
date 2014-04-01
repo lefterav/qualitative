@@ -11,7 +11,7 @@ import logging as log
 import numpy as np
 from numpy import array
 from expsuite import PyExperimentSuite
-
+import time
 
 #todo: this should be read from config file (or expsuite)
 cfg_path = "/home/elav01/workspace/qualitative/src/experiment/hter/config/svr.cfg"
@@ -151,7 +151,10 @@ class HTERSuite(PyExperimentSuite):
         self.general_attributes = params["{}_general".format(params["att"])].split(",")
         self.class_name = params["class_name"]
         self.training_sets = params["training_sets"].format(**params).split(',')
-        self.training_sets_tofilter = params["training_sets_tofilter"].format(**params).split(',')
+        try:
+            self.training_sets_tofilter = params["training_sets_tofilter"].format(**params).split(',')
+        except:
+            self.training_sets_tofilter = None
         self.filters = dict([(key, value) for key, value in params.iteritems() if key.startswith("filter_")])
         self.roundup = params["roundup"]
         self.mode = params["mode"]
@@ -168,14 +171,15 @@ class HTERSuite(PyExperimentSuite):
         #logging
         log.basicConfig(level=log.INFO)
         
-        additional_training_filename = "training.additional.filtered.jcml"
-        
-        log.info("Filtering addiitional files")                
-        ret["used_sentences"], ret["total_sentences"] = join_filter_jcml(self.training_sets_tofilter, self.additional_training_filename, filter_sentence_ter, **self.filters)
+        if self.training_sets_tofilter:
+            additional_training_filename = "training.additional.filtered.jcml"
+            
+            log.info("Filtering addiitional files")                
+            ret["used_sentences"], ret["total_sentences"] = join_filter_jcml(self.training_sets_tofilter, additional_training_filename, filter_sentence_ter, **self.filters)
+            self.training_sets.add(additional_training_filename)
     
         #load and join filenames
         log.info("Creating joined file")        
-        self.training_sets.add(additional_training_filename)
         log.info("Input filenames: {}".format(self.training_sets))
         basic_xml_filename = "train.jcml"
         join_jcml(self.training_sets, basic_xml_filename)
@@ -219,7 +223,9 @@ class HTERSuite(PyExperimentSuite):
                                                      ",".join(["{:.3f}".format(s) for s in scores]))
                                                      )
         
-    
+        
+        log.info("Done! Go check the results...")
+        log.info(time.ctime())
         return ret
 
 
