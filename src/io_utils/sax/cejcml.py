@@ -169,7 +169,7 @@ class CEJcmlStats:
         self.desired_ref = kwargs.setdefault("desired_ref", [])
         
        
-    def _print_statistics(key, values):
+    def _print_statistics(self, key, values):
         try:
             values = np.asarray([float(v) for v in values])
             print "{}\t{:5.3f}\t{:5.3f}\t{:5.3f}\t{:5.3f}".format(key,
@@ -184,19 +184,27 @@ class CEJcmlStats:
     
     def get_attribute_statistics(self):
         general_attributes, source_attributes, target_attributes, ref_attributes = self.get_attribute_vectors()
+        
+        print "Source:"
+        
+        print '"{}"'.format('","'.join([key for key in source_attributes.iterkeys() if not key.endswith("_ratio") and not key.startswith("q_")]))
+        
+        print "\n Target:"
+        
         target_attributes = OrderedDict(sorted(target_attributes.iteritems(), key=lambda t: t[0]))
         print '"{}"'.format('","'.join([key for key in target_attributes.iterkeys() if not key.endswith("_ratio") and not key.startswith("q_")]))
+        
         print
         
-        for key, values in general_attributes.iteritems():
+        for key, value in general_attributes.iteritems():
             print "General attributes:\n"
             self._print_statistics(key, value)            
         
-        for key, values in source_attributes.iteritems():
+        for key, value in source_attributes.iteritems():
             print "Source attributes:\n"        
             self._print_statistics(key, value)
         
-        for key, values in target_attributes.iteritems():
+        for key, value in target_attributes.iteritems():
             print "Target attributes:\n"        
             self._print_statistics(key, value)            
             
