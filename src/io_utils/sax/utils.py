@@ -30,6 +30,7 @@ def join_filter_jcml(filenames, output_filename, callback, **kwargs):
     count = 0
     everything = 0
     for filename in filenames:
+        log.info("Filtering and joining filename {}".format(filename))
         reader = CEJcmlReader(filename, all_general=True, all_target=True)
         for parallelsentence in reader.get_parallelsentences():
             everything+=1

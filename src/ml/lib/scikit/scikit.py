@@ -40,6 +40,8 @@ def dataset_to_instances(dataset,
         #get all features in a row and then in a table
         att_row = []
         for att_name in desired_target_attributes:
+            if att_name == "":
+                continue
             for translation in parallelsentence.get_translations():
                 try:
                     att_value = translation.get_attribute(att_name)
@@ -49,16 +51,28 @@ def dataset_to_instances(dataset,
                     f.write(str(att_value))
                     f.write("\t")
                 except AttributeError:
-                    #log.warning("attribute {} could not be found, skipping sentence with id={}".format(att_name, parallelsentence.get_attribute("id")))
+                    log.warning("target attribute {} could not be found in sentence with id={}, replacing with 0".format(att_name, parallelsentence.get_attribute("id")))
                     att_row.append(0)
                     #continue
         for att_name in desired_parallel_attributes:
-            att_value = parallelsentence.get_attribute(att_name)
-            att_row.append(float(att_value))
+            if att_name == "":
+                continue
+            try:
+                att_value = parallelsentence.get_attribute(att_name)
+                att_row.append(float(att_value))
+            except AttributeError:
+                log.warning("parallel attribute {} could not be found in sentence with id={}, replacing with 0".format(att_name, parallelsentence.get_attribute("id")))
+                att_row.append(0)
                 
         for att_name in desired_source_attributes:
-            att_value = parallelsentence.get_source().get_attribute(att_name)
-            att_row.append(float(att_value))
+            if att_name == "":
+                continue
+            try:
+                att_value = parallelsentence.get_source().get_attribute(att_name)
+                att_row.append(float(att_value))
+            except AttributeError:
+                log.warning("source attribute {} could not be found in sentence with id={}, replacing with 0".format(att_name, parallelsentence.get_attribute("id")))
+                att_row.append(0)
         
         f.write("\n")
         att_table.append(att_row)
@@ -219,7 +233,7 @@ class TerRegressor(SkRegressor):
         self.size = len(self.y_train[skregressors[0].estimator])
         self.denominator = self.X_train[skregressors[0].estimator][:,0]
    
-    def cross_validate_start(self, cv=10, n_jobs=15, verbose=0, pre_dispatch='2*n_jobs', fit_params=None, fixed_folds=None, ):
+    def cross_validate_start(self, cv=10, n_jobs=15, verbose=0, pre_dispatch='2*n_jobs', fit_params=None, fixed_folds=None, roundup=False):
         if not fixed_folds:
             cvfolds = KFold(self.size, n_folds=cv, indices=True)
         else:

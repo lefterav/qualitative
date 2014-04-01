@@ -158,13 +158,13 @@ if cfg.exists_checker(target_language):
 
 @jobs_limit(1, "ltool") #Dunno why, but only one language tool at a time
 @active_if(cfg.has_section("languagetool"))
-@transform(preprocess_data, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, source_language)
+@transform(preprocess_data, suffix(".tok.jcml"), ".lt.%s.f.jcml" % source_language, source_language)
 def features_langtool_source(input_file, output_file, language):
     features_langtool(input_file, output_file, language)
 
 @jobs_limit(1, "ltool")
 @active_if(cfg.has_section("languagetool"))
-@transform(preprocess_data, suffix(".orig.jcml"), ".lt.%s.f.jcml" % target_language, target_language)
+@transform(preprocess_data, suffix(".tok.jcml"), ".lt.%s.f.jcml" % target_language, target_language)
 def features_langtool_target(input_file, output_file, language):
     features_langtool(input_file, output_file, language)
 if cfg.has_section("languagetool"):
@@ -337,7 +337,7 @@ if cfg.has_section('quest'):
     parallel_feature_functions.append(features_quest)
 
 @active_if(cfg.getboolean("annotation", "reference_features"))
-@transform(preprocess_data, suffix(".orig.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
+@transform(preprocess_data, suffix(".tok.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
 def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_atts, classpath, dir_path):
     analyzers = [LevenshteinGenerator(),
                  BleuGenerator()]
@@ -358,7 +358,7 @@ if cfg.getboolean("annotation", "reference_features"):
     
 
 @active_if(cfg.has_section("ter"))
-@transform(preprocess_data, suffix(".orig.jcml"), ".ter.%s.f.jcml" % target_language, cfg.get("ter", "path"))
+@transform(preprocess_data, suffix(".tok.jcml"), ".ter.%s.f.jcml" % target_language, cfg.get("ter", "path"))
 def reference_ter(input_file, output_file, path):
     saxjcml.run_features_generator(input_file, output_file, [TerWrapper(path)])
 
