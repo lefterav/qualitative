@@ -29,7 +29,7 @@ def help():
     print "--docid [String relevant to the document ID]"
     print "--genre [Genre of the content]"
     print "--origlang [Original (not actual) language of the content or 'any']"
-    print "--settype [refset|srcset|trgset]"
+    print "--settype [refset|srcset|tstset]"
     print "--sysid [String relevant to the system ID or 'ref']"   
 
 
@@ -85,7 +85,7 @@ if __name__ == '__main__':
     elif Input.settype == "refset":
         langtag = 'trglang="%s" SrcLang="%s"' % (Input.lang, Input.origlang)
         sysidtag = ' sysid="ref"'
-    elif Input.setname == "trgset":
+    elif Input.setname == "tstset":
         langtag = 'trglang="%s"' % Input.lang
         sysidtag = ' sysid="%s"' % Input.sysid
 
