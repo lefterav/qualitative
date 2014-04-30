@@ -82,12 +82,9 @@ if __name__ == '__main__':
     langtag = ""
     if Input.settype == "srcset":
         langtag = 'srclang="%s"' % Input.lang
-    elif Input.settype == "refset":
-        langtag = 'trglang="%s" SrcLang="%s"' % (Input.lang, Input.origlang)
+    elif Input.settype == "refset" or Input.settype == "tstset":
+        langtag = 'trglang="%s" srclang="%s"' % (Input.lang, Input.origlang)
         sysidtag = ' sysid="ref"'
-    elif Input.setname == "tstset":
-        langtag = 'trglang="%s"' % Input.lang
-        sysidtag = ' sysid="%s"' % Input.sysid
 
     print '<%s setid="%s" %s>' % (Input.settype, Input.setname, langtag)
     print '<doc%s docid="%s" genre="%s" origlang="%s">' % (sysidtag, Input.docid, Input.genre, Input.origlang)
