@@ -64,7 +64,7 @@ class CLIError(Exception):
     def __unicode__(self):
         return self.msg
 
-def set_selection_method(config):
+def set_selection_method(config, threshold=.25):
     """
     Given the configuration settings, this function instantiates the configured
     feature selection method initialized with the preset parameters.
@@ -91,7 +91,7 @@ def set_selection_method(config):
                                 scaling=p.get("scaling", .5), 
                                 sample_fraction=p.get('sample_fraction', .75), 
                                 n_resampling=p.get('n_resampling', 200),
-                                selection_threshold=p.get('selection_threshold', .25), 
+                                selection_threshold=threshold, 
                                 fit_intercept=p.get('fit_intercept', True), 
                                 # TODO: set verbosity according to global level
                                 verbose=True, 
