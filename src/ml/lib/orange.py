@@ -196,7 +196,7 @@ class OrangeRuntimeRanker:
         sentenceset = CompactPairwiseParallelSentenceSet(classified_pairwise_parallelsentences)
         ranked_sentence = sentenceset.get_multiranked_sentence("rank_predicted")
 
-        result = [(t.get_attribute("system"),t.get_attribute("rank")) for t in ranked_sentence.get_translations()]
+        result = [(t.get_attribute("rank"), t) for t in ranked_sentence.get_translations()]
 #        return ranked_sentence.get_target_attribute_values("rank")
         description = self._get_description(resultvector)
 

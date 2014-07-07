@@ -120,6 +120,7 @@ def set_selection_method(config, threshold=.25):
                                      verbose=True)
             else:
                 transformer = ExtraTreesClassifier()
+        
 
     return transformer
 
