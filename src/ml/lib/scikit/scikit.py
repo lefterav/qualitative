@@ -104,8 +104,11 @@ def dataset_to_instances(dataset,
     return numpy_att_table, numpy_class_vector
 
 
-
-
+# from sklearn.pipeline import Pipeline
+# def set_pipeline(config, X_train, y_train):
+#     learning_cfg = config.get("learning", None)
+#     if learning_cfg:
+#         pipe = Pipeline(steps=[('gaussian', None), ('SVM', None)])
         
         
 class SkRegressor(Regressor):
