@@ -36,6 +36,7 @@ from py4j.java_gateway import java_import
 
 from util.jvm import JVM
 
+
 class Autoranking:
 
     def __init__(self, configfilenames, classifiername):
@@ -66,10 +67,10 @@ class Autoranking:
         
         #put things in the original order given by the user
         #because the ranker scrambles the order
-        ranking.sort(key=lambda x: int(x[0]))
+        ranking.sort(key=lambda x: int(x.get_attribute("system")))
         
         #return only ranks without system ids
-        ranking = [r[1] for r in ranking]
+        ranking = [r[0] for r in ranking]
         
         return ranking, description
         
