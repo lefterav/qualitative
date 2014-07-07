@@ -14,9 +14,12 @@ if __name__ == '__main__':
     ranker = OrangeRuntimeRanker(classifiername)
 
     jcmlfilename = sys.argv[2]
+    outputfile = open(sys.argv[3], 'w')
     for parallelsentence in CEJcmlReader(jcmlfilename).get_parallelsentences():
         ranking, description = ranker.rank_sentence(parallelsentence)
         ranking_dict = OrderedDict(ranking)
         selected_sentence = ranking_dict[1] 
-        print selected_sentence.get_string()
+        outputfile.write("\n".format(selected_sentence.get_string()))
+        
+        
             
