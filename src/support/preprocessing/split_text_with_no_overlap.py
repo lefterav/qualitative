@@ -16,6 +16,7 @@ if __name__ == '__main__':
     parser.add_argument('--trainstem')    
     parser.add_argument('--teststem')
     parser.add_argument('--percentage')
+    parser.add_argument('--minlength')
     
     args = parser.parse_args()
     
@@ -25,13 +26,14 @@ if __name__ == '__main__':
     target_training_filename = args.trainstem + "." + args.targetlang
     source_test_filename = args.teststem + "." + args.sourcelang
     target_test_filename = args.teststem + "." + args.targetlang
+    MINLENGTH = int(args.minlength)
     
     f = open(source_filename, 'r')
-    sourcelines = [l.lower().strip() for l in f]
+    sourcelines = [l.strip() for l in f]
     f.close()
     
     f = open(target_filename, 'r')
-    targetlines = [l.lower().strip() for l in f]
+    targetlines = [l.strip() for l in f]
     f.close()
     
     assert(len(sourcelines)==len(targetlines))
@@ -53,6 +55,9 @@ if __name__ == '__main__':
         source_testlines = sourcelines[training_len+1:]
         target_testlines = targetlines[training_len+1:]
         for source_test_line, target_test_line in zip(source_testlines, target_testlines):
+            if len(source_test_line.split()) < MINLENGTH  or len (target_test_line) < MINLENGTH:
+                filtered_count += 1
+                continue
             test_line_valid = True
             for source_training_line, target_training_line in zip(source_traininglines, target_traininglines):
                 if source_training_line == source_test_line or target_training_line == target_test_line:
