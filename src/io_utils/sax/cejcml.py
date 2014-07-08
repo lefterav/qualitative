@@ -110,6 +110,10 @@ class CEJcmlReader():
         
         attributes = []
         target_id = 0
+        
+        src_text = ""
+        tgt_text = ""
+        
 
         for event, elem in context:
             #new sentence: get attributes
@@ -124,17 +128,20 @@ class CEJcmlReader():
             elif event == "start" and elem.tag == self.TAG_TGT:
                 target_id += 1
                 target_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_target or self.all_target])
-                targets.append(SimpleSentence("", target_attributes))
 
-#                 elif not compact and event == "end" and elem.tag == self.TAG_SRC:
-#                     src_text = elem.text
-#                 
-#                 elif not compact and event == "end" and elem.tag == self.TAG_TGT:
-#                     tgt_text.append(elem.text)
+            elif not compact and event == "end" and elem.tag == self.TAG_SRC and elem.text:
+                src_text = elem.text
+                 
+            elif event == "end" and elem.tag == self.TAG_TGT:
+                if not compact and elem.text:
+                    tgt_text = elem.text
+                else:
+                    tgt_text = ""
+                targets.append(SimpleSentence(tgt_text, target_attributes))
             
             elif event == "end" and elem.tag in self.TAG_SENT:
-                source = SimpleSentence("",source_attributes)
-                parallelsentence = ParallelSentence(source,targets,None,attributes)
+                source = SimpleSentence(src_text, source_attributes)
+                parallelsentence = ParallelSentence(source, targets, None, attributes)
                 log.debug("cejml.py: Just process sentence {}".format(parallelsentence.get_attribute("judgement_id")))
                 yield parallelsentence
             root.clear() 

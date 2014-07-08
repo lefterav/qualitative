@@ -106,11 +106,11 @@ def filter_sentence_ter(parallelsentence, **kwargs):
     @rtype: boolean
     """
     atts = parallelsentence.get_translations()[0].get_attributes()
-    return (atts["ter_deletions"] <= float(kwargs.setdefault("deletions", "Inf"))
-            and atts["ter_insertions"] <= float(kwargs.setdefault("insertions", "Inf"))
-            and atts["ter_substitutions"] <= float(kwargs.setdefault("substitutions", "Inf"))
-            and atts["ter_shifts"] <= float(kwargs.setdefault("shifts", "Inf"))
-            and atts["ter_edits"] <= float(kwargs.setdefault("shifts", "Inf"))
+    return (float(atts["ter_deletions"]) <= float(kwargs.setdefault("filter_deletions", "Inf"))
+            and float(atts["ter_insertions"]) <= float(kwargs.setdefault("filter_insertions", "Inf"))
+            and float(atts["ter_substitutions"]) <= float(kwargs.setdefault("filter_substitutions", "Inf"))
+            and float(atts["ter_shifts"]) <= float(kwargs.setdefault("filter_shifts", "Inf"))
+            and float(atts["ter_edits"]) <= float(kwargs.setdefault("filter_edits", "Inf"))
            )
     
     
@@ -145,7 +145,7 @@ def train_ter_separately(config, dataset, class_name, desired_parallel_attribute
 
 class HTERSuite(PyExperimentSuite):
     def reset(self, params, rep):
-        self.learner_configfile = params["learner_configfile"]
+        self.learner_configfile = params["learner_configfile"].format(**params)
         self.source_attributes = params["{}_source".format(params["att"])].split(",")
         self.target_attributes = params["{}_target".format(params["att"])].split(",")
         self.general_attributes = params["{}_general".format(params["att"])].split(",")
@@ -176,7 +176,7 @@ class HTERSuite(PyExperimentSuite):
             
             log.info("Filtering addiitional files")                
             ret["used_sentences"], ret["total_sentences"] = join_filter_jcml(self.training_sets_tofilter, additional_training_filename, filter_sentence_ter, **self.filters)
-            self.training_sets.add(additional_training_filename)
+            self.training_sets.append(additional_training_filename)
     
         #load and join filenames
         log.info("Creating joined file")        
