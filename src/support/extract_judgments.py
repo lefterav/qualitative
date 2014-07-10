@@ -25,7 +25,7 @@ def extract_sentence(path, system, direction, sentence_index):
 
     return result
 
-def extract_source(path, language, sentence_index):
+def extract_sourceref(path, language, sentence_index):
     translations = list(enumerate(codecs.open('%s/newssyscombtest2010.%s' %
                                (path, language), 'r', 'utf-8')))
     result = ''
@@ -99,7 +99,7 @@ def create_evaluation(judgments, path):
         entries.append((fields[19], system4, sentence4))
         entries.append((fields[20], system5, sentence5))
         entries.sort()
-        source = extract_source(path, src, index)
+        source = extract_sourceref(path, src, index)
 
         write_rankings(source, entries, out_gt, out_lt, out_eq)
 
