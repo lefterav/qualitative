@@ -71,7 +71,7 @@ def extract_sentence(path, system, direction, sentence_index, testset):
 
     return result
 
-def extract_source(path, language, sentence_index, testset):
+def extract_sourceref(path, language, sentence_index, testset):
     translations = list(enumerate(codecs.open(PTRN_SOURCEREF %
                                (path,  testset, language), 'r', 'utf-8')))
     result = ''
@@ -364,7 +364,7 @@ def process_current_judgments_set(path, docXML, cur_desiredsystem1, cur_desireds
     entries.append((score2, cur_desiredsystem2, sentence2))
     
     #print to file
-    source = extract_source(path, cur_src, cur_index, cur_testset)
+    source = extract_sourceref(path, cur_src, cur_index, cur_testset)
 
     docXML = write_rankings_XML(source, entries, docXML,  cur_src, cur_tgt, cur_testset , str(cur_index), avg_rank)
     

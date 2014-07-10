@@ -65,7 +65,7 @@ def extract_sentence(path, system, direction, sentence_index, testset):
 
     return result
 
-def extract_source(path, language, sentence_index, testset):
+def extract_sourceref(path, language, sentence_index, testset):
     translations = list(enumerate(codecs.open(PTRN_SOURCEREF %
                                (path,  testset, language), 'r', 'utf-8')))
     result = ''
@@ -219,7 +219,7 @@ def create_evaluation(judgments, path):
                     
                     #make sure they always appear in the same order (not sure if needed)
                     #entries.sort()
-                    source = extract_source(path, src, index, testset)
+                    source = extract_sourceref(path, src, index, testset)
             
                     write_rankings(source, entries, out_gt, out_lt, out_eq, dir+":"+testset+":"+str(index))
 
