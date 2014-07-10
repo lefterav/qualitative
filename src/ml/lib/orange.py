@@ -8,7 +8,7 @@ import cPickle as pickle
 import sys
 
 from io_utils.sax.cejcml2orange import CElementTreeJcml2Orange 
-from ml.classifier import Classifier
+#from ml.classifier import Classifier
 
 from sentence.dataset import DataSet
 from sentence.pairwisedataset import AnalyticPairwiseDataset
@@ -65,6 +65,7 @@ def parallelsentence_to_instance(domain, parallelsentence):
     @type: Orange.data.Instance
     """
     attributes = parallelsentence.get_nested_attributes()
+    #print "attributes = ", attributes
     values = []
     
     #features required by the model need to be retrieved from the 
@@ -78,7 +79,8 @@ def parallelsentence_to_instance(domain, parallelsentence):
         try:
             value = attributes[feature_name]
         except KeyError:
-            sys.exit("Feature '{}' not given by the enabled generators".format(feature_name))
+            sys.stderr.write("Feature '{}' not given by the enabled generators\n".format(feature_name))
+            value = 0 
 
         #this casts the feature value we produced, in an orange value object
         orange_value = feature(value)
