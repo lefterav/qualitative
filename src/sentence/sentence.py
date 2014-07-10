@@ -7,6 +7,7 @@
 
 from copy import deepcopy
 import sys
+import logging as log
 
 class SimpleSentence(object):
     """
@@ -68,7 +69,7 @@ class SimpleSentence(object):
             if sub:
                 return sub
             else:
-                sys.stderr.write("Could not find attribute {}\n".format(key))              
+                log.debug("Could not find attribute {}\n".format(key))              
                 raise AttributeError
     
     def add_attributes(self, attributes):
