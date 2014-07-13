@@ -5,7 +5,7 @@ Created on Nov 16, 2011
 '''
 
 import sys
-sys.path.append("/home/lupo01/taraxuscripts")
+sys.path.append("/home/Lukas Poustka/taraxuscripts")
 
 from featuregenerator.levenshtein.levenshtein import levenshtein_tok
 
@@ -65,10 +65,10 @@ class OOLinkage():
 # '/share/taraxu/data/KDE4/aligned/cs-en_src.txt', '/share/taraxu/data/KDE4/aligned/cs-en_tgt.txt', 100, '/share/taraxu/data/KDE4/aligned/
 OOLinkage('/media/DATA/Arbeit/DFKI/111102_OpenOffice/oolinkage/esde_src.c40.detok.txt', '/media/DATA/Arbeit/DFKI/111102_OpenOffice/oolinkage/de-es_tgt_detok.txt')
 
-#'/home/lupo01/oo/selected/openoffice.de-en.sel104.detok.de', '/home/lupo01/oo/aligned/esde_src_detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-en_GB_src_links.txt', '/home/lupo01/oo/selected/openoffice.de-en.sel104.detok.de_links.txt'
+#'/home/Lukas Poustka/oo/selected/openoffice.de-en.sel104.detok.de', '/home/Lukas Poustka/oo/aligned/esde_src_detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-en_GB_src_links.txt', '/home/Lukas Poustka/oo/selected/openoffice.de-en.sel104.detok.de_links.txt'
 
-#'/home/lupo01/oo/selected/openoffice.de-en.sel104.detok.de', '/share/taraxu/data/OpenOffice3/aligned/de-en_GB_src_detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-en_GB_src_links.txt', '/home/lupo01/oo/selected/openoffice.de-en.sel104.detok.de_links.txt'
+#'/home/Lukas Poustka/oo/selected/openoffice.de-en.sel104.detok.de', '/share/taraxu/data/OpenOffice3/aligned/de-en_GB_src_detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-en_GB_src_links.txt', '/home/Lukas Poustka/oo/selected/openoffice.de-en.sel104.detok.de_links.txt'
 
-#'/home/lupo01/oo/selected/esde_tgt.c40.detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-es_src_detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-es_src_links.txt', '/home/lupo01/oo/selected/esde_tgt.c40.detok_links.txt'
+#'/home/Lukas Poustka/oo/selected/esde_tgt.c40.detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-es_src_detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-es_src_links.txt', '/home/Lukas Poustka/oo/selected/esde_tgt.c40.detok_links.txt'
 
-#'/home/lupo01/oo/selected/esde_src.c40.detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-es_tgt_detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-es_tgt_links.txt', '/home/lupo01/oo/selected/esde_src.c40.detok_links.txt'
+#'/home/Lukas Poustka/oo/selected/esde_src.c40.detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-es_tgt_detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-es_tgt_links.txt', '/home/Lukas Poustka/oo/selected/esde_src.c40.detok_links.txt'

@@ -1,7 +1,7 @@
 '''
 Created on 31 Oct 2013
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 from xml.etree.cElementTree import iterparse

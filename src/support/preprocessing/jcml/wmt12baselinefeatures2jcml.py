@@ -1,7 +1,7 @@
 '''
 Created on 1 Mar 2012
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 import sys

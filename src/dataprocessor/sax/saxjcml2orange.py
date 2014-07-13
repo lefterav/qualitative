@@ -3,7 +3,7 @@
 '''
 Created on Jul 21, 2011
 
-@author: jogin, lefterav
+@author: jogin, Eleftherios Avramidis
 '''
 
 import codecs
@@ -445,4 +445,4 @@ class SaxJcmlOrangeContent(ContentHandler):
 #meta_attributes = set(["testset", "judgment-id", "langsrc", "langtgt", "ps1_judgement_id", 
 #                               "ps1_id", "ps2_id", "tgt-1_score" , "tgt-2_score", "tgt-1_system" , "tgt-2_system", "tgt-2_berkeley-tree", "tgt-1_berkeley-tree", "src-1_berkeley-tree", "src-2_berkeley-tree", 
 #                                 ])
-#SaxJcml2Orange("/home/lefterav/taraxu_data/selection-mechanism/wmt12qe/app/1/trainset.coupled.jcml", "rank", [], meta_attributes, "/home/lefterav/taraxu_data/selection-mechanism/wmt12qe/app/1/trainset.coupled.utf8.tab")
+#SaxJcml2Orange("/home/Eleftherios Avramidis/taraxu_data/selection-mechanism/wmt12qe/app/1/trainset.coupled.jcml", "rank", [], meta_attributes, "/home/Eleftherios Avramidis/taraxu_data/selection-mechanism/wmt12qe/app/1/trainset.coupled.utf8.tab")

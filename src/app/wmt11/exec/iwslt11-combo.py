@@ -1,7 +1,7 @@
 '''
 Created on Sep 12, 2011
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 from io_utils.input.linereader import LineReader
 from io_utils.input.jcmlreader import JcmlReader
@@ -15,9 +15,9 @@ import re
 if __name__ == '__main__':
     step_start = int(sys.argv[2])
     step_end = int(sys.argv[3])
-    mydir = "/home/elav01/iwslt11/test-combo"
+    mydir = "/home/Eleftherios Avramidis/iwslt11/test-combo"
     #mydir = "/share/taraxu/selection-mechanism/iwslt11/"
-    targetdir = "/home/elav01/iwslt11/test-combo"
+    targetdir = "/home/Eleftherios Avramidis/iwslt11/test-combo"
     extension = ".txt.fc"
     
     testset = "iwslt-tst2011-combo"

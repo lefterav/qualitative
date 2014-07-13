@@ -1,7 +1,7 @@
 '''
 Created on 04 Mar 2012
 
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 from sentence.dataset import DataSet
 import os

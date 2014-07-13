@@ -1,7 +1,7 @@
 '''
 Created on Aug 31, 2011
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 import inspect

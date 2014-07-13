@@ -1,7 +1,7 @@
 '''
 Created on 7 Feb 2012
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 from dataprocessor.input.jcmlreader import JcmlReader
@@ -40,8 +40,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='')
     parser.add_argument("--langpair", nargs='*', default=langpairs, help="Language pairs")
     parser.add_argument("--setid", nargs='*', default=sets, help="set names")
-    parser.add_argument("--input", help="input file pattern, e.g. /home/elav01/taraxu_data/jcml-latest/raw/{setid}.{langpair}.jcml.rank.jcml")
-    parser.add_argument("--output", help="output file pattern, e.g. /home/elav01/taraxu_data/jcml-latest/clean/{setid}.{langpair}.jcml.rank.jcml")
+    parser.add_argument("--input", help="input file pattern, e.g. /home/Eleftherios Avramidis/taraxu_data/jcml-latest/raw/{setid}.{langpair}.jcml.rank.jcml")
+    parser.add_argument("--output", help="output file pattern, e.g. /home/Eleftherios Avramidis/taraxu_data/jcml-latest/clean/{setid}.{langpair}.jcml.rank.jcml")
     args = parser.parse_args()
     
     for setid in args.setid:

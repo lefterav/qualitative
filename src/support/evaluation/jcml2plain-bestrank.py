@@ -8,8 +8,8 @@ import codecs
 
 if __name__ == '__main__':
     from io_utils.input.jcmlreader import JcmlReader
-    #filename_in = "/home/elav01/taraxu_data/ml4hmt/5/classified.jcml"
-    #filename_out = "/home/elav01/taraxu_data/ml4hmt/5/bestselected.txt"
+    #filename_in = "/home/Eleftherios Avramidis/taraxu_data/ml4hmt/5/classified.jcml"
+    #filename_out = "/home/Eleftherios Avramidis/taraxu_data/ml4hmt/5/bestselected.txt"
     #rank_attribute = "orig_rank"
     filename_in = sys.argv[1]
     filename_out = sys.argv[2]

@@ -1,7 +1,7 @@
 '''
 Created on 30 Aug 2012
 
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 
 from dataprocessor.input.jcmlreader import JcmlReader
@@ -68,8 +68,8 @@ if __name__ == '__main__':
     datafile = sys.argv[1]
     
         
-    java_classpath = ["/share/emplus/software/meteor-1.3/meteor-1.3.jar","/home/elav01/taraxu_tools/meteor-1.3","/home/elav01/.local/share/py4j/py4j0.7.jar","/home/elav01/tools/TaraXUscripts/src/app/autoranking"]
-    dir_path = "/home/elav01/workspace/TaraXUscripts/src/app/autoranking"
+    java_classpath = ["/share/emplus/software/meteor-1.3/meteor-1.3.jar","/home/Eleftherios Avramidis/taraxu_tools/meteor-1.3","/home/Eleftherios Avramidis/.local/share/py4j/py4j0.7.jar","/home/Eleftherios Avramidis/tools/TaraXUscripts/src/app/autoranking"]
+    dir_path = "/home/Eleftherios Avramidis/workspace/TaraXUscripts/src/app/autoranking"
     meteor = MeteorGenerator("en", java_classpath, dir_path)
     
     scorers = [bleu, meteor]

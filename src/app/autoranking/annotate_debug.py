@@ -1,7 +1,7 @@
 '''
 Created on 17 Sep 2012
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 import shutil
@@ -39,5 +39,5 @@ def features_checker_target(input_file, output_file, target_language):
 #    saxjcml.run_features_generator(input_file, output_file, [cfg.get_checker(target_language)])
     
 if __name__ == '__main__':
-    #"/home/elav01/Desktop/wmt2008-de-en-jcml-rank.orig.debug2.jcml", "/home/elav01/Desktop/wmt2008-de-en-jcml-rank.orig.debug2.annotated.jcml", "en")
-    print features_checker_target("/local/elav01/selection-mechanism/autoranking/21/wmt2008-de-en-jcml-rank.orig.jcml", "/local/elav01/selection-mechanism/autoranking/21/wmt2008-de-en-jcml-rank.iq.en.f.jcml", "en") 
+    #"/home/Eleftherios Avramidis/Desktop/wmt2008-de-en-jcml-rank.orig.debug2.jcml", "/home/Eleftherios Avramidis/Desktop/wmt2008-de-en-jcml-rank.orig.debug2.annotated.jcml", "en")
+    print features_checker_target("/local/Eleftherios Avramidis/selection-mechanism/autoranking/21/wmt2008-de-en-jcml-rank.orig.jcml", "/local/Eleftherios Avramidis/selection-mechanism/autoranking/21/wmt2008-de-en-jcml-rank.iq.en.f.jcml", "en") 

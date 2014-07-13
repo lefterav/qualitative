@@ -1,7 +1,7 @@
 '''
 Created on 27 Feb 2012
 
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 import unittest
 from dataprocessor.input.jcmlreader import JcmlReader
@@ -12,8 +12,8 @@ from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
 class CoupledDataSetTest(unittest.TestCase):
 
     def setUp(self):
-        self.input_file = "/home/lefterav/taraxu_data/wmt12/qe/training_set/training-sample.jcml"
-        self.output_file = "/home/lefterav/taraxu_data/wmt12/qe/training_set/training-sample.coupled.jcml"
+        self.input_file = "/home/Eleftherios Avramidis/taraxu_data/wmt12/qe/training_set/training-sample.jcml"
+        self.output_file = "/home/Eleftherios Avramidis/taraxu_data/wmt12/qe/training_set/training-sample.coupled.jcml"
         self.simple_dataset = JcmlReader(self.input_file).get_dataset()
         self.coupled_dataset = CoupledDataSet(construct = self.simple_dataset)
         

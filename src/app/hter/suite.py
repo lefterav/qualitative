@@ -1,6 +1,6 @@
 '''
 Created on 04 Mar 2012
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 
 from Orange.regression.linear import LinearRegressionLearner 

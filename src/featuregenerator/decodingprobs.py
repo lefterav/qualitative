@@ -1,7 +1,7 @@
 '''
 Created on 05.10.2011
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 import re
 import numpy

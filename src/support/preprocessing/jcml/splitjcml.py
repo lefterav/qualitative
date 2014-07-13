@@ -1,7 +1,7 @@
 '''
 Created on 24 Oct 2012
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml

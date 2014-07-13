@@ -14,15 +14,15 @@ def _add_rank(dic, system):
     return dic
 
 if __name__ == '__main__':
-    parallelsentences = JcmlReader("/home/elav01/taraxu_data/ml4hmt/news-test2008-test.es-en.withlang.if.jcml").get_parallelsentences()
-    bleuoutput_file = open("/home/elav01/taraxu_data/ml4hmt/tst/sentence-bleu.txt", 'w')
-    levoutput_file = open("/home/elav01/taraxu_data/ml4hmt/tst/sentence-lev.txt", 'w')
-    ref_file = open("/home/elav01/taraxu_data/ml4hmt/tst/ref.txt", 'w')
+    parallelsentences = JcmlReader("/home/Eleftherios Avramidis/taraxu_data/ml4hmt/news-test2008-test.es-en.withlang.if.jcml").get_parallelsentences()
+    bleuoutput_file = open("/home/Eleftherios Avramidis/taraxu_data/ml4hmt/tst/sentence-bleu.txt", 'w')
+    levoutput_file = open("/home/Eleftherios Avramidis/taraxu_data/ml4hmt/tst/sentence-lev.txt", 'w')
+    ref_file = open("/home/Eleftherios Avramidis/taraxu_data/ml4hmt/tst/ref.txt", 'w')
     systems = 5
     system_file = {}
     for system in range(systems):
         system_name = "t%s" % str(system + 1)
-        system_file[system_name] = open("/home/elav01/taraxu_data/ml4hmt/tst/output-%s.txt" % system_name, 'w')
+        system_file[system_name] = open("/home/Eleftherios Avramidis/taraxu_data/ml4hmt/tst/output-%s.txt" % system_name, 'w')
     
     
     bleu_rankvector = {}
