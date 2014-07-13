@@ -1,7 +1,7 @@
 import os
 from orangereader import OrangeData
 from sentence.dataset import DataSet
-from io_utils.input.jcmlreader import JcmlReader
+from dataprocessor.input.jcmlreader import JcmlReader
 from orange import ExampleTable
 
 

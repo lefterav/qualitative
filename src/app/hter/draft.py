@@ -4,8 +4,8 @@ Created on 25 Mar 2014
 '''
 import sys
 import yaml
-from io_utils.sax.utils import join_filter_jcml, CEJcmlReader, join_jcml
-from io_utils.input.jcmlreader import JcmlReader
+from dataprocessor.sax.utils import join_filter_jcml, CEJcmlReader, join_jcml
+from dataprocessor.input.jcmlreader import JcmlReader
 from ml.lib.scikit.scikit import SkRegressor, TerRegressor, dataset_to_instances
 import logging as log
 import numpy as np

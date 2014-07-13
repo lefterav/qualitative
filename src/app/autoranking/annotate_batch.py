@@ -17,9 +17,9 @@ from ruffus.task import pipeline_printout_graph, pipeline_printout
 #internal code classes
 import bootstrap 
 cfg = bootstrap.get_cfg()
-from io_utils.input.jcmlreader import JcmlReader
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml 
-from io_utils.sax import saxjcml
+from dataprocessor.input.jcmlreader import JcmlReader
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml 
+from dataprocessor.sax import saxjcml
 from featuregenerator.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.parser.berkeley.cfgrules import CfgRulesExtractor
 from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
@@ -30,7 +30,7 @@ from featuregenerator.bleu.bleugenerator import CrossBleuGenerator, BleuGenerato
 from featuregenerator.meteor.meteor import CrossMeteorGenerator, MeteorGenerator
 from featuregenerator.ter import TerWrapper 
 from featuregenerator.attribute_rank import AttributeRankGenerator
-from io_utils.input.xmlreader import XmlReader
+from dataprocessor.input.xmlreader import XmlReader
 from featuregenerator.languagechecker.languagetool_socket import LanguageToolSocketFeatureGenerator
 from featuregenerator.preprocessor import Normalizer
 from featuregenerator.preprocessor import Tokenizer

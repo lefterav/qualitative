@@ -4,8 +4,8 @@ Created on 30 Aug 2012
 @author: lefterav
 '''
 
-from io_utils.input.jcmlreader import JcmlReader
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.input.jcmlreader import JcmlReader
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
 
 from featuregenerator.bleu import bleu
 from featuregenerator.bleu.bleugenerator import BleuGenerator

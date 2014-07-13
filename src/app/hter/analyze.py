@@ -1,8 +1,8 @@
 import logging as log
 import sys
-from io_utils.sax.utils import join_jcml
-from io_utils.ce.cejcml import CEJcmlStats
-from io_utils.input.jcmlreader import JcmlReader
+from dataprocessor.sax.utils import join_jcml
+from dataprocessor.ce.cejcml import CEJcmlStats
+from dataprocessor.input.jcmlreader import JcmlReader
 
 if __name__ == '__main__':
     #logging

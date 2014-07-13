@@ -6,11 +6,11 @@ Created on Aug 31, 2011
 
 import inspect
 import sys
-from io_utils.sax.saxjcml import SaxJCMLProcessor
+from dataprocessor.sax.saxjcml import SaxJCMLProcessor
 from xml.sax import make_parser
 
-from io_utils.input.jcmlreader import JcmlReader
-from io_utils.output.xmlwriter import XmlWriter
+from dataprocessor.input.jcmlreader import JcmlReader
+from dataprocessor.output.xmlwriter import XmlWriter
 
 class Task(object):
     '''

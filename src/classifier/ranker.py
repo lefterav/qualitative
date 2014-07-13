@@ -6,7 +6,7 @@ from sentence.rankhandler import RankHandler
 from featuregenerator.featuregenerator import FeatureGenerator
 from featuregenerator.diff_generator import DiffGenerator
 from sentence.dataset import DataSet
-from io_utils.input.orangereader import OrangeData
+from dataprocessor.input.orangereader import OrangeData
  
 class Ranker(FeatureGenerator):
     '''

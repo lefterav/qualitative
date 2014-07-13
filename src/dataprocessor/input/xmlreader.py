@@ -10,8 +10,8 @@ Created on 15 Οκτ 2010
 
 
 
-from io_utils.input.genericxmlreader import GenericXmlReader
-from io_utils.dataformat.jcmlformat import JcmlFormat
+from dataprocessor.input.genericxmlreader import GenericXmlReader
+from dataprocessor.dataformat.jcmlformat import JcmlFormat
 
 class XmlReader(GenericXmlReader):
     """

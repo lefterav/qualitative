@@ -16,9 +16,9 @@ from ruffus.task import pipeline_printout_graph, pipeline_printout
 
 #internal code classes
 from bootstrap import cfg
-from io_utils.input.jcmlreader import JcmlReader
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml 
-from io_utils.sax import saxjcml
+from dataprocessor.input.jcmlreader import JcmlReader
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml 
+from dataprocessor.sax import saxjcml
 from featuregenerator.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
 from featuregenerator.ratio_generator import RatioGenerator
@@ -27,7 +27,7 @@ from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenera
 from featuregenerator.bleu.bleugenerator import CrossBleuGenerator, BleuGenerator
 from featuregenerator.meteor.meteor import CrossMeteorGenerator, MeteorGenerator
 from featuregenerator.attribute_rank import AttributeRankGenerator
-from io_utils.input.xmlreader import XmlReader
+from dataprocessor.input.xmlreader import XmlReader
 from featuregenerator.languagechecker.languagetool_socket import LanguageToolSocketFeatureGenerator
 from featuregenerator.preprocessor import Normalizer
 from featuregenerator.preprocessor import Tokenizer

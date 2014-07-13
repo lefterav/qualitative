@@ -63,8 +63,8 @@ class ErrorPredictionSuite(object):
     def iterate(self, params, rep, n):
         ret = {}
         
-        from io_utils.input.jcmlreader import JcmlReader
-        from io_utils.sax.saxps2jcml import IncrementalJcml
+        from dataprocessor.input.jcmlreader import JcmlReader
+        from dataprocessor.sax.saxps2jcml import IncrementalJcml
         
         
         if n == 0:

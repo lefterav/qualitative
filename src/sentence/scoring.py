@@ -483,7 +483,7 @@ def regenerate_tau():
     in order to reproduce results without re-executing the app script
     """
     
-    from io_utils.input.jcmlreader import JcmlReader
+    from dataprocessor.input.jcmlreader import JcmlReader
     d = JcmlReader("testset.reconstructed.hard.jcml").get_dataset()
     scoringset = Scoring(d)
     print scoringset.get_kendall_tau("rank_hard", "rank")
