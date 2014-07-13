@@ -31,7 +31,7 @@ from util.jvm import JVM
 ##from classifier.svmeasy import SVMEasyLearner
 #from Orange.classification.tree import TreeLearner
 #from Orange.classification.logreg import LogRegLearner
-#from experiment.utils.ruffus_utils import (touch, sys_call,
+#from app.utils.ruffus_utils import (touch, sys_call,
 #                                           main_logger as log,
 #                                           main_mutex as log_mtx)
 
@@ -257,7 +257,7 @@ class ExperimentConfigParser(ConfigParser):
                
         os.chdir(path)
         #copy all configuration settings to the new directory
-        new_configfile = open("experiment.cfg",'w')
+        new_configfile = open("app.cfg",'w')
         self.write(new_configfile)
         new_configfile.close()
         self.path = path
@@ -266,7 +266,7 @@ class ExperimentConfigParser(ConfigParser):
         return path
     
     def _get_new_step_id(self, existing_files):
-        #subdirectories should only have as name the integer id of the experiment
+        #subdirectories should only have as name the integer id of the app
         filename_ids = []
         for filename in existing_files: #@todo add check if is directory or do better listing
             try:
@@ -275,11 +275,11 @@ class ExperimentConfigParser(ConfigParser):
                 pass
         current_step_id = 1
         
-        #add one to the get the id of this experiment
+        #add one to the get the id of this app
         if filename_ids:
             highestnum = max(filename_ids)
             current_step_id = highestnum + 1
-        sys.stderr.write("Running experiment as step {0}\n".format(current_step_id))
+        sys.stderr.write("Running app as step {0}\n".format(current_step_id))
         return current_step_id 
     
     def __del__(self):
@@ -307,7 +307,7 @@ def get_cfg():
     parser.add_argument('--selectpath', help="""If source and target language are set, 
                                                 then use all files in the indicated directory 
                                                 that have these language codes in their filename""")
-    parser.add_argument('--cont', help="""If you want to resume an existing experiment, 
+    parser.add_argument('--cont', help="""If you want to resume an existing app, 
                                           specify its folder name heres. This must be 
                                           an existing dir name""")
     parser.add_argument('--cores',  help='How many cores should be parallelized')

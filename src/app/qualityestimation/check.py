@@ -9,7 +9,7 @@ import argparse
 import sys
 
 """
-Gathers the WMT12 quality estimation results from the experiment folders created with python Experiment Suite
+Gathers the WMT12 quality estimation results from the app folders created with python Experiment Suite
 """
         
     
@@ -23,7 +23,7 @@ def sort_values(mysuite, directory, rep, mode):
     @type mysuite: L{ExperimentSuite}
     @param directory: the directory that will be searched for results. It needs to have the structure suported by Experiment Suite
     @type directory: str 
-    @return: A dictionary with one entry per experiment. 
+    @return: A dictionary with one entry per app. 
     The key of each entry is a tuple containing (attribute_set,classifier_name,discretization,filterscorediff) and 
     its value is a list of (float) values, respectively to their names entered in the list 'required_feature_names'
     """

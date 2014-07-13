@@ -12,8 +12,6 @@ from Orange.regression.tree import TreeLearner
 from Orange.classification.rules import CN2Learner,  CN2UnorderedLearner, CN2SDUnorderedLearner, CN2EVCUnorderedLearner
 from Orange import feature
 
-from Orange.feature.imputation import Defaults, ImputeLearner
-
 from Orange.classification.bayes import NaiveLearner
 from Orange.classification.knn import kNNLearner
 #from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
@@ -65,6 +63,7 @@ class AutorankingSuite(PyExperimentSuite):
         if classifier_name == "SVMEasyLearner":
             self.classifier_params["verbose"] = True
         
+        
         self.meta_attributes = params["meta_attributes"].split(",")
         self.include_references = params.setdefault("include_references", False)
         self.replacement = params.setdefault("replacement", True)
@@ -106,51 +105,30 @@ class AutorankingSuite(PyExperimentSuite):
         self.training_sets = params["training_sets"].format(**params).split(',')
         self.testset = params["test_set"].format(**params)
         self.ties = params["ties"]
+        
+        self.classifier_file = params["classifier_file"]
     
     
     def iterate(self, params, rep, n):
         ret = {}
         
-#        print "experiment", os.getcwd()
+#        print "app", os.getcwd()
 #        print "iteration", n
         
-#        if n == 0:
+        if n == 80:
+            objectfile = open(self.classifier_file, 'r')
+            self.classifier = OrangeClassifier(pickle.load(objectfile))
+            objectfile.close() 
 #            import annotate_updated as annotate
 #            from ruffus import pipeline_run
 #            pipeline_run([annotate.analyze_external        _features]) 
         
-        if n == 0:
-            print "fetch entire set"
-            parallelsentences = []
-            for training_set in self.training_sets:
-                parallelsentences.extend(JcmlReader(training_set).get_parallelsentences())
-            
-            self.trainset = DataSet(parallelsentences)  
-        
-        #TODO: alter training filters?
         
         if n == 10:
             print "fetch test set"
             shutil.copy(self.testset, "testset.jcml")
             self.testset = JcmlReader("testset.jcml").get_dataset() 
             
-        if n == 20:
-            print "pairwise training set"
-                
-            self.trainset = AnalyticPairwiseDataset(
-                                                    self.trainset, include_references = self.include_references, 
-                                                    replacement = self.replacement, 
-                                                    filter_unassigned = self.filter_unassigned,
-                                                    restrict_ranks = self.restrict_ranks,
-                                                    rank_name = self.class_name,
-                                                    invert_ranks = self.invert_ranks,
-                                                    )
-            
-            if not self.ties:  
-                self.trainset.remove_ties()
-            
-            #SAVE
-            Parallelsentence2Jcml(self.trainset).write_to_file("pairwise_trainset.jcml")    
             
         if n == 30:
             print "pairwise testset"
@@ -175,32 +153,6 @@ class AutorankingSuite(PyExperimentSuite):
 #            parallelsentences = DiffGenerator().add_features_batch(parallelsentences)
 #            Parallelsentence2Jcml(parallelsentences).write_to_file(self.pairwise_test_filename)  
             pass
-        
-        if n == 60:
-            print "produce orange trainset"
-            
-            input_file = "pairwise_trainset.jcml"
-            self.trainset_orange_filename = "trainset.tab"
-            
-            if os.path.isdir("/local"):
-                dir = "/local"
-            else:
-                dir = "."
-            
-            
-            CElementTreeJcml2Orange(input_file, 
-                 self.class_name,
-                 self.active_attributes, 
-                 self.meta_attributes, 
-                 self.trainset_orange_filename, 
-                 compact_mode = True, 
-                 discrete_attributes=self.discrete_attributes,
-                 hidden_attributes=self.hidden_attributes,
-                 get_nested_attributes=True,
-                 dir=dir
-                 #filter_attributes={"rank" : "0"},
-#                 class_type=
-                )
         
         
         if n == 70:
@@ -228,31 +180,22 @@ class AutorankingSuite(PyExperimentSuite):
 #                 class_type=class_type
                 )
             
-        if n == 80:
-            print "train classifier"
-            input_file = self.trainset_orange_filename 
-            self.output_file = "classifier.clsf"
-            
-            trainset = Table(input_file)
-            mylearner = self.learner(**self.classifier_params)
-            
-#            if params["classifier_name"] == "logReg":
-#                
-#                imputer = Defaults(trainset.domain)
-#                for att in trainset.domain.
-#                    
-#                
-#                implearner = ImputeLearner(base_learner=mylearner,
-#                    imputer_constructor=imputer)
+#        if n == 80:
+#            print "train classifier"
+#            input_file = self.trainset_orange_filename 
+#            self.output_file = "classifier.clsf"
 #            
-#            else:
-#                implearner = mylearner
+#            trainset = Table(input_file)
+#            
+#            mylearner = self.learner(**self.classifier_params)
+#            trained_classifier = mylearner(trainset)
+#            self.classifier = OrangeClassifier(trained_classifier)
+#            self.classifier.print_content()
+            
+        
+        
 
             
-            trained_classifier = mylearner(trainset)
-            self.classifier = OrangeClassifier(trained_classifier)
-            self.classifier.print_content()
-                        
         if n == 90:
             print "test_classifier"
             
@@ -325,10 +268,10 @@ class AutorankingSuite(PyExperimentSuite):
     
     
     def save_state(self, params, rep, n):
-        if n == 0:
-            Parallelsentence2Jcml(self.trainset).write_to_file("trainset.jcml") 
-        if n == 20:
-            Parallelsentence2Jcml(self.trainset).write_to_file("pairwise_trainset.jcml")
+#        if n == 0:
+#            Parallelsentence2Jcml(self.trainset).write_to_file("trainset.jcml") 
+#        if n == 20:
+#            Parallelsentence2Jcml(self.trainset).write_to_file("pairwise_trainset.jcml")
         if n == 30:
             Parallelsentence2Jcml(self.testset).write_to_file("pairwise_testset.jcml")   
         if n == 40:
@@ -336,10 +279,10 @@ class AutorankingSuite(PyExperimentSuite):
         if n == 50:
             Parallelsentence2Jcml(self.testset).write_to_file(self.pairwise_test_filename) 
         
-        if n == 80:
-            objectfile = open(self.output_file, 'w')
-            pickle.dump(self.classifier.classifier, objectfile)
-            objectfile.close()
+#        if n == 80:
+#            objectfile = open(self.output_file, 'w')
+#            pickle.dump(self.classifier.classifier, objectfile)
+#            objectfile.close()
         if n == 90:
             classified_vector_file = open("classified.hard.txt", 'w')
             for value in self.classified_values_vector:
@@ -360,15 +303,19 @@ class AutorankingSuite(PyExperimentSuite):
     
     def restore_state(self,params, rep, n):
         self.class_name = params["class_name"]
-        if n > 0 and n <=20 :
-            self.trainset = JcmlReader("trainset.jcml").get_dataset()
-        
+#        if n > 0 and n <=20 :
+#            self.trainset = JcmlReader("trainset.jcml").get_dataset()
+        if n > 80:
+            objectfile = open("classifier.clsf", 'r')
+            self.classifier = OrangeClassifier(pickle.load(objectfile))
+            objectfile.close()
+#        
         if n > 10 and n <=30 :
             self.testset = JcmlReader("testset.jcml").get_dataset()
         
-        if n > 20 and n <=40:
-            self.trainset =  JcmlReader("pairwise_trainset.jcml").get_dataset()
-            
+#        if n > 20 and n <=40:
+#            self.trainset =  JcmlReader("pairwise_trainset.jcml").get_dataset()
+#            
         if n > 30 and n <=50:
             self.testset = JcmlReader("pairwise_testset.jcml").get_dataset()
         
@@ -379,10 +326,10 @@ class AutorankingSuite(PyExperimentSuite):
         if n > 70:
             self.testset_orange_filename = "testset.tab"
         
-        if n > 80 and n <= 90:
-            objectfile = open("classifier.clsf", 'r')
-            self.classifier = OrangeClassifier(pickle.load(objectfile))
-            objectfile.close()
+#        if n > 80 and n <= 90:
+#            objectfile = open("classifier.clsf", 'r')
+#            self.classifier = OrangeClassifier(pickle.load(objectfile))
+#            objectfile.close()
         if n > 90:
             
             classified_vector_file = open("classified.hard.txt", 'r') 

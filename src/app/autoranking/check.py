@@ -11,7 +11,7 @@ import os
 import logging
 
 """
-Gathers the results from the experiment folders created with python Experiment Suite
+Gathers the results from the app folders created with python Experiment Suite
 """
         
     
@@ -27,7 +27,7 @@ def retrieve_results(mysuite, path, reps = [0]):
     @type path: str 
     @param reps: a list or a range of repetition values that need to be checked. For simple experiments only one repetition exists, so the default value is 0
     @type reps: [int, ...]
-    @return: A list of with one tuple per experiment. Each tuple contains a dictionary of the experiment parameters and a a dictionary of the result values
+    @return: A list of with one tuple per app. Each tuple contains a dictionary of the app parameters and a a dictionary of the result values
     @rtype: [({parameter_name:parameter_value},{result_name:result_value}), ...] 
     The key of each entry is a tuple containing (attribute_set,classifier_name,discretization,filterscorediff) and 
     its value is a list of (float) values, respectively to their names entered in the list 'required_feature_names'
@@ -39,14 +39,14 @@ def retrieve_results(mysuite, path, reps = [0]):
     logging.debug("exps: %s", exps)
     result_names = set()
     
-    #browse experiment directories one by one
+    #browse app directories one by one
     for exp in exps:
         for rep in reps:
-            #get a dictionary with all result values for the current experiment
+            #get a dictionary with all result values for the current app
             values = mysuite.get_value(exp, rep, 'all')
             if values:
                 params = mysuite.get_params(exp)
-                params["experiment"] = os.path.basename(os.path.dirname(exp))
+                params["app"] = os.path.basename(os.path.dirname(exp))
                 results.append((params, values))
     logging.info("found %s experiments", len(results))
     
@@ -113,7 +113,7 @@ if __name__ == "__main__":
     
     
     #dev example 
-    #python2.7 check.py --path /home/elav01/taraxu_data/selection-mechanism/emnlp/experiment/4b --reps 0 --config config/autoranking.suite.bernux.cfg --params experiment classifier att mode ties include_references  > test.csv
+    #python2.7 check.py --path /home/elav01/taraxu_data/selection-mechanism/emnlp/app/4b --reps 0 --config config/autoranking.suite.bernux.cfg --params app classifier att mode ties include_references  > test.csv
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('--path', nargs=1,
                    help='the path were experiments will be found')

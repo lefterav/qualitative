@@ -124,7 +124,7 @@ class AutorankingSuite(PyExperimentSuite):
     def iterate(self, params, rep, n):
         ret = {}
         
-#        print "experiment", os.getcwd()
+#        print "app", os.getcwd()
 #        print "iteration", n
         
 #        if n == 0:
