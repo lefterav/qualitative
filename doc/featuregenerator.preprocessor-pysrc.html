@@ -1,0 +1,1058 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>featuregenerator.preprocessor</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="featuregenerator-module.html">Package&nbsp;featuregenerator</a> ::
+        Module&nbsp;preprocessor
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="featuregenerator.preprocessor-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="featuregenerator.preprocessor-module.html">Module featuregenerator.preprocessor</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">Created on 24 Mar 2012</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">@author: lefterav</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package featuregenerator=featuregenerator-module.html,Module featuregenerator.featuregenerator=featuregenerator.featuregenerator-module.html"><a title="featuregenerator
+featuregenerator.featuregenerator" class="py-name" href="#" onclick="return doclink('link-0', 'featuregenerator', 'link-0');">featuregenerator</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Class featuregenerator.featuregenerator.FeatureGenerator=featuregenerator.featuregenerator.FeatureGenerator-class.html"><a title="featuregenerator.featuregenerator.FeatureGenerator" class="py-name" href="#" onclick="return doclink('link-1', 'FeatureGenerator', 'link-1');">FeatureGenerator</a></tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">subprocess</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Package util=util-module.html"><a title="util" class="py-name" href="#" onclick="return doclink('link-2', 'util', 'link-2');">util</a></tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">codecs</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">Queue</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">threading</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-3" class="py-name" targets="Package sentence=sentence-module.html,Module sentence.sentence=sentence.sentence-module.html"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-3', 'sentence', 'link-3');">sentence</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Module sentence.dataset=sentence.dataset-module.html"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-4', 'dataset', 'link-4');">dataset</a></tt> <tt class="py-keyword">import</tt> <tt id="link-5" class="py-name" targets="Class sentence.dataset.DataSet=sentence.dataset.DataSet-class.html"><a title="sentence.dataset.DataSet" class="py-name" href="#" onclick="return doclink('link-5', 'DataSet', 'link-5');">DataSet</a></tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"> </tt>
+<a name="Preprocessor"></a><div id="Preprocessor-def"><a name="L17"></a><tt class="py-lineno"> 17</tt> <a class="py-toggle" href="#" id="Preprocessor-toggle" onclick="return toggle('Preprocessor');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="featuregenerator.preprocessor.Preprocessor-class.html">Preprocessor</a><tt class="py-op">(</tt><tt class="py-base-class">FeatureGenerator</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Preprocessor-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Preprocessor-expanded"><a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="Preprocessor.__init__"></a><div id="Preprocessor.__init__-def"><a name="L20"></a><tt class="py-lineno"> 20</tt> <a class="py-toggle" href="#" id="Preprocessor.__init__-toggle" onclick="return toggle('Preprocessor.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.preprocessor.Preprocessor-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">lang</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Preprocessor.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Preprocessor.__init__-expanded"><a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">lang</tt> <tt class="py-op">=</tt> <tt class="py-name">lang</tt> </tt>
+</div><a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">     </tt>
+<a name="Preprocessor.add_features_src"></a><div id="Preprocessor.add_features_src-def"><a name="L23"></a><tt class="py-lineno"> 23</tt> <a class="py-toggle" href="#" id="Preprocessor.add_features_src-toggle" onclick="return toggle('Preprocessor.add_features_src');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.preprocessor.Preprocessor-class.html#add_features_src">add_features_src</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">simplesentence</tt><tt class="py-op">,</tt> <tt class="py-param">parallelsentence</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Preprocessor.add_features_src-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Preprocessor.add_features_src-expanded"><a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">        <tt class="py-name">src_lang</tt> <tt class="py-op">=</tt> <tt id="link-6" class="py-name" targets="Module sentence.parallelsentence=sentence.parallelsentence-module.html"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-6', 'parallelsentence', 'link-6');">parallelsentence</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method sentence.parallelsentence.ParallelSentence.get_attribute()=sentence.parallelsentence.ParallelSentence-class.html#get_attribute,Method sentence.sentence.SimpleSentence.get_attribute()=sentence.sentence.SimpleSentence-class.html#get_attribute"><a title="sentence.parallelsentence.ParallelSentence.get_attribute
+sentence.sentence.SimpleSentence.get_attribute" class="py-name" href="#" onclick="return doclink('link-7', 'get_attribute', 'link-7');">get_attribute</a></tt><tt class="py-op">(</tt><tt class="py-string">"langsrc"</tt><tt class="py-op">)</tt> <tt class="py-comment">#TODO: make this format independent by adding it as an attribute of the sentence objects</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">src_lang</tt> <tt class="py-op">==</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">lang</tt><tt class="py-op">:</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">            <tt class="py-name">simplesentence</tt><tt class="py-op">.</tt><tt class="py-name">string</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method featuregenerator.preprocessor.CommandlinePreprocessor.process_string()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#process_string,Method featuregenerator.preprocessor.Preprocessor.process_string()=featuregenerator.preprocessor.Preprocessor-class.html#process_string"><a title="featuregenerator.preprocessor.CommandlinePreprocessor.process_string
+featuregenerator.preprocessor.Preprocessor.process_string" class="py-name" href="#" onclick="return doclink('link-8', 'process_string', 'link-8');">process_string</a></tt><tt class="py-op">(</tt><tt class="py-name">simplesentence</tt><tt class="py-op">.</tt><tt class="py-name">string</tt><tt class="py-op">)</tt>   </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">simplesentence</tt> </tt>
+</div><a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">     </tt>
+<a name="Preprocessor.add_features_tgt"></a><div id="Preprocessor.add_features_tgt-def"><a name="L29"></a><tt class="py-lineno"> 29</tt> <a class="py-toggle" href="#" id="Preprocessor.add_features_tgt-toggle" onclick="return toggle('Preprocessor.add_features_tgt');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.preprocessor.Preprocessor-class.html#add_features_tgt">add_features_tgt</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">simplesentence</tt><tt class="py-op">,</tt> <tt class="py-param">parallelsentence</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Preprocessor.add_features_tgt-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Preprocessor.add_features_tgt-expanded"><a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">        <tt class="py-name">tgt_lang</tt> <tt class="py-op">=</tt> <tt id="link-9" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-9', 'parallelsentence', 'link-6');">parallelsentence</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name"><a title="sentence.parallelsentence.ParallelSentence.get_attribute
+sentence.sentence.SimpleSentence.get_attribute" class="py-name" href="#" onclick="return doclink('link-10', 'get_attribute', 'link-7');">get_attribute</a></tt><tt class="py-op">(</tt><tt class="py-string">"langtgt"</tt><tt class="py-op">)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">tgt_lang</tt> <tt class="py-op">==</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">lang</tt><tt class="py-op">:</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">            <tt class="py-name">simplesentence</tt><tt class="py-op">.</tt><tt class="py-name">string</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name"><a title="featuregenerator.preprocessor.CommandlinePreprocessor.process_string
+featuregenerator.preprocessor.Preprocessor.process_string" class="py-name" href="#" onclick="return doclink('link-11', 'process_string', 'link-8');">process_string</a></tt><tt class="py-op">(</tt><tt class="py-name">simplesentence</tt><tt class="py-op">.</tt><tt class="py-name">string</tt><tt class="py-op">)</tt>   </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">simplesentence</tt> </tt>
+</div><a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">     </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">     </tt>
+<a name="Preprocessor.process_string"></a><div id="Preprocessor.process_string-def"><a name="L36"></a><tt class="py-lineno"> 36</tt> <a class="py-toggle" href="#" id="Preprocessor.process_string-toggle" onclick="return toggle('Preprocessor.process_string');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.preprocessor.Preprocessor-class.html#process_string">process_string</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">string</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Preprocessor.process_string-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Preprocessor.process_string-expanded"><a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt> </tt>
+</div></div><a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">     </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">     </tt>
+<a name="CommandlinePreprocessor"></a><div id="CommandlinePreprocessor-def"><a name="L40"></a><tt class="py-lineno"> 40</tt> <a class="py-toggle" href="#" id="CommandlinePreprocessor-toggle" onclick="return toggle('CommandlinePreprocessor');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="featuregenerator.preprocessor.CommandlinePreprocessor-class.html">CommandlinePreprocessor</a><tt class="py-op">(</tt><tt class="py-base-class">Preprocessor</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CommandlinePreprocessor-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="CommandlinePreprocessor-expanded"><a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">     </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">     </tt>
+<a name="CommandlinePreprocessor._enqueue_output"></a><div id="CommandlinePreprocessor._enqueue_output-def"><a name="L43"></a><tt class="py-lineno"> 43</tt> <a class="py-toggle" href="#" id="CommandlinePreprocessor._enqueue_output-toggle" onclick="return toggle('CommandlinePreprocessor._enqueue_output');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.preprocessor.CommandlinePreprocessor-class.html#_enqueue_output">_enqueue_output</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">stdout</tt><tt class="py-op">,</tt> <tt class="py-param">queue</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CommandlinePreprocessor._enqueue_output-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CommandlinePreprocessor._enqueue_output-expanded"><a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">        <tt id="link-12" class="py-name" targets="Variable support.extract_translations.out=support.extract_translations-module.html#out,Variable support.extract_translations2.out=support.extract_translations2-module.html#out"><a title="support.extract_translations.out
+support.extract_translations2.out" class="py-name" href="#" onclick="return doclink('link-12', 'out', 'link-12');">out</a></tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">line</tt> <tt class="py-keyword">in</tt> <tt class="py-name">iter</tt><tt class="py-op">(</tt><tt class="py-name">stdout</tt><tt class="py-op">.</tt><tt class="py-name">readline</tt><tt class="py-op">,</tt> <tt class="py-string">''</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">            <tt class="py-keyword">print</tt> <tt class="py-string">"thread received response: "</tt><tt class="py-op">,</tt> <tt class="py-name">line</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">            <tt class="py-name">queue</tt><tt class="py-op">.</tt><tt class="py-name">put</tt><tt class="py-op">(</tt><tt class="py-name">line</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-comment">#            break</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">     </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">     </tt>
+<a name="CommandlinePreprocessor.__init__"></a><div id="CommandlinePreprocessor.__init__-def"><a name="L57"></a><tt class="py-lineno"> 57</tt> <a class="py-toggle" href="#" id="CommandlinePreprocessor.__init__-toggle" onclick="return toggle('CommandlinePreprocessor.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.preprocessor.CommandlinePreprocessor-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">path</tt><tt class="py-op">,</tt> <tt class="py-param">lang</tt><tt class="py-op">,</tt> <tt class="py-param">params</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> <tt class="py-param">command_template</tt> <tt class="py-op">=</tt> <tt class="py-string">""</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CommandlinePreprocessor.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CommandlinePreprocessor.__init__-expanded"><a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">lang</tt> <tt class="py-op">=</tt> <tt class="py-name">lang</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">        <tt id="link-13" class="py-name" targets="Variable experiment.autoranking.annotate_updated.params=experiment.autoranking.annotate_updated-module.html#params,Variable experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params=experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival-module.html#params,Variable experiment.ml4hmt12.annotate_updated.params=experiment.ml4hmt12.annotate_updated-module.html#params"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-13', 'params', 'link-13');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"lang"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">lang</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">        <tt id="link-14" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-14', 'params', 'link-13');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"path"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-15" class="py-name" targets="Variable experiment.autoranking.annotate.path=experiment.autoranking.annotate-module.html#path,Variable experiment.autoranking.annotate_updated.path=experiment.autoranking.annotate_updated-module.html#path,Variable experiment.autoranking.autoranking.path=experiment.autoranking.autoranking-module.html#path,Variable experiment.ml4hmt12.annotate_updated.path=experiment.ml4hmt12.annotate_updated-module.html#path,Variable experiment.ml4hmt12.bootstrap.path=experiment.ml4hmt12.bootstrap-module.html#path"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-15', 'path', 'link-15');">path</a></tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name" targets="Module experiment.autoranking.command=experiment.autoranking.command-module.html"><a title="experiment.autoranking.command" class="py-name" href="#" onclick="return doclink('link-16', 'command', 'link-16');">command</a></tt> <tt class="py-op">=</tt> <tt class="py-name">command_template</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-op">**</tt><tt id="link-17" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-17', 'params', 'link-13');">params</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt class="py-name">command_items</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name"><a title="experiment.autoranking.command" class="py-name" href="#" onclick="return doclink('link-18', 'command', 'link-16');">command</a></tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Method sentence.dataset.DataSet.split()=sentence.dataset.DataSet-class.html#split"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-19', 'split', 'link-19');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">' '</tt><tt class="py-op">)</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name" targets="Variable experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.output=experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival-module.html#output,Variable experiment.experiment.Experiment.output=experiment.experiment.Experiment-class.html#output,Variable experiment.phase.Phase.output=experiment.phase.Phase-class.html#output,Package io_utils.output=io_utils.output-module.html"><a title="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.output
+experiment.experiment.Experiment.output
+experiment.phase.Phase.output
+io_utils.output" class="py-name" href="#" onclick="return doclink('link-20', 'output', 'link-20');">output</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">running</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">         </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Method support.evaluation.wmt12.wmt_scoring.WmtScoring.process()=support.evaluation.wmt12.wmt_scoring.WmtScoring-class.html#process,Method support.preprocessing.jcml.jcml2arff.Jcml2Arff.process()=support.preprocessing.jcml.jcml2arff.Jcml2Arff-class.html#process,Function support.preprocessing.jcml.wmt12decodingfeatures2jcml.process()=support.preprocessing.jcml.wmt12decodingfeatures2jcml-module.html#process"><a title="support.evaluation.wmt12.wmt_scoring.WmtScoring.process
+support.preprocessing.jcml.jcml2arff.Jcml2Arff.process
+support.preprocessing.jcml.wmt12decodingfeatures2jcml.process" class="py-name" href="#" onclick="return doclink('link-21', 'process', 'link-21');">process</a></tt> <tt class="py-op">=</tt> <tt class="py-name">subprocess</tt><tt class="py-op">.</tt><tt class="py-name">Popen</tt><tt class="py-op">(</tt><tt class="py-name">command_items</tt><tt class="py-op">,</tt>  </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">                                        <tt class="py-name">shell</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">,</tt>  </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">                                        <tt class="py-name">bufsize</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">,</tt>  </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">                                        <tt class="py-name">stdin</tt><tt class="py-op">=</tt><tt class="py-name">subprocess</tt><tt class="py-op">.</tt><tt class="py-name">PIPE</tt><tt class="py-op">,</tt>  </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">                                        <tt class="py-name">stdout</tt><tt class="py-op">=</tt><tt class="py-name">subprocess</tt><tt class="py-op">.</tt><tt class="py-name">PIPE</tt><tt class="py-op">,</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+</div><a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">         </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-comment">#        self.q = Queue.Queue()</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-comment">#        t = threading.Thread(target = self._enqueue_output, args = (self.process.stdout, self.q))</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"><tt class="py-comment">#        t.daemon = True</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"><tt class="py-comment">#        t.start()</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">         </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">         </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">         </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">         </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">        <tt class="py-comment">#self.process.stdin = codecs.getwriter('utf-8')(self.process.stdin)</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">        <tt class="py-comment">#self.process.stdout = codecs.getreader('utf-8')(self.process.stdout)</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">     </tt>
+<a name="CommandlinePreprocessor.process_string"></a><div id="CommandlinePreprocessor.process_string-def"><a name="L87"></a><tt class="py-lineno"> 87</tt> <a class="py-toggle" href="#" id="CommandlinePreprocessor.process_string-toggle" onclick="return toggle('CommandlinePreprocessor.process_string');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.preprocessor.CommandlinePreprocessor-class.html#process_string">process_string</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">string</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CommandlinePreprocessor.process_string-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CommandlinePreprocessor.process_string-expanded"><a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-comment">#string = string.decode('utf-8')</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">         </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">        <tt class="py-comment">#string = string.encode('utf-8')</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name"><a title="support.evaluation.wmt12.wmt_scoring.WmtScoring.process
+support.preprocessing.jcml.jcml2arff.Jcml2Arff.process
+support.preprocessing.jcml.wmt12decodingfeatures2jcml.process" class="py-name" href="#" onclick="return doclink('link-22', 'process', 'link-21');">process</a></tt><tt class="py-op">.</tt><tt class="py-name">stdin</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Method experiment.autoranking.decode.StreamToLogger.write()=experiment.autoranking.decode.StreamToLogger-class.html#write,Method experiment.autoranking.suite.StreamToLogger.write()=experiment.autoranking.suite.StreamToLogger-class.html#write,Method experiment.autorankingsearch.suite.StreamToLogger.write()=experiment.autorankingsearch.suite.StreamToLogger-class.html#write,Method experiment.autoranksvm.suite.StreamToLogger.write()=experiment.autoranksvm.suite.StreamToLogger-class.html#write,Method experiment.ml4hmt12.suite.StreamToLogger.write()=experiment.ml4hmt12.suite.StreamToLogger-class.html#write,Method experiment.ml4hmt12.test.StreamToLogger.write()=experiment.ml4hmt12.test.StreamToLogger-class.html#write,Method sentence.coupleddataset.CoupledDataSetDisk.write()=sentence.coupleddataset.CoupledDataSetDisk-class.html#write"><a title="experiment.autoranking.decode.StreamToLogger.write
+experiment.autoranking.suite.StreamToLogger.write
+experiment.autorankingsearch.suite.StreamToLogger.write
+experiment.autoranksvm.suite.StreamToLogger.write
+experiment.ml4hmt12.suite.StreamToLogger.write
+experiment.ml4hmt12.test.StreamToLogger.write
+sentence.coupleddataset.CoupledDataSetDisk.write" class="py-name" href="#" onclick="return doclink('link-23', 'write', 'link-23');">write</a></tt><tt class="py-op">(</tt><tt class="py-string">'{0}{1}\n'</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">string</tt><tt class="py-op">,</tt> <tt class="py-string">' '</tt><tt class="py-op">*</tt><tt class="py-number">10240</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="support.evaluation.wmt12.wmt_scoring.WmtScoring.process
+support.preprocessing.jcml.jcml2arff.Jcml2Arff.process
+support.preprocessing.jcml.wmt12decodingfeatures2jcml.process" class="py-name" href="#" onclick="return doclink('link-24', 'process', 'link-21');">process</a></tt><tt class="py-op">.</tt><tt class="py-name">stdin</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Method experiment.autoranking.decode.StreamToLogger.flush()=experiment.autoranking.decode.StreamToLogger-class.html#flush,Method experiment.autoranking.suite.StreamToLogger.flush()=experiment.autoranking.suite.StreamToLogger-class.html#flush,Method experiment.autorankingsearch.suite.StreamToLogger.flush()=experiment.autorankingsearch.suite.StreamToLogger-class.html#flush,Method experiment.autoranksvm.suite.StreamToLogger.flush()=experiment.autoranksvm.suite.StreamToLogger-class.html#flush,Method experiment.ml4hmt12.suite.StreamToLogger.flush()=experiment.ml4hmt12.suite.StreamToLogger-class.html#flush,Method experiment.ml4hmt12.test.StreamToLogger.flush()=experiment.ml4hmt12.test.StreamToLogger-class.html#flush,Method support.produceJudgmentFeatures.JudgedSet.flush()=support.produceJudgmentFeatures.JudgedSet-class.html#flush"><a title="experiment.autoranking.decode.StreamToLogger.flush
+experiment.autoranking.suite.StreamToLogger.flush
+experiment.autorankingsearch.suite.StreamToLogger.flush
+experiment.autoranksvm.suite.StreamToLogger.flush
+experiment.ml4hmt12.suite.StreamToLogger.flush
+experiment.ml4hmt12.test.StreamToLogger.flush
+support.produceJudgmentFeatures.JudgedSet.flush" class="py-name" href="#" onclick="return doclink('link-25', 'flush', 'link-25');">flush</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt>    </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name"><a title="support.evaluation.wmt12.wmt_scoring.WmtScoring.process
+support.preprocessing.jcml.jcml2arff.Jcml2Arff.process
+support.preprocessing.jcml.wmt12decodingfeatures2jcml.process" class="py-name" href="#" onclick="return doclink('link-26', 'process', 'link-21');">process</a></tt><tt class="py-op">.</tt><tt class="py-name">stdout</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name"><a title="experiment.autoranking.decode.StreamToLogger.flush
+experiment.autoranking.suite.StreamToLogger.flush
+experiment.autorankingsearch.suite.StreamToLogger.flush
+experiment.autoranksvm.suite.StreamToLogger.flush
+experiment.ml4hmt12.suite.StreamToLogger.flush
+experiment.ml4hmt12.test.StreamToLogger.flush
+support.produceJudgmentFeatures.JudgedSet.flush" class="py-name" href="#" onclick="return doclink('link-27', 'flush', 'link-25');">flush</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">         </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">        <tt id="link-28" class="py-name"><a title="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.output
+experiment.experiment.Experiment.output
+experiment.phase.Phase.output
+io_utils.output" class="py-name" href="#" onclick="return doclink('link-28', 'output', 'link-20');">output</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name"><a title="support.evaluation.wmt12.wmt_scoring.WmtScoring.process
+support.preprocessing.jcml.jcml2arff.Jcml2Arff.process
+support.preprocessing.jcml.wmt12decodingfeatures2jcml.process" class="py-name" href="#" onclick="return doclink('link-29', 'process', 'link-21');">process</a></tt><tt class="py-op">.</tt><tt class="py-name">stdout</tt><tt class="py-op">.</tt><tt class="py-name">readline</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">         </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">        <tt class="py-comment">#some preprocessors occasionally return an empty string. In that case read once more</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-30" class="py-name"><a title="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.output
+experiment.experiment.Experiment.output
+experiment.phase.Phase.output
+io_utils.output" class="py-name" href="#" onclick="return doclink('link-30', 'output', 'link-20');">output</a></tt> <tt class="py-op">==</tt> <tt class="py-string">""</tt> <tt class="py-keyword">and</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">string</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">            <tt id="link-31" class="py-name"><a title="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.output
+experiment.experiment.Experiment.output
+experiment.phase.Phase.output
+io_utils.output" class="py-name" href="#" onclick="return doclink('link-31', 'output', 'link-20');">output</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="support.evaluation.wmt12.wmt_scoring.WmtScoring.process
+support.preprocessing.jcml.jcml2arff.Jcml2Arff.process
+support.preprocessing.jcml.wmt12decodingfeatures2jcml.process" class="py-name" href="#" onclick="return doclink('link-32', 'process', 'link-21');">process</a></tt><tt class="py-op">.</tt><tt class="py-name">stdout</tt><tt class="py-op">.</tt><tt class="py-name">readline</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">         </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-33" class="py-name"><a title="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.output
+experiment.experiment.Experiment.output
+experiment.phase.Phase.output
+io_utils.output" class="py-name" href="#" onclick="return doclink('link-33', 'output', 'link-20');">output</a></tt> </tt>
+</div><a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">     </tt>
+<a name="CommandlinePreprocessor.close"></a><div id="CommandlinePreprocessor.close-def"><a name="L103"></a><tt class="py-lineno">103</tt> <a class="py-toggle" href="#" id="CommandlinePreprocessor.close-toggle" onclick="return toggle('CommandlinePreprocessor.close');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.preprocessor.CommandlinePreprocessor-class.html#close">close</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CommandlinePreprocessor.close-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CommandlinePreprocessor.close-expanded"><a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">running</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name"><a title="support.evaluation.wmt12.wmt_scoring.WmtScoring.process
+support.preprocessing.jcml.jcml2arff.Jcml2Arff.process
+support.preprocessing.jcml.wmt12decodingfeatures2jcml.process" class="py-name" href="#" onclick="return doclink('link-34', 'process', 'link-21');">process</a></tt><tt class="py-op">.</tt><tt class="py-name">stdin</tt><tt class="py-op">.</tt><tt id="link-35" class="py-name" targets="Method featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close()=featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html#close,Method featuregenerator.preprocessor.CommandlinePreprocessor.close()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#close,Method io_utils.sax.saxps2jcml.IncrementalJcml.close()=io_utils.sax.saxps2jcml.IncrementalJcml-class.html#close,Method support.preprocessing.jcml.jcml2arff.ArffWriter.close()=support.preprocessing.jcml.jcml2arff.ArffWriter-class.html#close"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-35', 'close', 'link-35');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name"><a title="support.evaluation.wmt12.wmt_scoring.WmtScoring.process
+support.preprocessing.jcml.jcml2arff.Jcml2Arff.process
+support.preprocessing.jcml.wmt12decodingfeatures2jcml.process" class="py-name" href="#" onclick="return doclink('link-36', 'process', 'link-21');">process</a></tt><tt class="py-op">.</tt><tt id="link-37" class="py-name" targets="Method util.jvm.JVM.terminate()=util.jvm.JVM-class.html#terminate"><a title="util.jvm.JVM.terminate" class="py-name" href="#" onclick="return doclink('link-37', 'terminate', 'link-37');">terminate</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">            <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">     </tt>
+<a name="CommandlinePreprocessor.__del__"></a><div id="CommandlinePreprocessor.__del__-def"><a name="L111"></a><tt class="py-lineno">111</tt> <a class="py-toggle" href="#" id="CommandlinePreprocessor.__del__-toggle" onclick="return toggle('CommandlinePreprocessor.__del__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.preprocessor.CommandlinePreprocessor-class.html#__del__">__del__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CommandlinePreprocessor.__del__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CommandlinePreprocessor.__del__-expanded"><a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-38', 'close', 'link-35');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">         </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">     </tt>
+<a name="CommandlinePreprocessor._get_temporary_file"></a><div id="CommandlinePreprocessor._get_temporary_file-def"><a name="L115"></a><tt class="py-lineno">115</tt> <a class="py-toggle" href="#" id="CommandlinePreprocessor._get_temporary_file-toggle" onclick="return toggle('CommandlinePreprocessor._get_temporary_file');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.preprocessor.CommandlinePreprocessor-class.html#_get_temporary_file">_get_temporary_file</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">strings</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CommandlinePreprocessor._get_temporary_file-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CommandlinePreprocessor._get_temporary_file-expanded"><a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt class="py-name">tempfile</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">                 </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">        <tt id="link-39" class="py-name" targets="Variable classifier.extract_liblinear_weights.f=classifier.extract_liblinear_weights-module.html#f,Variable classifier.extract_linear_regression_coefficients.f=classifier.extract_linear_regression_coefficients-module.html#f,Variable classifier.extract_logreg_weight.f=classifier.extract_logreg_weight-module.html#f,Variable experiment.autoranking.getlogregweights.f=experiment.autoranking.getlogregweights-module.html#f"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-39', 'f', 'link-39');">f</a></tt><tt class="py-op">,</tt> <tt id="link-40" class="py-name" targets="Variable experiment.data.Data.filename=experiment.data.Data-class.html#filename,Variable support.preprocessing.appraise_time_stats.filename=support.preprocessing.appraise_time_stats-module.html#filename"><a title="experiment.data.Data.filename
+support.preprocessing.appraise_time_stats.filename" class="py-name" href="#" onclick="return doclink('link-40', 'filename', 'link-40');">filename</a></tt> <tt class="py-op">=</tt> <tt class="py-name">tempfile</tt><tt class="py-op">.</tt><tt class="py-name">mkstemp</tt><tt class="py-op">(</tt><tt class="py-name">text</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">        <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-41" class="py-name"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-41', 'close', 'link-35');">close</a></tt><tt class="py-op">(</tt><tt id="link-42" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-42', 'f', 'link-39');">f</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt id="link-43" class="py-name"><a title="experiment.data.Data.filename
+support.preprocessing.appraise_time_stats.filename" class="py-name" href="#" onclick="return doclink('link-43', 'filename', 'link-40');">filename</a></tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">        <tt id="link-44" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-44', 'f', 'link-39');">f</a></tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt id="link-45" class="py-name"><a title="experiment.data.Data.filename
+support.preprocessing.appraise_time_stats.filename" class="py-name" href="#" onclick="return doclink('link-45', 'filename', 'link-40');">filename</a></tt><tt class="py-op">,</tt> <tt class="py-string">'w'</tt><tt class="py-op">)</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">string</tt> <tt class="py-keyword">in</tt> <tt class="py-name">strings</tt><tt class="py-op">:</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">            <tt id="link-46" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-46', 'f', 'link-39');">f</a></tt><tt class="py-op">.</tt><tt id="link-47" class="py-name"><a title="experiment.autoranking.decode.StreamToLogger.write
+experiment.autoranking.suite.StreamToLogger.write
+experiment.autorankingsearch.suite.StreamToLogger.write
+experiment.autoranksvm.suite.StreamToLogger.write
+experiment.ml4hmt12.suite.StreamToLogger.write
+experiment.ml4hmt12.test.StreamToLogger.write
+sentence.coupleddataset.CoupledDataSetDisk.write" class="py-name" href="#" onclick="return doclink('link-47', 'write', 'link-23');">write</a></tt><tt class="py-op">(</tt><tt class="py-name">string</tt><tt class="py-op">)</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">            <tt id="link-48" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-48', 'f', 'link-39');">f</a></tt><tt class="py-op">.</tt><tt id="link-49" class="py-name"><a title="experiment.autoranking.decode.StreamToLogger.write
+experiment.autoranking.suite.StreamToLogger.write
+experiment.autorankingsearch.suite.StreamToLogger.write
+experiment.autoranksvm.suite.StreamToLogger.write
+experiment.ml4hmt12.suite.StreamToLogger.write
+experiment.ml4hmt12.test.StreamToLogger.write
+sentence.coupleddataset.CoupledDataSetDisk.write" class="py-name" href="#" onclick="return doclink('link-49', 'write', 'link-23');">write</a></tt><tt class="py-op">(</tt><tt class="py-string">'\n'</tt><tt class="py-op">)</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">        <tt id="link-50" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-50', 'f', 'link-39');">f</a></tt><tt class="py-op">.</tt><tt id="link-51" class="py-name"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-51', 'close', 'link-35');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-52" class="py-name"><a title="experiment.data.Data.filename
+support.preprocessing.appraise_time_stats.filename" class="py-name" href="#" onclick="return doclink('link-52', 'filename', 'link-40');">filename</a></tt> </tt>
+</div><a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">     </tt>
+<a name="CommandlinePreprocessor._get_tool_output"></a><div id="CommandlinePreprocessor._get_tool_output-def"><a name="L128"></a><tt class="py-lineno">128</tt> <a class="py-toggle" href="#" id="CommandlinePreprocessor._get_tool_output-toggle" onclick="return toggle('CommandlinePreprocessor._get_tool_output');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.preprocessor.CommandlinePreprocessor-class.html#_get_tool_output">_get_tool_output</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">strings</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CommandlinePreprocessor._get_tool_output-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CommandlinePreprocessor._get_tool_output-expanded"><a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">        <tt class="py-name">tmpfilename</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name" targets="Method featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator._get_temporary_file()=featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html#_get_temporary_file,Method featuregenerator.preprocessor.CommandlinePreprocessor._get_temporary_file()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#_get_temporary_file"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator._get_temporary_file
+featuregenerator.preprocessor.CommandlinePreprocessor._get_temporary_file" class="py-name" href="#" onclick="return doclink('link-53', '_get_temporary_file', 'link-53');">_get_temporary_file</a></tt><tt class="py-op">(</tt><tt class="py-name">strings</tt><tt class="py-op">)</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">        <tt class="py-name">tmpfile</tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">tmpfilename</tt><tt class="py-op">,</tt> <tt class="py-string">'r'</tt><tt class="py-op">)</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">        <tt class="py-name">commanditems</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name"><a title="experiment.autoranking.command" class="py-name" href="#" onclick="return doclink('link-54', 'command', 'link-16');">command</a></tt><tt class="py-op">.</tt><tt id="link-55" class="py-name"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-55', 'split', 'link-19');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">' '</tt><tt class="py-op">)</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">        <tt id="link-56" class="py-name"><a title="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.output
+experiment.experiment.Experiment.output
+experiment.phase.Phase.output
+io_utils.output" class="py-name" href="#" onclick="return doclink('link-56', 'output', 'link-20');">output</a></tt> <tt class="py-op">=</tt> <tt class="py-name">subprocess</tt><tt class="py-op">.</tt><tt class="py-name">check_output</tt><tt class="py-op">(</tt><tt class="py-name">commanditems</tt><tt class="py-op">,</tt> <tt class="py-name">stdin</tt><tt class="py-op">=</tt><tt class="py-name">tmpfile</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-57', 'split', 'link-19');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">'\n'</tt><tt class="py-op">)</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">        <tt class="py-name">tmpfile</tt><tt class="py-op">.</tt><tt id="link-58" class="py-name"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-58', 'close', 'link-35');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">        <tt class="py-comment">#os.remove(tmpfile)</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-59" class="py-name"><a title="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.output
+experiment.experiment.Experiment.output
+experiment.phase.Phase.output
+io_utils.output" class="py-name" href="#" onclick="return doclink('link-59', 'output', 'link-20');">output</a></tt> </tt>
+</div></div><a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">             </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line"><tt class="py-comment">#    def add_features_batch(self, parallelsentences):</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"><tt class="py-comment">#        dataset = DataSet(parallelsentences)</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"><tt class="py-comment">#        </tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"><tt class="py-comment">#        if dataset.get_parallelsentences()[0].get_attribute("langsrc") == self.lang:</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"><tt class="py-comment">#            sourcestrings = dataset.get_singlesource_strings()</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"><tt class="py-comment">#            processed_sourcestrings = self._get_tool_output(sourcestrings)</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-comment">#            dataset.modify_singlesource_strings(processed_sourcestrings)</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"><tt class="py-comment">#        </tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-comment">#        </tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-comment">#        if dataset.get_parallelsentences()[0].get_attribute("langtgt") == self.lang:</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-comment">#            targetstringlists = dataset.get_target_strings()</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-comment">#            processed_targetstringslist = [self._get_tool_output(targetstrings) for targetstrings in targetstringlists]</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-comment">#            dataset.modify_target_strings(processed_targetstringslist)</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"><tt class="py-comment">#        </tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"><tt class="py-comment">#        return dataset.get_parallelsentences()</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"><tt class="py-comment">#    </tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"> </tt>
+<a name="Normalizer"></a><div id="Normalizer-def"><a name="L154"></a><tt class="py-lineno">154</tt> <a class="py-toggle" href="#" id="Normalizer-toggle" onclick="return toggle('Normalizer');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="featuregenerator.preprocessor.Normalizer-class.html">Normalizer</a><tt class="py-op">(</tt><tt class="py-base-class">CommandlinePreprocessor</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Normalizer-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Normalizer-expanded"><a name="Normalizer.__init__"></a><div id="Normalizer.__init__-def"><a name="L155"></a><tt class="py-lineno">155</tt> <a class="py-toggle" href="#" id="Normalizer.__init__-toggle" onclick="return toggle('Normalizer.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.preprocessor.Normalizer-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">lang</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Normalizer.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Normalizer.__init__-expanded"><a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">        <tt id="link-60" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-60', 'path', 'link-15');">path</a></tt> <tt class="py-op">=</tt> <tt id="link-61" class="py-name"><a title="util" class="py-name" href="#" onclick="return doclink('link-61', 'util', 'link-2');">util</a></tt><tt class="py-op">.</tt><tt class="py-name">__path__</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">        <tt id="link-62" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-62', 'path', 'link-15');">path</a></tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-63" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-63', 'path', 'link-15');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt id="link-64" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-64', 'path', 'link-15');">path</a></tt><tt class="py-op">,</tt> <tt class="py-string">"normalize-punctuation.perl"</tt><tt class="py-op">)</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">        <tt class="py-name">command_template</tt> <tt class="py-op">=</tt> <tt class="py-string">"perl {path} -b -l {lang}"</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-65" class="py-name" targets="Class featuregenerator.preprocessor.Normalizer=featuregenerator.preprocessor.Normalizer-class.html"><a title="featuregenerator.preprocessor.Normalizer" class="py-name" href="#" onclick="return doclink('link-65', 'Normalizer', 'link-65');">Normalizer</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-66" class="py-name" targets="Method classifier.bayes.Bayes.__init__()=classifier.bayes.Bayes-class.html#__init__,Method classifier.classifier.OrangeClassifier.__init__()=classifier.classifier.OrangeClassifier-class.html#__init__,Method classifier.knn.KnnLearner.__init__()=classifier.knn.KnnLearner-class.html#__init__,Method classifier.loglinear.LogLinear.__init__()=classifier.loglinear.LogLinear-class.html#__init__,Method classifier.orange.OrangeClassifier.__init__()=classifier.orange.OrangeClassifier-class.html#__init__,Method classifier.prank.PRank.__init__()=classifier.prank.PRank-class.html#__init__,Method classifier.ranker.Ranker.__init__()=classifier.ranker.Ranker-class.html#__init__,Method classifier.registry.AbstractClassifier.__init__()=classifier.registry.AbstractClassifier-class.html#__init__,Method classifier.rvm.RVM.__init__()=classifier.rvm.RVM-class.html#__init__,Method classifier.svm.SVM.__init__()=classifier.svm.SVM-class.html#__init__,Method classifier.svmeasy.SVMEasyLearner.__init__()=classifier.svmeasy.SVMEasyLearner-class.html#__init__,Method classifier.svmrank.SvmRank.__init__()=classifier.svmrank.SvmRank-class.html#__init__,Method classifier.tree.TreeLearner.__init__()=classifier.tree.TreeLearner-class.html#__init__,Method exec.autoranking.AutoRankingExperiment.__init__()=exec.autoranking.AutoRankingExperiment-class.html#__init__,Method exec.autoranking_v2.AutoRankingExperiment.__init__()=exec.autoranking_v2.AutoRankingExperiment-class.html#__init__,Method exec.experiment.Experiment.__init__()=exec.experiment.Experiment-class.html#__init__,Method exec.iwsltexp.MachineRanking.__init__()=exec.iwsltexp.MachineRanking-class.html#__init__,Method exec.selectbest.SelectBestExperiment.__init__()=exec.selectbest.SelectBestExperiment-class.html#__init__,Method experiment.autoranking.application.Autoranking.__init__()=experiment.autoranking.application.Autoranking-class.html#__init__,Method experiment.autoranking.decode.StreamToLogger.__init__()=experiment.autoranking.decode.StreamToLogger-class.html#__init__,Method experiment.autoranking.suite.StreamToLogger.__init__()=experiment.autoranking.suite.StreamToLogger-class.html#__init__,Method experiment.autorankingsearch.suite.StreamToLogger.__init__()=experiment.autorankingsearch.suite.StreamToLogger-class.html#__init__,Method experiment.autoranksvm.suite.StreamToLogger.__init__()=experiment.autoranksvm.suite.StreamToLogger-class.html#__init__,Method experiment.data.Data.__init__()=experiment.data.Data-class.html#__init__,Method experiment.errorprediction.preprocessing.db.DbConnector.__init__()=experiment.errorprediction.preprocessing.db.DbConnector-class.html#__init__,Method experiment.experiment.Experiment.__init__()=experiment.experiment.Experiment-class.html#__init__,Method experiment.ml4hmt12.preprocess.ApertiumFeatureGenerator.__init__()=experiment.ml4hmt12.preprocess.ApertiumFeatureGenerator-class.html#__init__,Method experiment.ml4hmt12.preprocess.HieroMosesFeatureGenerator.__init__()=experiment.ml4hmt12.preprocess.HieroMosesFeatureGenerator-class.html#__init__,Method experiment.ml4hmt12.preprocess.LucyFeatureGenerator.__init__()=experiment.ml4hmt12.preprocess.LucyFeatureGenerator-class.html#__init__,Method experiment.ml4hmt12.preprocess.MosesFeatureGenerator.__init__()=experiment.ml4hmt12.preprocess.MosesFeatureGenerator-class.html#__init__,Method experiment.ml4hmt12.suite.StreamToLogger.__init__()=experiment.ml4hmt12.suite.StreamToLogger-class.html#__init__,Method experiment.ml4hmt12.test.StreamToLogger.__init__()=experiment.ml4hmt12.test.StreamToLogger-class.html#__init__,Method experiment.phase.Phase.__init__()=experiment.phase.Phase-class.html#__init__,Method experiment.task.Task.__init__()=experiment.task.Task-class.html#__init__,Method featuregenerator.attribute_rank.AttributeRankGenerator.__init__()=featuregenerator.attribute_rank.AttributeRankGenerator-class.html#__init__,Method featuregenerator.bestsystem.BestSystemFeatureGenerator.__init__()=featuregenerator.bestsystem.BestSystemFeatureGenerator-class.html#__init__,Method featuregenerator.glassbox.moses.extractor.MosesGlassboxExtractor.__init__()=featuregenerator.glassbox.moses.extractor.MosesGlassboxExtractor-class.html#__init__,Method featuregenerator.hjerson.Hjerson.__init__()=featuregenerator.hjerson.Hjerson-class.html#__init__,Method featuregenerator.hjerson.levNode.__init__()=featuregenerator.hjerson.levNode-class.html#__init__,Method featuregenerator.ibm1featuregenerator.Ibm1FeatureGenerator.__init__()=featuregenerator.ibm1featuregenerator.Ibm1FeatureGenerator-class.html#__init__,Method featuregenerator.iq.acrolinxclient.IQFeatureGenerator.__init__()=featuregenerator.iq.acrolinxclient.IQFeatureGenerator-class.html#__init__,Method featuregenerator.languagechecker.languagetool.LanguageCheckerCmd.__init__()=featuregenerator.languagechecker.languagetool.LanguageCheckerCmd-class.html#__init__,Method featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.__init__()=featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html#__init__,Method featuregenerator.languagechecker.languagetool_socket.LanguageToolSocketFeatureGenerator.__init__()=featuregenerator.languagechecker.languagetool_socket.LanguageToolSocketFeatureGenerator-class.html#__init__,Method featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator.__init__()=featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#__init__,Method featuregenerator.lm.srilm.srilm_ngram.SRILMngramGenerator.__init__()=featuregenerator.lm.srilm.srilm_ngram.SRILMngramGenerator-class.html#__init__,Method featuregenerator.lm.srilm.srilmclient.SRILMFeatureGenerator.__init__()=featuregenerator.lm.srilm.srilmclient.SRILMFeatureGenerator-class.html#__init__,Method featuregenerator.meteor.meteor.MeteorGenerator.__init__()=featuregenerator.meteor.meteor.MeteorGenerator-class.html#__init__,Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.__init__()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator-class.html#__init__,Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator.__init__()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator-class.html#__init__,Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.__init__()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator-class.html#__init__,Method featuregenerator.parser.berkeley.parsermatches.ParserMatches.__init__()=featuregenerator.parser.berkeley.parsermatches.ParserMatches-class.html#__init__,Method featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket.__init__()=featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket-class.html#__init__,Method featuregenerator.parser.berkeley.standalone_parser_client.BerkeleyFeatures.__init__()=featuregenerator.parser.berkeley.standalone_parser_client.BerkeleyFeatures-class.html#__init__,Method featuregenerator.preprocessor.CommandlinePreprocessor.__init__()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#__init__,Method featuregenerator.preprocessor.Detokenizer.__init__()=featuregenerator.preprocessor.Detokenizer-class.html#__init__,Method featuregenerator.preprocessor.Normalizer.__init__()=featuregenerator.preprocessor.Normalizer-class.html#__init__,Method featuregenerator.preprocessor.Preprocessor.__init__()=featuregenerator.preprocessor.Preprocessor-class.html#__init__,Method featuregenerator.preprocessor.Tokenizer.__init__()=featuregenerator.preprocessor.Tokenizer-class.html#__init__,Method featuregenerator.preprocessor.Truecaser.__init__()=featuregenerator.preprocessor.Truecaser-class.html#__init__,Method featuregenerator.wer.wer.levNode.__init__()=featuregenerator.wer.wer.levNode-class.html#__init__,Method io_utils.input.genericreader.GenericReader.__init__()=io_utils.input.genericreader.GenericReader-class.html#__init__,Method io_utils.input.genericxmlreader.GenericXmlReader.__init__()=io_utils.input.genericxmlreader.GenericXmlReader-class.html#__init__,Method io_utils.input.linereader.AttributeLineReader.__init__()=io_utils.input.linereader.AttributeLineReader-class.html#__init__,Method io_utils.input.linereader.LineReader.__init__()=io_utils.input.linereader.LineReader-class.html#__init__,Method io_utils.input.orangeprocessor.AttributesReader.__init__()=io_utils.input.orangeprocessor.AttributesReader-class.html#__init__,Method io_utils.input.orangeprocessor.OrangeProcessor.__init__()=io_utils.input.orangeprocessor.OrangeProcessor-class.html#__init__,Method io_utils.input.orangeprocessor.SentenceReader.__init__()=io_utils.input.orangeprocessor.SentenceReader-class.html#__init__,Method io_utils.input.orangereader.OrangeData.__init__()=io_utils.input.orangereader.OrangeData-class.html#__init__,Method io_utils.input.posteditingreader.PosteditingReader.__init__()=io_utils.input.posteditingreader.PosteditingReader-class.html#__init__,Method io_utils.input.rankreader.R2RankReader.__init__()=io_utils.input.rankreader.R2RankReader-class.html#__init__,Method io_utils.input.rankreader.RankReader.__init__()=io_utils.input.rankreader.RankReader-class.html#__init__,Method io_utils.input.schemabasedreader.SchemaData.__init__()=io_utils.input.schemabasedreader.SchemaData-class.html#__init__,Method io_utils.input.taraxureader.TaraXUReader.__init__()=io_utils.input.taraxureader.TaraXUReader-class.html#__init__,Method io_utils.input.wmtreader.WmtReader.__init__()=io_utils.input.wmtreader.WmtReader-class.html#__init__,Method io_utils.output.ce.SelectRank.__init__()=io_utils.output.ce.SelectRank-class.html#__init__,Method io_utils.output.posteditingwriter.PosteditingWriter.__init__()=io_utils.output.posteditingwriter.PosteditingWriter-class.html#__init__,Method io_utils.output.taraxuwriter.TaraXUWriter.__init__()=io_utils.output.taraxuwriter.TaraXUWriter-class.html#__init__,Method io_utils.output.wmt11tabwriter.Wmt11TabWriter.__init__()=io_utils.output.wmt11tabwriter.Wmt11TabWriter-class.html#__init__,Method io_utils.output.xmlwriter.GenericWriter.__init__()=io_utils.output.xmlwriter.GenericWriter-class.html#__init__,Method io_utils.output.xmlwriter.GenericXMLWriter.__init__()=io_utils.output.xmlwriter.GenericXMLWriter-class.html#__init__,Method io_utils.paralleltemplate.BerkeleyFeatureGenerator.__init__()=io_utils.paralleltemplate.BerkeleyFeatureGenerator-class.html#__init__,Method io_utils.paralleltemplate.ParallelTemplate.__init__()=io_utils.paralleltemplate.ParallelTemplate-class.html#__init__,Method io_utils.sax.cejcml.CEJcmlReader.__init__()=io_utils.sax.cejcml.CEJcmlReader-class.html#__init__,Method io_utils.sax.cejcml.CEJcmlStats.__init__()=io_utils.sax.cejcml.CEJcmlStats-class.html#__init__,Method io_utils.sax.cejcml2orange.CElementTreeJcml2Orange.__init__()=io_utils.sax.cejcml2orange.CElementTreeJcml2Orange-class.html#__init__,Method io_utils.sax.jcml2Shogun.Jcml2Shogun.__init__()=io_utils.sax.jcml2Shogun.Jcml2Shogun-class.html#__init__,Method io_utils.sax.jcml2array.Jcml2Array.__init__()=io_utils.sax.jcml2array.Jcml2Array-class.html#__init__,Method io_utils.sax.saxjcml2orange.SaxJcml2Orange.__init__()=io_utils.sax.saxjcml2orange.SaxJcml2Orange-class.html#__init__,Method io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.__init__()=io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent-class.html#__init__,Method io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.__init__()=io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader-class.html#__init__,Method io_utils.sax.saxprocessor.SaxProcessor.__init__()=io_utils.sax.saxprocessor.SaxProcessor-class.html#__init__,Method io_utils.sax.saxps2jcml.IncrementalJcml.__init__()=io_utils.sax.saxps2jcml.IncrementalJcml-class.html#__init__,Method io_utils.sax.saxps2jcml.Parallelsentence2Jcml.__init__()=io_utils.sax.saxps2jcml.Parallelsentence2Jcml-class.html#__init__,Method io_utils.sax.saxwrapper.SaxWrapper.__init__()=io_utils.sax.saxwrapper.SaxWrapper-class.html#__init__,Method io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.__init__()=io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile-class.html#__init__,Method io_utils.saxjcml.SaxJCMLProcessor.__init__()=io_utils.saxjcml.SaxJCMLProcessor-class.html#__init__,Method io_utils.saxscoring.SaxSystemScoring.__init__()=io_utils.saxscoring.SaxSystemScoring-class.html#__init__,Method io_utils.saxwmt11eval.SaxWMTexporter.__init__()=io_utils.saxwmt11eval.SaxWMTexporter-class.html#__init__,Method ml.classifier.Classifier.__init__()=ml.classifier.Classifier-class.html#__init__,Method ml.lib.orange.OrangeClassifier.__init__()=ml.lib.orange.OrangeClassifier-class.html#__init__,Method ml.lib.orange.OrangeRuntimeRanker.__init__()=ml.lib.orange.OrangeRuntimeRanker-class.html#__init__,Method ml.ranker.Ranker.__init__()=ml.ranker.Ranker-class.html#__init__,Method preprocess.Experiment.__init__()=preprocess.Experiment-class.html#__init__,Method sentence.coupleddataset.CoupledDataSet.__init__()=sentence.coupleddataset.CoupledDataSet-class.html#__init__,Method sentence.coupleddataset.CoupledDataSetDisk.__init__()=sentence.coupleddataset.CoupledDataSetDisk-class.html#__init__,Method sentence.coupledparallelsentence.CoupledParallelSentence.__init__()=sentence.coupledparallelsentence.CoupledParallelSentence-class.html#__init__,Method sentence.dataset.DataSet.__init__()=sentence.dataset.DataSet-class.html#__init__,Method sentence.pairwisedataset.AnalyticPairwiseDataset.__init__()=sentence.pairwisedataset.AnalyticPairwiseDataset-class.html#__init__,Method sentence.pairwisedataset.CompactPairwiseDataset.__init__()=sentence.pairwisedataset.CompactPairwiseDataset-class.html#__init__,Method sentence.pairwisedataset.FilteredPairwiseDataset.__init__()=sentence.pairwisedataset.FilteredPairwiseDataset-class.html#__init__,Method sentence.pairwisedataset.RawPairwiseDataset.__init__()=sentence.pairwisedataset.RawPairwiseDataset-class.html#__init__,Method sentence.pairwiseparallelsentence.PairwiseParallelSentence.__init__()=sentence.pairwiseparallelsentence.PairwiseParallelSentence-class.html#__init__,Method sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.__init__()=sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet-class.html#__init__,Method sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet.__init__()=sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet-class.html#__init__,Method sentence.parallelsentence.ParallelSentence.__init__()=sentence.parallelsentence.ParallelSentence-class.html#__init__,Method sentence.rankhandler.RankHandler.__init__()=sentence.rankhandler.RankHandler-class.html#__init__,Method sentence.ranking.Ranking.__init__()=sentence.ranking.Ranking-class.html#__init__,Method sentence.scoring.Scoring.__init__()=sentence.scoring.Scoring-class.html#__init__,Method sentence.sentence.SimpleSentence.__init__()=sentence.sentence.SimpleSentence-class.html#__init__,Method support.berkeleyserver.MyPP.__init__()=support.berkeleyserver.MyPP-class.html#__init__,Method support.berkeleyserver.StoppableServer.__init__()=support.berkeleyserver.StoppableServer-class.html#__init__,Method support.handleClassifier.OrangeData.__init__()=support.handleClassifier.OrangeData-class.html#__init__,Method support.preprocessing.appraise_time_stats.Item.__init__()=support.preprocessing.appraise_time_stats.Item-class.html#__init__,Method support.preprocessing.jcml.jcml2arff.ArffWriter.__init__()=support.preprocessing.jcml.jcml2arff.ArffWriter-class.html#__init__,Method support.preprocessing.oolinkage.OOLinkage.__init__()=support.preprocessing.oolinkage.OOLinkage-class.html#__init__,Method support.produceJudgmentFeatures.JudgedSentence.__init__()=support.produceJudgmentFeatures.JudgedSentence-class.html#__init__,Method support.produceJudgmentFeatures.JudgedSet.__init__()=support.produceJudgmentFeatures.JudgedSet-class.html#__init__,Method support.sort_judgments.Task.__init__()=support.sort_judgments.Task-class.html#__init__,Method support.xmlrpctest.Shell.__init__()=support.xmlrpctest.Shell-class.html#__init__,Method tara_noorange.Experiment.__init__()=tara_noorange.Experiment-class.html#__init__,Method util.freqcaser.FreqCaser.__init__()=util.freqcaser.FreqCaser-class.html#__init__,Method util.jvm.JVM.__init__()=util.jvm.JVM-class.html#__init__,Method util.treetaggerwrapper.TreeTagger.__init__()=util.treetaggerwrapper.TreeTagger-class.html#__init__"><a title="classifier.bayes.Bayes.__init__
+classifier.classifier.OrangeClassifier.__init__
+classifier.knn.KnnLearner.__init__
+classifier.loglinear.LogLinear.__init__
+classifier.orange.OrangeClassifier.__init__
+classifier.prank.PRank.__init__
+classifier.ranker.Ranker.__init__
+classifier.registry.AbstractClassifier.__init__
+classifier.rvm.RVM.__init__
+classifier.svm.SVM.__init__
+classifier.svmeasy.SVMEasyLearner.__init__
+classifier.svmrank.SvmRank.__init__
+classifier.tree.TreeLearner.__init__
+exec.autoranking.AutoRankingExperiment.__init__
+exec.autoranking_v2.AutoRankingExperiment.__init__
+exec.experiment.Experiment.__init__
+exec.iwsltexp.MachineRanking.__init__
+exec.selectbest.SelectBestExperiment.__init__
+experiment.autoranking.application.Autoranking.__init__
+experiment.autoranking.decode.StreamToLogger.__init__
+experiment.autoranking.suite.StreamToLogger.__init__
+experiment.autorankingsearch.suite.StreamToLogger.__init__
+experiment.autoranksvm.suite.StreamToLogger.__init__
+experiment.data.Data.__init__
+experiment.errorprediction.preprocessing.db.DbConnector.__init__
+experiment.experiment.Experiment.__init__
+experiment.ml4hmt12.preprocess.ApertiumFeatureGenerator.__init__
+experiment.ml4hmt12.preprocess.HieroMosesFeatureGenerator.__init__
+experiment.ml4hmt12.preprocess.LucyFeatureGenerator.__init__
+experiment.ml4hmt12.preprocess.MosesFeatureGenerator.__init__
+experiment.ml4hmt12.suite.StreamToLogger.__init__
+experiment.ml4hmt12.test.StreamToLogger.__init__
+experiment.phase.Phase.__init__
+experiment.task.Task.__init__
+featuregenerator.attribute_rank.AttributeRankGenerator.__init__
+featuregenerator.bestsystem.BestSystemFeatureGenerator.__init__
+featuregenerator.glassbox.moses.extractor.MosesGlassboxExtractor.__init__
+featuregenerator.hjerson.Hjerson.__init__
+featuregenerator.hjerson.levNode.__init__
+featuregenerator.ibm1featuregenerator.Ibm1FeatureGenerator.__init__
+featuregenerator.iq.acrolinxclient.IQFeatureGenerator.__init__
+featuregenerator.languagechecker.languagetool.LanguageCheckerCmd.__init__
+featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.__init__
+featuregenerator.languagechecker.languagetool_socket.LanguageToolSocketFeatureGenerator.__init__
+featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator.__init__
+featuregenerator.lm.srilm.srilm_ngram.SRILMngramGenerator.__init__
+featuregenerator.lm.srilm.srilmclient.SRILMFeatureGenerator.__init__
+featuregenerator.meteor.meteor.MeteorGenerator.__init__
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.__init__
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator.__init__
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.__init__
+featuregenerator.parser.berkeley.parsermatches.ParserMatches.__init__
+featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket.__init__
+featuregenerator.parser.berkeley.standalone_parser_client.BerkeleyFeatures.__init__
+featuregenerator.preprocessor.CommandlinePreprocessor.__init__
+featuregenerator.preprocessor.Detokenizer.__init__
+featuregenerator.preprocessor.Normalizer.__init__
+featuregenerator.preprocessor.Preprocessor.__init__
+featuregenerator.preprocessor.Tokenizer.__init__
+featuregenerator.preprocessor.Truecaser.__init__
+featuregenerator.wer.wer.levNode.__init__
+io_utils.input.genericreader.GenericReader.__init__
+io_utils.input.genericxmlreader.GenericXmlReader.__init__
+io_utils.input.linereader.AttributeLineReader.__init__
+io_utils.input.linereader.LineReader.__init__
+io_utils.input.orangeprocessor.AttributesReader.__init__
+io_utils.input.orangeprocessor.OrangeProcessor.__init__
+io_utils.input.orangeprocessor.SentenceReader.__init__
+io_utils.input.orangereader.OrangeData.__init__
+io_utils.input.posteditingreader.PosteditingReader.__init__
+io_utils.input.rankreader.R2RankReader.__init__
+io_utils.input.rankreader.RankReader.__init__
+io_utils.input.schemabasedreader.SchemaData.__init__
+io_utils.input.taraxureader.TaraXUReader.__init__
+io_utils.input.wmtreader.WmtReader.__init__
+io_utils.output.ce.SelectRank.__init__
+io_utils.output.posteditingwriter.PosteditingWriter.__init__
+io_utils.output.taraxuwriter.TaraXUWriter.__init__
+io_utils.output.wmt11tabwriter.Wmt11TabWriter.__init__
+io_utils.output.xmlwriter.GenericWriter.__init__
+io_utils.output.xmlwriter.GenericXMLWriter.__init__
+io_utils.paralleltemplate.BerkeleyFeatureGenerator.__init__
+io_utils.paralleltemplate.ParallelTemplate.__init__
+io_utils.sax.cejcml.CEJcmlReader.__init__
+io_utils.sax.cejcml.CEJcmlStats.__init__
+io_utils.sax.cejcml2orange.CElementTreeJcml2Orange.__init__
+io_utils.sax.jcml2Shogun.Jcml2Shogun.__init__
+io_utils.sax.jcml2array.Jcml2Array.__init__
+io_utils.sax.saxjcml2orange.SaxJcml2Orange.__init__
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.__init__
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.__init__
+io_utils.sax.saxprocessor.SaxProcessor.__init__
+io_utils.sax.saxps2jcml.IncrementalJcml.__init__
+io_utils.sax.saxps2jcml.Parallelsentence2Jcml.__init__
+io_utils.sax.saxwrapper.SaxWrapper.__init__
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.__init__
+io_utils.saxjcml.SaxJCMLProcessor.__init__
+io_utils.saxscoring.SaxSystemScoring.__init__
+io_utils.saxwmt11eval.SaxWMTexporter.__init__
+ml.classifier.Classifier.__init__
+ml.lib.orange.OrangeClassifier.__init__
+ml.lib.orange.OrangeRuntimeRanker.__init__
+ml.ranker.Ranker.__init__
+preprocess.Experiment.__init__
+sentence.coupleddataset.CoupledDataSet.__init__
+sentence.coupleddataset.CoupledDataSetDisk.__init__
+sentence.coupledparallelsentence.CoupledParallelSentence.__init__
+sentence.dataset.DataSet.__init__
+sentence.pairwisedataset.AnalyticPairwiseDataset.__init__
+sentence.pairwisedataset.CompactPairwiseDataset.__init__
+sentence.pairwisedataset.FilteredPairwiseDataset.__init__
+sentence.pairwisedataset.RawPairwiseDataset.__init__
+sentence.pairwiseparallelsentence.PairwiseParallelSentence.__init__
+sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.__init__
+sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet.__init__
+sentence.parallelsentence.ParallelSentence.__init__
+sentence.rankhandler.RankHandler.__init__
+sentence.ranking.Ranking.__init__
+sentence.scoring.Scoring.__init__
+sentence.sentence.SimpleSentence.__init__
+support.berkeleyserver.MyPP.__init__
+support.berkeleyserver.StoppableServer.__init__
+support.handleClassifier.OrangeData.__init__
+support.preprocessing.appraise_time_stats.Item.__init__
+support.preprocessing.jcml.jcml2arff.ArffWriter.__init__
+support.preprocessing.oolinkage.OOLinkage.__init__
+support.produceJudgmentFeatures.JudgedSentence.__init__
+support.produceJudgmentFeatures.JudgedSet.__init__
+support.sort_judgments.Task.__init__
+support.xmlrpctest.Shell.__init__
+tara_noorange.Experiment.__init__
+util.freqcaser.FreqCaser.__init__
+util.jvm.JVM.__init__
+util.treetaggerwrapper.TreeTagger.__init__" class="py-name" href="#" onclick="return doclink('link-66', '__init__', 'link-66');">__init__</a></tt><tt class="py-op">(</tt><tt id="link-67" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-67', 'path', 'link-15');">path</a></tt><tt class="py-op">,</tt> <tt class="py-name">lang</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> <tt class="py-name">command_template</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">         </tt>
+<a name="Tokenizer"></a><div id="Tokenizer-def"><a name="L161"></a><tt class="py-lineno">161</tt> <a class="py-toggle" href="#" id="Tokenizer-toggle" onclick="return toggle('Tokenizer');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="featuregenerator.preprocessor.Tokenizer-class.html">Tokenizer</a><tt class="py-op">(</tt><tt class="py-base-class">CommandlinePreprocessor</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Tokenizer-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Tokenizer-expanded"><a name="Tokenizer.__init__"></a><div id="Tokenizer.__init__-def"><a name="L162"></a><tt class="py-lineno">162</tt> <a class="py-toggle" href="#" id="Tokenizer.__init__-toggle" onclick="return toggle('Tokenizer.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.preprocessor.Tokenizer-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">lang</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Tokenizer.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Tokenizer.__init__-expanded"><a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">        <tt id="link-68" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-68', 'path', 'link-15');">path</a></tt> <tt class="py-op">=</tt> <tt id="link-69" class="py-name"><a title="util" class="py-name" href="#" onclick="return doclink('link-69', 'util', 'link-2');">util</a></tt><tt class="py-op">.</tt><tt class="py-name">__path__</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">        <tt id="link-70" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-70', 'path', 'link-15');">path</a></tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-71" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-71', 'path', 'link-15');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt id="link-72" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-72', 'path', 'link-15');">path</a></tt><tt class="py-op">,</tt> <tt class="py-string">"tokenizer.perl"</tt><tt class="py-op">)</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">        <tt class="py-name">command_template</tt> <tt class="py-op">=</tt> <tt class="py-string">"perl {path} -b -l {lang}"</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-73" class="py-name" targets="Class featuregenerator.preprocessor.Tokenizer=featuregenerator.preprocessor.Tokenizer-class.html"><a title="featuregenerator.preprocessor.Tokenizer" class="py-name" href="#" onclick="return doclink('link-73', 'Tokenizer', 'link-73');">Tokenizer</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-74" class="py-name"><a title="classifier.bayes.Bayes.__init__
+classifier.classifier.OrangeClassifier.__init__
+classifier.knn.KnnLearner.__init__
+classifier.loglinear.LogLinear.__init__
+classifier.orange.OrangeClassifier.__init__
+classifier.prank.PRank.__init__
+classifier.ranker.Ranker.__init__
+classifier.registry.AbstractClassifier.__init__
+classifier.rvm.RVM.__init__
+classifier.svm.SVM.__init__
+classifier.svmeasy.SVMEasyLearner.__init__
+classifier.svmrank.SvmRank.__init__
+classifier.tree.TreeLearner.__init__
+exec.autoranking.AutoRankingExperiment.__init__
+exec.autoranking_v2.AutoRankingExperiment.__init__
+exec.experiment.Experiment.__init__
+exec.iwsltexp.MachineRanking.__init__
+exec.selectbest.SelectBestExperiment.__init__
+experiment.autoranking.application.Autoranking.__init__
+experiment.autoranking.decode.StreamToLogger.__init__
+experiment.autoranking.suite.StreamToLogger.__init__
+experiment.autorankingsearch.suite.StreamToLogger.__init__
+experiment.autoranksvm.suite.StreamToLogger.__init__
+experiment.data.Data.__init__
+experiment.errorprediction.preprocessing.db.DbConnector.__init__
+experiment.experiment.Experiment.__init__
+experiment.ml4hmt12.preprocess.ApertiumFeatureGenerator.__init__
+experiment.ml4hmt12.preprocess.HieroMosesFeatureGenerator.__init__
+experiment.ml4hmt12.preprocess.LucyFeatureGenerator.__init__
+experiment.ml4hmt12.preprocess.MosesFeatureGenerator.__init__
+experiment.ml4hmt12.suite.StreamToLogger.__init__
+experiment.ml4hmt12.test.StreamToLogger.__init__
+experiment.phase.Phase.__init__
+experiment.task.Task.__init__
+featuregenerator.attribute_rank.AttributeRankGenerator.__init__
+featuregenerator.bestsystem.BestSystemFeatureGenerator.__init__
+featuregenerator.glassbox.moses.extractor.MosesGlassboxExtractor.__init__
+featuregenerator.hjerson.Hjerson.__init__
+featuregenerator.hjerson.levNode.__init__
+featuregenerator.ibm1featuregenerator.Ibm1FeatureGenerator.__init__
+featuregenerator.iq.acrolinxclient.IQFeatureGenerator.__init__
+featuregenerator.languagechecker.languagetool.LanguageCheckerCmd.__init__
+featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.__init__
+featuregenerator.languagechecker.languagetool_socket.LanguageToolSocketFeatureGenerator.__init__
+featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator.__init__
+featuregenerator.lm.srilm.srilm_ngram.SRILMngramGenerator.__init__
+featuregenerator.lm.srilm.srilmclient.SRILMFeatureGenerator.__init__
+featuregenerator.meteor.meteor.MeteorGenerator.__init__
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.__init__
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator.__init__
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.__init__
+featuregenerator.parser.berkeley.parsermatches.ParserMatches.__init__
+featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket.__init__
+featuregenerator.parser.berkeley.standalone_parser_client.BerkeleyFeatures.__init__
+featuregenerator.preprocessor.CommandlinePreprocessor.__init__
+featuregenerator.preprocessor.Detokenizer.__init__
+featuregenerator.preprocessor.Normalizer.__init__
+featuregenerator.preprocessor.Preprocessor.__init__
+featuregenerator.preprocessor.Tokenizer.__init__
+featuregenerator.preprocessor.Truecaser.__init__
+featuregenerator.wer.wer.levNode.__init__
+io_utils.input.genericreader.GenericReader.__init__
+io_utils.input.genericxmlreader.GenericXmlReader.__init__
+io_utils.input.linereader.AttributeLineReader.__init__
+io_utils.input.linereader.LineReader.__init__
+io_utils.input.orangeprocessor.AttributesReader.__init__
+io_utils.input.orangeprocessor.OrangeProcessor.__init__
+io_utils.input.orangeprocessor.SentenceReader.__init__
+io_utils.input.orangereader.OrangeData.__init__
+io_utils.input.posteditingreader.PosteditingReader.__init__
+io_utils.input.rankreader.R2RankReader.__init__
+io_utils.input.rankreader.RankReader.__init__
+io_utils.input.schemabasedreader.SchemaData.__init__
+io_utils.input.taraxureader.TaraXUReader.__init__
+io_utils.input.wmtreader.WmtReader.__init__
+io_utils.output.ce.SelectRank.__init__
+io_utils.output.posteditingwriter.PosteditingWriter.__init__
+io_utils.output.taraxuwriter.TaraXUWriter.__init__
+io_utils.output.wmt11tabwriter.Wmt11TabWriter.__init__
+io_utils.output.xmlwriter.GenericWriter.__init__
+io_utils.output.xmlwriter.GenericXMLWriter.__init__
+io_utils.paralleltemplate.BerkeleyFeatureGenerator.__init__
+io_utils.paralleltemplate.ParallelTemplate.__init__
+io_utils.sax.cejcml.CEJcmlReader.__init__
+io_utils.sax.cejcml.CEJcmlStats.__init__
+io_utils.sax.cejcml2orange.CElementTreeJcml2Orange.__init__
+io_utils.sax.jcml2Shogun.Jcml2Shogun.__init__
+io_utils.sax.jcml2array.Jcml2Array.__init__
+io_utils.sax.saxjcml2orange.SaxJcml2Orange.__init__
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.__init__
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.__init__
+io_utils.sax.saxprocessor.SaxProcessor.__init__
+io_utils.sax.saxps2jcml.IncrementalJcml.__init__
+io_utils.sax.saxps2jcml.Parallelsentence2Jcml.__init__
+io_utils.sax.saxwrapper.SaxWrapper.__init__
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.__init__
+io_utils.saxjcml.SaxJCMLProcessor.__init__
+io_utils.saxscoring.SaxSystemScoring.__init__
+io_utils.saxwmt11eval.SaxWMTexporter.__init__
+ml.classifier.Classifier.__init__
+ml.lib.orange.OrangeClassifier.__init__
+ml.lib.orange.OrangeRuntimeRanker.__init__
+ml.ranker.Ranker.__init__
+preprocess.Experiment.__init__
+sentence.coupleddataset.CoupledDataSet.__init__
+sentence.coupleddataset.CoupledDataSetDisk.__init__
+sentence.coupledparallelsentence.CoupledParallelSentence.__init__
+sentence.dataset.DataSet.__init__
+sentence.pairwisedataset.AnalyticPairwiseDataset.__init__
+sentence.pairwisedataset.CompactPairwiseDataset.__init__
+sentence.pairwisedataset.FilteredPairwiseDataset.__init__
+sentence.pairwisedataset.RawPairwiseDataset.__init__
+sentence.pairwiseparallelsentence.PairwiseParallelSentence.__init__
+sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.__init__
+sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet.__init__
+sentence.parallelsentence.ParallelSentence.__init__
+sentence.rankhandler.RankHandler.__init__
+sentence.ranking.Ranking.__init__
+sentence.scoring.Scoring.__init__
+sentence.sentence.SimpleSentence.__init__
+support.berkeleyserver.MyPP.__init__
+support.berkeleyserver.StoppableServer.__init__
+support.handleClassifier.OrangeData.__init__
+support.preprocessing.appraise_time_stats.Item.__init__
+support.preprocessing.jcml.jcml2arff.ArffWriter.__init__
+support.preprocessing.oolinkage.OOLinkage.__init__
+support.produceJudgmentFeatures.JudgedSentence.__init__
+support.produceJudgmentFeatures.JudgedSet.__init__
+support.sort_judgments.Task.__init__
+support.xmlrpctest.Shell.__init__
+tara_noorange.Experiment.__init__
+util.freqcaser.FreqCaser.__init__
+util.jvm.JVM.__init__
+util.treetaggerwrapper.TreeTagger.__init__" class="py-name" href="#" onclick="return doclink('link-74', '__init__', 'link-66');">__init__</a></tt><tt class="py-op">(</tt><tt id="link-75" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-75', 'path', 'link-15');">path</a></tt><tt class="py-op">,</tt> <tt class="py-name">lang</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> <tt class="py-name">command_template</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"> </tt>
+<a name="Detokenizer"></a><div id="Detokenizer-def"><a name="L168"></a><tt class="py-lineno">168</tt> <a class="py-toggle" href="#" id="Detokenizer-toggle" onclick="return toggle('Detokenizer');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="featuregenerator.preprocessor.Detokenizer-class.html">Detokenizer</a><tt class="py-op">(</tt><tt class="py-base-class">CommandlinePreprocessor</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Detokenizer-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Detokenizer-expanded"><a name="Detokenizer.__init__"></a><div id="Detokenizer.__init__-def"><a name="L169"></a><tt class="py-lineno">169</tt> <a class="py-toggle" href="#" id="Detokenizer.__init__-toggle" onclick="return toggle('Detokenizer.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.preprocessor.Detokenizer-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">lang</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Detokenizer.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Detokenizer.__init__-expanded"><a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">        <tt id="link-76" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-76', 'path', 'link-15');">path</a></tt> <tt class="py-op">=</tt> <tt id="link-77" class="py-name"><a title="util" class="py-name" href="#" onclick="return doclink('link-77', 'util', 'link-2');">util</a></tt><tt class="py-op">.</tt><tt class="py-name">__path__</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">        <tt id="link-78" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-78', 'path', 'link-15');">path</a></tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-79" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-79', 'path', 'link-15');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt id="link-80" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-80', 'path', 'link-15');">path</a></tt><tt class="py-op">,</tt> <tt class="py-string">"detokenizer.perl"</tt><tt class="py-op">)</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">        <tt class="py-name">command_template</tt> <tt class="py-op">=</tt> <tt class="py-string">"perl {path} -l {lang}"</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-81" class="py-name" targets="Class featuregenerator.preprocessor.Detokenizer=featuregenerator.preprocessor.Detokenizer-class.html"><a title="featuregenerator.preprocessor.Detokenizer" class="py-name" href="#" onclick="return doclink('link-81', 'Detokenizer', 'link-81');">Detokenizer</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-82" class="py-name"><a title="classifier.bayes.Bayes.__init__
+classifier.classifier.OrangeClassifier.__init__
+classifier.knn.KnnLearner.__init__
+classifier.loglinear.LogLinear.__init__
+classifier.orange.OrangeClassifier.__init__
+classifier.prank.PRank.__init__
+classifier.ranker.Ranker.__init__
+classifier.registry.AbstractClassifier.__init__
+classifier.rvm.RVM.__init__
+classifier.svm.SVM.__init__
+classifier.svmeasy.SVMEasyLearner.__init__
+classifier.svmrank.SvmRank.__init__
+classifier.tree.TreeLearner.__init__
+exec.autoranking.AutoRankingExperiment.__init__
+exec.autoranking_v2.AutoRankingExperiment.__init__
+exec.experiment.Experiment.__init__
+exec.iwsltexp.MachineRanking.__init__
+exec.selectbest.SelectBestExperiment.__init__
+experiment.autoranking.application.Autoranking.__init__
+experiment.autoranking.decode.StreamToLogger.__init__
+experiment.autoranking.suite.StreamToLogger.__init__
+experiment.autorankingsearch.suite.StreamToLogger.__init__
+experiment.autoranksvm.suite.StreamToLogger.__init__
+experiment.data.Data.__init__
+experiment.errorprediction.preprocessing.db.DbConnector.__init__
+experiment.experiment.Experiment.__init__
+experiment.ml4hmt12.preprocess.ApertiumFeatureGenerator.__init__
+experiment.ml4hmt12.preprocess.HieroMosesFeatureGenerator.__init__
+experiment.ml4hmt12.preprocess.LucyFeatureGenerator.__init__
+experiment.ml4hmt12.preprocess.MosesFeatureGenerator.__init__
+experiment.ml4hmt12.suite.StreamToLogger.__init__
+experiment.ml4hmt12.test.StreamToLogger.__init__
+experiment.phase.Phase.__init__
+experiment.task.Task.__init__
+featuregenerator.attribute_rank.AttributeRankGenerator.__init__
+featuregenerator.bestsystem.BestSystemFeatureGenerator.__init__
+featuregenerator.glassbox.moses.extractor.MosesGlassboxExtractor.__init__
+featuregenerator.hjerson.Hjerson.__init__
+featuregenerator.hjerson.levNode.__init__
+featuregenerator.ibm1featuregenerator.Ibm1FeatureGenerator.__init__
+featuregenerator.iq.acrolinxclient.IQFeatureGenerator.__init__
+featuregenerator.languagechecker.languagetool.LanguageCheckerCmd.__init__
+featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.__init__
+featuregenerator.languagechecker.languagetool_socket.LanguageToolSocketFeatureGenerator.__init__
+featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator.__init__
+featuregenerator.lm.srilm.srilm_ngram.SRILMngramGenerator.__init__
+featuregenerator.lm.srilm.srilmclient.SRILMFeatureGenerator.__init__
+featuregenerator.meteor.meteor.MeteorGenerator.__init__
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.__init__
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator.__init__
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.__init__
+featuregenerator.parser.berkeley.parsermatches.ParserMatches.__init__
+featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket.__init__
+featuregenerator.parser.berkeley.standalone_parser_client.BerkeleyFeatures.__init__
+featuregenerator.preprocessor.CommandlinePreprocessor.__init__
+featuregenerator.preprocessor.Detokenizer.__init__
+featuregenerator.preprocessor.Normalizer.__init__
+featuregenerator.preprocessor.Preprocessor.__init__
+featuregenerator.preprocessor.Tokenizer.__init__
+featuregenerator.preprocessor.Truecaser.__init__
+featuregenerator.wer.wer.levNode.__init__
+io_utils.input.genericreader.GenericReader.__init__
+io_utils.input.genericxmlreader.GenericXmlReader.__init__
+io_utils.input.linereader.AttributeLineReader.__init__
+io_utils.input.linereader.LineReader.__init__
+io_utils.input.orangeprocessor.AttributesReader.__init__
+io_utils.input.orangeprocessor.OrangeProcessor.__init__
+io_utils.input.orangeprocessor.SentenceReader.__init__
+io_utils.input.orangereader.OrangeData.__init__
+io_utils.input.posteditingreader.PosteditingReader.__init__
+io_utils.input.rankreader.R2RankReader.__init__
+io_utils.input.rankreader.RankReader.__init__
+io_utils.input.schemabasedreader.SchemaData.__init__
+io_utils.input.taraxureader.TaraXUReader.__init__
+io_utils.input.wmtreader.WmtReader.__init__
+io_utils.output.ce.SelectRank.__init__
+io_utils.output.posteditingwriter.PosteditingWriter.__init__
+io_utils.output.taraxuwriter.TaraXUWriter.__init__
+io_utils.output.wmt11tabwriter.Wmt11TabWriter.__init__
+io_utils.output.xmlwriter.GenericWriter.__init__
+io_utils.output.xmlwriter.GenericXMLWriter.__init__
+io_utils.paralleltemplate.BerkeleyFeatureGenerator.__init__
+io_utils.paralleltemplate.ParallelTemplate.__init__
+io_utils.sax.cejcml.CEJcmlReader.__init__
+io_utils.sax.cejcml.CEJcmlStats.__init__
+io_utils.sax.cejcml2orange.CElementTreeJcml2Orange.__init__
+io_utils.sax.jcml2Shogun.Jcml2Shogun.__init__
+io_utils.sax.jcml2array.Jcml2Array.__init__
+io_utils.sax.saxjcml2orange.SaxJcml2Orange.__init__
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.__init__
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.__init__
+io_utils.sax.saxprocessor.SaxProcessor.__init__
+io_utils.sax.saxps2jcml.IncrementalJcml.__init__
+io_utils.sax.saxps2jcml.Parallelsentence2Jcml.__init__
+io_utils.sax.saxwrapper.SaxWrapper.__init__
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.__init__
+io_utils.saxjcml.SaxJCMLProcessor.__init__
+io_utils.saxscoring.SaxSystemScoring.__init__
+io_utils.saxwmt11eval.SaxWMTexporter.__init__
+ml.classifier.Classifier.__init__
+ml.lib.orange.OrangeClassifier.__init__
+ml.lib.orange.OrangeRuntimeRanker.__init__
+ml.ranker.Ranker.__init__
+preprocess.Experiment.__init__
+sentence.coupleddataset.CoupledDataSet.__init__
+sentence.coupleddataset.CoupledDataSetDisk.__init__
+sentence.coupledparallelsentence.CoupledParallelSentence.__init__
+sentence.dataset.DataSet.__init__
+sentence.pairwisedataset.AnalyticPairwiseDataset.__init__
+sentence.pairwisedataset.CompactPairwiseDataset.__init__
+sentence.pairwisedataset.FilteredPairwiseDataset.__init__
+sentence.pairwisedataset.RawPairwiseDataset.__init__
+sentence.pairwiseparallelsentence.PairwiseParallelSentence.__init__
+sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.__init__
+sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet.__init__
+sentence.parallelsentence.ParallelSentence.__init__
+sentence.rankhandler.RankHandler.__init__
+sentence.ranking.Ranking.__init__
+sentence.scoring.Scoring.__init__
+sentence.sentence.SimpleSentence.__init__
+support.berkeleyserver.MyPP.__init__
+support.berkeleyserver.StoppableServer.__init__
+support.handleClassifier.OrangeData.__init__
+support.preprocessing.appraise_time_stats.Item.__init__
+support.preprocessing.jcml.jcml2arff.ArffWriter.__init__
+support.preprocessing.oolinkage.OOLinkage.__init__
+support.produceJudgmentFeatures.JudgedSentence.__init__
+support.produceJudgmentFeatures.JudgedSet.__init__
+support.sort_judgments.Task.__init__
+support.xmlrpctest.Shell.__init__
+tara_noorange.Experiment.__init__
+util.freqcaser.FreqCaser.__init__
+util.jvm.JVM.__init__
+util.treetaggerwrapper.TreeTagger.__init__" class="py-name" href="#" onclick="return doclink('link-82', '__init__', 'link-66');">__init__</a></tt><tt class="py-op">(</tt><tt id="link-83" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-83', 'path', 'link-15');">path</a></tt><tt class="py-op">,</tt> <tt class="py-name">lang</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> <tt class="py-name">command_template</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">     </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line"> </tt>
+<a name="Truecaser"></a><div id="Truecaser-def"><a name="L176"></a><tt class="py-lineno">176</tt> <a class="py-toggle" href="#" id="Truecaser-toggle" onclick="return toggle('Truecaser');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="featuregenerator.preprocessor.Truecaser-class.html">Truecaser</a><tt class="py-op">(</tt><tt class="py-base-class">CommandlinePreprocessor</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Truecaser-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Truecaser-expanded"><a name="Truecaser.__init__"></a><div id="Truecaser.__init__-def"><a name="L177"></a><tt class="py-lineno">177</tt> <a class="py-toggle" href="#" id="Truecaser.__init__-toggle" onclick="return toggle('Truecaser.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.preprocessor.Truecaser-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">lang</tt><tt class="py-op">,</tt> <tt class="py-param">model</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Truecaser.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Truecaser.__init__-expanded"><a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">        <tt id="link-84" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-84', 'path', 'link-15');">path</a></tt> <tt class="py-op">=</tt> <tt id="link-85" class="py-name"><a title="util" class="py-name" href="#" onclick="return doclink('link-85', 'util', 'link-2');">util</a></tt><tt class="py-op">.</tt><tt class="py-name">__path__</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">        <tt id="link-86" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-86', 'path', 'link-15');">path</a></tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-87" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-87', 'path', 'link-15');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt id="link-88" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-88', 'path', 'link-15');">path</a></tt><tt class="py-op">,</tt> <tt class="py-string">"truecase.perl"</tt><tt class="py-op">)</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line">        <tt class="py-name">command_template</tt> <tt class="py-op">=</tt> <tt class="py-string">"perl {path} -model {model}"</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-89" class="py-name" targets="Class featuregenerator.preprocessor.Truecaser=featuregenerator.preprocessor.Truecaser-class.html"><a title="featuregenerator.preprocessor.Truecaser" class="py-name" href="#" onclick="return doclink('link-89', 'Truecaser', 'link-89');">Truecaser</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-90" class="py-name"><a title="classifier.bayes.Bayes.__init__
+classifier.classifier.OrangeClassifier.__init__
+classifier.knn.KnnLearner.__init__
+classifier.loglinear.LogLinear.__init__
+classifier.orange.OrangeClassifier.__init__
+classifier.prank.PRank.__init__
+classifier.ranker.Ranker.__init__
+classifier.registry.AbstractClassifier.__init__
+classifier.rvm.RVM.__init__
+classifier.svm.SVM.__init__
+classifier.svmeasy.SVMEasyLearner.__init__
+classifier.svmrank.SvmRank.__init__
+classifier.tree.TreeLearner.__init__
+exec.autoranking.AutoRankingExperiment.__init__
+exec.autoranking_v2.AutoRankingExperiment.__init__
+exec.experiment.Experiment.__init__
+exec.iwsltexp.MachineRanking.__init__
+exec.selectbest.SelectBestExperiment.__init__
+experiment.autoranking.application.Autoranking.__init__
+experiment.autoranking.decode.StreamToLogger.__init__
+experiment.autoranking.suite.StreamToLogger.__init__
+experiment.autorankingsearch.suite.StreamToLogger.__init__
+experiment.autoranksvm.suite.StreamToLogger.__init__
+experiment.data.Data.__init__
+experiment.errorprediction.preprocessing.db.DbConnector.__init__
+experiment.experiment.Experiment.__init__
+experiment.ml4hmt12.preprocess.ApertiumFeatureGenerator.__init__
+experiment.ml4hmt12.preprocess.HieroMosesFeatureGenerator.__init__
+experiment.ml4hmt12.preprocess.LucyFeatureGenerator.__init__
+experiment.ml4hmt12.preprocess.MosesFeatureGenerator.__init__
+experiment.ml4hmt12.suite.StreamToLogger.__init__
+experiment.ml4hmt12.test.StreamToLogger.__init__
+experiment.phase.Phase.__init__
+experiment.task.Task.__init__
+featuregenerator.attribute_rank.AttributeRankGenerator.__init__
+featuregenerator.bestsystem.BestSystemFeatureGenerator.__init__
+featuregenerator.glassbox.moses.extractor.MosesGlassboxExtractor.__init__
+featuregenerator.hjerson.Hjerson.__init__
+featuregenerator.hjerson.levNode.__init__
+featuregenerator.ibm1featuregenerator.Ibm1FeatureGenerator.__init__
+featuregenerator.iq.acrolinxclient.IQFeatureGenerator.__init__
+featuregenerator.languagechecker.languagetool.LanguageCheckerCmd.__init__
+featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.__init__
+featuregenerator.languagechecker.languagetool_socket.LanguageToolSocketFeatureGenerator.__init__
+featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator.__init__
+featuregenerator.lm.srilm.srilm_ngram.SRILMngramGenerator.__init__
+featuregenerator.lm.srilm.srilmclient.SRILMFeatureGenerator.__init__
+featuregenerator.meteor.meteor.MeteorGenerator.__init__
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.__init__
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator.__init__
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.__init__
+featuregenerator.parser.berkeley.parsermatches.ParserMatches.__init__
+featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket.__init__
+featuregenerator.parser.berkeley.standalone_parser_client.BerkeleyFeatures.__init__
+featuregenerator.preprocessor.CommandlinePreprocessor.__init__
+featuregenerator.preprocessor.Detokenizer.__init__
+featuregenerator.preprocessor.Normalizer.__init__
+featuregenerator.preprocessor.Preprocessor.__init__
+featuregenerator.preprocessor.Tokenizer.__init__
+featuregenerator.preprocessor.Truecaser.__init__
+featuregenerator.wer.wer.levNode.__init__
+io_utils.input.genericreader.GenericReader.__init__
+io_utils.input.genericxmlreader.GenericXmlReader.__init__
+io_utils.input.linereader.AttributeLineReader.__init__
+io_utils.input.linereader.LineReader.__init__
+io_utils.input.orangeprocessor.AttributesReader.__init__
+io_utils.input.orangeprocessor.OrangeProcessor.__init__
+io_utils.input.orangeprocessor.SentenceReader.__init__
+io_utils.input.orangereader.OrangeData.__init__
+io_utils.input.posteditingreader.PosteditingReader.__init__
+io_utils.input.rankreader.R2RankReader.__init__
+io_utils.input.rankreader.RankReader.__init__
+io_utils.input.schemabasedreader.SchemaData.__init__
+io_utils.input.taraxureader.TaraXUReader.__init__
+io_utils.input.wmtreader.WmtReader.__init__
+io_utils.output.ce.SelectRank.__init__
+io_utils.output.posteditingwriter.PosteditingWriter.__init__
+io_utils.output.taraxuwriter.TaraXUWriter.__init__
+io_utils.output.wmt11tabwriter.Wmt11TabWriter.__init__
+io_utils.output.xmlwriter.GenericWriter.__init__
+io_utils.output.xmlwriter.GenericXMLWriter.__init__
+io_utils.paralleltemplate.BerkeleyFeatureGenerator.__init__
+io_utils.paralleltemplate.ParallelTemplate.__init__
+io_utils.sax.cejcml.CEJcmlReader.__init__
+io_utils.sax.cejcml.CEJcmlStats.__init__
+io_utils.sax.cejcml2orange.CElementTreeJcml2Orange.__init__
+io_utils.sax.jcml2Shogun.Jcml2Shogun.__init__
+io_utils.sax.jcml2array.Jcml2Array.__init__
+io_utils.sax.saxjcml2orange.SaxJcml2Orange.__init__
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.__init__
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.__init__
+io_utils.sax.saxprocessor.SaxProcessor.__init__
+io_utils.sax.saxps2jcml.IncrementalJcml.__init__
+io_utils.sax.saxps2jcml.Parallelsentence2Jcml.__init__
+io_utils.sax.saxwrapper.SaxWrapper.__init__
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.__init__
+io_utils.saxjcml.SaxJCMLProcessor.__init__
+io_utils.saxscoring.SaxSystemScoring.__init__
+io_utils.saxwmt11eval.SaxWMTexporter.__init__
+ml.classifier.Classifier.__init__
+ml.lib.orange.OrangeClassifier.__init__
+ml.lib.orange.OrangeRuntimeRanker.__init__
+ml.ranker.Ranker.__init__
+preprocess.Experiment.__init__
+sentence.coupleddataset.CoupledDataSet.__init__
+sentence.coupleddataset.CoupledDataSetDisk.__init__
+sentence.coupledparallelsentence.CoupledParallelSentence.__init__
+sentence.dataset.DataSet.__init__
+sentence.pairwisedataset.AnalyticPairwiseDataset.__init__
+sentence.pairwisedataset.CompactPairwiseDataset.__init__
+sentence.pairwisedataset.FilteredPairwiseDataset.__init__
+sentence.pairwisedataset.RawPairwiseDataset.__init__
+sentence.pairwiseparallelsentence.PairwiseParallelSentence.__init__
+sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.__init__
+sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet.__init__
+sentence.parallelsentence.ParallelSentence.__init__
+sentence.rankhandler.RankHandler.__init__
+sentence.ranking.Ranking.__init__
+sentence.scoring.Scoring.__init__
+sentence.sentence.SimpleSentence.__init__
+support.berkeleyserver.MyPP.__init__
+support.berkeleyserver.StoppableServer.__init__
+support.handleClassifier.OrangeData.__init__
+support.preprocessing.appraise_time_stats.Item.__init__
+support.preprocessing.jcml.jcml2arff.ArffWriter.__init__
+support.preprocessing.oolinkage.OOLinkage.__init__
+support.produceJudgmentFeatures.JudgedSentence.__init__
+support.produceJudgmentFeatures.JudgedSet.__init__
+support.sort_judgments.Task.__init__
+support.xmlrpctest.Shell.__init__
+tara_noorange.Experiment.__init__
+util.freqcaser.FreqCaser.__init__
+util.jvm.JVM.__init__
+util.treetaggerwrapper.TreeTagger.__init__" class="py-name" href="#" onclick="return doclink('link-90', '__init__', 'link-66');">__init__</a></tt><tt class="py-op">(</tt><tt id="link-91" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-91', 'path', 'link-15');">path</a></tt><tt class="py-op">,</tt> <tt class="py-name">lang</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-string">"model"</tt><tt class="py-op">:</tt> <tt class="py-name">model</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> <tt class="py-name">command_template</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line"> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">     </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">     </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-92" class="py-name" targets="Variable featuregenerator.meteor.meteor.MeteorGenerator.__name__=featuregenerator.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-92', '__name__', 'link-92');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt id="link-93" class="py-name" targets="Package io_utils=io_utils-module.html"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-93', 'io_utils', 'link-93');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-94" class="py-name" targets="Variable experiment.experiment.Experiment.input=experiment.experiment.Experiment-class.html#input,Variable experiment.phase.Phase.input=experiment.phase.Phase-class.html#input,Package io_utils.input=io_utils.input-module.html"><a title="experiment.experiment.Experiment.input
+experiment.phase.Phase.input
+io_utils.input" class="py-name" href="#" onclick="return doclink('link-94', 'input', 'link-94');">input</a></tt><tt class="py-op">.</tt><tt id="link-95" class="py-name" targets="Module io_utils.input.jcmlreader=io_utils.input.jcmlreader-module.html"><a title="io_utils.input.jcmlreader" class="py-name" href="#" onclick="return doclink('link-95', 'jcmlreader', 'link-95');">jcmlreader</a></tt> <tt class="py-keyword">import</tt> <tt id="link-96" class="py-name" targets="Class io_utils.input.jcmlreader.JcmlReader=io_utils.input.jcmlreader.JcmlReader-class.html"><a title="io_utils.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-96', 'JcmlReader', 'link-96');">JcmlReader</a></tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt id="link-97" class="py-name"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-97', 'io_utils', 'link-93');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-98" class="py-name" targets="Package io_utils.sax=io_utils.sax-module.html"><a title="io_utils.sax" class="py-name" href="#" onclick="return doclink('link-98', 'sax', 'link-98');">sax</a></tt><tt class="py-op">.</tt><tt id="link-99" class="py-name" targets="Module io_utils.sax.saxps2jcml=io_utils.sax.saxps2jcml-module.html"><a title="io_utils.sax.saxps2jcml" class="py-name" href="#" onclick="return doclink('link-99', 'saxps2jcml', 'link-99');">saxps2jcml</a></tt> <tt class="py-keyword">import</tt> <tt id="link-100" class="py-name" targets="Class io_utils.sax.saxps2jcml.Parallelsentence2Jcml=io_utils.sax.saxps2jcml.Parallelsentence2Jcml-class.html"><a title="io_utils.sax.saxps2jcml.Parallelsentence2Jcml" class="py-name" href="#" onclick="return doclink('link-100', 'Parallelsentence2Jcml', 'link-100');">Parallelsentence2Jcml</a></tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line">    <tt class="py-comment">#path = "/home/lefterav/taraxu_tools/scripts/tokenizer/tokenizer.perl"</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line">    <tt class="py-comment">#command_template = "{path} -b -l {lang}"</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line"><tt class="py-comment">#    path = "/home/lefterav/taraxu_tools/scripts/tokenizer/normalize-punctuation.perl"</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line"><tt class="py-comment">#    command_template = "perl {path} -l {lang} -b"</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line">    <tt class="py-name">tokenizer</tt> <tt class="py-op">=</tt> <tt id="link-101" class="py-name"><a title="featuregenerator.preprocessor.Tokenizer" class="py-name" href="#" onclick="return doclink('link-101', 'Tokenizer', 'link-73');">Tokenizer</a></tt><tt class="py-op">(</tt><tt class="py-string">"en"</tt><tt class="py-op">)</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">    <tt class="py-name">parallelsentences</tt> <tt class="py-op">=</tt> <tt id="link-102" class="py-name"><a title="io_utils.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-102', 'JcmlReader', 'link-96');">JcmlReader</a></tt><tt class="py-op">(</tt><tt class="py-string">"/home/elav01/taraxu_data/jcml-latest/clean/wmt2011.newstest.en-de.rank-clean.jcml"</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-103" class="py-name" targets="Method io_utils.input.genericreader.GenericReader.get_parallelsentences()=io_utils.input.genericreader.GenericReader-class.html#get_parallelsentences,Method io_utils.input.genericxmlreader.GenericXmlReader.get_parallelsentences()=io_utils.input.genericxmlreader.GenericXmlReader-class.html#get_parallelsentences,Method io_utils.input.linereader.AttributeLineReader.get_parallelsentences()=io_utils.input.linereader.AttributeLineReader-class.html#get_parallelsentences,Method io_utils.input.linereader.LineReader.get_parallelsentences()=io_utils.input.linereader.LineReader-class.html#get_parallelsentences,Method io_utils.input.posteditingreader.PosteditingReader.get_parallelsentences()=io_utils.input.posteditingreader.PosteditingReader-class.html#get_parallelsentences,Method io_utils.input.rankreader.R2RankReader.get_parallelsentences()=io_utils.input.rankreader.R2RankReader-class.html#get_parallelsentences,Method io_utils.input.rankreader.RankReader.get_parallelsentences()=io_utils.input.rankreader.RankReader-class.html#get_parallelsentences,Method io_utils.input.taraxureader.TaraXUReader.get_parallelsentences()=io_utils.input.taraxureader.TaraXUReader-class.html#get_parallelsentences,Method io_utils.input.xliffreader.XliffReader.get_parallelsentences()=io_utils.input.xliffreader.XliffReader-class.html#get_parallelsentences,Method sentence.dataset.DataSet.get_parallelsentences()=sentence.dataset.DataSet-class.html#get_parallelsentences,Method sentence.pairwisedataset.PairwiseDataset.get_parallelsentences()=sentence.pairwisedataset.PairwiseDataset-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html#get_parallelsentences"><a title="io_utils.input.genericreader.GenericReader.get_parallelsentences
+io_utils.input.genericxmlreader.GenericXmlReader.get_parallelsentences
+io_utils.input.linereader.AttributeLineReader.get_parallelsentences
+io_utils.input.linereader.LineReader.get_parallelsentences
+io_utils.input.posteditingreader.PosteditingReader.get_parallelsentences
+io_utils.input.rankreader.R2RankReader.get_parallelsentences
+io_utils.input.rankreader.RankReader.get_parallelsentences
+io_utils.input.taraxureader.TaraXUReader.get_parallelsentences
+io_utils.input.xliffreader.XliffReader.get_parallelsentences
+sentence.dataset.DataSet.get_parallelsentences
+sentence.pairwisedataset.PairwiseDataset.get_parallelsentences
+sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences" class="py-name" href="#" onclick="return doclink('link-103', 'get_parallelsentences', 'link-103');">get_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line">    <tt class="py-name">tokenized</tt> <tt class="py-op">=</tt> <tt class="py-name">tokenizer</tt><tt class="py-op">.</tt><tt id="link-104" class="py-name" targets="Method featuregenerator.featuregenerator.FeatureGenerator.add_features_batch()=featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_batch,Method featuregenerator.languagechecker.languagetool.LanguageCheckerCmd.add_features_batch()=featuregenerator.languagechecker.languagetool.LanguageCheckerCmd-class.html#add_features_batch,Method featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator.add_features_batch()=featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#add_features_batch,Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.add_features_batch()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator-class.html#add_features_batch,Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.add_features_batch()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator-class.html#add_features_batch"><a title="featuregenerator.featuregenerator.FeatureGenerator.add_features_batch
+featuregenerator.languagechecker.languagetool.LanguageCheckerCmd.add_features_batch
+featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator.add_features_batch
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.add_features_batch
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.add_features_batch" class="py-name" href="#" onclick="return doclink('link-104', 'add_features_batch', 'link-104');">add_features_batch</a></tt><tt class="py-op">(</tt><tt class="py-name">parallelsentences</tt><tt class="py-op">)</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line">    <tt class="py-comment">#tokenizer.close()</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">    <tt id="link-105" class="py-name"><a title="io_utils.sax.saxps2jcml.Parallelsentence2Jcml" class="py-name" href="#" onclick="return doclink('link-105', 'Parallelsentence2Jcml', 'link-100');">Parallelsentence2Jcml</a></tt><tt class="py-op">(</tt><tt class="py-name">tokenized</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-106" class="py-name" targets="Method io_utils.output.posteditingwriter.PosteditingWriter.write_to_file()=io_utils.output.posteditingwriter.PosteditingWriter-class.html#write_to_file,Method io_utils.output.taraxuwriter.TaraXUWriter.write_to_file()=io_utils.output.taraxuwriter.TaraXUWriter-class.html#write_to_file,Method io_utils.output.wmt11tabwriter.Wmt11TabWriter.write_to_file()=io_utils.output.wmt11tabwriter.Wmt11TabWriter-class.html#write_to_file,Method io_utils.output.xmlwriter.GenericWriter.write_to_file()=io_utils.output.xmlwriter.GenericWriter-class.html#write_to_file,Method io_utils.output.xmlwriter.GenericXMLWriter.write_to_file()=io_utils.output.xmlwriter.GenericXMLWriter-class.html#write_to_file,Method io_utils.sax.saxps2jcml.Parallelsentence2Jcml.write_to_file()=io_utils.sax.saxps2jcml.Parallelsentence2Jcml-class.html#write_to_file"><a title="io_utils.output.posteditingwriter.PosteditingWriter.write_to_file
+io_utils.output.taraxuwriter.TaraXUWriter.write_to_file
+io_utils.output.wmt11tabwriter.Wmt11TabWriter.write_to_file
+io_utils.output.xmlwriter.GenericWriter.write_to_file
+io_utils.output.xmlwriter.GenericXMLWriter.write_to_file
+io_utils.sax.saxps2jcml.Parallelsentence2Jcml.write_to_file" class="py-name" href="#" onclick="return doclink('link-106', 'write_to_file', 'link-106');">write_to_file</a></tt><tt class="py-op">(</tt><tt class="py-string">"/home/elav01/taraxu_data/jcml-latest/tok/wmt2011.newstest.en-de.rank-clean.jcml"</tt><tt class="py-op">)</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:21 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

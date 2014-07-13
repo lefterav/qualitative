@@ -1,0 +1,758 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>featuregenerator.featuregenerator.FeatureGenerator</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="featuregenerator-module.html">Package&nbsp;featuregenerator</a> ::
+        <a href="featuregenerator.featuregenerator-module.html">Module&nbsp;featuregenerator</a> ::
+        Class&nbsp;FeatureGenerator
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="featuregenerator.featuregenerator.FeatureGenerator-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class FeatureGenerator</h1><p class="nomargin-top"><span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+object --+
+         |
+        <strong class="uidshort">FeatureGenerator</strong>
+</pre>
+
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="classifier.ranker.Ranker-class.html">classifier.ranker.Ranker</a></li><li>, <a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html">languagefeaturegenerator.LanguageFeatureGenerator</a></li><li>, <a href="featuregenerator.attribute_rank.AttributeRankGenerator-class.html">attribute_rank.AttributeRankGenerator</a></li><li>, <a href="featuregenerator.ibm1featuregenerator.Ibm1FeatureGenerator-class.html">ibm1featuregenerator.Ibm1FeatureGenerator</a></li><li>, <a href="featuregenerator.bestsystem.BestSystemFeatureGenerator-class.html">bestsystem.BestSystemFeatureGenerator</a></li><li>, <a href="featuregenerator.decodingprobs.DecodingProbsAnalyzer-class.html">decodingprobs.DecodingProbsAnalyzer</a></li><li>, <a href="featuregenerator.preprocessor.Preprocessor-class.html">preprocessor.Preprocessor</a></li><li>, <a href="featuregenerator.diff_generator.DiffGenerator-class.html">diff_generator.DiffGenerator</a></li>  </ul>
+</dd></dl>
+
+<hr />
+<pre class="literalblock">
+
+A base feature generator class, with no particular functioning. 
+    It just provides basic feature generator functions to be inherited (or overwritten) by specific feature generators.
+    If you want to code a new FeatureGenerator, it must inherit this class and override one or all of the methods 
+    get_features_src, get_features_tgt, get_features_simplesentence, get_features_parallelsentence 
+
+</pre>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">list(sentence.parallelsentence.ParallelSentence)</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_batch" class="summary-sig-name">add_features_batch</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">parallelsentences</span>)</span><br />
+      Abstract method to be overriden by the particular subclassed feature 
+      generator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.add_features_batch">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_dataset" class="summary-sig-name">add_features_dataset</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dataset</span>)</span><br />
+      Augments the provided DataSet with features of the current feature generator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.add_features_dataset">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_parallelsentence" class="summary-sig-name">add_features_parallelsentence</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">parallelsentence</span>)</span><br />
+      Augments the provided ParallelSentence with features of the current feature generator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.add_features_parallelsentence">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_simplesentence" class="summary-sig-name">add_features_simplesentence</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">simplesentence</span>,
+        <span class="summary-sig-arg">parallelsentence</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Works as a generalized method covering the functionality of both add_features_src and add_features_tgt.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.add_features_simplesentence">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_src" class="summary-sig-name">add_features_src</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">simplesentence</span>,
+        <span class="summary-sig-arg">parallelsentence</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Gets a source SimpleSentence and (optionally) its corresponding Parallelsentence and returns a SimpleSentence with the generated features
+    Operates as a wrapper around the get_features_src method, which returns a dictionary with the generated features.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.add_features_src">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_tgt" class="summary-sig-name">add_features_tgt</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">simplesentence</span>,
+        <span class="summary-sig-arg">parallelsentence</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Gets a target SimpleSentence and (optionally) its corresponding Parallelsentence and returns a SimpleSentence with the generated features
+    Operates as a wrapper around the get_features_src method, which returns a dictionary with the generated features.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.add_features_tgt">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_annotation_name" class="summary-sig-name">get_annotation_name</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Provides a name describing the set of features that each particular 
+      annotator added.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.get_annotation_name">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_parallelsentence" class="summary-sig-name">get_features_parallelsentence</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">parallelsentence</span>)</span><br />
+      Abstract method to be overriden by the particular subclassed feature 
+      generator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.get_features_parallelsentence">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_simplesentence" class="summary-sig-name">get_features_simplesentence</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">simplesentence</span>,
+        <span class="summary-sig-arg">parallelsentence</span>)</span><br />
+      Abstract method to be overriden by the particular subclassed feature 
+      generator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.get_features_simplesentence">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_src" class="summary-sig-name">get_features_src</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">simplesentence</span>,
+        <span class="summary-sig-arg">parallelsentence</span>)</span><br />
+      Abstract method to be overriden by the particular subclassed feature 
+      generator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.get_features_src">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_features_string"></a><span class="summary-sig-name">get_features_string</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">string</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.get_features_string">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_tgt" class="summary-sig-name">get_features_tgt</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">simplesentence</span>,
+        <span class="summary-sig-arg">parallelsentence</span>)</span><br />
+      Abstract method to be overriden by the particular subclassed feature 
+      generator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.get_features_tgt">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="process_dataset"></a><span class="summary-sig-name">process_dataset</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dataset</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.process_dataset">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__init__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="add_features_batch"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_features_batch</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">parallelsentences</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.add_features_batch">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Abstract method to be overriden by the particular subclassed feature 
+  generator. It allows the generation of features over many 
+  parallelsentences. It is a flexible solution when feature generation 
+  doesn't take place item to item (see SAX parsing) but a whole list of 
+  parallel sentences needs to be implemented at once. In this case, feature
+  generator may optimize better when the whole dataset is given.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>parallelsentences</code></strong> (list(sentence.parallelsentence.ParallelSentence)) - The parallel sentences to be be augmented</li>
+    </ul></dd>
+    <dt>Returns: list(sentence.parallelsentence.ParallelSentence)</dt>
+        <dd>The given list of ParallelSentence which are now augmented with 
+          features generated from the current featuregenerator</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="add_features_dataset"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_features_dataset</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">dataset</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.add_features_dataset">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Augments the provided DataSet with features of the current feature generator. 
+    It fires feature generation over the included parallelsentences it is composed of.
+    It is not compatible with SAX parsing.
+@param dataset: The DataSet whose contents will be augmented
+@type dataset: sentence.dataset.DataSet
+@rtype: sentence.dataset.DataSet
+@return: The given DataSet augmented with features generated from the current featuregenerator 
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="add_features_parallelsentence"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_features_parallelsentence</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">parallelsentence</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.add_features_parallelsentence">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Augments the provided ParallelSentence with features of the current feature generator. 
+    It fires feature generation functions over the included simplesentences it is composed of.
+@param parallelsentence: The ParalleSentence whose contents will be augmented
+@type parallelsentence: sentence.parallelsentence.ParalleSentence
+@rtype: sentence.parallelsentence.ParalleSentence
+@return: The given ParalleSentence augmented with features generated from the current featuregenerator 
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="add_features_simplesentence"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_features_simplesentence</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">simplesentence</span>,
+        <span class="sig-arg">parallelsentence</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.add_features_simplesentence">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Works as a generalized method covering the functionality of both add_features_src and add_features_tgt. It gets a SimpleSentence of any origin (source/target etc.) and (optionally) its corresponding Parallelsentence and returns a SimpleSentence with the generated features
+    Operates as a wrapper around the get_features_src method, which returns a dictionary with the generated features. 
+    From it we receive the dictionary, we duplicate the SimpleSentence object and we return a proper SimpleSentence object containing the generated features.
+@param simplesentence: A simplesentence
+@type simplesentence: sentence.sentence.SimpleSentence 
+@param parallelsentence: The parallelsentence containing the given SimpleSentence. Can be omitted if the subclassed feature generator doesn't require the parallelsentence in order to deliver simplesentence features
+@type parallelsentence: sentence.parallelsentence.ParallelSentence
+@rtype: sentence.sentence.SimpleSentence 
+@return: A SimpleSentence object similar to the one given, but now containing the generated features.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="add_features_src"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_features_src</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">simplesentence</span>,
+        <span class="sig-arg">parallelsentence</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.add_features_src">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Gets a source SimpleSentence and (optionally) its corresponding Parallelsentence and returns a SimpleSentence with the generated features
+    Operates as a wrapper around the get_features_src method, which returns a dictionary with the generated features. 
+    From it we receive the dictionary, we duplicate the source SimpleSentence object and we return a proper source SimpleSentence object containing the generated features.
+@param simplesentence: The source sentence of a ParallelSentence
+@type simplesentence: sentence.sentence.SimpleSentence 
+@param parallelsentence: The parallelsentence containing the given source sentence. Can be omitted if the subclassed feature generator doesn't require the parallelsentence in order to deliver source features
+@type parallelsentence: sentence.parallelsentence.ParallelSentence
+@rtype: sentence.sentence.SimpleSentence 
+@return: A source SimpleSentence object similar to the one given, but now containing the generated features.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="add_features_tgt"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_features_tgt</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">simplesentence</span>,
+        <span class="sig-arg">parallelsentence</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.add_features_tgt">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Gets a target SimpleSentence and (optionally) its corresponding Parallelsentence and returns a SimpleSentence with the generated features
+    Operates as a wrapper around the get_features_src method, which returns a dictionary with the generated features. 
+    From it we receive the dictionary, we duplicate the target SimpleSentence object and we return a proper target SimpleSentence object containing the generated features.
+@param simplesentence: The target sentence of a ParallelSentence
+@type simplesentence: sentence.sentence.SimpleSentence 
+@param parallelsentence: The parallelsentence containing the given target sentence. Can be omitted if the subclassed feature generator doesn't require the parallelsentence in order to deliver target features
+@type parallelsentence: sentence.parallelsentence.ParallelSentence
+@rtype: sentence.sentence.SimpleSentence 
+@return: A target SimpleSentence object similar to the one given, but now containing the generated features.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_annotation_name"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_annotation_name</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.get_annotation_name">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Provides a name describing the set of features that each particular 
+  annotator added. If not overriden, generates a name out of the class name
+  @return the name of the annotation @rtype string</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_features_parallelsentence"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_features_parallelsentence</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">parallelsentence</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.get_features_parallelsentence">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Abstract method to be overriden by the particular subclassed feature 
+  generator. It receives a parallel sentence and returns a list of parallel
+  sentence features that globally describe the parallel sentence itself. 
+  Features that describe source or target sentence etc should be added in 
+  functions get_features_src and get_features_tgt declared below. 
+  Implementation here provides an empty dictionary, in case subclassed 
+  feature generator doesn't provide any features.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_features_simplesentence"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_features_simplesentence</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">simplesentence</span>,
+        <span class="sig-arg">parallelsentence</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.get_features_simplesentence">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Abstract method to be overriden by the particular subclassed feature 
+  generator. It receives a simple sentence of any type and returns a list 
+  of features. It should be overriden by a feature generator that doesn't 
+  differentiate between source and target features</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_features_src"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_features_src</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">simplesentence</span>,
+        <span class="sig-arg">parallelsentence</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.get_features_src">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Abstract method to be overriden by the particular subclassed feature 
+  generator. It receives a source simple sentence and returns a list of 
+  source features. Implementation here fallbacks to the 
+  get_features_simplesentence function, when feature generator doesn't 
+  differentiate between source and target features</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_features_tgt"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_features_tgt</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">simplesentence</span>,
+        <span class="sig-arg">parallelsentence</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.featuregenerator-pysrc.html#FeatureGenerator.get_features_tgt">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Abstract method to be overriden by the particular subclassed feature 
+  generator. It receives a target simple sentence and returns a list of 
+  target features. Implementation here fallbacks to the 
+  get_features_simplesentence function, when feature generator doesn't 
+  differentiate between source and target features</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:19 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

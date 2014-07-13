@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>experiment.errorprediction.preprocessing.preprocess_glassbox</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="experiment-module.html">Package&nbsp;experiment</a> ::
+        <a href="experiment.errorprediction-module.html">Package&nbsp;errorprediction</a> ::
+        <a href="experiment.errorprediction.preprocessing-module.html">Package&nbsp;preprocessing</a> ::
+        Module&nbsp;preprocess_glassbox
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="experiment.errorprediction.preprocessing.preprocess_glassbox-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="experiment.errorprediction.preprocessing.preprocess_glassbox-module.html">Module experiment.errorprediction.preprocessing.preprocess_glassbox</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">Preprocessing functions for the data on the predicting errors from glassbox MT features </tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">Highly adapted on TaraXU file structure (particularly eval round 2)</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">Created on 11 Apr 2013</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">@author: Eleftherios Avramidis</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package featuregenerator=featuregenerator-module.html,Module featuregenerator.featuregenerator=featuregenerator.featuregenerator-module.html"><a title="featuregenerator
+featuregenerator.featuregenerator" class="py-name" href="#" onclick="return doclink('link-0', 'featuregenerator', 'link-0');">featuregenerator</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package featuregenerator.glassbox=featuregenerator.glassbox-module.html"><a title="featuregenerator.glassbox" class="py-name" href="#" onclick="return doclink('link-1', 'glassbox', 'link-1');">glassbox</a></tt><tt class="py-op">.</tt><tt class="py-name">mosesglassbox</tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class featuregenerator.glassbox.moses.extractor.MosesGlassboxExtractor=featuregenerator.glassbox.moses.extractor.MosesGlassboxExtractor-class.html"><a title="featuregenerator.glassbox.moses.extractor.MosesGlassboxExtractor" class="py-name" href="#" onclick="return doclink('link-2', 'MosesGlassboxExtractor', 'link-2');">MosesGlassboxExtractor</a></tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-3" class="py-name" targets="Package io_utils=io_utils-module.html"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-3', 'io_utils', 'link-3');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Package io_utils.sax=io_utils.sax-module.html"><a title="io_utils.sax" class="py-name" href="#" onclick="return doclink('link-4', 'sax', 'link-4');">sax</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Module io_utils.sax.saxps2jcml=io_utils.sax.saxps2jcml-module.html"><a title="io_utils.sax.saxps2jcml" class="py-name" href="#" onclick="return doclink('link-5', 'saxps2jcml', 'link-5');">saxps2jcml</a></tt> <tt class="py-keyword">import</tt> <tt id="link-6" class="py-name" targets="Class io_utils.sax.saxps2jcml.IncrementalJcml=io_utils.sax.saxps2jcml.IncrementalJcml-class.html"><a title="io_utils.sax.saxps2jcml.IncrementalJcml" class="py-name" href="#" onclick="return doclink('link-6', 'IncrementalJcml', 'link-6');">IncrementalJcml</a></tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-7" class="py-name" targets="Package sentence=sentence-module.html,Module sentence.sentence=sentence.sentence-module.html"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-7', 'sentence', 'link-7');">sentence</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Module sentence.parallelsentence=sentence.parallelsentence-module.html"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-8', 'parallelsentence', 'link-8');">parallelsentence</a></tt> <tt class="py-keyword">import</tt> <tt id="link-9" class="py-name" targets="Class sentence.parallelsentence.ParallelSentence=sentence.parallelsentence.ParallelSentence-class.html"><a title="sentence.parallelsentence.ParallelSentence" class="py-name" href="#" onclick="return doclink('link-9', 'ParallelSentence', 'link-9');">ParallelSentence</a></tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-10" class="py-name"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-10', 'sentence', 'link-7');">sentence</a></tt><tt class="py-op">.</tt><tt id="link-11" class="py-name"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-11', 'sentence', 'link-7');">sentence</a></tt> <tt class="py-keyword">import</tt> <tt id="link-12" class="py-name" targets="Class sentence.sentence.SimpleSentence=sentence.sentence.SimpleSentence-class.html"><a title="sentence.sentence.SimpleSentence" class="py-name" href="#" onclick="return doclink('link-12', 'SimpleSentence', 'link-12');">SimpleSentence</a></tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-13" class="py-name" targets="Module experiment.errorprediction.preprocessing.db=experiment.errorprediction.preprocessing.db-module.html"><a title="experiment.errorprediction.preprocessing.db" class="py-name" href="#" onclick="return doclink('link-13', 'db', 'link-13');">db</a></tt> <tt class="py-keyword">import</tt> <tt id="link-14" class="py-name" targets="Class experiment.errorprediction.preprocessing.db.DbConnector=experiment.errorprediction.preprocessing.db.DbConnector-class.html"><a title="experiment.errorprediction.preprocessing.db.DbConnector" class="py-name" href="#" onclick="return doclink('link-14', 'DbConnector', 'link-14');">DbConnector</a></tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-15" class="py-name"><a title="featuregenerator
+featuregenerator.featuregenerator" class="py-name" href="#" onclick="return doclink('link-15', 'featuregenerator', 'link-0');">featuregenerator</a></tt><tt class="py-op">.</tt><tt id="link-16" class="py-name" targets="Module featuregenerator.hjerson=featuregenerator.hjerson-module.html"><a title="featuregenerator.hjerson" class="py-name" href="#" onclick="return doclink('link-16', 'hjerson', 'link-16');">hjerson</a></tt> <tt class="py-keyword">import</tt> <tt id="link-17" class="py-name" targets="Class featuregenerator.hjerson.BinaryHjerson=featuregenerator.hjerson.BinaryHjerson-class.html"><a title="featuregenerator.hjerson.BinaryHjerson" class="py-name" href="#" onclick="return doclink('link-17', 'BinaryHjerson', 'link-17');">BinaryHjerson</a></tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">re</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">logging</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"> </tt>
+<a name="_get_id_from_line"></a><div id="_get_id_from_line-def"><a name="L21"></a><tt class="py-lineno"> 21</tt> <a class="py-toggle" href="#" id="_get_id_from_line-toggle" onclick="return toggle('_get_id_from_line');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="experiment.errorprediction.preprocessing.preprocess_glassbox-module.html#_get_id_from_line">_get_id_from_line</a><tt class="py-op">(</tt><tt class="py-param">testset_type</tt><tt class="py-op">,</tt> <tt class="py-param">id_line</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_get_id_from_line-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_get_id_from_line-expanded"><a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-docstring">    Reconstruct the unique sentence id from a `links` file that is row-by-row aligned to the source file</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-docstring">    This is based on IDing conventions from the 2nd evaluation round of the TaraX\H{U} project</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-docstring">    @param testset_type: it specifies the type of the testset_type, which defines the prefix and possible special IDing behaviour</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-docstring">    @type testset_type: str</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-docstring">    @param id_line: the line with the ID entries</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-docstring">    @type testset_type: str</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">     </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">testset_type</tt> <tt class="py-op">==</tt> <tt class="py-string">"wmt11"</tt><tt class="py-op">:</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">        <tt class="py-name">testset_type</tt> <tt class="py-op">=</tt> <tt class="py-string">"wmt11"</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">        <tt class="py-name">segment_id</tt><tt class="py-op">,</tt> <tt class="py-name">document_id</tt> <tt class="py-op">=</tt> <tt class="py-name">id_line</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Method sentence.dataset.DataSet.split()=sentence.dataset.DataSet-class.html#split"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-18', 'split', 'link-18');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">'\t'</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">        <tt class="py-name">uid</tt> <tt class="py-op">=</tt> <tt class="py-string">"{}-{}-{}"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">testset_type</tt><tt class="py-op">,</tt> <tt class="py-name">document_id</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">segment_id</tt><tt class="py-op">)</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">uid</tt> </tt>
+</div><a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">     </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="extract_glassbox_features_moses"></a><div id="extract_glassbox_features_moses-def"><a name="L38"></a><tt class="py-lineno"> 38</tt> <a class="py-toggle" href="#" id="extract_glassbox_features_moses-toggle" onclick="return toggle('extract_glassbox_features_moses');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="experiment.errorprediction.preprocessing.preprocess_glassbox-module.html#extract_glassbox_features_moses">extract_glassbox_features_moses</a><tt class="py-op">(</tt><tt class="py-param">source_filename</tt><tt class="py-op">,</tt> <tt class="py-param">ids_filename</tt><tt class="py-op">,</tt> <tt class="py-param">testset_type</tt><tt class="py-op">,</tt> <tt class="py-param">moses_target_filename</tt><tt class="py-op">,</tt> <tt class="py-param">log_filename</tt><tt class="py-op">,</tt> <tt class="py-param">output_filename</tt><tt class="py-op">,</tt> <tt class="py-param">source_lang</tt><tt class="py-op">,</tt> <tt class="py-param">target_lang</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="extract_glassbox_features_moses-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="extract_glassbox_features_moses-expanded"><a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-docstring">    Extract the glassbox features from Moses</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring">    @param source_filename: the filename of a plain text file with one source sentence per line</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-docstring">    @type source_filename: str</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">    @param target_filename: the filename of a plain text file with one target sentence per line</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring">    @type target_filename: str</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-docstring">    @param log_filename: the filename of the lof of the verbose output produced by Moses decoder</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-docstring">    @type log_filename: </tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">     </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">    <tt class="py-name">system</tt> <tt class="py-op">=</tt> <tt class="py-string">"moses"</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">     </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">    <tt class="py-comment">#get moses glass features in a list</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">    <tt id="link-19" class="py-name" targets="Module featuregenerator.glassbox.moses.extractor=featuregenerator.glassbox.moses.extractor-module.html"><a title="featuregenerator.glassbox.moses.extractor" class="py-name" href="#" onclick="return doclink('link-19', 'extractor', 'link-19');">extractor</a></tt> <tt class="py-op">=</tt> <tt id="link-20" class="py-name"><a title="featuregenerator.glassbox.moses.extractor.MosesGlassboxExtractor" class="py-name" href="#" onclick="return doclink('link-20', 'MosesGlassboxExtractor', 'link-2');">MosesGlassboxExtractor</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">    <tt class="py-name">features_dicts</tt> <tt class="py-op">=</tt> <tt id="link-21" class="py-name"><a title="featuregenerator.glassbox.moses.extractor" class="py-name" href="#" onclick="return doclink('link-21', 'extractor', 'link-19');">extractor</a></tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Method featuregenerator.glassbox.moses.extractor.MosesGlassboxExtractor.create_dicts_of_sentences_attributes()=featuregenerator.glassbox.moses.extractor.MosesGlassboxExtractor-class.html#create_dicts_of_sentences_attributes"><a title="featuregenerator.glassbox.moses.extractor.MosesGlassboxExtractor.create_dicts_of_sentences_attributes" class="py-name" href="#" onclick="return doclink('link-22', 'create_dicts_of_sentences_attributes', 'link-22');">create_dicts_of_sentences_attributes</a></tt><tt class="py-op">(</tt><tt class="py-name">log_filename</tt><tt class="py-op">)</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">     </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">    <tt class="py-comment">#initialize feature generators</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">    <tt id="link-23" class="py-name"><a title="featuregenerator.hjerson" class="py-name" href="#" onclick="return doclink('link-23', 'hjerson', 'link-16');">hjerson</a></tt> <tt class="py-op">=</tt> <tt id="link-24" class="py-name"><a title="featuregenerator.hjerson.BinaryHjerson" class="py-name" href="#" onclick="return doclink('link-24', 'BinaryHjerson', 'link-17');">BinaryHjerson</a></tt><tt class="py-op">(</tt><tt class="py-name">lang</tt> <tt class="py-op">=</tt> <tt class="py-name">target_lang</tt><tt class="py-op">)</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">     </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">    <tt class="py-comment">#open readers for input files and a writer for xml</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">    <tt class="py-name">sourcefile</tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">source_filename</tt><tt class="py-op">,</tt> <tt class="py-string">'r'</tt><tt class="py-op">)</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">    <tt class="py-name">moses_targetfile</tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">moses_target_filename</tt><tt class="py-op">,</tt> <tt class="py-string">'r'</tt><tt class="py-op">)</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">    <tt class="py-name">idsfile</tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">ids_filename</tt><tt class="py-op">,</tt> <tt class="py-string">'r'</tt><tt class="py-op">)</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">    <tt class="py-name">output_xml</tt> <tt class="py-op">=</tt> <tt id="link-25" class="py-name"><a title="io_utils.sax.saxps2jcml.IncrementalJcml" class="py-name" href="#" onclick="return doclink('link-25', 'IncrementalJcml', 'link-6');">IncrementalJcml</a></tt><tt class="py-op">(</tt><tt id="link-26" class="py-name" targets="Variable support.preprocessing.jcml.xliff2jcml.output_filename=support.preprocessing.jcml.xliff2jcml-module.html#output_filename"><a title="support.preprocessing.jcml.xliff2jcml.output_filename" class="py-name" href="#" onclick="return doclink('link-26', 'output_filename', 'link-26');">output_filename</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">    <tt class="py-comment">#open a connection to the mySQL server</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">    <tt class="py-name">mydb</tt> <tt class="py-op">=</tt> <tt id="link-27" class="py-name"><a title="experiment.errorprediction.preprocessing.db.DbConnector" class="py-name" href="#" onclick="return doclink('link-27', 'DbConnector', 'link-14');">DbConnector</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">     </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">    <tt class="py-name">no_postediting_count</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">    <tt class="py-name">reference_backoff_count</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">     </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">source_sentence</tt><tt class="py-op">,</tt> <tt class="py-name">id_line</tt><tt class="py-op">,</tt> <tt class="py-name">target_sentence</tt><tt class="py-op">,</tt> <tt class="py-name">features_dict</tt> <tt class="py-keyword">in</tt> <tt class="py-name">zip</tt><tt class="py-op">(</tt><tt class="py-name">sourcefile</tt><tt class="py-op">,</tt> <tt class="py-name">idsfile</tt><tt class="py-op">,</tt> <tt class="py-name">moses_targetfile</tt><tt class="py-op">,</tt> <tt class="py-name">features_dicts</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-name">uid</tt> <tt class="py-op">=</tt> <tt id="link-28" class="py-name" targets="Function experiment.errorprediction.preprocessing.preprocess_glassbox._get_id_from_line()=experiment.errorprediction.preprocessing.preprocess_glassbox-module.html#_get_id_from_line"><a title="experiment.errorprediction.preprocessing.preprocess_glassbox._get_id_from_line" class="py-name" href="#" onclick="return doclink('link-28', '_get_id_from_line', 'link-28');">_get_id_from_line</a></tt><tt class="py-op">(</tt><tt class="py-name">testset_type</tt><tt class="py-op">,</tt> <tt class="py-name">id_line</tt><tt class="py-op">)</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">         </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt class="py-comment">#prepare existing attributes</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-name">tgt_attributes</tt> <tt class="py-op">=</tt> <tt class="py-name">features_dict</tt>  </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">        <tt class="py-name">atts</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-string">"uid"</tt><tt class="py-op">:</tt> <tt class="py-name">uid</tt><tt class="py-op">}</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">         </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">        <tt class="py-comment">#fetch post-edited output, to be used as reference for extracting error classification</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">        <tt class="py-name">reference</tt> <tt class="py-op">=</tt> <tt class="py-name">mydb</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Method experiment.errorprediction.preprocessing.db.DbConnector.fetch_postediting()=experiment.errorprediction.preprocessing.db.DbConnector-class.html#fetch_postediting"><a title="experiment.errorprediction.preprocessing.db.DbConnector.fetch_postediting" class="py-name" href="#" onclick="return doclink('link-29', 'fetch_postediting', 'link-29');">fetch_postediting</a></tt><tt class="py-op">(</tt><tt class="py-name">uid</tt><tt class="py-op">,</tt> <tt class="py-name">system</tt><tt class="py-op">,</tt> <tt class="py-name">source_lang</tt><tt class="py-op">,</tt> <tt class="py-name">target_lang</tt><tt class="py-op">)</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">reference</tt><tt class="py-op">:</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">            <tt class="py-name">reference</tt> <tt class="py-op">=</tt> <tt class="py-name">mydb</tt><tt class="py-op">.</tt><tt id="link-30" class="py-name" targets="Method experiment.errorprediction.preprocessing.db.DbConnector.fetch_reference()=experiment.errorprediction.preprocessing.db.DbConnector-class.html#fetch_reference"><a title="experiment.errorprediction.preprocessing.db.DbConnector.fetch_reference" class="py-name" href="#" onclick="return doclink('link-30', 'fetch_reference', 'link-30');">fetch_reference</a></tt><tt class="py-op">(</tt><tt class="py-name">uid</tt><tt class="py-op">,</tt> <tt class="py-name">target_lang</tt><tt class="py-op">)</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">reference</tt><tt class="py-op">:</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">                <tt class="py-name">reference_backoff_count</tt> <tt class="py-op">+=</tt><tt class="py-number">1</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">                <tt class="py-name">no_postediting_count</tt> <tt class="py-op">+=</tt><tt class="py-number">1</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">                <tt class="py-keyword">continue</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">             </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-comment">#create ParallelSentence object and write to XML</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt id="link-31" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-31', 'parallelsentence', 'link-8');">parallelsentence</a></tt> <tt class="py-op">=</tt> <tt id="link-32" class="py-name"><a title="sentence.parallelsentence.ParallelSentence" class="py-name" href="#" onclick="return doclink('link-32', 'ParallelSentence', 'link-9');">ParallelSentence</a></tt><tt class="py-op">(</tt><tt id="link-33" class="py-name"><a title="sentence.sentence.SimpleSentence" class="py-name" href="#" onclick="return doclink('link-33', 'SimpleSentence', 'link-12');">SimpleSentence</a></tt><tt class="py-op">(</tt><tt class="py-name">source_sentence</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">                                            <tt class="py-op">[</tt><tt id="link-34" class="py-name"><a title="sentence.sentence.SimpleSentence" class="py-name" href="#" onclick="return doclink('link-34', 'SimpleSentence', 'link-12');">SimpleSentence</a></tt><tt class="py-op">(</tt><tt class="py-name">target_sentence</tt><tt class="py-op">,</tt> <tt class="py-name">tgt_attributes</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">                                            <tt id="link-35" class="py-name"><a title="sentence.sentence.SimpleSentence" class="py-name" href="#" onclick="return doclink('link-35', 'SimpleSentence', 'link-12');">SimpleSentence</a></tt><tt class="py-op">(</tt><tt class="py-name">reference</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">                                            <tt class="py-name">atts</tt><tt class="py-op">)</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">          </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">         </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">        <tt class="py-comment">#the rest of the features will be fetched by feature processors on sentence-level</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">        <tt id="link-36" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-36', 'parallelsentence', 'link-8');">parallelsentence</a></tt> <tt class="py-op">=</tt> <tt id="link-37" class="py-name"><a title="featuregenerator.hjerson" class="py-name" href="#" onclick="return doclink('link-37', 'hjerson', 'link-16');">hjerson</a></tt><tt class="py-op">.</tt><tt id="link-38" class="py-name" targets="Method classifier.ranker.Ranker.add_features_parallelsentence()=classifier.ranker.Ranker-class.html#add_features_parallelsentence,Method featuregenerator.attribute_rank.AttributeRankGenerator.add_features_parallelsentence()=featuregenerator.attribute_rank.AttributeRankGenerator-class.html#add_features_parallelsentence,Method featuregenerator.featuregenerator.FeatureGenerator.add_features_parallelsentence()=featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_parallelsentence"><a title="classifier.ranker.Ranker.add_features_parallelsentence
+featuregenerator.attribute_rank.AttributeRankGenerator.add_features_parallelsentence
+featuregenerator.featuregenerator.FeatureGenerator.add_features_parallelsentence" class="py-name" href="#" onclick="return doclink('link-38', 'add_features_parallelsentence', 'link-38');">add_features_parallelsentence</a></tt><tt class="py-op">(</tt><tt id="link-39" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-39', 'parallelsentence', 'link-8');">parallelsentence</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">        <tt class="py-name">output_xml</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name" targets="Method io_utils.sax.saxps2jcml.IncrementalJcml.add_parallelsentence()=io_utils.sax.saxps2jcml.IncrementalJcml-class.html#add_parallelsentence"><a title="io_utils.sax.saxps2jcml.IncrementalJcml.add_parallelsentence" class="py-name" href="#" onclick="return doclink('link-40', 'add_parallelsentence', 'link-40');">add_parallelsentence</a></tt><tt class="py-op">(</tt><tt id="link-41" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-41', 'parallelsentence', 'link-8');">parallelsentence</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">         </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">    <tt class="py-name">sourcefile</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Method featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close()=featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html#close,Method featuregenerator.preprocessor.CommandlinePreprocessor.close()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#close,Method io_utils.sax.saxps2jcml.IncrementalJcml.close()=io_utils.sax.saxps2jcml.IncrementalJcml-class.html#close,Method support.preprocessing.jcml.jcml2arff.ArffWriter.close()=support.preprocessing.jcml.jcml2arff.ArffWriter-class.html#close"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-42', 'close', 'link-42');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">    <tt class="py-name">moses_targetfile</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-43', 'close', 'link-42');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">    <tt class="py-name">idsfile</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-44', 'close', 'link-42');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">    <tt class="py-name">output_xml</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-45', 'close', 'link-42');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">    <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">warning</tt><tt class="py-op">(</tt><tt class="py-string">"{} references were used instead, because no post-editing found"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">reference_backoff_count</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">    <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">warning</tt><tt class="py-op">(</tt><tt class="py-string">"{} sentences were skipped because no references found"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">no_postediting_count</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"> </tt>
+<a name="extract_glassbox_features_lucy"></a><div id="extract_glassbox_features_lucy-def"><a name="L106"></a><tt class="py-lineno">106</tt> <a class="py-toggle" href="#" id="extract_glassbox_features_lucy-toggle" onclick="return toggle('extract_glassbox_features_lucy');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="experiment.errorprediction.preprocessing.preprocess_glassbox-module.html#extract_glassbox_features_lucy">extract_glassbox_features_lucy</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="extract_glassbox_features_lucy-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="extract_glassbox_features_lucy-expanded"><a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">     </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-46" class="py-name" targets="Variable featuregenerator.meteor.meteor.MeteorGenerator.__name__=featuregenerator.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-46', '__name__', 'link-46');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">    <tt class="py-comment">#print db.retrieve_uid("Deutsch", ['069592001_cust1-069592001-2'])</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">    <tt class="py-name">source_filename</tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name" targets="Variable experiment.autoranking.annotate.path=experiment.autoranking.annotate-module.html#path,Variable experiment.autoranking.annotate_updated.path=experiment.autoranking.annotate_updated-module.html#path,Variable experiment.autoranking.autoranking.path=experiment.autoranking.autoranking-module.html#path,Variable experiment.ml4hmt12.annotate_updated.path=experiment.ml4hmt12.annotate_updated-module.html#path,Variable experiment.ml4hmt12.bootstrap.path=experiment.ml4hmt12.bootstrap-module.html#path"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-47', 'path', 'link-47');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">expanduser</tt><tt class="py-op">(</tt><tt class="py-string">"~/taraxu_data/r2/glassbox/wmt11.de-en.de.dev"</tt><tt class="py-op">)</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">    <tt class="py-name">ids_filename</tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-48" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-48', 'path', 'link-47');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">expanduser</tt><tt class="py-op">(</tt><tt class="py-string">"~/taraxu_data/r2/glassbox/wmt11.de-en.de.links.dev"</tt><tt class="py-op">)</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">    <tt class="py-name">target_filename</tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-49" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-49', 'path', 'link-47');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">expanduser</tt><tt class="py-op">(</tt><tt class="py-string">"~/taraxu_data/r2/glassbox/wmt11.dev"</tt><tt class="py-op">)</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">    <tt class="py-name">log_filename</tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-50', 'path', 'link-47');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">expanduser</tt><tt class="py-op">(</tt><tt class="py-string">"~/taraxu_data/r2/glassbox/wmt11.v2.log.8.dev"</tt><tt class="py-op">)</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">    <tt class="py-name">testset_type</tt> <tt class="py-op">=</tt> <tt class="py-string">"wmt11"</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">    <tt id="link-51" class="py-name"><a title="support.preprocessing.jcml.xliff2jcml.output_filename" class="py-name" href="#" onclick="return doclink('link-51', 'output_filename', 'link-26');">output_filename</a></tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-52" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-52', 'path', 'link-47');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">expanduser</tt><tt class="py-op">(</tt><tt class="py-string">"~/taraxu_data/r2/glassbox/wmt11.gb.jcml"</tt><tt class="py-op">)</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">    <tt class="py-name">source_lang</tt> <tt class="py-op">=</tt> <tt class="py-string">"de"</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">    <tt class="py-name">target_lang</tt> <tt class="py-op">=</tt> <tt class="py-string">"en"</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">     </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">    <tt id="link-53" class="py-name" targets="Variable experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.sth=experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival-module.html#sth"><a title="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.sth" class="py-name" href="#" onclick="return doclink('link-53', 'sth', 'link-53');">sth</a></tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">StreamHandler</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">    <tt id="link-54" class="py-name"><a title="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.sth" class="py-name" href="#" onclick="return doclink('link-54', 'sth', 'link-53');">sth</a></tt><tt class="py-op">.</tt><tt class="py-name">setLevel</tt><tt class="py-op">(</tt><tt class="py-name">logging</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name" targets="Variable util.treetaggerwrapper.DEBUG=util.treetaggerwrapper-module.html#DEBUG"><a title="util.treetaggerwrapper.DEBUG" class="py-name" href="#" onclick="return doclink('link-55', 'DEBUG', 'link-55');">DEBUG</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">     </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">    <tt id="link-56" class="py-name" targets="Function experiment.errorprediction.preprocessing.preprocess_glassbox.extract_glassbox_features_moses()=experiment.errorprediction.preprocessing.preprocess_glassbox-module.html#extract_glassbox_features_moses"><a title="experiment.errorprediction.preprocessing.preprocess_glassbox.extract_glassbox_features_moses" class="py-name" href="#" onclick="return doclink('link-56', 'extract_glassbox_features_moses', 'link-56');">extract_glassbox_features_moses</a></tt><tt class="py-op">(</tt><tt class="py-name">source_filename</tt><tt class="py-op">,</tt> <tt class="py-name">ids_filename</tt><tt class="py-op">,</tt> <tt class="py-name">testset_type</tt><tt class="py-op">,</tt> <tt class="py-name">target_filename</tt><tt class="py-op">,</tt> <tt class="py-name">log_filename</tt><tt class="py-op">,</tt> <tt id="link-57" class="py-name"><a title="support.preprocessing.jcml.xliff2jcml.output_filename" class="py-name" href="#" onclick="return doclink('link-57', 'output_filename', 'link-26');">output_filename</a></tt><tt class="py-op">,</tt> <tt class="py-name">source_lang</tt><tt class="py-op">,</tt> <tt class="py-name">target_lang</tt><tt class="py-op">)</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:23 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>sentence.scoring.Scoring</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="sentence-module.html">Package&nbsp;sentence</a> ::
+        <a href="sentence.scoring-module.html">Module&nbsp;scoring</a> ::
+        Class&nbsp;Scoring
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="sentence.scoring.Scoring-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Scoring</h1><p class="nomargin-top"><span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+                       object --+        
+                                |        
+                  <a href="sentence.dataset.DataSet-class.html">dataset.DataSet</a> --+    
+                                    |    
+<a href="sentence.multirankeddataset.MultiRankedDataset-class.html">multirankeddataset.MultiRankedDataset</a> --+
+                                        |
+                                       <strong class="uidshort">Scoring</strong>
+</pre>
+
+<hr />
+<p>classdocs</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.scoring.Scoring-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*params</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      x.__init__(...) initializes x; see help(type(x)) for signature</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.scoring.Scoring-class.html#get_systems_scoring_from_segment_ranks" class="summary-sig-name">get_systems_scoring_from_segment_ranks</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">rank_attribute_name</span>)</span><br />
+      Provides a performance score for every system.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.get_systems_scoring_from_segment_ranks">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_spearman_correlation"></a><span class="summary-sig-name">get_spearman_correlation</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">rank_name_1</span>,
+        <span class="summary-sig-arg">rank_name_2</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.get_spearman_correlation">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">tuple(float, float)</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.scoring.Scoring-class.html#get_metrics_scores" class="summary-sig-name">get_metrics_scores</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">predicted_rank_name</span>,
+        <span class="summary-sig-arg">original_rank_name</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Calculates a metric</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.get_metrics_scores">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_kendall_tau_vector"></a><span class="summary-sig-name">get_kendall_tau_vector</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">rank_name_1</span>,
+        <span class="summary-sig-arg">rank_name_2</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.get_kendall_tau_vector">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_kendall_tau_avg"></a><span class="summary-sig-name">get_kendall_tau_avg</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">rank_name_1</span>,
+        <span class="summary-sig-arg">rank_name_2</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.get_kendall_tau_avg">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_kendall_tau_freq"></a><span class="summary-sig-name">get_kendall_tau_freq</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">rank_name_1</span>,
+        <span class="summary-sig-arg">rank_name_2</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.get_kendall_tau_freq">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="selectbest_accuracy"></a><span class="summary-sig-name">selectbest_accuracy</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">estimated_rank_name</span>,
+        <span class="summary-sig-arg">original_rank_name</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.selectbest_accuracy">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.scoring.Scoring-class.html#normalize_rank_list" class="summary-sig-name">normalize_rank_list</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">rank_list</span>)</span><br />
+      Normalizes a rank list so that it doesn't contain gaps.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.normalize_rank_list">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="best_predicted_vs_human"></a><span class="summary-sig-name">best_predicted_vs_human</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">predicted_rank_name</span>,
+        <span class="summary-sig-arg">original_rank_name</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.best_predicted_vs_human">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="mrr"></a><span class="summary-sig-name">mrr</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">predicted_rank_name</span>,
+        <span class="summary-sig-arg">original_rank_name</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.mrr">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="avg_predicted_ranked"></a><span class="summary-sig-name">avg_predicted_ranked</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">predicted_rank_name</span>,
+        <span class="summary-sig-arg">original_rank_name</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.avg_predicted_ranked">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.scoring.Scoring-class.html#avg_first_ranked" class="summary-sig-name">avg_first_ranked</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">predicted_rank_name</span>,
+        <span class="summary-sig-arg">original_rank_name</span>)</span><br />
+      Provide an integer that shows the predicted rank of the best system 
+      It is averaged over all segments.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.avg_first_ranked">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">tuple(float, float)</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.scoring.Scoring-class.html#get_kendall_tau" class="summary-sig-name">get_kendall_tau</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">predicted_rank_name</span>,
+        <span class="summary-sig-arg">original_rank_name</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Calculates average Kendall tau of predicted vs human ranking 
+      according to WMT12 (Birch et.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.get_kendall_tau">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">tuple(float, float)</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.scoring.Scoring-class.html#get_kendall_tau_b" class="summary-sig-name">get_kendall_tau_b</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">predicted_rank_name</span>,
+        <span class="summary-sig-arg">original_rank_name</span>)</span><br />
+      Calculates Kendall tau beta of predicted vs human ranking according 
+      to the Knight (1966) [scipy implementation] taking account of ties</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.get_kendall_tau_b">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="sentence.dataset.DataSet-class.html">dataset.DataSet</a></code></b>:
+      <code><a href="sentence.dataset.DataSet-class.html#__eq__">__eq__</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#__iter__">__iter__</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#add_attribute_vector">add_attribute_vector</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#append_dataset">append_dataset</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#clone">clone</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#compare">compare</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#confirm_attributes">confirm_attributes</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#ensure_judgment_ids">ensure_judgment_ids</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#get_all_attribute_names">get_all_attribute_names</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#get_annotations">get_annotations</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#get_attribute_names">get_attribute_names</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#get_discrete_attribute_values">get_discrete_attribute_values</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#get_head_sentences">get_head_sentences</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#get_multisource_strings">get_multisource_strings</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#get_nested_attribute_names">get_nested_attribute_names</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#get_parallelsentences">get_parallelsentences</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#get_parallelsentences_per_sentence_id">get_parallelsentences_per_sentence_id</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#get_parallelsentences_with_judgment_ids">get_parallelsentences_with_judgment_ids</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#get_singlesource_strings">get_singlesource_strings</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#get_size">get_size</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#get_tail_sentences">get_tail_sentences</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#get_target_strings">get_target_strings</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#get_translations_count_vector">get_translations_count_vector</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#import_target_attributes_onsystem">import_target_attributes_onsystem</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#merge_dataset">merge_dataset</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#merge_dataset_symmetrical">merge_dataset_symmetrical</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#merge_references_symmetrical">merge_references_symmetrical</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#modify_singlesource_strings">modify_singlesource_strings</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#modify_target_strings">modify_target_strings</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#remove_ties">remove_ties</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#select_attribute_names">select_attribute_names</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#split">split</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#write_singlesource_strings_file">write_singlesource_strings_file</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="sentence.dataset.DataSet-class.html">dataset.DataSet</a></code></b> (private):
+      <code><a href="sentence.dataset.DataSet-class.html#_retrieve_attribute_names" onclick="show_private();">_retrieve_attribute_names</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="sentence.dataset.DataSet-class.html">dataset.DataSet</a></code></b>:
+      <code><a href="sentence.dataset.DataSet-class.html#attribute_names">attribute_names</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#attribute_names_found">attribute_names_found</a></code>,
+      <code><a href="sentence.dataset.DataSet-class.html#parallelsentences">parallelsentences</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*params</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>parallelsentence_list</code></strong> - the parallelsentences to be wrapped in the dataset</li>
+        <li><strong class="pname"><code>attributes_list</code></strong> - if the names of the attributes for the parallelsentences are 
+          known, they can be given here, in order to avoid extra 
+          processing. Otherwise they will be computed when needed. @type 
+          [str, ...]</li>
+        <li><strong class="pname"><code>annotations</code></strong> - Not implemented @type list</li>
+    </ul></dd>
+    <dt>Overrides:
+        object.__init__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_systems_scoring_from_segment_ranks"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_systems_scoring_from_segment_ranks</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">rank_attribute_name</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.get_systems_scoring_from_segment_ranks">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Provides a performance score for every system. The score is the 
+  percentage of times the system performed better than all other systems or
+  equally to the systems that performed better than all other systems</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>rank_attribute_name</code></strong> (string @return A map of the system names and their performance 
+          percentage) - the name of the target sentence attribute which contains the rank
+          value, that we compare upon Smaller rank means better system.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_metrics_scores"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_metrics_scores</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">predicted_rank_name</span>,
+        <span class="sig-arg">original_rank_name</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.get_metrics_scores">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Calculates a metric</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>predicted_rank_name</code></strong> (str) - the name of the attribute containing the predicted rank</li>
+        <li><strong class="pname"><code>original_rank_name</code></strong> (str) - the name of the attribute containing the human rank</li>
+        <li><strong class="pname"><code>filter_ref</code></strong> (boolean) - don't include reference sentences when existing in the pairs</li>
+        <li><strong class="pname"><code>exclude_ties</code></strong> (boolean) - don't include human ties in the calculation, even if correctly 
+          predicted</li>
+    </ul></dd>
+    <dt>Returns: tuple(float, float)</dt>
+        <dd>the Kendall tau score and the probability for the null hypothesis
+          of X and Y being independent</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="normalize_rank_list"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">normalize_rank_list</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">rank_list</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.normalize_rank_list">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Normalizes a rank list so that it doesn't contain gaps. E.g [1,3,3,4] 
+  will be converted to [1,2,2,3]</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="avg_first_ranked"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">avg_first_ranked</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">predicted_rank_name</span>,
+        <span class="sig-arg">original_rank_name</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.avg_first_ranked">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Provide an integer that shows the predicted rank of the best system It
+  is averaged over all segments. Tied predictions are penalized</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_kendall_tau"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_kendall_tau</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">predicted_rank_name</span>,
+        <span class="sig-arg">original_rank_name</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.get_kendall_tau">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Calculates average Kendall tau of predicted vs human ranking according
+  to WMT12 (Birch et. al 2012)</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>predicted_rank_name</code></strong> (str) - the name of the attribute containing the predicted rank</li>
+        <li><strong class="pname"><code>original_rank_name</code></strong> (str) - the name of the attribute containing the human rank</li>
+        <li><strong class="pname"><code>filter_ref</code></strong> (boolean) - don't include reference sentences when existing in the pairs</li>
+        <li><strong class="pname"><code>exclude_ties</code></strong> (boolean) - don't include human ties in the calculation, even if correctly 
+          predicted</li>
+    </ul></dd>
+    <dt>Returns: tuple(float, float)</dt>
+        <dd>the Kendall tau score and the probability for the null hypothesis
+          of X and Y being independent</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_kendall_tau_b"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_kendall_tau_b</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">predicted_rank_name</span>,
+        <span class="sig-arg">original_rank_name</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sentence.scoring-pysrc.html#Scoring.get_kendall_tau_b">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Calculates Kendall tau beta of predicted vs human ranking according to
+  the Knight (1966) [scipy implementation] taking account of ties</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>predicted_rank_name</code></strong> (str) - the name of the attribute containing the predicted rank</li>
+        <li><strong class="pname"><code>original_rank_name</code></strong> (str) - the name of the attribute containing the human rank</li>
+    </ul></dd>
+    <dt>Returns: tuple(float, float)</dt>
+        <dd>the Kendall tau score and the probability for the null hypothesis
+          of X and Y being independent</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:20 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

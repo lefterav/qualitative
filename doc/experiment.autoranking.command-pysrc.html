@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>experiment.autoranking.command</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="experiment-module.html">Package&nbsp;experiment</a> ::
+        <a href="experiment.autoranking-module.html">Package&nbsp;autoranking</a> ::
+        Module&nbsp;command
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="experiment.autoranking.command-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="experiment.autoranking.command-module.html">Module experiment.autoranking.command</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-docstring">Created on Jun 21, 2013</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring">@author: Eleftherios Avramidis</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package sentence=sentence-module.html,Module sentence.sentence=sentence.sentence-module.html"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-0', 'sentence', 'link-0');">sentence</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module sentence.dataset=sentence.dataset-module.html"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-1', 'dataset', 'link-1');">dataset</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class sentence.dataset.DataSet=sentence.dataset.DataSet-class.html"><a title="sentence.dataset.DataSet" class="py-name" href="#" onclick="return doclink('link-2', 'DataSet', 'link-2');">DataSet</a></tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-3" class="py-name"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-3', 'sentence', 'link-0');">sentence</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Module sentence.pairwisedataset=sentence.pairwisedataset-module.html"><a title="sentence.pairwisedataset" class="py-name" href="#" onclick="return doclink('link-4', 'pairwisedataset', 'link-4');">pairwisedataset</a></tt> <tt class="py-keyword">import</tt> <tt id="link-5" class="py-name" targets="Class sentence.pairwisedataset.AnalyticPairwiseDataset=sentence.pairwisedataset.AnalyticPairwiseDataset-class.html"><a title="sentence.pairwisedataset.AnalyticPairwiseDataset" class="py-name" href="#" onclick="return doclink('link-5', 'AnalyticPairwiseDataset', 'link-5');">AnalyticPairwiseDataset</a></tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-6" class="py-name" targets="Package classifier=classifier-module.html,Module classifier.classifier=classifier.classifier-module.html,Variable classifier.extract_liblinear_weights.classifier=classifier.extract_liblinear_weights-module.html#classifier,Variable classifier.extract_linear_regression_coefficients.classifier=classifier.extract_linear_regression_coefficients-module.html#classifier,Variable classifier.extract_logreg_weight.classifier=classifier.extract_logreg_weight-module.html#classifier,Module ml.classifier=ml.classifier-module.html"><a title="classifier
+classifier.classifier
+classifier.extract_liblinear_weights.classifier
+classifier.extract_linear_regression_coefficients.classifier
+classifier.extract_logreg_weight.classifier
+ml.classifier" class="py-name" href="#" onclick="return doclink('link-6', 'classifier', 'link-6');">classifier</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Module classifier.orange=classifier.orange-module.html,Module ml.lib.orange=ml.lib.orange-module.html"><a title="classifier.orange
+ml.lib.orange" class="py-name" href="#" onclick="return doclink('link-7', 'orange', 'link-7');">orange</a></tt> <tt class="py-keyword">import</tt> <tt id="link-8" class="py-name" targets="Class classifier.classifier.OrangeClassifier=classifier.classifier.OrangeClassifier-class.html,Class classifier.orange.OrangeClassifier=classifier.orange.OrangeClassifier-class.html,Class ml.lib.orange.OrangeClassifier=ml.lib.orange.OrangeClassifier-class.html"><a title="classifier.classifier.OrangeClassifier
+classifier.orange.OrangeClassifier
+ml.lib.orange.OrangeClassifier" class="py-name" href="#" onclick="return doclink('link-8', 'OrangeClassifier', 'link-8');">OrangeClassifier</a></tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">cPickle</tt> <tt class="py-keyword">as</tt> <tt class="py-name">pickle</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"> </tt>
+<a name="SimpleAutoranking"></a><div id="SimpleAutoranking-def"><a name="L12"></a><tt class="py-lineno">12</tt> <a class="py-toggle" href="#" id="SimpleAutoranking-toggle" onclick="return toggle('SimpleAutoranking');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="experiment.autoranking.command.SimpleAutoranking-class.html">SimpleAutoranking</a><tt class="py-op">:</tt> </tt>
+</div><div id="SimpleAutoranking-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="SimpleAutoranking-expanded"><a name="SimpleAutoranking.init"></a><div id="SimpleAutoranking.init-def"><a name="L13"></a><tt class="py-lineno">13</tt> <a class="py-toggle" href="#" id="SimpleAutoranking.init-toggle" onclick="return toggle('SimpleAutoranking.init');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="experiment.autoranking.command.SimpleAutoranking-class.html#init">init</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">params</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SimpleAutoranking.init-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="SimpleAutoranking.init-expanded"><a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">        <tt id="link-9" class="py-name" targets="Variable experiment.autoranking.annotate_updated.params=experiment.autoranking.annotate_updated-module.html#params,Variable experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params=experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival-module.html#params,Variable experiment.ml4hmt12.annotate_updated.params=experiment.ml4hmt12.annotate_updated-module.html#params"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-9', 'params', 'link-9');">params</a></tt> <tt class="py-op">=</tt> <tt class="py-name">_read</tt><tt class="py-op">(</tt><tt class="py-name">config_filename</tt><tt class="py-op">)</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Variable experiment.autoranking.decode.AutorankingSuite.restore_supported=experiment.autoranking.decode.AutorankingSuite-class.html#restore_supported,Variable experiment.autoranking.suite.AutorankingSuite.restore_supported=experiment.autoranking.suite.AutorankingSuite-class.html#restore_supported,Variable experiment.autorankingsearch.suite.AutorankingSuite.restore_supported=experiment.autorankingsearch.suite.AutorankingSuite-class.html#restore_supported,Variable experiment.autoranksvm.suite.AutorankingSVMSuite.restore_supported=experiment.autoranksvm.suite.AutorankingSVMSuite-class.html#restore_supported,Variable experiment.errorprediction.suite.ErrorPredictionSuite.restore_supported=experiment.errorprediction.suite.ErrorPredictionSuite-class.html#restore_supported,Variable experiment.ml4hmt12.suite.AutorankingSuite.restore_supported=experiment.ml4hmt12.suite.AutorankingSuite-class.html#restore_supported,Variable experiment.ml4hmt12.test.AutorankingSuite.restore_supported=experiment.ml4hmt12.test.AutorankingSuite-class.html#restore_supported,Variable experiment.qualityestimation.suite.QualityEstimationSuite.restore_supported=experiment.qualityestimation.suite.QualityEstimationSuite-class.html#restore_supported"><a title="experiment.autoranking.decode.AutorankingSuite.restore_supported
+experiment.autoranking.suite.AutorankingSuite.restore_supported
+experiment.autorankingsearch.suite.AutorankingSuite.restore_supported
+experiment.autoranksvm.suite.AutorankingSVMSuite.restore_supported
+experiment.errorprediction.suite.ErrorPredictionSuite.restore_supported
+experiment.ml4hmt12.suite.AutorankingSuite.restore_supported
+experiment.ml4hmt12.test.AutorankingSuite.restore_supported
+experiment.qualityestimation.suite.QualityEstimationSuite.restore_supported" class="py-name" href="#" onclick="return doclink('link-10', 'restore_supported', 'link-10');">restore_supported</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">         </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">remove_infinite</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">         </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Variable experiment.errorprediction.errorprediction_draft.meta_attributes=experiment.errorprediction.errorprediction_draft-module.html#meta_attributes,Variable io_utils.input.testorange.meta_attributes=io_utils.input.testorange-module.html#meta_attributes,Variable tara_noorange.Experiment.meta_attributes=tara_noorange.Experiment-class.html#meta_attributes"><a title="experiment.errorprediction.errorprediction_draft.meta_attributes
+io_utils.input.testorange.meta_attributes
+tara_noorange.Experiment.meta_attributes" class="py-name" href="#" onclick="return doclink('link-11', 'meta_attributes', 'link-11');">meta_attributes</a></tt> <tt class="py-op">=</tt> <tt id="link-12" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-12', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"meta_attributes"</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Method sentence.dataset.DataSet.split()=sentence.dataset.DataSet-class.html#split"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-13', 'split', 'link-13');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">","</tt><tt class="py-op">)</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">include_references</tt> <tt class="py-op">=</tt> <tt id="link-14" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-14', 'params', 'link-9');">params</a></tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">"include_references"</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">replacement</tt> <tt class="py-op">=</tt> <tt id="link-15" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-15', 'params', 'link-9');">params</a></tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">"replacement"</tt><tt class="py-op">,</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">filter_unassigned</tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-16', 'params', 'link-9');">params</a></tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">"filter_unassigned"</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Method sentence.pairwisedataset.AnalyticPairwiseDataset.restrict_ranks()=sentence.pairwisedataset.AnalyticPairwiseDataset-class.html#restrict_ranks,Method sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.restrict_ranks()=sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet-class.html#restrict_ranks"><a title="sentence.pairwisedataset.AnalyticPairwiseDataset.restrict_ranks
+sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.restrict_ranks" class="py-name" href="#" onclick="return doclink('link-17', 'restrict_ranks', 'link-17');">restrict_ranks</a></tt> <tt class="py-op">=</tt> <tt id="link-18" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-18', 'params', 'link-9');">params</a></tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">"restrict_ranks"</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">         </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">delay_accuracy</tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-19', 'params', 'link-9');">params</a></tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">"delay_accuracy"</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">remove_infinite</tt> <tt class="py-op">=</tt> <tt id="link-20" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-20', 'params', 'link-9');">params</a></tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">"remove_infinite"</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">         </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="sentence.pairwisedataset.AnalyticPairwiseDataset.restrict_ranks
+sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.restrict_ranks" class="py-name" href="#" onclick="return doclink('link-21', 'restrict_ranks', 'link-17');">restrict_ranks</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name"><a title="sentence.pairwisedataset.AnalyticPairwiseDataset.restrict_ranks
+sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.restrict_ranks" class="py-name" href="#" onclick="return doclink('link-22', 'restrict_ranks', 'link-17');">restrict_ranks</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name"><a title="sentence.pairwisedataset.AnalyticPairwiseDataset.restrict_ranks
+sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.restrict_ranks" class="py-name" href="#" onclick="return doclink('link-23', 'restrict_ranks', 'link-17');">restrict_ranks</a></tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-24', 'split', 'link-13');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">","</tt><tt class="py-op">)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">         </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">        <tt class="py-name">source_attributes</tt> <tt class="py-op">=</tt> <tt id="link-25" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-25', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"{}_source"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt id="link-26" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-26', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"att"</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-27', 'split', 'link-13');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">","</tt><tt class="py-op">)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">        <tt class="py-name">target_attributes</tt> <tt class="py-op">=</tt> <tt id="link-28" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-28', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"{}_target"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt id="link-29" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-29', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"att"</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-30', 'split', 'link-13');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">","</tt><tt class="py-op">)</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">        <tt class="py-name">general_attributes</tt> <tt class="py-op">=</tt> <tt id="link-31" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-31', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"{}_general"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt id="link-32" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-32', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"att"</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-33', 'split', 'link-13');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">","</tt><tt class="py-op">)</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">         </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">        <tt id="link-34" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-34', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"source_attributes"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">source_attributes</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">        <tt id="link-35" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-35', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"target_attributes"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">target_attributes</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">        <tt id="link-36" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-36', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"general_attributes"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">general_attributes</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">         </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">active_attributes</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">general_attributes</tt> <tt class="py-op">!=</tt> <tt class="py-op">[</tt><tt class="py-string">""</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">active_attributes</tt><tt class="py-op">.</tt><tt class="py-name">extend</tt><tt class="py-op">(</tt><tt class="py-name">general_attributes</tt><tt class="py-op">)</tt> <tt class="py-comment">#TODOL check whether ps prefix is needed</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">source_attributes</tt> <tt class="py-op">!=</tt> <tt class="py-op">[</tt><tt class="py-string">""</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">active_attributes</tt><tt class="py-op">.</tt><tt class="py-name">extend</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-string">"src_{}"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">att</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">att</tt> <tt class="py-keyword">in</tt> <tt class="py-name">source_attributes</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">target_attributes</tt> <tt class="py-op">!=</tt> <tt class="py-op">[</tt><tt class="py-string">""</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">active_attributes</tt><tt class="py-op">.</tt><tt class="py-name">extend</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-string">"tgt-1_{}"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">att</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">att</tt> <tt class="py-keyword">in</tt> <tt class="py-name">target_attributes</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">active_attributes</tt><tt class="py-op">.</tt><tt class="py-name">extend</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-string">"tgt-2_{}"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">att</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">att</tt> <tt class="py-keyword">in</tt> <tt class="py-name">target_attributes</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">         </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">active_attributes</tt> <tt class="py-op">==</tt> <tt class="py-op">[</tt><tt class="py-string">""</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">active_attributes</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">discretization</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-37" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-37', 'params', 'link-9');">params</a></tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-string">"discretization"</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">discretization</tt> <tt class="py-op">=</tt> <tt id="link-38" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-38', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"discretization"</tt><tt class="py-op">]</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line"> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">hidden_attributes</tt> <tt class="py-op">=</tt> <tt id="link-39" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-39', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"hidden_attributes"</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-40', 'split', 'link-13');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">","</tt><tt class="py-op">)</tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">discrete_attributes</tt> <tt class="py-op">=</tt> <tt id="link-41" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-41', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"discrete_attributes"</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-42', 'split', 'link-13');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">","</tt><tt class="py-op">)</tt> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">  </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">class_name</tt> <tt class="py-op">=</tt> <tt id="link-43" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-43', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"class_name"</tt><tt class="py-op">]</tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">class_type</tt> <tt class="py-op">=</tt> <tt id="link-44" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-44', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"class_type"</tt><tt class="py-op">]</tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line">         </tt>
+<a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">testset</tt> <tt class="py-op">=</tt> <tt id="link-45" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-45', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"test_set"</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-op">**</tt><tt id="link-46" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-46', 'params', 'link-9');">params</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ties</tt> <tt class="py-op">=</tt> <tt id="link-47" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-47', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"ties"</tt><tt class="py-op">]</tt> </tt>
+<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line">         </tt>
+<a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line">        <tt class="py-name">objectfile</tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt id="link-48" class="py-name"><a title="experiment.autoranking.annotate_updated.params
+experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.params
+experiment.ml4hmt12.annotate_updated.params" class="py-name" href="#" onclick="return doclink('link-48', 'params', 'link-9');">params</a></tt><tt class="py-op">[</tt><tt class="py-string">"trained_classifier"</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-string">'r'</tt><tt class="py-op">)</tt> </tt>
+<a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-49" class="py-name"><a title="classifier
+classifier.classifier
+classifier.extract_liblinear_weights.classifier
+classifier.extract_linear_regression_coefficients.classifier
+classifier.extract_logreg_weight.classifier
+ml.classifier" class="py-name" href="#" onclick="return doclink('link-49', 'classifier', 'link-6');">classifier</a></tt> <tt class="py-op">=</tt> <tt id="link-50" class="py-name"><a title="classifier.classifier.OrangeClassifier
+classifier.orange.OrangeClassifier
+ml.lib.orange.OrangeClassifier" class="py-name" href="#" onclick="return doclink('link-50', 'OrangeClassifier', 'link-8');">OrangeClassifier</a></tt><tt class="py-op">(</tt><tt class="py-name">pickle</tt><tt class="py-op">.</tt><tt id="link-51" class="py-name" targets="Method io_utils.input.genericreader.GenericReader.load()=io_utils.input.genericreader.GenericReader-class.html#load,Method io_utils.input.genericxmlreader.GenericXmlReader.load()=io_utils.input.genericxmlreader.GenericXmlReader-class.html#load,Method io_utils.input.posteditingreader.PosteditingReader.load()=io_utils.input.posteditingreader.PosteditingReader-class.html#load,Method io_utils.input.rankreader.R2RankReader.load()=io_utils.input.rankreader.R2RankReader-class.html#load,Method io_utils.input.rankreader.RankReader.load()=io_utils.input.rankreader.RankReader-class.html#load,Method io_utils.input.xliffreader.XliffReader.load()=io_utils.input.xliffreader.XliffReader-class.html#load"><a title="io_utils.input.genericreader.GenericReader.load
+io_utils.input.genericxmlreader.GenericXmlReader.load
+io_utils.input.posteditingreader.PosteditingReader.load
+io_utils.input.rankreader.R2RankReader.load
+io_utils.input.rankreader.RankReader.load
+io_utils.input.xliffreader.XliffReader.load" class="py-name" href="#" onclick="return doclink('link-51', 'load', 'link-51');">load</a></tt><tt class="py-op">(</tt><tt class="py-name">objectfile</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line">        <tt class="py-name">objectfile</tt><tt class="py-op">.</tt><tt id="link-52" class="py-name" targets="Method featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close()=featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html#close,Method featuregenerator.preprocessor.CommandlinePreprocessor.close()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#close,Method io_utils.sax.saxps2jcml.IncrementalJcml.close()=io_utils.sax.saxps2jcml.IncrementalJcml-class.html#close,Method support.preprocessing.jcml.jcml2arff.ArffWriter.close()=support.preprocessing.jcml.jcml2arff.ArffWriter-class.html#close"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-52', 'close', 'link-52');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line">     </tt>
+<a name="SimpleAutoranking.run"></a><div id="SimpleAutoranking.run-def"><a name="L67"></a><tt class="py-lineno">67</tt> <a class="py-toggle" href="#" id="SimpleAutoranking.run-toggle" onclick="return toggle('SimpleAutoranking.run');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="experiment.autoranking.command.SimpleAutoranking-class.html#run">run</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">parallelsentence</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SimpleAutoranking.run-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="SimpleAutoranking.run-expanded"><a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">testset</tt> <tt class="py-op">=</tt> <tt id="link-53" class="py-name"><a title="sentence.dataset.DataSet" class="py-name" href="#" onclick="return doclink('link-53', 'DataSet', 'link-2');">DataSet</a></tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt id="link-54" class="py-name" targets="Module sentence.parallelsentence=sentence.parallelsentence-module.html"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-54', 'parallelsentence', 'link-54');">parallelsentence</a></tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">testset</tt> <tt class="py-op">=</tt> <tt id="link-55" class="py-name"><a title="sentence.pairwisedataset.AnalyticPairwiseDataset" class="py-name" href="#" onclick="return doclink('link-55', 'AnalyticPairwiseDataset', 'link-5');">AnalyticPairwiseDataset</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">testset</tt><tt class="py-op">,</tt> <tt class="py-name">replacement</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">replacement</tt><tt class="py-op">,</tt> <tt class="py-name">rankless</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L70"></a><tt class="py-lineno">70</tt>  <tt class="py-line">         </tt>
+<a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line">     </tt>
+<a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line">     </tt>
+<a name="L73"></a><tt class="py-lineno">73</tt>  <tt class="py-line"> </tt>
+<a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-56" class="py-name" targets="Variable featuregenerator.meteor.meteor.MeteorGenerator.__name__=featuregenerator.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-56', '__name__', 'link-56');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+<a name="L76"></a><tt class="py-lineno">76</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:26 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

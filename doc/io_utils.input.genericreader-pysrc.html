@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>io_utils.input.genericreader</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="io_utils-module.html">Package&nbsp;io_utils</a> ::
+        <a href="io_utils.input-module.html">Package&nbsp;input</a> ::
+        Module&nbsp;genericreader
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="io_utils.input.genericreader-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="io_utils.input.genericreader-module.html">Module io_utils.input.genericreader</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-docstring">Created on Aug 4, 2011</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring">@author: elav01</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package sentence=sentence-module.html,Module sentence.sentence=sentence.sentence-module.html"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-0', 'sentence', 'link-0');">sentence</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module sentence.dataset=sentence.dataset-module.html"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-1', 'dataset', 'link-1');">dataset</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class sentence.dataset.DataSet=sentence.dataset.DataSet-class.html"><a title="sentence.dataset.DataSet" class="py-name" href="#" onclick="return doclink('link-2', 'DataSet', 'link-2');">DataSet</a></tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"> </tt>
+<a name="GenericReader"></a><div id="GenericReader-def"><a name="L11"></a><tt class="py-lineno">11</tt> <a class="py-toggle" href="#" id="GenericReader-toggle" onclick="return toggle('GenericReader');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="io_utils.input.genericreader.GenericReader-class.html">GenericReader</a><tt class="py-op">:</tt> </tt>
+</div><div id="GenericReader-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="GenericReader-expanded"><a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">    <tt class="py-docstring">'''</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt class="py-docstring">    Abstract base class to describe the basic functionality of a reader, i.e. a mechanism that can</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-docstring">    import data from external entities (e.g. files) for use with the framework.</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">     </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">     </tt>
+<a name="GenericReader.__init__"></a><div id="GenericReader.__init__-def"><a name="L18"></a><tt class="py-lineno">18</tt> <a class="py-toggle" href="#" id="GenericReader.__init__-toggle" onclick="return toggle('GenericReader.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="io_utils.input.genericreader.GenericReader-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">input_filename</tt><tt class="py-op">,</tt> <tt class="py-param">load</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="GenericReader.__init__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="GenericReader.__init__-expanded"><a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"><tt class="py-docstring">        Constructor. Creates a memory object that handles file data</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line"><tt class="py-docstring">        @param input_filename: the name of file</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line"><tt class="py-docstring">        @type input_filename: string</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line"><tt class="py-docstring">        @param load: by turning this option to false, the instance will be </tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line"><tt class="py-docstring">                     initialized without loading everything into memory. This can be</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"><tt class="py-docstring">                     done later by calling .load() function</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line"><tt class="py-docstring">        @type load: boolean </tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Variable support.preprocessing.jcml.xliff2jcml.input_filename=support.preprocessing.jcml.xliff2jcml-module.html#input_filename"><a title="support.preprocessing.jcml.xliff2jcml.input_filename" class="py-name" href="#" onclick="return doclink('link-3', 'input_filename', 'link-3');">input_filename</a></tt> <tt class="py-op">=</tt> <tt id="link-4" class="py-name"><a title="support.preprocessing.jcml.xliff2jcml.input_filename" class="py-name" href="#" onclick="return doclink('link-4', 'input_filename', 'link-3');">input_filename</a></tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">loaded</tt> <tt class="py-op">=</tt> <tt id="link-5" class="py-name" targets="Method io_utils.input.genericreader.GenericReader.load()=io_utils.input.genericreader.GenericReader-class.html#load,Method io_utils.input.genericxmlreader.GenericXmlReader.load()=io_utils.input.genericxmlreader.GenericXmlReader-class.html#load,Method io_utils.input.posteditingreader.PosteditingReader.load()=io_utils.input.posteditingreader.PosteditingReader-class.html#load,Method io_utils.input.rankreader.R2RankReader.load()=io_utils.input.rankreader.R2RankReader-class.html#load,Method io_utils.input.rankreader.RankReader.load()=io_utils.input.rankreader.RankReader-class.html#load,Method io_utils.input.xliffreader.XliffReader.load()=io_utils.input.xliffreader.XliffReader-class.html#load"><a title="io_utils.input.genericreader.GenericReader.load
+io_utils.input.genericxmlreader.GenericXmlReader.load
+io_utils.input.posteditingreader.PosteditingReader.load
+io_utils.input.rankreader.R2RankReader.load
+io_utils.input.rankreader.RankReader.load
+io_utils.input.xliffreader.XliffReader.load" class="py-name" href="#" onclick="return doclink('link-5', 'load', 'link-5');">load</a></tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-6" class="py-name"><a title="io_utils.input.genericreader.GenericReader.load
+io_utils.input.genericxmlreader.GenericXmlReader.load
+io_utils.input.posteditingreader.PosteditingReader.load
+io_utils.input.rankreader.R2RankReader.load
+io_utils.input.rankreader.RankReader.load
+io_utils.input.xliffreader.XliffReader.load" class="py-name" href="#" onclick="return doclink('link-6', 'load', 'link-5');">load</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name"><a title="io_utils.input.genericreader.GenericReader.load
+io_utils.input.genericxmlreader.GenericXmlReader.load
+io_utils.input.posteditingreader.PosteditingReader.load
+io_utils.input.rankreader.R2RankReader.load
+io_utils.input.rankreader.RankReader.load
+io_utils.input.xliffreader.XliffReader.load" class="py-name" href="#" onclick="return doclink('link-7', 'load', 'link-5');">load</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">     </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line"> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">     </tt>
+<a name="GenericReader.load"></a><div id="GenericReader.load-def"><a name="L35"></a><tt class="py-lineno">35</tt> <a class="py-toggle" href="#" id="GenericReader.load-toggle" onclick="return toggle('GenericReader.load');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="io_utils.input.genericreader.GenericReader-class.html#load">load</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="GenericReader.load-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="GenericReader.load-expanded"><a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">(</tt> <tt class="py-string">"Should have implemented this"</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line"> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">         </tt>
+<a name="GenericReader.unload"></a><div id="GenericReader.unload-def"><a name="L39"></a><tt class="py-lineno">39</tt> <a class="py-toggle" href="#" id="GenericReader.unload-toggle" onclick="return toggle('GenericReader.unload');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="io_utils.input.genericreader.GenericReader-class.html#unload">unload</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="GenericReader.unload-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="GenericReader.unload-expanded"><a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">(</tt> <tt class="py-string">"Should have implemented this"</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line"> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">     </tt>
+<a name="GenericReader.get_parallelsentence"></a><div id="GenericReader.get_parallelsentence-def"><a name="L43"></a><tt class="py-lineno">43</tt> <a class="py-toggle" href="#" id="GenericReader.get_parallelsentence-toggle" onclick="return toggle('GenericReader.get_parallelsentence');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="io_utils.input.genericreader.GenericReader-class.html#get_parallelsentence">get_parallelsentence</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">XMLEntry</tt><tt class="py-op">)</tt><tt class="py-op">:</tt>    </tt>
+</div><a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">(</tt> <tt class="py-string">"Should have implemented this"</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line"> </tt>
+<a name="GenericReader.get_dataset"></a><div id="GenericReader.get_dataset-def"><a name="L46"></a><tt class="py-lineno">46</tt> <a class="py-toggle" href="#" id="GenericReader.get_dataset-toggle" onclick="return toggle('GenericReader.get_dataset');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="io_utils.input.genericreader.GenericReader-class.html#get_dataset">get_dataset</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="GenericReader.get_dataset-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="GenericReader.get_dataset-expanded"><a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line"><tt class="py-docstring">        Returns the contents of the parsed file into an object structure, which is represented by the DataSet object</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line"><tt class="py-docstring">        Note that this will cause all the data of the file to be loaded into system memory at once. </tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line"><tt class="py-docstring">        For big data sets this may not be optimal, so consider sentence-by-sentence reading with SAX, or CElementTree (e.g. saxjcml.py)</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line"><tt class="py-docstring">        @return the formed data set</tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line"><tt class="py-docstring">        @rtype DataSet</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-8" class="py-name"><a title="sentence.dataset.DataSet" class="py-name" href="#" onclick="return doclink('link-8', 'DataSet', 'link-2');">DataSet</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Method io_utils.input.genericreader.GenericReader.get_parallelsentences()=io_utils.input.genericreader.GenericReader-class.html#get_parallelsentences,Method io_utils.input.genericxmlreader.GenericXmlReader.get_parallelsentences()=io_utils.input.genericxmlreader.GenericXmlReader-class.html#get_parallelsentences,Method io_utils.input.linereader.AttributeLineReader.get_parallelsentences()=io_utils.input.linereader.AttributeLineReader-class.html#get_parallelsentences,Method io_utils.input.linereader.LineReader.get_parallelsentences()=io_utils.input.linereader.LineReader-class.html#get_parallelsentences,Method io_utils.input.posteditingreader.PosteditingReader.get_parallelsentences()=io_utils.input.posteditingreader.PosteditingReader-class.html#get_parallelsentences,Method io_utils.input.rankreader.R2RankReader.get_parallelsentences()=io_utils.input.rankreader.R2RankReader-class.html#get_parallelsentences,Method io_utils.input.rankreader.RankReader.get_parallelsentences()=io_utils.input.rankreader.RankReader-class.html#get_parallelsentences,Method io_utils.input.taraxureader.TaraXUReader.get_parallelsentences()=io_utils.input.taraxureader.TaraXUReader-class.html#get_parallelsentences,Method io_utils.input.xliffreader.XliffReader.get_parallelsentences()=io_utils.input.xliffreader.XliffReader-class.html#get_parallelsentences,Method sentence.dataset.DataSet.get_parallelsentences()=sentence.dataset.DataSet-class.html#get_parallelsentences,Method sentence.pairwisedataset.PairwiseDataset.get_parallelsentences()=sentence.pairwisedataset.PairwiseDataset-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html#get_parallelsentences"><a title="io_utils.input.genericreader.GenericReader.get_parallelsentences
+io_utils.input.genericxmlreader.GenericXmlReader.get_parallelsentences
+io_utils.input.linereader.AttributeLineReader.get_parallelsentences
+io_utils.input.linereader.LineReader.get_parallelsentences
+io_utils.input.posteditingreader.PosteditingReader.get_parallelsentences
+io_utils.input.rankreader.R2RankReader.get_parallelsentences
+io_utils.input.rankreader.RankReader.get_parallelsentences
+io_utils.input.taraxureader.TaraXUReader.get_parallelsentences
+io_utils.input.xliffreader.XliffReader.get_parallelsentences
+sentence.dataset.DataSet.get_parallelsentences
+sentence.pairwisedataset.PairwiseDataset.get_parallelsentences
+sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences" class="py-name" href="#" onclick="return doclink('link-9', 'get_parallelsentences', 'link-9');">get_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line">         </tt>
+<a name="GenericReader.get_parallelsentences"></a><div id="GenericReader.get_parallelsentences-def"><a name="L56"></a><tt class="py-lineno">56</tt> <a class="py-toggle" href="#" id="GenericReader.get_parallelsentences-toggle" onclick="return toggle('GenericReader.get_parallelsentences');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="io_utils.input.genericreader.GenericReader-class.html#get_parallelsentences">get_parallelsentences</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="GenericReader.get_parallelsentences-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="GenericReader.get_parallelsentences-expanded"><a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line"><tt class="py-docstring">        Returns the contents of the parsed file into an a list with </tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line"><tt class="py-docstring">        ParallelSentence objects. Note that this will cause all the data of the file to be loaded into system memory at once. </tt> </tt>
+<a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line"><tt class="py-docstring">        For big data sets this may not be optimal, so consider sentence-by-sentence reading with SAX or CElementTree (e.g. saxjcml.py)</tt> </tt>
+<a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line"><tt class="py-docstring">        @return the list of parallel sentences</tt> </tt>
+<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line"><tt class="py-docstring">        @rtype [ParallelSentence, ...]</tt> </tt>
+<a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">(</tt> <tt class="py-string">"Should have implemented this"</tt> <tt class="py-op">)</tt> </tt>
+</div></div><a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:26 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

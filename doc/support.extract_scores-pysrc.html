@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>support.extract_scores</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="support-module.html">Package&nbsp;support</a> ::
+        Module&nbsp;extract_scores
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="support.extract_scores-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="support.extract_scores-module.html">Module support.extract_scores</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">codecs</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"> </tt>
+<a name="extract_length"></a><div id="extract_length-def"><a name="L5"></a><tt class="py-lineno"> 5</tt> <a class="py-toggle" href="#" id="extract_length-toggle" onclick="return toggle('extract_length');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="support.extract_scores-module.html#extract_length">extract_length</a><tt class="py-op">(</tt><tt class="py-param">string</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="extract_length-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="extract_length-expanded"><a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">string</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Method sentence.dataset.DataSet.split()=sentence.dataset.DataSet-class.html#split"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-0', 'split', 'link-0');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">','</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-1" class="py-name"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-1', 'split', 'link-0');">split</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"> </tt>
+<a name="extract_prob"></a><div id="extract_prob-def"><a name="L8"></a><tt class="py-lineno"> 8</tt> <a class="py-toggle" href="#" id="extract_prob-toggle" onclick="return toggle('extract_prob');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="support.extract_scores-module.html#extract_prob">extract_prob</a><tt class="py-op">(</tt><tt class="py-param">string</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="extract_prob-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="extract_prob-expanded"><a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">string</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-2', 'split', 'link-0');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">','</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-3', 'split', 'link-0');">split</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"> </tt>
+<a name="extract_scores"></a><div id="extract_scores-def"><a name="L11"></a><tt class="py-lineno">11</tt> <a class="py-toggle" href="#" id="extract_scores-toggle" onclick="return toggle('extract_scores');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="support.extract_scores-module.html#extract_scores">extract_scores</a><tt class="py-op">(</tt><tt class="py-param">file</tt><tt class="py-op">,</tt> <tt class="py-param">out</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="extract_scores-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="extract_scores-expanded"><a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">        <tt class="py-name">lengthFlag</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">        <tt id="link-4" class="py-name" targets="Method io_utils.input.genericxmlreader.GenericXmlReader.length()=io_utils.input.genericxmlreader.GenericXmlReader-class.html#length,Method io_utils.input.xliffreader.XliffReader.length()=io_utils.input.xliffreader.XliffReader-class.html#length,Method sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.length()=sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html#length"><a title="io_utils.input.genericxmlreader.GenericXmlReader.length
+io_utils.input.xliffreader.XliffReader.length
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.length" class="py-name" href="#" onclick="return doclink('link-4', 'length', 'link-4');">length</a></tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">        <tt class="py-name">probFlag</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">        <tt class="py-name">prob</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">line</tt> <tt class="py-keyword">in</tt> <tt class="py-name">file</tt><tt class="py-op">:</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-string">'sentences'</tt> <tt class="py-keyword">in</tt> <tt class="py-name">line</tt> <tt class="py-keyword">and</tt> <tt class="py-string">'words'</tt> <tt class="py-keyword">in</tt> <tt class="py-name">line</tt> <tt class="py-keyword">and</tt> <tt class="py-string">'OOVs'</tt> <tt class="py-keyword">in</tt> <tt class="py-name">line</tt><tt class="py-op">:</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">                        <tt id="link-5" class="py-name"><a title="io_utils.input.genericxmlreader.GenericXmlReader.length
+io_utils.input.xliffreader.XliffReader.length
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.length" class="py-name" href="#" onclick="return doclink('link-5', 'length', 'link-4');">length</a></tt> <tt class="py-op">=</tt> <tt id="link-6" class="py-name" targets="Function support.extract_scores.extract_length()=support.extract_scores-module.html#extract_length"><a title="support.extract_scores.extract_length" class="py-name" href="#" onclick="return doclink('link-6', 'extract_length', 'link-6');">extract_length</a></tt><tt class="py-op">(</tt><tt class="py-name">line</tt><tt class="py-op">)</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">                        <tt class="py-name">lengthFlag</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">                <tt class="py-keyword">elif</tt> <tt class="py-string">'zeroprobs'</tt> <tt class="py-keyword">in</tt> <tt class="py-name">line</tt><tt class="py-op">:</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">                        <tt class="py-name">prob</tt> <tt class="py-op">=</tt> <tt id="link-7" class="py-name" targets="Function support.extract_scores.extract_prob()=support.extract_scores-module.html#extract_prob"><a title="support.extract_scores.extract_prob" class="py-name" href="#" onclick="return doclink('link-7', 'extract_prob', 'link-7');">extract_prob</a></tt><tt class="py-op">(</tt><tt class="py-name">line</tt><tt class="py-op">)</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">                        <tt class="py-name">probFlag</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">                 </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">lengthFlag</tt> <tt class="py-keyword">and</tt> <tt class="py-name">probFlag</tt><tt class="py-op">:</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">                        <tt id="link-8" class="py-name" targets="Function experiment.autoranking.decode.score()=experiment.autoranking.decode-module.html#score,Function experiment.autoranking.suite.score()=experiment.autoranking.suite-module.html#score,Method featuregenerator.meteor.meteor.MeteorGenerator.score()=featuregenerator.meteor.meteor.MeteorGenerator-class.html#score"><a title="experiment.autoranking.decode.score
+experiment.autoranking.suite.score
+featuregenerator.meteor.meteor.MeteorGenerator.score" class="py-name" href="#" onclick="return doclink('link-8', 'score', 'link-8');">score</a></tt> <tt class="py-op">=</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">prob</tt><tt class="py-op">/</tt><tt id="link-9" class="py-name"><a title="io_utils.input.genericxmlreader.GenericXmlReader.length
+io_utils.input.xliffreader.XliffReader.length
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.length" class="py-name" href="#" onclick="return doclink('link-9', 'length', 'link-4');">length</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">                        <tt id="link-10" class="py-name" targets="Variable support.extract_translations.out=support.extract_translations-module.html#out,Variable support.extract_translations2.out=support.extract_translations2-module.html#out"><a title="support.extract_translations.out
+support.extract_translations2.out" class="py-name" href="#" onclick="return doclink('link-10', 'out', 'link-10');">out</a></tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Method experiment.autoranking.decode.StreamToLogger.write()=experiment.autoranking.decode.StreamToLogger-class.html#write,Method experiment.autoranking.suite.StreamToLogger.write()=experiment.autoranking.suite.StreamToLogger-class.html#write,Method experiment.autorankingsearch.suite.StreamToLogger.write()=experiment.autorankingsearch.suite.StreamToLogger-class.html#write,Method experiment.autoranksvm.suite.StreamToLogger.write()=experiment.autoranksvm.suite.StreamToLogger-class.html#write,Method experiment.ml4hmt12.suite.StreamToLogger.write()=experiment.ml4hmt12.suite.StreamToLogger-class.html#write,Method experiment.ml4hmt12.test.StreamToLogger.write()=experiment.ml4hmt12.test.StreamToLogger-class.html#write,Method sentence.coupleddataset.CoupledDataSetDisk.write()=sentence.coupleddataset.CoupledDataSetDisk-class.html#write"><a title="experiment.autoranking.decode.StreamToLogger.write
+experiment.autoranking.suite.StreamToLogger.write
+experiment.autorankingsearch.suite.StreamToLogger.write
+experiment.autoranksvm.suite.StreamToLogger.write
+experiment.ml4hmt12.suite.StreamToLogger.write
+experiment.ml4hmt12.test.StreamToLogger.write
+sentence.coupleddataset.CoupledDataSetDisk.write" class="py-name" href="#" onclick="return doclink('link-11', 'write', 'link-11');">write</a></tt><tt class="py-op">(</tt><tt class="py-string">'%.5f\n'</tt> <tt class="py-op">%</tt> <tt id="link-12" class="py-name"><a title="experiment.autoranking.decode.score
+experiment.autoranking.suite.score
+featuregenerator.meteor.meteor.MeteorGenerator.score" class="py-name" href="#" onclick="return doclink('link-12', 'score', 'link-8');">score</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">                        <tt class="py-name">lengthFlag</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">                        <tt class="py-name">probFlag</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt>         </tt>
+</div><a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line"> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line"> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-13" class="py-name" targets="Variable featuregenerator.meteor.meteor.MeteorGenerator.__name__=featuregenerator.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-13', '__name__', 'link-13');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">        <tt id="link-14" class="py-name" targets="Variable experiment.experiment.Experiment.input=experiment.experiment.Experiment-class.html#input,Variable experiment.phase.Phase.input=experiment.phase.Phase-class.html#input,Package io_utils.input=io_utils.input-module.html"><a title="experiment.experiment.Experiment.input
+experiment.phase.Phase.input
+io_utils.input" class="py-name" href="#" onclick="return doclink('link-14', 'input', 'link-14');">input</a></tt> <tt class="py-op">=</tt> <tt class="py-name">codecs</tt><tt class="py-op">.</tt><tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">        <tt id="link-15" class="py-name"><a title="support.extract_translations.out
+support.extract_translations2.out" class="py-name" href="#" onclick="return doclink('link-15', 'out', 'link-10');">out</a></tt> <tt class="py-op">=</tt> <tt class="py-name">codecs</tt><tt class="py-op">.</tt><tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">+</tt><tt class="py-string">".scores"</tt><tt class="py-op">,</tt> <tt class="py-string">'w'</tt><tt class="py-op">,</tt> <tt class="py-string">'utf-8'</tt><tt class="py-op">)</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">        <tt id="link-16" class="py-name" targets="Module support.extract_scores=support.extract_scores-module.html,Function support.extract_scores.extract_scores()=support.extract_scores-module.html#extract_scores"><a title="support.extract_scores
+support.extract_scores.extract_scores" class="py-name" href="#" onclick="return doclink('link-16', 'extract_scores', 'link-16');">extract_scores</a></tt><tt class="py-op">(</tt><tt id="link-17" class="py-name"><a title="experiment.experiment.Experiment.input
+experiment.phase.Phase.input
+io_utils.input" class="py-name" href="#" onclick="return doclink('link-17', 'input', 'link-14');">input</a></tt><tt class="py-op">,</tt><tt id="link-18" class="py-name"><a title="support.extract_translations.out
+support.extract_translations2.out" class="py-name" href="#" onclick="return doclink('link-18', 'out', 'link-10');">out</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:21 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

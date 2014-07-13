@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>support.preprocessing.jcml.wmt12baselinefeatures2jcml</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="support-module.html">Package&nbsp;support</a> ::
+        <a href="support.preprocessing-module.html">Package&nbsp;preprocessing</a> ::
+        <a href="support.preprocessing.jcml-module.html">Package&nbsp;jcml</a> ::
+        Module&nbsp;wmt12baselinefeatures2jcml
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="support.preprocessing.jcml.wmt12baselinefeatures2jcml-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="support.preprocessing.jcml.wmt12baselinefeatures2jcml-module.html">Module support.preprocessing.jcml.wmt12baselinefeatures2jcml</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-docstring">Created on 1 Mar 2012</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring">@author: elav01</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package io_utils=io_utils-module.html"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-0', 'io_utils', 'link-0');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package io_utils.sax=io_utils.sax-module.html"><a title="io_utils.sax" class="py-name" href="#" onclick="return doclink('link-1', 'sax', 'link-1');">sax</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module io_utils.sax.saxps2jcml=io_utils.sax.saxps2jcml-module.html"><a title="io_utils.sax.saxps2jcml" class="py-name" href="#" onclick="return doclink('link-2', 'saxps2jcml', 'link-2');">saxps2jcml</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Class io_utils.sax.saxps2jcml.Parallelsentence2Jcml=io_utils.sax.saxps2jcml.Parallelsentence2Jcml-class.html"><a title="io_utils.sax.saxps2jcml.Parallelsentence2Jcml" class="py-name" href="#" onclick="return doclink('link-3', 'Parallelsentence2Jcml', 'link-3');">Parallelsentence2Jcml</a></tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-4" class="py-name"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-4', 'io_utils', 'link-0');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Variable experiment.experiment.Experiment.input=experiment.experiment.Experiment-class.html#input,Variable experiment.phase.Phase.input=experiment.phase.Phase-class.html#input,Package io_utils.input=io_utils.input-module.html"><a title="experiment.experiment.Experiment.input
+experiment.phase.Phase.input
+io_utils.input" class="py-name" href="#" onclick="return doclink('link-5', 'input', 'link-5');">input</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Module io_utils.input.jcmlreader=io_utils.input.jcmlreader-module.html"><a title="io_utils.input.jcmlreader" class="py-name" href="#" onclick="return doclink('link-6', 'jcmlreader', 'link-6');">jcmlreader</a></tt> <tt class="py-keyword">import</tt> <tt id="link-7" class="py-name" targets="Class io_utils.input.jcmlreader.JcmlReader=io_utils.input.jcmlreader.JcmlReader-class.html"><a title="io_utils.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-7', 'JcmlReader', 'link-7');">JcmlReader</a></tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">xml</tt><tt class="py-op">.</tt><tt class="py-name">etree</tt> <tt class="py-keyword">import</tt> <tt class="py-name">ElementTree</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"> </tt>
+<a name="wmt12baselinefeatures2jcml"></a><div id="wmt12baselinefeatures2jcml-def"><a name="L12"></a><tt class="py-lineno">12</tt> <a class="py-toggle" href="#" id="wmt12baselinefeatures2jcml-toggle" onclick="return toggle('wmt12baselinefeatures2jcml');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="support.preprocessing.jcml.wmt12baselinefeatures2jcml-module.html#wmt12baselinefeatures2jcml">wmt12baselinefeatures2jcml</a><tt class="py-op">(</tt><tt class="py-param">features_description_filename</tt><tt class="py-op">,</tt> <tt class="py-param">features_filename</tt><tt class="py-op">,</tt> <tt class="py-param">input_jcml</tt><tt class="py-op">,</tt> <tt class="py-param">output_jcml</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="wmt12baselinefeatures2jcml-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="wmt12baselinefeatures2jcml-expanded"><a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">    <tt class="py-name">attribute_names</tt> <tt class="py-op">=</tt> <tt id="link-8" class="py-name" targets="Function support.preprocessing.jcml.wmt12baselinefeatures2jcml.read_attribute_names()=support.preprocessing.jcml.wmt12baselinefeatures2jcml-module.html#read_attribute_names"><a title="support.preprocessing.jcml.wmt12baselinefeatures2jcml.read_attribute_names" class="py-name" href="#" onclick="return doclink('link-8', 'read_attribute_names', 'link-8');">read_attribute_names</a></tt><tt class="py-op">(</tt><tt class="py-name">features_description_filename</tt><tt class="py-op">)</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">    <tt class="py-name">att_vector</tt> <tt class="py-op">=</tt> <tt id="link-9" class="py-name" targets="Function support.preprocessing.jcml.wmt12baselinefeatures2jcml.get_attribute_vector()=support.preprocessing.jcml.wmt12baselinefeatures2jcml-module.html#get_attribute_vector"><a title="support.preprocessing.jcml.wmt12baselinefeatures2jcml.get_attribute_vector" class="py-name" href="#" onclick="return doclink('link-9', 'get_attribute_vector', 'link-9');">get_attribute_vector</a></tt><tt class="py-op">(</tt><tt class="py-name">attribute_names</tt><tt class="py-op">,</tt> <tt class="py-name">features_filename</tt><tt class="py-op">)</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">     </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">    <tt class="py-name">existing_dataset</tt> <tt class="py-op">=</tt> <tt id="link-10" class="py-name"><a title="io_utils.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-10', 'JcmlReader', 'link-7');">JcmlReader</a></tt><tt class="py-op">(</tt><tt class="py-name">input_jcml</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Method io_utils.input.genericreader.GenericReader.get_dataset()=io_utils.input.genericreader.GenericReader-class.html#get_dataset,Method io_utils.input.orangeprocessor.OrangeProcessor.get_dataset()=io_utils.input.orangeprocessor.OrangeProcessor-class.html#get_dataset,Method io_utils.input.orangereader.OrangeData.get_dataset()=io_utils.input.orangereader.OrangeData-class.html#get_dataset,Method io_utils.input.xliffreader.XliffReader.get_dataset()=io_utils.input.xliffreader.XliffReader-class.html#get_dataset,Method io_utils.sax.cejcml.CEJcmlReader.get_dataset()=io_utils.sax.cejcml.CEJcmlReader-class.html#get_dataset"><a title="io_utils.input.genericreader.GenericReader.get_dataset
+io_utils.input.orangeprocessor.OrangeProcessor.get_dataset
+io_utils.input.orangereader.OrangeData.get_dataset
+io_utils.input.xliffreader.XliffReader.get_dataset
+io_utils.sax.cejcml.CEJcmlReader.get_dataset" class="py-name" href="#" onclick="return doclink('link-11', 'get_dataset', 'link-11');">get_dataset</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">    <tt class="py-name">existing_dataset</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Method sentence.dataset.DataSet.add_attribute_vector()=sentence.dataset.DataSet-class.html#add_attribute_vector"><a title="sentence.dataset.DataSet.add_attribute_vector" class="py-name" href="#" onclick="return doclink('link-12', 'add_attribute_vector', 'link-12');">add_attribute_vector</a></tt><tt class="py-op">(</tt><tt class="py-name">att_vector</tt><tt class="py-op">,</tt> <tt class="py-string">"ps"</tt><tt class="py-op">)</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">    <tt id="link-13" class="py-name"><a title="io_utils.sax.saxps2jcml.Parallelsentence2Jcml" class="py-name" href="#" onclick="return doclink('link-13', 'Parallelsentence2Jcml', 'link-3');">Parallelsentence2Jcml</a></tt><tt class="py-op">(</tt><tt class="py-name">existing_dataset</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method io_utils.output.posteditingwriter.PosteditingWriter.write_to_file()=io_utils.output.posteditingwriter.PosteditingWriter-class.html#write_to_file,Method io_utils.output.taraxuwriter.TaraXUWriter.write_to_file()=io_utils.output.taraxuwriter.TaraXUWriter-class.html#write_to_file,Method io_utils.output.wmt11tabwriter.Wmt11TabWriter.write_to_file()=io_utils.output.wmt11tabwriter.Wmt11TabWriter-class.html#write_to_file,Method io_utils.output.xmlwriter.GenericWriter.write_to_file()=io_utils.output.xmlwriter.GenericWriter-class.html#write_to_file,Method io_utils.output.xmlwriter.GenericXMLWriter.write_to_file()=io_utils.output.xmlwriter.GenericXMLWriter-class.html#write_to_file,Method io_utils.sax.saxps2jcml.Parallelsentence2Jcml.write_to_file()=io_utils.sax.saxps2jcml.Parallelsentence2Jcml-class.html#write_to_file"><a title="io_utils.output.posteditingwriter.PosteditingWriter.write_to_file
+io_utils.output.taraxuwriter.TaraXUWriter.write_to_file
+io_utils.output.wmt11tabwriter.Wmt11TabWriter.write_to_file
+io_utils.output.xmlwriter.GenericWriter.write_to_file
+io_utils.output.xmlwriter.GenericXMLWriter.write_to_file
+io_utils.sax.saxps2jcml.Parallelsentence2Jcml.write_to_file" class="py-name" href="#" onclick="return doclink('link-14', 'write_to_file', 'link-14');">write_to_file</a></tt><tt class="py-op">(</tt><tt class="py-name">output_jcml</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">     </tt>
+<a name="get_attribute_vector"></a><div id="get_attribute_vector-def"><a name="L21"></a><tt class="py-lineno">21</tt> <a class="py-toggle" href="#" id="get_attribute_vector-toggle" onclick="return toggle('get_attribute_vector');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="support.preprocessing.jcml.wmt12baselinefeatures2jcml-module.html#get_attribute_vector">get_attribute_vector</a><tt class="py-op">(</tt><tt class="py-param">attribute_names</tt><tt class="py-op">,</tt> <tt class="py-param">features_filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt>   </tt>
+</div><a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">    <tt id="link-15" class="py-name" targets="Variable classifier.extract_liblinear_weights.f=classifier.extract_liblinear_weights-module.html#f,Variable classifier.extract_linear_regression_coefficients.f=classifier.extract_linear_regression_coefficients-module.html#f,Variable classifier.extract_logreg_weight.f=classifier.extract_logreg_weight-module.html#f,Variable experiment.autoranking.getlogregweights.f=experiment.autoranking.getlogregweights-module.html#f"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-15', 'f', 'link-15');">f</a></tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">features_filename</tt><tt class="py-op">,</tt> <tt class="py-string">'r'</tt><tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">    <tt class="py-name">att_vector</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt>  </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">     </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">line</tt> <tt class="py-keyword">in</tt> <tt id="link-16" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-16', 'f', 'link-15');">f</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">        <tt class="py-name">values</tt> <tt class="py-op">=</tt> <tt class="py-name">line</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Method sentence.dataset.DataSet.split()=sentence.dataset.DataSet-class.html#split"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-17', 'split', 'link-17');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">'\t'</tt><tt class="py-op">)</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">        <tt class="py-name">atts</tt> <tt class="py-op">=</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-op">(</tt><tt class="py-name">k</tt><tt class="py-op">,</tt> <tt class="py-name">v</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">k</tt><tt class="py-op">,</tt><tt class="py-name">v</tt> <tt class="py-keyword">in</tt> <tt class="py-name">zip</tt><tt class="py-op">(</tt><tt class="py-name">attribute_names</tt><tt class="py-op">,</tt> <tt class="py-name">values</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt class="py-name">att_vector</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">atts</tt><tt class="py-op">)</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">     </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">    <tt id="link-18" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-18', 'f', 'link-15');">f</a></tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Method featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close()=featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html#close,Method featuregenerator.preprocessor.CommandlinePreprocessor.close()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#close,Method io_utils.sax.saxps2jcml.IncrementalJcml.close()=io_utils.sax.saxps2jcml.IncrementalJcml-class.html#close,Method support.preprocessing.jcml.jcml2arff.ArffWriter.close()=support.preprocessing.jcml.jcml2arff.ArffWriter-class.html#close"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-19', 'close', 'link-19');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt>       </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">att_vector</tt> </tt>
+</div><a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">  </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">     </tt>
+<a name="read_attribute_names"></a><div id="read_attribute_names-def"><a name="L34"></a><tt class="py-lineno">34</tt> <a class="py-toggle" href="#" id="read_attribute_names-toggle" onclick="return toggle('read_attribute_names');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="support.preprocessing.jcml.wmt12baselinefeatures2jcml-module.html#read_attribute_names">read_attribute_names</a><tt class="py-op">(</tt><tt class="py-param">features_description_filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="read_attribute_names-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="read_attribute_names-expanded"><a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">    <tt id="link-20" class="py-name" targets="Module classifier.tree=classifier.tree-module.html"><a title="classifier.tree" class="py-name" href="#" onclick="return doclink('link-20', 'tree', 'link-20');">tree</a></tt> <tt class="py-op">=</tt> <tt class="py-name">ElementTree</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.parse()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator-class.html#parse,Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator.parse()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator-class.html#parse,Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.parse()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator-class.html#parse,Method featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket.parse()=featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket-class.html#parse"><a title="featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.parse
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator.parse
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.parse
+featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket.parse" class="py-name" href="#" onclick="return doclink('link-21', 'parse', 'link-21');">parse</a></tt><tt class="py-op">(</tt><tt class="py-name">features_description_filename</tt><tt class="py-op">)</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">    <tt class="py-name">feature_elements</tt> <tt class="py-op">=</tt> <tt id="link-22" class="py-name"><a title="classifier.tree" class="py-name" href="#" onclick="return doclink('link-22', 'tree', 'link-20');">tree</a></tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt><tt class="py-string">"feature"</tt><tt class="py-op">)</tt>     </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-op">[</tt><tt class="py-string">"bb_{0}"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt id="link-23" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-23', 'f', 'link-15');">f</a></tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt class="py-string">"index"</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt id="link-24" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-24', 'f', 'link-15');">f</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">feature_elements</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line"> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line"> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-25" class="py-name" targets="Variable featuregenerator.meteor.meteor.MeteorGenerator.__name__=featuregenerator.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-25', '__name__', 'link-25');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">    <tt class="py-name">features_description_filename</tt> <tt class="py-op">=</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">    <tt class="py-name">features_filename</tt> <tt class="py-op">=</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">    <tt class="py-name">input_jcml</tt> <tt class="py-op">=</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">3</tt><tt class="py-op">]</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">    <tt class="py-name">output_jcml</tt> <tt class="py-op">=</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">4</tt><tt class="py-op">]</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">    <tt id="link-26" class="py-name" targets="Module support.preprocessing.jcml.wmt12baselinefeatures2jcml=support.preprocessing.jcml.wmt12baselinefeatures2jcml-module.html,Function support.preprocessing.jcml.wmt12baselinefeatures2jcml.wmt12baselinefeatures2jcml()=support.preprocessing.jcml.wmt12baselinefeatures2jcml-module.html#wmt12baselinefeatures2jcml"><a title="support.preprocessing.jcml.wmt12baselinefeatures2jcml
+support.preprocessing.jcml.wmt12baselinefeatures2jcml.wmt12baselinefeatures2jcml" class="py-name" href="#" onclick="return doclink('link-26', 'wmt12baselinefeatures2jcml', 'link-26');">wmt12baselinefeatures2jcml</a></tt><tt class="py-op">(</tt><tt class="py-name">features_description_filename</tt><tt class="py-op">,</tt> <tt class="py-name">features_filename</tt><tt class="py-op">,</tt> <tt class="py-name">input_jcml</tt><tt class="py-op">,</tt> <tt class="py-name">output_jcml</tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:26 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
