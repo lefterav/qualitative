@@ -3,7 +3,7 @@
 '''
 Created on Jul 12, 2011
 
-@author: jogin, elav01
+@author: jogin, Eleftherios Avramidis
 '''
 from pairwiseparallelsentence import PairwiseParallelSentence
 from copy import deepcopy

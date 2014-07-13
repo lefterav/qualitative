@@ -1,7 +1,7 @@
 '''
 Created on Aug 31, 2011
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 from phase import Phase
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     
     
     experiment = Experiment()
-    experiment.input = "/home/elav01/taraxu_data/tmp.exp/wmt09.jcml"
+    experiment.input = "/home/Eleftherios Avramidis/taraxu_data/tmp.exp/wmt09.jcml"
     
     
     #===========================================================================

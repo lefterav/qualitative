@@ -52,7 +52,7 @@ class MyPP(protocol.ProcessProtocol):
 
 if __name__ == '__main__':
     pp = MyPP(1)
-    reactor.spawnProcess(pp, "/usr/bin/java", [ "java", "-jar", "berkeleyParser.jar", "-confidence" , "-kbest", "1" , "-gr", "grammars/eng_sm6.gr"], {}, "/home/elav01/taraxu_tools/berkeleyParser" )
+    reactor.spawnProcess(pp, "/usr/bin/java", [ "java", "-jar", "berkeleyParser.jar", "-confidence" , "-kbest", "1" , "-gr", "grammars/eng_sm6.gr"], {}, "/home/Eleftherios Avramidis/taraxu_tools/berkeleyParser" )
 #    reactor.spawnProcess(pp, "wc", ["wc","-l" ], {}, None, None, None, True )
     reactor.run()
     pp.onemore()

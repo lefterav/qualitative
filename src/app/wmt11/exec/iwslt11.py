@@ -1,7 +1,7 @@
 '''
 Created on Sep 12, 2011
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 from io_utils.input.linereader import LineReader
 from io_utils.input.jcmlreader import JcmlReader
@@ -15,7 +15,7 @@ import re
 if __name__ == '__main__':
     step_start = int(sys.argv[2])
     step_end = int(sys.argv[3])
-    #mydir = "/home/elav01/taraxu_data/tmp"
+    #mydir = "/home/Eleftherios Avramidis/taraxu_data/tmp"
     mydir = "/share/taraxu/selection-mechanism/iwslt11/test"
     #targetdir = "/share/taraxu/vilar/iwslt11/splitHyps/hyps"
     targetdir = "/share/taraxu/vilar/iwslt11/rescoring/testHyps"

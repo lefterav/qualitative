@@ -12,7 +12,7 @@ LANGUAGES = {
              }
 
 ###DO THIS
-SUBMISSIONFILES = "/home/elav01/taraxu_data/wmt08-humaneval-data/submissions/newssyscombtest2010.%s.%s'"
+SUBMISSIONFILES = "/home/Eleftherios Avramidis/taraxu_data/wmt08-humaneval-data/submissions/newssyscombtest2010.%s.%s'"
 SYSTEM1 = ['RBMT3']
 SYSTEM2 = ['UEDIN']
 

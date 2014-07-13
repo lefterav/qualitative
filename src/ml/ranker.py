@@ -1,7 +1,7 @@
 '''
 Created on 26 Mar 2013
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 class Ranker(object):

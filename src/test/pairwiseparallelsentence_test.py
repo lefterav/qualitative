@@ -1,5 +1,5 @@
 '''
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 from dataprocessor.input.jcmlreader import JcmlReader
 from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml

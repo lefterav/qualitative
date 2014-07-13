@@ -37,7 +37,7 @@ class TerWrapper(FeatureGenerator):
         else:
             command = "java -jar {} -h {} -r {}".format(self.path, hypothesis_filename, reference_filename)
         
-        #java -jar terSimple.jar -h /home/elav01/taraxu_data/wmt14/1.2/tr.translation.seg -r /home/elav01/taraxu_data/wmt14/1.2/tr.suggestion.seg
+        #java -jar terSimple.jar -h /home/Eleftherios Avramidis/taraxu_data/wmt14/1.2/tr.translation.seg -r /home/Eleftherios Avramidis/taraxu_data/wmt14/1.2/tr.suggestion.seg
         
         #print command
         output = subprocess.check_output(command.split())
@@ -59,7 +59,7 @@ class TerWrapper(FeatureGenerator):
             return {}
         
 if __name__ == '__main__':
-    terpath = "/home/elav01/workspace/qualitative/lib/terSimple.jar"
+    terpath = "/home/Eleftherios Avramidis/workspace/qualitative/lib/terSimple.jar"
     
     hypothesis_filename = sys.argv[1]
     reference_filename = sys.argv[2]

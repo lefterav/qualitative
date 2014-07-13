@@ -11,8 +11,8 @@ clear, we also include Levenshtein difference (lev-dif) with the next possible
 system. I.e. lev-dif of 1 may have led to a slightly uncertain selection.
 
 USAGE: 
-export PYTHONPATH=:/home/elav01/tools/TaraXUscripts/src:/home/elav01/tools/TaraXUscripts/src
-/home/elav01/tools/TaraXUscripts/src/support/evaluation/fixpostediting.py /share/taraxu/jul11-r1-results/editing /share/taraxu/jul11-r1-results/ranking
+export PYTHONPATH=:/home/Eleftherios Avramidis/tools/TaraXUscripts/src:/home/Eleftherios Avramidis/tools/TaraXUscripts/src
+/home/Eleftherios Avramidis/tools/TaraXUscripts/src/support/evaluation/fixpostediting.py /share/taraxu/jul11-r1-results/editing /share/taraxu/jul11-r1-results/ranking
 
 specify the directories where ranking.xml and editing.xml files reside. 
 
@@ -183,8 +183,8 @@ fix_dirs(filenames)
     
     
         
-#    editingfile = "/home/elav01/taraxu_data/r1/results/5-1-WMT08-de-en-editing.xml"
-#    rankingfile = "/home/elav01/taraxu_data/r1/results/6-1-WMT08-de-en-ranking.xml"
+#    editingfile = "/home/Eleftherios Avramidis/taraxu_data/r1/results/5-1-WMT08-de-en-editing.xml"
+#    rankingfile = "/home/Eleftherios Avramidis/taraxu_data/r1/results/6-1-WMT08-de-en-ranking.xml"
 
 #    fix(rankingfile, editingfile)  
 

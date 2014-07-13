@@ -1,6 +1,6 @@
 '''
 
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 import os
 import re

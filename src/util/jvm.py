@@ -1,7 +1,7 @@
 '''
 Created on 22 Jun 2012
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 import subprocess
 import time

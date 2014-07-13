@@ -16,8 +16,8 @@ from sentence.scoring import Scoring
 
 if __name__ == '__main__':
     
-    dataset1 = RankReader("/home/elav01/taraxu_data/r1/results/8-3-NEWS-de-en-ranking.xml").get_dataset()
-    dataset2 = XmlReader("/home/elav01/taraxu_data/r1/machine-ranking/DE-EN_news_SRC_Trados_Lucy_Google_Moses.out.xml").get_dataset()
+    dataset1 = RankReader("/home/Eleftherios Avramidis/taraxu_data/r1/results/8-3-NEWS-de-en-ranking.xml").get_dataset()
+    dataset2 = XmlReader("/home/Eleftherios Avramidis/taraxu_data/r1/machine-ranking/DE-EN_news_SRC_Trados_Lucy_Google_Moses.out.xml").get_dataset()
     
     dataset1.merge_dataset(dataset2, {"rank": "estimated_rank"}, ["id"])
     #print (Scoring(dataset1.get_parallelsentences())).get_kendall_tau_avg("rank", "estimated_rank")

@@ -5,7 +5,7 @@ and repeat them with modified verbose settings towards new output files
 
 Created on 1 Feb 2013
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 import os
@@ -135,7 +135,7 @@ if __name__ == '__main__':
                 verbose_log_filename = verbose_output_filename.replace(".v2.output.", ".v2.log.")
                 basic_command = basic_command.replace("-threads 8", "")
                 basic_command = basic_command.replace("-v 0", "-v 2")
-                basic_command = basic_command.replace("/home/elav01/tools/moses/moses-cmd/src/moses", "/share/emplus/software/moses/moses-cmd/src/moses")
+                basic_command = basic_command.replace("/home/Eleftherios Avramidis/tools/moses/moses-cmd/src/moses", "/share/emplus/software/moses/moses-cmd/src/moses")
                 basic_command = modify_moses_ini(basic_command)
                 
                 

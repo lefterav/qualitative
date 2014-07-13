@@ -1,7 +1,7 @@
 '''
 Created on 17 Sept 2011
 
-@author: Eleftherios Avramidis, Maja Popovic, David Vilar
+@author: Eleftherios Avramidis based on code from Maja Popovic, David Vilar
 '''
 
 import sys
