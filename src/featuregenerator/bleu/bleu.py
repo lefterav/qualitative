@@ -1,9 +1,3 @@
-
-        
-  #!/usr/bin/python
-
-# $Id: bleu.py 1307 2007-03-14 22:22:36Z hieuhoang1972 $
-
 '''
 @author: Eleftherios Avramidis
 @note: Modified copy from Hieu Hoang's code for Moses Project
