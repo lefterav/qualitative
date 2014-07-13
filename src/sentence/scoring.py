@@ -479,8 +479,8 @@ class Scoring(MultiRankedDataset):
 
 def regenerate_tau():
     """
-    Test script which should be run particularly from with the separate experiment folders, 
-    in order to reproduce results without re-executing the experiment script
+    Test script which should be run particularly from with the separate app folders, 
+    in order to reproduce results without re-executing the app script
     """
     
     from io_utils.input.jcmlreader import JcmlReader

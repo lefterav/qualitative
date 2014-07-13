@@ -5,7 +5,7 @@ from io_utils.input.jcmlreader import JcmlReader
 from orange import ExampleTable
 
 
-os.chdir("/home/lefterav/taraxu_data/ml4hmt/experiment/test")
+os.chdir("/home/lefterav/taraxu_data/ml4hmt/app/test")
 
 
 mydata = JcmlReader("news-test2008-dev.es-en.withlang.trial.bp.en.jcml").get_dataset()

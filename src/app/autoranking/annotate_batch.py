@@ -1,7 +1,7 @@
 '''
 Created on 17 Jan 2012
-Modified 22 Mar 2014 for autoranking experiment
-@author: Eleftherios Avramidis
+Modified 22 Mar 2012 for autoranking app
+@author: lefterav
 '''
 
 import shutil
@@ -21,13 +21,14 @@ from io_utils.input.jcmlreader import JcmlReader
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml 
 from io_utils.sax import saxjcml
 from featuregenerator.parser.berkeley.parsermatches import ParserMatches
+from featuregenerator.parser.berkeley.cfgrules import CfgRulesExtractor
 from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
 from featuregenerator.ratio_generator import RatioGenerator
 from featuregenerator.ibm1featuregenerator import Ibm1FeatureGenerator
 from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenerator
 from featuregenerator.bleu.bleugenerator import CrossBleuGenerator, BleuGenerator
 from featuregenerator.meteor.meteor import CrossMeteorGenerator, MeteorGenerator
-from featuregenerator.ter import TerWrapper
+from featuregenerator.ter import TerWrapper 
 from featuregenerator.attribute_rank import AttributeRankGenerator
 from io_utils.input.xmlreader import XmlReader
 from featuregenerator.languagechecker.languagetool_socket import LanguageToolSocketFeatureGenerator
@@ -114,13 +115,12 @@ def preprocess_data(input_file, output_file):
     tokenizer_src = Tokenizer(source_language)
     tokenizer_tgt = Tokenizer(target_language)
     fgs = [normalizer_src, normalizer_tgt, tokenizer_src, tokenizer_tgt]
-   
-    parallelsentences = JcmlReader(input_file).get_parallelsentences()
-    for fg in fgs:
-        parallelsentences = fg.add_features_batch(parallelsentences)
-    Parallelsentence2Jcml(parallelsentences).write_to_file(output_file)
+    
+#    parallelsentences = JcmlReader(input_file).get_parallelsentences()
+#    for fg in fgs:
+#        parallelsentences = fg.add_features_batch(parallelsentences)
+#    Parallelsentence2Jcml(parallelsentences).write_to_file(output_file)
     saxjcml.run_features_generator(input_file, output_file, fgs, True)
-#    os.symlink(input_file, output_file)
     
     
 
@@ -158,13 +158,13 @@ if cfg.exists_checker(target_language):
 
 @jobs_limit(1, "ltool") #Dunno why, but only one language tool at a time
 @active_if(cfg.has_section("languagetool"))
-@transform(preprocess_data, suffix(".tok.jcml"), ".lt.%s.f.jcml" % source_language, source_language)
+@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, source_language)
 def features_langtool_source(input_file, output_file, language):
     features_langtool(input_file, output_file, language)
 
 @jobs_limit(1, "ltool")
 @active_if(cfg.has_section("languagetool"))
-@transform(preprocess_data, suffix(".tok.jcml"), ".lt.%s.f.jcml" % target_language, target_language)
+@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % target_language, target_language)
 def features_langtool_target(input_file, output_file, language):
     features_langtool(input_file, output_file, language)
 if cfg.has_section("languagetool"):
@@ -189,50 +189,50 @@ def original_data_split(input_files, output_files, parts):
         XmlReader(input_file).split_and_write(parts, re_split)
 
        
-# @active_if(cfg.exists_parser(source_language))
-# @transform(original_data_split, suffix("part.jcml"), "part.parsed.%s.f.jcml" % source_language, source_language, cfg.get_parser_name(source_language))
-# def features_berkeley_source(input_file, output_file, source_language, parser_name):
-#     features_berkeley(input_file, output_file, source_language)
-#     
-# @active_if(cfg.exists_parser(target_language))
-# @transform(original_data_split, suffix("part.jcml"), "part.parsed.%s.f.jcml" % target_language, target_language, cfg.get_parser_name(target_language))
-# def features_berkeley_target(input_file, output_file, target_language, parser_name):
-#     features_berkeley(input_file, output_file, target_language)
-# 
-# 
-# def features_berkeley(input_file, output_file, language):
-#     """
-#     Parsing
-#     """
-#     parser = cfg.get_parser(language) #this is bypassing the architecture, but avoids wasting memory for the loaded parser
-#     saxjcml.run_features_generator(input_file, output_file, [parser])
-#     
-# #    parser = BerkeleyXMLRPCFeatureGenerator(parser_url, language, parser_tokenize)
-# #    saxjcml.run_features_generator(input_file, output_file, [parser])
-# 
-# @active_if(cfg.exists_parser(source_language))
-# #@merge(features_berkeley_source, "parsed.%s.f.jcml" % source_language)
-# @collate(features_berkeley_source, regex(r"([^.]+)\.\s?(\d+)\.part.parsed.([^.]+).f.jcml"),  r"\1.parsed.\3.f.jcml")
-# def merge_parse_parts_source(inputs, output):
-#     merge_parts(inputs, output)
-# if (cfg.exists_parser(source_language)):
-#     parallel_feature_functions.append(merge_parse_parts_source)
-# 
-# @active_if(cfg.exists_parser(target_language))
-# #@merge(features_berkeley_target, "parsed.%s.f.jcml" % target_language)
-# @collate(features_berkeley_target, regex(r"([^.]+)\.\s?(\d+)\.part.parsed.([^.]+).f.jcml"),  r"\1.parsed.\3.f.jcml")
-# def merge_parse_parts_target(inputs, output):
-#     merge_parts(inputs, output)
-# if (cfg.exists_parser(target_language)):
-#     parallel_feature_functions.append(merge_parse_parts_target)
-# 
-# 
-# def merge_parts(inputs, output):
-#     print inputs
-#     parallelsentences = []
-#     for inp in sorted(inputs):
-#         parallelsentences.extend(JcmlReader(inp).get_parallelsentences())
-#     Parallelsentence2Jcml(parallelsentences).write_to_file(output)    
+@active_if(cfg.exists_parser(source_language))
+@transform(original_data_split, suffix("part.jcml"), "part.parsed.%s.f.jcml" % source_language, source_language, cfg.get_parser_name(source_language))
+def features_berkeley_source(input_file, output_file, source_language, parser_name):
+    features_berkeley(input_file, output_file, source_language)
+    
+@active_if(cfg.exists_parser(target_language))
+@transform(original_data_split, suffix("part.jcml"), "part.parsed.%s.f.jcml" % target_language, target_language, cfg.get_parser_name(target_language))
+def features_berkeley_target(input_file, output_file, target_language, parser_name):
+    features_berkeley(input_file, output_file, target_language)
+
+
+def features_berkeley(input_file, output_file, language):
+    """
+    Parsing
+    """
+    parser = cfg.get_parser(language) #this is bypassing the architecture, but avoids wasting memory for the loaded parser
+    saxjcml.run_features_generator(input_file, output_file, [parser])
+    
+#    parser = BerkeleyXMLRPCFeatureGenerator(parser_url, language, parser_tokenize)
+#    saxjcml.run_features_generator(input_file, output_file, [parser])
+
+@active_if(cfg.exists_parser(source_language))
+#@merge(features_berkeley_source, "parsed.%s.f.jcml" % source_language)
+@collate(features_berkeley_source, regex(r"([^.]+)\.\s?(\d+)\.part.parsed.([^.]+).f.jcml"),  r"\1.parsed.\3.f.jcml")
+def merge_parse_parts_source(inputs, output):
+    merge_parts(inputs, output)
+if (cfg.exists_parser(source_language)):
+    parallel_feature_functions.append(merge_parse_parts_source)
+
+@active_if(cfg.exists_parser(target_language))
+#@merge(features_berkeley_target, "parsed.%s.f.jcml" % target_language)
+@collate(features_berkeley_target, regex(r"([^.]+)\.\s?(\d+)\.part.parsed.([^.]+).f.jcml"),  r"\1.parsed.\3.f.jcml")
+def merge_parse_parts_target(inputs, output):
+    merge_parts(inputs, output)
+if (cfg.exists_parser(target_language)):
+    parallel_feature_functions.append(merge_parse_parts_target)
+
+
+def merge_parts(inputs, output):
+    print inputs
+    parallelsentences = []
+    for inp in sorted(inputs):
+        parallelsentences.extend(JcmlReader(inp).get_parallelsentences())
+    Parallelsentence2Jcml(parallelsentences).write_to_file(output)    
 
 
 
@@ -266,6 +266,9 @@ def cross_meteor(input_file, output_file, target_language, classpath, dir_path):
 if cfg.has_section("meteor"):    
     parallel_feature_functions.append(cross_meteor)
     
+
+
+
     
 #    parallelsentences = JcmlReader(input_file).get_parallelsentences()
 #    parallelsentences = truecaser.add_features_batch(parallelsentences)
@@ -337,13 +340,17 @@ if cfg.has_section('quest'):
     parallel_feature_functions.append(features_quest)
 
 @active_if(cfg.getboolean("annotation", "reference_features"))
-@transform(preprocess_data, suffix(".tok.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
+@transform(data_fetch, suffix(".orig.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
 def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_atts, classpath, dir_path):
     analyzers = [LevenshteinGenerator(),
                  BleuGenerator()]
+    saxjcml.run_features_generator(input_file, output_file, analyzers)
     
     if cfg.has_section("meteor"):
         analyzers.append(MeteorGenerator(target_language, classpath, dir_path))
+        
+if cfg.getboolean("annotation", "reference_features"):
+    parallel_feature_functions.append(reference_features)
         
 #    analyzers.append(RatioGenerator())
     
@@ -352,18 +359,6 @@ def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_
 #    for attribute in lessisbetter_atts:
 #        analyzers.append(AttributeRankGenerator(attribute))
 #        
-    saxjcml.run_features_generator(input_file, output_file, analyzers)
-if cfg.getboolean("annotation", "reference_features"):
-    parallel_feature_functions.append(reference_features)
-    
-
-@active_if(cfg.has_section("ter"))
-@transform(preprocess_data, suffix(".tok.jcml"), ".ter.%s.f.jcml" % target_language, cfg.get("ter", "path"))
-def reference_ter(input_file, output_file, path):
-    saxjcml.run_features_generator(input_file, output_file, [TerWrapper(path)])
-
-if cfg.has_section("ter"):    
-    parallel_feature_functions.append(reference_ter)
 
 #active_parallel_feature_functions = [function for function in parallel_feature_functions if function.is_active]
 
@@ -387,6 +382,7 @@ def analyze_external_features(input_file, output_file, source_language, target_l
     langpair = (source_language, target_language)
     analyzers = [
                  ParserMatches(langpair),
+                 CfgRulesExtractor(),
                  RatioGenerator()]
     saxjcml.run_features_generator(input_file, output_file, analyzers)
     

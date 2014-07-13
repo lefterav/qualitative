@@ -1,5 +1,5 @@
 '''
-Implementation of the Python Experiment Suite for the Error Prediction experiment
+Implementation of the Python Experiment Suite for the Error Prediction app
 Created on 19 Apr 2013
 
 @author: Eleftherios Avramidis

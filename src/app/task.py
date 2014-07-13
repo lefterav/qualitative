@@ -14,7 +14,7 @@ from io_utils.output.xmlwriter import XmlWriter
 
 class Task(object):
     '''
-    A Task represent the part of an experiment Phase, where data need to be read from one source, 
+    A Task represent the part of an app Phase, where data need to be read from one source, 
     get processed and (optionally) be written to another source. 
     The steps of the processing are defined by a list of processors (e.g. featuregenerators) to be launched sequentially
     
@@ -132,7 +132,7 @@ class AccumulativeTask(Task):
     '''
     An AccumulativeTask is a Task where data need to processed all in once, after being loaded into the memory.
     This can be tricky for big datasets, as memory issues may occur. Though, it is useful for running parts of 
-    the experiment that do not support individual item processing (e.g. classifier training) or for processes
+    the app that do not support individual item processing (e.g. classifier training) or for processes
     that run faster when they have to do everything altogether
     '''
 

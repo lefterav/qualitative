@@ -99,7 +99,7 @@ if __name__ == '__main__':
     
     for directory_pattern, executions, exclude_development in rounds:
         for langpair, exp_id in executions:
-            #comple the directory path where experiment is based
+            #comple the directory path where app is based
             directory = directory_pattern.format(langpair)
             filename_pattern = "*_decode.{}".format(exp_id)
             current_subdir = os.path.join(directory, str(exp_id))

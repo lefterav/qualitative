@@ -17,8 +17,8 @@ from sentence.scoring import Scoring
 
 if __name__ == '__main__':
     datafile = sys.argv[1]
-    java_classpath = ["/home/elav01/taraxu_tools/meteor-1.3/meteor-1.3.jar","/home/elav01/taraxu_tools/meteor-1.3","/usr/share/py4j/py4j0.7.jar","/home/elav01/workspace/TaraXUscripts/src/experiment/autoranking"]
-    dir_path = "/home/elav01/workspace/TaraXUscripts/src/experiment/autoranking"
+    java_classpath = ["/home/elav01/taraxu_tools/meteor-1.3/meteor-1.3.jar","/home/elav01/taraxu_tools/meteor-1.3","/usr/share/py4j/py4j0.7.jar","/home/elav01/workspace/TaraXUscripts/src/app/autoranking"]
+    dir_path = "/home/elav01/workspace/TaraXUscripts/src/app/autoranking"
     
     dataset = JcmlReader(datafile).get_dataset()
     meteor = MeteorGenerator("en", java_classpath, dir_path)
