@@ -351,12 +351,12 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
 
 #
 #
-if __name__ == '__main__':
+#if __name__ == '__main__':
     
-    text = 'This break every possibility. Dear clients, we would like to informm you that during the latest commerccial update we recieved marvelous products, which wwe can offers in really good prices. Please keeps in touch for further notice. This break every possibility.'
-    ac = IQFeatureGenerator("en")
-from dataprocessor.sax import saxjcml
-    #
-    saxjcml.run_features_generator("/home/Eleftherios Avramidis/taraxu_data/wmt12/qe/training_set/training.jcml", 
-                                   "/home/Eleftherios Avramidis/taraxu_data/wmt12/qe/training_set/training.iq.jcml", [ac])
-    print ac.process(text)
+#    text = 'This break every possibility. Dear clients, we would like to informm you that during the latest commerccial update we recieved marvelous products, which wwe can offers in really good prices. Please keeps in touch for further notice. This break every possibility.'
+#    ac = IQFeatureGenerator("en")
+#    from dataprocessor.sax import saxjcml
+#    #
+#    saxjcml.run_features_generator("/home/Eleftherios Avramidis/taraxu_data/wmt12/qe/training_set/training.jcml", 
+#                                   "/home/Eleftherios Avramidis/taraxu_data/wmt12/qe/training_set/training.iq.jcml", [ac])
+#    print ac.process(text)
