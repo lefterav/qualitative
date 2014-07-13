@@ -92,7 +92,7 @@ class WmtScoring(DataSet):
 if __name__ == '__main__':
     import sys
     import os
-    from io_utils.input.jcmlreader import JcmlReader
+    from dataprocessor.input.jcmlreader import JcmlReader
     import shutil
     classified_jcml = sys.argv[1]
     mode = sys.argv[2]

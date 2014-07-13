@@ -4,15 +4,15 @@ Created on 14 Jul 2012
 @author: lefterav
 '''
 
-from io_utils.input.jcmlreader import JcmlReader
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.input.jcmlreader import JcmlReader
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
 from sentence.pairwisedataset import AnalyticPairwiseDataset, CompactPairwiseDataset, FilteredPairwiseDataset
 import os
 import unittest
 from numpy.ma.testutils import assert_equal
 from sentence.rankhandler import RankHandler
 from sentence.dataset import DataSet
-from io_utils.output.xmlwriter import XmlWriter
+from dataprocessor.output.xmlwriter import XmlWriter
 
 
 

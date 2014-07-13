@@ -6,7 +6,7 @@ This script converts txt inputs from testDataESEN directory (or tuningDataESEN) 
 There are 4 classes - Apertium, Lucy, Moses and HieroMoses.
 '''
 
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
 from numpy import average, var, std, array
 from optparse import OptionParser
 import os

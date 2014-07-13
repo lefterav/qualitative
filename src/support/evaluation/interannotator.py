@@ -9,7 +9,7 @@ import argparse
 import os
 import sys
 import fnmatch
-from io_utils.input.rankreader import R2RankReader as RankReader
+from dataprocessor.input.rankreader import R2RankReader as RankReader
 from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentenceSet
     
     

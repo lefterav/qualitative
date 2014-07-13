@@ -5,8 +5,8 @@
 from copy import deepcopy
 from sentence.parallelsentence import ParallelSentence
 from sentence.dataset import DataSet
-from io_utils.input.xmlreader import XmlReader
-from io_utils.output.xmlwriter import XmlWriter
+from dataprocessor.input.xmlreader import XmlReader
+from dataprocessor.output.xmlwriter import XmlWriter
 #from abc import ABCMeta
 from sys import stderr
 

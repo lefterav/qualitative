@@ -6,7 +6,7 @@ Created on 22 May 2013
 
 import sys
 from collections import OrderedDict
-from io_utils.input.jcmlreader import JcmlReader
+from dataprocessor.input.jcmlreader import JcmlReader
 from ranking.set import allmetrics
 from sentence.ranking import Ranking
 

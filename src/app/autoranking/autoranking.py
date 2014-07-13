@@ -15,11 +15,11 @@ import cPickle as pickle
 
 #internal code classes
 from bootstrap import cfg
-from io_utils.input.orangereader import OrangeData
-from io_utils.sax.saxjcml2orange import SaxJcml2Orange
-from io_utils.input.jcmlreader import JcmlReader
-from io_utils.sax import saxjcml2orange
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml 
+from dataprocessor.input.orangereader import OrangeData
+from dataprocessor.sax.saxjcml2orange import SaxJcml2Orange
+from dataprocessor.input.jcmlreader import JcmlReader
+from dataprocessor.sax import saxjcml2orange
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml 
 from sentence.dataset import DataSet
 from sentence.rankhandler import RankHandler
 from featuregenerator.diff_generator import DiffGenerator

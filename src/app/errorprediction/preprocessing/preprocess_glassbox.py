@@ -7,7 +7,7 @@ Created on 11 Apr 2013
 '''
 
 from featuregenerator.glassbox.moses.extractor import MosesGlassboxExtractor
-from io_utils.sax.saxps2jcml import IncrementalJcml
+from dataprocessor.sax.saxps2jcml import IncrementalJcml
 from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence
 from db import DbConnector

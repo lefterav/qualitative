@@ -4,10 +4,10 @@ Created on 23 Feb 2012
 @author: lefterav
 '''
 
-from io_utils.input.jcmlreader import JcmlReader
+from dataprocessor.input.jcmlreader import JcmlReader
 from sentence.coupleddataset import CoupledDataSet, OrangeCoupledDataSet, CoupledDataSetDisk
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
-from io_utils.sax.saxjcml2orange import SaxJcml2Orange
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.sax.saxjcml2orange import SaxJcml2Orange
 from Orange.classification.bayes import NaiveLearner
 from Orange.regression.linear import LinearRegressionLearner
 

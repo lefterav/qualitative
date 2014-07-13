@@ -4,7 +4,7 @@ Created on Jul 21, 2011
 @author: jogin
 '''
 
-from io_utils.input.rankreader import RankReader
+from dataprocessor.input.rankreader import RankReader
 
 
 
