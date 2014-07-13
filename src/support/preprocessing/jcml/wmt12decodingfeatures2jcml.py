@@ -9,8 +9,8 @@ import subprocess
 import numpy
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
-from io_utils.input.jcmlreader import JcmlReader
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.input.jcmlreader import JcmlReader
 
 
 def process(path):

@@ -9,9 +9,9 @@ import os
 import shutil
 from dataset import DataSet
 from coupledparallelsentence import CoupledParallelSentence
-from io_utils.input.orangereader import OrangeData
-from io_utils.sax.saxps2jcml import IncrementalJcml
-from io_utils.input.jcmlreader import JcmlReader
+from dataprocessor.input.orangereader import OrangeData
+from dataprocessor.sax.saxps2jcml import IncrementalJcml
+from dataprocessor.input.jcmlreader import JcmlReader
 
 
 class CoupledDataSet(DataSet):

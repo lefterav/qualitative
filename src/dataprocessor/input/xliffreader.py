@@ -12,7 +12,7 @@ from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence
 from sentence.dataset import DataSet
 from xml.sax.saxutils import unescape
-from io_utils.input.genericxmlreader import GenericXmlReader
+from dataprocessor.input.genericxmlreader import GenericXmlReader
 
 class XliffReader(GenericXmlReader):
     """

@@ -12,7 +12,7 @@ import tempfile
 from random import shuffle
 from xml.sax.saxutils import XMLGenerator
 from xml.sax.xmlreader import AttributesImpl
-from io_utils.dataformat.jcmlformat import JcmlFormat
+from dataprocessor.dataformat.jcmlformat import JcmlFormat
 from sentence.sentence import SimpleSentence
 from sentence.dataset import DataSet
 

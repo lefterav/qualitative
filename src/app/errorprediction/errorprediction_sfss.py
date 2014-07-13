@@ -11,8 +11,8 @@ Created on 17 Apr 2013
 
 import sys, logging
 import glob, os
-from io_utils.ce.cejcml2orange import CElementTreeJcml2Orange
-from io_utils.sax.utils import join_jcml
+from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange
+from dataprocessor.sax.utils import join_jcml
 from Orange.data import Table, Domain
 from Orange.classification.logreg import LogRegLearner, dump
 from Orange.classification.logreg import LibLinearLogRegLearner

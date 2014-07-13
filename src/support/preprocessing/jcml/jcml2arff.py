@@ -3,7 +3,7 @@ Created on 06 Mar 2012
 
 @author: lefterav
 '''
-from io_utils.input.jcmlreader import JcmlReader
+from dataprocessor.input.jcmlreader import JcmlReader
 
 class ArffWriter:
     def __init__(self, output_filename, class_type, class_values=[], numeric_attribute_names=[], string_attribute_names=[], nominal_attributes={}):

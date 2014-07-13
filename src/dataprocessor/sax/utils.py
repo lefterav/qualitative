@@ -1,5 +1,5 @@
-from io_utils.sax.saxps2jcml import IncrementalJcml
-from io_utils.ce.cejcml import CEJcmlReader
+from dataprocessor.sax.saxps2jcml import IncrementalJcml
+from dataprocessor.ce.cejcml import CEJcmlReader
 import logging as log
 
 def join_jcml(filenames, output_filename):

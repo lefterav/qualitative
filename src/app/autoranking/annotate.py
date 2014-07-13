@@ -18,11 +18,11 @@ import cPickle as pickle
 
 #internal code classes
 from bootstrap import cfg
-from io_utils.input.orangereader import OrangeData
-from io_utils.sax.saxjcml2orange import SaxJcml2Orange
-from io_utils.input.jcmlreader import JcmlReader
-from io_utils.sax import saxjcml2orange
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml 
+from dataprocessor.input.orangereader import OrangeData
+from dataprocessor.sax.saxjcml2orange import SaxJcml2Orange
+from dataprocessor.input.jcmlreader import JcmlReader
+from dataprocessor.sax import saxjcml2orange
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml 
 from sentence.dataset import DataSet
 from sentence.rankhandler import RankHandler
 from featuregenerator.diff_generator import DiffGenerator
@@ -46,7 +46,7 @@ from featuregenerator.ibm1featuregenerator import Ibm1FeatureGenerator
 from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenerator
 from featuregenerator.bleu.bleugenerator import BleuGenerator
 from featuregenerator.attribute_rank import AttributeRankGenerator
-from io_utils.input.xmlreader import XmlReader
+from dataprocessor.input.xmlreader import XmlReader
 
 
 cores = 2

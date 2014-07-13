@@ -183,8 +183,8 @@ class Truecaser(CommandlinePreprocessor):
     
     
 if __name__ == '__main__':
-    from io_utils.input.jcmlreader import JcmlReader
-    from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
+    from dataprocessor.input.jcmlreader import JcmlReader
+    from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
     #path = "/home/lefterav/taraxu_tools/scripts/tokenizer/tokenizer.perl"
     #command_template = "{path} -b -l {lang}"
 #    path = "/home/lefterav/taraxu_tools/scripts/tokenizer/normalize-punctuation.perl"

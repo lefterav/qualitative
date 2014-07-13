@@ -1,4 +1,4 @@
-from io_utils.sax.utils import filter_jcml
+from dataprocessor.sax.utils import filter_jcml
 import sys
 import logging as log
 
