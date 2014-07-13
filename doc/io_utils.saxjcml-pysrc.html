@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>io_utils.saxjcml</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="io_utils-module.html">Package&nbsp;io_utils</a> ::
+        Module&nbsp;saxjcml
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="io_utils.saxjcml-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="io_utils.saxjcml-module.html">Module io_utils.saxjcml</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment">#!/usr/bin/python</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">@author: Eleftherios Avramidis</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">xml</tt><tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Package io_utils.sax=io_utils.sax-module.html"><a title="io_utils.sax" class="py-name" href="#" onclick="return doclink('link-0', 'sax', 'link-0');">sax</a></tt><tt class="py-op">.</tt><tt class="py-name">saxutils</tt> <tt class="py-keyword">import</tt> <tt class="py-name">XMLGenerator</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">xml</tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name"><a title="io_utils.sax" class="py-name" href="#" onclick="return doclink('link-1', 'sax', 'link-0');">sax</a></tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name" targets="Package sentence=sentence-module.html,Module sentence.sentence=sentence.sentence-module.html"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-2', 'sentence', 'link-2');">sentence</a></tt><tt class="py-op">.</tt><tt id="link-3" class="py-name"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-3', 'sentence', 'link-2');">sentence</a></tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Class sentence.sentence.SimpleSentence=sentence.sentence.SimpleSentence-class.html"><a title="sentence.sentence.SimpleSentence" class="py-name" href="#" onclick="return doclink('link-4', 'SimpleSentence', 'link-4');">SimpleSentence</a></tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-5" class="py-name"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-5', 'sentence', 'link-2');">sentence</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Module sentence.parallelsentence=sentence.parallelsentence-module.html"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-6', 'parallelsentence', 'link-6');">parallelsentence</a></tt> <tt class="py-keyword">import</tt> <tt id="link-7" class="py-name" targets="Class sentence.parallelsentence.ParallelSentence=sentence.parallelsentence.ParallelSentence-class.html"><a title="sentence.parallelsentence.ParallelSentence" class="py-name" href="#" onclick="return doclink('link-7', 'ParallelSentence', 'link-7');">ParallelSentence</a></tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">shutil</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">codecs</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"> </tt>
+<a name="run_features_generator"></a><div id="run_features_generator-def"><a name="L18"></a><tt class="py-lineno"> 18</tt> <a class="py-toggle" href="#" id="run_features_generator-toggle" onclick="return toggle('run_features_generator');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="io_utils.saxjcml-module.html#run_features_generator">run_features_generator</a><tt class="py-op">(</tt><tt class="py-param">input_file</tt><tt class="py-op">,</tt> <tt class="py-param">output_file</tt><tt class="py-op">,</tt> <tt class="py-param">generators</tt><tt class="py-op">,</tt> <tt class="py-param">encode</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="run_features_generator-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="run_features_generator-expanded"><a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">    Function that runs a jcml file through a list of featuregenerators in the SAX way</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-docstring">    and adds the features directly on a target jcml file</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-docstring">    @param input_file Filename for the XML-formated data used as input</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-docstring">    @type input_file string</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-docstring">    @param output_file Filename for the result of the featuregenerator, to be generated</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-docstring">    @type output_file string</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-docstring">    @param generators List of generators to be applied on each of the parallelsentences contained in the XMLs   </tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">     </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">    <tt class="py-name">input_file_object</tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">input_file</tt><tt class="py-op">,</tt> <tt class="py-string">'r'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">    <tt class="py-name">tmpfile</tt> <tt class="py-op">=</tt> <tt class="py-string">"%s.tmp"</tt> <tt class="py-op">%</tt> <tt class="py-name">output_file</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">    <tt class="py-name">output_file_object</tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">tmpfile</tt><tt class="py-op">,</tt> <tt class="py-string">'w'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">    <tt class="py-name">saxhandler</tt> <tt class="py-op">=</tt> <tt id="link-8" class="py-name" targets="Class io_utils.saxjcml.SaxJCMLProcessor=io_utils.saxjcml.SaxJCMLProcessor-class.html"><a title="io_utils.saxjcml.SaxJCMLProcessor" class="py-name" href="#" onclick="return doclink('link-8', 'SaxJCMLProcessor', 'link-8');">SaxJCMLProcessor</a></tt><tt class="py-op">(</tt><tt class="py-name">output_file_object</tt><tt class="py-op">,</tt> <tt class="py-name">generators</tt><tt class="py-op">)</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">    <tt id="link-9" class="py-name"><a title="io_utils.sax" class="py-name" href="#" onclick="return doclink('link-9', 'sax', 'link-0');">sax</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.parse()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator-class.html#parse,Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator.parse()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator-class.html#parse,Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.parse()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator-class.html#parse,Method featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket.parse()=featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket-class.html#parse"><a title="featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.parse
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator.parse
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.parse
+featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket.parse" class="py-name" href="#" onclick="return doclink('link-10', 'parse', 'link-10');">parse</a></tt><tt class="py-op">(</tt><tt class="py-name">input_file_object</tt><tt class="py-op">,</tt> <tt class="py-name">saxhandler</tt><tt class="py-op">)</tt>     </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">    <tt class="py-name">input_file_object</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Method featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close()=featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html#close,Method featuregenerator.preprocessor.CommandlinePreprocessor.close()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#close,Method io_utils.sax.saxps2jcml.IncrementalJcml.close()=io_utils.sax.saxps2jcml.IncrementalJcml-class.html#close,Method support.preprocessing.jcml.jcml2arff.ArffWriter.close()=support.preprocessing.jcml.jcml2arff.ArffWriter-class.html#close"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-11', 'close', 'link-11');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">    <tt class="py-name">output_file_object</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-12', 'close', 'link-11');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">    <tt class="py-name">shutil</tt><tt class="py-op">.</tt><tt class="py-name">move</tt><tt class="py-op">(</tt><tt class="py-name">tmpfile</tt><tt class="py-op">,</tt> <tt class="py-name">output_file</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"> </tt>
+<a name="SaxJCMLProcessor"></a><div id="SaxJCMLProcessor-def"><a name="L39"></a><tt class="py-lineno"> 39</tt> <a class="py-toggle" href="#" id="SaxJCMLProcessor-toggle" onclick="return toggle('SaxJCMLProcessor');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="io_utils.saxjcml.SaxJCMLProcessor-class.html">SaxJCMLProcessor</a><tt class="py-op">(</tt><tt class="py-base-class">XMLGenerator</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SaxJCMLProcessor-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="SaxJCMLProcessor-expanded"><a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring">    Handles the generation of features over an XML object formatted as JCML. </tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-docstring">    It does processing every time a parallel sentence including its contents has been declared.</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">    Processing of any other XML type should follow this example.</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">     </tt>
+<a name="SaxJCMLProcessor.__init__"></a><div id="SaxJCMLProcessor.__init__-def"><a name="L46"></a><tt class="py-lineno"> 46</tt> <a class="py-toggle" href="#" id="SaxJCMLProcessor.__init__-toggle" onclick="return toggle('SaxJCMLProcessor.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="io_utils.saxjcml.SaxJCMLProcessor-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">out</tt><tt class="py-op">,</tt> <tt class="py-param">feature_generators</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SaxJCMLProcessor.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SaxJCMLProcessor.__init__-expanded"><a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring">        @param out: file object to receive processed changes</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring">        @type out: file</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-docstring">        @param feature_generators: list of feature generators to be applied</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-docstring">        @type feature_generators: list</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">         </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">        <tt class="py-comment">#flags that show the current focus of the parsing</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">is_parallelsentence</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt>  </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">is_simplesentence</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">passed_head</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt>  <tt class="py-comment">#annotations declaration can only be done before any sentence has been declared</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">        <tt class="py-comment">#the following variables function as a buffer, that gets filled as the elements are being parsed</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">        <tt class="py-comment">#when elements are ended, then objects are created</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ps_attributes</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> <tt class="py-comment">#attributes of the parallel sentence</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ss_attributes</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> <tt class="py-comment">#attributes of a simple sentence</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">         </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">src</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">tgt</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ref</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">annotations</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">         </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ss_text</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">         </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Method io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.set_tags()=io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent-class.html#set_tags,Method io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.set_tags()=io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile-class.html#set_tags,Method io_utils.saxjcml.SaxJCMLProcessor.set_tags()=io_utils.saxjcml.SaxJCMLProcessor-class.html#set_tags,Method io_utils.saxscoring.SaxSystemScoring.set_tags()=io_utils.saxscoring.SaxSystemScoring-class.html#set_tags,Method io_utils.saxwmt11eval.SaxWMTexporter.set_tags()=io_utils.saxwmt11eval.SaxWMTexporter-class.html#set_tags"><a title="io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.set_tags
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.set_tags
+io_utils.saxjcml.SaxJCMLProcessor.set_tags
+io_utils.saxscoring.SaxSystemScoring.set_tags
+io_utils.saxwmt11eval.SaxWMTexporter.set_tags" class="py-name" href="#" onclick="return doclink('link-13', 'set_tags', 'link-13');">set_tags</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">         </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">feature_generators</tt> <tt class="py-op">=</tt> <tt class="py-name">feature_generators</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_encoding</tt> <tt class="py-op">=</tt> <tt class="py-string">"utf-8"</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt class="py-name">_encoding</tt> <tt class="py-op">=</tt> <tt class="py-string">"utf-8"</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">        <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt class="py-name">_out</tt> <tt class="py-op">=</tt> <tt id="link-14" class="py-name" targets="Variable support.extract_translations.out=support.extract_translations-module.html#out,Variable support.extract_translations2.out=support.extract_translations2-module.html#out"><a title="support.extract_translations.out
+support.extract_translations2.out" class="py-name" href="#" onclick="return doclink('link-14', 'out', 'link-14');">out</a></tt> </tt>
+</div><a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">         </tt>
+<a name="SaxJCMLProcessor.set_tags"></a><div id="SaxJCMLProcessor.set_tags-def"><a name="L77"></a><tt class="py-lineno"> 77</tt> <a class="py-toggle" href="#" id="SaxJCMLProcessor.set_tags-toggle" onclick="return toggle('SaxJCMLProcessor.set_tags');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="io_utils.saxjcml.SaxJCMLProcessor-class.html#set_tags">set_tags</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SaxJCMLProcessor.set_tags-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SaxJCMLProcessor.set_tags-expanded"><a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-docstring">        Handles the basic tags used for reading the simple XML format. </tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"><tt class="py-docstring">        As tags are prone to changes, this can be done by changing values here, or overriding accordingly</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Variable io_utils.pysvmlight.TAG_DOC=io_utils.pysvmlight-module.html#TAG_DOC"><a title="io_utils.pysvmlight.TAG_DOC" class="py-name" href="#" onclick="return doclink('link-15', 'TAG_DOC', 'link-15');">TAG_DOC</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"jcml"</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name" targets="Variable io_utils.pysvmlight.TAG_SENT=io_utils.pysvmlight-module.html#TAG_SENT"><a title="io_utils.pysvmlight.TAG_SENT" class="py-name" href="#" onclick="return doclink('link-16', 'TAG_SENT', 'link-16');">TAG_SENT</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"judgedsentence"</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Variable io_utils.pysvmlight.TAG_SRC=io_utils.pysvmlight-module.html#TAG_SRC"><a title="io_utils.pysvmlight.TAG_SRC" class="py-name" href="#" onclick="return doclink('link-17', 'TAG_SRC', 'link-17');">TAG_SRC</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"src"</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Variable io_utils.pysvmlight.TAG_TGT=io_utils.pysvmlight-module.html#TAG_TGT"><a title="io_utils.pysvmlight.TAG_TGT" class="py-name" href="#" onclick="return doclink('link-18', 'TAG_TGT', 'link-18');">TAG_TGT</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"tgt"</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">TAG_REF</tt> <tt class="py-op">=</tt> <tt class="py-string">"ref"</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">TAG_ANNOTATIONS</tt> <tt class="py-op">=</tt> <tt class="py-string">"annotations"</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">TAG_ANNOTATION</tt> <tt class="py-op">=</tt> <tt class="py-string">"annotation"</tt> </tt>
+</div><a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">         </tt>
+<a name="SaxJCMLProcessor.startDocument"></a><div id="SaxJCMLProcessor.startDocument-def"><a name="L90"></a><tt class="py-lineno"> 90</tt> <a class="py-toggle" href="#" id="SaxJCMLProcessor.startDocument-toggle" onclick="return toggle('SaxJCMLProcessor.startDocument');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="io_utils.saxjcml.SaxJCMLProcessor-class.html#startDocument">startDocument</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SaxJCMLProcessor.startDocument-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SaxJCMLProcessor.startDocument-expanded"><a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Method io_utils.sax.saxprocessor.SaxProcessor.startDocument()=io_utils.sax.saxprocessor.SaxProcessor-class.html#startDocument,Method io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.startDocument()=io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile-class.html#startDocument,Method io_utils.saxjcml.SaxJCMLProcessor.startDocument()=io_utils.saxjcml.SaxJCMLProcessor-class.html#startDocument,Method io_utils.saxscoring.SaxSystemScoring.startDocument()=io_utils.saxscoring.SaxSystemScoring-class.html#startDocument,Method io_utils.saxwmt11eval.SaxWMTexporter.startDocument()=io_utils.saxwmt11eval.SaxWMTexporter-class.html#startDocument"><a title="io_utils.sax.saxprocessor.SaxProcessor.startDocument
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.startDocument
+io_utils.saxjcml.SaxJCMLProcessor.startDocument
+io_utils.saxscoring.SaxSystemScoring.startDocument
+io_utils.saxwmt11eval.SaxWMTexporter.startDocument" class="py-name" href="#" onclick="return doclink('link-19', 'startDocument', 'link-19');">startDocument</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">        <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name" targets="Method io_utils.input.orangeprocessor.AttributesReader.startElement()=io_utils.input.orangeprocessor.AttributesReader-class.html#startElement,Method io_utils.input.orangeprocessor.SentenceReader.startElement()=io_utils.input.orangeprocessor.SentenceReader-class.html#startElement,Method io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.startElement()=io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent-class.html#startElement,Method io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.startElement()=io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader-class.html#startElement,Method io_utils.sax.saxprocessor.SaxProcessor.startElement()=io_utils.sax.saxprocessor.SaxProcessor-class.html#startElement,Method io_utils.sax.saxwrapper.SaxWrapper.startElement()=io_utils.sax.saxwrapper.SaxWrapper-class.html#startElement,Method io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.startElement()=io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile-class.html#startElement,Method io_utils.saxjcml.SaxJCMLProcessor.startElement()=io_utils.saxjcml.SaxJCMLProcessor-class.html#startElement,Method io_utils.saxscoring.SaxSystemScoring.startElement()=io_utils.saxscoring.SaxSystemScoring-class.html#startElement,Method io_utils.saxwmt11eval.SaxWMTexporter.startElement()=io_utils.saxwmt11eval.SaxWMTexporter-class.html#startElement"><a title="io_utils.input.orangeprocessor.AttributesReader.startElement
+io_utils.input.orangeprocessor.SentenceReader.startElement
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.startElement
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.startElement
+io_utils.sax.saxprocessor.SaxProcessor.startElement
+io_utils.sax.saxwrapper.SaxWrapper.startElement
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.startElement
+io_utils.saxjcml.SaxJCMLProcessor.startElement
+io_utils.saxscoring.SaxSystemScoring.startElement
+io_utils.saxwmt11eval.SaxWMTexporter.startElement" class="py-name" href="#" onclick="return doclink('link-20', 'startElement', 'link-20');">startElement</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="io_utils.pysvmlight.TAG_DOC" class="py-name" href="#" onclick="return doclink('link-21', 'TAG_DOC', 'link-15');">TAG_DOC</a></tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"> </tt>
+<a name="SaxJCMLProcessor.endDocument"></a><div id="SaxJCMLProcessor.endDocument-def"><a name="L94"></a><tt class="py-lineno"> 94</tt> <a class="py-toggle" href="#" id="SaxJCMLProcessor.endDocument-toggle" onclick="return toggle('SaxJCMLProcessor.endDocument');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="io_utils.saxjcml.SaxJCMLProcessor-class.html#endDocument">endDocument</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SaxJCMLProcessor.endDocument-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SaxJCMLProcessor.endDocument-expanded"><a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">        <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Method io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.endElement()=io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent-class.html#endElement,Method io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.endElement()=io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader-class.html#endElement,Method io_utils.sax.saxprocessor.SaxProcessor.endElement()=io_utils.sax.saxprocessor.SaxProcessor-class.html#endElement,Method io_utils.sax.saxwrapper.SaxWrapper.endElement()=io_utils.sax.saxwrapper.SaxWrapper-class.html#endElement,Method io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.endElement()=io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile-class.html#endElement,Method io_utils.saxjcml.SaxJCMLProcessor.endElement()=io_utils.saxjcml.SaxJCMLProcessor-class.html#endElement,Method io_utils.saxscoring.SaxSystemScoring.endElement()=io_utils.saxscoring.SaxSystemScoring-class.html#endElement,Method io_utils.saxwmt11eval.SaxWMTexporter.endElement()=io_utils.saxwmt11eval.SaxWMTexporter-class.html#endElement"><a title="io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.endElement
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.endElement
+io_utils.sax.saxprocessor.SaxProcessor.endElement
+io_utils.sax.saxwrapper.SaxWrapper.endElement
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.endElement
+io_utils.saxjcml.SaxJCMLProcessor.endElement
+io_utils.saxscoring.SaxSystemScoring.endElement
+io_utils.saxwmt11eval.SaxWMTexporter.endElement" class="py-name" href="#" onclick="return doclink('link-22', 'endElement', 'link-22');">endElement</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name"><a title="io_utils.pysvmlight.TAG_DOC" class="py-name" href="#" onclick="return doclink('link-23', 'TAG_DOC', 'link-15');">TAG_DOC</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">        <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name" targets="Method io_utils.input.orangeprocessor.AttributesReader.endDocument()=io_utils.input.orangeprocessor.AttributesReader-class.html#endDocument,Method io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.endDocument()=io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader-class.html#endDocument,Method io_utils.sax.saxprocessor.SaxProcessor.endDocument()=io_utils.sax.saxprocessor.SaxProcessor-class.html#endDocument,Method io_utils.sax.saxwrapper.SaxWrapper.endDocument()=io_utils.sax.saxwrapper.SaxWrapper-class.html#endDocument,Method io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.endDocument()=io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile-class.html#endDocument,Method io_utils.saxjcml.SaxJCMLProcessor.endDocument()=io_utils.saxjcml.SaxJCMLProcessor-class.html#endDocument,Method io_utils.saxscoring.SaxSystemScoring.endDocument()=io_utils.saxscoring.SaxSystemScoring-class.html#endDocument,Method io_utils.saxwmt11eval.SaxWMTexporter.endDocument()=io_utils.saxwmt11eval.SaxWMTexporter-class.html#endDocument"><a title="io_utils.input.orangeprocessor.AttributesReader.endDocument
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.endDocument
+io_utils.sax.saxprocessor.SaxProcessor.endDocument
+io_utils.sax.saxwrapper.SaxWrapper.endDocument
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.endDocument
+io_utils.saxjcml.SaxJCMLProcessor.endDocument
+io_utils.saxscoring.SaxSystemScoring.endDocument
+io_utils.saxwmt11eval.SaxWMTexporter.endDocument" class="py-name" href="#" onclick="return doclink('link-24', 'endDocument', 'link-24');">endDocument</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">     </tt>
+<a name="SaxJCMLProcessor.startElement"></a><div id="SaxJCMLProcessor.startElement-def"><a name="L98"></a><tt class="py-lineno"> 98</tt> <a class="py-toggle" href="#" id="SaxJCMLProcessor.startElement-toggle" onclick="return toggle('SaxJCMLProcessor.startElement');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="io_utils.saxjcml.SaxJCMLProcessor-class.html#startElement">startElement</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">,</tt> <tt class="py-param">attrs</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SaxJCMLProcessor.startElement-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SaxJCMLProcessor.startElement-expanded"><a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-docstring">        Signals the start of an element (simplesentence or parallelsentence)</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-docstring">        @param name: the name of the element</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-docstring">        @type name: str </tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"><tt class="py-docstring">        @param attrs: of the element type as a string and the attrs parameter holds an object of the Attributes interface containing the attributes of the element.</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-docstring">        @type attrs: Attributes</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-25" class="py-name" targets="Variable experiment.errorprediction.errorprediction_draft.name=experiment.errorprediction.errorprediction_draft-module.html#name,Variable experiment.phase.Phase.name=experiment.phase.Phase-class.html#name"><a title="experiment.errorprediction.errorprediction_draft.name
+experiment.phase.Phase.name" class="py-name" href="#" onclick="return doclink('link-25', 'name', 'link-25');">name</a></tt> <tt class="py-op">==</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name"><a title="io_utils.pysvmlight.TAG_SENT" class="py-name" href="#" onclick="return doclink('link-26', 'TAG_SENT', 'link-16');">TAG_SENT</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">             </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">            <tt class="py-comment">#empty up string and attribute buffer</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ss_text</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ps_attributes</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">tgt</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">att_name</tt> <tt class="py-keyword">in</tt> <tt class="py-name">attrs</tt><tt class="py-op">.</tt><tt class="py-name">getNames</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ps_attributes</tt><tt class="py-op">[</tt><tt class="py-name">att_name</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">attrs</tt><tt class="py-op">.</tt><tt class="py-name">getValue</tt><tt class="py-op">(</tt><tt class="py-name">att_name</tt><tt class="py-op">)</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">is_parallelsentence</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">             </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">            <tt class="py-comment">#add the newly produced feature generators to the heading of the generated file</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"><tt class="py-comment">#            XMLGenerator.startElement(self, self.TAG_ANNOTATIONS, {})</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"><tt class="py-comment">#            if not self.passed_head:</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"><tt class="py-comment">#                for featuregenerator in self.feature_generators:</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"><tt class="py-comment">#                    atts = {"name" : featuregenerator.get_annotation_name()}</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"><tt class="py-comment">#                self.passed_head = True    </tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"><tt class="py-comment">#        </tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"><tt class="py-comment">#        if name == self.TAG_ANNOTATION:</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"><tt class="py-comment">#            if not self.passed_head:</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"><tt class="py-comment">#                self.annotations.append(attrs.getValue("name"))</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"><tt class="py-comment">#                #XMLGenerator.startElement(self, name, attrs)</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"><tt class="py-comment">#            else:</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-comment">#                print "Format error. Annotation must be declared in the beginning of the document"</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">         </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt id="link-27" class="py-name"><a title="experiment.errorprediction.errorprediction_draft.name
+experiment.phase.Phase.name" class="py-name" href="#" onclick="return doclink('link-27', 'name', 'link-25');">name</a></tt> <tt class="py-keyword">in</tt> <tt class="py-op">[</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name"><a title="io_utils.pysvmlight.TAG_SRC" class="py-name" href="#" onclick="return doclink('link-28', 'TAG_SRC', 'link-17');">TAG_SRC</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name"><a title="io_utils.pysvmlight.TAG_TGT" class="py-name" href="#" onclick="return doclink('link-29', 'TAG_TGT', 'link-18');">TAG_TGT</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">TAG_REF</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">             </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">            <tt class="py-comment">#empty up string and attribute buffer</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ss_text</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ss_attributes</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">att_name</tt> <tt class="py-keyword">in</tt> <tt class="py-name">attrs</tt><tt class="py-op">.</tt><tt class="py-name">getNames</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ss_attributes</tt><tt class="py-op">[</tt><tt class="py-name">att_name</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">attrs</tt><tt class="py-op">.</tt><tt class="py-name">getValue</tt><tt class="py-op">(</tt><tt class="py-name">att_name</tt><tt class="py-op">)</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">is_simplesentence</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+</div><a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">         </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">                 </tt>
+<a name="SaxJCMLProcessor.characters"></a><div id="SaxJCMLProcessor.characters-def"><a name="L143"></a><tt class="py-lineno">143</tt> <a class="py-toggle" href="#" id="SaxJCMLProcessor.characters-toggle" onclick="return toggle('SaxJCMLProcessor.characters');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="io_utils.saxjcml.SaxJCMLProcessor-class.html#characters">characters</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">ch</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SaxJCMLProcessor.characters-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SaxJCMLProcessor.characters-expanded"><a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-docstring">        The Parser will call this method to report each chunk of character data. </tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-docstring">        We use it to store the string of the simplesentence</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-docstring">        @param ch: character being parsed</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-docstring">        @type ch: str </tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">is_simplesentence</tt> <tt class="py-op">:</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ss_text</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">ch</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"><tt class="py-comment">#            self.ss_text = u"%s%s" % (self.ss_text, ch)</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">             </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">     </tt>
+<a name="SaxJCMLProcessor.endElement"></a><div id="SaxJCMLProcessor.endElement-def"><a name="L155"></a><tt class="py-lineno">155</tt> <a class="py-toggle" href="#" id="SaxJCMLProcessor.endElement-toggle" onclick="return toggle('SaxJCMLProcessor.endElement');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="io_utils.saxjcml.SaxJCMLProcessor-class.html#endElement">endElement</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SaxJCMLProcessor.endElement-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SaxJCMLProcessor.endElement-expanded"><a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-docstring">        Signals the end of an element.</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"><tt class="py-docstring">        Data stored in global vars of the class, time to create our objects and fire their processing</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"><tt class="py-docstring">        @param name: the name of the element</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"><tt class="py-docstring">        @type name: str </tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line"><tt class="py-docstring">        @param attrs: of the element type as a string and the attrs parameter holds an object of the Attributes interface containing the attributes of the element.</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"><tt class="py-docstring">        @type attrs: Attributes</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">        <tt class="py-name">parsed_text</tt> <tt class="py-op">=</tt> <tt class="py-string">""</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ss_text</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">        <tt class="py-comment">#get rid of annoying leading spaces</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">         </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">        <tt class="py-comment">#all of the elements have to be declared here</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">        <tt class="py-comment">#for each element, create the objects and clear "buffers"</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-30" class="py-name"><a title="experiment.errorprediction.errorprediction_draft.name
+experiment.phase.Phase.name" class="py-name" href="#" onclick="return doclink('link-30', 'name', 'link-25');">name</a></tt> <tt class="py-op">==</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="io_utils.pysvmlight.TAG_SRC" class="py-name" href="#" onclick="return doclink('link-31', 'TAG_SRC', 'link-17');">TAG_SRC</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">src</tt> <tt class="py-op">=</tt> <tt id="link-32" class="py-name"><a title="sentence.sentence.SimpleSentence" class="py-name" href="#" onclick="return doclink('link-32', 'SimpleSentence', 'link-4');">SimpleSentence</a></tt><tt class="py-op">(</tt><tt class="py-name">parsed_text</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ss_attributes</tt><tt class="py-op">)</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ss_text</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt id="link-33" class="py-name"><a title="experiment.errorprediction.errorprediction_draft.name
+experiment.phase.Phase.name" class="py-name" href="#" onclick="return doclink('link-33', 'name', 'link-25');">name</a></tt> <tt class="py-op">==</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">TAG_REF</tt><tt class="py-op">:</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ref</tt> <tt class="py-op">=</tt> <tt id="link-34" class="py-name"><a title="sentence.sentence.SimpleSentence" class="py-name" href="#" onclick="return doclink('link-34', 'SimpleSentence', 'link-4');">SimpleSentence</a></tt><tt class="py-op">(</tt><tt class="py-name">parsed_text</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ss_attributes</tt><tt class="py-op">)</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ss_text</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt id="link-35" class="py-name"><a title="experiment.errorprediction.errorprediction_draft.name
+experiment.phase.Phase.name" class="py-name" href="#" onclick="return doclink('link-35', 'name', 'link-25');">name</a></tt> <tt class="py-op">==</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name"><a title="io_utils.pysvmlight.TAG_TGT" class="py-name" href="#" onclick="return doclink('link-36', 'TAG_TGT', 'link-18');">TAG_TGT</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">tgt</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-37" class="py-name"><a title="sentence.sentence.SimpleSentence" class="py-name" href="#" onclick="return doclink('link-37', 'SimpleSentence', 'link-4');">SimpleSentence</a></tt><tt class="py-op">(</tt><tt class="py-name">parsed_text</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ss_attributes</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ss_text</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt id="link-38" class="py-name"><a title="experiment.errorprediction.errorprediction_draft.name
+experiment.phase.Phase.name" class="py-name" href="#" onclick="return doclink('link-38', 'name', 'link-25');">name</a></tt> <tt class="py-op">==</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name"><a title="io_utils.pysvmlight.TAG_SENT" class="py-name" href="#" onclick="return doclink('link-39', 'TAG_SENT', 'link-16');">TAG_SENT</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">            <tt class="py-comment">#when the judged sentence gets closed, all previously inserted data have to be converted to objects </tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line">            <tt id="link-40" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-40', 'parallelsentence', 'link-6');">parallelsentence</a></tt> <tt class="py-op">=</tt> <tt id="link-41" class="py-name"><a title="sentence.parallelsentence.ParallelSentence" class="py-name" href="#" onclick="return doclink('link-41', 'ParallelSentence', 'link-7');">ParallelSentence</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">src</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">tgt</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ref</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ps_attributes</tt><tt class="py-op">)</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line">            <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stderr</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Method experiment.autoranking.decode.StreamToLogger.write()=experiment.autoranking.decode.StreamToLogger-class.html#write,Method experiment.autoranking.suite.StreamToLogger.write()=experiment.autoranking.suite.StreamToLogger-class.html#write,Method experiment.autorankingsearch.suite.StreamToLogger.write()=experiment.autorankingsearch.suite.StreamToLogger-class.html#write,Method experiment.autoranksvm.suite.StreamToLogger.write()=experiment.autoranksvm.suite.StreamToLogger-class.html#write,Method experiment.ml4hmt12.suite.StreamToLogger.write()=experiment.ml4hmt12.suite.StreamToLogger-class.html#write,Method experiment.ml4hmt12.test.StreamToLogger.write()=experiment.ml4hmt12.test.StreamToLogger-class.html#write,Method sentence.coupleddataset.CoupledDataSetDisk.write()=sentence.coupleddataset.CoupledDataSetDisk-class.html#write"><a title="experiment.autoranking.decode.StreamToLogger.write
+experiment.autoranking.suite.StreamToLogger.write
+experiment.autorankingsearch.suite.StreamToLogger.write
+experiment.autoranksvm.suite.StreamToLogger.write
+experiment.ml4hmt12.suite.StreamToLogger.write
+experiment.ml4hmt12.test.StreamToLogger.write
+sentence.coupleddataset.CoupledDataSetDisk.write" class="py-name" href="#" onclick="return doclink('link-42', 'write', 'link-42');">write</a></tt><tt class="py-op">(</tt><tt class="py-string">"\\"</tt><tt class="py-op">)</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">            <tt class="py-comment">#apply feature generators</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">fg</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">feature_generators</tt><tt class="py-op">:</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">                <tt id="link-43" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-43', 'parallelsentence', 'link-6');">parallelsentence</a></tt> <tt class="py-op">=</tt> <tt class="py-name">fg</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name" targets="Method classifier.ranker.Ranker.add_features_parallelsentence()=classifier.ranker.Ranker-class.html#add_features_parallelsentence,Method featuregenerator.attribute_rank.AttributeRankGenerator.add_features_parallelsentence()=featuregenerator.attribute_rank.AttributeRankGenerator-class.html#add_features_parallelsentence,Method featuregenerator.featuregenerator.FeatureGenerator.add_features_parallelsentence()=featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_parallelsentence"><a title="classifier.ranker.Ranker.add_features_parallelsentence
+featuregenerator.attribute_rank.AttributeRankGenerator.add_features_parallelsentence
+featuregenerator.featuregenerator.FeatureGenerator.add_features_parallelsentence" class="py-name" href="#" onclick="return doclink('link-44', 'add_features_parallelsentence', 'link-44');">add_features_parallelsentence</a></tt><tt class="py-op">(</tt><tt id="link-45" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-45', 'parallelsentence', 'link-6');">parallelsentence</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line">                <tt class="py-comment">#parallelsentence.add_attributes( fg.get_features_parallelsentence(parallelsentence) )</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line">            <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stderr</tt><tt class="py-op">.</tt><tt id="link-46" class="py-name"><a title="experiment.autoranking.decode.StreamToLogger.write
+experiment.autoranking.suite.StreamToLogger.write
+experiment.autorankingsearch.suite.StreamToLogger.write
+experiment.autoranksvm.suite.StreamToLogger.write
+experiment.ml4hmt12.suite.StreamToLogger.write
+experiment.ml4hmt12.test.StreamToLogger.write
+sentence.coupleddataset.CoupledDataSetDisk.write" class="py-name" href="#" onclick="return doclink('link-46', 'write', 'link-42');">write</a></tt><tt class="py-op">(</tt><tt class="py-string">"/"</tt><tt class="py-op">)</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">            <tt class="py-comment">#print parallelsentence</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line">            <tt class="py-name">src</tt> <tt class="py-op">=</tt> <tt id="link-47" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-47', 'parallelsentence', 'link-6');">parallelsentence</a></tt><tt class="py-op">.</tt><tt id="link-48" class="py-name" targets="Method sentence.parallelsentence.ParallelSentence.get_source()=sentence.parallelsentence.ParallelSentence-class.html#get_source"><a title="sentence.parallelsentence.ParallelSentence.get_source" class="py-name" href="#" onclick="return doclink('link-48', 'get_source', 'link-48');">get_source</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"><tt class="py-comment">#            #print src.get_string()</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line"><tt class="py-comment">#            for fg in self.feature_generators:</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line"><tt class="py-comment">#                src = fg.add_features_src(src, parallelsentence)</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line"><tt class="py-comment">#                #src.add_attributes( fg.get_features_src(src, parallelsentence) )</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line"><tt class="py-comment">#            parallelsentence.set_source(src)</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line">            <tt class="py-comment">#display modifications on output file</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">            <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt class="py-name">_write</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-string">"\n\t"</tt><tt class="py-op">)</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">              </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line">            <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt id="link-49" class="py-name"><a title="io_utils.input.orangeprocessor.AttributesReader.startElement
+io_utils.input.orangeprocessor.SentenceReader.startElement
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.startElement
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.startElement
+io_utils.sax.saxprocessor.SaxProcessor.startElement
+io_utils.sax.saxwrapper.SaxWrapper.startElement
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.startElement
+io_utils.saxjcml.SaxJCMLProcessor.startElement
+io_utils.saxscoring.SaxSystemScoring.startElement
+io_utils.saxwmt11eval.SaxWMTexporter.startElement" class="py-name" href="#" onclick="return doclink('link-49', 'startElement', 'link-20');">startElement</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-50" class="py-name"><a title="experiment.errorprediction.errorprediction_draft.name
+experiment.phase.Phase.name" class="py-name" href="#" onclick="return doclink('link-50', 'name', 'link-25');">name</a></tt><tt class="py-op">,</tt> <tt id="link-51" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-51', 'parallelsentence', 'link-6');">parallelsentence</a></tt><tt class="py-op">.</tt><tt id="link-52" class="py-name" targets="Method io_utils.input.genericxmlreader.GenericXmlReader.get_attributes()=io_utils.input.genericxmlreader.GenericXmlReader-class.html#get_attributes,Method sentence.parallelsentence.ParallelSentence.get_attributes()=sentence.parallelsentence.ParallelSentence-class.html#get_attributes,Method sentence.sentence.SimpleSentence.get_attributes()=sentence.sentence.SimpleSentence-class.html#get_attributes"><a title="io_utils.input.genericxmlreader.GenericXmlReader.get_attributes
+sentence.parallelsentence.ParallelSentence.get_attributes
+sentence.sentence.SimpleSentence.get_attributes" class="py-name" href="#" onclick="return doclink('link-52', 'get_attributes', 'link-52');">get_attributes</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line">                         </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">            <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt class="py-name">_write</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-string">"\n\t\t"</tt><tt class="py-op">)</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line">            <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name"><a title="io_utils.input.orangeprocessor.AttributesReader.startElement
+io_utils.input.orangeprocessor.SentenceReader.startElement
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.startElement
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.startElement
+io_utils.sax.saxprocessor.SaxProcessor.startElement
+io_utils.sax.saxwrapper.SaxWrapper.startElement
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.startElement
+io_utils.saxjcml.SaxJCMLProcessor.startElement
+io_utils.saxscoring.SaxSystemScoring.startElement
+io_utils.saxwmt11eval.SaxWMTexporter.startElement" class="py-name" href="#" onclick="return doclink('link-53', 'startElement', 'link-20');">startElement</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name"><a title="io_utils.pysvmlight.TAG_SRC" class="py-name" href="#" onclick="return doclink('link-54', 'TAG_SRC', 'link-17');">TAG_SRC</a></tt><tt class="py-op">,</tt> <tt class="py-name">src</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name"><a title="io_utils.input.genericxmlreader.GenericXmlReader.get_attributes
+sentence.parallelsentence.ParallelSentence.get_attributes
+sentence.sentence.SimpleSentence.get_attributes" class="py-name" href="#" onclick="return doclink('link-55', 'get_attributes', 'link-52');">get_attributes</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line">            <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt id="link-56" class="py-name" targets="Method io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.characters()=io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent-class.html#characters,Method io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.characters()=io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader-class.html#characters,Method io_utils.sax.saxprocessor.SaxProcessor.characters()=io_utils.sax.saxprocessor.SaxProcessor-class.html#characters,Method io_utils.sax.saxwrapper.SaxWrapper.characters()=io_utils.sax.saxwrapper.SaxWrapper-class.html#characters,Method io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.characters()=io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile-class.html#characters,Method io_utils.saxjcml.SaxJCMLProcessor.characters()=io_utils.saxjcml.SaxJCMLProcessor-class.html#characters,Method io_utils.saxscoring.SaxSystemScoring.characters()=io_utils.saxscoring.SaxSystemScoring-class.html#characters,Method io_utils.saxwmt11eval.SaxWMTexporter.characters()=io_utils.saxwmt11eval.SaxWMTexporter-class.html#characters"><a title="io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.characters
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.characters
+io_utils.sax.saxprocessor.SaxProcessor.characters
+io_utils.sax.saxwrapper.SaxWrapper.characters
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.characters
+io_utils.saxjcml.SaxJCMLProcessor.characters
+io_utils.saxscoring.SaxSystemScoring.characters
+io_utils.saxwmt11eval.SaxWMTexporter.characters" class="py-name" href="#" onclick="return doclink('link-56', 'characters', 'link-56');">characters</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">src</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name" targets="Method sentence.sentence.SimpleSentence.get_string()=sentence.sentence.SimpleSentence-class.html#get_string"><a title="sentence.sentence.SimpleSentence.get_string" class="py-name" href="#" onclick="return doclink('link-57', 'get_string', 'link-57');">get_string</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line">            <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt id="link-58" class="py-name"><a title="io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.endElement
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.endElement
+io_utils.sax.saxprocessor.SaxProcessor.endElement
+io_utils.sax.saxwrapper.SaxWrapper.endElement
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.endElement
+io_utils.saxjcml.SaxJCMLProcessor.endElement
+io_utils.saxscoring.SaxSystemScoring.endElement
+io_utils.saxwmt11eval.SaxWMTexporter.endElement" class="py-name" href="#" onclick="return doclink('link-58', 'endElement', 'link-22');">endElement</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-59" class="py-name"><a title="io_utils.pysvmlight.TAG_SRC" class="py-name" href="#" onclick="return doclink('link-59', 'TAG_SRC', 'link-17');">TAG_SRC</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line">             </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">tgt</tt> <tt class="py-keyword">in</tt> <tt id="link-60" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-60', 'parallelsentence', 'link-6');">parallelsentence</a></tt><tt class="py-op">.</tt><tt id="link-61" class="py-name" targets="Method sentence.pairwiseparallelsentence.PairwiseParallelSentence.get_translations()=sentence.pairwiseparallelsentence.PairwiseParallelSentence-class.html#get_translations,Method sentence.parallelsentence.ParallelSentence.get_translations()=sentence.parallelsentence.ParallelSentence-class.html#get_translations"><a title="sentence.pairwiseparallelsentence.PairwiseParallelSentence.get_translations
+sentence.parallelsentence.ParallelSentence.get_translations" class="py-name" href="#" onclick="return doclink('link-61', 'get_translations', 'link-61');">get_translations</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line"><tt class="py-comment">#                for fg in self.feature_generators:</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line"><tt class="py-comment">#                    tgt = fg.add_features_tgt(tgt, parallelsentence)</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line"><tt class="py-comment">#                    #tgt.add_attributes( fg.get_features_tgt(tgt, parallelsentence) )</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line"> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line">                <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt class="py-name">_write</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-string">"\n\t\t"</tt><tt class="py-op">)</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line">                <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt id="link-62" class="py-name"><a title="io_utils.input.orangeprocessor.AttributesReader.startElement
+io_utils.input.orangeprocessor.SentenceReader.startElement
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.startElement
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.startElement
+io_utils.sax.saxprocessor.SaxProcessor.startElement
+io_utils.sax.saxwrapper.SaxWrapper.startElement
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.startElement
+io_utils.saxjcml.SaxJCMLProcessor.startElement
+io_utils.saxscoring.SaxSystemScoring.startElement
+io_utils.saxwmt11eval.SaxWMTexporter.startElement" class="py-name" href="#" onclick="return doclink('link-62', 'startElement', 'link-20');">startElement</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-63" class="py-name"><a title="io_utils.pysvmlight.TAG_TGT" class="py-name" href="#" onclick="return doclink('link-63', 'TAG_TGT', 'link-18');">TAG_TGT</a></tt><tt class="py-op">,</tt> <tt class="py-name">tgt</tt><tt class="py-op">.</tt><tt id="link-64" class="py-name"><a title="io_utils.input.genericxmlreader.GenericXmlReader.get_attributes
+sentence.parallelsentence.ParallelSentence.get_attributes
+sentence.sentence.SimpleSentence.get_attributes" class="py-name" href="#" onclick="return doclink('link-64', 'get_attributes', 'link-52');">get_attributes</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line">                <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt id="link-65" class="py-name"><a title="io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.characters
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.characters
+io_utils.sax.saxprocessor.SaxProcessor.characters
+io_utils.sax.saxwrapper.SaxWrapper.characters
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.characters
+io_utils.saxjcml.SaxJCMLProcessor.characters
+io_utils.saxscoring.SaxSystemScoring.characters
+io_utils.saxwmt11eval.SaxWMTexporter.characters" class="py-name" href="#" onclick="return doclink('link-65', 'characters', 'link-56');">characters</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">tgt</tt><tt class="py-op">.</tt><tt id="link-66" class="py-name"><a title="sentence.sentence.SimpleSentence.get_string" class="py-name" href="#" onclick="return doclink('link-66', 'get_string', 'link-57');">get_string</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line">                <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt id="link-67" class="py-name"><a title="io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.endElement
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.endElement
+io_utils.sax.saxprocessor.SaxProcessor.endElement
+io_utils.sax.saxwrapper.SaxWrapper.endElement
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.endElement
+io_utils.saxjcml.SaxJCMLProcessor.endElement
+io_utils.saxscoring.SaxSystemScoring.endElement
+io_utils.saxwmt11eval.SaxWMTexporter.endElement" class="py-name" href="#" onclick="return doclink('link-67', 'endElement', 'link-22');">endElement</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-68" class="py-name"><a title="io_utils.pysvmlight.TAG_TGT" class="py-name" href="#" onclick="return doclink('link-68', 'TAG_TGT', 'link-18');">TAG_TGT</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line">             </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">             </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">            <tt class="py-name">ref</tt> <tt class="py-op">=</tt> <tt id="link-69" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-69', 'parallelsentence', 'link-6');">parallelsentence</a></tt><tt class="py-op">.</tt><tt id="link-70" class="py-name" targets="Method sentence.parallelsentence.ParallelSentence.get_reference()=sentence.parallelsentence.ParallelSentence-class.html#get_reference"><a title="sentence.parallelsentence.ParallelSentence.get_reference" class="py-name" href="#" onclick="return doclink('link-70', 'get_reference', 'link-70');">get_reference</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line">             </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">            <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt class="py-name">_write</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-string">"\n\t\t"</tt><tt class="py-op">)</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">                <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt id="link-71" class="py-name"><a title="io_utils.input.orangeprocessor.AttributesReader.startElement
+io_utils.input.orangeprocessor.SentenceReader.startElement
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.startElement
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.startElement
+io_utils.sax.saxprocessor.SaxProcessor.startElement
+io_utils.sax.saxwrapper.SaxWrapper.startElement
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.startElement
+io_utils.saxjcml.SaxJCMLProcessor.startElement
+io_utils.saxscoring.SaxSystemScoring.startElement
+io_utils.saxwmt11eval.SaxWMTexporter.startElement" class="py-name" href="#" onclick="return doclink('link-71', 'startElement', 'link-20');">startElement</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">TAG_REF</tt><tt class="py-op">,</tt> <tt class="py-name">ref</tt><tt class="py-op">.</tt><tt id="link-72" class="py-name"><a title="io_utils.input.genericxmlreader.GenericXmlReader.get_attributes
+sentence.parallelsentence.ParallelSentence.get_attributes
+sentence.sentence.SimpleSentence.get_attributes" class="py-name" href="#" onclick="return doclink('link-72', 'get_attributes', 'link-52');">get_attributes</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">                <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt id="link-73" class="py-name"><a title="io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.characters
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.characters
+io_utils.sax.saxprocessor.SaxProcessor.characters
+io_utils.sax.saxwrapper.SaxWrapper.characters
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.characters
+io_utils.saxjcml.SaxJCMLProcessor.characters
+io_utils.saxscoring.SaxSystemScoring.characters
+io_utils.saxwmt11eval.SaxWMTexporter.characters" class="py-name" href="#" onclick="return doclink('link-73', 'characters', 'link-56');">characters</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">ref</tt><tt class="py-op">.</tt><tt id="link-74" class="py-name"><a title="sentence.sentence.SimpleSentence.get_string" class="py-name" href="#" onclick="return doclink('link-74', 'get_string', 'link-57');">get_string</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line">                <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt id="link-75" class="py-name"><a title="io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.endElement
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.endElement
+io_utils.sax.saxprocessor.SaxProcessor.endElement
+io_utils.sax.saxwrapper.SaxWrapper.endElement
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.endElement
+io_utils.saxjcml.SaxJCMLProcessor.endElement
+io_utils.saxscoring.SaxSystemScoring.endElement
+io_utils.saxwmt11eval.SaxWMTexporter.endElement" class="py-name" href="#" onclick="return doclink('link-75', 'endElement', 'link-22');">endElement</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">TAG_REF</tt><tt class="py-op">)</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line">                <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt class="py-name">_write</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-string">"\n\t"</tt><tt class="py-op">)</tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line">                <tt class="py-keyword">pass</tt> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line"> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line">            <tt class="py-name">XMLGenerator</tt><tt class="py-op">.</tt><tt id="link-76" class="py-name"><a title="io_utils.sax.saxjcml2orange.SaxJcmlOrangeContent.endElement
+io_utils.sax.saxjcml2orange.SaxJcmlOrangeHeader.endElement
+io_utils.sax.saxprocessor.SaxProcessor.endElement
+io_utils.sax.saxwrapper.SaxWrapper.endElement
+io_utils.sax_bestrank2simplefile.SaxBestRank2SimpleFile.endElement
+io_utils.saxjcml.SaxJCMLProcessor.endElement
+io_utils.saxscoring.SaxSystemScoring.endElement
+io_utils.saxwmt11eval.SaxWMTexporter.endElement" class="py-name" href="#" onclick="return doclink('link-76', 'endElement', 'link-22');">endElement</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-77" class="py-name"><a title="experiment.errorprediction.errorprediction_draft.name
+experiment.phase.Phase.name" class="py-name" href="#" onclick="return doclink('link-77', 'name', 'link-25');">name</a></tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:27 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="sentence-module.html">Package&nbsp;sentence</a> ::
+        <a href="sentence.pairwiseparallelsentenceset-module.html">Module&nbsp;pairwiseparallelsentenceset</a> ::
+        Class&nbsp;CompactPairwiseParallelSentenceSet
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class CompactPairwiseParallelSentenceSet</h1><p class="nomargin-top"><span class="codelink"><a href="sentence.pairwiseparallelsentenceset-pysrc.html#CompactPairwiseParallelSentenceSet">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+<a href="sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html">PairwiseParallelSentenceSet</a> --+
+                              |
+                             <strong class="uidshort">CompactPairwiseParallelSentenceSet</strong>
+</pre>
+
+<hr />
+<p>A compact set of pairwise parallel sentences, all originating from the
+  same source sentence, where only one comparison per system-pair is 
+  allowed</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pairwise_parallelsentences</span>,
+        <span class="summary-sig-arg">rank_name</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">rank</code><code class="variable-quote">'</code></span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.pairwiseparallelsentenceset-pysrc.html#CompactPairwiseParallelSentenceSet.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">int</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet-class.html#remove_ties" class="summary-sig-name">remove_ties</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      It removes the pairwise sentences whose rank is equal with each 
+      other's</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.pairwiseparallelsentenceset-pysrc.html#CompactPairwiseParallelSentenceSet.remove_ties">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><a href="sentence.parallelsentence.ParallelSentence-class.html" 
+      class="link">ParallelSentence</a></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet-class.html#get_multiranked_sentence" class="summary-sig-name">get_multiranked_sentence</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">critical_attribute</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">new_rank_name</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">del_orig_class_att</span>=<span class="summary-sig-default">True</span>)</span><br />
+      It reconstructs a single parallel sentence object with a gathered 
+      discrete [1-9] ranking out of the pairwise comparisons that exist in 
+      the pairwise parallel sentence instances</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.pairwiseparallelsentenceset-pysrc.html#CompactPairwiseParallelSentenceSet.get_multiranked_sentence">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><a href="sentence.parallelsentence.ParallelSentence-class.html" 
+      class="link">ParallelSentence</a></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet-class.html#get_multiranked_sentence_with_probfilter" class="summary-sig-name">get_multiranked_sentence_with_probfilter</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">attribute1</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">attribute2</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">critical_attribute</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">rank_soft_predicted</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">new_rank_name</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">threshold</span>=<span class="summary-sig-default">0.1</span>)</span><br />
+      It reconstructs a single parallel sentence object with a gathered 
+      discrete [1-9] ranking out of the pairwise comparisons that exist in 
+      the pairwise parallel sentence instances</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.pairwiseparallelsentenceset-pysrc.html#CompactPairwiseParallelSentenceSet.get_multiranked_sentence_with_probfilter">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><a href="sentence.parallelsentence.ParallelSentence-class.html" 
+      class="link">ParallelSentence</a></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet-class.html#get_multiranked_sentence_with_soft_ranks" class="summary-sig-name">get_multiranked_sentence_with_soft_ranks</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">attribute1</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">attribute2</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">critical_attribute</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">rank_soft_predicted</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">new_rank_name</span>=<span class="summary-sig-default">None</span>)</span><br />
+      It reconstructs a single parallel sentence object with a gathered 
+      discrete [1-9] ranking out of the pairwise comparisons that exist in 
+      the pairwise parallel sentence instances</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.pairwiseparallelsentenceset-pysrc.html#CompactPairwiseParallelSentenceSet.get_multiranked_sentence_with_soft_ranks">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><a 
+      href="sentence.pairwiseparallelsentence.PairwiseParallelSentence-class.html"
+      class="link">PairwiseParallelSentence</a></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet-class.html#get_pairwise_parallelsentence" class="summary-sig-name">get_pairwise_parallelsentence</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">system_names</span>,
+        <span class="summary-sig-arg">directed</span>=<span class="summary-sig-default">False</span>)</span><br />
+      Provides the pairwise parallel sentence, whose target sentences 
+      provide output by the two given systems</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.pairwiseparallelsentenceset-pysrc.html#CompactPairwiseParallelSentenceSet.get_pairwise_parallelsentence">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html">PairwiseParallelSentenceSet</a></code></b>:
+      <code><a href="sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html#get_parallelsentences">get_parallelsentences</a></code>,
+      <code><a href="sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html#get_system_names">get_system_names</a></code>,
+      <code><a href="sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html#length">length</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">{(str, str): <a 
+      href="sentence.pairwiseparallelsentence.PairwiseParallelSentence-class.html"
+      class="link">PairwiseParallelSentence</a>}</span>
+    </td><td class="summary">
+        <a name="pps_dict"></a><span class="summary-name">pps_dict</span><br />
+      a dictionary of pairwise parallelel sentences
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">str</span>
+    </td><td class="summary">
+        <a name="rank_name"></a><span class="summary-name">rank_name</span><br />
+      the name of the rank value
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pairwise_parallelsentences</span>,
+        <span class="sig-arg">rank_name</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">rank</code><code class="variable-quote">'</code></span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sentence.pairwiseparallelsentenceset-pysrc.html#CompactPairwiseParallelSentenceSet.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pairwise_parallelsentences</code></strong> ([<a 
+          href="sentence.pairwiseparallelsentence.PairwiseParallelSentence-class.html"
+          class="link">PairwiseParallelSentence</a>, ...]) - a list of pairwise parallel sentences</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="remove_ties"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">remove_ties</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sentence.pairwiseparallelsentenceset-pysrc.html#CompactPairwiseParallelSentenceSet.remove_ties">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>It removes the pairwise sentences whose rank is equal with each 
+  other's</p>
+  <dl class="fields">
+    <dt>Returns: int</dt>
+        <dd>the number of ties filtered</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_multiranked_sentence"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_multiranked_sentence</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">critical_attribute</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">new_rank_name</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">del_orig_class_att</span>=<span class="sig-default">True</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sentence.pairwiseparallelsentenceset-pysrc.html#CompactPairwiseParallelSentenceSet.get_multiranked_sentence">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>It reconstructs a single parallel sentence object with a gathered 
+  discrete [1-9] ranking out of the pairwise comparisons that exist in the 
+  pairwise parallel sentence instances</p>
+  <dl class="fields">
+    <dt>Returns: <a href="sentence.parallelsentence.ParallelSentence-class.html" 
+      class="link">ParallelSentence</a></dt>
+        <dd>a parallel sentence</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_multiranked_sentence_with_probfilter"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_multiranked_sentence_with_probfilter</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">attribute1</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">attribute2</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">critical_attribute</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">rank_soft_predicted</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">new_rank_name</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">threshold</span>=<span class="sig-default">0.1</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sentence.pairwiseparallelsentenceset-pysrc.html#CompactPairwiseParallelSentenceSet.get_multiranked_sentence_with_probfilter">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>It reconstructs a single parallel sentence object with a gathered 
+  discrete [1-9] ranking out of the pairwise comparisons that exist in the 
+  pairwise parallel sentence instances</p>
+  <dl class="fields">
+    <dt>Returns: <a href="sentence.parallelsentence.ParallelSentence-class.html" 
+      class="link">ParallelSentence</a></dt>
+        <dd>a parallel sentence</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_multiranked_sentence_with_soft_ranks"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_multiranked_sentence_with_soft_ranks</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">attribute1</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">attribute2</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">critical_attribute</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">rank_soft_predicted</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">new_rank_name</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sentence.pairwiseparallelsentenceset-pysrc.html#CompactPairwiseParallelSentenceSet.get_multiranked_sentence_with_soft_ranks">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>It reconstructs a single parallel sentence object with a gathered 
+  discrete [1-9] ranking out of the pairwise comparisons that exist in the 
+  pairwise parallel sentence instances</p>
+  <dl class="fields">
+    <dt>Returns: <a href="sentence.parallelsentence.ParallelSentence-class.html" 
+      class="link">ParallelSentence</a></dt>
+        <dd>a parallel sentence</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_pairwise_parallelsentence"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_pairwise_parallelsentence</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">system_names</span>,
+        <span class="sig-arg">directed</span>=<span class="sig-default">False</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sentence.pairwiseparallelsentenceset-pysrc.html#CompactPairwiseParallelSentenceSet.get_pairwise_parallelsentence">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Provides the pairwise parallel sentence, whose target sentences 
+  provide output by the two given systems</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>system_names</code></strong> (tuple of strings) - pair of translation system names</li>
+        <li><strong class="pname"><code>order</code></strong> (boolean) - whether the order of the systems in the tuple is important, or 
+          not</li>
+    </ul></dd>
+    <dt>Returns: <a 
+      href="sentence.pairwiseparallelsentence.PairwiseParallelSentence-class.html"
+      class="link">PairwiseParallelSentence</a></dt>
+        <dd>the pairwise parallel sentence that contains the outputs of the 
+          two given systems</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:20 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

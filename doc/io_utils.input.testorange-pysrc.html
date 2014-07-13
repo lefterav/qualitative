@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>io_utils.input.testorange</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="io_utils-module.html">Package&nbsp;io_utils</a> ::
+        <a href="io_utils.input-module.html">Package&nbsp;input</a> ::
+        Module&nbsp;testorange
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="io_utils.input.testorange-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="io_utils.input.testorange-module.html">Module io_utils.input.testorange</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Module io_utils.input.orangereader=io_utils.input.orangereader-module.html"><a title="io_utils.input.orangereader" class="py-name" href="#" onclick="return doclink('link-0', 'orangereader', 'link-0');">orangereader</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Class io_utils.input.orangereader.OrangeData=io_utils.input.orangereader.OrangeData-class.html,Class support.handleClassifier.OrangeData=support.handleClassifier.OrangeData-class.html"><a title="io_utils.input.orangereader.OrangeData
+support.handleClassifier.OrangeData" class="py-name" href="#" onclick="return doclink('link-1', 'OrangeData', 'link-1');">OrangeData</a></tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name" targets="Package sentence=sentence-module.html,Module sentence.sentence=sentence.sentence-module.html"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-2', 'sentence', 'link-2');">sentence</a></tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Module sentence.dataset=sentence.dataset-module.html"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-3', 'dataset', 'link-3');">dataset</a></tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Class sentence.dataset.DataSet=sentence.dataset.DataSet-class.html"><a title="sentence.dataset.DataSet" class="py-name" href="#" onclick="return doclink('link-4', 'DataSet', 'link-4');">DataSet</a></tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-5" class="py-name" targets="Package io_utils=io_utils-module.html"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-5', 'io_utils', 'link-5');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Variable experiment.experiment.Experiment.input=experiment.experiment.Experiment-class.html#input,Variable experiment.phase.Phase.input=experiment.phase.Phase-class.html#input,Package io_utils.input=io_utils.input-module.html"><a title="experiment.experiment.Experiment.input
+experiment.phase.Phase.input
+io_utils.input" class="py-name" href="#" onclick="return doclink('link-6', 'input', 'link-6');">input</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Module io_utils.input.jcmlreader=io_utils.input.jcmlreader-module.html"><a title="io_utils.input.jcmlreader" class="py-name" href="#" onclick="return doclink('link-7', 'jcmlreader', 'link-7');">jcmlreader</a></tt> <tt class="py-keyword">import</tt> <tt id="link-8" class="py-name" targets="Class io_utils.input.jcmlreader.JcmlReader=io_utils.input.jcmlreader.JcmlReader-class.html"><a title="io_utils.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-8', 'JcmlReader', 'link-8');">JcmlReader</a></tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-9" class="py-name" targets="Module classifier.orange=classifier.orange-module.html,Module ml.lib.orange=ml.lib.orange-module.html"><a title="classifier.orange
+ml.lib.orange" class="py-name" href="#" onclick="return doclink('link-9', 'orange', 'link-9');">orange</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">ExampleTable</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">chdir</tt><tt class="py-op">(</tt><tt class="py-string">"/home/lefterav/taraxu_data/ml4hmt/experiment/test"</tt><tt class="py-op">)</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt id="link-10" class="py-name" targets="Variable io_utils.input.testorange.mydata=io_utils.input.testorange-module.html#mydata"><a title="io_utils.input.testorange.mydata" class="py-name" href="#" onclick="return doclink('link-10', 'mydata', 'link-10');">mydata</a></tt> <tt class="py-op">=</tt> <tt id="link-11" class="py-name"><a title="io_utils.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-11', 'JcmlReader', 'link-8');">JcmlReader</a></tt><tt class="py-op">(</tt><tt class="py-string">"news-test2008-dev.es-en.withlang.trial.bp.en.jcml"</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Method io_utils.input.genericreader.GenericReader.get_dataset()=io_utils.input.genericreader.GenericReader-class.html#get_dataset,Method io_utils.input.orangeprocessor.OrangeProcessor.get_dataset()=io_utils.input.orangeprocessor.OrangeProcessor-class.html#get_dataset,Method io_utils.input.orangereader.OrangeData.get_dataset()=io_utils.input.orangereader.OrangeData-class.html#get_dataset,Method io_utils.input.xliffreader.XliffReader.get_dataset()=io_utils.input.xliffreader.XliffReader-class.html#get_dataset,Method io_utils.sax.cejcml.CEJcmlReader.get_dataset()=io_utils.sax.cejcml.CEJcmlReader-class.html#get_dataset"><a title="io_utils.input.genericreader.GenericReader.get_dataset
+io_utils.input.orangeprocessor.OrangeProcessor.get_dataset
+io_utils.input.orangereader.OrangeData.get_dataset
+io_utils.input.xliffreader.XliffReader.get_dataset
+io_utils.sax.cejcml.CEJcmlReader.get_dataset" class="py-name" href="#" onclick="return doclink('link-12', 'get_dataset', 'link-12');">get_dataset</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt id="link-13" class="py-name" targets="Variable experiment.errorprediction.errorprediction_draft.meta_attributes=experiment.errorprediction.errorprediction_draft-module.html#meta_attributes,Variable io_utils.input.testorange.meta_attributes=io_utils.input.testorange-module.html#meta_attributes,Variable tara_noorange.Experiment.meta_attributes=tara_noorange.Experiment-class.html#meta_attributes"><a title="experiment.errorprediction.errorprediction_draft.meta_attributes
+io_utils.input.testorange.meta_attributes
+tara_noorange.Experiment.meta_attributes" class="py-name" href="#" onclick="return doclink('link-13', 'meta_attributes', 'link-13');">meta_attributes</a></tt><tt class="py-op">=</tt> <tt class="py-string">"id,testset,langsrc,langtgt"</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method sentence.dataset.DataSet.split()=sentence.dataset.DataSet-class.html#split"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-14', 'split', 'link-14');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">","</tt><tt class="py-op">)</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt id="link-15" class="py-name" targets="Variable io_utils.input.testorange.attributes=io_utils.input.testorange-module.html#attributes"><a title="io_utils.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-15', 'attributes', 'link-15');">attributes</a></tt><tt class="py-op">=</tt> <tt class="py-string">"tgt-1_sc_t3-total,tgt-1_sc_t1-total,tgt-1_t1-OOV_count,tgt-1_t2-OOV_count,tgt-1_t3-OOV_count,tgt-1_t4-OOV_count,tgt-1_t5-OOV_count,tgt-1_an_t1-t1_r1_d1-fuzz1,tgt-1_an_t1-t1_r1_d1-fuzz2,tgt-1_an_t1-t1_r1_d1-pre-pruned,tgt-1_an_t1-t1_r1_d1-added,tgt-1_an_t1-t1_r1_d1-merged,tgt-1_phrasecount,tgt-1_t2_r1_d2-cat-PHR-S,tgt-1_t2_r1_d2-cat-PHR-CLS,tgt-1_dp-0-var,tgt-1_dp-1-var,tgt-1_dp-2-var,tgt-1_dp-3-var,tgt-1_dp-4-var,tgt-1_dp-c-var,tgt-1_dp-pC-mean,tgt-1_dp-0-std,tgt-1_dp-1-std,tgt-1_dp-2-std,tgt-1_dp-3-std,tgt-1_dp-4-std,tgt-1_dp-c-std,tgt-1_dp-pC-std,tgt-2_sc_t3-total,tgt-2_sc_t1-total,tgt-2_t1-OOV_count,tgt-2_t2-OOV_count,tgt-2_t3-OOV_count,tgt-2_t4-OOV_count,tgt-2_t5-OOV_count,tgt-2_an_t1-t1_r1_d1-fuzz1,tgt-2_an_t1-t1_r1_d1-fuzz2,tgt-2_an_t1-t1_r1_d1-pre-pruned,tgt-2_an_t1-t1_r1_d1-added,tgt-2_an_t1-t1_r1_d1-merged,tgt-2_phrasecount,tgt-2_t2_r1_d2-cat-PHR-S,tgt-2_t2_r1_d2-cat-PHR-CLS,tgt-2_dp-0-var,tgt-2_dp-1-var,tgt-2_dp-2-var,tgt-2_dp-3-var,tgt-2_dp-4-var,tgt-2_dp-c-var,tgt-2_dp-pC-mean,tgt-2_dp-0-std,tgt-2_dp-1-std,tgt-2_dp-2-std,tgt-2_dp-3-std,tgt-2_dp-4-std,tgt-2_dp-c-std,tgt-2_dp-pC-std,tgt-1_berkeley-loglikelihood,tgt-1_berkeley-best-parse-confidence,tgt-1_berkeley-n,tgt-1_berkeley-loglikelihood,tgt-1_berkeley-avg-confidence,tgt-1_berkeley-loglikelihood_ratio,tgt-1_berkeley-best-parse-confidence_ratio,tgt-1_berkeley-n_ratio,tgt-1_berkeley-loglikelihood_ratio,tgt-1_berkeley-avg-confidence_ratio,tgt-1_prob,tgt-2_berkeley-loglikelihood,tgt-2_berkeley-best-parse-confidence,tgt-2_berkeley-n,tgt-2_berkeley-loglikelihood,tgt-2_berkeley-avg-confidence,tgt-2_berkeley-loglikelihood_ratio,tgt-2_berkeley-best-parse-confidence_ratio,tgt-2_berkeley-n_ratio,tgt-2_berkeley-loglikelihood_ratio,tgt-2_berkeley-avg-confidence_ratio,tgt-2_prob"</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-16', 'split', 'link-14');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">","</tt><tt class="py-op">)</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"><tt class="py-keyword">print</tt> <tt id="link-17" class="py-name"><a title="experiment.errorprediction.errorprediction_draft.meta_attributes
+io_utils.input.testorange.meta_attributes
+tara_noorange.Experiment.meta_attributes" class="py-name" href="#" onclick="return doclink('link-17', 'meta_attributes', 'link-13');">meta_attributes</a></tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt id="link-18" class="py-name" targets="Variable io_utils.input.testorange.myorangedata=io_utils.input.testorange-module.html#myorangedata"><a title="io_utils.input.testorange.myorangedata" class="py-name" href="#" onclick="return doclink('link-18', 'myorangedata', 'link-18');">myorangedata</a></tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name"><a title="io_utils.input.orangereader.OrangeData
+support.handleClassifier.OrangeData" class="py-name" href="#" onclick="return doclink('link-19', 'OrangeData', 'link-1');">OrangeData</a></tt><tt class="py-op">(</tt><tt id="link-20" class="py-name"><a title="io_utils.input.testorange.mydata" class="py-name" href="#" onclick="return doclink('link-20', 'mydata', 'link-10');">mydata</a></tt><tt class="py-op">,</tt> <tt class="py-string">"tgt-3_rank"</tt><tt class="py-op">,</tt> <tt id="link-21" class="py-name"><a title="io_utils.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-21', 'attributes', 'link-15');">attributes</a></tt><tt class="py-op">,</tt> <tt id="link-22" class="py-name"><a title="experiment.errorprediction.errorprediction_draft.meta_attributes
+io_utils.input.testorange.meta_attributes
+tara_noorange.Experiment.meta_attributes" class="py-name" href="#" onclick="return doclink('link-22', 'meta_attributes', 'link-13');">meta_attributes</a></tt><tt class="py-op">,</tt> <tt class="py-string">"test.tab"</tt><tt class="py-op">)</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"><tt id="link-23" class="py-name" targets="Variable io_utils.input.testorange.myraworangedata=io_utils.input.testorange-module.html#myraworangedata"><a title="io_utils.input.testorange.myraworangedata" class="py-name" href="#" onclick="return doclink('link-23', 'myraworangedata', 'link-23');">myraworangedata</a></tt> <tt class="py-op">=</tt> <tt id="link-24" class="py-name"><a title="io_utils.input.testorange.myorangedata" class="py-name" href="#" onclick="return doclink('link-24', 'myorangedata', 'link-18');">myorangedata</a></tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Method io_utils.input.orangeprocessor.OrangeProcessor.get_data()=io_utils.input.orangeprocessor.OrangeProcessor-class.html#get_data,Method io_utils.input.orangereader.OrangeData.get_data()=io_utils.input.orangereader.OrangeData-class.html#get_data"><a title="io_utils.input.orangeprocessor.OrangeProcessor.get_data
+io_utils.input.orangereader.OrangeData.get_data" class="py-name" href="#" onclick="return doclink('link-25', 'get_data', 'link-25');">get_data</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"><tt id="link-26" class="py-name"><a title="io_utils.input.testorange.myraworangedata" class="py-name" href="#" onclick="return doclink('link-26', 'myraworangedata', 'link-23');">myraworangedata</a></tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-string">"testdata.noberkl.after.tab"</tt><tt class="py-op">)</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line"><tt id="link-27" class="py-name" targets="Variable io_utils.input.testorange.myraworangedata2=io_utils.input.testorange-module.html#myraworangedata2"><a title="io_utils.input.testorange.myraworangedata2" class="py-name" href="#" onclick="return doclink('link-27', 'myraworangedata2', 'link-27');">myraworangedata2</a></tt> <tt class="py-op">=</tt> <tt class="py-name">ExampleTable</tt><tt class="py-op">(</tt><tt class="py-string">"testdata.noberkl.after.tab"</tt><tt class="py-op">)</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line"><tt id="link-28" class="py-name" targets="Variable io_utils.input.testorange.myraworangedata3=io_utils.input.testorange-module.html#myraworangedata3"><a title="io_utils.input.testorange.myraworangedata3" class="py-name" href="#" onclick="return doclink('link-28', 'myraworangedata3', 'link-28');">myraworangedata3</a></tt> <tt class="py-op">=</tt> <tt class="py-name">ExampleTable</tt><tt class="py-op">(</tt><tt class="py-string">"testdata.noberkl.after.tab"</tt><tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line"> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"><tt class="py-keyword">print</tt> <tt id="link-29" class="py-name"><a title="io_utils.input.testorange.myraworangedata2" class="py-name" href="#" onclick="return doclink('link-29', 'myraworangedata2', 'link-27');">myraworangedata2</a></tt> <tt class="py-op">==</tt> <tt id="link-30" class="py-name"><a title="io_utils.input.testorange.myraworangedata3" class="py-name" href="#" onclick="return doclink('link-30', 'myraworangedata3', 'link-28');">myraworangedata3</a></tt><tt class="py-op">.</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:21 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

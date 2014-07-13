@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>support.preprocessing.oolinkage</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="support-module.html">Package&nbsp;support</a> ::
+        <a href="support.preprocessing-module.html">Package&nbsp;preprocessing</a> ::
+        Module&nbsp;oolinkage
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="support.preprocessing.oolinkage-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="support.preprocessing.oolinkage-module.html">Module support.preprocessing.oolinkage</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-docstring">Created on Nov 16, 2011</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring">@author: jogin</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Variable experiment.autoranking.annotate.path=experiment.autoranking.annotate-module.html#path,Variable experiment.autoranking.annotate_updated.path=experiment.autoranking.annotate_updated-module.html#path,Variable experiment.autoranking.autoranking.path=experiment.autoranking.autoranking-module.html#path,Variable experiment.ml4hmt12.annotate_updated.path=experiment.ml4hmt12.annotate_updated-module.html#path,Variable experiment.ml4hmt12.bootstrap.path=experiment.ml4hmt12.bootstrap-module.html#path"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-0', 'path', 'link-0');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-string">"/home/lupo01/taraxuscripts"</tt><tt class="py-op">)</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-1" class="py-name" targets="Package featuregenerator=featuregenerator-module.html,Module featuregenerator.featuregenerator=featuregenerator.featuregenerator-module.html"><a title="featuregenerator
+featuregenerator.featuregenerator" class="py-name" href="#" onclick="return doclink('link-1', 'featuregenerator', 'link-1');">featuregenerator</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Package featuregenerator.levenshtein=featuregenerator.levenshtein-module.html,Module featuregenerator.levenshtein.levenshtein=featuregenerator.levenshtein.levenshtein-module.html,Function featuregenerator.levenshtein.levenshtein.levenshtein()=featuregenerator.levenshtein.levenshtein-module.html#levenshtein"><a title="featuregenerator.levenshtein
+featuregenerator.levenshtein.levenshtein
+featuregenerator.levenshtein.levenshtein.levenshtein" class="py-name" href="#" onclick="return doclink('link-2', 'levenshtein', 'link-2');">levenshtein</a></tt><tt class="py-op">.</tt><tt id="link-3" class="py-name"><a title="featuregenerator.levenshtein
+featuregenerator.levenshtein.levenshtein
+featuregenerator.levenshtein.levenshtein.levenshtein" class="py-name" href="#" onclick="return doclink('link-3', 'levenshtein', 'link-2');">levenshtein</a></tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Function featuregenerator.levenshtein.levenshtein.levenshtein_tok()=featuregenerator.levenshtein.levenshtein-module.html#levenshtein_tok"><a title="featuregenerator.levenshtein.levenshtein.levenshtein_tok" class="py-name" href="#" onclick="return doclink('link-4', 'levenshtein_tok', 'link-4');">levenshtein_tok</a></tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"> </tt>
+<a name="OOLinkage"></a><div id="OOLinkage-def"><a name="L13"></a><tt class="py-lineno">13</tt> <a class="py-toggle" href="#" id="OOLinkage-toggle" onclick="return toggle('OOLinkage');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="support.preprocessing.oolinkage.OOLinkage-class.html">OOLinkage</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="OOLinkage-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="OOLinkage-expanded"><a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-docstring">    This script compares sentences from Open Office 2010 with sentences from Open Office 2011 (OpenOffice3) according to Levenshtein distance.</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="OOLinkage.__init__"></a><div id="OOLinkage.__init__-def"><a name="L17"></a><tt class="py-lineno">17</tt> <a class="py-toggle" href="#" id="OOLinkage.__init__-toggle" onclick="return toggle('OOLinkage.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="support.preprocessing.oolinkage.OOLinkage-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">oldOOSnts</tt><tt class="py-op">,</tt> <tt class="py-param">newOOSnts</tt><tt class="py-op">,</tt> <tt class="py-param">newOOLinks</tt><tt class="py-op">=</tt><tt class="py-string">''</tt><tt class="py-op">,</tt> <tt class="py-param">oldOOLinks</tt><tt class="py-op">=</tt><tt class="py-string">''</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="OOLinkage.__init__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="OOLinkage.__init__-expanded"><a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"><tt class="py-docstring">        @param: oldOOSnts: old Open Office file with aligned sentences</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"><tt class="py-docstring">        @type: string</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line"><tt class="py-docstring">        @param: newOOSnts: new Open Office file with aligned sentences</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line"><tt class="py-docstring">        @type: string</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line"><tt class="py-docstring">        @param: newOOLinks: new Open Office file with source links of aligned sentences</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line"><tt class="py-docstring">        @type: string</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"><tt class="py-docstring">        @param: oldOOLinks: filename for saving links of sentence and source</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line"><tt class="py-docstring">        @type: string</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt id="link-5" class="py-name" targets="Variable classifier.extract_liblinear_weights.f=classifier.extract_liblinear_weights-module.html#f,Variable classifier.extract_linear_regression_coefficients.f=classifier.extract_linear_regression_coefficients-module.html#f,Variable classifier.extract_logreg_weight.f=classifier.extract_logreg_weight-module.html#f,Variable experiment.autoranking.getlogregweights.f=experiment.autoranking.getlogregweights-module.html#f"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-5', 'f', 'link-5');">f</a></tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">oldOOSnts</tt><tt class="py-op">)</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">        <tt class="py-name">oldSntsStr</tt> <tt class="py-op">=</tt> <tt id="link-6" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-6', 'f', 'link-5');">f</a></tt><tt class="py-op">.</tt><tt class="py-name">read</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">        <tt id="link-7" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-7', 'f', 'link-5');">f</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close()=featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html#close,Method featuregenerator.preprocessor.CommandlinePreprocessor.close()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#close,Method io_utils.sax.saxps2jcml.IncrementalJcml.close()=io_utils.sax.saxps2jcml.IncrementalJcml-class.html#close,Method support.preprocessing.jcml.jcml2arff.ArffWriter.close()=support.preprocessing.jcml.jcml2arff.ArffWriter-class.html#close"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-8', 'close', 'link-8');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">         </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">        <tt id="link-9" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-9', 'f', 'link-5');">f</a></tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">newOOSnts</tt><tt class="py-op">)</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">        <tt class="py-name">newSntsStr</tt> <tt class="py-op">=</tt> <tt id="link-10" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-10', 'f', 'link-5');">f</a></tt><tt class="py-op">.</tt><tt class="py-name">read</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">        <tt id="link-11" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-11', 'f', 'link-5');">f</a></tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-12', 'close', 'link-8');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line"> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">        <tt class="py-name">oldSnts</tt> <tt class="py-op">=</tt> <tt class="py-name">oldSntsStr</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Method sentence.dataset.DataSet.split()=sentence.dataset.DataSet-class.html#split"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-13', 'split', 'link-13');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">'\n'</tt><tt class="py-op">)</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">        <tt class="py-name">newSnts</tt> <tt class="py-op">=</tt> <tt class="py-name">newSntsStr</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-14', 'split', 'link-13');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">'\n'</tt><tt class="py-op">)</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line"> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">        <tt class="py-comment"># Levenshtein distance 4 or less:</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">        <tt class="py-comment"># 9, 14, 15, 20</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">        <tt id="link-15" class="py-name" targets="Variable exec.getfeaturenames.b=exec.getfeaturenames-module.html#b"><a title="exec.getfeaturenames.b" class="py-name" href="#" onclick="return doclink('link-15', 'b', 'link-15');">b</a></tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">        <tt id="link-16" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-16', 'f', 'link-5');">f</a></tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-string">'log.txt'</tt><tt class="py-op">,</tt><tt class="py-string">'w'</tt><tt class="py-op">)</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">oldSnt</tt> <tt class="py-keyword">in</tt> <tt class="py-name">oldSnts</tt><tt class="py-op">:</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">            <tt id="link-17" class="py-name" targets="Variable classifier.rvm.RVM.a=classifier.rvm.RVM-class.html#a,Variable exec.getfeaturenames.a=exec.getfeaturenames-module.html#a"><a title="classifier.rvm.RVM.a
+exec.getfeaturenames.a" class="py-name" href="#" onclick="return doclink('link-17', 'a', 'link-17');">a</a></tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">            <tt id="link-18" class="py-name"><a title="exec.getfeaturenames.b" class="py-name" href="#" onclick="return doclink('link-18', 'b', 'link-15');">b</a></tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-19" class="py-name"><a title="exec.getfeaturenames.b" class="py-name" href="#" onclick="return doclink('link-19', 'b', 'link-15');">b</a></tt> <tt class="py-op">&lt;</tt> <tt class="py-number">42</tt><tt class="py-op">:</tt> <tt class="py-keyword">continue</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">            <tt class="py-keyword">print</tt> <tt id="link-20" class="py-name"><a title="exec.getfeaturenames.b" class="py-name" href="#" onclick="return doclink('link-20', 'b', 'link-15');">b</a></tt> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">newSnt</tt> <tt class="py-keyword">in</tt> <tt class="py-name">newSnts</tt><tt class="py-op">:</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-21" class="py-name"><a title="featuregenerator.levenshtein.levenshtein.levenshtein_tok" class="py-name" href="#" onclick="return doclink('link-21', 'levenshtein_tok', 'link-4');">levenshtein_tok</a></tt><tt class="py-op">(</tt><tt class="py-name">oldSnt</tt><tt class="py-op">,</tt> <tt class="py-name">newSnt</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">4</tt><tt class="py-op">:</tt> <tt class="py-keyword">continue</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">                     </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">                    <tt id="link-22" class="py-name"><a title="classifier.rvm.RVM.a
+exec.getfeaturenames.a" class="py-name" href="#" onclick="return doclink('link-22', 'a', 'link-17');">a</a></tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">                    <tt class="py-keyword">print</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt id="link-23" class="py-name"><a title="exec.getfeaturenames.b" class="py-name" href="#" onclick="return doclink('link-23', 'b', 'link-15');">b</a></tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">'-'</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt id="link-24" class="py-name"><a title="classifier.rvm.RVM.a
+exec.getfeaturenames.a" class="py-name" href="#" onclick="return doclink('link-24', 'a', 'link-17');">a</a></tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">':'</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">                    <tt class="py-keyword">print</tt> <tt class="py-string">'Ref:\n'</tt><tt class="py-op">,</tt> <tt class="py-name">oldSnt</tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line">                    <tt class="py-keyword">print</tt> <tt class="py-string">'Candidate:\n'</tt><tt class="py-op">,</tt> <tt class="py-name">newSnt</tt> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">                    <tt class="py-keyword">print</tt> <tt class="py-string">'Levenshtein:'</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt id="link-25" class="py-name"><a title="featuregenerator.levenshtein.levenshtein.levenshtein_tok" class="py-name" href="#" onclick="return doclink('link-25', 'levenshtein_tok', 'link-4');">levenshtein_tok</a></tt><tt class="py-op">(</tt><tt class="py-name">oldSnt</tt><tt class="py-op">,</tt> <tt class="py-name">newSnt</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">'\n'</tt> </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line">                    <tt id="link-26" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-26', 'f', 'link-5');">f</a></tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Method experiment.autoranking.decode.StreamToLogger.write()=experiment.autoranking.decode.StreamToLogger-class.html#write,Method experiment.autoranking.suite.StreamToLogger.write()=experiment.autoranking.suite.StreamToLogger-class.html#write,Method experiment.autorankingsearch.suite.StreamToLogger.write()=experiment.autorankingsearch.suite.StreamToLogger-class.html#write,Method experiment.autoranksvm.suite.StreamToLogger.write()=experiment.autoranksvm.suite.StreamToLogger-class.html#write,Method experiment.ml4hmt12.suite.StreamToLogger.write()=experiment.ml4hmt12.suite.StreamToLogger-class.html#write,Method experiment.ml4hmt12.test.StreamToLogger.write()=experiment.ml4hmt12.test.StreamToLogger-class.html#write,Method sentence.coupleddataset.CoupledDataSetDisk.write()=sentence.coupleddataset.CoupledDataSetDisk-class.html#write"><a title="experiment.autoranking.decode.StreamToLogger.write
+experiment.autoranking.suite.StreamToLogger.write
+experiment.autorankingsearch.suite.StreamToLogger.write
+experiment.autoranksvm.suite.StreamToLogger.write
+experiment.ml4hmt12.suite.StreamToLogger.write
+experiment.ml4hmt12.test.StreamToLogger.write
+sentence.coupleddataset.CoupledDataSetDisk.write" class="py-name" href="#" onclick="return doclink('link-27', 'write', 'link-27');">write</a></tt><tt class="py-op">(</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt id="link-28" class="py-name"><a title="exec.getfeaturenames.b" class="py-name" href="#" onclick="return doclink('link-28', 'b', 'link-15');">b</a></tt><tt class="py-op">)</tt><tt class="py-op">+</tt><tt class="py-string">' - '</tt><tt class="py-op">+</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt id="link-29" class="py-name"><a title="classifier.rvm.RVM.a
+exec.getfeaturenames.a" class="py-name" href="#" onclick="return doclink('link-29', 'a', 'link-17');">a</a></tt><tt class="py-op">)</tt><tt class="py-op">+</tt><tt class="py-string">':'</tt><tt class="py-op">)</tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">                    <tt id="link-30" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-30', 'f', 'link-5');">f</a></tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="experiment.autoranking.decode.StreamToLogger.write
+experiment.autoranking.suite.StreamToLogger.write
+experiment.autorankingsearch.suite.StreamToLogger.write
+experiment.autoranksvm.suite.StreamToLogger.write
+experiment.ml4hmt12.suite.StreamToLogger.write
+experiment.ml4hmt12.test.StreamToLogger.write
+sentence.coupleddataset.CoupledDataSetDisk.write" class="py-name" href="#" onclick="return doclink('link-31', 'write', 'link-27');">write</a></tt><tt class="py-op">(</tt><tt class="py-string">'Ref:\n'</tt><tt class="py-op">+</tt><tt class="py-name">oldSnt</tt><tt class="py-op">)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line">                    <tt id="link-32" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-32', 'f', 'link-5');">f</a></tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="experiment.autoranking.decode.StreamToLogger.write
+experiment.autoranking.suite.StreamToLogger.write
+experiment.autorankingsearch.suite.StreamToLogger.write
+experiment.autoranksvm.suite.StreamToLogger.write
+experiment.ml4hmt12.suite.StreamToLogger.write
+experiment.ml4hmt12.test.StreamToLogger.write
+sentence.coupleddataset.CoupledDataSetDisk.write" class="py-name" href="#" onclick="return doclink('link-33', 'write', 'link-27');">write</a></tt><tt class="py-op">(</tt><tt class="py-string">'Candidate:\n'</tt><tt class="py-op">+</tt><tt class="py-name">newSnt</tt><tt class="py-op">)</tt> </tt>
+<a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line">                    <tt id="link-34" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-34', 'f', 'link-5');">f</a></tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="experiment.autoranking.decode.StreamToLogger.write
+experiment.autoranking.suite.StreamToLogger.write
+experiment.autorankingsearch.suite.StreamToLogger.write
+experiment.autoranksvm.suite.StreamToLogger.write
+experiment.ml4hmt12.suite.StreamToLogger.write
+experiment.ml4hmt12.test.StreamToLogger.write
+sentence.coupleddataset.CoupledDataSetDisk.write" class="py-name" href="#" onclick="return doclink('link-35', 'write', 'link-27');">write</a></tt><tt class="py-op">(</tt><tt class="py-string">'Levenshtein: '</tt><tt class="py-op">+</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt id="link-36" class="py-name"><a title="featuregenerator.levenshtein.levenshtein.levenshtein_tok" class="py-name" href="#" onclick="return doclink('link-36', 'levenshtein_tok', 'link-4');">levenshtein_tok</a></tt><tt class="py-op">(</tt><tt class="py-name">oldSnt</tt><tt class="py-op">,</tt> <tt class="py-name">newSnt</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">+</tt><tt class="py-string">'\n'</tt><tt class="py-op">)</tt> </tt>
+<a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-37" class="py-name"><a title="exec.getfeaturenames.b" class="py-name" href="#" onclick="return doclink('link-37', 'b', 'link-15');">b</a></tt> <tt class="py-op">&gt;</tt> <tt class="py-number">60</tt><tt class="py-op">:</tt> <tt class="py-keyword">break</tt> </tt>
+<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line">        <tt id="link-38" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-38', 'f', 'link-5');">f</a></tt><tt class="py-op">.</tt><tt id="link-39" class="py-name"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-39', 'close', 'link-8');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line"> </tt>
+<a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line"> </tt>
+<a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line"><tt class="py-comment"># '/share/taraxu/data/KDE4/aligned/cs-en_src.txt', '/share/taraxu/data/KDE4/aligned/cs-en_tgt.txt', 100, '/share/taraxu/data/KDE4/aligned/</tt> </tt>
+<a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line"><tt id="link-40" class="py-name" targets="Class support.preprocessing.oolinkage.OOLinkage=support.preprocessing.oolinkage.OOLinkage-class.html"><a title="support.preprocessing.oolinkage.OOLinkage" class="py-name" href="#" onclick="return doclink('link-40', 'OOLinkage', 'link-40');">OOLinkage</a></tt><tt class="py-op">(</tt><tt class="py-string">'/media/DATA/Arbeit/DFKI/111102_OpenOffice/oolinkage/esde_src.c40.detok.txt'</tt><tt class="py-op">,</tt> <tt class="py-string">'/media/DATA/Arbeit/DFKI/111102_OpenOffice/oolinkage/de-es_tgt_detok.txt'</tt><tt class="py-op">)</tt> </tt>
+<a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line"> </tt>
+<a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line"><tt class="py-comment">#'/home/lupo01/oo/selected/openoffice.de-en.sel104.detok.de', '/home/lupo01/oo/aligned/esde_src_detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-en_GB_src_links.txt', '/home/lupo01/oo/selected/openoffice.de-en.sel104.detok.de_links.txt'</tt> </tt>
+<a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line"> </tt>
+<a name="L70"></a><tt class="py-lineno">70</tt>  <tt class="py-line"><tt class="py-comment">#'/home/lupo01/oo/selected/openoffice.de-en.sel104.detok.de', '/share/taraxu/data/OpenOffice3/aligned/de-en_GB_src_detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-en_GB_src_links.txt', '/home/lupo01/oo/selected/openoffice.de-en.sel104.detok.de_links.txt'</tt> </tt>
+<a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line"> </tt>
+<a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line"><tt class="py-comment">#'/home/lupo01/oo/selected/esde_tgt.c40.detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-es_src_detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-es_src_links.txt', '/home/lupo01/oo/selected/esde_tgt.c40.detok_links.txt'</tt> </tt>
+<a name="L73"></a><tt class="py-lineno">73</tt>  <tt class="py-line"> </tt>
+<a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line"><tt class="py-comment">#'/home/lupo01/oo/selected/esde_src.c40.detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-es_tgt_detok.txt', '/share/taraxu/data/OpenOffice3/aligned/de-es_tgt_links.txt', '/home/lupo01/oo/selected/esde_src.c40.detok_links.txt'</tt> </tt>
+<a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:26 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

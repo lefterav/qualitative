@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>support.preprocessing.jcml.wmt12decodingfeatures2jcml</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="support-module.html">Package&nbsp;support</a> ::
+        <a href="support.preprocessing-module.html">Package&nbsp;preprocessing</a> ::
+        <a href="support.preprocessing.jcml-module.html">Package&nbsp;jcml</a> ::
+        Module&nbsp;wmt12decodingfeatures2jcml
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="support.preprocessing.jcml.wmt12decodingfeatures2jcml-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="support.preprocessing.jcml.wmt12decodingfeatures2jcml-module.html">Module support.preprocessing.jcml.wmt12decodingfeatures2jcml</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">Created on 29 Feb 2012</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">@author: elav01</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">re</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">subprocess</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">numpy</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package featuregenerator=featuregenerator-module.html,Module featuregenerator.featuregenerator=featuregenerator.featuregenerator-module.html"><a title="featuregenerator
+featuregenerator.featuregenerator" class="py-name" href="#" onclick="return doclink('link-0', 'featuregenerator', 'link-0');">featuregenerator</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module featuregenerator.languagefeaturegenerator=featuregenerator.languagefeaturegenerator-module.html"><a title="featuregenerator.languagefeaturegenerator" class="py-name" href="#" onclick="return doclink('link-1', 'languagefeaturegenerator', 'link-1');">languagefeaturegenerator</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator=featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html"><a title="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator" class="py-name" href="#" onclick="return doclink('link-2', 'LanguageFeatureGenerator', 'link-2');">LanguageFeatureGenerator</a></tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-3" class="py-name" targets="Package io_utils=io_utils-module.html"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-3', 'io_utils', 'link-3');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Package io_utils.sax=io_utils.sax-module.html"><a title="io_utils.sax" class="py-name" href="#" onclick="return doclink('link-4', 'sax', 'link-4');">sax</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Module io_utils.sax.saxps2jcml=io_utils.sax.saxps2jcml-module.html"><a title="io_utils.sax.saxps2jcml" class="py-name" href="#" onclick="return doclink('link-5', 'saxps2jcml', 'link-5');">saxps2jcml</a></tt> <tt class="py-keyword">import</tt> <tt id="link-6" class="py-name" targets="Class io_utils.sax.saxps2jcml.Parallelsentence2Jcml=io_utils.sax.saxps2jcml.Parallelsentence2Jcml-class.html"><a title="io_utils.sax.saxps2jcml.Parallelsentence2Jcml" class="py-name" href="#" onclick="return doclink('link-6', 'Parallelsentence2Jcml', 'link-6');">Parallelsentence2Jcml</a></tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-7" class="py-name"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-7', 'io_utils', 'link-3');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Variable experiment.experiment.Experiment.input=experiment.experiment.Experiment-class.html#input,Variable experiment.phase.Phase.input=experiment.phase.Phase-class.html#input,Package io_utils.input=io_utils.input-module.html"><a title="experiment.experiment.Experiment.input
+experiment.phase.Phase.input
+io_utils.input" class="py-name" href="#" onclick="return doclink('link-8', 'input', 'link-8');">input</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Module io_utils.input.jcmlreader=io_utils.input.jcmlreader-module.html"><a title="io_utils.input.jcmlreader" class="py-name" href="#" onclick="return doclink('link-9', 'jcmlreader', 'link-9');">jcmlreader</a></tt> <tt class="py-keyword">import</tt> <tt id="link-10" class="py-name" targets="Class io_utils.input.jcmlreader.JcmlReader=io_utils.input.jcmlreader.JcmlReader-class.html"><a title="io_utils.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-10', 'JcmlReader', 'link-10');">JcmlReader</a></tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"> </tt>
+<a name="process"></a><div id="process-def"><a name="L16"></a><tt class="py-lineno"> 16</tt> <a class="py-toggle" href="#" id="process-toggle" onclick="return toggle('process');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="support.preprocessing.jcml.wmt12decodingfeatures2jcml-module.html#process">process</a><tt class="py-op">(</tt><tt class="py-param">path</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="process-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="process-expanded"><a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line">    <tt class="py-name">files</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">(</tt><tt class="py-name">int</tt><tt class="py-op">(</tt><tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt><tt class="py-string">"(.*)\.sgml"</tt><tt class="py-op">,</tt> <tt id="link-11" class="py-name" targets="Variable classifier.extract_liblinear_weights.f=classifier.extract_liblinear_weights-module.html#f,Variable classifier.extract_linear_regression_coefficients.f=classifier.extract_linear_regression_coefficients-module.html#f,Variable classifier.extract_logreg_weight.f=classifier.extract_logreg_weight-module.html#f,Variable experiment.autoranking.getlogregweights.f=experiment.autoranking.getlogregweights-module.html#f"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-11', 'f', 'link-11');">f</a></tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt id="link-12" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-12', 'f', 'link-11');">f</a></tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt id="link-13" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-13', 'f', 'link-11');">f</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">listdir</tt><tt class="py-op">(</tt><tt id="link-14" class="py-name" targets="Variable experiment.autoranking.annotate.path=experiment.autoranking.annotate-module.html#path,Variable experiment.autoranking.annotate_updated.path=experiment.autoranking.annotate_updated-module.html#path,Variable experiment.autoranking.autoranking.path=experiment.autoranking.autoranking-module.html#path,Variable experiment.ml4hmt12.annotate_updated.path=experiment.ml4hmt12.annotate_updated-module.html#path,Variable experiment.ml4hmt12.bootstrap.path=experiment.ml4hmt12.bootstrap-module.html#path"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-14', 'path', 'link-14');">path</a></tt><tt class="py-op">)</tt> <tt class="py-keyword">if</tt> <tt id="link-15" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-15', 'f', 'link-11');">f</a></tt><tt class="py-op">.</tt><tt class="py-name">endswith</tt><tt class="py-op">(</tt><tt class="py-string">"sgml"</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">    <tt class="py-name">atts_vector</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">sentence_id</tt><tt class="py-op">,</tt> <tt id="link-16" class="py-name" targets="Variable experiment.data.Data.filename=experiment.data.Data-class.html#filename,Variable support.preprocessing.appraise_time_stats.filename=support.preprocessing.appraise_time_stats-module.html#filename"><a title="experiment.data.Data.filename
+support.preprocessing.appraise_time_stats.filename" class="py-name" href="#" onclick="return doclink('link-16', 'filename', 'link-16');">filename</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">sorted</tt><tt class="py-op">(</tt><tt class="py-name">files</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">        <tt id="link-17" class="py-name"><a title="experiment.data.Data.filename
+support.preprocessing.appraise_time_stats.filename" class="py-name" href="#" onclick="return doclink('link-17', 'filename', 'link-16');">filename</a></tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-18', 'path', 'link-14');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt id="link-19" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-19', 'path', 'link-14');">path</a></tt><tt class="py-op">,</tt> <tt id="link-20" class="py-name"><a title="experiment.data.Data.filename
+support.preprocessing.appraise_time_stats.filename" class="py-name" href="#" onclick="return doclink('link-20', 'filename', 'link-16');">filename</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt id="link-21" class="py-name"><a title="experiment.data.Data.filename
+support.preprocessing.appraise_time_stats.filename" class="py-name" href="#" onclick="return doclink('link-21', 'filename', 'link-16');">filename</a></tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">        <tt class="py-name">file</tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt id="link-22" class="py-name"><a title="experiment.data.Data.filename
+support.preprocessing.appraise_time_stats.filename" class="py-name" href="#" onclick="return doclink('link-22', 'filename', 'link-16');">filename</a></tt><tt class="py-op">,</tt> <tt class="py-string">'r'</tt><tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">         </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">        <tt class="py-name">file_content</tt> <tt class="py-op">=</tt> <tt class="py-name">file</tt><tt class="py-op">.</tt><tt class="py-name">read</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">        <tt class="py-name">file</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Method featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close()=featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html#close,Method featuregenerator.preprocessor.CommandlinePreprocessor.close()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#close,Method io_utils.sax.saxps2jcml.IncrementalJcml.close()=io_utils.sax.saxps2jcml.IncrementalJcml-class.html#close,Method support.preprocessing.jcml.jcml2arff.ArffWriter.close()=support.preprocessing.jcml.jcml2arff.ArffWriter-class.html#close"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-23', 'close', 'link-23');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">         </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">        <tt class="py-comment">#SCORES</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">        <tt id="link-24" class="py-name" targets="Variable featuregenerator.bleu.bleu.pattern=featuregenerator.bleu.bleu-module.html#pattern"><a title="featuregenerator.bleu.bleu.pattern" class="py-name" href="#" onclick="return doclink('link-24', 'pattern', 'link-24');">pattern</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"SCORES \(UNWEIGHTED/WEIGHTED\): d: ([\d\-\.]*) w: ([\d\-\.]*) u: ([\d\-\.]*) d: ([\d\-\.]*) ([\d\-\.]*) ([\d\-\.]*) ([\d\-\.]*) ([\d\-\.]*) ([\d\-\.]*) lm: ([\d\-\.]*) tm: ([\d\-\.]*) ([\d\-\.]*) ([\d\-\.]*) ([\d\-\.]*) ([\d\-\.]*)"</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">        <tt class="py-name">values</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt><tt id="link-25" class="py-name"><a title="featuregenerator.bleu.bleu.pattern" class="py-name" href="#" onclick="return doclink('link-25', 'pattern', 'link-24');">pattern</a></tt><tt class="py-op">,</tt> <tt class="py-name">file_content</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">        <tt class="py-op">[</tt><tt class="py-name">score_d</tt><tt class="py-op">,</tt> <tt class="py-name">score_w</tt><tt class="py-op">,</tt> <tt class="py-name">score_u</tt><tt class="py-op">,</tt> <tt class="py-name">score_d1</tt><tt class="py-op">,</tt> <tt class="py-name">score_d2</tt><tt class="py-op">,</tt> <tt class="py-name">score_d3</tt><tt class="py-op">,</tt> <tt class="py-name">score_d4</tt><tt class="py-op">,</tt> <tt class="py-name">score_d5</tt><tt class="py-op">,</tt> <tt class="py-name">score_d6</tt><tt class="py-op">,</tt> <tt class="py-name">score_lm</tt><tt class="py-op">,</tt> <tt class="py-name">score_tm1</tt><tt class="py-op">,</tt> <tt class="py-name">score_tm2</tt><tt class="py-op">,</tt> <tt class="py-name">score_tm3</tt><tt class="py-op">,</tt> <tt class="py-name">score_tm4</tt><tt class="py-op">,</tt> <tt class="py-name">score_tm5</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">values</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">         </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">        <tt class="py-name">sentence_atts</tt> <tt class="py-op">=</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-name">score_d</tt> <tt class="py-op">=</tt> <tt class="py-name">score_d</tt><tt class="py-op">,</tt> <tt class="py-name">score_w</tt><tt class="py-op">=</tt><tt class="py-name">score_w</tt><tt class="py-op">,</tt>  </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">                    <tt class="py-name">score_d1</tt><tt class="py-op">=</tt><tt class="py-name">score_d1</tt><tt class="py-op">,</tt> <tt class="py-name">score_d2</tt><tt class="py-op">=</tt><tt class="py-name">score_d2</tt><tt class="py-op">,</tt> <tt class="py-name">score_d3</tt><tt class="py-op">=</tt><tt class="py-name">score_d3</tt><tt class="py-op">,</tt> <tt class="py-name">score_d4</tt><tt class="py-op">=</tt><tt class="py-name">score_d4</tt><tt class="py-op">,</tt> <tt class="py-name">score_d5</tt><tt class="py-op">=</tt><tt class="py-name">score_d5</tt><tt class="py-op">,</tt> <tt class="py-name">score_d6</tt><tt class="py-op">=</tt><tt class="py-name">score_d6</tt><tt class="py-op">,</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">                    <tt class="py-name">score_lm</tt><tt class="py-op">=</tt><tt class="py-name">score_lm</tt><tt class="py-op">,</tt> <tt class="py-name">score_tm1</tt><tt class="py-op">=</tt><tt class="py-name">score_tm1</tt><tt class="py-op">,</tt> <tt class="py-name">score_tm2</tt><tt class="py-op">=</tt><tt class="py-name">score_tm2</tt><tt class="py-op">,</tt> <tt class="py-name">score_tm3</tt><tt class="py-op">=</tt><tt class="py-name">score_tm3</tt><tt class="py-op">,</tt> <tt class="py-name">score_tm4</tt><tt class="py-op">=</tt><tt class="py-name">score_tm4</tt><tt class="py-op">,</tt> <tt class="py-name">score_tm5</tt><tt class="py-op">=</tt><tt class="py-name">score_tm5</tt> <tt class="py-op">)</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">         </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">        <tt class="py-comment">#GRAPH</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">        <tt class="py-name">graph_content</tt> <tt class="py-op">=</tt> <tt class="py-name">file_content</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name" targets="Method sentence.dataset.DataSet.split()=sentence.dataset.DataSet-class.html#split"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-26', 'split', 'link-26');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">"&lt;wgraph&gt;"</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">        <tt id="link-27" class="py-name"><a title="featuregenerator.bleu.bleu.pattern" class="py-name" href="#" onclick="return doclink('link-27', 'pattern', 'link-24');">pattern</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"([\w]*)=([\d\-\.\,\ ]*)\s*"</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">         </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">        <tt class="py-name">atts</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">        <tt class="py-name">graph_rows</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt><tt id="link-28" class="py-name"><a title="featuregenerator.bleu.bleu.pattern" class="py-name" href="#" onclick="return doclink('link-28', 'pattern', 'link-24');">pattern</a></tt><tt class="py-op">,</tt> <tt class="py-name">graph_content</tt><tt class="py-op">)</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-op">(</tt><tt class="py-name">graph_feature_name</tt><tt class="py-op">,</tt> <tt class="py-name">graph_feature_value</tt><tt class="py-op">)</tt><tt class="py-keyword">in</tt> <tt class="py-name">graph_rows</tt><tt class="py-op">:</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">             </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">graph_feature_name</tt> <tt class="py-op">==</tt> <tt class="py-string">"a"</tt><tt class="py-op">:</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">                <tt class="py-name">atts</tt><tt class="py-op">.</tt><tt class="py-name">update</tt><tt class="py-op">(</tt><tt id="link-29" class="py-name" targets="Function support.preprocessing.jcml.wmt12decodingfeatures2jcml._split_a_vector()=support.preprocessing.jcml.wmt12decodingfeatures2jcml-module.html#_split_a_vector"><a title="support.preprocessing.jcml.wmt12decodingfeatures2jcml._split_a_vector" class="py-name" href="#" onclick="return doclink('link-29', '_split_a_vector', 'link-29');">_split_a_vector</a></tt><tt class="py-op">(</tt><tt class="py-name">graph_feature_value</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">            <tt class="py-keyword">elif</tt> <tt class="py-name">graph_feature_name</tt> <tt class="py-op">==</tt> <tt class="py-string">"r"</tt><tt class="py-op">:</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">                <tt class="py-name">atts</tt><tt class="py-op">.</tt><tt class="py-name">update</tt><tt class="py-op">(</tt><tt id="link-30" class="py-name" targets="Function support.preprocessing.jcml.wmt12decodingfeatures2jcml._split_r_vector()=support.preprocessing.jcml.wmt12decodingfeatures2jcml-module.html#_split_r_vector"><a title="support.preprocessing.jcml.wmt12decodingfeatures2jcml._split_r_vector" class="py-name" href="#" onclick="return doclink('link-30', '_split_r_vector', 'link-30');">_split_r_vector</a></tt><tt class="py-op">(</tt><tt class="py-name">graph_feature_value</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">                 </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">            <tt class="py-keyword">elif</tt> <tt class="py-name">graph_feature_name</tt> <tt class="py-keyword">in</tt> <tt class="py-op">[</tt><tt class="py-string">"UTTERANCE"</tt><tt class="py-op">,</tt> <tt class="py-string">"VERSION"</tt><tt class="py-op">,</tt> <tt class="py-string">"w"</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">                <tt class="py-keyword">pass</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">graph_feature_name</tt> <tt class="py-op">==</tt> <tt class="py-string">"pC"</tt><tt class="py-op">:</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">                    <tt class="py-name">graph_feature_value</tt> <tt class="py-op">=</tt> <tt class="py-name">graph_feature_value</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">             </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">                    <tt class="py-name">atts</tt><tt class="py-op">[</tt><tt class="py-name">graph_feature_name</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">graph_feature_value</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt> <tt class="py-name">KeyError</tt><tt class="py-op">:</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">                    <tt class="py-name">atts</tt><tt class="py-op">[</tt><tt class="py-name">graph_feature_name</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">graph_feature_value</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">                 </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">        <tt class="py-comment">#now calculate avg</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">         </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">graph_feature_name</tt><tt class="py-op">,</tt> <tt class="py-name">graph_feature_values</tt> <tt class="py-keyword">in</tt> <tt class="py-name">atts</tt><tt class="py-op">.</tt><tt class="py-name">iteritems</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">            <tt class="py-name">sentence_atts</tt><tt class="py-op">[</tt><tt class="py-string">"{0}_avg"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">graph_feature_name</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">"%.3f"</tt> <tt class="py-op">%</tt> <tt class="py-name">round</tt><tt class="py-op">(</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">average</tt><tt class="py-op">(</tt><tt class="py-name">graph_feature_values</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-number">3</tt><tt class="py-op">)</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">            <tt class="py-name">sentence_atts</tt><tt class="py-op">[</tt><tt class="py-string">"{0}_std"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">graph_feature_name</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">"%.3f"</tt> <tt class="py-op">%</tt> <tt class="py-name">round</tt><tt class="py-op">(</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">std</tt><tt class="py-op">(</tt><tt class="py-name">graph_feature_values</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-number">3</tt><tt class="py-op">)</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">            <tt class="py-name">sentence_atts</tt><tt class="py-op">[</tt><tt class="py-string">"{0}_var"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">graph_feature_name</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">"%.3f"</tt> <tt class="py-op">%</tt> <tt class="py-name">round</tt><tt class="py-op">(</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">var</tt><tt class="py-op">(</tt><tt class="py-name">graph_feature_values</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-number">3</tt><tt class="py-op">)</tt>   </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">                                                                                 </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt class="py-name">sentence_atts</tt> <tt class="py-op">=</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-op">(</tt><tt class="py-string">"d_%s"</tt> <tt class="py-op">%</tt> <tt class="py-name">k</tt><tt class="py-op">,</tt> <tt class="py-name">v</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">k</tt><tt class="py-op">,</tt><tt class="py-name">v</tt> <tt class="py-keyword">in</tt> <tt class="py-name">sentence_atts</tt><tt class="py-op">.</tt><tt class="py-name">iteritems</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-name">atts_vector</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">sentence_atts</tt><tt class="py-op">)</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">atts_vector</tt> </tt>
+</div><a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"> </tt>
+<a name="_split_a_vector"></a><div id="_split_a_vector-def"><a name="L72"></a><tt class="py-lineno"> 72</tt> <a class="py-toggle" href="#" id="_split_a_vector-toggle" onclick="return toggle('_split_a_vector');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="support.preprocessing.jcml.wmt12decodingfeatures2jcml-module.html#_split_a_vector">_split_a_vector</a><tt class="py-op">(</tt><tt class="py-param">graph_feature_value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_split_a_vector-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_split_a_vector-expanded"><a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">    <tt class="py-name">values</tt> <tt class="py-op">=</tt> <tt class="py-name">graph_feature_value</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-31', 'split', 'link-26');">split</a></tt><tt class="py-op">(</tt><tt class="py-string">", "</tt><tt class="py-op">)</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">    <tt class="py-name">atts</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">    <tt id="link-32" class="py-name" targets="Variable io_utils.sax.saxwrapper.SaxWrapper.i=io_utils.sax.saxwrapper.SaxWrapper-class.html#i"><a title="io_utils.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-32', 'i', 'link-32');">i</a></tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">value</tt> <tt class="py-keyword">in</tt> <tt class="py-name">values</tt><tt class="py-op">:</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">        <tt id="link-33" class="py-name"><a title="io_utils.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-33', 'i', 'link-32');">i</a></tt><tt class="py-op">+=</tt><tt class="py-number">1</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">        <tt class="py-name">atts</tt><tt class="py-op">[</tt><tt class="py-string">"a{0}"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt id="link-34" class="py-name"><a title="io_utils.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-34', 'i', 'link-32');">i</a></tt><tt class="py-op">)</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">atts</tt> </tt>
+</div><a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">     </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"> </tt>
+<a name="_split_r_vector"></a><div id="_split_r_vector-def"><a name="L82"></a><tt class="py-lineno"> 82</tt> <a class="py-toggle" href="#" id="_split_r_vector-toggle" onclick="return toggle('_split_r_vector');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="support.preprocessing.jcml.wmt12decodingfeatures2jcml-module.html#_split_r_vector">_split_r_vector</a><tt class="py-op">(</tt><tt class="py-param">graph_feature_value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_split_r_vector-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_split_r_vector-expanded"><a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">    <tt class="py-comment">#input data have a bug</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">    <tt class="py-name">values</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt><tt class="py-string">"(\-?\d{1,3}\.\d{1,3})"</tt><tt class="py-op">,</tt> <tt class="py-name">graph_feature_value</tt><tt class="py-op">)</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">    <tt class="py-name">atts</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">    <tt id="link-35" class="py-name"><a title="io_utils.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-35', 'i', 'link-32');">i</a></tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">value</tt> <tt class="py-keyword">in</tt> <tt class="py-name">values</tt><tt class="py-op">:</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt id="link-36" class="py-name"><a title="io_utils.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-36', 'i', 'link-32');">i</a></tt><tt class="py-op">+=</tt><tt class="py-number">1</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">        <tt class="py-name">atts</tt><tt class="py-op">[</tt><tt class="py-string">"r{0}"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt id="link-37" class="py-name"><a title="io_utils.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-37', 'i', 'link-32');">i</a></tt><tt class="py-op">)</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">atts</tt> </tt>
+</div><a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">                         </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-38" class="py-name" targets="Variable featuregenerator.meteor.meteor.MeteorGenerator.__name__=featuregenerator.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-38', '__name__', 'link-38');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">    <tt class="py-name">input_path</tt> <tt class="py-op">=</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> <tt class="py-comment">#"/home/elav01/taraxu_data/wmt12/quality-estimation/training_set/decoding"</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">    <tt class="py-name">input_jcml</tt> <tt class="py-op">=</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt> <tt class="py-comment">#"/home/elav01/taraxu_data/wmt12/quality-estimation/training_set/training.jcml"</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">    <tt class="py-name">output_jcml</tt> <tt class="py-op">=</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">3</tt><tt class="py-op">]</tt> <tt class="py-comment">#"/home/elav01/taraxu_data/wmt12/quality-estimation/training_set/training.decoding.es.f.jcml"</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">     </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">)</tt><tt class="py-op">&lt;</tt><tt class="py-number">4</tt> <tt class="py-op">:</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-string">"This script reads the supplementary decoding attributes of WMT12-quality estimation task and \</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-string">         wraps them into the designated jcml format. Syntax: script [dir] [input.jcml] [output.jcml]\n \</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-string">         dir: directory where the files [1-9]*.sgml, one file for sentence are stored \</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-string">         input.jcml: original jcml file containing the rest of the data \</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"><tt class="py-string">         output.jcml: a copy of the original jcml file, with attributes from the decoded process added \</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-string">         "</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">     </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">    <tt class="py-name">att_vector</tt> <tt class="py-op">=</tt> <tt id="link-39" class="py-name" targets="Method support.evaluation.wmt12.wmt_scoring.WmtScoring.process()=support.evaluation.wmt12.wmt_scoring.WmtScoring-class.html#process,Method support.preprocessing.jcml.jcml2arff.Jcml2Arff.process()=support.preprocessing.jcml.jcml2arff.Jcml2Arff-class.html#process,Function support.preprocessing.jcml.wmt12decodingfeatures2jcml.process()=support.preprocessing.jcml.wmt12decodingfeatures2jcml-module.html#process"><a title="support.evaluation.wmt12.wmt_scoring.WmtScoring.process
+support.preprocessing.jcml.jcml2arff.Jcml2Arff.process
+support.preprocessing.jcml.wmt12decodingfeatures2jcml.process" class="py-name" href="#" onclick="return doclink('link-39', 'process', 'link-39');">process</a></tt><tt class="py-op">(</tt><tt class="py-name">input_path</tt><tt class="py-op">)</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">    <tt id="link-40" class="py-name" targets="Module sentence.dataset=sentence.dataset-module.html"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-40', 'dataset', 'link-40');">dataset</a></tt> <tt class="py-op">=</tt> <tt id="link-41" class="py-name"><a title="io_utils.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-41', 'JcmlReader', 'link-10');">JcmlReader</a></tt><tt class="py-op">(</tt><tt class="py-name">input_jcml</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Method io_utils.input.genericreader.GenericReader.get_dataset()=io_utils.input.genericreader.GenericReader-class.html#get_dataset,Method io_utils.input.orangeprocessor.OrangeProcessor.get_dataset()=io_utils.input.orangeprocessor.OrangeProcessor-class.html#get_dataset,Method io_utils.input.orangereader.OrangeData.get_dataset()=io_utils.input.orangereader.OrangeData-class.html#get_dataset,Method io_utils.input.xliffreader.XliffReader.get_dataset()=io_utils.input.xliffreader.XliffReader-class.html#get_dataset,Method io_utils.sax.cejcml.CEJcmlReader.get_dataset()=io_utils.sax.cejcml.CEJcmlReader-class.html#get_dataset"><a title="io_utils.input.genericreader.GenericReader.get_dataset
+io_utils.input.orangeprocessor.OrangeProcessor.get_dataset
+io_utils.input.orangereader.OrangeData.get_dataset
+io_utils.input.xliffreader.XliffReader.get_dataset
+io_utils.sax.cejcml.CEJcmlReader.get_dataset" class="py-name" href="#" onclick="return doclink('link-42', 'get_dataset', 'link-42');">get_dataset</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">    <tt id="link-43" class="py-name"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-43', 'dataset', 'link-40');">dataset</a></tt><tt class="py-op">.</tt><tt id="link-44" class="py-name" targets="Method sentence.dataset.DataSet.add_attribute_vector()=sentence.dataset.DataSet-class.html#add_attribute_vector"><a title="sentence.dataset.DataSet.add_attribute_vector" class="py-name" href="#" onclick="return doclink('link-44', 'add_attribute_vector', 'link-44');">add_attribute_vector</a></tt><tt class="py-op">(</tt><tt class="py-name">att_vector</tt><tt class="py-op">)</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">    <tt id="link-45" class="py-name"><a title="io_utils.sax.saxps2jcml.Parallelsentence2Jcml" class="py-name" href="#" onclick="return doclink('link-45', 'Parallelsentence2Jcml', 'link-6');">Parallelsentence2Jcml</a></tt><tt class="py-op">(</tt><tt id="link-46" class="py-name"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-46', 'dataset', 'link-40');">dataset</a></tt><tt class="py-op">.</tt><tt id="link-47" class="py-name" targets="Method io_utils.input.genericreader.GenericReader.get_parallelsentences()=io_utils.input.genericreader.GenericReader-class.html#get_parallelsentences,Method io_utils.input.genericxmlreader.GenericXmlReader.get_parallelsentences()=io_utils.input.genericxmlreader.GenericXmlReader-class.html#get_parallelsentences,Method io_utils.input.linereader.AttributeLineReader.get_parallelsentences()=io_utils.input.linereader.AttributeLineReader-class.html#get_parallelsentences,Method io_utils.input.linereader.LineReader.get_parallelsentences()=io_utils.input.linereader.LineReader-class.html#get_parallelsentences,Method io_utils.input.posteditingreader.PosteditingReader.get_parallelsentences()=io_utils.input.posteditingreader.PosteditingReader-class.html#get_parallelsentences,Method io_utils.input.rankreader.R2RankReader.get_parallelsentences()=io_utils.input.rankreader.R2RankReader-class.html#get_parallelsentences,Method io_utils.input.rankreader.RankReader.get_parallelsentences()=io_utils.input.rankreader.RankReader-class.html#get_parallelsentences,Method io_utils.input.taraxureader.TaraXUReader.get_parallelsentences()=io_utils.input.taraxureader.TaraXUReader-class.html#get_parallelsentences,Method io_utils.input.xliffreader.XliffReader.get_parallelsentences()=io_utils.input.xliffreader.XliffReader-class.html#get_parallelsentences,Method sentence.dataset.DataSet.get_parallelsentences()=sentence.dataset.DataSet-class.html#get_parallelsentences,Method sentence.pairwisedataset.PairwiseDataset.get_parallelsentences()=sentence.pairwisedataset.PairwiseDataset-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html#get_parallelsentences"><a title="io_utils.input.genericreader.GenericReader.get_parallelsentences
+io_utils.input.genericxmlreader.GenericXmlReader.get_parallelsentences
+io_utils.input.linereader.AttributeLineReader.get_parallelsentences
+io_utils.input.linereader.LineReader.get_parallelsentences
+io_utils.input.posteditingreader.PosteditingReader.get_parallelsentences
+io_utils.input.rankreader.R2RankReader.get_parallelsentences
+io_utils.input.rankreader.RankReader.get_parallelsentences
+io_utils.input.taraxureader.TaraXUReader.get_parallelsentences
+io_utils.input.xliffreader.XliffReader.get_parallelsentences
+sentence.dataset.DataSet.get_parallelsentences
+sentence.pairwisedataset.PairwiseDataset.get_parallelsentences
+sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences" class="py-name" href="#" onclick="return doclink('link-47', 'get_parallelsentences', 'link-47');">get_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-48" class="py-name" targets="Method io_utils.output.posteditingwriter.PosteditingWriter.write_to_file()=io_utils.output.posteditingwriter.PosteditingWriter-class.html#write_to_file,Method io_utils.output.taraxuwriter.TaraXUWriter.write_to_file()=io_utils.output.taraxuwriter.TaraXUWriter-class.html#write_to_file,Method io_utils.output.wmt11tabwriter.Wmt11TabWriter.write_to_file()=io_utils.output.wmt11tabwriter.Wmt11TabWriter-class.html#write_to_file,Method io_utils.output.xmlwriter.GenericWriter.write_to_file()=io_utils.output.xmlwriter.GenericWriter-class.html#write_to_file,Method io_utils.output.xmlwriter.GenericXMLWriter.write_to_file()=io_utils.output.xmlwriter.GenericXMLWriter-class.html#write_to_file,Method io_utils.sax.saxps2jcml.Parallelsentence2Jcml.write_to_file()=io_utils.sax.saxps2jcml.Parallelsentence2Jcml-class.html#write_to_file"><a title="io_utils.output.posteditingwriter.PosteditingWriter.write_to_file
+io_utils.output.taraxuwriter.TaraXUWriter.write_to_file
+io_utils.output.wmt11tabwriter.Wmt11TabWriter.write_to_file
+io_utils.output.xmlwriter.GenericWriter.write_to_file
+io_utils.output.xmlwriter.GenericXMLWriter.write_to_file
+io_utils.sax.saxps2jcml.Parallelsentence2Jcml.write_to_file" class="py-name" href="#" onclick="return doclink('link-48', 'write_to_file', 'link-48');">write_to_file</a></tt><tt class="py-op">(</tt><tt class="py-name">output_jcml</tt><tt class="py-op">)</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:23 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
