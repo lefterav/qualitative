@@ -5,7 +5,7 @@ Created on 19 Apr 2013
 @author: Eleftherios Avramidis
 '''
 
-from ml import classifier
+from ml import var
 import logging
 
 def _read_attributes(params):
@@ -42,10 +42,10 @@ class ErrorPredictionSuite(object):
         self.restore_supported = True
         
         #define learner
-        learner_name = params["classifier"]
+        learner_name = params["var"]
         learner_params = "params_{}".format(learner_name)
         self.learner_params = params.setdefault(learner_params, {})
-        self.learner = classifier.forname(learner_name, **self.classifier_params)
+        self.learner = var.forname(learner_name, **self.classifier_params)
         
         #set attributes values
         self.meta_attributes = params["meta_attributes"].split(",")

@@ -8,7 +8,7 @@ import cPickle as pickle
 import sys
 
 from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange 
-#from ml.classifier import Classifier
+#from ml.var import Classifier
 
 from sentence.dataset import DataSet
 from sentence.pairwisedataset import AnalyticPairwiseDataset
