@@ -4,9 +4,9 @@ Created on 27 Feb 2012
 @author: lefterav
 '''
 import unittest
-from io_utils.input.jcmlreader import JcmlReader
+from dataprocessor.input.jcmlreader import JcmlReader
 from sentence.coupleddataset import CoupledDataSet, OrangeCoupledDataSet, CoupledDataSetDisk
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
 
 
 class CoupledDataSetTest(unittest.TestCase):

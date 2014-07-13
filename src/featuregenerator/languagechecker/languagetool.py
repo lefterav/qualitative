@@ -194,8 +194,8 @@ class LanguageCheckerCmd(LanguageFeatureGenerator):
 if __name__ == '__main__':
     path = "/home/lefterav/taraxu_tools/LanguageTool-1.6/LanguageTool.jar"
     cmdfg = LanguageToolFeatureGenerator(path, 'en')
-    from io_utils.input.jcmlreader import JcmlReader
-    from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
+    from dataprocessor.input.jcmlreader import JcmlReader
+    from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
     parallelsentences = JcmlReader("/home/lefterav/taraxu_data/selection-mechanism/ml4hmt/app/autoranking/4/wmt00-test-devpart.orig.jcml").get_parallelsentences()
     annotated = cmdfg.add_features_batch(parallelsentences)
     cmdfg.close()

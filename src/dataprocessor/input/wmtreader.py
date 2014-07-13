@@ -92,7 +92,7 @@ class WmtReader():
             
 if __name__ == '__main__':
     import sys
-    from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
+    from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
     
     langpairs = ["en-de", "de-en", "en-fr", "fr-en", "en-es", "es-en", "en-cs", "cs-en", "en-ru", "ru-en"]
     base_dir = sys.argv[1]

@@ -4,9 +4,9 @@ Created on 7 Feb 2012
 @author: elav01
 '''
 
-from io_utils.input.jcmlreader import JcmlReader
+from dataprocessor.input.jcmlreader import JcmlReader
 from sentence.pairwisedataset import FilteredPairwiseDataset , AnalyticPairwiseDataset
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
 import os
 import argparse
 from ConfigParser import ConfigParser

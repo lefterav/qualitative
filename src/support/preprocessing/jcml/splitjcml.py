@@ -4,8 +4,8 @@ Created on 24 Oct 2012
 @author: elav01
 '''
 
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
-from io_utils.input.jcmlreader import JcmlReader
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.input.jcmlreader import JcmlReader
 from sys import argv
 import sys
 

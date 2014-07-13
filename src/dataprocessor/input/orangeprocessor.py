@@ -126,7 +126,7 @@ class AttributesReader:
 class SentenceReader:
     
     def __init__(self):
-        from io_utils.input.xliffreader import XliffReader
+        from dataprocessor.input.xliffreader import XliffReader
     def startElement(self, name, atts = []):
         if name == self.TAG_SENT:
             pass

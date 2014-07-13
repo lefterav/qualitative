@@ -21,11 +21,11 @@ from Orange.classification.tree import C45Learner
 from Orange.classification.logreg import LogRegLearner
 from Orange import evaluation
 
-from io_utils.input.jcmlreader import JcmlReader
+from dataprocessor.input.jcmlreader import JcmlReader
 #from sentence.coupleddataset import CoupledDataSet, OrangeCoupledDataSet, CoupledDataSetDisk
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
-from io_utils.sax.saxjcml2orange import SaxJcml2Orange
-from io_utils.ce.cejcml2orange import CElementTreeJcml2Orange 
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.sax.saxjcml2orange import SaxJcml2Orange
+from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange 
 from classifier.classifier import OrangeClassifier
 from Orange.data import Table
 from datetime import datetime

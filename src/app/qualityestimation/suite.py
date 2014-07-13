@@ -16,10 +16,10 @@ from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
 from Orange.classification.tree import TreeLearner
 from Orange.classification.logreg import LogRegLearner
 
-from io_utils.input.jcmlreader import JcmlReader
+from dataprocessor.input.jcmlreader import JcmlReader
 #from sentence.coupleddataset import CoupledDataSet, OrangeCoupledDataSet, CoupledDataSetDisk
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
-from io_utils.sax.saxjcml2orange import SaxJcml2Orange
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.sax.saxjcml2orange import SaxJcml2Orange
 from classifier.classifier import OrangeClassifier
 from support.evaluation.wmt12.wmt_scoring import WmtScoring
 from Orange.data import Table
