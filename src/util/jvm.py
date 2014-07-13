@@ -6,14 +6,26 @@ Created on 22 Jun 2012
 import subprocess
 import time
 import os
+import fnmatch
+
+
+def get_libs():
+    path = os.path.abspath(__file__)
+    components = path.split(os.sep)
+    rootpath = os.path.join(os.sep, *components[:-3])
+    libpath = os.path.join(rootpath, "lib")    
+    libs = [os.path.join(libpath, f) for f in os.listdir(libpath) if f.endswith('.jar') or f.endswith('.class')]
+    libs.append(libpath)
+    return libs
+    
+
 
 class JVM(object):
     '''
     classdocs
     '''
 
-
-    def __init__(self, java_classpath):
+    def __init__(self, params):
         '''
         Constructor
         '''
@@ -21,8 +33,9 @@ class JVM(object):
         #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
         #subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path])
             
-        
+        java_classpath = get_libs()
         path = os.path.abspath(__file__)
+        libdir = path
         java_classpath.append(os.path.dirname(path))
         classpath = ":".join(java_classpath)
         print "classpath = ", classpath
