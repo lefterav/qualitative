@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>featuregenerator.hjerson.Hjerson</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="featuregenerator-module.html">Package&nbsp;featuregenerator</a> ::
+        <a href="featuregenerator.hjerson-module.html">Module&nbsp;hjerson</a> ::
+        Class&nbsp;Hjerson
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="featuregenerator.hjerson.Hjerson-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Hjerson</h1><p class="nomargin-top"><span class="codelink"><a href="featuregenerator.hjerson-pysrc.html#Hjerson">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+                                   object --+        
+                                            |        
+            <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html">featuregenerator.FeatureGenerator</a> --+    
+                                                |    
+<a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html">languagefeaturegenerator.LanguageFeatureGenerator</a> --+
+                                                    |
+                                                   <strong class="uidshort">Hjerson</strong>
+</pre>
+
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="featuregenerator.hjerson.BinaryHjerson-class.html">BinaryHjerson</a></li>  </ul>
+</dd></dl>
+
+<hr />
+<p>This is a class that wraps the Hjerson functionality on a sentence 
+  level.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.hjerson.Hjerson-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      By initializing Hjerson, we maintain a tokenizer (if needed) and a 
+      treetager object so that they are available for sentence-level calls</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.hjerson-pysrc.html#Hjerson.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">{str: object, ... }</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.hjerson.Hjerson-class.html#get_features_tgt" class="summary-sig-name">get_features_tgt</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">simplesentence</span>,
+        <span class="summary-sig-arg">parallelsentence</span>)</span><br />
+      Override language feature generator function in order to return 
+      sentence level error classes</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.hjerson-pysrc.html#Hjerson.get_features_tgt">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_tag"></a><span class="summary-sig-name">_tag</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">string</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.hjerson-pysrc.html#Hjerson._tag">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.hjerson.Hjerson-class.html#get_features_strings" class="summary-sig-name">get_features_strings</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">target_string</span>,
+        <span class="summary-sig-arg">references</span>)</span><br />
+      Process one sentence, given the translated sentence (hypothesis) and 
+      the corresponding reference</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.hjerson-pysrc.html#Hjerson.get_features_strings">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.hjerson.Hjerson-class.html#analyze" class="summary-sig-name">analyze</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">hline</span>,
+        <span class="summary-sig-arg">basehline</span>,
+        <span class="summary-sig-arg">addhline</span>,
+        <span class="summary-sig-arg">refs</span>,
+        <span class="summary-sig-arg">baserefs</span>,
+        <span class="summary-sig-arg">addrefs</span>)</span><br />
+      This functions hosts the core sentence-level functionality of 
+      Hjerson, as written originally by Maja Popovic.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.hjerson-pysrc.html#Hjerson.analyze">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="calculate_total_scores"></a><span class="summary-sig-name">calculate_total_scores</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.hjerson-pysrc.html#Hjerson.calculate_total_scores">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html">languagefeaturegenerator.LanguageFeatureGenerator</a></code></b>:
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#add_features_batch">add_features_batch</a></code>,
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#add_features_batch_xml">add_features_batch_xml</a></code>,
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#add_features_dataset">add_features_dataset</a></code>,
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#get_features_simplesentence">get_features_simplesentence</a></code>,
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#get_features_src">get_features_src</a></code>,
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#get_features_string">get_features_string</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html">featuregenerator.FeatureGenerator</a></code></b>:
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_parallelsentence">add_features_parallelsentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_simplesentence">add_features_simplesentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_src">add_features_src</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_tgt">add_features_tgt</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_annotation_name">get_annotation_name</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_parallelsentence">get_features_parallelsentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#process_dataset">process_dataset</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html">languagefeaturegenerator.LanguageFeatureGenerator</a></code></b>:
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#lang">lang</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.hjerson-pysrc.html#Hjerson.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>By initializing Hjerson, we maintain a tokenizer (if needed) and a 
+  treetager object so that they are available for sentence-level calls</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>tokenize</code></strong> (boolean) - specify if tokenizer should be run by Hjerson, false if it has 
+          already happened</li>
+        <li><strong class="pname"><code>lang</code></strong> (str) - specify which language is the content using the language 2-letter
+          iso code</li>
+        <li><strong class="pname"><code>tagdir</code></strong> (str) - specify the directory where the treetager bin folder exists</li>
+    </ul></dd>
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_features_tgt"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_features_tgt</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">simplesentence</span>,
+        <span class="sig-arg">parallelsentence</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.hjerson-pysrc.html#Hjerson.get_features_tgt">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Override language feature generator function in order to return 
+  sentence level error classes</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>simplesentence</code></strong> - a simple sentence object, containing the target sentence @type <a
+          href="sentence.sentence.SimpleSentence-class.html" 
+          class="link">sentence.sentence.SimpleSentence</a></li>
+        <li><strong class="pname"><code>parallelsentence</code></strong> - a parallel sentence object which is needed to derive the 
+          reference @type <a 
+          href="sentence.parallelsentence.ParallelSentence-class.html" 
+          class="link">sentence.parallelsentence.ParallelSentence</a></li>
+    </ul></dd>
+    <dt>Returns: {str: object, ... }</dt>
+        <dd>a dictionary with the attributes retrieved</dd>
+    <dt>Overrides:
+        <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_tgt">featuregenerator.FeatureGenerator.get_features_tgt</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_features_strings"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_features_strings</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">target_string</span>,
+        <span class="sig-arg">references</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.hjerson-pysrc.html#Hjerson.get_features_strings">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Process one sentence, given the translated sentence (hypothesis) and 
+  the corresponding reference</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>target_string</code></strong> (str) - the translation hypothesis produced by the system</li>
+        <li><strong class="pname"><code>references</code></strong> (list(str)) - a list of strings, containing the correct translations</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="analyze"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">analyze</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">hline</span>,
+        <span class="sig-arg">basehline</span>,
+        <span class="sig-arg">addhline</span>,
+        <span class="sig-arg">refs</span>,
+        <span class="sig-arg">baserefs</span>,
+        <span class="sig-arg">addrefs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.hjerson-pysrc.html#Hjerson.analyze">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This functions hosts the core sentence-level functionality of Hjerson,
+  as written originally by Maja Popovic. It operates after all 
+  sentence-level strings have been retrieved and passed as parameters</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>hline</code></strong></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:19 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

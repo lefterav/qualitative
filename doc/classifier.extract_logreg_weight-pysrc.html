@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>classifier.extract_logreg_weight</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="classifier-module.html">Package&nbsp;classifier</a> ::
+        Module&nbsp;extract_logreg_weight
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="classifier.extract_logreg_weight-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="classifier.extract_logreg_weight-module.html">Module classifier.extract_logreg_weight</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">Orange</tt><tt class="py-op">.</tt><tt class="py-name">classification</tt> <tt class="py-keyword">import</tt> <tt class="py-name">logreg</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">cPickle</tt> <tt class="py-keyword">as</tt> <tt class="py-name">pickle</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable classifier.extract_liblinear_weights.f=classifier.extract_liblinear_weights-module.html#f,Variable classifier.extract_linear_regression_coefficients.f=classifier.extract_linear_regression_coefficients-module.html#f,Variable classifier.extract_logreg_weight.f=classifier.extract_logreg_weight-module.html#f,Variable experiment.autoranking.getlogregweights.f=experiment.autoranking.getlogregweights-module.html#f"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-0', 'f', 'link-0');">f</a></tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-string">'classifier.clsf'</tt><tt class="py-op">)</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt id="link-1" class="py-name" targets="Package classifier=classifier-module.html,Module classifier.classifier=classifier.classifier-module.html,Variable classifier.extract_liblinear_weights.classifier=classifier.extract_liblinear_weights-module.html#classifier,Variable classifier.extract_linear_regression_coefficients.classifier=classifier.extract_linear_regression_coefficients-module.html#classifier,Variable classifier.extract_logreg_weight.classifier=classifier.extract_logreg_weight-module.html#classifier,Module ml.classifier=ml.classifier-module.html"><a title="classifier
+classifier.classifier
+classifier.extract_liblinear_weights.classifier
+classifier.extract_linear_regression_coefficients.classifier
+classifier.extract_logreg_weight.classifier
+ml.classifier" class="py-name" href="#" onclick="return doclink('link-1', 'classifier', 'link-1');">classifier</a></tt> <tt class="py-op">=</tt> <tt class="py-name">pickle</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Method io_utils.input.genericreader.GenericReader.load()=io_utils.input.genericreader.GenericReader-class.html#load,Method io_utils.input.genericxmlreader.GenericXmlReader.load()=io_utils.input.genericxmlreader.GenericXmlReader-class.html#load,Method io_utils.input.posteditingreader.PosteditingReader.load()=io_utils.input.posteditingreader.PosteditingReader-class.html#load,Method io_utils.input.rankreader.R2RankReader.load()=io_utils.input.rankreader.R2RankReader-class.html#load,Method io_utils.input.rankreader.RankReader.load()=io_utils.input.rankreader.RankReader-class.html#load,Method io_utils.input.xliffreader.XliffReader.load()=io_utils.input.xliffreader.XliffReader-class.html#load"><a title="io_utils.input.genericreader.GenericReader.load
+io_utils.input.genericxmlreader.GenericXmlReader.load
+io_utils.input.posteditingreader.PosteditingReader.load
+io_utils.input.rankreader.R2RankReader.load
+io_utils.input.rankreader.RankReader.load
+io_utils.input.xliffreader.XliffReader.load" class="py-name" href="#" onclick="return doclink('link-2', 'load', 'link-2');">load</a></tt><tt class="py-op">(</tt><tt id="link-3" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-3', 'f', 'link-0');">f</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt id="link-4" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-4', 'f', 'link-0');">f</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Method featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close()=featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html#close,Method featuregenerator.preprocessor.CommandlinePreprocessor.close()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#close,Method io_utils.sax.saxps2jcml.IncrementalJcml.close()=io_utils.sax.saxps2jcml.IncrementalJcml-class.html#close,Method support.preprocessing.jcml.jcml2arff.ArffWriter.close()=support.preprocessing.jcml.jcml2arff.ArffWriter-class.html#close"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-5', 'close', 'link-5');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt id="link-6" class="py-name" targets="Variable classifier.extract_logreg_weight.textfilename=classifier.extract_logreg_weight-module.html#textfilename"><a title="classifier.extract_logreg_weight.textfilename" class="py-name" href="#" onclick="return doclink('link-6', 'textfilename', 'link-6');">textfilename</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"classifier.dump.txt"</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt id="link-7" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-7', 'f', 'link-0');">f</a></tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt id="link-8" class="py-name"><a title="classifier.extract_logreg_weight.textfilename" class="py-name" href="#" onclick="return doclink('link-8', 'textfilename', 'link-6');">textfilename</a></tt><tt class="py-op">,</tt> <tt class="py-string">"w"</tt><tt class="py-op">)</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt id="link-9" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-9', 'f', 'link-0');">f</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method experiment.autoranking.decode.StreamToLogger.write()=experiment.autoranking.decode.StreamToLogger-class.html#write,Method experiment.autoranking.suite.StreamToLogger.write()=experiment.autoranking.suite.StreamToLogger-class.html#write,Method experiment.autorankingsearch.suite.StreamToLogger.write()=experiment.autorankingsearch.suite.StreamToLogger-class.html#write,Method experiment.autoranksvm.suite.StreamToLogger.write()=experiment.autoranksvm.suite.StreamToLogger-class.html#write,Method experiment.ml4hmt12.suite.StreamToLogger.write()=experiment.ml4hmt12.suite.StreamToLogger-class.html#write,Method experiment.ml4hmt12.test.StreamToLogger.write()=experiment.ml4hmt12.test.StreamToLogger-class.html#write,Method sentence.coupleddataset.CoupledDataSetDisk.write()=sentence.coupleddataset.CoupledDataSetDisk-class.html#write"><a title="experiment.autoranking.decode.StreamToLogger.write
+experiment.autoranking.suite.StreamToLogger.write
+experiment.autorankingsearch.suite.StreamToLogger.write
+experiment.autoranksvm.suite.StreamToLogger.write
+experiment.ml4hmt12.suite.StreamToLogger.write
+experiment.ml4hmt12.test.StreamToLogger.write
+sentence.coupleddataset.CoupledDataSetDisk.write" class="py-name" href="#" onclick="return doclink('link-10', 'write', 'link-10');">write</a></tt><tt class="py-op">(</tt><tt class="py-name">logreg</tt><tt class="py-op">.</tt><tt class="py-name">dump</tt><tt class="py-op">(</tt><tt id="link-11" class="py-name"><a title="classifier
+classifier.classifier
+classifier.extract_liblinear_weights.classifier
+classifier.extract_linear_regression_coefficients.classifier
+classifier.extract_logreg_weight.classifier
+ml.classifier" class="py-name" href="#" onclick="return doclink('link-11', 'classifier', 'link-1');">classifier</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt id="link-12" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-12', 'f', 'link-0');">f</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-13', 'close', 'link-5');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:21 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

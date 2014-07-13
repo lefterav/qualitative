@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>support.evaluation.selectbest_n_evaluate</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="support-module.html">Package&nbsp;support</a> ::
+        <a href="support.evaluation-module.html">Package&nbsp;evaluation</a> ::
+        Module&nbsp;selectbest_n_evaluate
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="support.evaluation.selectbest_n_evaluate-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="support.evaluation.selectbest_n_evaluate-module.html">Module support.evaluation.selectbest_n_evaluate</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">Created on 30 Aug 2012</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">@author: lefterav</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package io_utils=io_utils-module.html"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-0', 'io_utils', 'link-0');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Variable experiment.experiment.Experiment.input=experiment.experiment.Experiment-class.html#input,Variable experiment.phase.Phase.input=experiment.phase.Phase-class.html#input,Package io_utils.input=io_utils.input-module.html"><a title="experiment.experiment.Experiment.input
+experiment.phase.Phase.input
+io_utils.input" class="py-name" href="#" onclick="return doclink('link-1', 'input', 'link-1');">input</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module io_utils.input.jcmlreader=io_utils.input.jcmlreader-module.html"><a title="io_utils.input.jcmlreader" class="py-name" href="#" onclick="return doclink('link-2', 'jcmlreader', 'link-2');">jcmlreader</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Class io_utils.input.jcmlreader.JcmlReader=io_utils.input.jcmlreader.JcmlReader-class.html"><a title="io_utils.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-3', 'JcmlReader', 'link-3');">JcmlReader</a></tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-4" class="py-name"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-4', 'io_utils', 'link-0');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Package io_utils.sax=io_utils.sax-module.html"><a title="io_utils.sax" class="py-name" href="#" onclick="return doclink('link-5', 'sax', 'link-5');">sax</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Module io_utils.sax.saxps2jcml=io_utils.sax.saxps2jcml-module.html"><a title="io_utils.sax.saxps2jcml" class="py-name" href="#" onclick="return doclink('link-6', 'saxps2jcml', 'link-6');">saxps2jcml</a></tt> <tt class="py-keyword">import</tt> <tt id="link-7" class="py-name" targets="Class io_utils.sax.saxps2jcml.Parallelsentence2Jcml=io_utils.sax.saxps2jcml.Parallelsentence2Jcml-class.html"><a title="io_utils.sax.saxps2jcml.Parallelsentence2Jcml" class="py-name" href="#" onclick="return doclink('link-7', 'Parallelsentence2Jcml', 'link-7');">Parallelsentence2Jcml</a></tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-8" class="py-name"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-8', 'io_utils', 'link-0');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Variable experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.output=experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival-module.html#output,Variable experiment.experiment.Experiment.output=experiment.experiment.Experiment-class.html#output,Variable experiment.phase.Phase.output=experiment.phase.Phase-class.html#output,Package io_utils.output=io_utils.output-module.html"><a title="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.output
+experiment.experiment.Experiment.output
+experiment.phase.Phase.output
+io_utils.output" class="py-name" href="#" onclick="return doclink('link-9', 'output', 'link-9');">output</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Module io_utils.output.xmlwriter=io_utils.output.xmlwriter-module.html"><a title="io_utils.output.xmlwriter" class="py-name" href="#" onclick="return doclink('link-10', 'xmlwriter', 'link-10');">xmlwriter</a></tt> <tt class="py-keyword">import</tt> <tt id="link-11" class="py-name" targets="Class io_utils.output.xmlwriter.XmlWriter=io_utils.output.xmlwriter.XmlWriter-class.html"><a title="io_utils.output.xmlwriter.XmlWriter" class="py-name" href="#" onclick="return doclink('link-11', 'XmlWriter', 'link-11');">XmlWriter</a></tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-12" class="py-name" targets="Package featuregenerator=featuregenerator-module.html,Module featuregenerator.featuregenerator=featuregenerator.featuregenerator-module.html"><a title="featuregenerator
+featuregenerator.featuregenerator" class="py-name" href="#" onclick="return doclink('link-12', 'featuregenerator', 'link-12');">featuregenerator</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Package featuregenerator.bleu=featuregenerator.bleu-module.html,Module featuregenerator.bleu.bleu=featuregenerator.bleu.bleu-module.html"><a title="featuregenerator.bleu
+featuregenerator.bleu.bleu" class="py-name" href="#" onclick="return doclink('link-13', 'bleu', 'link-13');">bleu</a></tt> <tt class="py-keyword">import</tt> <tt id="link-14" class="py-name"><a title="featuregenerator.bleu
+featuregenerator.bleu.bleu" class="py-name" href="#" onclick="return doclink('link-14', 'bleu', 'link-13');">bleu</a></tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-15" class="py-name"><a title="featuregenerator
+featuregenerator.featuregenerator" class="py-name" href="#" onclick="return doclink('link-15', 'featuregenerator', 'link-12');">featuregenerator</a></tt><tt class="py-op">.</tt><tt id="link-16" class="py-name"><a title="featuregenerator.bleu
+featuregenerator.bleu.bleu" class="py-name" href="#" onclick="return doclink('link-16', 'bleu', 'link-13');">bleu</a></tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Module featuregenerator.bleu.bleugenerator=featuregenerator.bleu.bleugenerator-module.html"><a title="featuregenerator.bleu.bleugenerator" class="py-name" href="#" onclick="return doclink('link-17', 'bleugenerator', 'link-17');">bleugenerator</a></tt> <tt class="py-keyword">import</tt> <tt id="link-18" class="py-name" targets="Class featuregenerator.bleu.bleugenerator.BleuGenerator=featuregenerator.bleu.bleugenerator.BleuGenerator-class.html"><a title="featuregenerator.bleu.bleugenerator.BleuGenerator" class="py-name" href="#" onclick="return doclink('link-18', 'BleuGenerator', 'link-18');">BleuGenerator</a></tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-19" class="py-name"><a title="featuregenerator
+featuregenerator.featuregenerator" class="py-name" href="#" onclick="return doclink('link-19', 'featuregenerator', 'link-12');">featuregenerator</a></tt><tt class="py-op">.</tt><tt id="link-20" class="py-name" targets="Package featuregenerator.meteor=featuregenerator.meteor-module.html,Module featuregenerator.meteor.meteor=featuregenerator.meteor.meteor-module.html"><a title="featuregenerator.meteor
+featuregenerator.meteor.meteor" class="py-name" href="#" onclick="return doclink('link-20', 'meteor', 'link-20');">meteor</a></tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="featuregenerator.meteor
+featuregenerator.meteor.meteor" class="py-name" href="#" onclick="return doclink('link-21', 'meteor', 'link-20');">meteor</a></tt> <tt class="py-keyword">import</tt> <tt id="link-22" class="py-name" targets="Class featuregenerator.meteor.meteor.MeteorGenerator=featuregenerator.meteor.meteor.MeteorGenerator-class.html"><a title="featuregenerator.meteor.meteor.MeteorGenerator" class="py-name" href="#" onclick="return doclink('link-22', 'MeteorGenerator', 'link-22');">MeteorGenerator</a></tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-23" class="py-name" targets="Package sentence=sentence-module.html,Module sentence.sentence=sentence.sentence-module.html"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-23', 'sentence', 'link-23');">sentence</a></tt><tt class="py-op">.</tt><tt id="link-24" class="py-name" targets="Module sentence.parallelsentence=sentence.parallelsentence-module.html"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-24', 'parallelsentence', 'link-24');">parallelsentence</a></tt> <tt class="py-keyword">import</tt> <tt id="link-25" class="py-name" targets="Class sentence.parallelsentence.ParallelSentence=sentence.parallelsentence.ParallelSentence-class.html"><a title="sentence.parallelsentence.ParallelSentence" class="py-name" href="#" onclick="return doclink('link-25', 'ParallelSentence', 'link-25');">ParallelSentence</a></tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-26" class="py-name"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-26', 'sentence', 'link-23');">sentence</a></tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Module sentence.scoring=sentence.scoring-module.html"><a title="sentence.scoring" class="py-name" href="#" onclick="return doclink('link-27', 'scoring', 'link-27');">scoring</a></tt> <tt class="py-keyword">import</tt> <tt id="link-28" class="py-name" targets="Class sentence.scoring.Scoring=sentence.scoring.Scoring-class.html"><a title="sentence.scoring.Scoring" class="py-name" href="#" onclick="return doclink('link-28', 'Scoring', 'link-28');">Scoring</a></tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"> </tt>
+<a name="sort_sentences_per_system"></a><div id="sort_sentences_per_system-def"><a name="L19"></a><tt class="py-lineno"> 19</tt> <a class="py-toggle" href="#" id="sort_sentences_per_system-toggle" onclick="return toggle('sort_sentences_per_system');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="support.evaluation.selectbest_n_evaluate-module.html#sort_sentences_per_system">sort_sentences_per_system</a><tt class="py-op">(</tt><tt class="py-param">dataset</tt><tt class="py-op">,</tt> <tt class="py-param">predicted_rank_name</tt><tt class="py-op">,</tt> <tt class="py-param">original_rank_name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="sort_sentences_per_system-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="sort_sentences_per_system-expanded"><a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">    <tt class="py-name">sentences_per_system</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-29" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-29', 'parallelsentence', 'link-24');">parallelsentence</a></tt> <tt class="py-keyword">in</tt> <tt id="link-30" class="py-name" targets="Module sentence.dataset=sentence.dataset-module.html"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-30', 'dataset', 'link-30');">dataset</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">         </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">        <tt class="py-name">reference</tt> <tt class="py-op">=</tt> <tt id="link-31" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-31', 'parallelsentence', 'link-24');">parallelsentence</a></tt><tt class="py-op">.</tt><tt id="link-32" class="py-name" targets="Method sentence.parallelsentence.ParallelSentence.get_reference()=sentence.parallelsentence.ParallelSentence-class.html#get_reference"><a title="sentence.parallelsentence.ParallelSentence.get_reference" class="py-name" href="#" onclick="return doclink('link-32', 'get_reference', 'link-32');">get_reference</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">        <tt class="py-name">reference_string</tt> <tt class="py-op">=</tt> <tt class="py-name">reference</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name" targets="Method sentence.sentence.SimpleSentence.get_string()=sentence.sentence.SimpleSentence-class.html#get_string"><a title="sentence.sentence.SimpleSentence.get_string" class="py-name" href="#" onclick="return doclink('link-33', 'get_string', 'link-33');">get_string</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">         </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">        <tt class="py-name">predicted_rank_vector</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt id="link-34" class="py-name" targets="Variable classifier.extract_liblinear_weights.f=classifier.extract_liblinear_weights-module.html#f,Variable classifier.extract_linear_regression_coefficients.f=classifier.extract_linear_regression_coefficients-module.html#f,Variable classifier.extract_logreg_weight.f=classifier.extract_logreg_weight-module.html#f,Variable experiment.autoranking.getlogregweights.f=experiment.autoranking.getlogregweights-module.html#f"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-34', 'f', 'link-34');">f</a></tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt id="link-35" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-35', 'f', 'link-34');">f</a></tt> <tt class="py-keyword">in</tt> <tt id="link-36" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-36', 'parallelsentence', 'link-24');">parallelsentence</a></tt><tt class="py-op">.</tt><tt id="link-37" class="py-name" targets="Method sentence.parallelsentence.ParallelSentence.get_filtered_target_attribute_values()=sentence.parallelsentence.ParallelSentence-class.html#get_filtered_target_attribute_values"><a title="sentence.parallelsentence.ParallelSentence.get_filtered_target_attribute_values" class="py-name" href="#" onclick="return doclink('link-37', 'get_filtered_target_attribute_values', 'link-37');">get_filtered_target_attribute_values</a></tt><tt class="py-op">(</tt><tt class="py-name">predicted_rank_name</tt><tt class="py-op">,</tt> <tt class="py-string">"system"</tt><tt class="py-op">,</tt> <tt class="py-string">"_ref"</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">        <tt class="py-name">original_rank_vector</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt id="link-38" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-38', 'f', 'link-34');">f</a></tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt id="link-39" class="py-name"><a title="classifier.extract_liblinear_weights.f
+classifier.extract_linear_regression_coefficients.f
+classifier.extract_logreg_weight.f
+experiment.autoranking.getlogregweights.f" class="py-name" href="#" onclick="return doclink('link-39', 'f', 'link-34');">f</a></tt> <tt class="py-keyword">in</tt> <tt id="link-40" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-40', 'parallelsentence', 'link-24');">parallelsentence</a></tt><tt class="py-op">.</tt><tt id="link-41" class="py-name"><a title="sentence.parallelsentence.ParallelSentence.get_filtered_target_attribute_values" class="py-name" href="#" onclick="return doclink('link-41', 'get_filtered_target_attribute_values', 'link-37');">get_filtered_target_attribute_values</a></tt><tt class="py-op">(</tt><tt class="py-name">original_rank_name</tt><tt class="py-op">,</tt> <tt class="py-string">"system"</tt><tt class="py-op">,</tt> <tt class="py-string">"_ref"</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">         </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">        <tt class="py-name">min_predicted</tt> <tt class="py-op">=</tt> <tt class="py-name">min</tt><tt class="py-op">(</tt><tt class="py-name">predicted_rank_vector</tt><tt class="py-op">)</tt>      </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">        <tt class="py-name">min_original</tt> <tt class="py-op">=</tt> <tt class="py-name">min</tt><tt class="py-op">(</tt><tt class="py-name">original_rank_vector</tt><tt class="py-op">)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">        <tt class="py-name">max_original</tt> <tt class="py-op">=</tt> <tt class="py-name">max</tt><tt class="py-op">(</tt><tt class="py-name">original_rank_vector</tt><tt class="py-op">)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">         </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">             </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">        <tt class="py-name">predicted_best</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">         </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">        <tt class="py-name">parallelsentence_strings</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt>  </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">         </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">translation</tt> <tt class="py-keyword">in</tt> <tt id="link-42" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-42', 'parallelsentence', 'link-24');">parallelsentence</a></tt><tt class="py-op">.</tt><tt id="link-43" class="py-name" targets="Method sentence.pairwiseparallelsentence.PairwiseParallelSentence.get_translations()=sentence.pairwiseparallelsentence.PairwiseParallelSentence-class.html#get_translations,Method sentence.parallelsentence.ParallelSentence.get_translations()=sentence.parallelsentence.ParallelSentence-class.html#get_translations"><a title="sentence.pairwiseparallelsentence.PairwiseParallelSentence.get_translations
+sentence.parallelsentence.ParallelSentence.get_translations" class="py-name" href="#" onclick="return doclink('link-43', 'get_translations', 'link-43');">get_translations</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">             </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">             </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">            <tt class="py-name">translation_string</tt> <tt class="py-op">=</tt> <tt class="py-name">translation</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name"><a title="sentence.sentence.SimpleSentence.get_string" class="py-name" href="#" onclick="return doclink('link-44', 'get_string', 'link-33');">get_string</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">             </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">            <tt class="py-comment">#first gather based on the system name</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">            <tt class="py-name">system</tt> <tt class="py-op">=</tt> <tt class="py-name">translation</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name" targets="Method sentence.parallelsentence.ParallelSentence.get_attribute()=sentence.parallelsentence.ParallelSentence-class.html#get_attribute,Method sentence.sentence.SimpleSentence.get_attribute()=sentence.sentence.SimpleSentence-class.html#get_attribute"><a title="sentence.parallelsentence.ParallelSentence.get_attribute
+sentence.sentence.SimpleSentence.get_attribute" class="py-name" href="#" onclick="return doclink('link-45', 'get_attribute', 'link-45');">get_attribute</a></tt><tt class="py-op">(</tt><tt class="py-string">"system"</tt><tt class="py-op">)</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">            <tt class="py-name">sentence_tuple</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-name">translation_string</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-name">reference_string</tt><tt class="py-op">]</tt><tt class="py-op">)</tt>     </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">            <tt class="py-name">sentences_per_system</tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-name">system</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">sentence_tuple</tt><tt class="py-op">)</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">            <tt class="py-name">system_categories</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">                                 <tt class="py-op">(</tt><tt class="py-string">'-predicted_best'</tt><tt class="py-op">,</tt> <tt class="py-name">predicted_rank_name</tt><tt class="py-op">,</tt> <tt class="py-name">min_predicted</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">                                 <tt class="py-op">(</tt><tt class="py-string">"-human_1"</tt><tt class="py-op">,</tt> <tt class="py-name">original_rank_name</tt><tt class="py-op">,</tt> <tt class="py-name">min_original</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">                                 <tt class="py-op">(</tt><tt class="py-string">"-human_2"</tt><tt class="py-op">,</tt> <tt class="py-name">original_rank_name</tt><tt class="py-op">,</tt> <tt class="py-name">min_original</tt><tt class="py-op">+</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">                                 <tt class="py-op">(</tt><tt class="py-string">"-human_3"</tt><tt class="py-op">,</tt> <tt class="py-name">original_rank_name</tt><tt class="py-op">,</tt> <tt class="py-name">min_original</tt><tt class="py-op">+</tt><tt class="py-number">2</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">                                 <tt class="py-op">(</tt><tt class="py-string">"-human_4"</tt><tt class="py-op">,</tt> <tt class="py-name">original_rank_name</tt><tt class="py-op">,</tt> <tt class="py-name">min_original</tt><tt class="py-op">+</tt><tt class="py-number">3</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">                                 <tt class="py-op">(</tt><tt class="py-string">"-human_worst"</tt><tt class="py-op">,</tt> <tt class="py-name">original_rank_name</tt><tt class="py-op">,</tt> <tt class="py-name">max_original</tt><tt class="py-op">)</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">                                <tt class="py-op">]</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">         </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">             </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">         </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">id</tt><tt class="py-op">,</tt> <tt class="py-name">attname</tt><tt class="py-op">,</tt> <tt class="py-name">attvalue</tt> <tt class="py-keyword">in</tt> <tt class="py-name">system_categories</tt><tt class="py-op">:</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">translation</tt><tt class="py-op">.</tt><tt id="link-46" class="py-name"><a title="sentence.parallelsentence.ParallelSentence.get_attribute
+sentence.sentence.SimpleSentence.get_attribute" class="py-name" href="#" onclick="return doclink('link-46', 'get_attribute', 'link-45');">get_attribute</a></tt><tt class="py-op">(</tt><tt class="py-name">attname</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-name">attvalue</tt><tt class="py-op">:</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">                    <tt class="py-name">sentence_tuple</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-name">translation_string</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-name">reference_string</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">                    <tt class="py-name">sentences_per_system</tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-name">id</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">sentence_tuple</tt><tt class="py-op">)</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">         </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">                 </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">sentences_per_system</tt> </tt>
+</div><a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-47" class="py-name" targets="Variable featuregenerator.meteor.meteor.MeteorGenerator.__name__=featuregenerator.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-47', '__name__', 'link-47');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">    <tt class="py-name">datafile</tt> <tt class="py-op">=</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">     </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">         </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">    <tt class="py-name">java_classpath</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">"/share/emplus/software/meteor-1.3/meteor-1.3.jar"</tt><tt class="py-op">,</tt><tt class="py-string">"/home/elav01/taraxu_tools/meteor-1.3"</tt><tt class="py-op">,</tt><tt class="py-string">"/home/elav01/.local/share/py4j/py4j0.7.jar"</tt><tt class="py-op">,</tt><tt class="py-string">"/home/elav01/tools/TaraXUscripts/src/experiment/autoranking"</tt><tt class="py-op">]</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">    <tt class="py-name">dir_path</tt> <tt class="py-op">=</tt> <tt class="py-string">"/home/elav01/workspace/TaraXUscripts/src/experiment/autoranking"</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">    <tt id="link-48" class="py-name"><a title="featuregenerator.meteor
+featuregenerator.meteor.meteor" class="py-name" href="#" onclick="return doclink('link-48', 'meteor', 'link-20');">meteor</a></tt> <tt class="py-op">=</tt> <tt id="link-49" class="py-name"><a title="featuregenerator.meteor.meteor.MeteorGenerator" class="py-name" href="#" onclick="return doclink('link-49', 'MeteorGenerator', 'link-22');">MeteorGenerator</a></tt><tt class="py-op">(</tt><tt class="py-string">"en"</tt><tt class="py-op">,</tt> <tt class="py-name">java_classpath</tt><tt class="py-op">,</tt> <tt class="py-name">dir_path</tt><tt class="py-op">)</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">     </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">    <tt class="py-name">scorers</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt id="link-50" class="py-name"><a title="featuregenerator.bleu
+featuregenerator.bleu.bleu" class="py-name" href="#" onclick="return doclink('link-50', 'bleu', 'link-13');">bleu</a></tt><tt class="py-op">,</tt> <tt id="link-51" class="py-name"><a title="featuregenerator.meteor
+featuregenerator.meteor.meteor" class="py-name" href="#" onclick="return doclink('link-51', 'meteor', 'link-20');">meteor</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">     </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">    <tt id="link-52" class="py-name"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-52', 'dataset', 'link-30');">dataset</a></tt> <tt class="py-op">=</tt> <tt id="link-53" class="py-name"><a title="io_utils.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-53', 'JcmlReader', 'link-3');">JcmlReader</a></tt><tt class="py-op">(</tt><tt class="py-name">datafile</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name" targets="Method io_utils.input.genericreader.GenericReader.get_dataset()=io_utils.input.genericreader.GenericReader-class.html#get_dataset,Method io_utils.input.orangeprocessor.OrangeProcessor.get_dataset()=io_utils.input.orangeprocessor.OrangeProcessor-class.html#get_dataset,Method io_utils.input.orangereader.OrangeData.get_dataset()=io_utils.input.orangereader.OrangeData-class.html#get_dataset,Method io_utils.input.xliffreader.XliffReader.get_dataset()=io_utils.input.xliffreader.XliffReader-class.html#get_dataset,Method io_utils.sax.cejcml.CEJcmlReader.get_dataset()=io_utils.sax.cejcml.CEJcmlReader-class.html#get_dataset"><a title="io_utils.input.genericreader.GenericReader.get_dataset
+io_utils.input.orangeprocessor.OrangeProcessor.get_dataset
+io_utils.input.orangereader.OrangeData.get_dataset
+io_utils.input.xliffreader.XliffReader.get_dataset
+io_utils.sax.cejcml.CEJcmlReader.get_dataset" class="py-name" href="#" onclick="return doclink('link-54', 'get_dataset', 'link-54');">get_dataset</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">     </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">    <tt class="py-comment">#optional </tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">3</tt><tt class="py-op">:</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">        <tt class="py-name">importfile</tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-comment">#        sys.stderr("Importing references from file {}".format(importfile))</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">        <tt class="py-name">importdataset</tt> <tt class="py-op">=</tt> <tt id="link-55" class="py-name"><a title="io_utils.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-55', 'JcmlReader', 'link-3');">JcmlReader</a></tt><tt class="py-op">(</tt><tt class="py-name">importfile</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-56" class="py-name"><a title="io_utils.input.genericreader.GenericReader.get_dataset
+io_utils.input.orangeprocessor.OrangeProcessor.get_dataset
+io_utils.input.orangereader.OrangeData.get_dataset
+io_utils.input.xliffreader.XliffReader.get_dataset
+io_utils.sax.cejcml.CEJcmlReader.get_dataset" class="py-name" href="#" onclick="return doclink('link-56', 'get_dataset', 'link-54');">get_dataset</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">        <tt id="link-57" class="py-name"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-57', 'dataset', 'link-30');">dataset</a></tt><tt class="py-op">.</tt><tt id="link-58" class="py-name" targets="Method sentence.dataset.DataSet.merge_dataset()=sentence.dataset.DataSet-class.html#merge_dataset"><a title="sentence.dataset.DataSet.merge_dataset" class="py-name" href="#" onclick="return doclink('link-58', 'merge_dataset', 'link-58');">merge_dataset</a></tt><tt class="py-op">(</tt><tt class="py-name">importdataset</tt><tt class="py-op">,</tt> <tt class="py-name">add_missing</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">)</tt>   </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-comment">#        XmlWriter(dataset).write_to_file(datafile.replace("jcml", "merged.jcml"))</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">    <tt class="py-name">predicted_first_sentences</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">    <tt class="py-name">original_first_sentences</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">    <tt class="py-name">original_last_sentences</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">     </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">    <tt class="py-name">predicted_rank_name</tt> <tt class="py-op">=</tt> <tt class="py-string">"rank_soft"</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">    <tt class="py-name">original_rank_name</tt> <tt class="py-op">=</tt> <tt class="py-string">"ref-lev"</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">     </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">    <tt class="py-name">sentences_per_system</tt> <tt class="py-op">=</tt> <tt id="link-59" class="py-name" targets="Function support.evaluation.selectbest_n_evaluate.sort_sentences_per_system()=support.evaluation.selectbest_n_evaluate-module.html#sort_sentences_per_system"><a title="support.evaluation.selectbest_n_evaluate.sort_sentences_per_system" class="py-name" href="#" onclick="return doclink('link-59', 'sort_sentences_per_system', 'link-59');">sort_sentences_per_system</a></tt><tt class="py-op">(</tt><tt id="link-60" class="py-name"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-60', 'dataset', 'link-30');">dataset</a></tt><tt class="py-op">,</tt> <tt class="py-name">predicted_rank_name</tt><tt class="py-op">,</tt> <tt class="py-name">original_rank_name</tt><tt class="py-op">)</tt>         </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">     </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">scorer</tt> <tt class="py-keyword">in</tt> <tt class="py-name">scorers</tt><tt class="py-op">:</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-string">"----------------"</tt>         </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-name">scorer</tt><tt class="py-op">.</tt><tt id="link-61" class="py-name"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-61', '__name__', 'link-47');">__name__</a></tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-string">"----------------"</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">system</tt><tt class="py-op">,</tt> <tt class="py-name">sentence_tuples</tt> <tt class="py-keyword">in</tt> <tt class="py-name">sorted</tt><tt class="py-op">(</tt><tt class="py-name">sentences_per_system</tt><tt class="py-op">.</tt><tt class="py-name">items</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">            <tt class="py-keyword">print</tt> <tt class="py-name">system</tt><tt class="py-op">,</tt> <tt class="py-string">"&amp;"</tt><tt class="py-op">,</tt> <tt class="py-name">round</tt><tt class="py-op">(</tt><tt class="py-number">100.00</tt><tt class="py-op">*</tt><tt class="py-name">scorer</tt><tt class="py-op">.</tt><tt id="link-62" class="py-name" targets="Function featuregenerator.bleu.bleu.score_sentences()=featuregenerator.bleu.bleu-module.html#score_sentences,Method featuregenerator.meteor.meteor.MeteorGenerator.score_sentences()=featuregenerator.meteor.meteor.MeteorGenerator-class.html#score_sentences"><a title="featuregenerator.bleu.bleu.score_sentences
+featuregenerator.meteor.meteor.MeteorGenerator.score_sentences" class="py-name" href="#" onclick="return doclink('link-62', 'score_sentences', 'link-62');">score_sentences</a></tt><tt class="py-op">(</tt><tt class="py-name">sentence_tuples</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-number">2</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">"&amp;"</tt><tt class="py-op">,</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">sentence_tuples</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">" \\\\"</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:21 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

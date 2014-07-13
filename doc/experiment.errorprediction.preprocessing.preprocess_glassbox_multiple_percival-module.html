@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="experiment-module.html">Package&nbsp;experiment</a> ::
+        <a href="experiment.errorprediction-module.html">Package&nbsp;errorprediction</a> ::
+        <a href="experiment.errorprediction.preprocessing-module.html">Package&nbsp;preprocessing</a> ::
+        Module&nbsp;preprocess_glassbox_multiple_percival
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module preprocess_glassbox_multiple_percival</h1><p class="nomargin-top"><span class="codelink"><a href="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival-pysrc.html">source&nbsp;code</a></span></p>
+<p>TaraXU specific script for gathering data of round 2 and wrapping them
+  on a sentence level Created on Apr 21, 2013</p>
+
+<hr />
+<div class="fields">      <p><strong>Author:</strong>
+        Eleftherios Avramidis
+      </p>
+</div><!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Functions</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Functions"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_find_filename"></a><span class="summary-sig-name">_find_filename</span>(<span class="summary-sig-arg">fullpattern</span>,
+        <span class="summary-sig-arg">params</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival-pysrc.html#_find_filename">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Variables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="sth"></a><span class="summary-name">sth</span> = <code title="logging.StreamHandler()">logging.StreamHandler()</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival-module.html#source" class="summary-name">source</a> = <code title="&quot;{basepath}/test-data/client/raw/{langpair_upper}/{set}*xml&quot;">&quot;{basepath}/test-data/client/raw/{langpair_upper}/{se<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival-module.html#testsets" class="summary-name">testsets</a> = <code title="[&quot;cust_euDE_4&quot;, &quot;Green Fact Sheet_cust_euDE_4&quot;, &quot;ReGen_letak_cust_euDE\
+_4&quot;, &quot;TZ_Way_to_Green.docx_cust_euDE_4&quot;, &quot;069592001_cust1&quot;, &quot;079784001\
+_cust_1&quot;, &quot;069592001_cust_euDE_1&quot;, &quot;079784001_cust_euDE_1&quot;, &quot;351564014\
+_00__2_cust_euDE_2&quot;, &quot;355004004__1_cust_euDE_2&quot;, &quot;35500410402__2_cust_\
+euDE_2&quot;, &quot;069592001_cust_1.&quot;, &quot;079784001_cust_1&quot;, &quot;Change_Tyres_cust_e\
+uDE_3&quot;, &quot;ELEVATORS_cust_euDE_4&quot;, &quot;ESCALATORS AND MOVING WALKWAYS_cust_\
+euDE_4&quot;, &quot;Future_tyre_Labelling_cust_euDE_3&quot;, &quot;GEN_cust_euDE_4&quot;, &quot;Oct_\
+cust_euDE_4&quot;, &quot;SAFETY FOR ALL_cust_euDE_4&quot;, &quot;SERVICE EXCELLENCE_cust_e\
+...">[&quot;cust_euDE_4&quot;, &quot;Green Fact Sheet_cust_euDE_4&quot;, &quot;Re<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="target"></a><span class="summary-name">target</span> = <code title="&quot;{basepath}/system-outputs/{system}/{langpair}/*{set}*&quot;">&quot;{basepath}/system-outputs/{system}/{langpair}/*{set}*&quot;</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="log"></a><span class="summary-name">log</span> = <code title="&quot;{basepath}/logs/{langpair}/{system}/wmt11.*&quot;">&quot;{basepath}/logs/{langpair}/{system}/wmt11.*&quot;</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ids"></a><span class="summary-name">ids</span> = <code title="source+ &quot;.links&quot;">source+ &quot;.links&quot;</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival-module.html#output" class="summary-name">output</a> = <code title="&quot;/share/taraxu/selection-mechanism/errorprediction/preprocessing/combi\
+ned/{set}.{langpair}.{system}.jcml&quot;">&quot;/share/taraxu/selection-mechanism/errorprediction/pr<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="params"></a><span class="summary-name">params</span> = <code title="{&quot;basepath&quot;: &quot;/share/taraxu/evaluation-rounds/r2&quot;}">{&quot;basepath&quot;: &quot;/share/taraxu/evaluation-rounds/r2&quot;}</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="systems"></a><span class="summary-name">systems</span> = <code title="[&quot;moses&quot;]">[&quot;moses&quot;]</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival-module.html#langpairs" class="summary-name">langpairs</a> = <code title="[('de', 'en'), ('en', 'de'), ('de', 'fr'), ('fr', 'de'), ('de', 'es'),\
+ ('es', 'de')]">[('de', 'en'), ('en', 'de'), ('de', 'fr'), ('fr', <code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="counter"></a><span class="summary-name">counter</span> = <code title="0">0</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES DETAILS ==================== -->
+<a name="section-VariablesDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-VariablesDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="source"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">source</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+&quot;{basepath}/test-data/client/raw/{langpair_upper}/{set}*xml&quot;
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="testsets"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">testsets</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+[&quot;cust_euDE_4&quot;, &quot;Green Fact Sheet_cust_euDE_4&quot;, &quot;ReGen_letak_cust_euDE<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+_4&quot;, &quot;TZ_Way_to_Green.docx_cust_euDE_4&quot;, &quot;069592001_cust1&quot;, &quot;079784001<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+_cust_1&quot;, &quot;069592001_cust_euDE_1&quot;, &quot;079784001_cust_euDE_1&quot;, &quot;351564014<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+_00__2_cust_euDE_2&quot;, &quot;355004004__1_cust_euDE_2&quot;, &quot;35500410402__2_cust_<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+euDE_2&quot;, &quot;069592001_cust_1.&quot;, &quot;079784001_cust_1&quot;, &quot;Change_Tyres_cust_e<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+uDE_3&quot;, &quot;ELEVATORS_cust_euDE_4&quot;, &quot;ESCALATORS AND MOVING WALKWAYS_cust_<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+euDE_4&quot;, &quot;Future_tyre_Labelling_cust_euDE_3&quot;, &quot;GEN_cust_euDE_4&quot;, &quot;Oct_<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+cust_euDE_4&quot;, &quot;SAFETY FOR ALL_cust_euDE_4&quot;, &quot;SERVICE EXCELLENCE_cust_e<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="output"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">output</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+&quot;/share/taraxu/selection-mechanism/errorprediction/preprocessing/combi<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ned/{set}.{langpair}.{system}.jcml&quot;
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="langpairs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">langpairs</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+[('de', 'en'), ('en', 'de'), ('de', 'fr'), ('fr', 'de'), ('de', 'es'),<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ ('es', 'de')]
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:18 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
