@@ -5,7 +5,7 @@ Created on 7 Jul 2014
 '''
 
 from ml.lib.orange import OrangeRuntimeRanker 
-from io_utils.sax.cejcml import CEJcmlReader 
+from io_utils.ce.cejcml import CEJcmlReader 
 from collections import OrderedDict
 import sys
 
