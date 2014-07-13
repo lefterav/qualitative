@@ -3,7 +3,7 @@ Orange ML toolkit
 --------------------
 sudo apt-get install python-dev g++ build-essential python-pip 
 sudo pip install --upgrade pip  
-sudo pip install orange *
+sudo pip install orange
 
 * There is also a debian package / repository called orangesvn ( sudo apt-get install orangesvn) but works only with python 2.5. If you use it, you may have to tackle pythonpath issues
 
