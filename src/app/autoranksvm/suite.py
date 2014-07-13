@@ -44,7 +44,7 @@ import pickle
 import os
 
 from expsuite import PyExperimentSuite
-from experiment.autoranking.suite import AutorankingSuite
+from app.autoranking.suite import AutorankingSuite
 
 from io_utils.ce import pysvmlight
 from classifier.svmrank import SvmRank

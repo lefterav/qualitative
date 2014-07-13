@@ -257,7 +257,7 @@ import shutil
 def load_data():
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', nargs=1, help="configuration file")
-    parser.add_argument('-e', nargs=1, help="experiment name")
+    parser.add_argument('-e', nargs=1, help="app name")
     parser.add_argument('-n', nargs='?', help="cores num")
     parser.add_argument('-d', nargs='?', help="delete previous")
     args = parser.parse_args()
@@ -427,7 +427,7 @@ if __name__ == '__main__':
         logging.debug("Iteration filename %s", newconfig_filename)
         get_new_commandline_args(newconfig_filename)
         
-        #run the experiment
+        #run the app
         mysuite = AutorankingSuite()
         mysuite.start()
         
