@@ -9,7 +9,7 @@ Created on 17 Apr 2013
 @author: Eleftherios Avramidis
 '''
 
-from io_utils.sax.cejcml2orange import CElementTreeJcml2Orange
+from io_utils.ce.cejcml2orange import CElementTreeJcml2Orange
 import sys, logging
 from Orange.data import Table, Domain
 from Orange.classification.logreg import LogRegLearner, dump
