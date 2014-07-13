@@ -1,3 +1,7 @@
+"""
+@author Eleftherios Avramidis based on original by Maja Popovic
+"""
+
 #!/usr/bin/env python
 
 import sys
