@@ -12,7 +12,7 @@ LANGUAGES = {
              'French' : 'fr'
              }
 
-def extract_source(path, language, sentence_index):
+def extract_sourceref(path, language, sentence_index):
     translations = list(enumerate(codecs.open('%s/newssyscombtest2010.%s' %
                                (path, language), 'r', 'utf-8')))
     result = ''
@@ -64,7 +64,7 @@ def create_trees(judgments, lucypath, sourcepath):
         elif pos == 15:
             rank = fields[20]
 
-        source = extract_source(sourcepath, src, index)
+        source = extract_sourceref(sourcepath, src, index)
         (phrasal, sentence, tree) = extract_trees(lucypath, source, dir)
         tree = tree.replace('\t', ' ')
         out = codecs.open('%s.trees' % dir, 'a', 'utf-8')

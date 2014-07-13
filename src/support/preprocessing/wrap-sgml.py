@@ -7,7 +7,7 @@ Wraps a simple text file (sentence per line) into plain SGML
 import getopt
 import codecs
 import sys
-
+from xml.sax.saxutils import escape
 
 class _Input:
     setname = "set"
@@ -92,6 +92,9 @@ if __name__ == '__main__':
     for line in sys.stdin :
        i+=1
        line = line.replace("\n"," ")
+       line = escape(line)
+       if line.strip() == "":
+          line = "dummy"
        print '<seg id="'+str(i)+'">' + line.strip() +'</seg>'
     
     print '</doc>'

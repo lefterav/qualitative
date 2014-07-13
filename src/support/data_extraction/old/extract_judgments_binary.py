@@ -90,7 +90,7 @@ def extract_sentence(path, system, langpair, sentence_index, testset, config):
     return result
 
 
-def extract_source(path, language, sentence_index, testset, config):
+def extract_sourceref(path, language, sentence_index, testset, config):
     PTRN_SOURCEREF=config.get("data","pattern_sourceref")
     translations = list(enumerate(codecs.open(PTRN_SOURCEREF %
                                (path,  testset, language), 'r', 'utf-8')))
@@ -477,7 +477,7 @@ def process_sentence_judgments (sentence_judgments, cur_langpair, cur_langsrc, c
         target2 = SimpleSentence(target2_string, {'system': desiredsystem2 })
         target = [target1, target2]
         
-        source_string = extract_source(path, cur_langsrc, cur_index, cur_testset, config)
+        source_string = extract_sourceref(path, cur_langsrc, cur_index, cur_testset, config)
         source = SimpleSentence(source_string)
 
         parallelsentence = ParallelSentence (source, target)

@@ -23,6 +23,7 @@ LANGUAGES = {
              'French' : 'fr',
              'Hungarian' : 'hu',
              'Russian' : 'ru',
+             'Hindi' : 'hi',
              'All': 'All'
              }
 
@@ -90,15 +91,23 @@ class WMTEvalReader:
             attributes = {}
             attributes = self.map_attributes(row, attributes)
             
+            if row["srclang"] != 'en' and row["trglang"] == 'en':
+                lang2en = "{}en".format(row["srclang"])
+            elif row["trglang"] != 'en' and row["srclang"] == 'en':
+                lang2en = "{}en".format(row["trglang"])
+            
             #this will open the file of the source sentences, get its text and create a SimpleSentence objece            
-            source_text = self.extract_source(row["srclang"], row["testset"], row["srcIndex"])
+            source_text = self.extract_sourceref(row["srclang"], row["testset"], row["srcIndex"], lang2en=lang2en)
             source = SimpleSentence(source_text)
             
             #this will get a list of Simplsentences containing the translations provided by the several systems from the files
             translations = self.get_translations(row)
             
-            #this uses the same function for extracting source sentences, but asks for the target language id instead. this is the reference            
-            reference_text = self.extract_source(row["trglang"], row["testset"], row["srcIndex"])
+            #this uses the same function for extracting source sentences, but asks for the target language id instead. this is the reference
+            if self.config.has_option("data", "pattern_ref"):            
+                reference_text = self.extract_sourceref(row["trglang"], row["testset"], row["srcIndex"], type="ref", lang2en=lang2en)
+            else:
+                reference_text = self.extract_sourceref(row["trglang"], row["testset"], row["srcIndex"])
             reference = SimpleSentence(reference_text)
             
             #initialize object and append it to the list
@@ -194,21 +203,22 @@ class WMTEvalReader:
                 
             file.close()
         else:
-            result = self.extract_source(trglang, None, sentence_index)
+            result = self.extract_sourceref(trglang, None, sentence_index)
         
         return result
 
         
     
-    def extract_source(self, srclang, testset, sentence_index ):
+    def extract_sourceref(self, srclang, testset, sentence_index, type="sourceref", lang2en=""):
         path = self.config.get("data","path")
         sentence_index = int(sentence_index)
         sentence_indexing_base = self.config.getint("format","sentence_indexing_base")
 
-        pattern_sourceref = self.config.get("data","pattern_sourceref")
+        pattern_sourceref = self.config.get("data","pattern_{}".format(type))
         pattern_fields = {"path": path,
                           "srclang": srclang,
-                          "testset": testset}
+                          "testset": testset,
+                          "lang2en": lang2en}
         full_filename = pattern_sourceref % pattern_fields
         file = open(full_filename, 'r')
         file = self.tokenize_file(file, srclang)

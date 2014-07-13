@@ -21,7 +21,11 @@ if __name__ == '__main__':
                      ("en", "es"), 
                      ("es", "en"), 
                      ("cs", "en"),  #Caution: for some years, this works with cz. 
-                     ("en", "cs")
+                     ("en", "cs"),
+                     ("en", "ru"),
+                     ("ru", "en"),
+                     ("en", "hi"),
+                     ("hi", "en")
                     ]
         template_language = ("de", "en")
         path = os.curdir
@@ -57,15 +61,23 @@ if __name__ == '__main__':
                     config.set("preprocessing", "tokenize_target", "False")
                     config.set("preprocessing", "tokenizer", "/home/elav01/taraxu_tools/moses-scripts/tokenizer.perl")
                     
-                    config.set("output", "filename", "/home/elav01/taraxu_data/jcml-latest/raw/%s.rank.jcml" % new_filename)
-                    
+                    try:
+                        os.mkdir("%s-%s" % (srclang, tgtlang))
+                    except:
+                        pass
+                    exact_output_filename = os.path.abspath(os.path.join(os.curdir, "%s-%s" % (srclang, tgtlang), "%s.rank.jcml" % new_filename))
+                    #config.set("output", "filename", "/home/elav01/taraxu_data/jcml-latest/raw/%s.rank.jcml" % new_filename)
+                    config.set("output", "filename", exact_output_filename)
+                    print "File will be written in" , exact_output_filename
                     
                     wmtr = WMTEvalReader(config)
                     parallelsentences = wmtr.parse()
+                    if parallelsentences:
+                        sys.stderr.write("%d Sentences read, proceeding with writing XML\n" % len(parallelsentences))
                     
-                    sys.stderr.write("%d Sentences read, proceeding with writing XML\n" % len(parallelsentences))
- 
-                    filename = config.get("output", "filename")
-                    xmlwriter = Parallelsentence2Jcml(parallelsentences).write_to_file(filename)
-                    sys.stderr.write("Done\n")
+                        filename = config.get("output", "filename")
+                        xmlwriter = Parallelsentence2Jcml(parallelsentences).write_to_file(filename)
+                        sys.stderr.write("Done\n")
+                    else:
+                        sys.stderr.write("No sentences extracted for language pair\n")
                 
