@@ -1,4 +1,37 @@
 
+============
+Requirements
+============
+
+This is a list of the requirements for running the suite. Please scroll
+for more hints on their installation
+
+python-libraries
+* python 2.7
+* orange ml toolkit
+* py4j
+* python-nltk
+* python xlmrpc
+* numpy
+* scipy
+* ruffus [only for training]
+* expsuite [only for training]
+
+external programs [need to start separately]
+* lmserver wrapped over SRILM
+* Acrolinx IQ [optional]
+
+jar files:
+* Berkeley parser
+* Meteor
+* Language tool [optional] 
+
+other resources:
+* language model for source and target language (ARPA format)
+* trained grammar for Berkeley parser (source and target language)
+
+
+
 Orange ML toolkit
 --------------------
 sudo apt-get install python-dev g++ build-essential python-pip 
