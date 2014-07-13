@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>experiment.execute</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="experiment-module.html">Package&nbsp;experiment</a> ::
+        Module&nbsp;execute
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="experiment.execute-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="experiment.execute-module.html">Module experiment.execute</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-docstring">Created on Aug 31, 2011</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring">@author: elav01</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Module experiment.phase=experiment.phase-module.html"><a title="experiment.phase" class="py-name" href="#" onclick="return doclink('link-0', 'phase', 'link-0');">phase</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Class experiment.phase.Phase=experiment.phase.Phase-class.html"><a title="experiment.phase.Phase" class="py-name" href="#" onclick="return doclink('link-1', 'Phase', 'link-1');">Phase</a></tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name" targets="Module experiment.task=experiment.task-module.html"><a title="experiment.task" class="py-name" href="#" onclick="return doclink('link-2', 'task', 'link-2');">task</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-3" class="py-name" targets="Module experiment.data=experiment.data-module.html,Variable experiment.ml4hmt12.features_scoring.data=experiment.ml4hmt12.features_scoring-module.html#data"><a title="experiment.data
+experiment.ml4hmt12.features_scoring.data" class="py-name" href="#" onclick="return doclink('link-3', 'data', 'link-3');">data</a></tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Class experiment.data.Data=experiment.data.Data-class.html"><a title="experiment.data.Data" class="py-name" href="#" onclick="return doclink('link-4', 'Data', 'link-4');">Data</a></tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-5" class="py-name" targets="Module exec.experiment=exec.experiment-module.html,Package experiment=experiment-module.html,Module experiment.autoranking.experiment=experiment.autoranking.experiment-module.html,Module experiment.experiment=experiment.experiment-module.html"><a title="exec.experiment
+experiment
+experiment.autoranking.experiment
+experiment.experiment" class="py-name" href="#" onclick="return doclink('link-5', 'experiment', 'link-5');">experiment</a></tt> <tt class="py-keyword">import</tt> <tt id="link-6" class="py-name" targets="Class exec.experiment.Experiment=exec.experiment.Experiment-class.html,Class experiment.autoranking.experiment.Experiment=experiment.autoranking.experiment.Experiment-class.html,Class experiment.experiment.Experiment=experiment.experiment.Experiment-class.html,Class preprocess.Experiment=preprocess.Experiment-class.html,Class tara_noorange.Experiment=tara_noorange.Experiment-class.html"><a title="exec.experiment.Experiment
+experiment.autoranking.experiment.Experiment
+experiment.experiment.Experiment
+preprocess.Experiment
+tara_noorange.Experiment" class="py-name" href="#" onclick="return doclink('link-6', 'Experiment', 'link-6');">Experiment</a></tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-7" class="py-name" targets="Variable featuregenerator.meteor.meteor.MeteorGenerator.__name__=featuregenerator.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-7', '__name__', 'link-7');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">     </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">    <tt class="py-name">src_language</tt> <tt class="py-op">=</tt> <tt class="py-string">"de"</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">    <tt class="py-name">tgt_language</tt> <tt class="py-op">=</tt> <tt class="py-string">"en"</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">     </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">    <tt class="py-name">tgt_srilmserver</tt> <tt class="py-op">=</tt> <tt class="py-string">""</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">    <tt class="py-name">src_berkeleyserver</tt> <tt class="py-op">=</tt> <tt class="py-string">""</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">    <tt class="py-name">tgt_berkeleyserver</tt> <tt class="py-op">=</tt> <tt class="py-string">""</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">     </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">     </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">    <tt id="link-8" class="py-name"><a title="exec.experiment
+experiment
+experiment.autoranking.experiment
+experiment.experiment" class="py-name" href="#" onclick="return doclink('link-8', 'experiment', 'link-5');">experiment</a></tt> <tt class="py-op">=</tt> <tt id="link-9" class="py-name"><a title="exec.experiment.Experiment
+experiment.autoranking.experiment.Experiment
+experiment.experiment.Experiment
+preprocess.Experiment
+tara_noorange.Experiment" class="py-name" href="#" onclick="return doclink('link-9', 'Experiment', 'link-6');">Experiment</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">    <tt id="link-10" class="py-name"><a title="exec.experiment
+experiment
+experiment.autoranking.experiment
+experiment.experiment" class="py-name" href="#" onclick="return doclink('link-10', 'experiment', 'link-5');">experiment</a></tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Variable experiment.experiment.Experiment.input=experiment.experiment.Experiment-class.html#input,Variable experiment.phase.Phase.input=experiment.phase.Phase-class.html#input,Package io_utils.input=io_utils.input-module.html"><a title="experiment.experiment.Experiment.input
+experiment.phase.Phase.input
+io_utils.input" class="py-name" href="#" onclick="return doclink('link-11', 'input', 'link-11');">input</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"/home/elav01/taraxu_data/tmp.exp/wmt09.jcml"</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">     </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">     </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">    <tt class="py-comment">#===========================================================================</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">    <tt class="py-comment"># Preprocessing</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">    <tt class="py-comment">#===========================================================================</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">    <tt id="link-12" class="py-name" targets="Package experiment.errorprediction.preprocessing=experiment.errorprediction.preprocessing-module.html,Package support.preprocessing=support.preprocessing-module.html"><a title="experiment.errorprediction.preprocessing
+support.preprocessing" class="py-name" href="#" onclick="return doclink('link-12', 'preprocessing', 'link-12');">preprocessing</a></tt> <tt class="py-op">=</tt> <tt id="link-13" class="py-name"><a title="experiment.phase.Phase" class="py-name" href="#" onclick="return doclink('link-13', 'Phase', 'link-1');">Phase</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">    <tt id="link-14" class="py-name"><a title="experiment.errorprediction.preprocessing
+support.preprocessing" class="py-name" href="#" onclick="return doclink('link-14', 'preprocessing', 'link-12');">preprocessing</a></tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Variable experiment.errorprediction.errorprediction_draft.name=experiment.errorprediction.errorprediction_draft-module.html#name,Variable experiment.phase.Phase.name=experiment.phase.Phase-class.html#name"><a title="experiment.errorprediction.errorprediction_draft.name
+experiment.phase.Phase.name" class="py-name" href="#" onclick="return doclink('link-15', 'name', 'link-15');">name</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"generating primary features"</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line"><tt class="py-comment">#    tgt_ngram = SerialTask()</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line"><tt class="py-comment">#    tgt_ngram.name = "tgt_ngram"</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line"><tt class="py-comment">#    from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line"><tt class="py-comment">#    tgt_ngram.processors = [SRILMngramGenerator(tgt_srilmserver, tgt_language)]</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">     </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line"><tt class="py-comment">#    src_berkeley = SerialTask()</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line"><tt class="py-comment">#    src_berkeley.name = "src_berkeley"</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line"><tt class="py-comment">#    from featuregenerator.parser.berkeley.berkeleyclient import BerkeleyFeatureGenerator        </tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line"><tt class="py-comment">#    src_berkeley.processors = [BerkeleyFeatureGenerator(src_berkeleyserver, src_language)]</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line"><tt class="py-comment">#    </tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line"><tt class="py-comment">#    tgt_berkeley = SerialTask()</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line"><tt class="py-comment">#    tgt_berkeley.name = "tgt_berkeley"</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line"><tt class="py-comment">#    tgt_berkeley.processors = [BerkeleyFeatureGenerator(tgt_berkeleyserver, tgt_language)]</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line"><tt class="py-comment">#    </tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">    <tt class="py-name">analyzefeatures</tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name" targets="Class experiment.task.SerialTask=experiment.task.SerialTask-class.html"><a title="experiment.task.SerialTask" class="py-name" href="#" onclick="return doclink('link-16', 'SerialTask', 'link-16');">SerialTask</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">    <tt class="py-name">analyzefeatures</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="experiment.errorprediction.errorprediction_draft.name
+experiment.phase.Phase.name" class="py-name" href="#" onclick="return doclink('link-17', 'name', 'link-15');">name</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"analyze_features"</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">    <tt class="py-name">analyzefeatures</tt><tt class="py-op">.</tt><tt class="py-name">file_extension</tt> <tt class="py-op">=</tt> <tt class="py-string">"ef"</tt> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">    <tt class="py-comment">#analyzefeatures.required = [src_berkeley, tgt_berkeley]</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">     </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt id="link-18" class="py-name" targets="Package featuregenerator=featuregenerator-module.html,Module featuregenerator.featuregenerator=featuregenerator.featuregenerator-module.html"><a title="featuregenerator
+featuregenerator.featuregenerator" class="py-name" href="#" onclick="return doclink('link-18', 'featuregenerator', 'link-18');">featuregenerator</a></tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Module featuregenerator.lengthfeaturegenerator=featuregenerator.lengthfeaturegenerator-module.html"><a title="featuregenerator.lengthfeaturegenerator" class="py-name" href="#" onclick="return doclink('link-19', 'lengthfeaturegenerator', 'link-19');">lengthfeaturegenerator</a></tt> <tt class="py-keyword">import</tt> <tt id="link-20" class="py-name" targets="Class featuregenerator.lengthfeaturegenerator.LengthFeatureGenerator=featuregenerator.lengthfeaturegenerator.LengthFeatureGenerator-class.html,Class io_utils.paralleltemplate.LengthFeatureGenerator=io_utils.paralleltemplate.LengthFeatureGenerator-class.html"><a title="featuregenerator.lengthfeaturegenerator.LengthFeatureGenerator
+io_utils.paralleltemplate.LengthFeatureGenerator" class="py-name" href="#" onclick="return doclink('link-20', 'LengthFeatureGenerator', 'link-20');">LengthFeatureGenerator</a></tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt id="link-21" class="py-name"><a title="featuregenerator
+featuregenerator.featuregenerator" class="py-name" href="#" onclick="return doclink('link-21', 'featuregenerator', 'link-18');">featuregenerator</a></tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Variable experiment.ml4hmt12.bootstrap.parser=experiment.ml4hmt12.bootstrap-module.html#parser,Package featuregenerator.parser=featuregenerator.parser-module.html"><a title="experiment.ml4hmt12.bootstrap.parser
+featuregenerator.parser" class="py-name" href="#" onclick="return doclink('link-22', 'parser', 'link-22');">parser</a></tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Package featuregenerator.parser.berkeley=featuregenerator.parser.berkeley-module.html"><a title="featuregenerator.parser.berkeley" class="py-name" href="#" onclick="return doclink('link-23', 'berkeley', 'link-23');">berkeley</a></tt><tt class="py-op">.</tt><tt id="link-24" class="py-name" targets="Module featuregenerator.parser.berkeley.parsermatches=featuregenerator.parser.berkeley.parsermatches-module.html"><a title="featuregenerator.parser.berkeley.parsermatches" class="py-name" href="#" onclick="return doclink('link-24', 'parsermatches', 'link-24');">parsermatches</a></tt> <tt class="py-keyword">import</tt> <tt id="link-25" class="py-name" targets="Class featuregenerator.parser.berkeley.parsermatches.ParserMatches=featuregenerator.parser.berkeley.parsermatches.ParserMatches-class.html"><a title="featuregenerator.parser.berkeley.parsermatches.ParserMatches" class="py-name" href="#" onclick="return doclink('link-25', 'ParserMatches', 'link-25');">ParserMatches</a></tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt id="link-26" class="py-name"><a title="featuregenerator
+featuregenerator.featuregenerator" class="py-name" href="#" onclick="return doclink('link-26', 'featuregenerator', 'link-18');">featuregenerator</a></tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Module featuregenerator.ratio_generator=featuregenerator.ratio_generator-module.html"><a title="featuregenerator.ratio_generator" class="py-name" href="#" onclick="return doclink('link-27', 'ratio_generator', 'link-27');">ratio_generator</a></tt> <tt class="py-keyword">import</tt> <tt id="link-28" class="py-name" targets="Class featuregenerator.ratio_generator.RatioGenerator=featuregenerator.ratio_generator.RatioGenerator-class.html,Class io_utils.paralleltemplate.RatioGenerator=io_utils.paralleltemplate.RatioGenerator-class.html"><a title="featuregenerator.ratio_generator.RatioGenerator
+io_utils.paralleltemplate.RatioGenerator" class="py-name" href="#" onclick="return doclink('link-28', 'RatioGenerator', 'link-28');">RatioGenerator</a></tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line"> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">    <tt class="py-name">analyzefeatures</tt><tt class="py-op">.</tt><tt class="py-name">processors</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt id="link-29" class="py-name"><a title="featuregenerator.lengthfeaturegenerator.LengthFeatureGenerator
+io_utils.paralleltemplate.LengthFeatureGenerator" class="py-name" href="#" onclick="return doclink('link-29', 'LengthFeatureGenerator', 'link-20');">LengthFeatureGenerator</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line"> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">    </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line">    <tt id="link-30" class="py-name"><a title="experiment.errorprediction.preprocessing
+support.preprocessing" class="py-name" href="#" onclick="return doclink('link-30', 'preprocessing', 'link-12');">preprocessing</a></tt><tt class="py-op">.</tt><tt id="link-31" class="py-name" targets="Variable experiment.phase.Phase.tasks=experiment.phase.Phase-class.html#tasks,Package experiment.tasks=experiment.tasks-module.html"><a title="experiment.phase.Phase.tasks
+experiment.tasks" class="py-name" href="#" onclick="return doclink('link-31', 'tasks', 'link-31');">tasks</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">analyzefeatures</tt><tt class="py-op">]</tt>    </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">     </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line">    <tt id="link-32" class="py-name"><a title="exec.experiment
+experiment
+experiment.autoranking.experiment
+experiment.experiment" class="py-name" href="#" onclick="return doclink('link-32', 'experiment', 'link-5');">experiment</a></tt><tt class="py-op">.</tt><tt id="link-33" class="py-name" targets="Variable experiment.experiment.Experiment.phases=experiment.experiment.Experiment-class.html#phases"><a title="experiment.experiment.Experiment.phases" class="py-name" href="#" onclick="return doclink('link-33', 'phases', 'link-33');">phases</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt id="link-34" class="py-name"><a title="experiment.errorprediction.preprocessing
+support.preprocessing" class="py-name" href="#" onclick="return doclink('link-34', 'preprocessing', 'link-12');">preprocessing</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line">    <tt id="link-35" class="py-name"><a title="exec.experiment
+experiment
+experiment.autoranking.experiment
+experiment.experiment" class="py-name" href="#" onclick="return doclink('link-35', 'experiment', 'link-5');">experiment</a></tt><tt class="py-op">.</tt><tt id="link-36" class="py-name" targets="Method experiment.autoranking.command.SimpleAutoranking.run()=experiment.autoranking.command.SimpleAutoranking-class.html#run,Method experiment.experiment.Experiment.run()=experiment.experiment.Experiment-class.html#run,Method experiment.phase.Phase.run()=experiment.phase.Phase-class.html#run,Method experiment.task.AccumulativeTask.run()=experiment.task.AccumulativeTask-class.html#run,Method experiment.task.GenerativeTask.run()=experiment.task.GenerativeTask-class.html#run,Method experiment.task.SerialTask.run()=experiment.task.SerialTask-class.html#run"><a title="experiment.autoranking.command.SimpleAutoranking.run
+experiment.experiment.Experiment.run
+experiment.phase.Phase.run
+experiment.task.AccumulativeTask.run
+experiment.task.GenerativeTask.run
+experiment.task.SerialTask.run" class="py-name" href="#" onclick="return doclink('link-36', 'run', 'link-36');">run</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:24 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

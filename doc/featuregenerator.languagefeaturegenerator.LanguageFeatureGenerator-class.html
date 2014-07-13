@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="featuregenerator-module.html">Package&nbsp;featuregenerator</a> ::
+        <a href="featuregenerator.languagefeaturegenerator-module.html">Module&nbsp;languagefeaturegenerator</a> ::
+        Class&nbsp;LanguageFeatureGenerator
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class LanguageFeatureGenerator</h1><p class="nomargin-top"><span class="codelink"><a href="featuregenerator.languagefeaturegenerator-pysrc.html#LanguageFeatureGenerator">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+                       object --+    
+                                |    
+<a href="featuregenerator.featuregenerator.FeatureGenerator-class.html">featuregenerator.FeatureGenerator</a> --+
+                                    |
+                                   <strong class="uidshort">LanguageFeatureGenerator</strong>
+</pre>
+
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="featuregenerator.hjerson.Hjerson-class.html">hjerson.Hjerson</a></li><li>, <a href="featuregenerator.parser.berkeley.parsermatches.ParserMatches-class.html">parser.berkeley.parsermatches.ParserMatches</a></li><li>, <a href="featuregenerator.meteor.meteor.MeteorGenerator-class.html">meteor.meteor.MeteorGenerator</a></li><li>, <a href="featuregenerator.languagechecker.languagetool_socket.LanguageToolSocketFeatureGenerator-class.html">languagechecker.languagetool_socket.LanguageToolSocketFeatureGenerator</a></li><li>, <a href="featuregenerator.languagechecker.languagetool.LanguageCheckerCmd-class.html">languagechecker.languagetool.LanguageCheckerCmd</a></li><li>, <a href="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html">languagechecker.languagetool.LanguageToolFeatureGenerator</a></li>  </ul>
+</dd></dl>
+
+<hr />
+<p>Extends the base FeatureGenerator class, by providing basic 
+  checking/functioning for language-specific feature processes. This way, 
+  this class can be inhereted and extended for feature categories that can 
+  only correspond to a particular language specified upon the 
+  initialization of the object</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">lang</span>)</span><br />
+      In order to initialize a language-specific feature generator, the 
+      language needs to be instantiatied as a class variable</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.languagefeaturegenerator-pysrc.html#LanguageFeatureGenerator.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">list(sentence.parallelsentence.ParallelSentence)</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#add_features_batch" class="summary-sig-name">add_features_batch</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">parallelsentences</span>)</span><br />
+      Abstract method to be overriden by the particular subclassed feature 
+      generator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.languagefeaturegenerator-pysrc.html#LanguageFeatureGenerator.add_features_batch">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="add_features_batch_xml"></a><span class="summary-sig-name">add_features_batch_xml</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">filename_in</span>,
+        <span class="summary-sig-arg">filename_out</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.languagefeaturegenerator-pysrc.html#LanguageFeatureGenerator.add_features_batch_xml">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#add_features_dataset" class="summary-sig-name">add_features_dataset</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dataset</span>)</span><br />
+      Augments the provided DataSet with features of the current feature generator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.languagefeaturegenerator-pysrc.html#LanguageFeatureGenerator.add_features_dataset">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#get_features_simplesentence" class="summary-sig-name">get_features_simplesentence</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">simplesentence</span>,
+        <span class="summary-sig-arg">parallelsentence</span>)</span><br />
+      Abstract method to be overriden by the particular subclassed feature 
+      generator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.languagefeaturegenerator-pysrc.html#LanguageFeatureGenerator.get_features_simplesentence">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#get_features_src" class="summary-sig-name">get_features_src</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">simplesentence</span>,
+        <span class="summary-sig-arg">parallelsentence</span>)</span><br />
+      Function that falls back to the general simple sentence feature 
+      generation, only if the language is supported by the feature 
+      generator It receives a source simple sentence and returns a list of 
+      source features.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.languagefeaturegenerator-pysrc.html#LanguageFeatureGenerator.get_features_src">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#get_features_string" class="summary-sig-name">get_features_string</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">string</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.languagefeaturegenerator-pysrc.html#LanguageFeatureGenerator.get_features_string">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#get_features_tgt" class="summary-sig-name">get_features_tgt</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">simplesentence</span>,
+        <span class="summary-sig-arg">parallelsentence</span>)</span><br />
+      Function that falls back to the general simple sentence feature 
+      generation, only if the language is supported by the feature 
+      generator It receives a target simple sentence and returns a list of 
+      target features.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.languagefeaturegenerator-pysrc.html#LanguageFeatureGenerator.get_features_tgt">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html">featuregenerator.FeatureGenerator</a></code></b>:
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_parallelsentence">add_features_parallelsentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_simplesentence">add_features_simplesentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_src">add_features_src</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_tgt">add_features_tgt</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_annotation_name">get_annotation_name</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_parallelsentence">get_features_parallelsentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#process_dataset">process_dataset</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">str</span>
+    </td><td class="summary">
+        <a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#lang" class="summary-name">lang</a><br />
+      the language abrev.
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">lang</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.languagefeaturegenerator-pysrc.html#LanguageFeatureGenerator.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>In order to initialize a language-specific feature generator, the 
+  language needs to be instantiatied as a class variable</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>lang</code></strong> (string) - the language code of the language that the feature generator is 
+          capable of</li>
+    </ul></dd>
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="add_features_batch"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_features_batch</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">parallelsentences</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.languagefeaturegenerator-pysrc.html#LanguageFeatureGenerator.add_features_batch">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Abstract method to be overriden by the particular subclassed feature 
+  generator. It allows the generation of features over many 
+  parallelsentences. It is a flexible solution when feature generation 
+  doesn't take place item to item (see SAX parsing) but a whole list of 
+  parallel sentences needs to be implemented at once. In this case, feature
+  generator may optimize better when the whole dataset is given.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>parallelsentences</code></strong> (list(sentence.parallelsentence.ParallelSentence)) - The parallel sentences to be be augmented</li>
+    </ul></dd>
+    <dt>Returns: list(sentence.parallelsentence.ParallelSentence)</dt>
+        <dd>The given list of ParallelSentence which are now augmented with 
+          features generated from the current featuregenerator</dd>
+    <dt>Overrides:
+        <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_batch">featuregenerator.FeatureGenerator.add_features_batch</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="add_features_dataset"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_features_dataset</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">dataset</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.languagefeaturegenerator-pysrc.html#LanguageFeatureGenerator.add_features_dataset">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Augments the provided DataSet with features of the current feature generator. 
+    It fires feature generation over the included parallelsentences it is composed of.
+    It is not compatible with SAX parsing.
+@param dataset: The DataSet whose contents will be augmented
+@type dataset: sentence.dataset.DataSet
+@rtype: sentence.dataset.DataSet
+@return: The given DataSet augmented with features generated from the current featuregenerator 
+
+</pre>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_dataset">featuregenerator.FeatureGenerator.add_features_dataset</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_features_simplesentence"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_features_simplesentence</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">simplesentence</span>,
+        <span class="sig-arg">parallelsentence</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.languagefeaturegenerator-pysrc.html#LanguageFeatureGenerator.get_features_simplesentence">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Abstract method to be overriden by the particular subclassed feature 
+  generator. It receives a simple sentence of any type and returns a list 
+  of features. It should be overriden by a feature generator that doesn't 
+  differentiate between source and target features</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_simplesentence">featuregenerator.FeatureGenerator.get_features_simplesentence</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_features_src"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_features_src</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">simplesentence</span>,
+        <span class="sig-arg">parallelsentence</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.languagefeaturegenerator-pysrc.html#LanguageFeatureGenerator.get_features_src">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Function that falls back to the general simple sentence feature 
+  generation, only if the language is supported by the feature generator It
+  receives a source simple sentence and returns a list of source 
+  features.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_src">featuregenerator.FeatureGenerator.get_features_src</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_features_string"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_features_string</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">string</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.languagefeaturegenerator-pysrc.html#LanguageFeatureGenerator.get_features_string">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_string">featuregenerator.FeatureGenerator.get_features_string</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_features_tgt"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_features_tgt</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">simplesentence</span>,
+        <span class="sig-arg">parallelsentence</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.languagefeaturegenerator-pysrc.html#LanguageFeatureGenerator.get_features_tgt">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Function that falls back to the general simple sentence feature 
+  generation, only if the language is supported by the feature generator It
+  receives a target simple sentence and returns a list of target 
+  features.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_tgt">featuregenerator.FeatureGenerator.get_features_tgt</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== INSTANCE VARIABLE DETAILS ==================== -->
+<a name="section-InstanceVariableDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variable Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariableDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="lang"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">lang</h3>
+  the language abrev. code
+  <dl class="fields">
+    <dt>Type:</dt>
+      <dd>str</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:20 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

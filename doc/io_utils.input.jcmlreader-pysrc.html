@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>io_utils.input.jcmlreader</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="io_utils-module.html">Package&nbsp;io_utils</a> ::
+        <a href="io_utils.input-module.html">Package&nbsp;input</a> ::
+        Module&nbsp;jcmlreader
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="io_utils.input.jcmlreader-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="io_utils.input.jcmlreader-module.html">Module io_utils.input.jcmlreader</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment">#!/usr/bin/python</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-docstring">Created on 15 &#927;&#954;&#964; 2010</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-docstring">@author: Eleftherios Avramidis</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">xml</tt><tt class="py-op">.</tt><tt class="py-name">dom</tt><tt class="py-op">.</tt><tt class="py-name">minidom</tt> <tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.parse()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator-class.html#parse,Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator.parse()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator-class.html#parse,Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.parse()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator-class.html#parse,Method featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket.parse()=featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket-class.html#parse"><a title="featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.parse
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator.parse
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.parse
+featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket.parse" class="py-name" href="#" onclick="return doclink('link-0', 'parse', 'link-0');">parse</a></tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-1" class="py-name" targets="Package io_utils=io_utils-module.html"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-1', 'io_utils', 'link-1');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Variable experiment.experiment.Experiment.input=experiment.experiment.Experiment-class.html#input,Variable experiment.phase.Phase.input=experiment.phase.Phase-class.html#input,Package io_utils.input=io_utils.input-module.html"><a title="experiment.experiment.Experiment.input
+experiment.phase.Phase.input
+io_utils.input" class="py-name" href="#" onclick="return doclink('link-2', 'input', 'link-2');">input</a></tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Module io_utils.input.genericxmlreader=io_utils.input.genericxmlreader-module.html"><a title="io_utils.input.genericxmlreader" class="py-name" href="#" onclick="return doclink('link-3', 'genericxmlreader', 'link-3');">genericxmlreader</a></tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Class io_utils.input.genericxmlreader.GenericXmlReader=io_utils.input.genericxmlreader.GenericXmlReader-class.html"><a title="io_utils.input.genericxmlreader.GenericXmlReader" class="py-name" href="#" onclick="return doclink('link-4', 'GenericXmlReader', 'link-4');">GenericXmlReader</a></tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-5" class="py-name"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-5', 'io_utils', 'link-1');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Package io_utils.dataformat=io_utils.dataformat-module.html"><a title="io_utils.dataformat" class="py-name" href="#" onclick="return doclink('link-6', 'dataformat', 'link-6');">dataformat</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Module io_utils.dataformat.jcmlformat=io_utils.dataformat.jcmlformat-module.html"><a title="io_utils.dataformat.jcmlformat" class="py-name" href="#" onclick="return doclink('link-7', 'jcmlformat', 'link-7');">jcmlformat</a></tt> <tt class="py-keyword">import</tt> <tt id="link-8" class="py-name" targets="Class io_utils.dataformat.jcmlformat.JcmlFormat=io_utils.dataformat.jcmlformat.JcmlFormat-class.html"><a title="io_utils.dataformat.jcmlformat.JcmlFormat" class="py-name" href="#" onclick="return doclink('link-8', 'JcmlFormat', 'link-8');">JcmlFormat</a></tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"> </tt>
+<a name="JcmlReader"></a><div id="JcmlReader-def"><a name="L16"></a><tt class="py-lineno">16</tt> <a class="py-toggle" href="#" id="JcmlReader-toggle" onclick="return toggle('JcmlReader');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="io_utils.input.jcmlreader.JcmlReader-class.html">JcmlReader</a><tt class="py-op">(</tt><tt class="py-base-class">GenericXmlReader</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="JcmlReader-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="JcmlReader-expanded"><a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt class="py-docstring">    classdocs</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">     </tt>
+<a name="JcmlReader.get_tags"></a><div id="JcmlReader.get_tags-def"><a name="L22"></a><tt class="py-lineno">22</tt> <a class="py-toggle" href="#" id="JcmlReader.get_tags-toggle" onclick="return toggle('JcmlReader.get_tags');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="io_utils.input.jcmlreader.JcmlReader-class.html#get_tags">get_tags</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="JcmlReader.get_tags-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="JcmlReader.get_tags-expanded"><a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">        <tt id="link-9" class="py-name" targets="Variable io_utils.dataformat.genericformat.GenericFormat.TAG=io_utils.dataformat.genericformat.GenericFormat-class.html#TAG,Variable io_utils.dataformat.jcmlformat.JcmlFormat.TAG=io_utils.dataformat.jcmlformat.JcmlFormat-class.html#TAG"><a title="io_utils.dataformat.genericformat.GenericFormat.TAG
+io_utils.dataformat.jcmlformat.JcmlFormat.TAG" class="py-name" href="#" onclick="return doclink('link-9', 'TAG', 'link-9');">TAG</a></tt> <tt class="py-op">=</tt> <tt id="link-10" class="py-name"><a title="io_utils.dataformat.jcmlformat.JcmlFormat" class="py-name" href="#" onclick="return doclink('link-10', 'JcmlFormat', 'link-8');">JcmlFormat</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Method io_utils.dataformat.genericformat.GenericFormat.get_tags()=io_utils.dataformat.genericformat.GenericFormat-class.html#get_tags,Method io_utils.input.genericxmlreader.GenericXmlReader.get_tags()=io_utils.input.genericxmlreader.GenericXmlReader-class.html#get_tags,Method io_utils.input.jcmlreader.JcmlReader.get_tags()=io_utils.input.jcmlreader.JcmlReader-class.html#get_tags,Method io_utils.input.xmlreader.XmlReader.get_tags()=io_utils.input.xmlreader.XmlReader-class.html#get_tags"><a title="io_utils.dataformat.genericformat.GenericFormat.get_tags
+io_utils.input.genericxmlreader.GenericXmlReader.get_tags
+io_utils.input.jcmlreader.JcmlReader.get_tags
+io_utils.input.xmlreader.XmlReader.get_tags" class="py-name" href="#" onclick="return doclink('link-11', 'get_tags', 'link-11');">get_tags</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-12" class="py-name"><a title="io_utils.dataformat.genericformat.GenericFormat.TAG
+io_utils.dataformat.jcmlformat.JcmlFormat.TAG" class="py-name" href="#" onclick="return doclink('link-12', 'TAG', 'link-9');">TAG</a></tt> </tt>
+</div></div><a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:22 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
