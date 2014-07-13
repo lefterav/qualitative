@@ -10,6 +10,7 @@ import time
 import cPickle as pickle
 import sys
 
+from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator
 from sentence.sentence import SimpleSentence
 
 from ml.lib.orange import OrangeRuntimeRanker 
@@ -18,21 +19,13 @@ from sentence.parallelsentence import ParallelSentence
 from bootstrap import ExperimentConfigParser
 from featuregenerator.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
-from featuregenerator.ratio_generator import RatioGenerator
-from featuregenerator.ibm1featuregenerator import Ibm1FeatureGenerator
-from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenerator
-from featuregenerator.bleu.bleugenerator import CrossBleuGenerator, BleuGenerator
-from featuregenerator.meteor.meteor import CrossMeteorGenerator, MeteorGenerator
-from featuregenerator.attribute_rank import AttributeRankGenerator
-from featuregenerator.languagechecker.languagetool_socket import LanguageToolSocketFeatureGenerator
-from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator
+from featuregenerator.meteor.meteor import CrossMeteorGenerator
 from featuregenerator.preprocessor import Normalizer
 from featuregenerator.preprocessor import Tokenizer
 from featuregenerator.preprocessor import Truecaser
 
-from py4j.java_gateway import JavaGateway
-from py4j.java_gateway import GatewayClient
-from py4j.java_gateway import java_import
+from py4j.java_gateway import GatewayClient, JavaGateway 
+#from py4j.java_gateway import java_import
 
 from util.jvm import JVM
 
@@ -44,8 +37,8 @@ class Autoranking:
         for config_filename in configfilenames:
             cfg.read(config_filename)
 
-        gateway = self._get_java_gateway(cfg)        
-        self.featuregenerators = self.initialize_featuregenerators(cfg, gateway)
+        self._get_java_gateway(cfg)        
+        self.featuregenerators = self.initialize_featuregenerators(cfg)
         ##self.attset = attset
         
         self.ranker = OrangeRuntimeRanker(classifiername)
@@ -86,12 +79,12 @@ class Autoranking:
         return parallelsentence
         
         
-    def _get_parser(self, cfg, gateway, language):
+    def _get_parser(self, cfg, language):
         for parser_name in [section for section in cfg.sections() if section.startswith("parser:")]:
             if cfg.get(parser_name, "language") == language:
                 grammarfile = cfg.get(parser_name, "grammarfile")
                 sys.stderr.write("initializing socket parser with grammar file {}\n".format(grammarfile))
-                return BerkeleySocketFeatureGenerator(language, grammarfile, gateway)
+                return BerkeleySocketFeatureGenerator(language, grammarfile, self.gateway)
                 
     def _get_java_gateway(self, cfg):
         java_classpath, dir_path = cfg.get_classpath()
@@ -106,13 +99,13 @@ class Autoranking:
             return self.gateway
 
 
-    def initialize_featuregenerators(self, cfg, gateway):
+    def initialize_featuregenerators(self, cfg):
 
         source_language =  cfg.get("general", "source_language")
         target_language =  cfg.get("general", "target_language")
         
-        src_parser = self._get_parser(cfg, gateway, source_language)
-        tgt_parser = self._get_parser(cfg, gateway, target_language)
+        src_parser = self._get_parser(cfg, source_language)
+        tgt_parser = self._get_parser(cfg, target_language)
 
         langpair = (source_language, target_language)
         
