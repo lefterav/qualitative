@@ -21,6 +21,7 @@ from io_utils.input.jcmlreader import JcmlReader
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml 
 from io_utils import saxjcml
 from featuregenerator.parser.berkeley.parsermatches import ParserMatches
+from featuregenerator.parser.berkeley.cfgrules import CfgRulesExtractor
 from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
 from featuregenerator.ratio_generator import RatioGenerator
 from featuregenerator.ibm1featuregenerator import Ibm1FeatureGenerator
@@ -381,6 +382,7 @@ def analyze_external_features(input_file, output_file, source_language, target_l
     langpair = (source_language, target_language)
     analyzers = [
                  ParserMatches(langpair),
+                 CfgRulesExtractor(),
                  RatioGenerator()]
     saxjcml.run_features_generator(input_file, output_file, analyzers)
     
