@@ -76,7 +76,8 @@ class ExperimentConfigParser(ConfigParser):
             path = os.path.abspath(__file__)
             dir_path = os.path.dirname(path) #@todo: change location of the JavaServer to sth more universal
             java_classpath.add(dir_path)
-        return list(java_classpath), dir_path
+            return list(java_classpath), dir_path
+        return [], None
 
     def get_gatewayclient(self):
         try:

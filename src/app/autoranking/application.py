@@ -107,8 +107,6 @@ class Autoranking:
 
 
     def initialize_featuregenerators(self, cfg, gateway):
-        
-        
 
         source_language =  cfg.get("general", "source_language")
         target_language =  cfg.get("general", "target_language")
@@ -117,8 +115,6 @@ class Autoranking:
         tgt_parser = self._get_parser(cfg, gateway, target_language)
 
         langpair = (source_language, target_language)
-
-    
         
         featuregenerators = [
             Normalizer(source_language),
@@ -149,21 +145,39 @@ class Autoranking:
 
 if __name__ == "__main__":
     
-    classifier_filename = "/share/taraxu/selection-mechanism/wmt13/sentenceranking/autoranking_wmt13_newfeatures1_de_en/class_nameranklangpairde-eninclude_references0.0ties0.0trainset_modeannotatedattattset_24classifierLogReg/classifier.clsf"
-    configfilenames = [
-                       '/home/Eleftherios Avramidis/workspace/qualitative/src/app/autoranking/config/pipeline.cfg',
-                       '/home/Eleftherios Avramidis/workspace/qualitative/src/app/autoranking/config/pipeline.wmt13metric.blade6.de.de-en.cfg'
-                       ]
-            
+    classifier_filename = sys.argv[1] # "/share/taraxu/selection-mechanism/wmt13/sentenceranking/autoranking_wmt13_newfeatures1_de_en/class_nameranklangpairde-eninclude_references0.0ties0.0trainset_modeannotatedattattset_24classifierLogReg/classifier.clsf"
+    configfilenames = sys.argv[2:]
     
-    source = "Wir muessen diese Loesung diskutieren"
-    target1 = "We have to discuss this solution"
-    target2 = "We have to discuss this"
-    target3 = "We must this solution discuss"
-
+    #[
+    #'/home/Eleftherios Avramidis/workspace/qualitative/src/app/autoranking/config/pipeline.cfg',
+    #'/home/Eleftherios Avramidis/workspace/qualitative/src/app/autoranking/config/pipeline.wmt13metric.blade6.de.de-en.cfg'
+    #]
     autoranker = Autoranking(configfilenames, classifier_filename)
-    result, description = autoranker.rank(source, [target1, target2, target3])
-    print result
-    print description
+    
+    while 1==1:    
+        source = raw_input("Source sentence (or 'exit')")
+        if source == "exit":
+            sys.exit("Exit requested")
+        doexit = False
+        i = 0
+        translations = []
+        while 1==1:
+            i+=1
+            translation = raw_input("Translation (or empty to continue)")
+            if translation!="":
+                translations.append(translation)
+            else:
+                break
+                
+        
+        
+        #source = "Wir muessen diese Loesung diskutieren"
+        #target1 = "We have to discuss this solution"
+        #target2 = "We have to discuss this"
+        #target3 = "We must this solution discuss"
+
+        result, description = autoranker.rank(source, translations)
+        print result
+        print description
 
 
