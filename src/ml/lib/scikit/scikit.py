@@ -15,6 +15,8 @@ from sklearn.base import is_classifier, clone
 import numbers 
 from sklearn.cross_validation import is_classifier, check_cv, _PartitionIterator, KFold
 
+
+
 def dataset_to_instances(dataset, 
                          class_name,
                          desired_parallel_attributes = [],
@@ -27,73 +29,86 @@ def dataset_to_instances(dataset,
     class_vector = []
 
     f=open("data.tab", 'w')
+    c=open("class.tab", 'w')
 
     for parallelsentence in dataset.get_parallelsentences():
-        log.debug("Parallelsentence {}".format(parallelsentence.get_attribute("id")))
-        #get the class value
-        if class_name:
-            if class_level=="target":
-                class_vector.append(float(parallelsentence.get_translations()[0].get_attribute(class_name)))
-            elif class_level=="parallel":
-                class_vector.append(float(parallelsentence.get_attribute(class_name)))
-            
-        #get all features in a row and then in a table
-        att_row = []
-        for att_name in desired_target_attributes:
-            if att_name == "":
-                continue
-            for translation in parallelsentence.get_translations():
-                try:
-                    att_value = translation.get_attribute(att_name)
-                    att_value = att_value.replace("inf", "99999999")
-                    att_value = att_value.replace("nan", "0")                                
-                    att_row.append(float(att_value))
-                    f.write(str(att_value))
-                    f.write("\t")
-                except AttributeError:
-                    log.warning("target attribute {} could not be found in sentence with id={}, replacing with 0".format(att_name, parallelsentence.get_attribute("id")))
-                    att_row.append(0)
-                    #continue
-        for att_name in desired_parallel_attributes:
-            if att_name == "":
-                continue
-            try:
-                att_value = parallelsentence.get_attribute(att_name)
-                att_row.append(float(att_value))
-            except AttributeError:
-                log.warning("parallel attribute {} could not be found in sentence with id={}, replacing with 0".format(att_name, parallelsentence.get_attribute("id")))
-                att_row.append(0)
+        for translation in parallelsentence.get_translations():
+            #log.debug("Parallelsentence {}".format(parallelsentence.get_attribute("id")))
+            #get the class value
+            if class_name:
+                if class_level=="target":
+                    class_vector.append(float(translation.get_attribute(class_name)))
+                    c.write("{}\n".format(translation.get_attribute(class_name)))
+                elif class_level=="parallel":
+                    class_vector.append(float(parallelsentence.get_attribute(class_name)))
                 
-        for att_name in desired_source_attributes:
-            if att_name == "":
-                continue
-            try:
-                att_value = parallelsentence.get_source().get_attribute(att_name)
-                att_row.append(float(att_value))
-            except AttributeError:
-                log.warning("source attribute {} could not be found in sentence with id={}, replacing with 0".format(att_name, parallelsentence.get_attribute("id")))
-                att_row.append(0)
+            #get all features in a row and then in a table
+            att_row = []
+            log.debug("Target attributes: {}".format(len(desired_target_attributes)))
+            for att_name in desired_target_attributes:
+                if att_name != "":
+                        try:
+                            att_value = translation.get_attribute(att_name)
+                            att_value = att_value.replace("inf", "99999999")
+                            att_value = att_value.replace("nan", "0")                                
+                            att_row.append(float(att_value))
+                            f.write(str(att_value))
+                            f.write("\t")
+                        except AttributeError:
+                            log.debug("target attribute {} could not be found in sentence with id={}, replacing with 0".format(att_name, parallelsentence.get_attribute("id")))
+                            att_row.append(0)
+                            
+            log.debug("Parallel attributes: {}".format(len(desired_parallel_attributes)))                        
+            for att_name in desired_parallel_attributes:
+                if att_name != "":
+                    try:
+                        att_value = parallelsentence.get_attribute(att_name)
+                        att_row.append(float(att_value))
+                    except AttributeError:
+                        log.debug("parallel attribute {} could not be found in sentence with id={}, replacing with 0".format(att_name, parallelsentence.get_attribute("id")))
+                        att_row.append(0)
+            
+            log.debug("Source attributes: {}".format(len(desired_source_attributes)))
+            for att_name in desired_source_attributes:
+                if att_name != "":
+                    try:
+                        att_value = parallelsentence.get_source().get_attribute(att_name)
+                        att_value = att_value.replace("inf", "99999999")
+                        att_value = att_value.replace("nan", "0") 
+                        att_row.append(float(att_value))
+                        f.write(str(att_value))
+                        f.write("\t")
+                    except AttributeError:
+                        log.debug("source attribute {} could not be found in sentence with id={}, replacing with 0".format(att_name, parallelsentence.get_attribute("id")))
+                        att_row.append(0)
         
-        f.write("\n")
-        att_table.append(att_row)
+            log.debug("id: {}, row length: {}".format(parallelsentence.get_attribute("id"), len(att_row)))
+            f.write("\n")
+            att_table.append(att_row)
 
     numpy_att_table = np.asarray(att_table)
+    #log.debug("numpy_att_table: {}".format(numpy_att_table))
     numpy_class_vector = np.asarray(class_vector)
 
     if len(numpy_att_table.shape) != 2:
+        log.info("Shape of loaded data: {}".format(numpy_att_table.shape))
         raise IOError("the training dataset must be in the format of a matrix with M lines and N columns.")
         
-    if numpy_att_table.shape[0] != numpy_class_vector.shape[0]:
-        raise IOError("the number of instances in the train features file does not match the number of references given.")
+    #if numpy_att_table.shape[0] != numpy_class_vector.shape[0]:
+    #    raise IOError("the number of instances in the train features file does not match the number of references given.")
     
     f.close()
+    c.close()
     
     
     return numpy_att_table, numpy_class_vector
 
 
-
-
+# from sklearn.pipeline import Pipeline
+# def set_pipeline(config, X_train, y_train):
+#     learning_cfg = config.get("learning", None)
+#     if learning_cfg:
+#         pipe = Pipeline(steps=[('gaussian', None), ('SVM', None)])
         
         
 class SkRegressor(Regressor):
@@ -120,21 +135,21 @@ class SkRegressor(Regressor):
             self.X_train = scale_datasets_crossvalidation(self.X_train)
         
     
-    def feature_selection(self):
+    def feature_selection(self, threshold=.25):
         config = self.config
         # sets the selection method
-        transformer = set_selection_method(config)
+        transformer = set_selection_method(config, threshold)
     
         # if the system is configured to run feature selection
         # runs it and modifies the datasets to the new dimensions
         if transformer is not None:
             log.info("Running feature selection %s" % str(transformer))
-            log.debug("X_train dimensions before fit_transform(): %s,%s" % self.X_train.shape)
-            log.debug("y_train dimensions before fit_transform(): %s" % self.y_train.shape)
+            log.info("X_train dimensions before fit_transform(): %s,%s" % self.X_train.shape)
+            log.info("y_train dimensions before fit_transform(): %s" % self.y_train.shape)
             
             X_train = transformer.fit_transform(self.X_train, self.y_train)
             
-            log.debug("Dimensions after fit_transform(): %s,%s" % X_train.shape)
+            log.info("Dimensions after fit_transform(): %s,%s" % X_train.shape)
         
         
     def set_learning_method(self):
@@ -155,6 +170,11 @@ class SkRegressor(Regressor):
         scores = cross_validation.cross_val_score(self.estimator, self.X_train, self.y_train, cv=cv, n_jobs=n_jobs, scoring=scorer)
         return scores
 #        return scores
+
+    def train_test(self, X_test, blah, dummy, roundup=None):
+        self.estimator.fit(self.X_train, self.y_train)
+        X_test = scale_datasets_crossvalidation(X_test)
+        return self.estimator.predict(X_test)
         
         
 
@@ -180,7 +200,32 @@ class FixedFolds(_PartitionIterator):
         return len(self.test_folds)
         
         
-                
+def ter_train_test(estimators, Xs_train, ys_train, X_test, denominator, verbose, fit_params, roundup=False):
+    estimations = []
+
+    
+
+    for estimator in estimators:
+        X_train = Xs_train[estimator]
+        y_train = ys_train[estimator]
+        estimator.fit(X_train, y_train)
+        y_predict = estimator.predict(X_test)
+        if roundup:
+            y_predict = np.rint(y_predict)
+        estimations.append(y_predict)
+        
+    all_estimations = np.column_stack(estimations)
+    log.info("all_estimations.shape = {}".format(all_estimations.shape))
+    
+    sum_estimations = np.sum(all_estimations, axis=1)
+    log.info("sum_estimations.shape = {}".format(sum_estimations.shape))
+#    log.info("tokens.shape = {}".format(X[:,0].shape))
+            
+    ter = np.divide(sum_estimations, denominator)
+    
+    for i in range(len(ter)):
+        log.info("ter{} = {:.3g} + {:.3g} + {:.3g} + {:.3g} / {} = {:.3g}".format(i, estimations[0][i], estimations[1][i], estimations[2][i], estimations[3][i], X_test[i,0], ter[i]))    
+    return ter       
                 
 def ter_cross_validate_fold(estimators, X_dic, y_dic, denominator, tergold, scorer, train, test, verbose, fit_params, roundup=False):
     estimations = []
@@ -247,7 +292,13 @@ class TerRegressor(SkRegressor):
         for train, test in cvfolds)
         scores = np.array(scores)
         return scores
+    
+    def train_test(self, X_test, verbose, fit_params, roundup=False):
+        X_test = scale_datasets_crossvalidation(X_test)
+        return ter_train_test(self.estimators, self.X_train, self.y_train, X_test, X_test[:,0],  verbose, fit_params, roundup=False)
 
+    
+        
         
         
 
