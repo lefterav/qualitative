@@ -123,7 +123,7 @@ class CElementTreeJcml2Orange():
             sys.stderr.write(errortext)
             raise IndexError(errortext)
         
-        # first construct thecd /home/elav01/taraxu_data/selection-mechanism/emnlp/experiment/4b/autoranking_development/class_nameranklangpairde-eninclude_references0.0ties0.0trainset_modeannotatedattattset_2classifierNaive lines for the declaration
+        # first construct thecd /home/elav01/taraxu_data/selection-mechanism/emnlp/app/4b/autoranking_development/class_nameranklangpairde-eninclude_references0.0ties0.0trainset_modeannotatedattattset_2classifierNaive lines for the declaration
         line_1 = [] # line for the name of the arguments
         line_2 = [] # line for the type of the arguments
         line_3 = [] # line for the definition of the class

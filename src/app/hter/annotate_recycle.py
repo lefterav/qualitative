@@ -1,6 +1,6 @@
 '''
 Created on 17 Jan 2012
-Modified 22 Mar 2014 for autoranking experiment
+Modified 22 Mar 2014 for autoranking app
 @author: Eleftherios Avramidis
 '''
 
@@ -109,18 +109,18 @@ except:
 @transform(data_fetch, suffix("orig.jcml"), "tok.jcml")        
 def preprocess_data(input_file, output_file):
     
-#    normalizer_src = Normalizer(source_language)
-#    normalizer_tgt = Normalizer(target_language)
-#    tokenizer_src = Tokenizer(source_language)
-#    tokenizer_tgt = Tokenizer(target_language)
-#    fgs = [normalizer_src, normalizer_tgt, tokenizer_src, tokenizer_tgt]
-    
-#    parallelsentences = JcmlReader(input_file).get_parallelsentences()
-#    for fg in fgs:
-#        parallelsentences = fg.add_features_batch(parallelsentences)
-#    Parallelsentence2Jcml(parallelsentences).write_to_file(output_file)
-#    saxjcml.run_features_generator(input_file, output_file, fgs, True)
-    os.symlink(input_file, output_file)
+    normalizer_src = Normalizer(source_language)
+    normalizer_tgt = Normalizer(target_language)
+    tokenizer_src = Tokenizer(source_language)
+    tokenizer_tgt = Tokenizer(target_language)
+    fgs = [normalizer_src, normalizer_tgt, tokenizer_src, tokenizer_tgt]
+   
+    parallelsentences = JcmlReader(input_file).get_parallelsentences()
+    for fg in fgs:
+        parallelsentences = fg.add_features_batch(parallelsentences)
+    Parallelsentence2Jcml(parallelsentences).write_to_file(output_file)
+    saxjcml.run_features_generator(input_file, output_file, fgs, True)
+#    os.symlink(input_file, output_file)
     
     
 
@@ -158,13 +158,13 @@ if cfg.exists_checker(target_language):
 
 @jobs_limit(1, "ltool") #Dunno why, but only one language tool at a time
 @active_if(cfg.has_section("languagetool"))
-@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, source_language)
+@transform(preprocess_data, suffix(".tok.jcml"), ".lt.%s.f.jcml" % source_language, source_language)
 def features_langtool_source(input_file, output_file, language):
     features_langtool(input_file, output_file, language)
 
 @jobs_limit(1, "ltool")
 @active_if(cfg.has_section("languagetool"))
-@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % target_language, target_language)
+@transform(preprocess_data, suffix(".tok.jcml"), ".lt.%s.f.jcml" % target_language, target_language)
 def features_langtool_target(input_file, output_file, language):
     features_langtool(input_file, output_file, language)
 if cfg.has_section("languagetool"):
@@ -189,50 +189,50 @@ def original_data_split(input_files, output_files, parts):
         XmlReader(input_file).split_and_write(parts, re_split)
 
        
-@active_if(cfg.exists_parser(source_language))
-@transform(original_data_split, suffix("part.jcml"), "part.parsed.%s.f.jcml" % source_language, source_language, cfg.get_parser_name(source_language))
-def features_berkeley_source(input_file, output_file, source_language, parser_name):
-    features_berkeley(input_file, output_file, source_language)
-    
-@active_if(cfg.exists_parser(target_language))
-@transform(original_data_split, suffix("part.jcml"), "part.parsed.%s.f.jcml" % target_language, target_language, cfg.get_parser_name(target_language))
-def features_berkeley_target(input_file, output_file, target_language, parser_name):
-    features_berkeley(input_file, output_file, target_language)
-
-
-def features_berkeley(input_file, output_file, language):
-    """
-    Parsing
-    """
-    parser = cfg.get_parser(language) #this is bypassing the architecture, but avoids wasting memory for the loaded parser
-    saxjcml.run_features_generator(input_file, output_file, [parser])
-    
-#    parser = BerkeleyXMLRPCFeatureGenerator(parser_url, language, parser_tokenize)
-#    saxjcml.run_features_generator(input_file, output_file, [parser])
-
-@active_if(cfg.exists_parser(source_language))
-#@merge(features_berkeley_source, "parsed.%s.f.jcml" % source_language)
-@collate(features_berkeley_source, regex(r"([^.]+)\.\s?(\d+)\.part.parsed.([^.]+).f.jcml"),  r"\1.parsed.\3.f.jcml")
-def merge_parse_parts_source(inputs, output):
-    merge_parts(inputs, output)
-if (cfg.exists_parser(source_language)):
-    parallel_feature_functions.append(merge_parse_parts_source)
-
-@active_if(cfg.exists_parser(target_language))
-#@merge(features_berkeley_target, "parsed.%s.f.jcml" % target_language)
-@collate(features_berkeley_target, regex(r"([^.]+)\.\s?(\d+)\.part.parsed.([^.]+).f.jcml"),  r"\1.parsed.\3.f.jcml")
-def merge_parse_parts_target(inputs, output):
-    merge_parts(inputs, output)
-if (cfg.exists_parser(target_language)):
-    parallel_feature_functions.append(merge_parse_parts_target)
-
-
-def merge_parts(inputs, output):
-    print inputs
-    parallelsentences = []
-    for inp in sorted(inputs):
-        parallelsentences.extend(JcmlReader(inp).get_parallelsentences())
-    Parallelsentence2Jcml(parallelsentences).write_to_file(output)    
+# @active_if(cfg.exists_parser(source_language))
+# @transform(original_data_split, suffix("part.jcml"), "part.parsed.%s.f.jcml" % source_language, source_language, cfg.get_parser_name(source_language))
+# def features_berkeley_source(input_file, output_file, source_language, parser_name):
+#     features_berkeley(input_file, output_file, source_language)
+#     
+# @active_if(cfg.exists_parser(target_language))
+# @transform(original_data_split, suffix("part.jcml"), "part.parsed.%s.f.jcml" % target_language, target_language, cfg.get_parser_name(target_language))
+# def features_berkeley_target(input_file, output_file, target_language, parser_name):
+#     features_berkeley(input_file, output_file, target_language)
+# 
+# 
+# def features_berkeley(input_file, output_file, language):
+#     """
+#     Parsing
+#     """
+#     parser = cfg.get_parser(language) #this is bypassing the architecture, but avoids wasting memory for the loaded parser
+#     saxjcml.run_features_generator(input_file, output_file, [parser])
+#     
+# #    parser = BerkeleyXMLRPCFeatureGenerator(parser_url, language, parser_tokenize)
+# #    saxjcml.run_features_generator(input_file, output_file, [parser])
+# 
+# @active_if(cfg.exists_parser(source_language))
+# #@merge(features_berkeley_source, "parsed.%s.f.jcml" % source_language)
+# @collate(features_berkeley_source, regex(r"([^.]+)\.\s?(\d+)\.part.parsed.([^.]+).f.jcml"),  r"\1.parsed.\3.f.jcml")
+# def merge_parse_parts_source(inputs, output):
+#     merge_parts(inputs, output)
+# if (cfg.exists_parser(source_language)):
+#     parallel_feature_functions.append(merge_parse_parts_source)
+# 
+# @active_if(cfg.exists_parser(target_language))
+# #@merge(features_berkeley_target, "parsed.%s.f.jcml" % target_language)
+# @collate(features_berkeley_target, regex(r"([^.]+)\.\s?(\d+)\.part.parsed.([^.]+).f.jcml"),  r"\1.parsed.\3.f.jcml")
+# def merge_parse_parts_target(inputs, output):
+#     merge_parts(inputs, output)
+# if (cfg.exists_parser(target_language)):
+#     parallel_feature_functions.append(merge_parse_parts_target)
+# 
+# 
+# def merge_parts(inputs, output):
+#     print inputs
+#     parallelsentences = []
+#     for inp in sorted(inputs):
+#         parallelsentences.extend(JcmlReader(inp).get_parallelsentences())
+#     Parallelsentence2Jcml(parallelsentences).write_to_file(output)    
 
 
 
@@ -337,7 +337,7 @@ if cfg.has_section('quest'):
     parallel_feature_functions.append(features_quest)
 
 @active_if(cfg.getboolean("annotation", "reference_features"))
-@transform(data_fetch, suffix(".orig.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
+@transform(preprocess_data, suffix(".tok.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
 def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_atts, classpath, dir_path):
     analyzers = [LevenshteinGenerator(),
                  BleuGenerator()]
@@ -358,7 +358,7 @@ if cfg.getboolean("annotation", "reference_features"):
     
 
 @active_if(cfg.has_section("ter"))
-@transform(data_fetch, suffix(".orig.jcml"), ".ter.%s.f.jcml" % target_language, cfg.get("ter", "path"))
+@transform(preprocess_data, suffix(".tok.jcml"), ".ter.%s.f.jcml" % target_language, cfg.get("ter", "path"))
 def reference_ter(input_file, output_file, path):
     saxjcml.run_features_generator(input_file, output_file, [TerWrapper(path)])
 
