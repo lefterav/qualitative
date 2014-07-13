@@ -16,8 +16,7 @@ def forname(name, library='orange', **kwargs):
     @param name: the name of the classifier
     @param library: the name of the library whose classifeir should be used
     """  
-    if library=='orange':
-        return orange.forname(name, **kwargs)
+    pass
     
 
 
