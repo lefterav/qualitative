@@ -1,7 +1,7 @@
 '''
 Created on 15 Σεπ 2011
 
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 
 import xmlrpclib 

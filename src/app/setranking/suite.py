@@ -1,6 +1,6 @@
 '''
 Created on 07 Mar 2012
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 from sentence.coupleddataset import CoupledDataSet, OrangeCoupledDataSet, CoupledDataSetDisk
 

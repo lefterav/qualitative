@@ -1,7 +1,7 @@
 '''
 Created on 15 Jun 2012
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 from py4j.java_gateway import JavaGateway

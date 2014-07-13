@@ -1,5 +1,5 @@
 '''
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 
 from sentence.rankhandler import RankHandler 

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 '''
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 
 from io_utils.input.xmlreader import XmlReader
@@ -57,9 +57,9 @@ if __name__ == '__main__':
     exp = Experiment()
     
     if sys.argv[1] == "readwmt":
-        dir = "/home/lefterav/taraxu_data/wmt11-data"
+        dir = "/home/Eleftherios Avramidis/taraxu_data/wmt11-data"
         langpair = "de-en"
-        outfile = "/home/lefterav/taraxu_data/wmt11-data/wmt11.jcml"
+        outfile = "/home/Eleftherios Avramidis/taraxu_data/wmt11-data/wmt11.jcml"
         exp.convert_wmtdata(dir, langpair, outfile)
         
     elif sys.argv[1] == "wmt11eval":

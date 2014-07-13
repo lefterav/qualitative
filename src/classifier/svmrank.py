@@ -1,7 +1,7 @@
 '''
 Created on 29 Aug 2012
 
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 import os
 import subprocess

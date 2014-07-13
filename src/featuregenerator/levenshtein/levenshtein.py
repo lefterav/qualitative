@@ -1,7 +1,7 @@
 '''
 Created on Sep 6, 2011
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 from nltk.tokenize.punkt import PunktWordTokenizer

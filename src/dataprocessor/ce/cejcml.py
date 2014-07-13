@@ -1,7 +1,7 @@
 '''
 Created on 26 Jun 2012
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 import codecs

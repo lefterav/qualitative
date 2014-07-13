@@ -1,6 +1,6 @@
 '''
 Created on 20 Oct 2011
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 import shutil

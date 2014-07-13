@@ -1,5 +1,5 @@
 '''
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 
 import csv
@@ -59,14 +59,14 @@ if __name__ == '__main__':
                         pass
                     config.set("preprocessing", "tokenize_source", "False")
                     config.set("preprocessing", "tokenize_target", "False")
-                    config.set("preprocessing", "tokenizer", "/home/elav01/taraxu_tools/moses-scripts/tokenizer.perl")
+                    config.set("preprocessing", "tokenizer", "/home/Eleftherios Avramidis/taraxu_tools/moses-scripts/tokenizer.perl")
                     
                     try:
                         os.mkdir("%s-%s" % (srclang, tgtlang))
                     except:
                         pass
                     exact_output_filename = os.path.abspath(os.path.join(os.curdir, "%s-%s" % (srclang, tgtlang), "%s.rank.jcml" % new_filename))
-                    #config.set("output", "filename", "/home/elav01/taraxu_data/jcml-latest/raw/%s.rank.jcml" % new_filename)
+                    #config.set("output", "filename", "/home/Eleftherios Avramidis/taraxu_data/jcml-latest/raw/%s.rank.jcml" % new_filename)
                     config.set("output", "filename", exact_output_filename)
                     print "File will be written in" , exact_output_filename
                     

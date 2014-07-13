@@ -26,8 +26,8 @@ public class BParser {
 		int kbest;
 		
 		public BParser( String inFileName ){		
-			//String inFileName = "/home/lefterav/tools/berkeley/eng_sm6.gr";
-			//String inFileName = "/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr";
+			//String inFileName = "/home/Eleftherios Avramidis/tools/berkeley/eng_sm6.gr";
+			//String inFileName = "/home/Eleftherios Avramidis/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr";
 			ParserData pData = ParserData.Load(inFileName);
 			Grammar grammar = pData.getGrammar();
 		    Lexicon lexicon = pData.getLexicon();
@@ -45,7 +45,7 @@ public class BParser {
 		}
 		
 		public void initialiaze( String inFileName ){
-			//String inFileName = "/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr";
+			//String inFileName = "/home/Eleftherios Avramidis/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr";
 			ParserData pData = ParserData.Load(inFileName);
 			Grammar grammar = pData.getGrammar();
 		    Lexicon lexicon = pData.getLexicon();

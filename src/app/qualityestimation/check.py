@@ -1,7 +1,7 @@
 '''
 Created on 07 Mar 2012
 
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 
 from suite import QualityEstimationSuite

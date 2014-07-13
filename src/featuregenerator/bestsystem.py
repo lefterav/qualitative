@@ -1,7 +1,7 @@
 '''
 Created on Jun 24, 2011
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 from featuregenerator import FeatureGenerator

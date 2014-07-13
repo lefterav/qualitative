@@ -419,7 +419,7 @@ class Experiment:
             #TODO: get list of attributes directly from feature generators
             
 #            i_xmlwriter = XmlWriter(dataset)
-#            i_xmlwriter.write_to_file("/home/elav01/taraxu_data/wmt10-humaneval-data/wmt08.pair.jcml")
+#            i_xmlwriter.write_to_file("/home/Eleftherios Avramidis/taraxu_data/wmt10-humaneval-data/wmt08.pair.jcml")
 #            i_xmlwriter = None
             
             
@@ -575,21 +575,21 @@ class Experiment:
 
     ###PARTICULAR FUNCTIONS TO BE RUN ONCE
     def get_testset_trainset_wmt10(self):
-        self.get_test_sentences("/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10.jcml", "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml" , "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.jcml")
+        self.get_test_sentences("/home/Eleftherios Avramidis/taraxu_data/wmt10-humaneval-data/wmt10.jcml", "/home/Eleftherios Avramidis/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml" , "/home/Eleftherios Avramidis/taraxu_data/wmt10-humaneval-data/wmt10-test.jcml")
         
     def add_external_features_042011(self):
-        #datafiles = [ "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt08.jcml"]
-        datafiles = ["/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml"]
-        #datafiles = ["/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.jcml"]
+        #datafiles = [ "/home/Eleftherios Avramidis/taraxu_data/wmt10-humaneval-data/wmt08.jcml"]
+        datafiles = ["/home/Eleftherios Avramidis/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml"]
+        #datafiles = ["/home/Eleftherios Avramidis/taraxu_data/wmt10-humaneval-data/wmt10-test.jcml"]
         for datafile in datafiles:
             self.add_external_features(datafile, datafile.replace("jcml", "xf.jcml"))
 
         
     
     def analyze_external_features_042011(self):
-        #datafiles = [ "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt08.xf.jcml"]
-        datafiles = ["/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml"]
-        #datafiles.append("/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.xf.jcml")
+        #datafiles = [ "/home/Eleftherios Avramidis/taraxu_data/wmt10-humaneval-data/wmt08.xf.jcml"]
+        datafiles = ["/home/Eleftherios Avramidis/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml"]
+        #datafiles.append("/home/Eleftherios Avramidis/taraxu_data/wmt10-humaneval-data/wmt10-test.xf.jcml")
         for datafile in datafiles:
             self.analyze_external_features(datafile, datafile.replace("xf.jcml", "if.jcml"))
     
@@ -643,15 +643,15 @@ if __name__ == '__main__':
 #    exp.add_external_features_042011()
 #    exp.add_external_features_042011()
     #exp.analyze_external_features_042011()
-    #exp.get_test_sentences("/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10.jcml", "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml" , "/home/elav01/taraxu_data/wmt10-humaneval-data/wmt10-test.jcml")
+    #exp.get_test_sentences("/home/Eleftherios Avramidis/taraxu_data/wmt10-humaneval-data/wmt10.jcml", "/home/Eleftherios Avramidis/taraxu_data/wmt10-humaneval-data/wmt10-train.jcml" , "/home/Eleftherios Avramidis/taraxu_data/wmt10-humaneval-data/wmt10-test.jcml")
     
 
     
     #myexperiment.add_external_features("test08.xml")
     
 #    train_filename = dir + "featured_train08.xml"
-#    classifiers = myexperiment.train_classifiers('/home/elav01/workspace/TaraXUscripts/src/tmpa04du_.tab')
-#    #classifiers = myexperiment.train_classifiers('/home/elav01/workspace/TaraXUscripts/src/tmpa04du_.tab')
+#    classifiers = myexperiment.train_classifiers('/home/Eleftherios Avramidis/workspace/TaraXUscripts/src/tmpa04du_.tab')
+#    #classifiers = myexperiment.train_classifiers('/home/Eleftherios Avramidis/workspace/TaraXUscripts/src/tmpa04du_.tab')
 #    test_filename = dir + "featured_test08.xml"
 #    myexperiment.test_classifiers(classifiers, test_filename)
     
@@ -678,9 +678,9 @@ if __name__ == '__main__':
         exp.add_b_features_batch(sourcefile, targetfile)
     
     elif sys.argv[1] == "readwmt":
-        dir = "/home/lefterav/taraxu_data/wmt11-data"
+        dir = "/home/Eleftherios Avramidis/taraxu_data/wmt11-data"
         langpair = "de-en"
-        outfile = "/home/lefterav/taraxu_data/wmt11-data/wmt11.jcml"
+        outfile = "/home/Eleftherios Avramidis/taraxu_data/wmt11-data/wmt11.jcml"
         exp.convert_wmtdata(dir, langpair, outfile)
         
     elif sys.argv[1] == "jcml2wmt":

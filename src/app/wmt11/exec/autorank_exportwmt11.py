@@ -1,6 +1,6 @@
 '''
 
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 
 from autoranking import AutoRankingExperiment

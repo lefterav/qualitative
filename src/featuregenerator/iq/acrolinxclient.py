@@ -357,6 +357,6 @@ if __name__ == '__main__':
     ac = IQFeatureGenerator("en")
 from dataprocessor.sax import saxjcml
     #
-    saxjcml.run_features_generator("/home/elav01/taraxu_data/wmt12/qe/training_set/training.jcml", 
-                                   "/home/elav01/taraxu_data/wmt12/qe/training_set/training.iq.jcml", [ac])
+    saxjcml.run_features_generator("/home/Eleftherios Avramidis/taraxu_data/wmt12/qe/training_set/training.jcml", 
+                                   "/home/Eleftherios Avramidis/taraxu_data/wmt12/qe/training_set/training.iq.jcml", [ac])
     print ac.process(text)

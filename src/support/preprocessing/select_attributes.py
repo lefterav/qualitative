@@ -1,7 +1,7 @@
 '''
 Created on 6 Mar 2012
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 from dataprocessor.input.jcmlreader import JcmlReader
