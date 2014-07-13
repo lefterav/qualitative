@@ -1,8 +1,0 @@
-
-MGIZA++ (and therefore Chaksi's distributed word alignment) requires:
-	- BerkeleyDB
-	- BerkeleyDB++
-	- Boost Library (String, Regex)
-
-Chaksi requires:
-       - Java V6 (due to its dependency on Hadoop 20.1)
