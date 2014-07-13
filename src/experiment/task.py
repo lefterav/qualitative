@@ -6,7 +6,7 @@ Created on Aug 31, 2011
 
 import inspect
 import sys
-from io_utils.saxjcml import SaxJCMLProcessor
+from io_utils.sax.saxjcml import SaxJCMLProcessor
 from xml.sax import make_parser
 
 from io_utils.input.jcmlreader import JcmlReader
