@@ -7,7 +7,7 @@ Created on 19 Apr 2013
 import cPickle as pickle
 import sys
 
-from io_utils.sax.cejcml2orange import CElementTreeJcml2Orange 
+from io_utils.ce.cejcml2orange import CElementTreeJcml2Orange 
 #from ml.classifier import Classifier
 
 from sentence.dataset import DataSet

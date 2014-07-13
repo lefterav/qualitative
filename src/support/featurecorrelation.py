@@ -10,7 +10,7 @@ import orange
 import sys
 import os
 
-from io_utils.sax.cejcml2orange import CElementTreeJcml2Orange
+from io_utils.ce.cejcml2orange import CElementTreeJcml2Orange
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
 from io_utils.input.xmlreader import XmlReader
 from sentence.pairwisedataset import PairwiseDataset

@@ -19,7 +19,7 @@ import bootstrap
 cfg = bootstrap.get_cfg()
 from io_utils.input.jcmlreader import JcmlReader
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml 
-from io_utils import saxjcml
+from io_utils.sax import saxjcml
 from featuregenerator.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.parser.berkeley.cfgrules import CfgRulesExtractor
 from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator

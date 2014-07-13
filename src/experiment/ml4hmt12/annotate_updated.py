@@ -18,7 +18,7 @@ from ruffus.task import pipeline_printout_graph, pipeline_printout
 from bootstrap import cfg
 from io_utils.input.jcmlreader import JcmlReader
 from io_utils.sax.saxps2jcml import Parallelsentence2Jcml 
-from io_utils import saxjcml
+from io_utils.sax import saxjcml
 from featuregenerator.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
 from featuregenerator.ratio_generator import RatioGenerator
