@@ -93,4 +93,4 @@ class CohenKappa(object):
         return [(items[i],items[j]) for i in range(len(items)) for j in range(i+1, len(items))]
 
 system_names = [  "google", "moses", "lucy"]
-print CohenKappa().get_cohen_kappa(system_names, "/home/lefterav/taraxu_data/r1/results/6-1-WMT08-de-en-ranking.xml", "/home/lefterav/taraxu_data/r1/results/19-1-WMT08-de-en-ranking.xml")
+print CohenKappa().get_cohen_kappa(system_names, "/home/Eleftherios Avramidis/taraxu_data/r1/results/6-1-WMT08-de-en-ranking.xml", "/home/Eleftherios Avramidis/taraxu_data/r1/results/19-1-WMT08-de-en-ranking.xml")

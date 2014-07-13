@@ -1,7 +1,7 @@
 '''
 Created on May 31, 2011
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 # To install library in ubuntu run 

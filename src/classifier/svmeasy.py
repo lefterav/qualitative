@@ -1,6 +1,6 @@
 '''
 
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 
 from Orange.classification.svm import SVMLearner, SVMClassifierWrapper
@@ -92,10 +92,10 @@ class SVMEasyLearner(SVMLearner):
 
             
         
-#examples = orange.ExampleTable("/home/lefterav/workspace/TaraXUscripts/src/training-attset1.100.tab")
+#examples = orange.ExampleTable("/home/Eleftherios Avramidis/workspace/TaraXUscripts/src/training-attset1.100.tab")
 #svmlearner = SVMEasy(examples)
 #
-#testexamples = orange.ExampleTable("/home/lefterav/workspace/TaraXUscripts/src/training-attset2.tab")
+#testexamples = orange.ExampleTable("/home/Eleftherios Avramidis/workspace/TaraXUscripts/src/training-attset2.tab")
 #print svmlearner(testexamples[1])
 
 #objectfile = open("/tmp/svmeasy.pickle", 'w')

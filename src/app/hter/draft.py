@@ -14,7 +14,7 @@ from expsuite import PyExperimentSuite
 import time
 
 #todo: this should be read from config file (or expsuite)
-cfg_path = "/home/elav01/workspace/qualitative/src/app/hter/config/svr.cfg"
+cfg_path = "/home/Eleftherios Avramidis/workspace/qualitative/src/app/hter/config/svr.cfg"
 class_name = "ter_ter"
 desired_parallel_attributes = []
 desired_source_attributes = []

@@ -1,7 +1,7 @@
 '''
 Created on 16 Mar 2012
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 
@@ -38,8 +38,8 @@ import sys
 if __name__ == '__main__':
     
     
-    #f1 = open('/home/elav01/taraxu_data/r2/r2-output/aaa.xml', 'r')
-    #f2 = open('/home/elav01/taraxu_data/r2/r2-output/aaa2.xml', 'w')
+    #f1 = open('/home/Eleftherios Avramidis/taraxu_data/r2/r2-output/aaa.xml', 'r')
+    #f2 = open('/home/Eleftherios Avramidis/taraxu_data/r2/r2-output/aaa2.xml', 'w')
     
         
     try:

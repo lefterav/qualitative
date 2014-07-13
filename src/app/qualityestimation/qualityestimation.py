@@ -1,7 +1,7 @@
 '''
 Created on 23 Feb 2012
 
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 
 from dataprocessor.input.jcmlreader import JcmlReader
@@ -25,7 +25,7 @@ if __name__ == '__main__':
     #param
     path = sys.argv[1]
     step = int(sys.argv[2])
-    input_file = sys.argv[3] #"/home/elav01/taraxu_data/wmt12/qe/training_set/training-sample.jcml"
+    input_file = sys.argv[3] #"/home/Eleftherios Avramidis/taraxu_data/wmt12/qe/training_set/training-sample.jcml"
     if len(sys.argv) > 4:
         test_file = sys.argv[4]
     else:
@@ -33,7 +33,7 @@ if __name__ == '__main__':
     
     os.chdir(path) 
     #param
-#    output_file = "/home/elav01/taraxu_data/wmt12/qe/training_set/training.coupled.jcml"
+#    output_file = "/home/Eleftherios Avramidis/taraxu_data/wmt12/qe/training_set/training.coupled.jcml"
     if step < 1:
         print "loading big set"
         simple_trainset = JcmlReader(input_file).get_dataset() 
@@ -42,7 +42,7 @@ if __name__ == '__main__':
 #        simple_trainset, a = simple_trainset.split(0.07)
 #    
 #    print "writing down the concatenated set"
-#    Parallelsentence2Jcml(simple_dataset.get_parallelsentences()).write_to_file('/home/elav01/taraxu_data/wmt12/qe/training_set/training-sample.jcml')
+#    Parallelsentence2Jcml(simple_dataset.get_parallelsentences()).write_to_file('/home/Eleftherios Avramidis/taraxu_data/wmt12/qe/training_set/training-sample.jcml')
 #    
         if not test_file:
             print "arbitrarily split given set to training and test sets 90% + 10%"

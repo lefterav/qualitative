@@ -1,7 +1,7 @@
 '''
 Created on 23 Feb 2012
 
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 from optparse import OptionParser
 from sentence.sentence import SimpleSentence

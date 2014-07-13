@@ -1,7 +1,7 @@
 '''
 Created on 17 Jan 2012
 
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 
 

@@ -1,7 +1,7 @@
 '''
 Created on 24 Mar 2012
 
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 
 from featuregenerator import FeatureGenerator
@@ -185,13 +185,13 @@ class Truecaser(CommandlinePreprocessor):
 if __name__ == '__main__':
     from dataprocessor.input.jcmlreader import JcmlReader
     from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
-    #path = "/home/lefterav/taraxu_tools/scripts/tokenizer/tokenizer.perl"
+    #path = "/home/Eleftherios Avramidis/taraxu_tools/scripts/tokenizer/tokenizer.perl"
     #command_template = "{path} -b -l {lang}"
-#    path = "/home/lefterav/taraxu_tools/scripts/tokenizer/normalize-punctuation.perl"
+#    path = "/home/Eleftherios Avramidis/taraxu_tools/scripts/tokenizer/normalize-punctuation.perl"
 #    command_template = "perl {path} -l {lang} -b"
     tokenizer = Tokenizer("en")
-    parallelsentences = JcmlReader("/home/elav01/taraxu_data/jcml-latest/clean/wmt2011.newstest.en-de.rank-clean.jcml").get_parallelsentences()
+    parallelsentences = JcmlReader("/home/Eleftherios Avramidis/taraxu_data/jcml-latest/clean/wmt2011.newstest.en-de.rank-clean.jcml").get_parallelsentences()
     tokenized = tokenizer.add_features_batch(parallelsentences)
     #tokenizer.close()
-    Parallelsentence2Jcml(tokenized).write_to_file("/home/elav01/taraxu_data/jcml-latest/tok/wmt2011.newstest.en-de.rank-clean.jcml")
+    Parallelsentence2Jcml(tokenized).write_to_file("/home/Eleftherios Avramidis/taraxu_data/jcml-latest/tok/wmt2011.newstest.en-de.rank-clean.jcml")
     

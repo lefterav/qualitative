@@ -1,7 +1,7 @@
 '''
 Created on 07 Mar 2012
 
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 
 from suite import AutorankingSuite
@@ -113,7 +113,7 @@ if __name__ == "__main__":
     
     
     #dev example 
-    #python2.7 check.py --path /home/elav01/taraxu_data/selection-mechanism/emnlp/app/4b --reps 0 --config config/autoranking.suite.bernux.cfg --params app classifier att mode ties include_references  > test.csv
+    #python2.7 check.py --path /home/Eleftherios Avramidis/taraxu_data/selection-mechanism/emnlp/app/4b --reps 0 --config config/autoranking.suite.bernux.cfg --params app classifier att mode ties include_references  > test.csv
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('--path', nargs=1,
                    help='the path were experiments will be found')

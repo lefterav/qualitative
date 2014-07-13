@@ -38,7 +38,7 @@ public class BerkeleyParserXMLRPCserver  {
 	        
 	          PropertyHandlerMapping phm = new PropertyHandlerMapping();
 	          
-	          //bParser bparser = new bParser( "/home/elav01/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr" );
+	          //bParser bparser = new bParser( "/home/Eleftherios Avramidis/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr" );
 	         
 	          //phm.addHandler("bParser", bparser.getClass());
 	          

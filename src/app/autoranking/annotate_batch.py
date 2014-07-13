@@ -1,7 +1,7 @@
 '''
 Created on 17 Jan 2012
 Modified 22 Mar 2012 for autoranking app
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 
 import shutil

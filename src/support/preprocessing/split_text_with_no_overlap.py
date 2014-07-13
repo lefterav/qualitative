@@ -1,7 +1,7 @@
 '''
 Created on 7 Nov 2012
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 import sys, argparse
