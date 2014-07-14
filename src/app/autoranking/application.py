@@ -32,12 +32,8 @@ from util.jvm import JVM
 
 class Autoranking:
 
-    def __init__(self, configfilenames, classifiername):
-        cfg = ExperimentConfigParser()
-        for config_filename in configfilenames:
-            cfg.read(config_filename)
-
-        self._get_java_gateway(cfg)        
+    def __init__(self, cfg, gateway):
+        
         self.featuregenerators = self.initialize_featuregenerators(cfg)
         ##self.attset = attset
         
@@ -104,8 +100,8 @@ class Autoranking:
         source_language =  cfg.get("general", "source_language")
         target_language =  cfg.get("general", "target_language")
         
-        src_parser = self._get_parser(cfg, source_language)
-        tgt_parser = self._get_parser(cfg, target_language)
+        src_parser = cfg.get_parser(source_language)
+        tgt_parser = cfg.get_parser(target_language)
 
         langpair = (source_language, target_language)
         
@@ -145,6 +141,12 @@ if __name__ == "__main__":
     #'/home/Eleftherios Avramidis/workspace/qualitative/src/app/autoranking/config/pipeline.cfg',
     #'/home/Eleftherios Avramidis/workspace/qualitative/src/app/autoranking/config/pipeline.wmt13metric.blade6.de.de-en.cfg'
     #]
+    cfg = ExperimentConfigParser()
+    for config_filename in configfilenames:
+        cfg.read(config_filename)
+    
+    gateway = cfg.java_init()
+    
     autoranker = Autoranking(configfilenames, classifier_filename)
     
     while 1==1:    
