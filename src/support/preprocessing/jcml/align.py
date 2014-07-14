@@ -1,7 +1,7 @@
 '''
 Created on Jun 7, 2013
 
-@author: dupo
+@author: Eleftherios Avramidis
 '''
 import sys
 from dataprocessor.input.jcmlreader import JcmlReader
