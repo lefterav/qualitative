@@ -1,7 +1,7 @@
 '''
 Created on Jul 13, 2014
 
-@author: dupo
+@author: Eleftherios Avramidis
 '''
 import logging
 from featuregenerator.featuregenerator import FeatureGenerator
