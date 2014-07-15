@@ -28,7 +28,6 @@ from featuregenerator.ibm1featuregenerator import Ibm1FeatureGenerator
 from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenerator
 from featuregenerator.bleu.bleugenerator import CrossBleuGenerator, BleuGenerator
 from featuregenerator.meteor.meteor import CrossMeteorGenerator, MeteorGenerator
-from featuregenerator.ter import TerWrapper 
 from featuregenerator.attribute_rank import AttributeRankGenerator
 from dataprocessor.input.xmlreader import XmlReader
 from featuregenerator.languagechecker.languagetool_socket import LanguageToolSocketFeatureGenerator
