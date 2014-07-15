@@ -32,11 +32,17 @@ from util.jvm import JVM
 
 class Autoranking:
 
-    def __init__(self, cfg, gateway):
+    def __init__(self, configfilenames, classifiername):
         
-        self.featuregenerators = self.initialize_featuregenerators(cfg)
         ##self.attset = attset
         
+        cfg = ExperimentConfigParser()
+        for config_filename in configfilenames:
+            cfg.read(config_filename)
+        
+        self.gateway = cfg.java_init()
+        
+        self.featuregenerators = self.initialize_featuregenerators(cfg)
         self.ranker = OrangeRuntimeRanker(classifiername)
         self.source_language =  cfg.get("general", "source_language")
         self.target_language =  cfg.get("general", "target_language")
@@ -87,8 +93,9 @@ class Autoranking:
         
         if java_classpath:
             
-            self.jvm = JVM(java_classpath)
-            socket_no = self.jvm.socket_no
+            #self.jvm = JVM(java_classpath)
+            #socket_no = self.jvm.socket_no
+            socket_no = 25336
             self.gatewayclient = GatewayClient('localhost', socket_no)
             self.gateway = JavaGateway(self.gatewayclient, auto_convert=True, auto_field=True)
             sys.stderr.write("Initialized global Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
@@ -141,11 +148,7 @@ if __name__ == "__main__":
     #'/home/Eleftherios Avramidis/workspace/qualitative/src/app/autoranking/config/pipeline.cfg',
     #'/home/Eleftherios Avramidis/workspace/qualitative/src/app/autoranking/config/pipeline.wmt13metric.blade6.de.de-en.cfg'
     #]
-    cfg = ExperimentConfigParser()
-    for config_filename in configfilenames:
-        cfg.read(config_filename)
     
-    gateway = cfg.java_init()
     
     autoranker = Autoranking(configfilenames, classifier_filename)
     
