@@ -57,7 +57,8 @@ class ExperimentConfigParser(ConfigParser):
         if java_classpath:
             
             self.jvm = JVM(java_classpath)
-            socket_no = self.jvm.socket_no
+            #socket_no = self.jvm.socket_no
+            socket_no = 25336
             self.gatewayclient = GatewayClient('localhost', socket_no)
             self.gateway = JavaGateway(self.gatewayclient, auto_convert=True, auto_field=True)
             sys.stderr.write("Initialized global Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
@@ -292,6 +293,11 @@ class ExperimentConfigParser(ConfigParser):
 #except IndexError:
 #    configfilename = CONFIG_FILENAME
 
+def get_cfg_files(config_filenames):
+    cfg = ExperimentConfigParser()
+    for config_filename in config_filenames:
+        cfg.read(config_filename)
+    return cfg
 
 def get_cfg():
 
