@@ -62,7 +62,7 @@ class Autoranking:
         
         #put things in the original order given by the user
         #because the ranker scrambles the order
-        ranking.sort(key=lambda x: int(x.get_attribute("system")))
+        ranking.sort(key=lambda x: x[1].get_attribute("system"))
         
         #return only ranks without system ids
         ranking = [r[0] for r in ranking]
