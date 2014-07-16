@@ -8,7 +8,7 @@ for more hints on their installation
 
 python-libraries
 * python 2.7
-* orange ml toolkit
+* orange
 * py4j
 * python-nltk
 * python xlmrpc
@@ -19,17 +19,19 @@ python-libraries
 * expsuite [only for training]
 
 external programs [need to start separately]
-* lmserver wrapped over SRILM
-* Acrolinx IQ [optional]
+* lmserver wrapped over SRILM [soon to be replaced by KenLM]
+* Acrolinx IQ [proprietary-optional]
 
-jar files:
+jar files (automatically fetched by lib/install.sh)
+* py4j
 * Berkeley parser
 * Meteor
-* Language tool [optional] 
+* Language tool 
 
 other resources:
 * language model for source and target language (ARPA format)
 * trained grammar for Berkeley parser (source and target language)
+* truecaser model for source and target language (see Moses)
 
 
 
