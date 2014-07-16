@@ -11,7 +11,7 @@ python-libraries
 * orange
 * py4j
 * python-nltk
-* python xlmrpc
+* xmlrpclib
 * numpy
 * scipy
 * suds
