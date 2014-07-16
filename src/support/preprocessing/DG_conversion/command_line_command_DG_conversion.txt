@@ -1,2 +1,0 @@
-python DG_conversion.py -i DG_gesamt_DE-EN_Source.sgm -j source_sentence_list.txt -t new_source_sentences_list -s google -l en
-
