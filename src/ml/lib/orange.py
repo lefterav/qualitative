@@ -142,8 +142,7 @@ class OrangeRuntimeRanker:
                 output.append("System{} < System{}".format(system_names[0], system_names[1]))
             else:
                 output.append("System{} > System{}".format(system_names[0], system_names[1]))
-            output.append(" \n instance: {} \n probabilities: {}\n".format(instance, distribution))
-                
+            output.append(" \n instance: {} \n probabilities: {}\n".format(instance, distribution))    
         return "".join(output)
     
     def rank_sentence(self, parallelsentence):
@@ -201,7 +200,6 @@ class OrangeRuntimeRanker:
         result = [(t.get_attribute("rank"), t) for t in ranked_sentence.get_translations()]
 #        return ranked_sentence.get_target_attribute_values("rank")
         description = self._get_description(resultvector)
-
         return result, description
         
         
