@@ -65,8 +65,8 @@ class Autoranking:
         ranking.sort(key=lambda x: x[1].get_attribute("system"))
         
         #return only ranks without system ids
+        description += "\n Final ranking: {}".format([(r[0], r[1].get_string()) for r in ranking])
         ranking = [r[0] for r in ranking]
-        
         return ranking, description
         
         
@@ -175,7 +175,7 @@ if __name__ == "__main__":
         #target3 = "We must this solution discuss"
 
         result, description = autoranker.rank(source, translations)
-        print result
         print description
+        print "The right order of the given sentences is ", result
 
 
