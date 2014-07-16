@@ -140,9 +140,11 @@ class Autoranking:
     
 
 if __name__ == "__main__":
-    
-    classifier_filename = sys.argv[1] # "/share/taraxu/selection-mechanism/wmt13/sentenceranking/autoranking_wmt13_newfeatures1_de_en/class_nameranklangpairde-eninclude_references0.0ties0.0trainset_modeannotatedattattset_24classifierLogReg/classifier.clsf"
-    configfilenames = sys.argv[2:]
+    try:
+        classifier_filename = sys.argv[1] # "/share/taraxu/selection-mechanism/wmt13/sentenceranking/autoranking_wmt13_newfeatures1_de_en/class_nameranklangpairde-eninclude_references0.0ties0.0trainset_modeannotatedattattset_24classifierLogReg/classifier.clsf"
+        configfilenames = sys.argv[2:]
+    except:
+        sys.exit("Syntax: python application.py <classifier_filename> <pipeline.config.1> [<pipeline.config.2> ...]")
     
     #[
     #'/home/Eleftherios Avramidis/workspace/qualitative/src/app/autoranking/config/pipeline.cfg',
@@ -153,7 +155,7 @@ if __name__ == "__main__":
     autoranker = Autoranking(configfilenames, classifier_filename)
     
     while 1==1:    
-        source = raw_input("Source sentence (or 'exit')")
+        source = raw_input("Source sentence (or 'exit') > ")
         if source == "exit":
             sys.exit("Exit requested")
         doexit = False
@@ -161,7 +163,7 @@ if __name__ == "__main__":
         translations = []
         while 1==1:
             i+=1
-            translation = raw_input("Translation (or empty to continue)")
+            translation = raw_input("Translation (or empty to continue) > ")
             if translation!="":
                 translations.append(translation)
             else:
