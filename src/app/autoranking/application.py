@@ -94,8 +94,7 @@ class Autoranking:
         if java_classpath:
             
             #self.jvm = JVM(java_classpath)
-            #socket_no = self.jvm.socket_no
-            socket_no = 25336
+            socket_no = self.jvm.socket_no
             self.gatewayclient = GatewayClient('localhost', socket_no)
             self.gateway = JavaGateway(self.gatewayclient, auto_convert=True, auto_field=True)
             sys.stderr.write("Initialized global Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
@@ -118,18 +117,17 @@ class Autoranking:
             Tokenizer(source_language),
             Tokenizer(target_language),
             
-            #cfg.get_parser(source_language),
             src_parser,
             tgt_parser,
             
             ParserMatches(langpair),
             
             #truecase
-            Truecaser(source_language, cfg.get_truecaser_model(source_language)),
-            Truecaser(target_language, cfg.get_truecaser_model(target_language)),
+            #Truecaser(source_language, cfg.get_truecaser_model(source_language)),
+            #Truecaser(target_language, cfg.get_truecaser_model(target_language)),
             
-            cfg.get_lm(source_language),
-            cfg.get_lm(target_language),            
+            #cfg.get_lm(source_language),
+            #cfg.get_lm(target_language),            
 
             CrossMeteorGenerator(target_language, cfg.get_classpath()[0], cfg.get_classpath()[1]),
             

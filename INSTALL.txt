@@ -1,3 +1,13 @@
+In order to run the program please follow the steps:
+
+0. Add the /src directory into the PYTHONPATH of your linux 
+   Debian/Ubuntu: export PYTHONPATH = $PYTHONPATH:/home/<dirname>/qualitative/src
+1. Install python requirements and external programs (see below)
+2. Change directory to /lib and run "bash install.sh" to download Java libraries
+3. Download linguistic resources (suggested folder in /res; there may be a bash script to do that)
+4. Specify the location of the linguistic resources to the configuration files
+5. To test installation run application.py <classifier_file> <annotation.config.1> [<annotation.config.2> ...]
+
 
 ============
 Requirements
@@ -6,7 +16,18 @@ Requirements
 This is a list of the requirements for running the suite. Please scroll
 for more hints on their installation
 
-python-libraries
+python-libraries 
+----------------
+
+Use pip-install: 
+For Debian/ubuntu: 
+>> sudo apt-get install python-dev g++ build-essential python-pip 
+>> sudo pip install --upgrade pip  
+>> sudo pip install <package-name>
+or for user-specific installation (no root or 
+not wanting to risk your python environment) 
+>> pip install --user <package-name> 
+
 * python 2.7
 * orange
 * py4j
@@ -16,23 +37,23 @@ python-libraries
 * scipy
 * suds
 * ruffus [only for training]
-* expsuite [only for training]
+* expsuite [only for training] (Manually from https://github.com/lefterav/expsuite)
 
 external programs [need to start separately]
 * lmserver wrapped over SRILM [soon to be replaced by KenLM]
 * Acrolinx IQ [proprietary-optional]
 
-jar files (automatically fetched by lib/install.sh)
+jar files (automatically fetched by "cd lib; bash install.sh")
 * py4j
 * Berkeley parser
 * Meteor
 * Language tool 
 
-other resources:
+other resources (automatically fetched by "cd res; bash download.sh":
 * language model for source and target language (ARPA format)
 * trained grammar for Berkeley parser (source and target language)
 * truecaser model for source and target language (see Moses)
-
+* pre-trained quality estimation ranking model
 
 
 Orange ML toolkit
