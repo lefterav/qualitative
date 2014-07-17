@@ -33,7 +33,8 @@ class JVM(object):
         #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
         #subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path])
             
-        java_classpath.extend(get_libs())
+        #java_classpath.extend(get_libs())
+        java_classpath = get_libs()
         path = os.path.abspath(__file__)
         libdir = path
         java_classpath.append(os.path.dirname(path))
@@ -42,10 +43,12 @@ class JVM(object):
         print "classpath = ", classpath
 
         #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
-        try:
-            subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % os.path.dirname(path) ])
-        except:
-            pass
+        #commenting out as it is better handled by bash script in /lib
+        #try:
+        #    subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % os.path.dirname(path) ])
+        #except:
+        #    pass
+        
         
         # prepare and run Java server
         #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
