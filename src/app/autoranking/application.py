@@ -123,11 +123,11 @@ class Autoranking:
             ParserMatches(langpair),
             
             #truecase
-            #Truecaser(source_language, cfg.get_truecaser_model(source_language)),
-            #Truecaser(target_language, cfg.get_truecaser_model(target_language)),
+            Truecaser(source_language, cfg.get_truecaser_model(source_language)),
+            Truecaser(target_language, cfg.get_truecaser_model(target_language)),
             
-            #cfg.get_lm(source_language),
-            #cfg.get_lm(target_language),            
+            cfg.get_lm(source_language),
+            cfg.get_lm(target_language),            
 
             CrossMeteorGenerator(target_language, cfg.get_classpath()[0], cfg.get_classpath()[1]),
             
