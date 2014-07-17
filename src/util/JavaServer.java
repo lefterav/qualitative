@@ -32,11 +32,12 @@ public class JavaServer {
     	boolean serverCreated = false;
 		int socket = 25336;
 		
+		JavaServer app = new JavaServer();
 		//keep trying to connect with the next socket, until socket is free
 		while (!serverCreated) {
 			try{
 				System.err.println("Trying to start Java server in socket " + Integer.toString(socket));
-				server = new GatewayServer(null, socket);
+				server = new GatewayServer(app, socket);
 				server.start();
 				serverCreated = true;
 			} catch (Exception e) {
