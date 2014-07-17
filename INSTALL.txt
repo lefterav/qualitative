@@ -28,6 +28,7 @@ or for user-specific installation (no root or
 not wanting to risk your python environment) 
 >> pip install --user <package-name> 
 
+Packages:
 * python 2.7
 * orange
 * py4j
@@ -35,7 +36,7 @@ not wanting to risk your python environment)
 * xmlrpclib
 * numpy
 * scipy
-* suds
+* suds [only for Acrolinx support]
 * ruffus [only for training]
 * expsuite [only for training] (Manually from https://github.com/lefterav/expsuite)
 
