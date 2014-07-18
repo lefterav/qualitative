@@ -106,30 +106,30 @@ class Autoranking:
         source_language =  cfg.get("general", "source_language")
         target_language =  cfg.get("general", "target_language")
         
-        src_parser = cfg.get_parser(source_language)
+        #src_parser = cfg.get_parser(source_language)
         tgt_parser = cfg.get_parser(target_language)
 
         langpair = (source_language, target_language)
         
         featuregenerators = [
-            Normalizer(source_language),
-            Normalizer(target_language),
-            Tokenizer(source_language),
+            #Normalizer(source_language),
+            #Normalizer(target_language),
+            #Tokenizer(source_language),
             Tokenizer(target_language),
             
-            src_parser,
+            #src_parser,
             tgt_parser,
             
-            ParserMatches(langpair),
+            #ParserMatches(langpair),
             
             #truecase
-            Truecaser(source_language, cfg.get_truecaser_model(source_language)),
-            Truecaser(target_language, cfg.get_truecaser_model(target_language)),
+            #Truecaser(source_language, cfg.get_truecaser_model(source_language)),
+            #Truecaser(target_language, cfg.get_truecaser_model(target_language)),
             
-            cfg.get_lm(source_language),
-            cfg.get_lm(target_language),            
+            #cfg.get_lm(source_language),
+            #cfg.get_lm(target_language),            
 
-            CrossMeteorGenerator(target_language, cfg.get_classpath()[0], cfg.get_classpath()[1]),
+            #CrossMeteorGenerator(target_language, cfg.get_classpath()[0], cfg.get_classpath()[1]),
             
             LengthFeatureGenerator()
         ]

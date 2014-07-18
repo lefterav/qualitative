@@ -8,7 +8,6 @@ from ConfigParser import ConfigParser, NoOptionError
 from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator, BerkeleyXMLRPCFeatureGenerator
 from featuregenerator.iq.acrolinxclient import IQFeatureGenerator
 from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator 
-#import Orange
 import os
 import re
 import sys
@@ -18,23 +17,6 @@ import argparse
 import fnmatch
 import socket
 from util.jvm import JVM
-
-#from Orange.regression.linear import LinearRegressionLearner 
-#from Orange.regression.pls import PLSRegressionLearner
-#from Orange.regression.lasso import LassoRegressionLearner
-#from Orange.regression.earth import EarthLearner
-#from Orange.regression.tree import TreeLearner
-#
-#from Orange.classification.knn import kNNLearner
-#from Orange.classification.bayes import NaiveLearner
-#from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
-##from classifier.svmeasy import SVMEasyLearner
-#from Orange.classification.tree import TreeLearner
-#from Orange.classification.logreg import LogRegLearner
-#from app.utils.ruffus_utils import (touch, sys_call,
-#                                           main_logger as log,
-#                                           main_mutex as log_mtx)
-
 from py4j.java_gateway import GatewayClient, JavaGateway
 
 # --- config and options---
@@ -45,6 +27,8 @@ CONFIG_TEMPLATE = """
 
 
 class ExperimentConfigParser(ConfigParser):
+    """
+    """
     checker = 0
     
 
@@ -58,6 +42,7 @@ class ExperimentConfigParser(ConfigParser):
             
             self.jvm = JVM(java_classpath)
             socket_no = self.jvm.socket_no
+            #socket_no = 25336
             self.gatewayclient = GatewayClient('localhost', socket_no)
             self.gateway = JavaGateway(self.gatewayclient, auto_convert=True, auto_field=True)
             sys.stderr.write("Initialized global Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
