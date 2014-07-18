@@ -27,7 +27,12 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -56,9 +61,11 @@
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class LevenshteinGenerator</h1><p class="nomargin-top"><span class="codelink"><a href="featuregenerator.levenshtein.levenshtein_generator-pysrc.html#LevenshteinGenerator">source&nbsp;code</a></span></p>
 <pre class="base-tree">
-featuregenerator.featuregenerator.FeatureGenerator --+
-                                                     |
-                                                    <strong class="uidshort">LevenshteinGenerator</strong>
+                       object --+    
+                                |    
+<a href="featuregenerator.featuregenerator.FeatureGenerator-class.html">featuregenerator.FeatureGenerator</a> --+
+                                    |
+                                   <strong class="uidshort">LevenshteinGenerator</strong>
 </pre>
 
 <hr />
@@ -99,6 +106,64 @@ featuregenerator.featuregenerator.FeatureGenerator --+
         </tr>
       </table>
       
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html">featuregenerator.FeatureGenerator</a></code></b>:
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_batch">add_features_batch</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_dataset">add_features_dataset</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_parallelsentence">add_features_parallelsentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_simplesentence">add_features_simplesentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_src">add_features_src</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_tgt">add_features_tgt</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_annotation_name">get_annotation_name</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_parallelsentence">get_features_parallelsentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_simplesentence">get_features_simplesentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_src">get_features_src</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_string">get_features_string</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#process_dataset">process_dataset</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__init__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
     </td>
   </tr>
 </table>
@@ -145,6 +210,9 @@ featuregenerator.featuregenerator.FeatureGenerator --+
     </ul></dd>
     <dt>Returns: dict</dt>
         <dd>dictionary containing Levenshtein distance as an attribute</dd>
+    <dt>Overrides:
+        <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_tgt">featuregenerator.FeatureGenerator.get_features_tgt</a>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -166,13 +234,18 @@ featuregenerator.featuregenerator.FeatureGenerator --+
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:20 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:12 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
