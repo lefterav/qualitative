@@ -27,7 +27,12 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -56,9 +61,13 @@
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class IQFeatureGenerator</h1><p class="nomargin-top"><span class="codelink"><a href="featuregenerator.iq.acrolinxclient-pysrc.html#IQFeatureGenerator">source&nbsp;code</a></span></p>
 <pre class="base-tree">
-featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
-                                                                     |
-                                                                    <strong class="uidshort">IQFeatureGenerator</strong>
+                                   object --+        
+                                            |        
+            <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html">featuregenerator.FeatureGenerator</a> --+    
+                                                |    
+<a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html">languagefeaturegenerator.LanguageFeatureGenerator</a> --+
+                                                    |
+                                                   <strong class="uidshort">IQFeatureGenerator</strong>
 </pre>
 
 <hr />
@@ -89,12 +98,14 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
         <tr>
           <td><span class="summary-sig"><a href="featuregenerator.iq.acrolinxclient.IQFeatureGenerator-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">lang</span>,
-        <span class="summary-sig-arg">settings</span>=<span class="summary-sig-default">{}</span>,
-        <span class="summary-sig-arg">user_id</span>=<span class="summary-sig-default">'dfkitaraxu'</span>,
-        <span class="summary-sig-arg">host</span>=<span class="summary-sig-default">&quot;msv-3231.sb.dfki.de:8031&quot;</span>,
-        <span class="summary-sig-arg">wsdl_path</span>=<span class="summary-sig-default">&quot;/acrolinx/services/core-no-mtom?wsdl&quot;</span>,
-        <span class="summary-sig-arg">protocol</span>=<span class="summary-sig-default">&quot;http&quot;</span>,
-        <span class="summary-sig-arg">license_file</span>=<span class="summary-sig-default">&quot;license.dat&quot;</span>)</span></td>
+        <span class="summary-sig-arg">settings</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="summary-sig-arg">user_id</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">dfkitaraxu</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">host</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">msv-3231.sb.dfki.de:8031</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">wsdl_path</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">/acrolinx/services/core-no-mtom?wsdl</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">protocol</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">http</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">license_file</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">license.dat</code><code class="variable-quote">'</code></span>)</span><br />
+      In order to initialize a language-specific feature generator, the 
+      language needs to be instantiatied as a class variable</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="featuregenerator.iq.acrolinxclient-pysrc.html#IQFeatureGenerator.__init__">source&nbsp;code</a></span>
             
@@ -169,7 +180,7 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="featuregenerator.iq.acrolinxclient.IQFeatureGenerator-class.html#_attributes2soapproperties" class="summary-sig-name" onclick="show_private();">_attributes2soapproperties</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">attributes</span>=<span class="summary-sig-default">{}</span>)</span><br />
+        <span class="summary-sig-arg">attributes</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span><br />
       Converts a normal python dict to a list of SoapProperty instances</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="featuregenerator.iq.acrolinxclient-pysrc.html#IQFeatureGenerator._attributes2soapproperties">source&nbsp;code</a></span>
@@ -263,6 +274,41 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
       
     </td>
   </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html">languagefeaturegenerator.LanguageFeatureGenerator</a></code></b>:
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#add_features_batch">add_features_batch</a></code>,
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#add_features_batch_xml">add_features_batch_xml</a></code>,
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#add_features_dataset">add_features_dataset</a></code>,
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#get_features_simplesentence">get_features_simplesentence</a></code>,
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#get_features_src">get_features_src</a></code>,
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#get_features_tgt">get_features_tgt</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html">featuregenerator.FeatureGenerator</a></code></b>:
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_parallelsentence">add_features_parallelsentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_simplesentence">add_features_simplesentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_src">add_features_src</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_tgt">add_features_tgt</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_annotation_name">get_annotation_name</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_parallelsentence">get_features_parallelsentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#process_dataset">process_dataset</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
 </table>
 <!-- ==================== INSTANCE VARIABLES ==================== -->
 <a name="section-InstanceVariables"></a>
@@ -290,9 +336,10 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type">str</span>
     </td><td class="summary">
-        <a name="lang"></a><span class="summary-name">lang</span>
+        <a name="lang"></a><span class="summary-name">lang</span><br />
+      the language abrev.
     </td>
   </tr>
 <tr>
@@ -308,6 +355,31 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a name="user_id"></a><span class="summary-name">user_id</span>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
     </td>
   </tr>
 </table>
@@ -338,12 +410,12 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">lang</span>,
-        <span class="sig-arg">settings</span>=<span class="sig-default">{}</span>,
-        <span class="sig-arg">user_id</span>=<span class="sig-default">'dfkitaraxu'</span>,
-        <span class="sig-arg">host</span>=<span class="sig-default">&quot;msv-3231.sb.dfki.de:8031&quot;</span>,
-        <span class="sig-arg">wsdl_path</span>=<span class="sig-default">&quot;/acrolinx/services/core-no-mtom?wsdl&quot;</span>,
-        <span class="sig-arg">protocol</span>=<span class="sig-default">&quot;http&quot;</span>,
-        <span class="sig-arg">license_file</span>=<span class="sig-default">&quot;license.dat&quot;</span>)</span>
+        <span class="sig-arg">settings</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="sig-arg">user_id</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">dfkitaraxu</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">host</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">msv-3231.sb.dfki.de:8031</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">wsdl_path</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">/acrolinx/services/core-no-mtom?wsdl</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">protocol</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">http</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">license_file</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">license.dat</code><code class="variable-quote">'</code></span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
@@ -351,7 +423,8 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
     </td>
   </tr></table>
   
-  
+  <p>In order to initialize a language-specific feature generator, the 
+  language needs to be instantiatied as a class variable</p>
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
@@ -362,6 +435,9 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
           the end of the request url</li>
         <li><strong class="pname"><code>protocol</code></strong> (str) - the protocol, default value http</li>
     </ul></dd>
+    <dt>Overrides:
+        object.__init__
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -454,7 +530,7 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">_attributes2soapproperties</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">attributes</span>=<span class="sig-default">{}</span>)</span>
+        <span class="sig-arg">attributes</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="featuregenerator.iq.acrolinxclient-pysrc.html#IQFeatureGenerator._attributes2soapproperties">source&nbsp;code</a></span>&nbsp;
@@ -500,6 +576,9 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
     </ul></dd>
     <dt>Returns: {str: str}</dt>
         <dd>a dict with attributes retrieved from the quality analysis</dd>
+    <dt>Overrides:
+        <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_string">featuregenerator.FeatureGenerator.get_features_string</a>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -521,13 +600,18 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:19 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:12 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
