@@ -27,7 +27,12 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -52,6 +57,11 @@
 </table>
 <!-- ==================== PACKAGE DESCRIPTION ==================== -->
 <h1 class="epydoc">Package featuregenerator</h1><p class="nomargin-top"><span class="codelink"><a href="featuregenerator-pysrc.html">source&nbsp;code</a></span></p>
+<p>Interface for feature generators, i.e. classes which handle the 
+  generation of features over the parallel objects. Any new 
+  featuregenerator should implement languagefeaturegenerator.py (if it is 
+  language-specific) or featuregenerator.py  (it is language-generic).</p>
+
 <!-- ==================== SUBMODULES ==================== -->
 <a name="section-Submodules"></a>
 <table class="summary" border="1" cellpadding="3"
@@ -79,22 +89,8 @@
     <li> <strong class="uidlink"><a href="featuregenerator.bleu.bleugenerator-module.html">featuregenerator.bleu.bleugenerator</a></strong>: <em class="summary">Created on 07.10.2011</em>    </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="featuregenerator.decodingprobs-module.html">featuregenerator.decodingprobs</a></strong>: <em class="summary">Created on 05.10.2011</em>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.diff_generator-module.html">featuregenerator.diff_generator</a></strong>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.featuregenerator-module.html">featuregenerator.featuregenerator</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="featuregenerator.glassbox-module.html">featuregenerator.glassbox</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="featuregenerator.glassbox.lucy-module.html">featuregenerator.glassbox.lucy</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="featuregenerator.glassbox.moses-module.html">featuregenerator.glassbox.moses</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="featuregenerator.glassbox.moses.extractor-module.html">featuregenerator.glassbox.moses.extractor</a></strong>: <em class="summary">Created on Apr 2, 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="featuregenerator.glassbox.moses.rerun_verbose-module.html">featuregenerator.glassbox.moses.rerun_verbose</a></strong>: <em class="summary">Rerun a series of Moses experiments, with verbose output Dig into a
-        list of given Moses EMS executions for particular experiments and 
-        repeat them with modified verbose settings towards new output files</em>    </li>
-    </ul>
-    </li>
-    </ul>
-    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.hjerson-module.html">featuregenerator.hjerson</a></strong>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.ibm1featuregenerator-module.html">featuregenerator.ibm1featuregenerator</a></strong>: <em class="summary">Created on 17 Sept 2011</em>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.iq-module.html">featuregenerator.iq</a></strong>
@@ -122,9 +118,6 @@
     <li> <strong class="uidlink"><a href="featuregenerator.lm.srilm-module.html">featuregenerator.lm.srilm</a></strong>
     <ul>
     <li> <strong class="uidlink"><a href="featuregenerator.lm.srilm.srilm_ngram-module.html">featuregenerator.lm.srilm.srilm_ngram</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="featuregenerator.lm.srilm.srilmclient-module.html">featuregenerator.lm.srilm.srilmclient</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="featuregenerator.lm.srilm.srilmwrapper-module.html">featuregenerator.lm.srilm.srilmwrapper</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="featuregenerator.lm.srilm.test-module.html">featuregenerator.lm.srilm.test</a></strong>    </li>
     </ul>
     </li>
     </ul>
@@ -135,12 +128,12 @@
     <li> <strong class="uidlink"><a href="featuregenerator.meteor.testmeteor-module.html">featuregenerator.meteor.testmeteor</a></strong>: <em class="summary">Created on 22 Jun 2012</em>    </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="featuregenerator.morph-module.html">featuregenerator.morph</a></strong>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.parser-module.html">featuregenerator.parser</a></strong>
     <ul>
     <li> <strong class="uidlink"><a href="featuregenerator.parser.berkeley-module.html">featuregenerator.parser.berkeley</a></strong>
     <ul>
     <li> <strong class="uidlink"><a href="featuregenerator.parser.berkeley.berkeleyclient-module.html">featuregenerator.parser.berkeley.berkeleyclient</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="featuregenerator.parser.berkeley.cfgrules-module.html">featuregenerator.parser.berkeley.cfgrules</a></strong>: <em class="summary">Created on Jul 13, 2014</em>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.parser.berkeley.parsermatches-module.html">featuregenerator.parser.berkeley.parsermatches</a></strong>: <em class="summary">Created on 22 March 2011</em>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.parser.berkeley.socket-module.html">featuregenerator.parser.berkeley.socket</a></strong>
     <ul>
@@ -156,7 +149,7 @@
     <li> <strong class="uidlink"><a href="featuregenerator.ratio_generator-module.html">featuregenerator.ratio_generator</a></strong>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.wer-module.html">featuregenerator.wer</a></strong>
     <ul>
-    <li> <strong class="uidlink"><a href="featuregenerator.wer.wer-module.html">featuregenerator.wer.wer</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="featuregenerator.wer.wer-module.html">featuregenerator.wer.wer</a></strong>: <em class="summary">@author Eleftherios Avramidis based on original by Maja Popovic</em>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.wer.werfeaturegenerator-module.html">featuregenerator.wer.werfeaturegenerator</a></strong>    </li>
     </ul>
     </li>
@@ -207,13 +200,18 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:18 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:12 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

@@ -27,7 +27,12 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -80,13 +85,16 @@ featuregenerator.levenshtein.levenshtein.levenshtein" class="py-name" href="#" o
 <a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"><tt class="py-docstring">        @rtype: dict</tt> </tt>
 <a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line"><tt class="py-docstring">        @return: dictionary containing Levenshtein distance as an attribute </tt> </tt>
 <a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
-<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">        <tt class="py-name">target_untokenized</tt> <tt class="py-op">=</tt> <tt id="link-5" class="py-name" targets="Variable experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.target=experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival-module.html#target"><a title="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.target" class="py-name" href="#" onclick="return doclink('link-5', 'target', 'link-5');">target</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Method sentence.sentence.SimpleSentence.get_string()=sentence.sentence.SimpleSentence-class.html#get_string"><a title="sentence.sentence.SimpleSentence.get_string" class="py-name" href="#" onclick="return doclink('link-6', 'get_string', 'link-6');">get_string</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">        <tt class="py-name">ref_untokenized</tt> <tt class="py-op">=</tt> <tt id="link-7" class="py-name" targets="Module sentence.parallelsentence=sentence.parallelsentence-module.html"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-7', 'parallelsentence', 'link-7');">parallelsentence</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method sentence.parallelsentence.ParallelSentence.get_reference()=sentence.parallelsentence.ParallelSentence-class.html#get_reference"><a title="sentence.parallelsentence.ParallelSentence.get_reference" class="py-name" href="#" onclick="return doclink('link-8', 'get_reference', 'link-8');">get_reference</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name"><a title="sentence.sentence.SimpleSentence.get_string" class="py-name" href="#" onclick="return doclink('link-9', 'get_string', 'link-6');">get_string</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">         </tt>
-<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line"> </tt>
-<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">        <tt class="py-name">wer_value</tt> <tt class="py-op">=</tt> <tt id="link-10" class="py-name"><a title="featuregenerator.levenshtein.levenshtein.levenshtein_tok" class="py-name" href="#" onclick="return doclink('link-10', 'levenshtein_tok', 'link-4');">levenshtein_tok</a></tt><tt class="py-op">(</tt><tt class="py-name">target_untokenized</tt><tt class="py-op">,</tt> <tt class="py-name">ref_untokenized</tt><tt class="py-op">)</tt> </tt>
-<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-op">{</tt><tt class="py-string">'ref-lev'</tt><tt class="py-op">:</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">wer_value</tt><tt class="py-op">)</tt><tt class="py-op">}</tt> </tt>
-</div></div><a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">        <tt class="py-name">target_untokenized</tt> <tt class="py-op">=</tt> <tt class="py-name">target</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Method sentence.sentence.SimpleSentence.get_string()=sentence.sentence.SimpleSentence-class.html#get_string"><a title="sentence.sentence.SimpleSentence.get_string" class="py-name" href="#" onclick="return doclink('link-5', 'get_string', 'link-5');">get_string</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">            <tt class="py-name">ref_untokenized</tt> <tt class="py-op">=</tt> <tt id="link-6" class="py-name" targets="Module sentence.parallelsentence=sentence.parallelsentence-module.html"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-6', 'parallelsentence', 'link-6');">parallelsentence</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method sentence.parallelsentence.ParallelSentence.get_reference()=sentence.parallelsentence.ParallelSentence-class.html#get_reference"><a title="sentence.parallelsentence.ParallelSentence.get_reference" class="py-name" href="#" onclick="return doclink('link-7', 'get_reference', 'link-7');">get_reference</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name"><a title="sentence.sentence.SimpleSentence.get_string" class="py-name" href="#" onclick="return doclink('link-8', 'get_string', 'link-5');">get_string</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">         </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line"> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">            <tt class="py-name">wer_value</tt> <tt class="py-op">=</tt> <tt id="link-9" class="py-name"><a title="featuregenerator.levenshtein.levenshtein.levenshtein_tok" class="py-name" href="#" onclick="return doclink('link-9', 'levenshtein_tok', 'link-4');">levenshtein_tok</a></tt><tt class="py-op">(</tt><tt class="py-name">target_untokenized</tt><tt class="py-op">,</tt> <tt class="py-name">ref_untokenized</tt><tt class="py-op">)</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-op">{</tt><tt class="py-string">'ref-lev'</tt><tt class="py-op">:</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">wer_value</tt><tt class="py-op">)</tt><tt class="py-op">}</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+</div></div><a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line"> </tt><script type="text/javascript">
 <!--
 expandto(location.href);
 // -->
@@ -110,13 +118,18 @@ expandto(location.href);
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:26 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:15 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
