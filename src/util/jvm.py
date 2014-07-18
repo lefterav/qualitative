@@ -6,32 +6,34 @@ Created on 22 Jun 2012
 import subprocess
 import time
 import os
-import fnmatch
-
 
 def get_libs():
+    """
+    Return libs directory and files that need to be included in the java classpath
+    @return: file patter and directories to be included in the java classpath
+    @rtype: list(str)
+    """
     path = os.path.abspath(__file__)
     components = path.split(os.sep)
     rootpath = os.path.join(os.sep, *components[:-3])
     libpath = os.path.join(rootpath, "lib")
     libpath_all = os.path.join(libpath, "*")    
-    #libs = [os.path.join(libpath, f) for f in os.listdir(libpath) if f.endswith('.jar') or f.endswith('.class')]
     libs = [libpath, libpath_all]
     return libs
 
 class JVM(object):
     '''
-    classdocs
+    A wrapper for the Py4J server of Java Virtual Machine, so that java libraries can be accessed via Py4J. 
+    @ivar jvm: The object of the wrapped Java Virtual Machine process
+    @ivar socket_no: The socket that the Java Server is responding to Py4J requests 
+    @ivar pid: The system process id of the Java Server 
     '''
 
     def __init__(self, java_classpath):
         '''
-        Constructor
+        Star running java
         '''
-        
-        #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
-        #subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path])
-            
+           
         #java_classpath.extend(get_libs())
         java_classpath = get_libs()
         path = os.path.abspath(__file__)
@@ -60,10 +62,16 @@ class JVM(object):
         self.pid = self.jvm.pid
         
     def terminate(self):
+        """
+        Stop the Java Server
+        """
         self.jvm.terminate()
     
     
     def __del__(self):
+        """
+        Stop the Java Server if the object stops existing
+        """
         try:
             self.jvm.terminate()
         except:
