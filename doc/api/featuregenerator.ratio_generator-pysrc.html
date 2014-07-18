@@ -27,7 +27,12 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -71,14 +76,14 @@ featuregenerator.featuregenerator" class="py-name" href="#" onclick="return docl
 <a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">     </tt>
 <a name="RatioGenerator.get_features_tgt"></a><div id="RatioGenerator.get_features_tgt-def"><a name="L16"></a><tt class="py-lineno">16</tt> <a class="py-toggle" href="#" id="RatioGenerator.get_features_tgt-toggle" onclick="return toggle('RatioGenerator.get_features_tgt');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.ratio_generator.RatioGenerator-class.html#get_features_tgt">get_features_tgt</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">simplesentence</tt><tt class="py-op">,</tt> <tt class="py-param">parallelsentence</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
 </div><div id="RatioGenerator.get_features_tgt-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="RatioGenerator.get_features_tgt-expanded"><a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">        <tt class="py-comment">#get the length of the source</tt> </tt>
-<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">        <tt class="py-name">tgt_attributes</tt> <tt class="py-op">=</tt> <tt class="py-name">simplesentence</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Method io_utils.input.genericxmlreader.GenericXmlReader.get_attributes()=io_utils.input.genericxmlreader.GenericXmlReader-class.html#get_attributes,Method sentence.parallelsentence.ParallelSentence.get_attributes()=sentence.parallelsentence.ParallelSentence-class.html#get_attributes,Method sentence.sentence.SimpleSentence.get_attributes()=sentence.sentence.SimpleSentence-class.html#get_attributes"><a title="io_utils.input.genericxmlreader.GenericXmlReader.get_attributes
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">        <tt class="py-name">tgt_attributes</tt> <tt class="py-op">=</tt> <tt class="py-name">simplesentence</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Method dataprocessor.input.genericxmlreader.GenericXmlReader.get_attributes()=dataprocessor.input.genericxmlreader.GenericXmlReader-class.html#get_attributes,Method sentence.parallelsentence.ParallelSentence.get_attributes()=sentence.parallelsentence.ParallelSentence-class.html#get_attributes,Method sentence.sentence.SimpleSentence.get_attributes()=sentence.sentence.SimpleSentence-class.html#get_attributes"><a title="dataprocessor.input.genericxmlreader.GenericXmlReader.get_attributes
 sentence.parallelsentence.ParallelSentence.get_attributes
 sentence.sentence.SimpleSentence.get_attributes" class="py-name" href="#" onclick="return doclink('link-2', 'get_attributes', 'link-2');">get_attributes</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">        <tt class="py-name">src_attributes</tt> <tt class="py-op">=</tt> <tt id="link-3" class="py-name" targets="Module sentence.parallelsentence=sentence.parallelsentence-module.html"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-3', 'parallelsentence', 'link-3');">parallelsentence</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Method sentence.parallelsentence.ParallelSentence.get_source()=sentence.parallelsentence.ParallelSentence-class.html#get_source"><a title="sentence.parallelsentence.ParallelSentence.get_source" class="py-name" href="#" onclick="return doclink('link-4', 'get_source', 'link-4');">get_source</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name"><a title="io_utils.input.genericxmlreader.GenericXmlReader.get_attributes
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">        <tt class="py-name">src_attributes</tt> <tt class="py-op">=</tt> <tt id="link-3" class="py-name" targets="Module sentence.parallelsentence=sentence.parallelsentence-module.html"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-3', 'parallelsentence', 'link-3');">parallelsentence</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Method sentence.parallelsentence.ParallelSentence.get_source()=sentence.parallelsentence.ParallelSentence-class.html#get_source"><a title="sentence.parallelsentence.ParallelSentence.get_source" class="py-name" href="#" onclick="return doclink('link-4', 'get_source', 'link-4');">get_source</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name"><a title="dataprocessor.input.genericxmlreader.GenericXmlReader.get_attributes
 sentence.parallelsentence.ParallelSentence.get_attributes
 sentence.sentence.SimpleSentence.get_attributes" class="py-name" href="#" onclick="return doclink('link-5', 'get_attributes', 'link-2');">get_attributes</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
 <a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">         </tt>
-<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">        <tt id="link-6" class="py-name" targets="Variable io_utils.input.testorange.attributes=io_utils.input.testorange-module.html#attributes"><a title="io_utils.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-6', 'attributes', 'link-6');">attributes</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">        <tt id="link-6" class="py-name" targets="Variable dataprocessor.input.testorange.attributes=dataprocessor.input.testorange-module.html#attributes"><a title="dataprocessor.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-6', 'attributes', 'link-6');">attributes</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
 <a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">         </tt>
 <a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">        <tt class="py-comment">#if there are two features with the same name in bot src and target, calculate their ratio and add it</tt> </tt>
 <a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">tgt_attribute_name</tt> <tt class="py-keyword">in</tt> <tt class="py-name">tgt_attributes</tt><tt class="py-op">.</tt><tt class="py-name">keys</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
@@ -93,12 +98,12 @@ sentence.sentence.SimpleSentence.get_attributes" class="py-name" href="#" onclic
 <a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">                            <tt class="py-name">ratio</tt> <tt class="py-op">=</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-string">'inf'</tt><tt class="py-op">)</tt> </tt>
 <a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">                        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
 <a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">                            <tt class="py-name">ratio</tt> <tt class="py-op">=</tt> <tt class="py-number">1.0</tt> <tt class="py-op">*</tt> <tt class="py-name">src_attribute_value</tt> <tt class="py-op">/</tt> <tt class="py-name">tgt_attribute_value</tt> </tt>
-<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">                        <tt id="link-7" class="py-name"><a title="io_utils.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-7', 'attributes', 'link-6');">attributes</a></tt><tt class="py-op">[</tt><tt class="py-name">new_attribute_name</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">ratio</tt><tt class="py-op">)</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">                        <tt id="link-7" class="py-name"><a title="dataprocessor.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-7', 'attributes', 'link-6');">attributes</a></tt><tt class="py-op">[</tt><tt class="py-name">new_attribute_name</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">ratio</tt><tt class="py-op">)</tt> </tt>
 <a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt> <tt class="py-name">ValueError</tt><tt class="py-op">:</tt> </tt>
 <a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">                    <tt class="py-keyword">pass</tt> </tt>
 <a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">                     </tt>
 <a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">                     </tt>
-<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-8" class="py-name"><a title="io_utils.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-8', 'attributes', 'link-6');">attributes</a></tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-8" class="py-name"><a title="dataprocessor.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-8', 'attributes', 'link-6');">attributes</a></tt> </tt>
 </div></div><a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line"> </tt><script type="text/javascript">
 <!--
 expandto(location.href);
@@ -123,13 +128,18 @@ expandto(location.href);
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:24 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:13 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

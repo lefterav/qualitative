@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>dataprocessor.input.xmlreader</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="dataprocessor-module.html">Package&nbsp;dataprocessor</a> ::
+        <a href="dataprocessor.input-module.html">Package&nbsp;input</a> ::
+        Module&nbsp;xmlreader
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="dataprocessor.input.xmlreader-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="dataprocessor.input.xmlreader-module.html">Module dataprocessor.input.xmlreader</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment">#!/usr/bin/python</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-docstring">Created on 15 &#927;&#954;&#964; 2010</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-docstring">@author: Eleftherios Avramidis</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package dataprocessor=dataprocessor-module.html"><a title="dataprocessor" class="py-name" href="#" onclick="return doclink('link-0', 'dataprocessor', 'link-0');">dataprocessor</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package dataprocessor.input=dataprocessor.input-module.html"><a title="dataprocessor.input" class="py-name" href="#" onclick="return doclink('link-1', 'input', 'link-1');">input</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module dataprocessor.input.genericxmlreader=dataprocessor.input.genericxmlreader-module.html"><a title="dataprocessor.input.genericxmlreader" class="py-name" href="#" onclick="return doclink('link-2', 'genericxmlreader', 'link-2');">genericxmlreader</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Class dataprocessor.input.genericxmlreader.GenericXmlReader=dataprocessor.input.genericxmlreader.GenericXmlReader-class.html"><a title="dataprocessor.input.genericxmlreader.GenericXmlReader" class="py-name" href="#" onclick="return doclink('link-3', 'GenericXmlReader', 'link-3');">GenericXmlReader</a></tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-4" class="py-name"><a title="dataprocessor" class="py-name" href="#" onclick="return doclink('link-4', 'dataprocessor', 'link-0');">dataprocessor</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Package dataprocessor.dataformat=dataprocessor.dataformat-module.html"><a title="dataprocessor.dataformat" class="py-name" href="#" onclick="return doclink('link-5', 'dataformat', 'link-5');">dataformat</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Module dataprocessor.dataformat.jcmlformat=dataprocessor.dataformat.jcmlformat-module.html"><a title="dataprocessor.dataformat.jcmlformat" class="py-name" href="#" onclick="return doclink('link-6', 'jcmlformat', 'link-6');">jcmlformat</a></tt> <tt class="py-keyword">import</tt> <tt id="link-7" class="py-name" targets="Class dataprocessor.dataformat.jcmlformat.JcmlFormat=dataprocessor.dataformat.jcmlformat.JcmlFormat-class.html"><a title="dataprocessor.dataformat.jcmlformat.JcmlFormat" class="py-name" href="#" onclick="return doclink('link-7', 'JcmlFormat', 'link-7');">JcmlFormat</a></tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"> </tt>
+<a name="XmlReader"></a><div id="XmlReader-def"><a name="L16"></a><tt class="py-lineno">16</tt> <a class="py-toggle" href="#" id="XmlReader-toggle" onclick="return toggle('XmlReader');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="dataprocessor.input.xmlreader.XmlReader-class.html">XmlReader</a><tt class="py-op">(</tt><tt class="py-base-class">GenericXmlReader</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="XmlReader-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="XmlReader-expanded"><a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt class="py-docstring">    classdocs</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">     </tt>
+<a name="XmlReader.get_tags"></a><div id="XmlReader.get_tags-def"><a name="L22"></a><tt class="py-lineno">22</tt> <a class="py-toggle" href="#" id="XmlReader.get_tags-toggle" onclick="return toggle('XmlReader.get_tags');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="dataprocessor.input.xmlreader.XmlReader-class.html#get_tags">get_tags</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="XmlReader.get_tags-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="XmlReader.get_tags-expanded"><a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">        <tt id="link-8" class="py-name" targets="Variable dataprocessor.dataformat.genericformat.GenericFormat.TAG=dataprocessor.dataformat.genericformat.GenericFormat-class.html#TAG,Variable dataprocessor.dataformat.jcmlformat.JcmlFormat.TAG=dataprocessor.dataformat.jcmlformat.JcmlFormat-class.html#TAG"><a title="dataprocessor.dataformat.genericformat.GenericFormat.TAG
+dataprocessor.dataformat.jcmlformat.JcmlFormat.TAG" class="py-name" href="#" onclick="return doclink('link-8', 'TAG', 'link-8');">TAG</a></tt> <tt class="py-op">=</tt> <tt id="link-9" class="py-name"><a title="dataprocessor.dataformat.jcmlformat.JcmlFormat" class="py-name" href="#" onclick="return doclink('link-9', 'JcmlFormat', 'link-7');">JcmlFormat</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method dataprocessor.dataformat.genericformat.GenericFormat.get_tags()=dataprocessor.dataformat.genericformat.GenericFormat-class.html#get_tags,Method dataprocessor.input.genericxmlreader.GenericXmlReader.get_tags()=dataprocessor.input.genericxmlreader.GenericXmlReader-class.html#get_tags,Method dataprocessor.input.jcmlreader.JcmlReader.get_tags()=dataprocessor.input.jcmlreader.JcmlReader-class.html#get_tags,Method dataprocessor.input.xmlreader.XmlReader.get_tags()=dataprocessor.input.xmlreader.XmlReader-class.html#get_tags"><a title="dataprocessor.dataformat.genericformat.GenericFormat.get_tags
+dataprocessor.input.genericxmlreader.GenericXmlReader.get_tags
+dataprocessor.input.jcmlreader.JcmlReader.get_tags
+dataprocessor.input.xmlreader.XmlReader.get_tags" class="py-name" href="#" onclick="return doclink('link-10', 'get_tags', 'link-10');">get_tags</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-11" class="py-name"><a title="dataprocessor.dataformat.genericformat.GenericFormat.TAG
+dataprocessor.dataformat.jcmlformat.JcmlFormat.TAG" class="py-name" href="#" onclick="return doclink('link-11', 'TAG', 'link-8');">TAG</a></tt> </tt>
+</div></div><a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:15 2014
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -27,7 +27,12 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -57,7 +62,7 @@
 <a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
 <a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-docstring">Created on Sep 6, 2011</tt> </tt>
 <a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
-<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring">@author: elav01</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring">@author: Eleftherios Avramidis</tt> </tt>
 <a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
 <a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"> </tt>
 <a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">nltk</tt><tt class="py-op">.</tt><tt class="py-name">tokenize</tt><tt class="py-op">.</tt><tt class="py-name">punkt</tt> <tt class="py-keyword">import</tt> <tt class="py-name">PunktWordTokenizer</tt> </tt>
@@ -84,8 +89,8 @@ featuregenerator.levenshtein.levenshtein.levenshtein" class="py-name" href="#" o
 <a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">s2</tt><tt class="py-op">)</tt> </tt>
 <a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">  </tt>
 <a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">    <tt class="py-name">previous_row</tt> <tt class="py-op">=</tt> <tt class="py-name">xrange</tt><tt class="py-op">(</tt><tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">s2</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
-<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-2" class="py-name" targets="Variable io_utils.sax.saxwrapper.SaxWrapper.i=io_utils.sax.saxwrapper.SaxWrapper-class.html#i"><a title="io_utils.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-2', 'i', 'link-2');">i</a></tt><tt class="py-op">,</tt> <tt class="py-name">c1</tt> <tt class="py-keyword">in</tt> <tt class="py-name">enumerate</tt><tt class="py-op">(</tt><tt class="py-name">s1</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt class="py-name">current_row</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt id="link-3" class="py-name"><a title="io_utils.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-3', 'i', 'link-2');">i</a></tt> <tt class="py-op">+</tt> <tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-2" class="py-name" targets="Variable dataprocessor.sax.saxwrapper.SaxWrapper.i=dataprocessor.sax.saxwrapper.SaxWrapper-class.html#i"><a title="dataprocessor.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-2', 'i', 'link-2');">i</a></tt><tt class="py-op">,</tt> <tt class="py-name">c1</tt> <tt class="py-keyword">in</tt> <tt class="py-name">enumerate</tt><tt class="py-op">(</tt><tt class="py-name">s1</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt class="py-name">current_row</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt id="link-3" class="py-name"><a title="dataprocessor.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-3', 'i', 'link-2');">i</a></tt> <tt class="py-op">+</tt> <tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
 <a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">j</tt><tt class="py-op">,</tt> <tt class="py-name">c2</tt> <tt class="py-keyword">in</tt> <tt class="py-name">enumerate</tt><tt class="py-op">(</tt><tt class="py-name">s2</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
 <a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">            <tt class="py-name">insertions</tt> <tt class="py-op">=</tt> <tt class="py-name">previous_row</tt><tt class="py-op">[</tt><tt class="py-name">j</tt> <tt class="py-op">+</tt> <tt class="py-number">1</tt><tt class="py-op">]</tt> <tt class="py-op">+</tt> <tt class="py-number">1</tt> <tt class="py-comment"># j+1 instead of j since previous_row and current_row are one character longer</tt> </tt>
 <a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">            <tt class="py-name">deletions</tt> <tt class="py-op">=</tt> <tt class="py-name">current_row</tt><tt class="py-op">[</tt><tt class="py-name">j</tt><tt class="py-op">]</tt> <tt class="py-op">+</tt> <tt class="py-number">1</tt>       <tt class="py-comment"># than s2</tt> </tt>
@@ -118,13 +123,18 @@ expandto(location.href);
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:23 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:15 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
