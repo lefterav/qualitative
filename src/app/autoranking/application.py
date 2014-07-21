@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 
 '''
+This script provides
+ (a) the class that wraps the functionality of the ranking mechanism
+ (b) a command-line interactive interface for testing installation
+
 Created on 2 Aug 2013
 
 @author: Eleftherios Avramidis
 '''
 
 import time
-import cPickle as pickle
 import sys
 
 from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator
@@ -25,17 +28,32 @@ from featuregenerator.preprocessor import Tokenizer
 from featuregenerator.preprocessor import Truecaser
 
 from py4j.java_gateway import GatewayClient, JavaGateway 
-#from py4j.java_gateway import java_import
 
-from util.jvm import JVM
 
 
 class Autoranking:
-
+    """
+    A class that demonstrates the use of simple ranking pipeline. It provides
+    the function 'parse' that receives source and translation strings and
+    returns a ranked list
+    @ivar featuregenerators: List of initialized feature generator objects in the order that will be used 
+    @type featuregenerators: [featuregenerator.featuregenerator.FeatureGenerator, ...]
+    @ivar ranker: Machine Learning class that handles ranking of items
+    @type ranker: ml.lib.orange
+    @ivar source_language: Language code for source language
+    @type source_language: str
+    @ivar target_language: Language code for target language
+    @type target_language: str
+    """
     def __init__(self, configfilenames, classifiername):
-        
-        ##self.attset = attset
-        
+        """
+        Initialize the class.
+        @param configfilenames: a list of annotation configuration files that contain
+        the settings for all feature generators etc.
+        @type configfilenames: list(str)
+        @param classifiername: the filename of a picked classifier object
+        @type classifiername: str
+        """
         cfg = ExperimentConfigParser()
         for config_filename in configfilenames:
             cfg.read(config_filename)
@@ -49,6 +67,13 @@ class Autoranking:
         
         
     def rank(self, source, translations):
+        """
+        Rank translations according to estimated quality
+        @param source: The source sentence whose translations are raned
+        @type source: str
+        @param translations: The translations to be ranked
+        @type translations: list(str)
+        """
         sourcesentence = SimpleSentence(source)
 
         translationsentences = [SimpleSentence(t, {"system":"{}".format(i+1)}) for i,t in enumerate(translations)]
@@ -102,35 +127,37 @@ class Autoranking:
 
 
     def initialize_featuregenerators(self, cfg):
-
+        """
+        Initialize the featuregenerators that handle superficial analysis of given translations
+        @param cfg: the loaded configuration object
+        """
         source_language =  cfg.get("general", "source_language")
         target_language =  cfg.get("general", "target_language")
         
-        #src_parser = cfg.get_parser(source_language)
+        src_parser = cfg.get_parser(source_language)
         tgt_parser = cfg.get_parser(target_language)
 
         langpair = (source_language, target_language)
         
         featuregenerators = [
-            #Normalizer(source_language),
-            #Normalizer(target_language),
-            #Tokenizer(source_language),
+            Normalizer(source_language),
+            Normalizer(target_language),
+            Tokenizer(source_language),
             Tokenizer(target_language),
             
-            #src_parser,
+            src_parser,
             tgt_parser,
             
-            #ParserMatches(langpair),
+            ParserMatches(langpair),
             
-            #truecase
-            #Truecaser(source_language, cfg.get_truecaser_model(source_language)),
-            #Truecaser(target_language, cfg.get_truecaser_model(target_language)),
+            #truecase only for the language model
+            Truecaser(source_language, cfg.get_truecaser_model(source_language)),
+            Truecaser(target_language, cfg.get_truecaser_model(target_language)),
             
-            #cfg.get_lm(source_language),
-            #cfg.get_lm(target_language),            
+            cfg.get_lm(source_language),
+            cfg.get_lm(target_language),            
 
-            #CrossMeteorGenerator(target_language, cfg.get_classpath()[0], cfg.get_classpath()[1]),
-            
+            CrossMeteorGenerator(target_language, cfg.get_classpath()[0], cfg.get_classpath()[1]),
             LengthFeatureGenerator()
         ]
         
@@ -166,16 +193,7 @@ if __name__ == "__main__":
                 translations.append(translation)
             else:
                 break
-                
-        
-        
-        #source = "Wir muessen diese Loesung diskutieren"
-        #target1 = "We have to discuss this solution"
-        #target2 = "We have to discuss this"
-        #target3 = "We must this solution discuss"
 
         result, description = autoranker.rank(source, translations)
         print description
         print "The right order of the given sentences is ", result
-
-

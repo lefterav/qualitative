@@ -27,7 +27,12 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -55,9 +60,9 @@
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class OrangeCoupledDataSet</h1><p class="nomargin-top"><span class="codelink"><a href="sentence.coupleddataset-pysrc.html#OrangeCoupledDataSet">source&nbsp;code</a></span></p>
 <pre class="base-tree">
-<a href="io_utils.input.orangereader.OrangeData-class.html">io_utils.input.orangereader.OrangeData</a> --+
-                                         |
-                                        <strong class="uidshort">OrangeCoupledDataSet</strong>
+<a href="dataprocessor.input.orangereader.OrangeData-class.html">dataprocessor.input.orangereader.OrangeData</a> --+
+                                              |
+                                             <strong class="uidshort">OrangeCoupledDataSet</strong>
 </pre>
 
 <hr />
@@ -130,21 +135,21 @@
   </tr>
   <tr>
     <td colspan="2" class="summary">
-    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="io_utils.input.orangereader.OrangeData-class.html">io_utils.input.orangereader.OrangeData</a></code></b>:
-      <code><a href="io_utils.input.orangereader.OrangeData-class.html#__init__">__init__</a></code>,
-      <code><a href="io_utils.input.orangereader.OrangeData-class.html#classify_accuracy">classify_accuracy</a></code>,
-      <code><a href="io_utils.input.orangereader.OrangeData-class.html#classify_with">classify_with</a></code>,
-      <code><a href="io_utils.input.orangereader.OrangeData-class.html#cross_validation">cross_validation</a></code>,
-      <code><a href="io_utils.input.orangereader.OrangeData-class.html#get_SVM">get_SVM</a></code>,
-      <code><a href="io_utils.input.orangereader.OrangeData-class.html#get_accuracy">get_accuracy</a></code>,
-      <code><a href="io_utils.input.orangereader.OrangeData-class.html#get_data">get_data</a></code>,
-      <code><a href="io_utils.input.orangereader.OrangeData-class.html#get_dataset">get_dataset</a></code>,
-      <code><a href="io_utils.input.orangereader.OrangeData-class.html#print_statistics">print_statistics</a></code>,
-      <code><a href="io_utils.input.orangereader.OrangeData-class.html#split_data">split_data</a></code>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="dataprocessor.input.orangereader.OrangeData-class.html">dataprocessor.input.orangereader.OrangeData</a></code></b>:
+      <code><a href="dataprocessor.input.orangereader.OrangeData-class.html#__init__">__init__</a></code>,
+      <code><a href="dataprocessor.input.orangereader.OrangeData-class.html#classify_accuracy">classify_accuracy</a></code>,
+      <code><a href="dataprocessor.input.orangereader.OrangeData-class.html#classify_with">classify_with</a></code>,
+      <code><a href="dataprocessor.input.orangereader.OrangeData-class.html#cross_validation">cross_validation</a></code>,
+      <code><a href="dataprocessor.input.orangereader.OrangeData-class.html#get_SVM">get_SVM</a></code>,
+      <code><a href="dataprocessor.input.orangereader.OrangeData-class.html#get_accuracy">get_accuracy</a></code>,
+      <code><a href="dataprocessor.input.orangereader.OrangeData-class.html#get_data">get_data</a></code>,
+      <code><a href="dataprocessor.input.orangereader.OrangeData-class.html#get_dataset">get_dataset</a></code>,
+      <code><a href="dataprocessor.input.orangereader.OrangeData-class.html#print_statistics">print_statistics</a></code>,
+      <code><a href="dataprocessor.input.orangereader.OrangeData-class.html#split_data">split_data</a></code>
       </p>
-    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="io_utils.input.orangereader.OrangeData-class.html">io_utils.input.orangereader.OrangeData</a></code></b> (private):
-      <code><a href="io_utils.input.orangereader.OrangeData-class.html#_get_temp_file" onclick="show_private();">_get_temp_file</a></code>,
-      <code><a href="io_utils.input.orangereader.OrangeData-class.html#_writeTempFile" onclick="show_private();">_writeTempFile</a></code>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="dataprocessor.input.orangereader.OrangeData-class.html">dataprocessor.input.orangereader.OrangeData</a></code></b> (private):
+      <code><a href="dataprocessor.input.orangereader.OrangeData-class.html#_get_temp_file" onclick="show_private();">_get_temp_file</a></code>,
+      <code><a href="dataprocessor.input.orangereader.OrangeData-class.html#_writeTempFile" onclick="show_private();">_writeTempFile</a></code>
       </p></div>
     </td>
   </tr>
@@ -189,7 +194,7 @@
   
   <dl class="fields">
     <dt>Overrides:
-        <a href="io_utils.input.orangereader.OrangeData-class.html#_get_orange_header" onclick="show_private();">io_utils.input.orangereader.OrangeData._get_orange_header</a>
+        <a href="dataprocessor.input.orangereader.OrangeData-class.html#_get_orange_header" onclick="show_private();">dataprocessor.input.orangereader.OrangeData._get_orange_header</a>
     </dt>
   </dl>
 </td></tr></table>
@@ -216,7 +221,7 @@
   
   <dl class="fields">
     <dt>Overrides:
-        <a href="io_utils.input.orangereader.OrangeData-class.html#_getOrangeFormat" onclick="show_private();">io_utils.input.orangereader.OrangeData._getOrangeFormat</a>
+        <a href="dataprocessor.input.orangereader.OrangeData-class.html#_getOrangeFormat" onclick="show_private();">dataprocessor.input.orangereader.OrangeData._getOrangeFormat</a>
     </dt>
   </dl>
 </td></tr></table>
@@ -239,13 +244,18 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:20 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:13 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

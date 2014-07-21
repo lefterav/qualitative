@@ -27,7 +27,12 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -61,7 +66,8 @@ object --+
 </pre>
 
 <hr />
-<p>classdocs</p>
+<p>A wrapper for the Py4J server of Java Virtual Machine, so that java 
+  libraries can be accessed via Py4J.</p>
 
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
@@ -88,7 +94,7 @@ object --+
         <tr>
           <td><span class="summary-sig"><a href="util.jvm.JVM-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">java_classpath</span>)</span><br />
-      Constructor</td>
+      Star running java</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="util.jvm-pysrc.html#JVM.__init__">source&nbsp;code</a></span>
             
@@ -104,7 +110,8 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="terminate"></a><span class="summary-sig-name">terminate</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a name="terminate"></a><span class="summary-sig-name">terminate</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Stop the Java Server</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="util.jvm-pysrc.html#JVM.terminate">source&nbsp;code</a></span>
             
@@ -120,7 +127,8 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="__del__"></a><span class="summary-sig-name">__del__</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a name="__del__"></a><span class="summary-sig-name">__del__</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Stop the Java Server if the object stops existing</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="util.jvm-pysrc.html#JVM.__del__">source&nbsp;code</a></span>
             
@@ -146,6 +154,48 @@ object --+
       <code>__str__</code>,
       <code>__subclasshook__</code>
       </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="jvm"></a><span class="summary-name">jvm</span><br />
+      The object of the wrapped Java Virtual Machine process
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="pid"></a><span class="summary-name">pid</span><br />
+      The system process id of the Java Server
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="socket_no"></a><span class="summary-name">socket_no</span><br />
+      The socket that the Java Server is responding to Py4J requests
     </td>
   </tr>
 </table>
@@ -208,7 +258,7 @@ object --+
     </td>
   </tr></table>
   
-  <p>Constructor</p>
+  <p>Star running java</p>
   <dl class="fields">
     <dt>Overrides:
         object.__init__
@@ -234,13 +284,18 @@ object --+
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:20 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:13 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
