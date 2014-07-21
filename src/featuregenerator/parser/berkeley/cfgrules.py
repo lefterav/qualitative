@@ -14,6 +14,7 @@ class Rule:
         self.lhs = None
         self.rhs = []
         self.depth = 0
+        self.leaves = 0
         
     def __str__(self):
         string = "{}_{}".format(self.lhs, "-".join(self.rhs))
@@ -26,6 +27,7 @@ class Rule:
         string = string.replace("*", "_")
         string = string.replace(":", "PUNCT")        
         return string        
+
 
 def get_cfg_rules(string, terminals=False):
     '''
@@ -41,8 +43,9 @@ def get_cfg_rules(string, terminals=False):
     #have remained incomplete
     stack = []
     
-    #always track current depth
-    depth = 0    
+    #always track current depth and number of leaves
+    depth = 0   
+    leaves = 0
     
     #the label gathers the characters of the labels as they appear
     #one by one
@@ -88,7 +91,11 @@ def get_cfg_rules(string, terminals=False):
         #and can be delivered
         elif char==")" and stack:
             depth -= 1
-        
+            current_leaves = 0
+
+            if not previousrule.rhs:
+                previousrule.leaves += 1
+            current_leaves = previousrule.leaves
             #deliver rule but maybe exclude leaves
             if previousrule.rhs or terminals:
                 rules.append(previousrule)
@@ -98,6 +105,7 @@ def get_cfg_rules(string, terminals=False):
             #we need to pop the rule from the node above, because
             #it may get more RHS in the next loop
             previousrule = stack.pop()
+            previousrule.leaves += current_leaves
             logging.debug("Popping previousrule: {}".format(previousrule))
             label = []
         #get characters for the label
@@ -136,23 +144,35 @@ class CfgRulesExtractor(FeatureGenerator):
         
         ruledepth = {}
         labeldepth = {}
+        labelleaves = {}
         fulldepth = 0
         
         for rule in cfg_rules:
             ruledepth[rule] = ruledepth.setdefault(rule, []).append(rule.depth)
-            labeldepth[rule.lhs] = labeldepth.setdefault(rule, []).append(rule.depth)
+            labeldepth.setdefault(rule.lhs, []).append(rule.depth)
+            labelleaves.setdefault(rule.lhs, []).append(rule.leaves) 
             if rule.depth > fulldepth:
                 fulldepth = rule.depth
             
         for label, depthvector in labeldepth.iteritems():
             try:
-                atts["parse_{}_depth_max".format(label)] = max(depthvector) 
+                atts["parse_{}_depth_max".format(label)] = max(depthvector)
                 atts["parse_{}_height_max".format(label)] = fulldepth - max(depthvector)
                 atts["parse_{}_depth_avg".format(label)] = average(depthvector)
                 atts["parse_{}_height_avg".format(label)] = fulldepth - average(depthvector)
             except:
-                pass
+                atts["parse_{}_depth_max".format(label)] = 0
+                atts["parse_{}_height_max".format(label)] = 0
+                atts["parse_{}_depth_avg".format(label)] = 0
+                atts["parse_{}_height_avg".format(label)] = 0
             
+        for label, leavevector in labelleaves.iteritems():
+            try:
+                atts["parse_{}_leaves_max".format(label)] = max(leavevector)
+                atts["parse_{}_leaves_avg".format(label)] = average(leavevector)
+            except:
+                atts["parse_{}_leaves_max".format(label)] = 0
+                atts["parse_{}_leaves_avg".format(label)] = 0
         
         for rule in cfg_rules:
             atts["cfg_{}".format(rule)] =  atts.setdefault("cfg_{}".format(rule), 0) + 1
