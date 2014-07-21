@@ -1,21 +1,28 @@
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
 from app.autoranking.application import Autoranking
+import sys
 
 # Restrict to a particular path.
 class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/RPC2',)
 
-# Create ranker
-classifier_filename = "/share/taraxu/selection-mechanism/wmt13/sentenceranking/autoranking_wmt13_newfeatures1_de_en/class_nameranklangpairde-eninclude_references0.0ties0.0trainset_modeannotatedattattset_24classifierLogReg/classifier.clsf"
-configfilenames = [
-                       '/home/Eleftherios Avramidis/workspace/qualitative/src/app/autoranking/config/pipeline.cfg',
-                       '/home/Eleftherios Avramidis/workspace/qualitative/src/app/autoranking/config/pipeline.wmt13metric.blade6.de.de-en.cfg'
-                       ]
+if len(sys.argv) < 5:
+    sys.exit("Usage: python xmlrpcserver.py <host> <port> <classifier_file> <annotation.config.1> [annotation.config.2 ...]")
+
+host = sys.argv[1] #e.g. lns-87004.sb.dfki.de",
+port = int(sys.argv[2]) # eg. 8089
+classifier_filename = sys.argv[3] # "/share/taraxu/selection-mechanism/wmt13/sentenceranking/autoranking_wmt13_newfeatures1_de_en/class_nameranklangpairde-eninclude_references0.0ties0.0trainset_modeannotatedattattset_24classifierLogReg/classifier.clsf"
+configfilenames = sys.argv[4:]
+
+#[
+#                       '/home/elav01/workspace/qualitative/src/app/autoranking/config/pipeline.cfg',
+#                       '/home/Eleftherios Avramidis/workspace/qualitative/src/app/autoranking/config/pipeline.wmt13metric.blade6.de.de-en.cfg'
+                      # ]
 
 # Create 
 autoranker = Autoranking(configfilenames, classifier_filename)
-server = SimpleXMLRPCServer(("lns-87004.sb.dfki.de", 8089),
+server = SimpleXMLRPCServer((host, port),
                             requestHandler=RequestHandler)
 server.register_introspection_functions()
 
