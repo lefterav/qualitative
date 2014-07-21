@@ -14,6 +14,8 @@ import shutil
 import codecs
 import sys
 
+def dict_string(dic):
+    return dict([(str(key), str(value)) for key, value in dic.iteritems()])
 
 def run_features_generator(input_file, output_file, generators, encode=False):
     """
@@ -198,7 +200,9 @@ class SaxJCMLProcessor(XMLGenerator):
             XMLGenerator.startElement(self, name, parallelsentence.get_attributes())
                         
             XMLGenerator._write(self, "\n\t\t")
-            XMLGenerator.startElement(self, self.TAG_SRC, src.get_attributes())
+
+            src_attributes = dict_string(src.get_attributes())
+            XMLGenerator.startElement(self, self.TAG_SRC, src_attributes)
             XMLGenerator.characters(self, src.get_string())
             XMLGenerator.endElement(self, self.TAG_SRC)
             
@@ -208,7 +212,8 @@ class SaxJCMLProcessor(XMLGenerator):
 #                    #tgt.add_attributes( fg.get_features_tgt(tgt, parallelsentence) )
 
                 XMLGenerator._write(self, "\n\t\t")
-                XMLGenerator.startElement(self, self.TAG_TGT, tgt.get_attributes())
+                tgt_attributes = dict_string(tgt.get_attributes())
+                XMLGenerator.startElement(self, self.TAG_TGT, tgt_attributes)
                 XMLGenerator.characters(self, tgt.get_string())
                 XMLGenerator.endElement(self, self.TAG_TGT)
             
@@ -217,7 +222,8 @@ class SaxJCMLProcessor(XMLGenerator):
             
             XMLGenerator._write(self, "\n\t\t")
             try:
-                XMLGenerator.startElement(self, self.TAG_REF, ref.get_attributes())
+		ref_attributes = dict_string(ref.get_attributes)
+                XMLGenerator.startElement(self, self.TAG_REF, ref_attributes)
                 XMLGenerator.characters(self, ref.get_string())
                 XMLGenerator.endElement(self, self.TAG_REF)
                 XMLGenerator._write(self, "\n\t")
