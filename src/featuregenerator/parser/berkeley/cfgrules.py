@@ -162,7 +162,7 @@ class CfgRulesExtractor(FeatureGenerator):
                 atts["cfg_{}_height_max".format(rule)] = fulldepth - max(ruledepth.setdefault(rule, []))
                 atts["cfg_{}_height_avg".format(rule)] = fulldepth - average(ruledepth.setdefault(rule, []))
                 
-            except ValueError:
+            except:
                 atts["cfg_{}_depth_max".format(rule)] = 0
                 atts["cfg_{}_depth_avg".format(rule)] = 0
                 atts["cfg_{}_height_max".format(rule)] = fulldepth
