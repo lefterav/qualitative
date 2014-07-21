@@ -27,7 +27,12 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -57,21 +62,19 @@
 <a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
 <a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-docstring">Created on 6 Mar 2012</tt> </tt>
 <a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
-<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring">@author: elav01</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring">@author: Eleftherios Avramidis</tt> </tt>
 <a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
 <a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"> </tt>
-<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package io_utils=io_utils-module.html"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-0', 'io_utils', 'link-0');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Variable experiment.experiment.Experiment.input=experiment.experiment.Experiment-class.html#input,Variable experiment.phase.Phase.input=experiment.phase.Phase-class.html#input,Package io_utils.input=io_utils.input-module.html"><a title="experiment.experiment.Experiment.input
-experiment.phase.Phase.input
-io_utils.input" class="py-name" href="#" onclick="return doclink('link-1', 'input', 'link-1');">input</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module io_utils.input.jcmlreader=io_utils.input.jcmlreader-module.html"><a title="io_utils.input.jcmlreader" class="py-name" href="#" onclick="return doclink('link-2', 'jcmlreader', 'link-2');">jcmlreader</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Class io_utils.input.jcmlreader.JcmlReader=io_utils.input.jcmlreader.JcmlReader-class.html"><a title="io_utils.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-3', 'JcmlReader', 'link-3');">JcmlReader</a></tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package dataprocessor=dataprocessor-module.html"><a title="dataprocessor" class="py-name" href="#" onclick="return doclink('link-0', 'dataprocessor', 'link-0');">dataprocessor</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package dataprocessor.input=dataprocessor.input-module.html"><a title="dataprocessor.input" class="py-name" href="#" onclick="return doclink('link-1', 'input', 'link-1');">input</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module dataprocessor.input.jcmlreader=dataprocessor.input.jcmlreader-module.html"><a title="dataprocessor.input.jcmlreader" class="py-name" href="#" onclick="return doclink('link-2', 'jcmlreader', 'link-2');">jcmlreader</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Class dataprocessor.input.jcmlreader.JcmlReader=dataprocessor.input.jcmlreader.JcmlReader-class.html"><a title="dataprocessor.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-3', 'JcmlReader', 'link-3');">JcmlReader</a></tt> </tt>
 <a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
 <a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"> </tt>
 <a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"> </tt>
 <a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-4" class="py-name" targets="Variable featuregenerator.meteor.meteor.MeteorGenerator.__name__=featuregenerator.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-4', '__name__', 'link-4');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
-<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">    <tt id="link-5" class="py-name" targets="Module sentence.dataset=sentence.dataset-module.html"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-5', 'dataset', 'link-5');">dataset</a></tt> <tt class="py-op">=</tt> <tt id="link-6" class="py-name"><a title="io_utils.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-6', 'JcmlReader', 'link-3');">JcmlReader</a></tt><tt class="py-op">(</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method io_utils.input.genericreader.GenericReader.get_dataset()=io_utils.input.genericreader.GenericReader-class.html#get_dataset,Method io_utils.input.orangeprocessor.OrangeProcessor.get_dataset()=io_utils.input.orangeprocessor.OrangeProcessor-class.html#get_dataset,Method io_utils.input.orangereader.OrangeData.get_dataset()=io_utils.input.orangereader.OrangeData-class.html#get_dataset,Method io_utils.input.xliffreader.XliffReader.get_dataset()=io_utils.input.xliffreader.XliffReader-class.html#get_dataset,Method io_utils.sax.cejcml.CEJcmlReader.get_dataset()=io_utils.sax.cejcml.CEJcmlReader-class.html#get_dataset"><a title="io_utils.input.genericreader.GenericReader.get_dataset
-io_utils.input.orangeprocessor.OrangeProcessor.get_dataset
-io_utils.input.orangereader.OrangeData.get_dataset
-io_utils.input.xliffreader.XliffReader.get_dataset
-io_utils.sax.cejcml.CEJcmlReader.get_dataset" class="py-name" href="#" onclick="return doclink('link-7', 'get_dataset', 'link-7');">get_dataset</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt>                     </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">    <tt id="link-5" class="py-name" targets="Module sentence.dataset=sentence.dataset-module.html"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-5', 'dataset', 'link-5');">dataset</a></tt> <tt class="py-op">=</tt> <tt id="link-6" class="py-name"><a title="dataprocessor.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-6', 'JcmlReader', 'link-3');">JcmlReader</a></tt><tt class="py-op">(</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method dataprocessor.ce.cejcml.CEJcmlReader.get_dataset()=dataprocessor.ce.cejcml.CEJcmlReader-class.html#get_dataset,Method dataprocessor.input.genericreader.GenericReader.get_dataset()=dataprocessor.input.genericreader.GenericReader-class.html#get_dataset,Method dataprocessor.input.orangeprocessor.OrangeProcessor.get_dataset()=dataprocessor.input.orangeprocessor.OrangeProcessor-class.html#get_dataset,Method dataprocessor.input.orangereader.OrangeData.get_dataset()=dataprocessor.input.orangereader.OrangeData-class.html#get_dataset,Method dataprocessor.input.xliffreader.XliffReader.get_dataset()=dataprocessor.input.xliffreader.XliffReader-class.html#get_dataset"><a title="dataprocessor.ce.cejcml.CEJcmlReader.get_dataset
+dataprocessor.input.genericreader.GenericReader.get_dataset
+dataprocessor.input.orangeprocessor.OrangeProcessor.get_dataset
+dataprocessor.input.orangereader.OrangeData.get_dataset
+dataprocessor.input.xliffreader.XliffReader.get_dataset" class="py-name" href="#" onclick="return doclink('link-7', 'get_dataset', 'link-7');">get_dataset</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt>                     </tt>
 <a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">    <tt class="py-name">expressions</tt> <tt class="py-op">=</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
 <a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-name">expressions</tt> </tt>
 <a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-comment">#                   ["bb_.*"], #baseline</tt> </tt>
@@ -83,9 +86,9 @@ io_utils.sax.cejcml.CEJcmlReader.get_dataset" class="py-name" href="#" onclick="
 <a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line"><tt class="py-comment">#                   #["src_grammar.*", "src_style.*", "tgt-1_lgt_.*"]</tt> </tt>
 <a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line"><tt class="py-comment">#                   ["tgt-1_berkeley-n", "tgt-1_berkeley.*ratio"]           </tt> </tt>
 <a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line"><tt class="py-comment">#                   ]</tt> </tt>
-<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">    <tt id="link-8" class="py-name" targets="Variable io_utils.input.testorange.attributes=io_utils.input.testorange-module.html#attributes"><a title="io_utils.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-8', 'attributes', 'link-8');">attributes</a></tt> <tt class="py-op">=</tt> <tt id="link-9" class="py-name"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-9', 'dataset', 'link-5');">dataset</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method sentence.dataset.DataSet.select_attribute_names()=sentence.dataset.DataSet-class.html#select_attribute_names"><a title="sentence.dataset.DataSet.select_attribute_names" class="py-name" href="#" onclick="return doclink('link-10', 'select_attribute_names', 'link-10');">select_attribute_names</a></tt><tt class="py-op">(</tt><tt class="py-name">expressions</tt><tt class="py-op">)</tt> </tt>
-<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-11" class="py-name"><a title="io_utils.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-11', 'attributes', 'link-8');">attributes</a></tt><tt class="py-op">:</tt> </tt>
-<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-string">","</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt id="link-12" class="py-name"><a title="io_utils.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-12', 'attributes', 'link-8');">attributes</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">    <tt id="link-8" class="py-name" targets="Variable dataprocessor.input.testorange.attributes=dataprocessor.input.testorange-module.html#attributes"><a title="dataprocessor.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-8', 'attributes', 'link-8');">attributes</a></tt> <tt class="py-op">=</tt> <tt id="link-9" class="py-name"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-9', 'dataset', 'link-5');">dataset</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method sentence.dataset.DataSet.select_attribute_names()=sentence.dataset.DataSet-class.html#select_attribute_names"><a title="sentence.dataset.DataSet.select_attribute_names" class="py-name" href="#" onclick="return doclink('link-10', 'select_attribute_names', 'link-10');">select_attribute_names</a></tt><tt class="py-op">(</tt><tt class="py-name">expressions</tt><tt class="py-op">)</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-11" class="py-name"><a title="dataprocessor.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-11', 'attributes', 'link-8');">attributes</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-string">","</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt id="link-12" class="py-name"><a title="dataprocessor.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-12', 'attributes', 'link-8');">attributes</a></tt><tt class="py-op">)</tt> </tt>
 <a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line"><tt class="py-comment">#        print '["%s"]' % '","'.join(attributes)</tt> </tt>
 <a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line"> </tt><script type="text/javascript">
 <!--
@@ -111,13 +114,18 @@ expandto(location.href);
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:24 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:14 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

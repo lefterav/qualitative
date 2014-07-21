@@ -27,7 +27,12 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -88,18 +93,17 @@ featuregenerator.featuregenerator" class="py-name" href="#" onclick="return docl
 </div><div id="AttributeRankGenerator.add_features_parallelsentence-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="AttributeRankGenerator.add_features_parallelsentence-expanded"><a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">        <tt class="py-name">values</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">tgt</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Method sentence.parallelsentence.ParallelSentence.get_attribute()=sentence.parallelsentence.ParallelSentence-class.html#get_attribute,Method sentence.sentence.SimpleSentence.get_attribute()=sentence.sentence.SimpleSentence-class.html#get_attribute"><a title="sentence.parallelsentence.ParallelSentence.get_attribute
 sentence.sentence.SimpleSentence.get_attribute" class="py-name" href="#" onclick="return doclink('link-2', 'get_attribute', 'link-2');">get_attribute</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">critical_attribute</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">tgt</tt> <tt class="py-keyword">in</tt> <tt class="py-name">ps</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Method sentence.pairwiseparallelsentence.PairwiseParallelSentence.get_translations()=sentence.pairwiseparallelsentence.PairwiseParallelSentence-class.html#get_translations,Method sentence.parallelsentence.ParallelSentence.get_translations()=sentence.parallelsentence.ParallelSentence-class.html#get_translations"><a title="sentence.pairwiseparallelsentence.PairwiseParallelSentence.get_translations
 sentence.parallelsentence.ParallelSentence.get_translations" class="py-name" href="#" onclick="return doclink('link-3', 'get_translations', 'link-3');">get_translations</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
-<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">        <tt class="py-name">values</tt> <tt class="py-op">=</tt> <tt id="link-4" class="py-name" targets="Variable support.extract_translations.list=support.extract_translations-module.html#list,Variable support.extract_translations2.list=support.extract_translations2-module.html#list"><a title="support.extract_translations.list
-support.extract_translations2.list" class="py-name" href="#" onclick="return doclink('link-4', 'list', 'link-4');">list</a></tt><tt class="py-op">(</tt><tt id="link-5" class="py-name" targets="Module evaluation.ranking.set=evaluation.ranking.set-module.html"><a title="evaluation.ranking.set" class="py-name" href="#" onclick="return doclink('link-5', 'set', 'link-5');">set</a></tt><tt class="py-op">(</tt><tt class="py-name">values</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">        <tt class="py-name">values</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt id="link-4" class="py-name" targets="Module evaluation.ranking.set=evaluation.ranking.set-module.html"><a title="evaluation.ranking.set" class="py-name" href="#" onclick="return doclink('link-4', 'set', 'link-4');">set</a></tt><tt class="py-op">(</tt><tt class="py-name">values</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
 <a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">        <tt class="py-name">values</tt> <tt class="py-op">=</tt> <tt class="py-name">sorted</tt><tt class="py-op">(</tt><tt class="py-name">values</tt><tt class="py-op">)</tt> </tt>
 <a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">reverse</tt><tt class="py-op">:</tt> </tt>
 <a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">            <tt class="py-name">values</tt><tt class="py-op">.</tt><tt class="py-name">reverse</tt><tt class="py-op">(</tt><tt class="py-op">)</tt>     </tt>
 <a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">         </tt>
-<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">translation</tt> <tt class="py-keyword">in</tt> <tt class="py-name">ps</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name"><a title="sentence.pairwiseparallelsentence.PairwiseParallelSentence.get_translations
-sentence.parallelsentence.ParallelSentence.get_translations" class="py-name" href="#" onclick="return doclink('link-6', 'get_translations', 'link-3');">get_translations</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">            <tt class="py-name">value</tt> <tt class="py-op">=</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">translation</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name"><a title="sentence.parallelsentence.ParallelSentence.get_attribute
-sentence.sentence.SimpleSentence.get_attribute" class="py-name" href="#" onclick="return doclink('link-7', 'get_attribute', 'link-2');">get_attribute</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">critical_attribute</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">translation</tt> <tt class="py-keyword">in</tt> <tt class="py-name">ps</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name"><a title="sentence.pairwiseparallelsentence.PairwiseParallelSentence.get_translations
+sentence.parallelsentence.ParallelSentence.get_translations" class="py-name" href="#" onclick="return doclink('link-5', 'get_translations', 'link-3');">get_translations</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">            <tt class="py-name">value</tt> <tt class="py-op">=</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">translation</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name"><a title="sentence.parallelsentence.ParallelSentence.get_attribute
+sentence.sentence.SimpleSentence.get_attribute" class="py-name" href="#" onclick="return doclink('link-6', 'get_attribute', 'link-2');">get_attribute</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">critical_attribute</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
 <a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">            <tt class="py-name">new_attribute_value</tt> <tt class="py-op">=</tt> <tt class="py-name">values</tt><tt class="py-op">.</tt><tt class="py-name">index</tt><tt class="py-op">(</tt><tt class="py-name">value</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-number">1</tt> </tt>
-<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">            <tt class="py-name">translation</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method sentence.sentence.SimpleSentence.add_attribute()=sentence.sentence.SimpleSentence-class.html#add_attribute"><a title="sentence.sentence.SimpleSentence.add_attribute" class="py-name" href="#" onclick="return doclink('link-8', 'add_attribute', 'link-8');">add_attribute</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">new_attribute_name</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">new_attribute_value</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">            <tt class="py-name">translation</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method sentence.sentence.SimpleSentence.add_attribute()=sentence.sentence.SimpleSentence-class.html#add_attribute"><a title="sentence.sentence.SimpleSentence.add_attribute" class="py-name" href="#" onclick="return doclink('link-7', 'add_attribute', 'link-7');">add_attribute</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">new_attribute_name</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">new_attribute_value</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
 <a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">ps</tt> </tt>
 </div></div><a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line"> </tt><script type="text/javascript">
 <!--
@@ -125,13 +129,18 @@ expandto(location.href);
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:26 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:14 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

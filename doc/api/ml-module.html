@@ -27,7 +27,12 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -52,6 +57,11 @@
 </table>
 <!-- ==================== PACKAGE DESCRIPTION ==================== -->
 <h1 class="epydoc">Package ml</h1><p class="nomargin-top"><span class="codelink"><a href="ml-pysrc.html">source&nbsp;code</a></span></p>
+<p>Unified interface for access to several ML libraries and toolkits. New
+  ML libraries should be placed into /lib and implement learner.py or 
+  ranker.py /var contains old classifier wrappers that still work but need 
+  to be gradually migrated</p>
+
 <!-- ==================== SUBMODULES ==================== -->
 <a name="section-Submodules"></a>
 <table class="summary" border="1" cellpadding="3"
@@ -71,14 +81,47 @@
 </tr>
   <tr><td class="summary">
   <ul class="nomargin">
-    <li> <strong class="uidlink"><a href="ml.classifier-module.html">ml.classifier</a></strong>: <em class="summary">It provides a general classifier API which unifies common machine 
+    <li> <strong class="uidlink"><a href="ml.learner-module.html">ml.learner</a></strong>: <em class="summary">It provides a general classifier API which unifies common machine 
         learning functions</em>    </li>
     <li> <strong class="uidlink"><a href="ml.lib-module.html">ml.lib</a></strong>
     <ul>
     <li> <strong class="uidlink"><a href="ml.lib.orange-module.html">ml.lib.orange</a></strong>: <em class="summary">Created on 19 Apr 2013</em>    </li>
+    <li> <strong class="uidlink"><a href="ml.lib.scikit-module.html">ml.lib.scikit</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="ml.lib.scikit.evaluation_measures-module.html">ml.lib.scikit.evaluation_measures</a></strong>: <em class="summary">evaluation_measures -- Additional metrics used in learn_model not 
+        implemented in sklearn.</em>    </li>
+    <li> <strong class="uidlink"><a href="ml.lib.scikit.features_file_utils-module.html">ml.lib.scikit.features_file_utils</a></strong>: <em class="summary">Created on Aug 29, 2012</em>    </li>
+    <li> <strong class="uidlink"><a href="ml.lib.scikit.learn_model-module.html">ml.lib.scikit.learn_model</a></strong>: <em class="summary">learn_model -- Program that learns machine translation quality 
+        estimation models</em>    </li>
+    <li> <strong class="uidlink"><a href="ml.lib.scikit.scikit-module.html">ml.lib.scikit.scikit</a></strong>: <em class="summary">Created on 25 Mar 2014</em>    </li>
+    <li> <strong class="uidlink"><a href="ml.lib.scikit.sklearn_utils-module.html">ml.lib.scikit.sklearn_utils</a></strong>: <em class="summary">sklearn_utils -- Helper functions to deal with data in the formats 
+        sklearn uses.</em>    </li>
+    </ul>
+    </li>
     </ul>
     </li>
     <li> <strong class="uidlink"><a href="ml.ranker-module.html">ml.ranker</a></strong>: <em class="summary">Created on 26 Mar 2013</em>    </li>
+    <li> <strong class="uidlink"><a href="ml.var-module.html">ml.var</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="ml.var.bayes-module.html">ml.var.bayes</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.classifier-module.html">ml.var.classifier</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.extract_liblinear_weights-module.html">ml.var.extract_liblinear_weights</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.extract_linear_regression_coefficients-module.html">ml.var.extract_linear_regression_coefficients</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.extract_logreg_weight-module.html">ml.var.extract_logreg_weight</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.knn-module.html">ml.var.knn</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.loglinear-module.html">ml.var.loglinear</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.orange-module.html">ml.var.orange</a></strong>: <em class="summary">Created on 26 Mar 2013</em>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.prank-module.html">ml.var.prank</a></strong>: <em class="summary">Created on 13 Oct 2012</em>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.ranker-module.html">ml.var.ranker</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.registry-module.html">ml.var.registry</a></strong>: <em class="summary">This module should be connecting classifier wrappers with the 
+        external Machine Learning classification libraries.</em>    </li>
+    <li> <strong class="uidlink">ml.var.rvm</strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.svm-module.html">ml.var.svm</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.svmeasy-module.html">ml.var.svmeasy</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.svmrank-module.html">ml.var.svmrank</a></strong>: <em class="summary">Created on 29 Aug 2012</em>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.tree-module.html">ml.var.tree</a></strong>    </li>
+    </ul>
+    </li>
   </ul></td></tr>
 </table>
 
@@ -126,13 +169,18 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:19 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:12 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
