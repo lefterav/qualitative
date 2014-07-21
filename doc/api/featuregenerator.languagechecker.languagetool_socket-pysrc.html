@@ -27,7 +27,12 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -57,7 +62,7 @@
 <a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
 <a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-docstring">Created on 30 Mar 2012</tt> </tt>
 <a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
-<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring">@author: elav01</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring">@author: Eleftherios Avramidis</tt> </tt>
 <a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
 <a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">py4j</tt><tt class="py-op">.</tt><tt class="py-name">java_gateway</tt> <tt class="py-keyword">import</tt> <tt class="py-name">JavaGateway</tt> </tt>
 <a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">py4j</tt><tt class="py-op">.</tt><tt class="py-name">java_gateway</tt> <tt class="py-keyword">import</tt> <tt class="py-name">GatewayClient</tt> </tt>
@@ -100,8 +105,7 @@ featuregenerator.featuregenerator" class="py-name" href="#" onclick="return docl
 <a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line"><tt class="py-comment">#        gatewayclient = self.socket</tt> </tt>
 <a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line"><tt class="py-comment">#        gateway = JavaGateway(gatewayclient)</tt> </tt>
 <a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">         </tt>
-<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">        <tt class="py-name">ltool_view</tt> <tt class="py-op">=</tt> <tt id="link-3" class="py-name" targets="Variable experiment.autoranking.annotate_updated.gateway=experiment.autoranking.annotate_updated-module.html#gateway,Variable experiment.ml4hmt12.annotate_updated.gateway=experiment.ml4hmt12.annotate_updated-module.html#gateway"><a title="experiment.autoranking.annotate_updated.gateway
-experiment.ml4hmt12.annotate_updated.gateway" class="py-name" href="#" onclick="return doclink('link-3', 'gateway', 'link-3');">gateway</a></tt><tt class="py-op">.</tt><tt class="py-name">new_jvm_view</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">        <tt class="py-name">ltool_view</tt> <tt class="py-op">=</tt> <tt id="link-3" class="py-name" targets="Variable app.autoranking.annotate_batch.gateway=app.autoranking.annotate_batch-module.html#gateway"><a title="app.autoranking.annotate_batch.gateway" class="py-name" href="#" onclick="return doclink('link-3', 'gateway', 'link-3');">gateway</a></tt><tt class="py-op">.</tt><tt class="py-name">new_jvm_view</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
 <a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">        <tt class="py-name">java_import</tt><tt class="py-op">(</tt><tt class="py-name">ltool_view</tt><tt class="py-op">,</tt> <tt class="py-string">'org.languagetool.*'</tt><tt class="py-op">)</tt> </tt>
 <a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">         </tt>
 <a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">        <tt class="py-name">tool_language</tt> <tt class="py-op">=</tt> <tt class="py-name">ltool_view</tt><tt class="py-op">.</tt><tt class="py-name">Language</tt><tt class="py-op">.</tt><tt class="py-name">getLanguageForShortName</tt><tt class="py-op">(</tt><tt class="py-name">lang</tt><tt class="py-op">)</tt> </tt>
@@ -111,8 +115,7 @@ experiment.ml4hmt12.annotate_updated.gateway" class="py-name" href="#" onclick="
 <a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">         </tt>
 <a name="LanguageToolSocketFeatureGenerator.get_features_string"></a><div id="LanguageToolSocketFeatureGenerator.get_features_string-def"><a name="L54"></a><tt class="py-lineno">54</tt> <a class="py-toggle" href="#" id="LanguageToolSocketFeatureGenerator.get_features_string-toggle" onclick="return toggle('LanguageToolSocketFeatureGenerator.get_features_string');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.languagechecker.languagetool_socket.LanguageToolSocketFeatureGenerator-class.html#get_features_string">get_features_string</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">string</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
 </div><div id="LanguageToolSocketFeatureGenerator.get_features_string-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="LanguageToolSocketFeatureGenerator.get_features_string-expanded"><a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line">        <tt class="py-name">atts</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
-<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">        <tt class="py-name">matches</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ltool</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Module experiment.autoranking.check=experiment.autoranking.check-module.html,Module experiment.qualityestimation.check=experiment.qualityestimation.check-module.html"><a title="experiment.autoranking.check
-experiment.qualityestimation.check" class="py-name" href="#" onclick="return doclink('link-4', 'check', 'link-4');">check</a></tt><tt class="py-op">(</tt><tt class="py-name">string</tt><tt class="py-op">)</tt> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">        <tt class="py-name">matches</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ltool</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Module app.autoranking.check=app.autoranking.check-module.html"><a title="app.autoranking.check" class="py-name" href="#" onclick="return doclink('link-4', 'check', 'link-4');">check</a></tt><tt class="py-op">(</tt><tt class="py-name">string</tt><tt class="py-op">)</tt> </tt>
 <a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line">        <tt class="py-name">errors</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
 <a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">        <tt class="py-name">total_error_chars</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
 <a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">match</tt> <tt class="py-keyword">in</tt> <tt class="py-name">matches</tt><tt class="py-op">:</tt> </tt>
@@ -167,13 +170,18 @@ expandto(location.href);
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:27 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:15 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

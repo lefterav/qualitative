@@ -27,7 +27,12 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -52,28 +57,90 @@
 </b></center><br />
 <h1 class="epydoc">Module Hierarchy</h1>
 <ul class="nomargin-top">
-    <li> <strong class="uidlink"><a href="classifier-module.html">classifier</a></strong>
+    <li> <strong class="uidlink"><a href="app-module.html">app</a></strong>
     <ul>
-    <li> <strong class="uidlink"><a href="classifier.bayes-module.html">classifier.bayes</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="classifier.classifier-module.html">classifier.classifier</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="classifier.extract_liblinear_weights-module.html">classifier.extract_liblinear_weights</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="classifier.extract_linear_regression_coefficients-module.html">classifier.extract_linear_regression_coefficients</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="classifier.extract_logreg_weight-module.html">classifier.extract_logreg_weight</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="classifier.knn-module.html">classifier.knn</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="classifier.loglinear-module.html">classifier.loglinear</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="classifier.orange-module.html">classifier.orange</a></strong>: <em class="summary">Created on 26 Mar 2013</em>    </li>
-    <li> <strong class="uidlink"><a href="classifier.prank-module.html">classifier.prank</a></strong>: <em class="summary">Created on 13 Oct 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="classifier.ranker-module.html">classifier.ranker</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="classifier.registry-module.html">classifier.registry</a></strong>: <em class="summary">This module should be connecting classifier wrappers with the 
-        external Machine Learning classification libraries.</em>    </li>
-    <li> <strong class="uidlink"><a href="classifier.rvm-module.html">classifier.rvm</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="classifier.svm-module.html">classifier.svm</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="classifier.svmeasy-module.html">classifier.svmeasy</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="classifier.svmrank-module.html">classifier.svmrank</a></strong>: <em class="summary">Created on 29 Aug 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="classifier.tree-module.html">classifier.tree</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="app.autoranking-module.html">app.autoranking</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="app.autoranking.annotate_batch-module.html">app.autoranking.annotate_batch</a></strong>: <em class="summary">Created on 17 Jan 2012 Modified 22 Mar 2012 for autoranking app</em>    </li>
+    <li> <strong class="uidlink"><a href="app.autoranking.application-module.html">app.autoranking.application</a></strong>: <em class="summary">This script provides
+ (a) the class that wraps the functionality of the ranking mechanism
+ (b) a command-line interactive interface for testing installation</em>    </li>
+    <li> <strong class="uidlink"><a href="app.autoranking.bootstrap-module.html">app.autoranking.bootstrap</a></strong>: <em class="summary">bootstrap.py bootstrapping module to initialize necessary objects 
+        for annotation</em>    </li>
+    <li> <strong class="uidlink"><a href="app.autoranking.check-module.html">app.autoranking.check</a></strong>: <em class="summary">Created on 07 Mar 2012</em>    </li>
+    <li> <strong class="uidlink"><a href="app.autoranking.decode_batch-module.html">app.autoranking.decode_batch</a></strong>: <em class="summary">Created on 07 Mar 2012</em>    </li>
+    <li> <strong class="uidlink"><a href="app.autoranking.jvmtest-module.html">app.autoranking.jvmtest</a></strong>: <em class="summary">Created on Jul 14, 2014</em>    </li>
+    <li> <strong class="uidlink"><a href="app.autoranking.suite-module.html">app.autoranking.suite</a></strong>: <em class="summary">Created on 07 Mar 2012</em>    </li>
+    <li> <strong class="uidlink"><a href="app.autoranking.xmlrpcserver-module.html">app.autoranking.xmlrpcserver</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="app.autoranking.xmlrpctest-module.html">app.autoranking.xmlrpctest</a></strong>    </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="evaluation-module.html">evaluation</a></strong>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor-module.html">dataprocessor</a></strong>: <em class="summary">Processors for handling reading, writing and conversion from the 
+        external XML format to internal structures and other intermediate 
+        formats.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="dataprocessor.ce-module.html">dataprocessor.ce</a></strong>: <em class="summary">Data processors and scripts based on cElementTree</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="dataprocessor.ce.ce-module.html">dataprocessor.ce.ce</a></strong>: <em class="summary">Created on 26 Jun 2012</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.ce.cejcml-module.html">dataprocessor.ce.cejcml</a></strong>: <em class="summary">Created on 26 Jun 2012</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.ce.cejcml2orange-module.html">dataprocessor.ce.cejcml2orange</a></strong>: <em class="summary">Created on 26 Jun 2012</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.ce.cejcml2scikit-module.html">dataprocessor.ce.cejcml2scikit</a></strong>: <em class="summary">Created on 26 Jun 2012</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.ce.pysvmlight-module.html">dataprocessor.ce.pysvmlight</a></strong>: <em class="summary">Created on 27 Aug 2012</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.ce.select_incremental-module.html">dataprocessor.ce.select_incremental</a></strong>: <em class="summary">Created on 7 Jul 2014</em>    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.dataformat-module.html">dataprocessor.dataformat</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="dataprocessor.dataformat.genericformat-module.html">dataprocessor.dataformat.genericformat</a></strong>: <em class="summary">Created on Aug 31, 2011</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.dataformat.jcmlformat-module.html">dataprocessor.dataformat.jcmlformat</a></strong>: <em class="summary">Created on Aug 31, 2011</em>    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.input-module.html">dataprocessor.input</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="dataprocessor.input.genericreader-module.html">dataprocessor.input.genericreader</a></strong>: <em class="summary">Created on Aug 4, 2011</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.input.genericxmlreader-module.html">dataprocessor.input.genericxmlreader</a></strong>: <em class="summary">Created on 15 &#927;&#954;&#964; 2010</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.input.jcmlreader-module.html">dataprocessor.input.jcmlreader</a></strong>: <em class="summary">Created on 15 &#927;&#954;&#964; 2010</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.input.linereader-module.html">dataprocessor.input.linereader</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.input.orangeprocessor-module.html">dataprocessor.input.orangeprocessor</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.input.orangereader-module.html">dataprocessor.input.orangereader</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.input.posteditingreader-module.html">dataprocessor.input.posteditingreader</a></strong>: <em class="summary">Created on Jun 27, 2011</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.input.rankreader-module.html">dataprocessor.input.rankreader</a></strong>: <em class="summary">Created on Jun 27, 2011</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.input.schemabasedreader-module.html">dataprocessor.input.schemabasedreader</a></strong>: <em class="summary">Created on 28 &#927;&#954;&#964; 2010</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.input.taraxureader-module.html">dataprocessor.input.taraxureader</a></strong>: <em class="summary">Created on 15 &#927;&#954;&#964; 2010</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.input.testorange-module.html">dataprocessor.input.testorange</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.input.wmtreader-module.html">dataprocessor.input.wmtreader</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.input.xliffreader-module.html">dataprocessor.input.xliffreader</a></strong>: <em class="summary">Created on Jun 27, 2011</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.input.xmlreader-module.html">dataprocessor.input.xmlreader</a></strong>: <em class="summary">Created on 15 &#927;&#954;&#964; 2010</em>    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.output-module.html">dataprocessor.output</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="dataprocessor.output.posteditingwriter-module.html">dataprocessor.output.posteditingwriter</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.output.taraxuwriter-module.html">dataprocessor.output.taraxuwriter</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.output.wmt11tabwriter-module.html">dataprocessor.output.wmt11tabwriter</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.output.xmlwriter-module.html">dataprocessor.output.xmlwriter</a></strong>    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.sax-module.html">dataprocessor.sax</a></strong>: <em class="summary">Data processors using SAX.</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="dataprocessor.sax.jcml2Shogun-module.html">dataprocessor.sax.jcml2Shogun</a></strong>: <em class="summary">Created on Sep 17, 2012</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.sax.jcml2array-module.html">dataprocessor.sax.jcml2array</a></strong>: <em class="summary">Created on Nov 13, 2012</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.sax.sax_bestrank2simplefile-module.html">dataprocessor.sax.sax_bestrank2simplefile</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.sax.saxjcml-module.html">dataprocessor.sax.saxjcml</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.sax.saxjcml2orange-module.html">dataprocessor.sax.saxjcml2orange</a></strong>: <em class="summary">Created on Jul 21, 2011</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.sax.saxprocessor-module.html">dataprocessor.sax.saxprocessor</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.sax.saxps2jcml-module.html">dataprocessor.sax.saxps2jcml</a></strong>: <em class="summary">Created on 14 Dec 2011</em>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.sax.saxscoring-module.html">dataprocessor.sax.saxscoring</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.sax.saxwmt11eval-module.html">dataprocessor.sax.saxwmt11eval</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.sax.saxwrapper-module.html">dataprocessor.sax.saxwrapper</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="dataprocessor.sax.utils-module.html">dataprocessor.sax.utils</a></strong>    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="evaluation-module.html">evaluation</a></strong>: <em class="summary">Evaluation metrics for use with quality estimation experiments.</em>
     <ul>
     <li> <strong class="uidlink"><a href="evaluation.rankeval-module.html">evaluation.rankeval</a></strong>: <em class="summary">Created on 22 May 2013</em>    </li>
     <li> <strong class="uidlink"><a href="evaluation.ranking-module.html">evaluation.ranking</a></strong>
@@ -86,108 +153,7 @@
     </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="exec-module.html">exec</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="exec.autorank_exportwmt11-module.html">exec.autorank_exportwmt11</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="exec.autoranking-module.html">exec.autoranking</a></strong>: <em class="summary">Created on May 6, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="exec.autoranking_v2-module.html">exec.autoranking_v2</a></strong>: <em class="summary">Created on May 6, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="exec.experiment-module.html">exec.experiment</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="exec.extractorangefiles-module.html">exec.extractorangefiles</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="exec.getfeaturenames-module.html">exec.getfeaturenames</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="exec.iwslt11-module.html">exec.iwslt11</a></strong>: <em class="summary">Created on Sep 12, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="exec.iwsltexp-module.html">exec.iwsltexp</a></strong>: <em class="summary">Created on May 6, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="exec.ml4hmt-module.html">exec.ml4hmt</a></strong>: <em class="summary">Created on Sep 12, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="exec.rank_correlation_analysis-module.html">exec.rank_correlation_analysis</a></strong>: <em class="summary">Created on Aug 4, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="exec.selectbest-module.html">exec.selectbest</a></strong>: <em class="summary">Created on May 6, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="exec.system_score-module.html">exec.system_score</a></strong>    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="experiment-module.html">experiment</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="experiment.autoranking-module.html">experiment.autoranking</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="experiment.autoranking.annotate-module.html">experiment.autoranking.annotate</a></strong>: <em class="summary">Created on 17 Jan 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.autoranking.annotate_debug-module.html">experiment.autoranking.annotate_debug</a></strong>: <em class="summary">Created on 17 Sep 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.autoranking.annotate_updated-module.html">experiment.autoranking.annotate_updated</a></strong>: <em class="summary">Created on 17 Jan 2012 Modified 22 Mar 2012 for autoranking 
-        experiment</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.autoranking.application-module.html">experiment.autoranking.application</a></strong>: <em class="summary">Created on 2 Aug 2013</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.autoranking.autoranking-module.html">experiment.autoranking.autoranking</a></strong>: <em class="summary">Created on 20 Oct 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.autoranking.bootstrap-module.html">experiment.autoranking.bootstrap</a></strong>: <em class="summary">bootstrap.py module to set up a pipeline program</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.autoranking.check-module.html">experiment.autoranking.check</a></strong>: <em class="summary">Created on 07 Mar 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.autoranking.command-module.html">experiment.autoranking.command</a></strong>: <em class="summary">Created on Jun 21, 2013</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.autoranking.decode-module.html">experiment.autoranking.decode</a></strong>: <em class="summary">Created on 07 Mar 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.autoranking.experiment-module.html">experiment.autoranking.experiment</a></strong>: <em class="summary">Created on 23 Feb 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.autoranking.extract_testset-module.html">experiment.autoranking.extract_testset</a></strong>: <em class="summary">Created on 7 Feb 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.autoranking.getlogregweights-module.html">experiment.autoranking.getlogregweights</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="experiment.autoranking.suite-module.html">experiment.autoranking.suite</a></strong>: <em class="summary">Created on 07 Mar 2012</em>    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="experiment.autorankingsearch-module.html">experiment.autorankingsearch</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="experiment.autorankingsearch.suite-module.html">experiment.autorankingsearch.suite</a></strong>: <em class="summary">Created on 07 Mar 2012</em>    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="experiment.autoranksvm-module.html">experiment.autoranksvm</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="experiment.autoranksvm.suite-module.html">experiment.autoranksvm.suite</a></strong>: <em class="summary">Created on 07 Mar 2012</em>    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="experiment.data-module.html">experiment.data</a></strong>: <em class="summary">Created on Aug 31, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.errorprediction-module.html">experiment.errorprediction</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="experiment.errorprediction.errorprediction_draft-module.html">experiment.errorprediction.errorprediction_draft</a></strong>: <em class="summary">Draft script one-for-all.</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.errorprediction.preprocessing-module.html">experiment.errorprediction.preprocessing</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="experiment.errorprediction.preprocessing.db-module.html">experiment.errorprediction.preprocessing.db</a></strong>: <em class="summary">Provides syncing support for IDs stored in a MySQL db</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.errorprediction.preprocessing.preprocess_errorclass-module.html">experiment.errorprediction.preprocessing.preprocess_errorclass</a></strong>: <em class="summary">Created on 11 Apr 2013</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.errorprediction.preprocessing.preprocess_glassbox-module.html">experiment.errorprediction.preprocessing.preprocess_glassbox</a></strong>: <em class="summary">Preprocessing functions for the data on the predicting errors from 
-        glassbox MT features Highly adapted on TaraXU file structure 
-        (particularly eval round 2)</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.errorprediction.preprocessing.preprocess_glassbox_draft_percival-module.html">experiment.errorprediction.preprocessing.preprocess_glassbox_draft_percival</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival-module.html">experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival</a></strong>: <em class="summary">TaraXU specific script for gathering data of round 2 and wrapping 
-        them on a sentence level Created on Apr 21, 2013</em>    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="experiment.errorprediction.suite-module.html">experiment.errorprediction.suite</a></strong>: <em class="summary">Implementation of the Python Experiment Suite for the Error 
-        Prediction experiment Created on 19 Apr 2013</em>    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="experiment.execute-module.html">experiment.execute</a></strong>: <em class="summary">Created on Aug 31, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.experiment-module.html">experiment.experiment</a></strong>: <em class="summary">Created on Aug 31, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.ml4hmt12-module.html">experiment.ml4hmt12</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="experiment.ml4hmt12.annotate_updated-module.html">experiment.ml4hmt12.annotate_updated</a></strong>: <em class="summary">Created on 17 Jan 2012 Modified 22 Mar 2012 for autoranking 
-        experiment</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.ml4hmt12.bootstrap-module.html">experiment.ml4hmt12.bootstrap</a></strong>: <em class="summary">bootstrap.py module to set up a pipeline program</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.ml4hmt12.features_scoring-module.html">experiment.ml4hmt12.features_scoring</a></strong>: <em class="summary">Created on Oct 28, 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.ml4hmt12.postprocess-module.html">experiment.ml4hmt12.postprocess</a></strong>: <em class="summary">Created on Nov 2, 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.ml4hmt12.preprocess-module.html">experiment.ml4hmt12.preprocess</a></strong>: <em class="summary">Created on Sep 26, 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.ml4hmt12.suite-module.html">experiment.ml4hmt12.suite</a></strong>: <em class="summary">Created on 07 Mar 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.ml4hmt12.test-module.html">experiment.ml4hmt12.test</a></strong>: <em class="summary">Created on 07 Mar 2012</em>    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="experiment.phase-module.html">experiment.phase</a></strong>: <em class="summary">Created on Aug 31, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.qualityestimation-module.html">experiment.qualityestimation</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="experiment.qualityestimation.check-module.html">experiment.qualityestimation.check</a></strong>: <em class="summary">Created on 07 Mar 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.qualityestimation.qualityestimation-module.html">experiment.qualityestimation.qualityestimation</a></strong>: <em class="summary">Created on 23 Feb 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.qualityestimation.suite-module.html">experiment.qualityestimation.suite</a></strong>: <em class="summary">Created on 04 Mar 2012</em>    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="experiment.task-module.html">experiment.task</a></strong>: <em class="summary">Created on Aug 31, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="experiment.tasks-module.html">experiment.tasks</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="experiment.tasks.annotate-module.html">experiment.tasks.annotate</a></strong>: <em class="summary">Created on Aug 31, 2011</em>    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="experiment.utils-module.html">experiment.utils</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="experiment.utils.ruffus_utils-module.html">experiment.utils.ruffus_utils</a></strong>    </li>
-    </ul>
-    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="featuregenerator-module.html">featuregenerator</a></strong>
+    <li> <strong class="uidlink"><a href="featuregenerator-module.html">featuregenerator</a></strong>: <em class="summary">Interface for feature generators, i.e.</em>
     <ul>
     <li> <strong class="uidlink"><a href="featuregenerator.attribute_rank-module.html">featuregenerator.attribute_rank</a></strong>: <em class="summary">Created on 07.10.2011</em>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.bestsystem-module.html">featuregenerator.bestsystem</a></strong>: <em class="summary">Created on Jun 24, 2011</em>    </li>
@@ -197,22 +163,8 @@
     <li> <strong class="uidlink"><a href="featuregenerator.bleu.bleugenerator-module.html">featuregenerator.bleu.bleugenerator</a></strong>: <em class="summary">Created on 07.10.2011</em>    </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="featuregenerator.decodingprobs-module.html">featuregenerator.decodingprobs</a></strong>: <em class="summary">Created on 05.10.2011</em>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.diff_generator-module.html">featuregenerator.diff_generator</a></strong>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.featuregenerator-module.html">featuregenerator.featuregenerator</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="featuregenerator.glassbox-module.html">featuregenerator.glassbox</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="featuregenerator.glassbox.lucy-module.html">featuregenerator.glassbox.lucy</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="featuregenerator.glassbox.moses-module.html">featuregenerator.glassbox.moses</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="featuregenerator.glassbox.moses.extractor-module.html">featuregenerator.glassbox.moses.extractor</a></strong>: <em class="summary">Created on Apr 2, 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="featuregenerator.glassbox.moses.rerun_verbose-module.html">featuregenerator.glassbox.moses.rerun_verbose</a></strong>: <em class="summary">Rerun a series of Moses experiments, with verbose output Dig into a
-        list of given Moses EMS executions for particular experiments and 
-        repeat them with modified verbose settings towards new output files</em>    </li>
-    </ul>
-    </li>
-    </ul>
-    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.hjerson-module.html">featuregenerator.hjerson</a></strong>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.ibm1featuregenerator-module.html">featuregenerator.ibm1featuregenerator</a></strong>: <em class="summary">Created on 17 Sept 2011</em>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.iq-module.html">featuregenerator.iq</a></strong>
@@ -240,9 +192,6 @@
     <li> <strong class="uidlink"><a href="featuregenerator.lm.srilm-module.html">featuregenerator.lm.srilm</a></strong>
     <ul>
     <li> <strong class="uidlink"><a href="featuregenerator.lm.srilm.srilm_ngram-module.html">featuregenerator.lm.srilm.srilm_ngram</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="featuregenerator.lm.srilm.srilmclient-module.html">featuregenerator.lm.srilm.srilmclient</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="featuregenerator.lm.srilm.srilmwrapper-module.html">featuregenerator.lm.srilm.srilmwrapper</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="featuregenerator.lm.srilm.test-module.html">featuregenerator.lm.srilm.test</a></strong>    </li>
     </ul>
     </li>
     </ul>
@@ -253,12 +202,12 @@
     <li> <strong class="uidlink"><a href="featuregenerator.meteor.testmeteor-module.html">featuregenerator.meteor.testmeteor</a></strong>: <em class="summary">Created on 22 Jun 2012</em>    </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="featuregenerator.morph-module.html">featuregenerator.morph</a></strong>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.parser-module.html">featuregenerator.parser</a></strong>
     <ul>
     <li> <strong class="uidlink"><a href="featuregenerator.parser.berkeley-module.html">featuregenerator.parser.berkeley</a></strong>
     <ul>
     <li> <strong class="uidlink"><a href="featuregenerator.parser.berkeley.berkeleyclient-module.html">featuregenerator.parser.berkeley.berkeleyclient</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="featuregenerator.parser.berkeley.cfgrules-module.html">featuregenerator.parser.berkeley.cfgrules</a></strong>: <em class="summary">Created on Jul 13, 2014</em>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.parser.berkeley.parsermatches-module.html">featuregenerator.parser.berkeley.parsermatches</a></strong>: <em class="summary">Created on 22 March 2011</em>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.parser.berkeley.socket-module.html">featuregenerator.parser.berkeley.socket</a></strong>
     <ul>
@@ -274,87 +223,59 @@
     <li> <strong class="uidlink"><a href="featuregenerator.ratio_generator-module.html">featuregenerator.ratio_generator</a></strong>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.wer-module.html">featuregenerator.wer</a></strong>
     <ul>
-    <li> <strong class="uidlink"><a href="featuregenerator.wer.wer-module.html">featuregenerator.wer.wer</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="featuregenerator.wer.wer-module.html">featuregenerator.wer.wer</a></strong>: <em class="summary">@author Eleftherios Avramidis based on original by Maja Popovic</em>    </li>
     <li> <strong class="uidlink"><a href="featuregenerator.wer.werfeaturegenerator-module.html">featuregenerator.wer.werfeaturegenerator</a></strong>    </li>
     </ul>
     </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="io_utils-module.html">io_utils</a></strong>
+    <li> <strong class="uidlink"><a href="ml-module.html">ml</a></strong>: <em class="summary">Unified interface for access to several ML libraries and toolkits.</em>
     <ul>
-    <li> <strong class="uidlink"><a href="io_utils.dataformat-module.html">io_utils.dataformat</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="io_utils.dataformat.genericformat-module.html">io_utils.dataformat.genericformat</a></strong>: <em class="summary">Created on Aug 31, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.dataformat.jcmlformat-module.html">io_utils.dataformat.jcmlformat</a></strong>: <em class="summary">Created on Aug 31, 2011</em>    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="io_utils.input-module.html">io_utils.input</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="io_utils.input.genericreader-module.html">io_utils.input.genericreader</a></strong>: <em class="summary">Created on Aug 4, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.input.genericxmlreader-module.html">io_utils.input.genericxmlreader</a></strong>: <em class="summary">Created on 15 &#927;&#954;&#964; 2010</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.input.jcmlreader-module.html">io_utils.input.jcmlreader</a></strong>: <em class="summary">Created on 15 &#927;&#954;&#964; 2010</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.input.linereader-module.html">io_utils.input.linereader</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.input.orangeprocessor-module.html">io_utils.input.orangeprocessor</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.input.orangereader-module.html">io_utils.input.orangereader</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.input.posteditingreader-module.html">io_utils.input.posteditingreader</a></strong>: <em class="summary">Created on Jun 27, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.input.rankreader-module.html">io_utils.input.rankreader</a></strong>: <em class="summary">Created on Jun 27, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.input.schemabasedreader-module.html">io_utils.input.schemabasedreader</a></strong>: <em class="summary">Created on 28 &#927;&#954;&#964; 2010</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.input.taraxureader-module.html">io_utils.input.taraxureader</a></strong>: <em class="summary">Created on 15 &#927;&#954;&#964; 2010</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.input.testorange-module.html">io_utils.input.testorange</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.input.wmtreader-module.html">io_utils.input.wmtreader</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.input.xliffreader-module.html">io_utils.input.xliffreader</a></strong>: <em class="summary">Created on Jun 27, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.input.xmlreader-module.html">io_utils.input.xmlreader</a></strong>: <em class="summary">Created on 15 &#927;&#954;&#964; 2010</em>    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="io_utils.output-module.html">io_utils.output</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="io_utils.output.ce-module.html">io_utils.output.ce</a></strong>: <em class="summary">Created on 26 Jun 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.output.posteditingwriter-module.html">io_utils.output.posteditingwriter</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.output.taraxuwriter-module.html">io_utils.output.taraxuwriter</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.output.wmt11tabwriter-module.html">io_utils.output.wmt11tabwriter</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.output.xmlwriter-module.html">io_utils.output.xmlwriter</a></strong>    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="io_utils.paralleltemplate-module.html">io_utils.paralleltemplate</a></strong>: <em class="summary">Created on May 31, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.pysvmlight-module.html">io_utils.pysvmlight</a></strong>: <em class="summary">Created on 27 Aug 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.sax-module.html">io_utils.sax</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="io_utils.sax.cejcml-module.html">io_utils.sax.cejcml</a></strong>: <em class="summary">Created on 26 Jun 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.sax.cejcml2orange-module.html">io_utils.sax.cejcml2orange</a></strong>: <em class="summary">Created on 26 Jun 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.sax.jcml2Shogun-module.html">io_utils.sax.jcml2Shogun</a></strong>: <em class="summary">Created on Sep 17, 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.sax.jcml2array-module.html">io_utils.sax.jcml2array</a></strong>: <em class="summary">Created on Nov 13, 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.sax.saxjcml2orange-module.html">io_utils.sax.saxjcml2orange</a></strong>: <em class="summary">Created on Jul 21, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.sax.saxprocessor-module.html">io_utils.sax.saxprocessor</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.sax.saxps2jcml-module.html">io_utils.sax.saxps2jcml</a></strong>: <em class="summary">Created on 14 Dec 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.sax.saxwrapper-module.html">io_utils.sax.saxwrapper</a></strong>    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="io_utils.sax_bestrank2simplefile-module.html">io_utils.sax_bestrank2simplefile</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.saxjcml-module.html">io_utils.saxjcml</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.saxscoring-module.html">io_utils.saxscoring</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="io_utils.saxwmt11eval-module.html">io_utils.saxwmt11eval</a></strong>    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="ml-module.html">ml</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="ml.classifier-module.html">ml.classifier</a></strong>: <em class="summary">It provides a general classifier API which unifies common machine 
+    <li> <strong class="uidlink"><a href="ml.learner-module.html">ml.learner</a></strong>: <em class="summary">It provides a general classifier API which unifies common machine 
         learning functions</em>    </li>
     <li> <strong class="uidlink"><a href="ml.lib-module.html">ml.lib</a></strong>
     <ul>
     <li> <strong class="uidlink"><a href="ml.lib.orange-module.html">ml.lib.orange</a></strong>: <em class="summary">Created on 19 Apr 2013</em>    </li>
+    <li> <strong class="uidlink"><a href="ml.lib.scikit-module.html">ml.lib.scikit</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="ml.lib.scikit.evaluation_measures-module.html">ml.lib.scikit.evaluation_measures</a></strong>: <em class="summary">evaluation_measures -- Additional metrics used in learn_model not 
+        implemented in sklearn.</em>    </li>
+    <li> <strong class="uidlink"><a href="ml.lib.scikit.features_file_utils-module.html">ml.lib.scikit.features_file_utils</a></strong>: <em class="summary">Created on Aug 29, 2012</em>    </li>
+    <li> <strong class="uidlink"><a href="ml.lib.scikit.learn_model-module.html">ml.lib.scikit.learn_model</a></strong>: <em class="summary">learn_model -- Program that learns machine translation quality 
+        estimation models</em>    </li>
+    <li> <strong class="uidlink"><a href="ml.lib.scikit.scikit-module.html">ml.lib.scikit.scikit</a></strong>: <em class="summary">Created on 25 Mar 2014</em>    </li>
+    <li> <strong class="uidlink"><a href="ml.lib.scikit.sklearn_utils-module.html">ml.lib.scikit.sklearn_utils</a></strong>: <em class="summary">sklearn_utils -- Helper functions to deal with data in the formats 
+        sklearn uses.</em>    </li>
+    </ul>
+    </li>
     </ul>
     </li>
     <li> <strong class="uidlink"><a href="ml.ranker-module.html">ml.ranker</a></strong>: <em class="summary">Created on 26 Mar 2013</em>    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="net-module.html">net</a></strong>
+    <li> <strong class="uidlink"><a href="ml.var-module.html">ml.var</a></strong>
     <ul>
-    <li> <strong class="uidlink"><a href="net.xmlrpcserver-module.html">net.xmlrpcserver</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="net.xmlrpctest-module.html">net.xmlrpctest</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.bayes-module.html">ml.var.bayes</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.classifier-module.html">ml.var.classifier</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.extract_liblinear_weights-module.html">ml.var.extract_liblinear_weights</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.extract_linear_regression_coefficients-module.html">ml.var.extract_linear_regression_coefficients</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.extract_logreg_weight-module.html">ml.var.extract_logreg_weight</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.knn-module.html">ml.var.knn</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.loglinear-module.html">ml.var.loglinear</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.orange-module.html">ml.var.orange</a></strong>: <em class="summary">Created on 26 Mar 2013</em>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.prank-module.html">ml.var.prank</a></strong>: <em class="summary">Created on 13 Oct 2012</em>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.ranker-module.html">ml.var.ranker</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.registry-module.html">ml.var.registry</a></strong>: <em class="summary">This module should be connecting classifier wrappers with the 
+        external Machine Learning classification libraries.</em>    </li>
+    <li> <strong class="uidlink">ml.var.rvm</strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.svm-module.html">ml.var.svm</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.svmeasy-module.html">ml.var.svmeasy</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.svmrank-module.html">ml.var.svmrank</a></strong>: <em class="summary">Created on 29 Aug 2012</em>    </li>
+    <li> <strong class="uidlink"><a href="ml.var.tree-module.html">ml.var.tree</a></strong>    </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="preprocess-module.html">preprocess</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="sentence-module.html">sentence</a></strong>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="sentence-module.html">sentence</a></strong>: <em class="summary">Data structures for handling parallel sentences including features 
+        and attributes</em>
     <ul>
     <li> <strong class="uidlink"><a href="sentence.coupleddataset-module.html">sentence.coupleddataset</a></strong>: <em class="summary">Created on 23 Feb 2012</em>    </li>
     <li> <strong class="uidlink"><a href="sentence.coupledparallelsentence-module.html">sentence.coupledparallelsentence</a></strong>: <em class="summary">Created on 23 Feb 2012</em>    </li>
@@ -372,40 +293,15 @@
     </li>
     <li> <strong class="uidlink"><a href="support-module.html">support</a></strong>
     <ul>
-    <li> <strong class="uidlink"><a href="support.berkeleyserver-module.html">support.berkeleyserver</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="support.evaluation-module.html">support.evaluation</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="support.evaluation.cohenkappa-module.html">support.evaluation.cohenkappa</a></strong>: <em class="summary">Created on Jul 21, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="support.evaluation.fixpostediting-module.html">support.evaluation.fixpostediting</a></strong>: <em class="summary">Created on Sep 5, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="support.evaluation.hybridcorpusevaluation-module.html">support.evaluation.hybridcorpusevaluation</a></strong>: <em class="summary">Created on 18 Oct 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="support.evaluation.interannotator-module.html">support.evaluation.interannotator</a></strong>: <em class="summary">Created on Jul 21, 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="support.evaluation.metric_correlation-module.html">support.evaluation.metric_correlation</a></strong>: <em class="summary">Created on 30 Aug 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="support.evaluation.selectbest_n_evaluate-module.html">support.evaluation.selectbest_n_evaluate</a></strong>: <em class="summary">Created on 30 Aug 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="support.evaluation.wmt12-module.html">support.evaluation.wmt12</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="support.evaluation.wmt12.wmt_scoring-module.html">support.evaluation.wmt12.wmt_scoring</a></strong>: <em class="summary">Created on 04 Mar 2012</em>    </li>
-    </ul>
-    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="support.extract_judgments-module.html">support.extract_judgments</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="support.extract_judgments08-module.html">support.extract_judgments08</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="support.extract_judgments2-module.html">support.extract_judgments2</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="support.extract_phrasal-module.html">support.extract_phrasal</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="support.extract_scores-module.html">support.extract_scores</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="support.extract_translations-module.html">support.extract_translations</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="support.extract_translations2-module.html">support.extract_translations2</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="support.extract_trees-module.html">support.extract_trees</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="support.featurecorrelation-module.html">support.featurecorrelation</a></strong>: <em class="summary">Created on Jan 23, 2013</em>    </li>
-    <li> <strong class="uidlink"><a href="support.handleClassifier-module.html">support.handleClassifier</a></strong>: <em class="summary">Created on Sep 1, 2010</em>    </li>
     <li> <strong class="uidlink"><a href="support.preprocessing-module.html">support.preprocessing</a></strong>
     <ul>
-    <li> <strong class="uidlink"><a href="support.preprocessing.appraise_time_stats-module.html">support.preprocessing.appraise_time_stats</a></strong>: <em class="summary">Created on 1 Aug 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="support.preprocessing.check_overlap-module.html">support.preprocessing.check_overlap</a></strong>: <em class="summary">Split a parallel document into a training and a test set</em>    </li>
+    <li> <strong class="uidlink"><a href="support.preprocessing.check_overlap-module.html">support.preprocessing.check_overlap</a></strong>: <em class="summary">Remove from a parallel document sentences that are found in a test 
+        set</em>    </li>
     <li> <strong class="uidlink"><a href="support.preprocessing.jcml-module.html">support.preprocessing.jcml</a></strong>
     <ul>
     <li> <strong class="uidlink"><a href="support.preprocessing.jcml.align-module.html">support.preprocessing.jcml.align</a></strong>: <em class="summary">Created on Jun 7, 2013</em>    </li>
     <li> <strong class="uidlink"><a href="support.preprocessing.jcml.jcml2arff-module.html">support.preprocessing.jcml.jcml2arff</a></strong>: <em class="summary">Created on 06 Mar 2012</em>    </li>
+    <li> <strong class="uidlink"><a href="support.preprocessing.jcml.jcml2ref-module.html">support.preprocessing.jcml.jcml2ref</a></strong>: <em class="summary">Created on 31 Oct 2013</em>    </li>
     <li> <strong class="uidlink"><a href="support.preprocessing.jcml.joinjcml-module.html">support.preprocessing.jcml.joinjcml</a></strong>: <em class="summary">Created on May 31, 2013</em>    </li>
     <li> <strong class="uidlink"><a href="support.preprocessing.jcml.splitjcml-module.html">support.preprocessing.jcml.splitjcml</a></strong>: <em class="summary">Created on 24 Oct 2012</em>    </li>
     <li> <strong class="uidlink"><a href="support.preprocessing.jcml.txt2jcml-module.html">support.preprocessing.jcml.txt2jcml</a></strong>: <em class="summary">Created on 23 Feb 2012</em>    </li>
@@ -416,33 +312,23 @@
     </li>
     <li> <strong class="uidlink"><a href="support.preprocessing.oolinkage-module.html">support.preprocessing.oolinkage</a></strong>: <em class="summary">Created on Nov 16, 2011</em>    </li>
     <li> <strong class="uidlink"><a href="support.preprocessing.select_attributes-module.html">support.preprocessing.select_attributes</a></strong>: <em class="summary">Created on 6 Mar 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="support.preprocessing.spit_traintest-module.html">support.preprocessing.spit_traintest</a></strong>: <em class="summary">Split a parallel document into a training and a test set</em>    </li>
-    <li> <strong class="uidlink"><a href="support.preprocessing.split_text_with_no_overlap-module.html">support.preprocessing.split_text_with_no_overlap</a></strong>: <em class="summary">Created on 7 Nov 2012</em>    </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="support.produceJudgmentFeatures-module.html">support.produceJudgmentFeatures</a></strong>: <em class="summary">This script reads the XML-formatted data from pairwise system 
-        comparisons and adds various features based on various linguistic 
-        characteristics of each parallel sentence.</em>    </li>
-    <li> <strong class="uidlink"><a href="support.sort_judgments-module.html">support.sort_judgments</a></strong>: <em class="summary">Holding the data of a particular MT Task</em>    </li>
-    <li> <strong class="uidlink"><a href="support.xmlrpctest-module.html">support.xmlrpctest</a></strong>    </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="tara-module.html">tara</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="tara_noorange-module.html">tara_noorange</a></strong>    </li>
-    <li> <strong class="uidlink"><a href="test-module.html">test</a></strong>
+    <li> <strong class="uidlink"><a href="test-module.html">test</a></strong>: <em class="summary">Code for testing</em>
     <ul>
     <li> <strong class="uidlink"><a href="test.coupleddataset_test-module.html">test.coupleddataset_test</a></strong>: <em class="summary">Created on 27 Feb 2012</em>    </li>
     <li> <strong class="uidlink"><a href="test.pairwise_test-module.html">test.pairwise_test</a></strong>: <em class="summary">Created on 14 Jul 2012</em>    </li>
     <li> <strong class="uidlink"><a href="test.pairwiseparallelsentence_test-module.html">test.pairwiseparallelsentence_test</a></strong>    </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="test_rankhandler-module.html">test_rankhandler</a></strong>: <em class="summary">Created on 25 Sept 2011</em>    </li>
-    <li> <strong class="uidlink"><a href="util-module.html">util</a></strong>
+    <li> <strong class="uidlink"><a href="util-module.html">util</a></strong>: <em class="summary">Utilities for various stage of preprocessing</em>
     <ul>
     <li> <strong class="uidlink"><a href="util.freqcaser-module.html">util.freqcaser</a></strong>: <em class="summary">Created on Sep 16, 2011</em>    </li>
     <li> <strong class="uidlink"><a href="util.jvm-module.html">util.jvm</a></strong>: <em class="summary">Created on 22 Jun 2012</em>    </li>
-    <li> <strong class="uidlink"><a href="util.treetaggerwrapper-module.html">util.treetaggerwrapper</a></strong>: <em class="summary">:mod:`treetaggerwrapper` -- Python wrapper for TreeTagger
-=========================================================</em>    </li>
+    <li> <strong class="uidlink"><a href="util.paralleltemplate-module.html">util.paralleltemplate</a></strong>: <em class="summary">Created on May 31, 2011</em>    </li>
+    <li> <strong class="uidlink"><a href="util.ruffus_utils-module.html">util.ruffus_utils</a></strong>    </li>
     </ul>
     </li>
 </ul>
@@ -463,13 +349,18 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:17 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:11 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
