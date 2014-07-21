@@ -27,7 +27,12 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -57,9 +62,13 @@
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class SRILMngramGenerator</h1><p class="nomargin-top"><span class="codelink"><a href="featuregenerator.lm.srilm.srilm_ngram-pysrc.html#SRILMngramGenerator">source&nbsp;code</a></span></p>
 <pre class="base-tree">
-featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
-                                                                     |
-                                                                    <strong class="uidshort">SRILMngramGenerator</strong>
+                                   object --+        
+                                            |        
+            <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html">featuregenerator.FeatureGenerator</a> --+    
+                                                |    
+<a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html">languagefeaturegenerator.LanguageFeatureGenerator</a> --+
+                                                    |
+                                                   <strong class="uidshort">SRILMngramGenerator</strong>
 </pre>
 
 <hr />
@@ -89,9 +98,9 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="__init__"></a><span class="summary-sig-name">__init__</span>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="featuregenerator.lm.srilm.srilm_ngram.SRILMngramGenerator-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">url</span>,
-        <span class="summary-sig-arg">lang</span>=<span class="summary-sig-default">&quot;en&quot;</span>,
+        <span class="summary-sig-arg">lang</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">en</code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">lowercase</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">tokenize</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">freqcase_file</span>=<span class="summary-sig-default">False</span>)</span><br />
@@ -111,9 +120,13 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_features_src"></a><span class="summary-sig-name">get_features_src</span>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="featuregenerator.lm.srilm.srilm_ngram.SRILMngramGenerator-class.html#get_features_src" class="summary-sig-name">get_features_src</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">simplesentence</span>,
-        <span class="summary-sig-arg">parallelsentence</span>)</span></td>
+        <span class="summary-sig-arg">parallelsentence</span>)</span><br />
+      Function that falls back to the general simple sentence feature 
+      generation, only if the language is supported by the feature 
+      generator It receives a source simple sentence and returns a list of 
+      source features.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="featuregenerator.lm.srilm.srilm_ngram-pysrc.html#SRILMngramGenerator.get_features_src">source&nbsp;code</a></span>
             
@@ -129,9 +142,13 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_features_tgt"></a><span class="summary-sig-name">get_features_tgt</span>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="featuregenerator.lm.srilm.srilm_ngram.SRILMngramGenerator-class.html#get_features_tgt" class="summary-sig-name">get_features_tgt</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">simplesentence</span>,
-        <span class="summary-sig-arg">parallelsentence</span>)</span></td>
+        <span class="summary-sig-arg">parallelsentence</span>)</span><br />
+      Function that falls back to the general simple sentence feature 
+      generation, only if the language is supported by the feature 
+      generator It receives a target simple sentence and returns a list of 
+      target features.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="featuregenerator.lm.srilm.srilm_ngram-pysrc.html#SRILMngramGenerator.get_features_tgt">source&nbsp;code</a></span>
             
@@ -175,14 +192,52 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
       
     </td>
   </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_standouts"></a><span class="summary-sig-name">_standouts</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">vector</span>,
+        <span class="summary-sig-arg">sign</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.lm.srilm.srilm_ngram-pysrc.html#SRILMngramGenerator._standouts">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_standout_pos"></a><span class="summary-sig-name">_standout_pos</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">vector</span>,
+        <span class="summary-sig-arg">sign</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.lm.srilm.srilm_ngram-pysrc.html#SRILMngramGenerator._standout_pos">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_features_simplesentence"></a><span class="summary-sig-name">get_features_simplesentence</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">simplesentence</span>)</span></td>
+          <td><span class="summary-sig"><a href="featuregenerator.lm.srilm.srilm_ngram.SRILMngramGenerator-class.html#get_features_simplesentence" class="summary-sig-name">get_features_simplesentence</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">simplesentence</span>)</span><br />
+      Abstract method to be overriden by the particular subclassed feature 
+      generator.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="featuregenerator.lm.srilm.srilm_ngram-pysrc.html#SRILMngramGenerator.get_features_simplesentence">source&nbsp;code</a></span>
             
@@ -226,7 +281,225 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
       
     </td>
   </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html">languagefeaturegenerator.LanguageFeatureGenerator</a></code></b>:
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#add_features_batch">add_features_batch</a></code>,
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#add_features_batch_xml">add_features_batch_xml</a></code>,
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#add_features_dataset">add_features_dataset</a></code>,
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#get_features_string">get_features_string</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html">featuregenerator.FeatureGenerator</a></code></b>:
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_parallelsentence">add_features_parallelsentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_simplesentence">add_features_simplesentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_src">add_features_src</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_tgt">add_features_tgt</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_annotation_name">get_annotation_name</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_parallelsentence">get_features_parallelsentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#process_dataset">process_dataset</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
 </table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html">languagefeaturegenerator.LanguageFeatureGenerator</a></code></b>:
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#lang">lang</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">url</span>,
+        <span class="sig-arg">lang</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">en</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">lowercase</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">tokenize</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">freqcase_file</span>=<span class="sig-default">False</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.lm.srilm.srilm_ngram-pysrc.html#SRILMngramGenerator.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Define connection with the server</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>lang</code></strong> - the language code of the language that the feature generator is 
+          capable of</li>
+    </ul></dd>
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_features_src"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_features_src</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">simplesentence</span>,
+        <span class="sig-arg">parallelsentence</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.lm.srilm.srilm_ngram-pysrc.html#SRILMngramGenerator.get_features_src">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Function that falls back to the general simple sentence feature 
+  generation, only if the language is supported by the feature generator It
+  receives a source simple sentence and returns a list of source 
+  features.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_src">featuregenerator.FeatureGenerator.get_features_src</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_features_tgt"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_features_tgt</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">simplesentence</span>,
+        <span class="sig-arg">parallelsentence</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.lm.srilm.srilm_ngram-pysrc.html#SRILMngramGenerator.get_features_tgt">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Function that falls back to the general simple sentence feature 
+  generation, only if the language is supported by the feature generator It
+  receives a target simple sentence and returns a list of target 
+  features.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_tgt">featuregenerator.FeatureGenerator.get_features_tgt</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_features_simplesentence"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_features_simplesentence</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">simplesentence</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.lm.srilm.srilm_ngram-pysrc.html#SRILMngramGenerator.get_features_simplesentence">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Abstract method to be overriden by the particular subclassed feature 
+  generator. It receives a simple sentence of any type and returns a list 
+  of features. It should be overriden by a feature generator that doesn't 
+  differentiate between source and target features</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_simplesentence">featuregenerator.FeatureGenerator.get_features_simplesentence</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
 <!-- ==================== NAVIGATION BAR ==================== -->
 <table class="navbar" border="0" width="100%" cellpadding="0"
        bgcolor="#a0c0ff" cellspacing="0">
@@ -244,13 +517,18 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:20 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:12 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

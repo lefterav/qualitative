@@ -27,7 +27,12 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -57,7 +62,7 @@
 <a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
 <a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-docstring">Created on 22 Jun 2012</tt> </tt>
 <a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
-<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring">@author: elav01</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring">@author: Eleftherios Avramidis</tt> </tt>
 <a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
 <a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">py4j</tt><tt class="py-op">.</tt><tt class="py-name">java_gateway</tt> <tt class="py-keyword">import</tt> <tt class="py-name">JavaGateway</tt><tt class="py-op">,</tt> <tt class="py-name">GatewayClient</tt><tt class="py-op">,</tt> <tt class="py-name">java_import</tt> </tt>
 <a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"> </tt>
@@ -70,44 +75,37 @@
 <a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">    <tt id="link-3" class="py-name"><a title="util.jvm" class="py-name" href="#" onclick="return doclink('link-3', 'jvm', 'link-1');">jvm</a></tt> <tt class="py-op">=</tt> <tt id="link-4" class="py-name"><a title="util.jvm.JVM" class="py-name" href="#" onclick="return doclink('link-4', 'JVM', 'link-2');">JVM</a></tt><tt class="py-op">(</tt><tt class="py-name">java_classpath</tt><tt class="py-op">,</tt> <tt class="py-name">dir_path</tt><tt class="py-op">)</tt> </tt>
 <a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">    <tt class="py-name">socket_no</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name"><a title="util.jvm" class="py-name" href="#" onclick="return doclink('link-5', 'jvm', 'link-1');">jvm</a></tt><tt class="py-op">.</tt><tt class="py-name">socket_no</tt> </tt>
 <a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">    <tt class="py-name">gatewayclient</tt> <tt class="py-op">=</tt> <tt class="py-name">GatewayClient</tt><tt class="py-op">(</tt><tt class="py-string">'localhost'</tt><tt class="py-op">,</tt> <tt class="py-name">socket_no</tt><tt class="py-op">)</tt> </tt>
-<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">    <tt id="link-6" class="py-name" targets="Variable experiment.autoranking.annotate_updated.gateway=experiment.autoranking.annotate_updated-module.html#gateway,Variable experiment.ml4hmt12.annotate_updated.gateway=experiment.ml4hmt12.annotate_updated-module.html#gateway"><a title="experiment.autoranking.annotate_updated.gateway
-experiment.ml4hmt12.annotate_updated.gateway" class="py-name" href="#" onclick="return doclink('link-6', 'gateway', 'link-6');">gateway</a></tt> <tt class="py-op">=</tt> <tt class="py-name">JavaGateway</tt><tt class="py-op">(</tt><tt class="py-name">gatewayclient</tt><tt class="py-op">,</tt> <tt class="py-name">auto_convert</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">auto_field</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
-<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">    <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stderr</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method experiment.autoranking.decode.StreamToLogger.write()=experiment.autoranking.decode.StreamToLogger-class.html#write,Method experiment.autoranking.suite.StreamToLogger.write()=experiment.autoranking.suite.StreamToLogger-class.html#write,Method experiment.autorankingsearch.suite.StreamToLogger.write()=experiment.autorankingsearch.suite.StreamToLogger-class.html#write,Method experiment.autoranksvm.suite.StreamToLogger.write()=experiment.autoranksvm.suite.StreamToLogger-class.html#write,Method experiment.ml4hmt12.suite.StreamToLogger.write()=experiment.ml4hmt12.suite.StreamToLogger-class.html#write,Method experiment.ml4hmt12.test.StreamToLogger.write()=experiment.ml4hmt12.test.StreamToLogger-class.html#write,Method sentence.coupleddataset.CoupledDataSetDisk.write()=sentence.coupleddataset.CoupledDataSetDisk-class.html#write"><a title="experiment.autoranking.decode.StreamToLogger.write
-experiment.autoranking.suite.StreamToLogger.write
-experiment.autorankingsearch.suite.StreamToLogger.write
-experiment.autoranksvm.suite.StreamToLogger.write
-experiment.ml4hmt12.suite.StreamToLogger.write
-experiment.ml4hmt12.test.StreamToLogger.write
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">    <tt id="link-6" class="py-name" targets="Variable app.autoranking.annotate_batch.gateway=app.autoranking.annotate_batch-module.html#gateway"><a title="app.autoranking.annotate_batch.gateway" class="py-name" href="#" onclick="return doclink('link-6', 'gateway', 'link-6');">gateway</a></tt> <tt class="py-op">=</tt> <tt class="py-name">JavaGateway</tt><tt class="py-op">(</tt><tt class="py-name">gatewayclient</tt><tt class="py-op">,</tt> <tt class="py-name">auto_convert</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">auto_field</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">    <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stderr</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method app.autoranking.decode_batch.StreamToLogger.write()=app.autoranking.decode_batch.StreamToLogger-class.html#write,Method app.autoranking.suite.StreamToLogger.write()=app.autoranking.suite.StreamToLogger-class.html#write,Method sentence.coupleddataset.CoupledDataSetDisk.write()=sentence.coupleddataset.CoupledDataSetDisk-class.html#write"><a title="app.autoranking.decode_batch.StreamToLogger.write
+app.autoranking.suite.StreamToLogger.write
 sentence.coupleddataset.CoupledDataSetDisk.write" class="py-name" href="#" onclick="return doclink('link-7', 'write', 'link-7');">write</a></tt><tt class="py-op">(</tt><tt class="py-string">"Initialized global Java gateway with pid {} in socket {}\n"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name"><a title="util.jvm" class="py-name" href="#" onclick="return doclink('link-8', 'jvm', 'link-1');">jvm</a></tt><tt class="py-op">.</tt><tt class="py-name">pid</tt><tt class="py-op">,</tt> <tt class="py-name">socket_no</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
 <a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"> </tt>
 <a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">     </tt>
 <a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">    <tt class="py-name">gatewayclient</tt> <tt class="py-op">=</tt> <tt class="py-name">GatewayClient</tt><tt class="py-op">(</tt><tt class="py-string">'localhost'</tt><tt class="py-op">,</tt> <tt class="py-name">socket_no</tt><tt class="py-op">)</tt> </tt>
 <a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-string">"Gclient started"</tt> </tt>
-<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">    <tt id="link-9" class="py-name"><a title="experiment.autoranking.annotate_updated.gateway
-experiment.ml4hmt12.annotate_updated.gateway" class="py-name" href="#" onclick="return doclink('link-9', 'gateway', 'link-6');">gateway</a></tt> <tt class="py-op">=</tt> <tt class="py-name">JavaGateway</tt><tt class="py-op">(</tt><tt class="py-name">gatewayclient</tt><tt class="py-op">,</tt> <tt class="py-name">auto_convert</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">auto_field</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">    <tt id="link-9" class="py-name"><a title="app.autoranking.annotate_batch.gateway" class="py-name" href="#" onclick="return doclink('link-9', 'gateway', 'link-6');">gateway</a></tt> <tt class="py-op">=</tt> <tt class="py-name">JavaGateway</tt><tt class="py-op">(</tt><tt class="py-name">gatewayclient</tt><tt class="py-op">,</tt> <tt class="py-name">auto_convert</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">auto_field</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
 <a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-string">"Java Gateway started"</tt> </tt>
 <a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">    <tt class="py-comment">#create a new view for the jvm</tt> </tt>
-<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">    <tt class="py-name">meteor_view</tt> <tt class="py-op">=</tt> <tt id="link-10" class="py-name"><a title="experiment.autoranking.annotate_updated.gateway
-experiment.ml4hmt12.annotate_updated.gateway" class="py-name" href="#" onclick="return doclink('link-10', 'gateway', 'link-6');">gateway</a></tt><tt class="py-op">.</tt><tt class="py-name">new_jvm_view</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">    <tt class="py-name">meteor_view</tt> <tt class="py-op">=</tt> <tt id="link-10" class="py-name"><a title="app.autoranking.annotate_batch.gateway" class="py-name" href="#" onclick="return doclink('link-10', 'gateway', 'link-6');">gateway</a></tt><tt class="py-op">.</tt><tt class="py-name">new_jvm_view</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
 <a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">    <tt class="py-comment">#import required packages</tt> </tt>
 <a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">    <tt class="py-name">java_import</tt><tt class="py-op">(</tt><tt class="py-name">meteor_view</tt><tt class="py-op">,</tt> <tt class="py-string">'edu.cmu.meteor.scorer.*'</tt><tt class="py-op">)</tt> </tt>
 <a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">    <tt class="py-comment">#initialize the java object</tt> </tt>
 <a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">    <tt class="py-name">java_import</tt><tt class="py-op">(</tt><tt class="py-name">meteor_view</tt><tt class="py-op">,</tt> <tt class="py-string">'edu.cmu.meteor.util.*'</tt><tt class="py-op">)</tt> </tt>
 <a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-string">"Modules imported"</tt> </tt>
 <a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">    <tt class="py-comment">#pass the language setting into the meteor configuration object</tt> </tt>
-<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">    <tt id="link-11" class="py-name" targets="Variable exec.autoranking_v2.AutoRankingExperiment.config=exec.autoranking_v2.AutoRankingExperiment-class.html#config"><a title="exec.autoranking_v2.AutoRankingExperiment.config" class="py-name" href="#" onclick="return doclink('link-11', 'config', 'link-11');">config</a></tt> <tt class="py-op">=</tt> <tt class="py-name">meteor_view</tt><tt class="py-op">.</tt><tt class="py-name">MeteorConfiguration</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">;</tt> </tt>
-<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">    <tt id="link-12" class="py-name"><a title="exec.autoranking_v2.AutoRankingExperiment.config" class="py-name" href="#" onclick="return doclink('link-12', 'config', 'link-11');">config</a></tt><tt class="py-op">.</tt><tt class="py-name">setLanguage</tt><tt class="py-op">(</tt><tt class="py-string">"en"</tt><tt class="py-op">)</tt><tt class="py-op">;</tt> </tt>
-<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">    <tt class="py-name">scorer</tt> <tt class="py-op">=</tt> <tt class="py-name">meteor_view</tt><tt class="py-op">.</tt><tt class="py-name">MeteorScorer</tt><tt class="py-op">(</tt><tt id="link-13" class="py-name"><a title="exec.autoranking_v2.AutoRankingExperiment.config" class="py-name" href="#" onclick="return doclink('link-13', 'config', 'link-11');">config</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">    <tt class="py-name">config</tt> <tt class="py-op">=</tt> <tt class="py-name">meteor_view</tt><tt class="py-op">.</tt><tt class="py-name">MeteorConfiguration</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">;</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">    <tt class="py-name">config</tt><tt class="py-op">.</tt><tt class="py-name">setLanguage</tt><tt class="py-op">(</tt><tt class="py-string">"en"</tt><tt class="py-op">)</tt><tt class="py-op">;</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">    <tt class="py-name">scorer</tt> <tt class="py-op">=</tt> <tt class="py-name">meteor_view</tt><tt class="py-op">.</tt><tt class="py-name">MeteorScorer</tt><tt class="py-op">(</tt><tt class="py-name">config</tt><tt class="py-op">)</tt> </tt>
 <a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-string">"object initialized"</tt> </tt>
 <a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">    <tt class="py-comment">#run object function</tt> </tt>
 <a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">    <tt class="py-name">stats</tt> <tt class="py-op">=</tt> <tt class="py-name">scorer</tt><tt class="py-op">.</tt><tt class="py-name">getMeteorStats</tt><tt class="py-op">(</tt><tt class="py-string">"Test sentence"</tt><tt class="py-op">,</tt> <tt class="py-string">"Test sentence !"</tt><tt class="py-op">)</tt><tt class="py-op">;</tt> </tt>
-<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-name">stats</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Function experiment.autoranking.decode.score()=experiment.autoranking.decode-module.html#score,Function experiment.autoranking.suite.score()=experiment.autoranking.suite-module.html#score,Method featuregenerator.meteor.meteor.MeteorGenerator.score()=featuregenerator.meteor.meteor.MeteorGenerator-class.html#score"><a title="experiment.autoranking.decode.score
-experiment.autoranking.suite.score
-featuregenerator.meteor.meteor.MeteorGenerator.score" class="py-name" href="#" onclick="return doclink('link-14', 'score', 'link-14');">score</a></tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-name">stats</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Function app.autoranking.decode_batch.score()=app.autoranking.decode_batch-module.html#score,Function app.autoranking.suite.score()=app.autoranking.suite-module.html#score,Method featuregenerator.meteor.meteor.MeteorGenerator.score()=featuregenerator.meteor.meteor.MeteorGenerator-class.html#score"><a title="app.autoranking.decode_batch.score
+app.autoranking.suite.score
+featuregenerator.meteor.meteor.MeteorGenerator.score" class="py-name" href="#" onclick="return doclink('link-11', 'score', 'link-11');">score</a></tt> </tt>
 <a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-number">1</tt> </tt>
 </div><a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line"> </tt>
 <a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line"> </tt>
-<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-15" class="py-name" targets="Variable featuregenerator.meteor.meteor.MeteorGenerator.__name__=featuregenerator.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-15', '__name__', 'link-15');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-12" class="py-name" targets="Variable featuregenerator.meteor.meteor.MeteorGenerator.__name__=featuregenerator.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-12', '__name__', 'link-12');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
 <a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">     </tt>
 <a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line"><tt class="py-comment">#    gatewayclient = GatewayClient('localhost', socket_no)</tt> </tt>
 <a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line"> </tt>
@@ -115,13 +113,13 @@ featuregenerator.meteor.meteor.MeteorGenerator.score" class="py-name" href="#" o
 <a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line"> </tt>
 <a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">    <tt class="py-name">p</tt> <tt class="py-op">=</tt> <tt class="py-name">multiprocessing</tt><tt class="py-op">.</tt><tt class="py-name">Pool</tt><tt class="py-op">(</tt><tt class="py-number">3</tt><tt class="py-op">)</tt> </tt>
 <a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-string">"Multipool initialized"</tt> </tt>
-<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">.</tt><tt class="py-name">map</tt><tt class="py-op">(</tt><tt id="link-16" class="py-name" targets="Function featuregenerator.meteor.testmeteor.singlethread()=featuregenerator.meteor.testmeteor-module.html#singlethread"><a title="featuregenerator.meteor.testmeteor.singlethread" class="py-name" href="#" onclick="return doclink('link-16', 'singlethread', 'link-16');">singlethread</a></tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-name">java_classpath</tt><tt class="py-op">,</tt> <tt class="py-name">java_classpath</tt><tt class="py-op">,</tt> <tt class="py-name">java_classpath</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">.</tt><tt class="py-name">map</tt><tt class="py-op">(</tt><tt id="link-13" class="py-name" targets="Function featuregenerator.meteor.testmeteor.singlethread()=featuregenerator.meteor.testmeteor-module.html#singlethread"><a title="featuregenerator.meteor.testmeteor.singlethread" class="py-name" href="#" onclick="return doclink('link-13', 'singlethread', 'link-13');">singlethread</a></tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-name">java_classpath</tt><tt class="py-op">,</tt> <tt class="py-name">java_classpath</tt><tt class="py-op">,</tt> <tt class="py-name">java_classpath</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
 <a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">     </tt>
 <a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line"> </tt>
 <a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line"> </tt>
 <a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line"> </tt>
 <a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line"> </tt>
-<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-17" class="py-name"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-17', '__name__', 'link-15');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-14" class="py-name"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-14', '__name__', 'link-12');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
 <a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
 <a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line"> </tt><script type="text/javascript">
 <!--
@@ -147,13 +145,18 @@ expandto(location.href);
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:22 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:15 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

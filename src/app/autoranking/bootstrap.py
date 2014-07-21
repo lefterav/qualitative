@@ -1,5 +1,5 @@
 """bootstrap.py
-    module to set up a pipeline program
+    bootstrapping module to initialize necessary objects for annotation
 """
 
 
@@ -28,10 +28,10 @@ CONFIG_TEMPLATE = """
 
 class ExperimentConfigParser(ConfigParser):
     """
+    An extension of the ConfigParser that initializes necessary object for annotation pipelines
+    according to the settings specified by the configuration files 
     """
     checker = 0
-    
-
     
     def java_init(self):
         

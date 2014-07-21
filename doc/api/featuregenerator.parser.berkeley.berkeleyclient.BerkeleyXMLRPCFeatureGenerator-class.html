@@ -27,7 +27,12 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -57,11 +62,15 @@
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class BerkeleyXMLRPCFeatureGenerator</h1><p class="nomargin-top"><span class="codelink"><a href="featuregenerator.parser.berkeley.berkeleyclient-pysrc.html#BerkeleyXMLRPCFeatureGenerator">source&nbsp;code</a></span></p>
 <pre class="base-tree">
-featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+    
-                                                                     |    
-                                              <a href="featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator-class.html">BerkeleyFeatureGenerator</a> --+
-                                                                         |
-                                                                        <strong class="uidshort">BerkeleyXMLRPCFeatureGenerator</strong>
+                                   object --+            
+                                            |            
+            <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html">featuregenerator.FeatureGenerator</a> --+        
+                                                |        
+<a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html">languagefeaturegenerator.LanguageFeatureGenerator</a> --+    
+                                                    |    
+                             <a href="featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator-class.html">BerkeleyFeatureGenerator</a> --+
+                                                        |
+                                                       <strong class="uidshort">BerkeleyXMLRPCFeatureGenerator</strong>
 </pre>
 
 <hr />
@@ -90,7 +99,7 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
         <tr>
           <td><span class="summary-sig"><a href="featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">url</span>,
-        <span class="summary-sig-arg">lang</span>=<span class="summary-sig-default">&quot;&quot;</span>,
+        <span class="summary-sig-arg">lang</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">tokenize</span>=<span class="summary-sig-default">False</span>)</span><br />
       Handles the connection with a Berkeley Server through XML-RPC</td>
           <td align="right" valign="top">
@@ -121,12 +130,14 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type">list(sentence.parallelsentence.ParallelSentence)</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator-class.html#add_features_batch" class="summary-sig-name">add_features_batch</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">parallelsentences</span>)</span></td>
+        <span class="summary-sig-arg">parallelsentences</span>)</span><br />
+      Abstract method to be overriden by the particular subclassed feature 
+      generator.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="featuregenerator.parser.berkeley.berkeleyclient-pysrc.html#BerkeleyXMLRPCFeatureGenerator.add_features_batch">source&nbsp;code</a></span>
             
@@ -160,6 +171,85 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
       <code><a href="featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator-class.html#get_features_string">get_features_string</a></code>,
       <code><a href="featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator-class.html#prepare_sentence">prepare_sentence</a></code>
       </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html">languagefeaturegenerator.LanguageFeatureGenerator</a></code></b>:
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#add_features_batch_xml">add_features_batch_xml</a></code>,
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#add_features_dataset">add_features_dataset</a></code>,
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#get_features_src">get_features_src</a></code>,
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#get_features_tgt">get_features_tgt</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html">featuregenerator.FeatureGenerator</a></code></b>:
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_parallelsentence">add_features_parallelsentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_simplesentence">add_features_simplesentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_src">add_features_src</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_tgt">add_features_tgt</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_annotation_name">get_annotation_name</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_parallelsentence">get_features_parallelsentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#process_dataset">process_dataset</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html">languagefeaturegenerator.LanguageFeatureGenerator</a></code></b>:
+      <code><a href="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#lang">lang</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
     </td>
   </tr>
 </table>
@@ -190,7 +280,7 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">url</span>,
-        <span class="sig-arg">lang</span>=<span class="sig-default">&quot;&quot;</span>,
+        <span class="sig-arg">lang</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
         <span class="sig-arg">tokenize</span>=<span class="sig-default">False</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
@@ -201,8 +291,13 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
   
   <p>Handles the connection with a Berkeley Server through XML-RPC</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>lang</code></strong> - the language code of the language that the feature generator is 
+          capable of</li>
+    </ul></dd>
     <dt>Overrides:
-        <a href="featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator-class.html#__init__">BerkeleyFeatureGenerator.__init__</a>
+        object.__init__
     </dt>
   </dl>
 </td></tr></table>
@@ -245,10 +340,23 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
     </td>
   </tr></table>
   
-  
+  <p>Abstract method to be overriden by the particular subclassed feature 
+  generator. It allows the generation of features over many 
+  parallelsentences. It is a flexible solution when feature generation 
+  doesn't take place item to item (see SAX parsing) but a whole list of 
+  parallel sentences needs to be implemented at once. In this case, feature
+  generator may optimize better when the whole dataset is given.</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>parallelsentences</code></strong> - The parallel sentences to be be augmented</li>
+    </ul></dd>
+    <dt>Returns: list(sentence.parallelsentence.ParallelSentence)</dt>
+        <dd>The given list of ParallelSentence which are now augmented with 
+          features generated from the current featuregenerator</dd>
     <dt>Overrides:
-        <a href="featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator-class.html#add_features_batch">BerkeleyFeatureGenerator.add_features_batch</a>
+        <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_batch">featuregenerator.FeatureGenerator.add_features_batch</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
     </dt>
   </dl>
 </td></tr></table>
@@ -271,13 +379,18 @@ featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator --+
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:20 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:12 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

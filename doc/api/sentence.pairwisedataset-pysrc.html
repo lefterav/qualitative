@@ -27,7 +27,12 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -83,15 +88,16 @@
 <a name="PairwiseDataset.get_parallelsentences"></a><div id="PairwiseDataset.get_parallelsentences-def"><a name="L28"></a><tt class="py-lineno"> 28</tt> <a class="py-toggle" href="#" id="PairwiseDataset.get_parallelsentences-toggle" onclick="return toggle('PairwiseDataset.get_parallelsentences');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sentence.pairwisedataset.PairwiseDataset-class.html#get_parallelsentences">get_parallelsentences</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
 </div><div id="PairwiseDataset.get_parallelsentences-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="PairwiseDataset.get_parallelsentences-expanded"><a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">        <tt class="py-name">all_parallel_sentences</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
 <a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">sentence_set</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method sentence.pairwisedataset.PairwiseDataset.get_all_parallelsentence_sets()=sentence.pairwisedataset.PairwiseDataset-class.html#get_all_parallelsentence_sets"><a title="sentence.pairwisedataset.PairwiseDataset.get_all_parallelsentence_sets" class="py-name" href="#" onclick="return doclink('link-7', 'get_all_parallelsentence_sets', 'link-7');">get_all_parallelsentence_sets</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">            <tt class="py-name">all_parallel_sentences</tt><tt class="py-op">.</tt><tt class="py-name">extend</tt><tt class="py-op">(</tt><tt class="py-name">sentence_set</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method io_utils.input.genericreader.GenericReader.get_parallelsentences()=io_utils.input.genericreader.GenericReader-class.html#get_parallelsentences,Method io_utils.input.genericxmlreader.GenericXmlReader.get_parallelsentences()=io_utils.input.genericxmlreader.GenericXmlReader-class.html#get_parallelsentences,Method io_utils.input.linereader.AttributeLineReader.get_parallelsentences()=io_utils.input.linereader.AttributeLineReader-class.html#get_parallelsentences,Method io_utils.input.linereader.LineReader.get_parallelsentences()=io_utils.input.linereader.LineReader-class.html#get_parallelsentences,Method io_utils.input.posteditingreader.PosteditingReader.get_parallelsentences()=io_utils.input.posteditingreader.PosteditingReader-class.html#get_parallelsentences,Method io_utils.input.rankreader.R2RankReader.get_parallelsentences()=io_utils.input.rankreader.R2RankReader-class.html#get_parallelsentences,Method io_utils.input.rankreader.RankReader.get_parallelsentences()=io_utils.input.rankreader.RankReader-class.html#get_parallelsentences,Method io_utils.input.taraxureader.TaraXUReader.get_parallelsentences()=io_utils.input.taraxureader.TaraXUReader-class.html#get_parallelsentences,Method io_utils.input.xliffreader.XliffReader.get_parallelsentences()=io_utils.input.xliffreader.XliffReader-class.html#get_parallelsentences,Method sentence.dataset.DataSet.get_parallelsentences()=sentence.dataset.DataSet-class.html#get_parallelsentences,Method sentence.pairwisedataset.PairwiseDataset.get_parallelsentences()=sentence.pairwisedataset.PairwiseDataset-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html#get_parallelsentences"><a title="io_utils.input.genericreader.GenericReader.get_parallelsentences
-io_utils.input.genericxmlreader.GenericXmlReader.get_parallelsentences
-io_utils.input.linereader.AttributeLineReader.get_parallelsentences
-io_utils.input.linereader.LineReader.get_parallelsentences
-io_utils.input.posteditingreader.PosteditingReader.get_parallelsentences
-io_utils.input.rankreader.R2RankReader.get_parallelsentences
-io_utils.input.rankreader.RankReader.get_parallelsentences
-io_utils.input.taraxureader.TaraXUReader.get_parallelsentences
-io_utils.input.xliffreader.XliffReader.get_parallelsentences
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">            <tt class="py-name">all_parallel_sentences</tt><tt class="py-op">.</tt><tt class="py-name">extend</tt><tt class="py-op">(</tt><tt class="py-name">sentence_set</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method dataprocessor.ce.cejcml.CEJcmlReader.get_parallelsentences()=dataprocessor.ce.cejcml.CEJcmlReader-class.html#get_parallelsentences,Method dataprocessor.input.genericreader.GenericReader.get_parallelsentences()=dataprocessor.input.genericreader.GenericReader-class.html#get_parallelsentences,Method dataprocessor.input.genericxmlreader.GenericXmlReader.get_parallelsentences()=dataprocessor.input.genericxmlreader.GenericXmlReader-class.html#get_parallelsentences,Method dataprocessor.input.linereader.AttributeLineReader.get_parallelsentences()=dataprocessor.input.linereader.AttributeLineReader-class.html#get_parallelsentences,Method dataprocessor.input.linereader.LineReader.get_parallelsentences()=dataprocessor.input.linereader.LineReader-class.html#get_parallelsentences,Method dataprocessor.input.posteditingreader.PosteditingReader.get_parallelsentences()=dataprocessor.input.posteditingreader.PosteditingReader-class.html#get_parallelsentences,Method dataprocessor.input.rankreader.R2RankReader.get_parallelsentences()=dataprocessor.input.rankreader.R2RankReader-class.html#get_parallelsentences,Method dataprocessor.input.rankreader.RankReader.get_parallelsentences()=dataprocessor.input.rankreader.RankReader-class.html#get_parallelsentences,Method dataprocessor.input.taraxureader.TaraXUReader.get_parallelsentences()=dataprocessor.input.taraxureader.TaraXUReader-class.html#get_parallelsentences,Method dataprocessor.input.xliffreader.XliffReader.get_parallelsentences()=dataprocessor.input.xliffreader.XliffReader-class.html#get_parallelsentences,Method sentence.dataset.DataSet.get_parallelsentences()=sentence.dataset.DataSet-class.html#get_parallelsentences,Method sentence.pairwisedataset.PairwiseDataset.get_parallelsentences()=sentence.pairwisedataset.PairwiseDataset-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html#get_parallelsentences"><a title="dataprocessor.ce.cejcml.CEJcmlReader.get_parallelsentences
+dataprocessor.input.genericreader.GenericReader.get_parallelsentences
+dataprocessor.input.genericxmlreader.GenericXmlReader.get_parallelsentences
+dataprocessor.input.linereader.AttributeLineReader.get_parallelsentences
+dataprocessor.input.linereader.LineReader.get_parallelsentences
+dataprocessor.input.posteditingreader.PosteditingReader.get_parallelsentences
+dataprocessor.input.rankreader.R2RankReader.get_parallelsentences
+dataprocessor.input.rankreader.RankReader.get_parallelsentences
+dataprocessor.input.taraxureader.TaraXUReader.get_parallelsentences
+dataprocessor.input.xliffreader.XliffReader.get_parallelsentences
 sentence.dataset.DataSet.get_parallelsentences
 sentence.pairwisedataset.PairwiseDataset.get_parallelsentences
 sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences
@@ -122,8 +128,8 @@ sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.remove_
 sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet.remove_ties
 sentence.parallelsentence.ParallelSentence.remove_ties" class="py-name" href="#" onclick="return doclink('link-9', 'remove_ties', 'link-9');">remove_ties</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
 <a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">        <tt class="py-comment">#filter out sentences where nothing is left</tt> </tt>
-<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">pairwise_parallelsentence_sets</tt> <tt class="py-op">=</tt> <tt class="py-name">OrderedDict</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-op">(</tt><tt class="py-name">id</tt><tt class="py-op">,</tt> <tt class="py-name">ps</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-op">(</tt><tt class="py-name">id</tt><tt class="py-op">,</tt> <tt class="py-name">ps</tt><tt class="py-op">)</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">pairwise_parallelsentence_sets</tt><tt class="py-op">.</tt><tt class="py-name">iteritems</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">if</tt> <tt class="py-name">ps</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method io_utils.input.genericxmlreader.GenericXmlReader.length()=io_utils.input.genericxmlreader.GenericXmlReader-class.html#length,Method io_utils.input.xliffreader.XliffReader.length()=io_utils.input.xliffreader.XliffReader-class.html#length,Method sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.length()=sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html#length"><a title="io_utils.input.genericxmlreader.GenericXmlReader.length
-io_utils.input.xliffreader.XliffReader.length
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">pairwise_parallelsentence_sets</tt> <tt class="py-op">=</tt> <tt class="py-name">OrderedDict</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-op">(</tt><tt class="py-name">id</tt><tt class="py-op">,</tt> <tt class="py-name">ps</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-op">(</tt><tt class="py-name">id</tt><tt class="py-op">,</tt> <tt class="py-name">ps</tt><tt class="py-op">)</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">pairwise_parallelsentence_sets</tt><tt class="py-op">.</tt><tt class="py-name">iteritems</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">if</tt> <tt class="py-name">ps</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method dataprocessor.input.genericxmlreader.GenericXmlReader.length()=dataprocessor.input.genericxmlreader.GenericXmlReader-class.html#length,Method dataprocessor.input.xliffreader.XliffReader.length()=dataprocessor.input.xliffreader.XliffReader-class.html#length,Method sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.length()=sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html#length"><a title="dataprocessor.input.genericxmlreader.GenericXmlReader.length
+dataprocessor.input.xliffreader.XliffReader.length
 sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.length" class="py-name" href="#" onclick="return doclink('link-10', 'length', 'link-10');">length</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
 <a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">removed_ties</tt> </tt>
 </div></div><a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"> </tt>
@@ -217,25 +223,26 @@ sentence.sentence.SimpleSentence.get_attribute" class="py-name" href="#" onclick
 <a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">pairwise_parallelsentence_sets</tt> <tt class="py-op">=</tt> <tt class="py-name">OrderedDict</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
 <a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">        <tt class="py-name">pairwise_parallelsentences_per_sid</tt> <tt class="py-op">=</tt> <tt class="py-name">OrderedDict</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
 <a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">         </tt>
-<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">        <tt id="link-20" class="py-name" targets="Variable io_utils.sax.jcml2array.cast=io_utils.sax.jcml2array-module.html#cast"><a title="io_utils.sax.jcml2array.cast" class="py-name" href="#" onclick="return doclink('link-20', 'cast', 'link-20');">cast</a></tt> <tt class="py-op">=</tt> <tt class="py-name">kwargs</tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">"cast"</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">        <tt id="link-20" class="py-name" targets="Variable dataprocessor.sax.jcml2array.cast=dataprocessor.sax.jcml2array-module.html#cast"><a title="dataprocessor.sax.jcml2array.cast" class="py-name" href="#" onclick="return doclink('link-20', 'cast', 'link-20');">cast</a></tt> <tt class="py-op">=</tt> <tt class="py-name">kwargs</tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">"cast"</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
 <a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">include_references</tt> <tt class="py-op">=</tt> <tt class="py-name">kwargs</tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">"include_references"</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
 <a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">replacement</tt> <tt class="py-op">=</tt> <tt class="py-name">kwargs</tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">"replacement"</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
 <a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">         </tt>
-<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-21" class="py-name"><a title="io_utils.sax.jcml2array.cast" class="py-name" href="#" onclick="return doclink('link-21', 'cast', 'link-20');">cast</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-21" class="py-name"><a title="dataprocessor.sax.jcml2array.cast" class="py-name" href="#" onclick="return doclink('link-21', 'cast', 'link-20');">cast</a></tt><tt class="py-op">:</tt> </tt>
 <a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Method sentence.pairwisedataset.RawPairwiseDataset._cast()=sentence.pairwisedataset.RawPairwiseDataset-class.html#_cast,Method sentence.pairwiseparallelsentence.PairwiseParallelSentence._cast()=sentence.pairwiseparallelsentence.PairwiseParallelSentence-class.html#_cast"><a title="sentence.pairwisedataset.RawPairwiseDataset._cast
-sentence.pairwiseparallelsentence.PairwiseParallelSentence._cast" class="py-name" href="#" onclick="return doclink('link-22', '_cast', 'link-22');">_cast</a></tt><tt class="py-op">(</tt><tt id="link-23" class="py-name"><a title="io_utils.sax.jcml2array.cast" class="py-name" href="#" onclick="return doclink('link-23', 'cast', 'link-20');">cast</a></tt><tt class="py-op">)</tt> </tt>
+sentence.pairwiseparallelsentence.PairwiseParallelSentence._cast" class="py-name" href="#" onclick="return doclink('link-22', '_cast', 'link-22');">_cast</a></tt><tt class="py-op">(</tt><tt id="link-23" class="py-name"><a title="dataprocessor.sax.jcml2array.cast" class="py-name" href="#" onclick="return doclink('link-23', 'cast', 'link-20');">cast</a></tt><tt class="py-op">)</tt> </tt>
 <a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
 <a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">             </tt>
 <a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">            <tt class="py-comment">#first group by sentence ID or judgment ID</tt> </tt>
-<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt id="link-24" class="py-name" targets="Module sentence.parallelsentence=sentence.parallelsentence-module.html"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-24', 'parallelsentence', 'link-24');">parallelsentence</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">plain_dataset</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="io_utils.input.genericreader.GenericReader.get_parallelsentences
-io_utils.input.genericxmlreader.GenericXmlReader.get_parallelsentences
-io_utils.input.linereader.AttributeLineReader.get_parallelsentences
-io_utils.input.linereader.LineReader.get_parallelsentences
-io_utils.input.posteditingreader.PosteditingReader.get_parallelsentences
-io_utils.input.rankreader.R2RankReader.get_parallelsentences
-io_utils.input.rankreader.RankReader.get_parallelsentences
-io_utils.input.taraxureader.TaraXUReader.get_parallelsentences
-io_utils.input.xliffreader.XliffReader.get_parallelsentences
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt id="link-24" class="py-name" targets="Module sentence.parallelsentence=sentence.parallelsentence-module.html"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-24', 'parallelsentence', 'link-24');">parallelsentence</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">plain_dataset</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="dataprocessor.ce.cejcml.CEJcmlReader.get_parallelsentences
+dataprocessor.input.genericreader.GenericReader.get_parallelsentences
+dataprocessor.input.genericxmlreader.GenericXmlReader.get_parallelsentences
+dataprocessor.input.linereader.AttributeLineReader.get_parallelsentences
+dataprocessor.input.linereader.LineReader.get_parallelsentences
+dataprocessor.input.posteditingreader.PosteditingReader.get_parallelsentences
+dataprocessor.input.rankreader.R2RankReader.get_parallelsentences
+dataprocessor.input.rankreader.RankReader.get_parallelsentences
+dataprocessor.input.taraxureader.TaraXUReader.get_parallelsentences
+dataprocessor.input.xliffreader.XliffReader.get_parallelsentences
 sentence.dataset.DataSet.get_parallelsentences
 sentence.pairwisedataset.PairwiseDataset.get_parallelsentences
 sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences
@@ -259,22 +266,23 @@ sentence.parallelsentence.ParallelSentence.get_pairwise_parallelsentences" class
 <a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">        <tt class="py-name">pairwise_parallelsentences_per_sid</tt> <tt class="py-op">=</tt> <tt class="py-name">OrderedDict</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
 <a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">         </tt>
 <a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">        <tt class="py-comment">#first group by sentence ID or judgment ID</tt> </tt>
-<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt id="link-32" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-32', 'parallelsentence', 'link-24');">parallelsentence</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">analytic_dataset</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="io_utils.input.genericreader.GenericReader.get_parallelsentences
-io_utils.input.genericxmlreader.GenericXmlReader.get_parallelsentences
-io_utils.input.linereader.AttributeLineReader.get_parallelsentences
-io_utils.input.linereader.LineReader.get_parallelsentences
-io_utils.input.posteditingreader.PosteditingReader.get_parallelsentences
-io_utils.input.rankreader.R2RankReader.get_parallelsentences
-io_utils.input.rankreader.RankReader.get_parallelsentences
-io_utils.input.taraxureader.TaraXUReader.get_parallelsentences
-io_utils.input.xliffreader.XliffReader.get_parallelsentences
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt id="link-32" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-32', 'parallelsentence', 'link-24');">parallelsentence</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">analytic_dataset</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="dataprocessor.ce.cejcml.CEJcmlReader.get_parallelsentences
+dataprocessor.input.genericreader.GenericReader.get_parallelsentences
+dataprocessor.input.genericxmlreader.GenericXmlReader.get_parallelsentences
+dataprocessor.input.linereader.AttributeLineReader.get_parallelsentences
+dataprocessor.input.linereader.LineReader.get_parallelsentences
+dataprocessor.input.posteditingreader.PosteditingReader.get_parallelsentences
+dataprocessor.input.rankreader.R2RankReader.get_parallelsentences
+dataprocessor.input.rankreader.RankReader.get_parallelsentences
+dataprocessor.input.taraxureader.TaraXUReader.get_parallelsentences
+dataprocessor.input.xliffreader.XliffReader.get_parallelsentences
 sentence.dataset.DataSet.get_parallelsentences
 sentence.pairwisedataset.PairwiseDataset.get_parallelsentences
 sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences
 sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences" class="py-name" href="#" onclick="return doclink('link-33', 'get_parallelsentences', 'link-8');">get_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
 <a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">         </tt>
 <a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">            <tt class="py-name">judgment_id</tt> <tt class="py-op">=</tt> <tt id="link-34" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-34', 'parallelsentence', 'link-24');">parallelsentence</a></tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="sentence.parallelsentence.ParallelSentence.get_compact_judgment_id" class="py-name" href="#" onclick="return doclink('link-35', 'get_compact_judgment_id', 'link-27');">get_compact_judgment_id</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line">            <tt id="link-36" class="py-name"><a title="sentence.pairwiseparallelsentence" class="py-name" href="#" onclick="return doclink('link-36', 'pairwiseparallelsentence', 'link-5');">pairwiseparallelsentence</a></tt> <tt class="py-op">=</tt> <tt id="link-37" class="py-name"><a title="sentence.pairwiseparallelsentence.PairwiseParallelSentence" class="py-name" href="#" onclick="return doclink('link-37', 'PairwiseParallelSentence', 'link-6');">PairwiseParallelSentence</a></tt><tt class="py-op">(</tt><tt id="link-38" class="py-name"><a title="io_utils.sax.jcml2array.cast" class="py-name" href="#" onclick="return doclink('link-38', 'cast', 'link-20');">cast</a></tt><tt class="py-op">=</tt><tt id="link-39" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-39', 'parallelsentence', 'link-24');">parallelsentence</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line">            <tt id="link-36" class="py-name"><a title="sentence.pairwiseparallelsentence" class="py-name" href="#" onclick="return doclink('link-36', 'pairwiseparallelsentence', 'link-5');">pairwiseparallelsentence</a></tt> <tt class="py-op">=</tt> <tt id="link-37" class="py-name"><a title="sentence.pairwiseparallelsentence.PairwiseParallelSentence" class="py-name" href="#" onclick="return doclink('link-37', 'PairwiseParallelSentence', 'link-6');">PairwiseParallelSentence</a></tt><tt class="py-op">(</tt><tt id="link-38" class="py-name"><a title="dataprocessor.sax.jcml2array.cast" class="py-name" href="#" onclick="return doclink('link-38', 'cast', 'link-20');">cast</a></tt><tt class="py-op">=</tt><tt id="link-39" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-39', 'parallelsentence', 'link-24');">parallelsentence</a></tt><tt class="py-op">)</tt> </tt>
 <a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line">            <tt class="py-name">pairwise_parallelsentences_per_sid</tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-name">judgment_id</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-40" class="py-name"><a title="sentence.pairwiseparallelsentence" class="py-name" href="#" onclick="return doclink('link-40', 'pairwiseparallelsentence', 'link-5');">pairwiseparallelsentence</a></tt><tt class="py-op">)</tt> </tt>
 <a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">             </tt>
 <a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">judgment_id</tt><tt class="py-op">,</tt> <tt class="py-name">pairwiseparallelsentences</tt> <tt class="py-keyword">in</tt> <tt class="py-name">pairwise_parallelsentences_per_sid</tt><tt class="py-op">.</tt><tt class="py-name">iteritems</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
@@ -325,15 +333,16 @@ sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.restric
 <a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">rankless</tt> <tt class="py-op">=</tt> <tt class="py-name">kwargs</tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">"rankless"</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
 <a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line">         </tt>
 <a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line">        <tt class="py-comment">#first group by sentence ID or judgment ID</tt> </tt>
-<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt id="link-44" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-44', 'parallelsentence', 'link-24');">parallelsentence</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">plain_dataset</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name"><a title="io_utils.input.genericreader.GenericReader.get_parallelsentences
-io_utils.input.genericxmlreader.GenericXmlReader.get_parallelsentences
-io_utils.input.linereader.AttributeLineReader.get_parallelsentences
-io_utils.input.linereader.LineReader.get_parallelsentences
-io_utils.input.posteditingreader.PosteditingReader.get_parallelsentences
-io_utils.input.rankreader.R2RankReader.get_parallelsentences
-io_utils.input.rankreader.RankReader.get_parallelsentences
-io_utils.input.taraxureader.TaraXUReader.get_parallelsentences
-io_utils.input.xliffreader.XliffReader.get_parallelsentences
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt id="link-44" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-44', 'parallelsentence', 'link-24');">parallelsentence</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">plain_dataset</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name"><a title="dataprocessor.ce.cejcml.CEJcmlReader.get_parallelsentences
+dataprocessor.input.genericreader.GenericReader.get_parallelsentences
+dataprocessor.input.genericxmlreader.GenericXmlReader.get_parallelsentences
+dataprocessor.input.linereader.AttributeLineReader.get_parallelsentences
+dataprocessor.input.linereader.LineReader.get_parallelsentences
+dataprocessor.input.posteditingreader.PosteditingReader.get_parallelsentences
+dataprocessor.input.rankreader.R2RankReader.get_parallelsentences
+dataprocessor.input.rankreader.RankReader.get_parallelsentences
+dataprocessor.input.taraxureader.TaraXUReader.get_parallelsentences
+dataprocessor.input.xliffreader.XliffReader.get_parallelsentences
 sentence.dataset.DataSet.get_parallelsentences
 sentence.pairwisedataset.PairwiseDataset.get_parallelsentences
 sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences
@@ -373,12 +382,8 @@ sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.restric
 <a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name"><a title="sentence.pairwisedataset.AnalyticPairwiseDataset.restrict_ranks
 sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.restrict_ranks" class="py-name" href="#" onclick="return doclink('link-54', 'restrict_ranks', 'link-43');">restrict_ranks</a></tt> <tt class="py-op">!=</tt> <tt id="link-55" class="py-name"><a title="sentence.pairwisedataset.AnalyticPairwiseDataset.restrict_ranks
 sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.restrict_ranks" class="py-name" href="#" onclick="return doclink('link-55', 'restrict_ranks', 'link-43');">restrict_ranks</a></tt><tt class="py-op">:</tt> </tt>
-<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line">            <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stderr</tt><tt class="py-op">.</tt><tt id="link-56" class="py-name" targets="Method experiment.autoranking.decode.StreamToLogger.write()=experiment.autoranking.decode.StreamToLogger-class.html#write,Method experiment.autoranking.suite.StreamToLogger.write()=experiment.autoranking.suite.StreamToLogger-class.html#write,Method experiment.autorankingsearch.suite.StreamToLogger.write()=experiment.autorankingsearch.suite.StreamToLogger-class.html#write,Method experiment.autoranksvm.suite.StreamToLogger.write()=experiment.autoranksvm.suite.StreamToLogger-class.html#write,Method experiment.ml4hmt12.suite.StreamToLogger.write()=experiment.ml4hmt12.suite.StreamToLogger-class.html#write,Method experiment.ml4hmt12.test.StreamToLogger.write()=experiment.ml4hmt12.test.StreamToLogger-class.html#write,Method sentence.coupleddataset.CoupledDataSetDisk.write()=sentence.coupleddataset.CoupledDataSetDisk-class.html#write"><a title="experiment.autoranking.decode.StreamToLogger.write
-experiment.autoranking.suite.StreamToLogger.write
-experiment.autorankingsearch.suite.StreamToLogger.write
-experiment.autoranksvm.suite.StreamToLogger.write
-experiment.ml4hmt12.suite.StreamToLogger.write
-experiment.ml4hmt12.test.StreamToLogger.write
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line">            <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stderr</tt><tt class="py-op">.</tt><tt id="link-56" class="py-name" targets="Method app.autoranking.decode_batch.StreamToLogger.write()=app.autoranking.decode_batch.StreamToLogger-class.html#write,Method app.autoranking.suite.StreamToLogger.write()=app.autoranking.suite.StreamToLogger-class.html#write,Method sentence.coupleddataset.CoupledDataSetDisk.write()=sentence.coupleddataset.CoupledDataSetDisk-class.html#write"><a title="app.autoranking.decode_batch.StreamToLogger.write
+app.autoranking.suite.StreamToLogger.write
 sentence.coupleddataset.CoupledDataSetDisk.write" class="py-name" href="#" onclick="return doclink('link-56', 'write', 'link-56');">write</a></tt><tt class="py-op">(</tt><tt class="py-string">"Warning: trying to filter out rank values, although this has happenned before"</tt><tt class="py-op">)</tt> </tt>
 <a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name"><a title="sentence.pairwisedataset.AnalyticPairwiseDataset.restrict_ranks
 sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.restrict_ranks" class="py-name" href="#" onclick="return doclink('link-57', 'restrict_ranks', 'link-43');">restrict_ranks</a></tt> <tt class="py-op">=</tt> <tt id="link-58" class="py-name"><a title="sentence.pairwisedataset.AnalyticPairwiseDataset.restrict_ranks
@@ -520,13 +525,18 @@ expandto(location.href);
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:23 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:16 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
