@@ -1,15 +1,20 @@
 '''
+Contains the feature generator and the necessary functions for extracting CFG rules from bracketed Berkeley parses
+
 Created on Jul 13, 2014
 
 @author: Eleftherios Avramidis
 '''
 import logging
+from numpy import average
 from featuregenerator.featuregenerator import FeatureGenerator
 
 class Rule:
     def __init__(self):
         self.lhs = None
         self.rhs = []
+        self.depth = 0
+        
     def __str__(self):
         string = "{}_{}".format(self.lhs, "-".join(self.rhs))
         string = string.replace("$,", "COMMA") #german grammar
@@ -36,6 +41,9 @@ def get_cfg_rules(string, terminals=False):
     #have remained incomplete
     stack = []
     
+    #always track current depth
+    depth = 0    
+    
     #the label gathers the characters of the labels as they appear
     #one by one
     label = []
@@ -54,6 +62,7 @@ def get_cfg_rules(string, terminals=False):
         
         #opening bracket initiates a rule (remains open)
         if char=="(":
+            depth += 1
             nextrule = Rule()
             label = []
             
@@ -64,6 +73,7 @@ def get_cfg_rules(string, terminals=False):
             labelstr = "".join(label)
             previousrule.rhs.append(labelstr)
             nextrule.lhs = labelstr
+            nextrule.depth = depth
             logging.debug("Next rule: {}".format(nextrule))
             
             #previous rule from upper nodes goes to the stack
@@ -77,6 +87,7 @@ def get_cfg_rules(string, terminals=False):
         #closing bracket indicates that a rule is closed/ready
         #and can be delivered
         elif char==")" and stack:
+            depth -= 1
         
             #deliver rule but maybe exclude leaves
             if previousrule.rhs or terminals:
@@ -105,7 +116,7 @@ class CfgRulesExtractor(FeatureGenerator):
     Handle the extraction of features out of CFG rules 
     '''
 
-    def __init__(self, params):
+    def __init__(self):
         '''
         Constructor
         '''
@@ -122,8 +133,43 @@ class CfgRulesExtractor(FeatureGenerator):
             return {}
         cfg_rules = get_cfg_rules(parsestring)
         atts = {}
+        
+        ruledepth = {}
+        labeldepth = {}
+        fulldepth = 0
+        
         for rule in cfg_rules:
-            atts[rule] =  atts.setdefault(rule, 0) + 1
+            ruledepth[rule] = ruledepth.setdefault(rule, []).append(rule.depth)
+            labeldepth[rule.lhs] = labeldepth.setdefault(rule, []).append(rule.depth)
+            if rule.depth > fulldepth:
+                fulldepth = rule.depth
+            
+        for label, depthvector in labeldepth.iteritems():
+            try:
+                atts["parse_{}_depth_max".format(label)] = max(depthvector) 
+                atts["parse_{}_height_max".format(label)] = fulldepth - max(depthvector)
+                atts["parse_{}_depth_avg".format(label)] = average(depthvector)
+                atts["parse_{}_height_avg".format(label)] = fulldepth - average(depthvector)
+            except:
+                pass
+            
+        
+        for rule in cfg_rules:
+            atts["cfg_{}".format(rule)] =  atts.setdefault("cfg_{}".format(rule), 0) + 1
+            try:
+                atts["cfg_{}_depth_max".format(rule)] = max(ruledepth.setdefault(rule, []))
+                atts["cfg_{}_depth_avg".format(rule)] = average(ruledepth.setdefault(rule, []))
+                atts["cfg_{}_height_max".format(rule)] = fulldepth - max(ruledepth.setdefault(rule, []))
+                atts["cfg_{}_height_avg".format(rule)] = fulldepth - average(ruledepth.setdefault(rule, []))
+                
+            except ValueError:
+                atts["cfg_{}_depth_max".format(rule)] = 0
+                atts["cfg_{}_depth_avg".format(rule)] = 0
+                atts["cfg_{}_height_max".format(rule)] = fulldepth
+                atts["cfg_{}_height_avg".format(rule)] = fulldepth
+                            
+            atts["cfg_fulldepth"] = fulldepth
+            
         return atts    
         
     
