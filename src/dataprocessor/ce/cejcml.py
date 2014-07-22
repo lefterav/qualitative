@@ -4,12 +4,9 @@ Created on 26 Jun 2012
 @author: Eleftherios Avramidis
 '''
 
-import codecs
-import sys
-import tempfile
-import shutil
-import numpy as np
+from numpy import average, std, min, max, asarray
 import logging as log
+import sys
 
 from collections import defaultdict, OrderedDict
 from xml.etree.cElementTree import iterparse
@@ -64,7 +61,7 @@ class CEJcmlReader():
         target_id = 0
         
 #        desired_source = []
-
+        targets = []
         
         
         for event, elem in context:
@@ -156,20 +153,39 @@ class CEJcmlReader():
            
 
    
-        
+
+def get_statistics(self, input_xml_filenames, **kwargs):
+    vector = defaultdict(list)
+    for input_xml_filename in input_xml_filenames:
+        reader = CEJcmlReader(input_xml_filename, **kwargs)
+        for parallelsentence in reader.get_parallelsentences(compact=True):
+            nested_attributes = parallelsentence.get_nested_attributes()
+            for att, value in nested_attributes.iteritems():
+                vector[att].append(value)
+    yield "feat & avg & std & min & max \\" 
+    for att, values in vector.iteritems():
+        values = asarray([float(v) for v in values])
+        yield "{} & {:5.3f} & {:5.3f} & {:5.3f} \\".format(
+                                                           att,
+                                                           average(values),
+                                                           std(values),
+                                                           min(values),
+                                                           max(values)
+                                                           )
+            
 
 
 class CEJcmlStats:
     """calculates statistics about specified attributes on an annotated JCML corpus. Low memory load"""
     
-    def __init__(self, input_xml_filename, **kwargs):
+    def __init__(self, input_xml_filenames, **kwargs):
     
         self.TAG_SENT = 'judgedsentence'
         self.TAG_SRC = 'src'
         self.TAG_TGT = 'tgt'
         self.TAG_DOC = 'jcml'
     
-        self.input_filename = input_xml_filename
+        self.input_filenames = input_xml_filenames
         self.desired_general = kwargs.setdefault("desired_general", [])
         self.desired_source = kwargs.setdefault("desired_source", [])
         self.desired_target = kwargs.setdefault("desired_target", [])
@@ -178,12 +194,12 @@ class CEJcmlStats:
        
     def _print_statistics(self, key, values):
         try:
-            values = np.asarray([float(v) for v in values])
+            values = asarray([float(v) for v in values])
             print "{}\t{:5.3f}\t{:5.3f}\t{:5.3f}\t{:5.3f}".format(key,
-                np.average(values),
-                np.std(values),
-                np.min(values),
-                np.max(values)
+                average(values),
+                std(values),
+                min(values),
+                max(values)
             )
         except ValueError:
             print "[{}] : distinct values ".format(key)
@@ -222,46 +238,47 @@ class CEJcmlStats:
         """
         Extract a list of values for each attribute
         """
-        
-        source_xml_file = open(self.input_filename, "r")
-        # get an iterable
-        context = iterparse(source_xml_file, events=("start", "end"))
-        # turn it into an iterator
-        context = iter(context)
-        # get the root element
-        event, root = context.next()
-        
         general_attributes = defaultdict(list)
         source_attributes = defaultdict(list)
         target_attributes = defaultdict(list)
         ref_attributes = defaultdict(list)
         
-        for event, elem in context:
-            #new sentence: get attributes
-            if event == "start" and elem.tag == self.TAG_SENT:
-                for key, value in elem.attrib.iteritems():
-
-                        general_attributes[key].append(value)
-                    
-            #new source sentence
-            elif event == "start" and elem.tag == self.TAG_SRC:
-                for key, value in elem.attrib.iteritems():
-
-                        source_attributes[key].append(value)
-
-            #new target sentence
-            elif event == "start" and elem.tag == self.TAG_TGT:
-                for key, value in elem.attrib.iteritems():
-
-                        target_attributes[key].append(value)
+        for input_filename in self.input_filenames:
+            source_xml_file = open(input_filename, "r")
+            # get an iterable
+            context = iterparse(source_xml_file, events=("start", "end"))
+            # turn it into an iterator
+            context = iter(context)
+            # get the root element
+            event, root = context.next()
+            
+            for event, elem in context:
+                #new sentence: get attributes
+                if event == "start" and elem.tag == self.TAG_SENT:
+                    for key, value in elem.attrib.iteritems():
+    
+                            general_attributes[key].append(value)
                         
-            elif event == "start" and elem.tag == self.TAG_REF:
-                for key, value in elem.attrib.iteritems():
-
-                        ref_attributes[key].append(value)
-
-            root.clear()
-        
-        source_xml_file.close()
+                #new source sentence
+                elif event == "start" and elem.tag == self.TAG_SRC:
+                    for key, value in elem.attrib.iteritems():
+    
+                            source_attributes[key].append(value)
+    
+                #new target sentence
+                elif event == "start" and elem.tag == self.TAG_TGT:
+                    for key, value in elem.attrib.iteritems():
+    
+                            target_attributes[key].append(value)
+                            
+                elif event == "start" and elem.tag == self.TAG_REF:
+                    for key, value in elem.attrib.iteritems():
+    
+                            ref_attributes[key].append(value)
+    
+                root.clear()
+            
+            source_xml_file.close()
         
         return general_attributes, source_attributes, target_attributes, ref_attributes
+    
