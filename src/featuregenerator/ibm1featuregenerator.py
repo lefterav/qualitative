@@ -26,7 +26,7 @@ class Ibm1FeatureGenerator(FeatureGenerator):
         lexs = lexline.split()
         
         while lexline:
-            self.lex[lexs[0]+" "+lexs[1]]=lexs[2]
+            self.lex["{} {}".format(lexs[0], lexs[1])]=lexs[2]
             lexs = lexline.split()
             lexline = lextxt.readline()
         
@@ -67,5 +67,18 @@ class Ibm1FeatureGenerator(FeatureGenerator):
                 logtsScore += math.log10(sScore)
         
         return logtsScore
+    
+    def get_alignment_string(self, source_line, target_line):
+        for source_id, source_token in enumerate(source_line.split(), start=0):
+            
+            matches = []
+            for target_id, target_token in enumerate(target_line.split()):
+                prob = self.lex["{} {}".format(source_token, target_token)] 
+                
+            
+                 
+            
+        
+    
     
     
