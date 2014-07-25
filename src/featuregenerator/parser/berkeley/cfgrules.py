@@ -6,6 +6,9 @@ Created on Jul 13, 2014
 @author: Eleftherios Avramidis
 '''
 import logging
+
+from featuregenerator.alignmentfeaturegenerator import AlignmentFeatureGenerator
+from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator 
 from numpy import average
 from featuregenerator.featuregenerator import FeatureGenerator
 from xml.sax.saxutils import escape
@@ -16,7 +19,8 @@ class Rule:
         self.lhs = None
         self.rhs = []
         self.depth = 0
-        self.leaves = 0
+        self.length = 0
+        self.leaves = []
         
     def __str__(self):
         string = "{}_{}".format(self.lhs, "-".join(self.rhs))
@@ -96,10 +100,12 @@ def get_cfg_rules(string, terminals=False):
         #and can be delivered
         elif char==")" and stack:
             depth -= 1
-            current_leaves = 0
+            current_length = 0
 
             if not previousrule.rhs:
-                previousrule.leaves += 1
+                previousrule.length += 1
+                previousrule.leaves.append("".join(label))
+            current_length = previousrule.length
             current_leaves = previousrule.leaves
             #deliver rule but maybe exclude leaves
             if previousrule.rhs or terminals:
@@ -110,7 +116,8 @@ def get_cfg_rules(string, terminals=False):
             #we need to pop the rule from the node above, because
             #it may get more RHS in the next loop
             previousrule = stack.pop()
-            previousrule.leaves += current_leaves
+            previousrule.length += current_length
+            previousrule.leaves.extend(current_leaves)
             logging.debug("Popping previousrule: {}".format(previousrule))
             label = []
         #get characters for the label
@@ -155,7 +162,7 @@ class CfgRulesExtractor(FeatureGenerator):
         for rule in cfg_rules:
             ruledepth[rule] = ruledepth.setdefault(rule, []).append(rule.depth)
             labeldepth.setdefault(rule.lhs, []).append(rule.depth)
-            labelleaves.setdefault(rule.lhs, []).append(rule.leaves) 
+            labelleaves.setdefault(rule.lhs, []).append(rule.length) 
             if rule.depth > fulldepth:
                 fulldepth = rule.depth
             
@@ -197,5 +204,38 @@ class CfgRulesExtractor(FeatureGenerator):
             
         return atts    
         
+class CfgAlignment(LanguageFeatureGenerator):
+    def __init__(self, giza_filename):
+        self.alignment = AlignmentFeatureGenerator(giza_filename)
+        
+    def get_features_tgt(self, targetsentence, parallelsentence):
+        source_line = parallelsentence.get_source().get_string()
+        target_line = targetsentence.get_string()
+        sourcerules = get_cfg_rules(source_line)
+        targetrules = get_cfg_rules(target_line)
+        rule_alignments = []
+        for sourcerule in sourcerules:
+            source_label = sourcerule.lhs
+            leaves = sourcerule.leaves
+            matched_labels = []
+            for source_token in leaves:
+                target_token = self.alignment.get_alignment_token(source_token, target_line)
+                matched_labels = self._match_rule_token(target_token, targetrules, matched_labels)
+            rule_alignments.append(source_label, matched_labels)
+          
+        atts = {}
+        for source_label, matched_labels in rule_alignments:
+            rule_alignment_string = "{}_{}".format(source_label, "-".join(matched_labels))
+            key = "ca_{}".format(rule_alignment_string)
+            atts[key] = atts.setdefault(key, 0) + 1
+        return atts
     
+    def _match_rule_token(self, target_token, targetrules, matched_labels):
+        matched_labels = []
+        for targetrule in targetrules:
+            if target_token in targetrule.leaves and matched_labels[-1]!=targetrule.lhs:
+                matched_labels.append(targetrule.lhs)
+        return matched_labels
+                                
+        
     
