@@ -24,7 +24,7 @@ from featuregenerator.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.parser.berkeley.cfgrules import CfgRulesExtractor
 from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
 from featuregenerator.ratio_generator import RatioGenerator
-from featuregenerator.ibm1featuregenerator import Ibm1FeatureGenerator
+from featuregenerator.alignmentfeaturegenerator import AlignmentFeatureGenerator
 from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenerator
 from featuregenerator.bleu.bleugenerator import CrossBleuGenerator, BleuGenerator
 from featuregenerator.meteor.meteor import CrossMeteorGenerator, MeteorGenerator
@@ -312,7 +312,7 @@ parallel_feature_functions.append(features_length)
 
 #@active_if(False)
 #def features_ibm(input_file, output_file, ibm1lexicon):
-#    ibmfeaturegenerator = Ibm1FeatureGenerator(ibm1lexicon)
+#    ibmfeaturegenerator = AlignmentFeatureGenerator(ibm1lexicon)
 #    saxjcml.run_features_generator(input_file, output_file, [ibmfeaturegenerator])
 
 """
