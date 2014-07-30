@@ -11,7 +11,7 @@ from featuregenerator.alignmentfeaturegenerator import AlignmentFeatureGenerator
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator 
 from numpy import average
 from featuregenerator.featuregenerator import FeatureGenerator
-from xml.sax.saxutils import escape
+from nltk.align import AlignedSent
 import re
 
 class Rule:
@@ -21,7 +21,7 @@ class Rule:
         self.depth = 0
         self.length = 0
         self.leaves = []
-        self.indices = []
+        self.indices = set()
         
     def __str__(self):
         string = "{}_{}".format(self.lhs, "-".join(self.rhs))
@@ -106,7 +106,7 @@ def get_cfg_rules(string, terminals=False):
             if not previousrule.rhs:
                 index+=1
                 previousrule.leaves.append("".join(label))
-                previousrule.indices.append(index)
+                previousrule.indices.add(index)
                 previousrule.length += 1
             current_length = previousrule.length
             current_leaves = previousrule.leaves
@@ -122,7 +122,7 @@ def get_cfg_rules(string, terminals=False):
             previousrule = stack.pop()
             previousrule.length += current_length
             previousrule.leaves.extend(current_leaves)
-            previousrule.indices.extend(current_indices)
+            previousrule.indices.update(current_indices)
             logging.debug("Popping previousrule: {}".format(previousrule))
             label = []
         #get characters for the label
@@ -210,13 +210,16 @@ class CfgRulesExtractor(FeatureGenerator):
         return atts    
         
 class CfgAlignment(LanguageFeatureGenerator):
-    def __init__(self, giza_filename):
-        self.alignment = AlignmentFeatureGenerator(giza_filename)
+    def __init__(self):
+        #TODO: self.alignment = AlignmentFeatureGenerator(giza_filename)
+        pass
         
     def get_features_tgt(self, targetsentence, parallelsentence):
         source_line = parallelsentence.get_source().get_string()
         target_line = targetsentence.get_string()
-        alignment = 
+        aligned_sentence = AlignedSent(source_line.split(),
+                                target_line.split(),
+                                targetsentence.get_attribute("alignment"))
         
         sourcerules = get_cfg_rules(source_line)
         targetrules = get_cfg_rules(target_line)
@@ -225,23 +228,25 @@ class CfgAlignment(LanguageFeatureGenerator):
         
         for sourcerule in sourcerules:
             source_label = sourcerule.lhs
-            matched_labels = []
-            for source_index in sourcerule.indices:
-                target_index = self.alignment.get_alignment_token(source_index, target_line)
-                matched_labels = self._match_rule_token(target_token, targetrules, matched_labels)
+            target_indices = aligned_sentence.alignment.range(sourcerule.indices)
+            matched_labels = self._match_targetlabels(targetrules, target_indices)
             rule_alignments.append(source_label, matched_labels)
           
         atts = {}
         for source_label, matched_labels in rule_alignments:
-            rule_alignment_string = "{}_{}".format(source_label, "-".join(matched_labels))
-            key = "ca_{}".format(rule_alignment_string)
+            if matched_labels:
+                rule_alignment_string = "{}_{}".format(source_label, "-".join(matched_labels))
+            else:
+                rule_alignment_string = "{}_{}".format(source_label, "-none")
+            key = "cfgal_{}".format(rule_alignment_string)
             atts[key] = atts.setdefault(key, 0) + 1
         return atts
+
     
-    def _match_rule_token(self, target_token, targetrules, matched_labels):
+    def _match_targetlabels(self, targetrules, target_indices):
         matched_labels = []
         for targetrule in targetrules:
-            if target_token in targetrule.leaves and matched_labels[-1]!=targetrule.lhs:
+            if targetrule.indices.issubset(target_indices):
                 matched_labels.append(targetrule.lhs)
         return matched_labels
                                 
