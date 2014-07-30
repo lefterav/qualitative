@@ -6,6 +6,11 @@ Created on 17 Sept 2011
 
 import math
 from featuregenerator import FeatureGenerator
+from nltk.align import AlignedSent
+
+
+
+
 
 
 class TokenAlignment:
@@ -31,6 +36,10 @@ class TokenAlignment:
         
     def __str__(self):
         return "{}-{}".format(self.source_id, self.target_id)
+
+class SimpleTokenAlignment(TokenAlignment):
+    def __init__(self, string):
+        self.source_id, self.target_id = string.strip().split("-")
 
 
 
@@ -60,7 +69,7 @@ class AlignmentFeatureGenerator(FeatureGenerator):
         target_line = simplesentence.get_string()
         score = self.get_score(source_line, target_line)
         attributes = {'giza' : "%.4f" % score,
-                      #'alignment' : self.get_alignment_string(source_line, target_line)
+                      #'alignment' : str(self.get_alignment_string(source_line, target_line))
                       }
         return attributes
     
@@ -97,11 +106,10 @@ class AlignmentFeatureGenerator(FeatureGenerator):
     def get_alignment_string(self, source_line, target_line):
         alignment = []
         for source_id, source_token in enumerate(source_line.split(), start=0):
-            match_prob, target_id, target_token = self.get_alignment_token(source_token, target_line)
-            if match_prob:
-                tokenalignment = TokenAlignment(source_id, source_token, target_id, target_token, match_prob)
+            tokenalignment = self.get_alignment_token(source_token, target_line)
+            if tokenalignment:                
                 alignment.append(tokenalignment)
-        return ' '.join([str(a) for a in alignment])
+        return alignment
     
     def get_alignment_token(self, source_token, target_line):
         matches = []
@@ -112,10 +120,10 @@ class AlignmentFeatureGenerator(FeatureGenerator):
             except KeyError:
                 pass
         try:
-	    match_prob, match_target_id, match_target_token = max(matches)
+            match_prob, match_target_id, match_target_token = max(matches)
         except:
-            return None, None, None
-        return match_prob, match_target_id, match_target_token
+            return None
+        return TokenAlignment(match_prob, match_target_id, match_target_token)
             
     
     
