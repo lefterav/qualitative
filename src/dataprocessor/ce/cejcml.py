@@ -14,7 +14,6 @@ from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 from sentence.dataset import DataSet
 
-
 class CEJcmlReader():
     """
     This class converts jcml format to tab format (orange format).
@@ -154,18 +153,35 @@ class CEJcmlReader():
 
    
 
-def get_statistics(self, input_xml_filenames, **kwargs):
+def get_statistics(input_xml_filenames, **kwargs):
     vector = defaultdict(list)
     for input_xml_filename in input_xml_filenames:
         reader = CEJcmlReader(input_xml_filename, **kwargs)
         for parallelsentence in reader.get_parallelsentences(compact=True):
-            nested_attributes = parallelsentence.get_nested_attributes()
-            for att, value in nested_attributes.iteritems():
-                vector[att].append(value)
-    yield "feat & avg & std & min & max \\" 
-    for att, values in vector.iteritems():
-        values = asarray([float(v) for v in values])
-        yield "{} & {:5.3f} & {:5.3f} & {:5.3f} \\".format(
+            general_attributes = parallelsentence.get_attributes()
+            source_attributes = parallelsentence.get_source().get_attributes()
+            source_attributes = dict([("src_{}".format(att), value) for att, value in source_attributes.iteritems()]) 
+            try:
+               ref_attributes = parallelsentence.get_reference().get_attributes()
+            except:
+               ref_attributes = {}
+            
+            general_attributes.update(source_attributes)
+            general_attributes.update(ref_attributes)
+
+            for att, value in general_attributes.iteritems():
+                 vector[att].append(value)
+
+            for target in parallelsentence.get_translations():                
+                for att, value in target.get_attributes().iteritems():
+                     vector["tgt_{}".format(att)].append(value)
+    yield "feat \t avg \t std \t min \t max " 
+    for att, values in vector.iteritems():	
+        try:
+            values = asarray([float(v) for v in values])
+        except:
+            continue
+        yield "{} \t {:5.3f} \t {:5.3f} \t {:5.3f} ".format(
                                                            att,
                                                            average(values),
                                                            std(values),

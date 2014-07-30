@@ -14,3 +14,8 @@
 2014-07-14.00-56-07 python
 2014-07-14.00-56-46 mv JavaServer.class /tmp/
 2014-07-15.01-05-27 cp JavaServer.class  ../../lib/
+2014-07-18.10-06-11 git rm *class*
+2014-07-18.10-06-23 mv JavaServer.class0 
+2014-07-18.10-06-28 mv JavaServer.class0 JavaServer.class
+2014-07-18.10-06-33 git rm *class*
+2014-07-18.10-06-45 rm JavaServer.class 
