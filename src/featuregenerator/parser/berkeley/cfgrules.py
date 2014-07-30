@@ -209,7 +209,7 @@ class CfgRulesExtractor(FeatureGenerator):
             
         return atts    
         
-class CfgAlignment(LanguageFeatureGenerator):
+class CfgAlignmentFeatureGenerator(LanguageFeatureGenerator):
     def __init__(self):
         #TODO: self.alignment = AlignmentFeatureGenerator(giza_filename)
         pass
@@ -217,12 +217,20 @@ class CfgAlignment(LanguageFeatureGenerator):
     def get_features_tgt(self, targetsentence, parallelsentence):
         source_line = parallelsentence.get_source().get_string()
         target_line = targetsentence.get_string()
+        alignment_string = targetsentence.get_attribute("alignment")
+        sourceparse = parallelsentence.get_source().get_attribute("berkeley-tree")
+        targetparse = targetsentence.get_attribute("berkeley-tree")
+        
+        return self.process_string(source_line, target_line, alignment_string, sourceparse, targetparse)
+    
+    def process_string(self, source_line, target_line, alignment_string, sourceparse, targetparse):
+        
         aligned_sentence = AlignedSent(source_line.split(),
                                 target_line.split(),
-                                targetsentence.get_attribute("alignment"))
+                                alignment_string)
+        sourcerules = get_cfg_rules(sourceparse)
+        targetrules = get_cfg_rules(targetparse)
         
-        sourcerules = get_cfg_rules(source_line)
-        targetrules = get_cfg_rules(target_line)
         
         rule_alignments = []
         
@@ -250,5 +258,11 @@ class CfgAlignment(LanguageFeatureGenerator):
                 matched_labels.append(targetrule.lhs)
         return matched_labels
                                 
-        
+if __name__ == "__main__":
+    alignmentprocessor = CfgAlignmentFeatureGenerator()
+    print alignmentprocessor.process_string("Keine befreiende Novelle fuer Tymoshenko durch das Parlament", 
+                                      "No releasing novella for Tymoshenko by the parliament", 
+                                      "0-0 1-1 2-2 3-3 4-4 5-5 6-6 7-7",
+                                      "(PSEUDO (NP (PIAT Keine) (ADJA befreiende) (NN Novelle)) (NP (ADJA fuer) (NN Tymoshenko) (PP (APPR durch) (ART das) (NN Parlament)))) )",
+                                      "(S (NP (DT No) (VBG releasing)) (VP (VBD novella) (PP (IN for) (NP (NNP Tymoshenko))) (PP (IN by) (NP (DT the) (NN parliament))))) )")
     
