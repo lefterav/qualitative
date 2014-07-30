@@ -11,6 +11,8 @@ from featuregenerator.alignmentfeaturegenerator import AlignmentFeatureGenerator
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator 
 from numpy import average
 from featuregenerator.featuregenerator import FeatureGenerator
+from xml.sax.saxutils import escape
+import re
 
 class Rule:
     def __init__(self):
@@ -31,6 +33,9 @@ class Rule:
         string = string.replace("$", "DLR")
         string = string.replace("*", "_")
         string = string.replace(":", "PUNCT")        
+        string = string.replace('"', "QUOT")
+        string = string.replace("'", "QUOT")
+        string = re.sub("", "_", string)
         return string        
 
 
