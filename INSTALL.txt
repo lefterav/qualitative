@@ -6,7 +6,7 @@ In order to run the program please follow the steps:
 2. Change directory to /lib and run "bash install.sh" to download Java libraries
 3. Download linguistic resources (suggested folder in /res; there may be a bash script to do that)
 4. Specify the location of the linguistic resources to the configuration files
-5. To test installation run application.py <classifier_file> <annotation.config.1> [<annotation.config.2> ...]
+5. To test installation start the LM server and run src/app/autoranking/application.py <classifier_file> <annotation.config.1> [<annotation.config.2> ...]
 
 
 ============
