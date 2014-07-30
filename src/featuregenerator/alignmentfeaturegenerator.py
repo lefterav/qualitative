@@ -110,11 +110,7 @@ class TokenAlignment:
         
     def __str__(self):
         return "{}-{}".format(self.source_id, self.target_id)
-    
-    
-    
-            
-        
+
     
     
     
