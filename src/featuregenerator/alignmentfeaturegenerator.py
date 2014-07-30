@@ -7,6 +7,33 @@ Created on 17 Sept 2011
 import math
 from featuregenerator import FeatureGenerator
 
+
+class TokenAlignment:
+    """
+    Represents one source word aligned with its target match
+    @ivar prob: Match probability
+    @type prob: float
+    @ivar source_id: Sentence index of the source token
+    @type source_id: int
+    @ivar source_token: The text of the source token
+    @type source_token: str
+    @ivar target_id: Sentence index of the target token
+    @type target_id: int
+    @ivar target_token: The text of the target token
+    @type target_token: str
+    """
+    def __init__(self, source_id, source_token, target_id, target_token, prob=None):
+        self.prob = prob
+        self.source_id = source_id
+        self.source_token = source_token
+        self.target_id = target_id
+        self.target_token = target_token
+        
+    def __str__(self):
+        return "{}-{}".format(self.source_id, self.target_id)
+
+
+
 class AlignmentFeatureGenerator(FeatureGenerator):
     '''
     Provides features generation from IBM Model 1 (See Popovic et. al 2011)
@@ -71,9 +98,10 @@ class AlignmentFeatureGenerator(FeatureGenerator):
         alignment = []
         for source_id, source_token in enumerate(source_line.split(), start=0):
             match_prob, target_id, target_token = self.get_alignment_token(source_token, target_line)
-            tokenalignment = TokenAlignment(source_id, source_token, target_id, target_token, match_prob)
-            alignment.append(tokenalignment)
-        return ' '.join(alignment)
+            if match_prob:
+                tokenalignment = TokenAlignment(source_id, source_token, target_id, target_token, match_prob)
+                alignment.append(tokenalignment)
+        return ' '.join([str(a) for a in alignment])
     
     def get_alignment_token(self, source_token, target_line):
         matches = []
@@ -83,34 +111,20 @@ class AlignmentFeatureGenerator(FeatureGenerator):
                 matches.append((prob, target_id, target_token))
             except KeyError:
                 pass
-        match_prob, match_target_id, match_target_token = max(matches)
+        try:
+	    match_prob, match_target_id, match_target_token = max(matches)
+        except:
+            return None, None, None
         return match_prob, match_target_id, match_target_token
             
+    
+    
             
-class TokenAlignment:
-    """
-    Represents one source word aligned with its target match
-    @ivar prob: Match probability
-    @type prob: float
-    @ivar source_id: Sentence index of the source token
-    @type source_id: int
-    @ivar source_token: The text of the source token
-    @type source_token: str
-    @ivar target_id: Sentence index of the target token
-    @type target_id: int
-    @ivar target_token: The text of the target token
-    @type target_token: str
-    """
-    def init(self, source_id, source_token, target_id, target_token, prob=None):
-        self.prob = prob
-        self.source_id = source_id
-        self.source_token = source_token
-        self.target_id = target_id
-        self.target_token = target_token
-        
-    def __str__(self):
-        return "{}-{}".format(self.source_id, self.target_id)
-
+if __name__ == "__main__":
+    alignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.6.e2f"
+    aligner = AlignmentFeatureGenerator(alignmentfile)
+    print aligner.get_alignment_string("das ist eine gute Idee , er hat gesagt", "He said that this is a good idea")
+    
     
     
     
