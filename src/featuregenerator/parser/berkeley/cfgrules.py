@@ -19,6 +19,7 @@ class Rule:
         self.depth = 0
         self.length = 0
         self.leaves = []
+        self.indices = []
         
     def __str__(self):
         string = "{}_{}".format(self.lhs, "-".join(self.rhs))
@@ -49,7 +50,7 @@ def get_cfg_rules(string, terminals=False):
     
     #always track current depth and number of leaves
     depth = 0   
-    leaves = 0
+    index = 0
     
     #the label gathers the characters of the labels as they appear
     #one by one
@@ -98,10 +99,13 @@ def get_cfg_rules(string, terminals=False):
             current_length = 0
 
             if not previousrule.rhs:
-                previousrule.length += 1
+                index+=1
                 previousrule.leaves.append("".join(label))
+                previousrule.indices.append(index)
+                previousrule.length += 1
             current_length = previousrule.length
             current_leaves = previousrule.leaves
+            current_indices = previousrule.indices
             #deliver rule but maybe exclude leaves
             if previousrule.rhs or terminals:
                 rules.append(previousrule)
@@ -113,6 +117,7 @@ def get_cfg_rules(string, terminals=False):
             previousrule = stack.pop()
             previousrule.length += current_length
             previousrule.leaves.extend(current_leaves)
+            previousrule.indices.extend(current_indices)
             logging.debug("Popping previousrule: {}".format(previousrule))
             label = []
         #get characters for the label
@@ -206,15 +211,18 @@ class CfgAlignment(LanguageFeatureGenerator):
     def get_features_tgt(self, targetsentence, parallelsentence):
         source_line = parallelsentence.get_source().get_string()
         target_line = targetsentence.get_string()
+        alignment = 
+        
         sourcerules = get_cfg_rules(source_line)
         targetrules = get_cfg_rules(target_line)
+        
         rule_alignments = []
+        
         for sourcerule in sourcerules:
             source_label = sourcerule.lhs
-            leaves = sourcerule.leaves
             matched_labels = []
-            for source_token in leaves:
-                target_token = self.alignment.get_alignment_token(source_token, target_line)
+            for source_index in sourcerule.indices:
+                target_index = self.alignment.get_alignment_token(source_index, target_line)
                 matched_labels = self._match_rule_token(target_token, targetrules, matched_labels)
             rule_alignments.append(source_label, matched_labels)
           
