@@ -3,9 +3,9 @@ import xmlrpclib
 import time
 import sys
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
-import socket
+from featuregenerator.parser.berkeley import socketservice
 from nltk import PunktWordTokenizer, PunktSentenceTokenizer
-from featuregenerator.parser.berkeley.socket.berkeleyparsersocket import BerkeleyParserSocket
+from featuregenerator.parser.berkeley.socketservice.berkeleyparsersocket import BerkeleyParserSocket
 
 from py4j.java_gateway import JavaGateway
 from py4j.java_gateway import GatewayClient
@@ -98,7 +98,7 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
 #                col_id += 1
 #            preprocessed_batch.append(preprocessed_row)
 #        
-#        socket.setdefaulttimeout(None) 
+#        socketservice.setdefaulttimeout(None) 
 #        connected = False
 #        while not connected:
 #            #try:
@@ -172,7 +172,7 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
 class BerkeleySocketFeatureGenerator(BerkeleyFeatureGenerator):
     """
     Class that handles the feature generation functions by calling Berkeley parser 
-    through a socket connection. This class has the advantage that it gets controlled
+    through a socketservice connection. This class has the advantage that it gets controlled
     fully by python code. So many parsers can be started and run in parallel, e.g. 
     for speeding up parsing process via parallelization. 
     This may be a problem when parser is too big and can only be loaded once for many
