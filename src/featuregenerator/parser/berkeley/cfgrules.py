@@ -7,7 +7,7 @@ Created on Jul 13, 2014
 '''
 import logging
 
-from featuregenerator.alignmentfeaturegenerator import AlignmentFeatureGenerator
+
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator 
 from numpy import average
 from featuregenerator.featuregenerator import FeatureGenerator
@@ -35,7 +35,7 @@ class Rule:
         string = string.replace(":", "PUNCT")        
         string = string.replace('"', "QUOT")
         string = string.replace("'", "QUOT")
-        string = re.sub("", "_", string)
+        #string = re.sub("\W", "_", string)
         return string        
 
 
@@ -104,10 +104,10 @@ def get_cfg_rules(string, terminals=False):
             current_length = 0
 
             if not previousrule.rhs:
-                index+=1
                 previousrule.leaves.append("".join(label))
                 previousrule.indices.add(index)
                 previousrule.length += 1
+                index+=1
             current_length = previousrule.length
             current_leaves = previousrule.leaves
             current_indices = previousrule.indices
@@ -223,22 +223,23 @@ class CfgAlignmentFeatureGenerator(LanguageFeatureGenerator):
         
         return self.process_string(source_line, target_line, alignment_string, sourceparse, targetparse)
     
+    
     def process_string(self, source_line, target_line, alignment_string, sourceparse, targetparse):
         
         aligned_sentence = AlignedSent(source_line.split(),
                                 target_line.split(),
                                 alignment_string)
-        sourcerules = get_cfg_rules(sourceparse)
-        targetrules = get_cfg_rules(targetparse)
+        sourcerules = get_cfg_rules(sourceparse, True)
+        targetrules = get_cfg_rules(targetparse, True)
         
         
         rule_alignments = []
         
         for sourcerule in sourcerules:
             source_label = sourcerule.lhs
-            target_indices = aligned_sentence.alignment.range(sourcerule.indices)
+            target_indices = aligned_sentence.alignment.range(list(sourcerule.indices))
             matched_labels = self._match_targetlabels(targetrules, target_indices)
-            rule_alignments.append(source_label, matched_labels)
+            rule_alignments.append((source_label, matched_labels))
           
         atts = {}
         for source_label, matched_labels in rule_alignments:
@@ -252,10 +253,13 @@ class CfgAlignmentFeatureGenerator(LanguageFeatureGenerator):
 
     
     def _match_targetlabels(self, targetrules, target_indices):
-        matched_labels = []
+        candidate_labels = []
         for targetrule in targetrules:
             if targetrule.indices.issubset(target_indices):
-                matched_labels.append(targetrule.lhs)
+                candidate_labels.append((len(targetrule.indices), targetrule.lhs))
+            
+        max_length , _ = max(candidate_labels)
+        matched_labels = [label for length, label in candidate_labels if length==max_length]
         return matched_labels
                                 
 if __name__ == "__main__":
