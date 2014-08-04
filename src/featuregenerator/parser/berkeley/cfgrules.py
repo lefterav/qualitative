@@ -7,10 +7,10 @@ Created on Jul 13, 2014
 '''
 import logging
 
-from featuregenerator.alignmentfeaturegenerator import AlignmentFeatureGenerator
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator 
-from numpy import average
-from featuregenerator.featuregenerator import FeatureGenerator
+#from featuregenerator.alignmentfeaturegenerator import AlignmentFeatureGenerator
+#from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator 
+#from numpy import average
+#from featuregenerator.featuregenerator import FeatureGenerator
 from nltk.align import AlignedSent
 import re
 
@@ -136,7 +136,7 @@ def get_cfg_rules(string, terminals=False):
     return rules    
 
 
-class CfgRulesExtractor(FeatureGenerator):
+class CfgRulesExtractor():
     '''
     Handle the extraction of features out of CFG rules 
     '''
@@ -209,7 +209,7 @@ class CfgRulesExtractor(FeatureGenerator):
             
         return atts    
         
-class CfgAlignmentFeatureGenerator(LanguageFeatureGenerator):
+class CfgAlignmentFeatureGenerator():
     def __init__(self):
         #TODO: self.alignment = AlignmentFeatureGenerator(giza_filename)
         pass
