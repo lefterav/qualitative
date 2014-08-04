@@ -145,7 +145,7 @@ class OrangeRuntimeRanker:
             output.append(" \n instance: {} \n probabilities: {}\n".format(instance, distribution))    
         return "".join(output)
     
-    def rank_sentence(self, parallelsentence):
+    def get_ranked_sentence(self, parallelsentence):
         """
         Receive a parallel sentence with features and perform ranking
         @param parallelsentence: an object containing the parallel sentence
@@ -196,7 +196,10 @@ class OrangeRuntimeRanker:
         #gather all classified pairwise comparisons into one sentence again
         sentenceset = CompactPairwiseParallelSentenceSet(classified_pairwise_parallelsentences)
         ranked_sentence = sentenceset.get_multiranked_sentence("rank_predicted")
+        return ranked_sentence, resultvector
 
+    def rank_sentence(self, parallelsentence):
+        ranked_sentence, resultvector = self.get_ranked_sentence(parallelsentence)
         result = [(t.get_attribute("rank"), t) for t in ranked_sentence.get_translations()]
 #        return ranked_sentence.get_target_attribute_values("rank")
         description = self._get_description(resultvector)

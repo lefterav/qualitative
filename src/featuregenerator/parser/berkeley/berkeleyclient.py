@@ -5,7 +5,7 @@ import sys
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 import socket
 from nltk import PunktWordTokenizer, PunktSentenceTokenizer
-from featuregenerator.parser.berkeley.socket.berkeleyparsersocket import BerkeleyParserSocket
+from featuregenerator.parser.berkeley.socketservice.berkeleyparsersocket import BerkeleyParserSocket
 
 from py4j.java_gateway import JavaGateway
 from py4j.java_gateway import GatewayClient
