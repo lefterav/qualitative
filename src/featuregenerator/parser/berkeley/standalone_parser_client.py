@@ -8,7 +8,7 @@ import xmlrpclib
 import time
 import sys
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
-import socket
+from featuregenerator.parser.berkeley import socketservice
 
 class BerkeleyFeatures():
     '''
