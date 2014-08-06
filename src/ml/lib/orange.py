@@ -1,4 +1,5 @@
 '''
+Utilize the orange machine learning library
 Created on 19 Apr 2013
 
 @author: Eleftherios Avramidis
@@ -164,6 +165,7 @@ class OrangeRuntimeRanker:
         
         resultvector = []
         
+        sys.stderr.write("source sentence before pairwising: '{}'".format(parallelsentence.get_source().get_string()))
         #de-compose multiranked sentence into pairwise comparisons
         pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences()
         
@@ -171,7 +173,6 @@ class OrangeRuntimeRanker:
         classified_pairwise_parallelsentences = []
         
         for pairwise_parallelsentence in pairwise_parallelsentences:
-            
             #conver pairwise parallel sentence into an orange instance
             instance = parallelsentence_to_instance(domain, pairwise_parallelsentence)
             
