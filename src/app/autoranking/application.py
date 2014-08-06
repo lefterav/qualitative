@@ -93,7 +93,15 @@ class Autoranking:
         description += "\n Final ranking: {}".format([(r[0], r[1].get_string()) for r in ranking])
         ranking = [r[0] for r in ranking]
         return ranking, description
+    
+    def get_ranked_sentence(self, sourcesentence, translationsentences):
+        atts = {"langsrc":self.source_language, "langtgt":self.target_language}
+        parallelsentence = ParallelSentence(sourcesentence, translationsentences, None, atts)
+        ranked_sentence, description = self.ranker.get_ranked_sentence(parallelsentence)
+        return ranked_sentence, description
         
+        
+
         
     def _annotate(self, parallelsentence):
         
