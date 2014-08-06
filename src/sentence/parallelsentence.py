@@ -51,7 +51,7 @@ class ParallelSentence(object):
             sys.exit('Source or target language not specified in parallelsentence: [{}]'.format(self.__str__()))
     
     def __str__(self):
-        return [s.__str__() for s in self.serialize()]
+        return ", ".join([s.__str__() for s in self.serialize()])
         
     def __lt__(self, other):
         return self.get_compact_id() < other.get_compact_id()
@@ -379,7 +379,9 @@ class ParallelSentence(object):
             systems_list.append(system_nameA)
             targets_list.append(targetA)
 
-        pps_list = [PairwiseParallelSentence(self.get_source(), 
+
+        for i in range(len(systems)):
+            pairwise_parallel_sentence = PairwiseParallelSentence(self.get_source(), 
                                              targets[i], 
                                              systems[i], 
                                              self.ref, 
@@ -387,10 +389,8 @@ class ParallelSentence(object):
                                              rank_name, 
                                              invert_ranks = invert_ranks,
                                              rankless = rankless
-                                             ) \
-                        for i in range(len(systems))
-                    ]
-        return pps_list
+                                             ) 
+            yield pairwise_parallel_sentence
     
 
     def import_indexed_parallelsentence(self, parallelsentence, target_attribute_names, keep_attributes_general=[], keep_attributes_source=[], keep_attributes_target=[]):
