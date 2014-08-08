@@ -7,13 +7,13 @@ Created on 17 Sept 2011
 import math
 from featuregenerator import FeatureGenerator
 from nltk.align import AlignedSent
+from operator import itemgetter
+import itertools
 
 
 
 
-
-
-class TokenAlignment:
+class OldTokenAlignment:
     """
     Represents one source word aligned with its target match
     @ivar prob: Match probability
@@ -60,7 +60,7 @@ class AlignmentFeatureGenerator(FeatureGenerator):
         lexs = lexline.split()
         
         while lexline:
-            self.lex[lexs[0], lexs[1]]=lexs[2]
+            self.lex[lexs[0], lexs[1]]=float(lexs[2])
             lexs = lexline.split()
             lexline = lextxt.readline()    
         
@@ -68,8 +68,8 @@ class AlignmentFeatureGenerator(FeatureGenerator):
         source_line = parallelsentence.get_source().get_string()
         target_line = simplesentence.get_string()
         score = self.get_score(source_line, target_line)
-        attributes = {'giza' : "%.4f" % score,
-                      #'alignment' : str(self.get_alignment_string(source_line, target_line))
+        attributes = {'ibm1-score' : "%.4f" % score,
+                      'ibm1-alignment' : str(self.get_string_alignment(source_line, target_line))
                       }
         return attributes
     
@@ -103,35 +103,87 @@ class AlignmentFeatureGenerator(FeatureGenerator):
         
         return logtsScore
     
-    def get_alignment_string(self, source_line, target_line):
-        alignment = []
-        for source_id, source_token in enumerate(source_line.split(), start=0):
-            tokenalignment = self.get_alignment_token(source_token, target_line)
-            if tokenalignment:                
-                alignment.append(tokenalignment)
-        return alignment
     
-    def get_alignment_token(self, source_token, target_line):
-        matches = []
-        for target_id, target_token in enumerate(target_line.split(), start=0):
-            try:
-                prob = self.lex[source_token, target_token] 
-                matches.append((prob, target_id, target_token))
-            except KeyError:
-                pass
-        try:
-            match_prob, match_target_id, match_target_token = max(matches)
-        except:
-            return None
-        return TokenAlignment(match_prob, match_target_id, match_target_token)
+    
+    
+    
+
+
+    def get_string_alignment(self, sourcestring, targetstring):
+        sourcetokens = sourcestring.split()
+        targettokens = targetstring.split()
+        
+        alignment = SentenceAlignment()
+        
+        for sourcetoken in sourcetokens:
+            tokenalignments = []
+            for targettoken in targettokens:
+                try:
+                    probability = self.lex[sourcetoken, targettoken]
+                except KeyError:
+                    continue
+                tokenalignment = TokenAlignment(targettoken, probability)
+                tokenalignments.append(tokenalignment)
             
+            alignment.add(tokenalignments)
+                    
+                
+                
+            
+            
+        
+
+class Token:
+    def __init__(self, string, index):
+        self.string = string
+        self.index = index
+    
+class TokenAlignment:
+    def __init__(self, targettoken, probability=None):
+        self.targettoken = targettoken
+        self.probability = probability
+        
+    def __lt__(self, other):
+        return self.probability < other.probability
+
+from collections import defaultdict
+
+
+class SentenceAlignment(list):
+    def __init__(self):
+        self.sourcealignments = defaultdict(list)
+        self.targetalignment = {}
+    
+    def add(self, sourcetoken, tokenalignments):
+        for tokenalignment in sorted(tokenalignments, reverse=True):
+            targettoken = tokenalignment.targettoken
+            try:
+                targettoken = self.targetalignment[sourcetoken]
+                continue
+            except KeyError:    
+                self.targetalignment[targettoken] = sourcetoken
+                self.sourcealignments[sourcetoken].append(targettoken)
+     
+        
+    def get_alignment_string(self):
+        alignmentstrings = []
+        for sourcetoken, targettokens in self.sourcealignments.iteritems():
+            
+            for targettoken in targettokens:
+                tokenalignmentstring = "{}-{}".format(sourcetoken, targettoken)
+                alignmentstrings.append(tokenalignmentstring)
+        return " ".join(alignmentstrings)
+        
+        #check that no target word has a double source token    
+                
     
     
             
 if __name__ == "__main__":
     alignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.6.e2f"
     aligner = AlignmentFeatureGenerator(alignmentfile)
-    print aligner.get_alignment_string("das ist eine gute Idee , er hat gesagt", "He said that this is a good idea")
+    print aligner.get_string_alignment("das ist eine gute Idee , er hat gesagt", "he said that this is a good idea")
+    print aligner.get_string_alignment("er hat einen Wiederspruch und eine Erklärung gemacht", "he made an appeal and a declaration")
     
     
     
