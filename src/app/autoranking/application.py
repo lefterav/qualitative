@@ -97,7 +97,8 @@ class Autoranking:
     def get_ranked_sentence(self, sourcesentence, translationsentences):
         atts = {"langsrc":self.source_language, "langtgt":self.target_language}
         parallelsentence = ParallelSentence(sourcesentence, translationsentences, None, atts)
-        ranked_sentence, description = self.ranker.get_ranked_sentence(parallelsentence)
+        annotated_parallelsentence = self._annotate(parallelsentence)
+        ranked_sentence, description = self.ranker.get_ranked_sentence(annotated_parallelsentence)
         return ranked_sentence, description
         
         
