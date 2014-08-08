@@ -109,10 +109,10 @@ class SimpleSentence(object):
         self.attributes.update(incoming_attributes)
         self.string = ss.string
     
-    def __get__(self, obj, cls=None): 
+    def __getitem__(self, obj, cls=None): 
         return self.get_attribute(obj)
 
-    def __set__(self, obj, val): 
+    def __setitem__(self, obj, val): 
         self.attributes[obj] = val
 
     def __delete__(self, obj): 

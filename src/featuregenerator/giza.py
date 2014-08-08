@@ -51,10 +51,10 @@ class GizaFeatureGenerator:
         
         #run script to temporary directory
         
-        cmd_force_align = "{gizadir}/scripts/force-align-moses.sh {filestem} {sourcelang} {targetlang} {rundir}"
-        cmd_merge_giza = "{gizadir}/scripts/merge_alignment.py {rundir}/giza.0/{sourcelang}-{targetlang}.A3.final.part* > {rundir}/giza.0/{sourcelang}-{targetlang}.A3.final"
-        cmd_merge_giza_inverse = "{gizadir}/scripts/merge_alignment.py {rundir}/giza-inverse.0/{sourcelang}-{targetlang}.A3.final.part* > {rundir}/giza-inverse.0/{sourcelang}-{targetlang}.A3.final"
-        cmd_symmetrize = '{mosesdir}/scripts/training/giza2bal.pl -d {rundir}/giza.0/{targetlang}-{sourcelang}.A3.final -i {rundir}/giza-inverse.0/{sourcelang}-{targetlang}.A3.final | {mosesdir}/bin/symal -alignment="grow" -diagonal="yes" -final="yes" -both="yes" > {rundir}/aligned.0.grow-diag-final-and'
+        cmd_force_align = "export QMT_HOME={gizadir}; {gizadir}/scripts/force-align-moses-mod.sh {filestem} {sourcelang} {targetlang} {rundir}"
+        cmd_merge_giza = "export QMT_HOME={gizadir}; {gizadir}/scripts/merge_alignment.py {rundir}/giza./{targetlang}-{sourcelang}.A3.final.part* > {rundir}/giza./{targetlang}-{sourcelang}.A3.final"
+        cmd_merge_giza_inverse = "export QMT_HOME={gizadir}; {gizadir}/scripts/merge_alignment.py {rundir}/giza-inverse./{sourcelang}-{targetlang}.A3.final.part* > {rundir}/giza-inverse./{sourcelang}-{targetlang}.A3.final"
+        cmd_symmetrize = '{mosesdir}/scripts/training/giza2bal.pl -d {rundir}/giza./{targetlang}-{sourcelang}.A3.final -i {rundir}/giza-inverse./{sourcelang}-{targetlang}.A3.final | {mosesdir}/bin/symal -alignment="grow" -diagonal="yes" -final="yes" -both="yes" > {rundir}/aligned.grow-diag-final-and'
         
         commands = [
                     cmd_force_align,
@@ -68,11 +68,13 @@ class GizaFeatureGenerator:
         for command in commands:
             command = command.format(
                                      gizadir = self.gizadir,
+                                     mosesdir = self.mosesdir,
                                      filestem = filestem,
                                      sourcelang = self.sourcelang,
                                      targetlang = self.targetlang,
                                      rundir = rundir
                                      )
+            print ">", command
             subprocess.check_call(command, shell=True)
         
            
@@ -99,4 +101,4 @@ if __name__ == "__main__":
                                
                                  
     )
-        
+    gfg.process_strings(sourcestring, targetstring)    

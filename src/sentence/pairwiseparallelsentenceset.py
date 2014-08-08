@@ -34,6 +34,7 @@ class PairwiseParallelSentenceSet():
 
     def length(self):
         return len(self.get_parallelsentences())    
+
     
 
 class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
