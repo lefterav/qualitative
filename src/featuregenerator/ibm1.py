@@ -1,45 +1,13 @@
 # -*- coding: UTF-8 -*-
 '''
-Created on 17 Sept 2011
+Loads IBM1 lexicon models and provides word-level probabilities and alignments
+Created on 17 Sept 2011, updated 09 August 2014
 
 @author: Eleftherios Avramidis based on code from Maja Popovic, David Vilar
 '''
 
 import math
 from featuregenerator import FeatureGenerator
-from nltk.align import AlignedSent
-from operator import itemgetter
-import itertools
-
-
-
-
-class OldTokenAlignment:
-    """
-    Represents one source word aligned with its target match
-    @ivar prob: Match probability
-    @type prob: float
-    @ivar source_id: Sentence index of the source token
-    @type source_id: int
-    @ivar source_token: The text of the source token
-    @type source_token: str
-    @ivar target_id: Sentence index of the target token
-    @type target_id: int
-    @ivar target_token: The text of the target token
-    @type target_token: str
-    """
-    def __init__(self, source_id, source_token, target_id, target_token, prob=None):
-        self.prob = prob
-        self.source_id = source_id
-        self.source_token = source_token
-        self.target_id = target_id
-        self.target_token = target_token
-        
-    def __str__(self):
-        return "{}-{}".format(self.source_id, self.target_id)
-
-
-
 
 class AlignmentFeatureGenerator(FeatureGenerator):
     '''
@@ -59,14 +27,21 @@ class AlignmentFeatureGenerator(FeatureGenerator):
         
         source_alignment = self.sourcelexicon.get_string_alignment(source_line, target_line)
         target_alignment = self.sourcelexicon.get_string_alignment(target_line, source_line)
+        joined_alignment = self.join_alignments(source_alignment, target_alignment)
         
         attributes = {
                       'ibm1-score' : "%.4f" % self.sourcelexicon.get_score(source_line, target_line),
-                      'ibm1-alignment' : source_alignment,
+                      'ibm1-alignment' : " ".join(source_alignment),
                       'ibm1-score-inv' : "%.4f" % self.get_score(target_line, source_line),
-                      'ibm1-alignment-inv' : target_alignment
+                      'ibm1-alignment-inv' : " ".join(target_alignment),
+                      'imb1-alignment-joined' : " ".join(joined_alignment)
                       }
         return attributes
+    
+    def join_alignments(self, sourcealignment, targetalignment):
+        joined_alignment = set(sourcealignment)
+        joined_alignment = joined_alignment.union(set(targetalignment))
+        return list(joined_alignment)
 
     
 class Lexicon:
@@ -85,7 +60,6 @@ class Lexicon:
             self.lex[lexs[0], lexs[1]]=float(lexs[2])
             lexs = lexline.split()
             lexline = lextxt.readline()    
-        
 
     
     def get_score(self, sline, tline): 
@@ -117,14 +91,8 @@ class Lexicon:
                 logtsScore += math.log10(sScore)
         
         return logtsScore
-    
-    
-    
-    
-    
 
-
-    def get_string_alignment(self, sourcestring, targetstring):
+    def calculate_alignment(self, sourcestring, targetstring):
         sourcetokens = [Token(t,i) for i, t in enumerate(sourcestring.split())]
         targettokens = [Token(t,i) for i, t in enumerate(targetstring.split())]
         
@@ -135,7 +103,6 @@ class Lexicon:
             for targettoken in targettokens:
                 try:
                     probability = self.lex[sourcetoken.string, targettoken.string]
-   #                 print "{} {}: {}".format(sourcetoken, targettoken, probability)
                 except KeyError:
                     continue
                 tokenalignment = TokenAlignment(targettoken, probability)
@@ -147,17 +114,22 @@ class Lexicon:
             for targettoken in targettokens:
                 try:
                     probability = self.lex[sourcetoken.string, targettoken.string]
-   #                 print "{} {}: {}".format(sourcetoken, targettoken, probability)
                 except KeyError:
                     continue
                 tokenalignment = TokenAlignment(targettoken, probability)
                 tokenalignments.append(tokenalignment)
             alignment.add_gaps(sourcetoken, tokenalignments)
         
+        return alignment
+    
+    
+    def get_alignment(self, sourcestring, targetstring):
+        alignment = self.get_alignment(sourcestring, targetstring)
         return alignment.get_alignment_string()           
                 
-                
-            
+    def get_alignment_inv(self, targetstring, sourcestring):
+        alignment = self.get_alignment(sourcestring, targetstring)
+        return alignment.get_alignment_string_inv()              
             
         
 
@@ -207,7 +179,7 @@ class SentenceAlignment(list):
             for targettoken in targettokens:
                 tokenalignmentstring = "{}-{}".format(sourcetoken.index, targettoken.index)
                 alignmentstrings.append(tokenalignmentstring)
-        return " ".join(alignmentstrings)
+        return alignmentstrings
 
     def get_alignment_string_inv(self):
         alignmentstrings = []
@@ -216,7 +188,7 @@ class SentenceAlignment(list):
             for targettoken in targettokens:
                 tokenalignmentstring = "{}-{}".format(targettoken, sourcetoken)
                 alignmentstrings.append(tokenalignmentstring)
-        return " ".join(alignmentstrings)
+        return alignmentstrings
         
         #check that no target word has a double source token    
                 
