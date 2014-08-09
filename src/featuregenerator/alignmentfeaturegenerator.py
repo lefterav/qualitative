@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 '''
 Created on 17 Sept 2011
 
@@ -37,9 +38,6 @@ class OldTokenAlignment:
     def __str__(self):
         return "{}-{}".format(self.source_id, self.target_id)
 
-class SimpleTokenAlignment(TokenAlignment):
-    def __init__(self, string):
-        self.source_id, self.target_id = string.strip().split("-")
 
 
 
@@ -120,13 +118,14 @@ class AlignmentFeatureGenerator(FeatureGenerator):
             for targettoken in targettokens:
                 try:
                     probability = self.lex[sourcetoken, targettoken]
+   #                 print "{} {}: {}".format(sourcetoken, targettoken, probability)
                 except KeyError:
                     continue
                 tokenalignment = TokenAlignment(targettoken, probability)
                 tokenalignments.append(tokenalignment)
             
-            alignment.add(tokenalignments)
-                    
+            alignment.add(sourcetoken, tokenalignments)
+        return alignment.get_alignment_string()           
                 
                 
             
@@ -145,31 +144,31 @@ class TokenAlignment:
         
     def __lt__(self, other):
         return self.probability < other.probability
+ 
+    def __str__(self):
+        return "{} [{}]".format(self.targettoken, self.probability)
 
 from collections import defaultdict
 
 
 class SentenceAlignment(list):
     def __init__(self):
-        self.sourcealignments = defaultdict(list)
+        self.sourcealignment = {}
         self.targetalignment = {}
     
     def add(self, sourcetoken, tokenalignments):
         for tokenalignment in sorted(tokenalignments, reverse=True):
             targettoken = tokenalignment.targettoken
-            try:
-                targettoken = self.targetalignment[sourcetoken]
-                continue
-            except KeyError:    
-                self.targetalignment[targettoken] = sourcetoken
-                self.sourcealignments[sourcetoken].append(targettoken)
+            if targettoken not in self.targetalignment and sourcetoken not in self.sourcealignment:
+                    self.targetalignment[targettoken] = sourcetoken
+                    self.sourcealignment[sourcetoken] = targettoken
      
         
     def get_alignment_string(self):
         alignmentstrings = []
-        for sourcetoken, targettokens in self.sourcealignments.iteritems():
+        for sourcetoken, targettoken in sorted(self.sourcealignment.items(), key=lambda alignment: alignment[0].index) :
             
-            for targettoken in targettokens:
+            #for targettoken in targettokens:
                 tokenalignmentstring = "{}-{}".format(sourcetoken, targettoken)
                 alignmentstrings.append(tokenalignmentstring)
         return " ".join(alignmentstrings)
@@ -180,7 +179,7 @@ class SentenceAlignment(list):
     
             
 if __name__ == "__main__":
-    alignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.6.e2f"
+    alignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.2.e2f"
     aligner = AlignmentFeatureGenerator(alignmentfile)
     print aligner.get_string_alignment("das ist eine gute Idee , er hat gesagt", "he said that this is a good idea")
     print aligner.get_string_alignment("er hat einen Wiederspruch und eine Erklärung gemacht", "he made an appeal and a declaration")

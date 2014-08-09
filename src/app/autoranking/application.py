@@ -166,7 +166,7 @@ class Autoranking:
             cfg.get_lm(source_language),
             cfg.get_lm(target_language),            
 
-            CrossMeteorGenerator(target_language, cfg.get_classpath()[0], cfg.get_classpath()[1]),
+            #CrossMeteorGenerator(target_language, cfg.get_classpath()[0], cfg.get_classpath()[1]),
             LengthFeatureGenerator()
         ]
         
