@@ -56,14 +56,19 @@ class AlignmentFeatureGenerator(FeatureGenerator):
         return self.get_features_strings(source_line, target_line)
     
     def get_features_strings(self, source_line, target_line):
+        
+        source_alignment = self.sourcelexicon.get_string_alignment(source_line, target_line)
+        target_alignment = self.sourcelexicon.get_string_alignment(target_line, source_line)
+        
         attributes = {
                       'ibm1-score' : "%.4f" % self.sourcelexicon.get_score(source_line, target_line),
-                      'ibm1-alignment' : self.sourcelexicon.get_string_alignment(source_line, target_line),
+                      'ibm1-alignment' : source_alignment,
                       'ibm1-score-inv' : "%.4f" % self.get_score(target_line, source_line),
-                      'ibm1-alignment-inv' : self.sourcelexicon.get_string_alignment(target_line, source_line)
+                      'ibm1-alignment-inv' : target_alignment
                       }
         return attributes
 
+    
 class Lexicon:
 
     def __init__(self, lexicon_filename):
@@ -201,6 +206,15 @@ class SentenceAlignment(list):
             
             for targettoken in targettokens:
                 tokenalignmentstring = "{}-{}".format(sourcetoken, targettoken)
+                alignmentstrings.append(tokenalignmentstring)
+        return " ".join(alignmentstrings)
+
+    def get_alignment_string_inv(self):
+        alignmentstrings = []
+        for sourcetoken, targettokens in sorted(self.sourcealignment.items(), key=lambda alignment: alignment[0].index) :
+            
+            for targettoken in targettokens:
+                tokenalignmentstring = "{}-{}".format(targettoken, sourcetoken)
                 alignmentstrings.append(tokenalignmentstring)
         return " ".join(alignmentstrings)
         
