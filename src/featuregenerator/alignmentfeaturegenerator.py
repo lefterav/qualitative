@@ -125,8 +125,8 @@ class Lexicon:
 
 
     def get_string_alignment(self, sourcestring, targetstring):
-        sourcetokens = sourcestring.split()
-        targettokens = targetstring.split()
+        sourcetokens = [Token(t,i) for i, t in enumerate(sourcestring.split())]
+        targettokens = [Token(t,i) for i, t in enumerate(targetstring.split())]
         
         alignment = SentenceAlignment()
         
@@ -134,7 +134,7 @@ class Lexicon:
             tokenalignments = []
             for targettoken in targettokens:
                 try:
-                    probability = self.lex[sourcetoken, targettoken]
+                    probability = self.lex[sourcetoken.string, targettoken.string]
    #                 print "{} {}: {}".format(sourcetoken, targettoken, probability)
                 except KeyError:
                     continue
@@ -146,7 +146,7 @@ class Lexicon:
             tokenalignments = []
             for targettoken in targettokens:
                 try:
-                    probability = self.lex[sourcetoken, targettoken]
+                    probability = self.lex[sourcetoken.string, targettoken.string]
    #                 print "{} {}: {}".format(sourcetoken, targettoken, probability)
                 except KeyError:
                     continue
@@ -205,7 +205,7 @@ class SentenceAlignment(list):
         for sourcetoken, targettokens in sorted(self.sourcealignment.items(), key=lambda alignment: alignment[0].index) :
             
             for targettoken in targettokens:
-                tokenalignmentstring = "{}-{}".format(sourcetoken, targettoken)
+                tokenalignmentstring = "{}-{}".format(sourcetoken.index, targettoken.index)
                 alignmentstrings.append(tokenalignmentstring)
         return " ".join(alignmentstrings)
 
