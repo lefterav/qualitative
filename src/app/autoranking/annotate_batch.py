@@ -21,10 +21,10 @@ from dataprocessor.input.jcmlreader import JcmlReader
 from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml 
 from dataprocessor.sax import saxjcml
 from featuregenerator.parser.berkeley.parsermatches import ParserMatches
-from featuregenerator.parser.berkeley.cfgrules import CfgRulesExtractor
+from featuregenerator.parser.berkeley.cfgrules import CfgRulesExtractor, CfgAlignmentFeatureGenerator
 from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
 from featuregenerator.ratio_generator import RatioGenerator
-from featuregenerator.alignmentfeaturegenerator import AlignmentFeatureGenerator
+from featuregenerator.ibm1 import AlignmentFeatureGenerator
 from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenerator
 from featuregenerator.bleu.bleugenerator import CrossBleuGenerator, BleuGenerator
 from featuregenerator.meteor.meteor import CrossMeteorGenerator, MeteorGenerator
@@ -361,6 +361,7 @@ if cfg.getboolean("annotation", "reference_features"):
 
 #active_parallel_feature_functions = [function for function in parallel_feature_functions if function.is_active]
 
+
 #first part of the regular expression is the basename of the dataset
 @collate(parallel_feature_functions, regex(r"([^.]+)\.(.+)\.f.jcml"),  r"\1.all.f.jcml")
 def features_gather(singledataset_annotations, gathered_singledataset_annotations):
@@ -375,14 +376,24 @@ def features_gather(singledataset_annotations, gathered_singledataset_annotation
         original_dataset.merge_dataset_symmetrical(appended_dataset, {}, "id")
     Parallelsentence2Jcml(original_dataset.get_parallelsentences()).write_to_file(gathered_singledataset_annotations)
 
+@transform(features_gather, suffix(".all.f.jcml"), ".all.ibm1.f.jcml", cfg.get("general", "ibm1_source_lexicon"), cfg.get("general", "ibm1_target_lexicon"))    
+def features_ibm1(input_file, output_file, sourcelexicon, targetlexicon):
+    analyzers = [
+             AlignmentFeatureGenerator(sourcelexicon, targetlexicon),
+             CfgAlignmentFeatureGenerator(),
+             ]
+    saxjcml.run_features_generator(input_file, output_file, analyzers)
     
-@transform(features_gather, suffix(".all.f.jcml"), ".all.analyzed.f.jcml", cfg.get("general", "source_language"), cfg.get("general", "target_language"))    
+@transform(features_ibm1, suffix(".all.ibm1.f.jcml"), ".all.analyzed.f.jcml", cfg.get("general", "source_language"), cfg.get("general", "target_language"))    
 def analyze_external_features(input_file, output_file, source_language, target_language):
     langpair = (source_language, target_language)
+
     analyzers = [
                  ParserMatches(langpair),
                  CfgRulesExtractor(),
-                 RatioGenerator()]
+                 RatioGenerator(),
+
+                 ]
     saxjcml.run_features_generator(input_file, output_file, analyzers)
     
 
