@@ -45,7 +45,26 @@ class AlignmentFeatureGenerator(FeatureGenerator):
     '''
     Provides features generation from IBM Model 1 (See Popovic et. al 2011)
     '''
+    def __init__(self, source_lexicon_filename, target_lexicon_filename):
+        self.sourcelexicon = Lexicon(source_lexicon_filename)
+        self.targetlexicon = Lexicon(target_lexicon_filename)
+        
+    
+    def get_features_tgt(self, simplesentence, parallelsentence):
+        source_line = parallelsentence.get_source().get_string()
+        target_line = simplesentence.get_string()
+        return self.get_features_strings(source_line, target_line)
+    
+    def get_features_strings(self, source_line, target_line):
+        attributes = {
+                      'ibm1-score' : "%.4f" % self.sourcelexicon.get_score(source_line, target_line),
+                      'ibm1-alignment' : self.sourcelexicon.get_string_alignment(source_line, target_line),
+                      'ibm1-score-inv' : "%.4f" % self.get_score(target_line, source_line),
+                      'ibm1-alignment-inv' : self.sourcelexicon.get_string_alignment(target_line, source_line)
+                      }
+        return attributes
 
+class Lexicon:
 
     def __init__(self, lexicon_filename):
         '''
@@ -62,14 +81,7 @@ class AlignmentFeatureGenerator(FeatureGenerator):
             lexs = lexline.split()
             lexline = lextxt.readline()    
         
-    def get_features_tgt(self, simplesentence, parallelsentence):
-        source_line = parallelsentence.get_source().get_string()
-        target_line = simplesentence.get_string()
-        score = self.get_score(source_line, target_line)
-        attributes = {'ibm1-score' : "%.4f" % score,
-                      'ibm1-alignment' : str(self.get_string_alignment(source_line, target_line))
-                      }
-        return attributes
+
     
     def get_score(self, sline, tline): 
         
@@ -123,8 +135,20 @@ class AlignmentFeatureGenerator(FeatureGenerator):
                     continue
                 tokenalignment = TokenAlignment(targettoken, probability)
                 tokenalignments.append(tokenalignment)
-            
             alignment.add(sourcetoken, tokenalignments)
+        
+        for sourcetoken in sourcetokens:
+            tokenalignments = []
+            for targettoken in targettokens:
+                try:
+                    probability = self.lex[sourcetoken, targettoken]
+   #                 print "{} {}: {}".format(sourcetoken, targettoken, probability)
+                except KeyError:
+                    continue
+                tokenalignment = TokenAlignment(targettoken, probability)
+                tokenalignments.append(tokenalignment)
+            alignment.add_gaps(sourcetoken, tokenalignments)
+        
         return alignment.get_alignment_string()           
                 
                 
@@ -153,22 +177,29 @@ from collections import defaultdict
 
 class SentenceAlignment(list):
     def __init__(self):
-        self.sourcealignment = {}
+        self.sourcealignment = defaultdict(list)
         self.targetalignment = {}
     
     def add(self, sourcetoken, tokenalignments):
         for tokenalignment in sorted(tokenalignments, reverse=True):
             targettoken = tokenalignment.targettoken
             if targettoken not in self.targetalignment and sourcetoken not in self.sourcealignment:
-                    self.targetalignment[targettoken] = sourcetoken
-                    self.sourcealignment[sourcetoken] = targettoken
+                self.targetalignment[targettoken] = sourcetoken
+                self.sourcealignment[sourcetoken].append(targettoken)
+    
+    def add_gaps(self, sourcetoken, tokenalignments):
+        for tokenalignment in sorted(tokenalignments, reverse=True):
+            targettoken = tokenalignment.targettoken
+            if targettoken not in self.targetalignment:
+                self.targetalignment[targettoken] = sourcetoken
+                self.sourcealignment[sourcetoken].append(targettoken)
      
         
     def get_alignment_string(self):
         alignmentstrings = []
-        for sourcetoken, targettoken in sorted(self.sourcealignment.items(), key=lambda alignment: alignment[0].index) :
+        for sourcetoken, targettokens in sorted(self.sourcealignment.items(), key=lambda alignment: alignment[0].index) :
             
-            #for targettoken in targettokens:
+            for targettoken in targettokens:
                 tokenalignmentstring = "{}-{}".format(sourcetoken, targettoken)
                 alignmentstrings.append(tokenalignmentstring)
         return " ".join(alignmentstrings)
@@ -179,10 +210,11 @@ class SentenceAlignment(list):
     
             
 if __name__ == "__main__":
-    alignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.2.e2f"
-    aligner = AlignmentFeatureGenerator(alignmentfile)
-    print aligner.get_string_alignment("das ist eine gute Idee , er hat gesagt", "he said that this is a good idea")
-    print aligner.get_string_alignment("er hat einen Wiederspruch und eine Erklärung gemacht", "he made an appeal and a declaration")
+    srcalignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.2.e2f"
+    tgtalignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.2.f2e"
+    aligner = AlignmentFeatureGenerator(srcalignmentfile, tgtalignmentfile)
+    print aligner.get_features_strings("das ist eine gute Idee , er hat gesagt", "he said that this is a good idea")
+    print aligner.get_features_strings("er hat einen Wiederspruch und eine Erklärung gemacht", "he made an appeal and a declaration")
     
     
     
