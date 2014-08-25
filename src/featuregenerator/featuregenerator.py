@@ -1,4 +1,5 @@
 """
+Base (abstract) feature generator class
 
 @author: Eleftherios Avramidis
 """
@@ -98,6 +99,10 @@ class FeatureGenerator(object):
         It receives a parallel sentence and returns a list of parallel sentence features that globally describe the parallel sentence itself. 
         Features that describe source or target sentence etc should be added in functions get_features_src and get_features_tgt declared below. 
         Implementation here provides an empty dictionary, in case subclassed feature generator doesn't provide any features.
+        @param parallelsentence: An instance of parallel sentence whose features will be extracted
+        @type parallelsentence: sentence.parallelsentence.ParallelSentence
+        @return: the attributes extracted by the analysis process
+        @rtype: dict
         """
         #stderr.write("Featuregenerator of type %s doesn't provide global ParallelSentence features\n" % self.__class__.__name__)
         return {}
@@ -107,6 +112,12 @@ class FeatureGenerator(object):
         Abstract method to be overriden by the particular subclassed feature generator. 
         It receives a source simple sentence and returns a list of source features. 
         Implementation here fallbacks to the get_features_simplesentence function, when feature generator doesn't differentiate between source and target features
+        @param simplesentence: An instance of the source sentence whose features will be extracted
+        @type simplesentence: sentence.sentence.SimpleSentence
+        @param parallelsentence: An instance of parallel sentence whose features will be extracted
+        @type parallelsentence: sentence.parallelsentence.ParallelSentence
+        @return: the attributes extracted by the analysis process
+        @rtype: dict
         """
         return self.get_features_simplesentence(simplesentence, parallelsentence)
 
@@ -115,6 +126,12 @@ class FeatureGenerator(object):
         Abstract method to be overriden by the particular subclassed feature generator. 
         It receives a target simple sentence and returns a list of target features. 
         Implementation here fallbacks to the get_features_simplesentence function, when feature generator doesn't differentiate between source and target features
+        @param simplesentence: An instance of the target sentence whose features will be extracted
+        @type simplesentence: sentence.sentence.SimpleSentence
+        @param parallelsentence: An instance of parallel sentence whose features will be extracted
+        @type parallelsentence: sentence.parallelsentence.ParallelSentence
+        @return: the attributes extracted by the analysis process
+        @rtype: dict
         """
         return self.get_features_simplesentence(simplesentence, parallelsentence)
     
@@ -123,6 +140,12 @@ class FeatureGenerator(object):
         Abstract method to be overriden by the particular subclassed feature generator. 
         It receives a simple sentence of any type and returns a list of features. 
         It should be overriden by a feature generator that doesn't differentiate between source and target features
+        @param simplesentence: An instance of a simple sentence whose features will be extracted
+        @type simplesentence: sentence.sentence.SimpleSentence
+        @param parallelsentence: An instance of parallel sentence whose features will be extracted
+        @type parallelsentence: sentence.parallelsentence.ParallelSentence
+        @return: the attributes extracted by the analysis process
+        @rtype: dict
         """
         #stderr.println("Featuregenerator of type %s doesn't provide SimpleSentence features" % self.__class__.__name__)
         return self.get_features_string(simplesentence.string)
@@ -186,5 +209,13 @@ class FeatureGenerator(object):
 
     
     def process_dataset(self, dataset):
+        """
+        Abstract method to be overriden by the particular subclassed feature generator,
+        when an entire dataset needs to be processed as a whole.
+        @param dataset: a dataset containing many parallel sentences
+        @type dataset: sentence.dataset.DataSet
+        @return dataset: the given dataset annotated
+        @rtype: sentence.dataset.DataSet
+        """
         return self.add_features_dataset(dataset)
         

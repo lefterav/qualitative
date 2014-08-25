@@ -3,7 +3,7 @@
 '''
 Created on Jun 27, 2011
 
-@author: jogin
+@author: Lukas Poustka
 '''
 
 import string

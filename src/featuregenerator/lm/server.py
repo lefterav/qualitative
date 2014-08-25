@@ -1,3 +1,7 @@
+"""
+Feature generator for LM features from external LM server
+"""
+
 import xmlrpclib 
 #import base64
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
@@ -8,7 +12,7 @@ from numpy import average, std
 
 
 
-class SRILMngramGenerator(LanguageFeatureGenerator):
+class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
     '''
     Gets all the words of a sentence through a SRILM language model and counts how many of them are unknown (unigram prob -99) 
     '''

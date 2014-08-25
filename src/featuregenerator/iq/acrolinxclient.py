@@ -1,7 +1,8 @@
 '''
+Implements feature generator for retrieving quality scores from an external Acrolinx IQ server
 Created on Feb 13, 2012
 
-@author: jogin
+@author: Lukas Poustka
 '''
 
 #from pysimplesoap.client import SoapClient
