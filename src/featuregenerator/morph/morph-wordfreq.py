@@ -1,4 +1,5 @@
 '''
+Calculate frequency distributions for morphologically analyzed words (non fully functional)
 Created on 19 Dec 2011
 
 @author: Eleftherios Avramidis

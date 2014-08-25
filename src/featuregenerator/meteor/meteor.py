@@ -1,6 +1,7 @@
 '''
-Created on 15 Jun 2012
+Calculate translation METEOR scores against reference (MeteorGenerator) and against competitive translations (CrossMeteorGenerator)
 
+Created on 15 Jun 2012
 @author: Eleftherios Avramidis
 '''
 
