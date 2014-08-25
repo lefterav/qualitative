@@ -18,6 +18,22 @@ from featuregenerator.featuregenerator import FeatureGenerator
 
 from nltk.align import AlignedSent
 import re
+import sys
+
+def xml_normalize(string):
+        string = string.replace("$,", "COMMA") #german grammar
+        string = string.replace(",", "COMMA")
+        string = string.replace("$.", "DOT") #german grammar        
+        string = string.replace(".", "DOT")
+        string = string.replace(";", "DOT")
+        string = string.replace("$", "DLR")
+        string = string.replace("*", "_")
+        string = string.replace(":", "PUNCT")
+        string = string.replace('"', "QUOT")
+        string = string.replace("'", "QUOT")
+        string = re.sub("[^A-Za-z0-9_]", "_", string)
+        return string
+
 
 class Rule:
     def __init__(self):
@@ -27,21 +43,10 @@ class Rule:
         self.length = 0
         self.leaves = []
         self.indices = set()
-        
-    def __str__(self):
+    
+    def __str__(self): 
         string = "{}_{}".format(self.lhs, "-".join(self.rhs))
-        string = string.replace("$,", "COMMA") #german grammar
-        string = string.replace(",", "COMMA")
-        string = string.replace("$.", "DOT") #german grammar        
-        string = string.replace(".", "DOT")
-        string = string.replace(";", "DOT")        
-        string = string.replace("$", "DLR")
-        string = string.replace("*", "_")
-        string = string.replace(":", "PUNCT")        
-        string = string.replace('"', "QUOT")
-        string = string.replace("'", "QUOT")
-        #string = re.sub("\W", "_", string)
-        return string        
+        return xml_normalize(string)        
 
 
 def get_cfg_rules(string, terminals=False):
@@ -141,7 +146,7 @@ def get_cfg_rules(string, terminals=False):
     return rules    
 
 
-class CfgRulesExtractor():
+class CfgRulesExtractor(FeatureGenerator):
     '''
     Handle the extraction of features out of CFG rules 
     '''
@@ -214,7 +219,7 @@ class CfgRulesExtractor():
             
         return atts    
         
-class CfgAlignmentFeatureGenerator():
+class CfgAlignmentFeatureGenerator(FeatureGenerator):
     def __init__(self):
         #TODO: self.alignment = AlignmentFeatureGenerator(giza_filename)
         pass
@@ -227,62 +232,99 @@ class CfgAlignmentFeatureGenerator():
         targetparse = targetsentence.get_attribute("berkeley-tree")
         
         return self.process_string(source_line, target_line, alignment_string, sourceparse, targetparse)
-    
+   
+    def _get_unaligned_target_indices(self, target_line, alignment_string):
+        alignedindices = set()
+        for _, targetindex in [t.split("-") for t in alignment_string.split()]:
+             alignedindices.add(int(targetindex))
+        allindices = set(range(len(target_line.split())))
+        unaligned = allindices - alignedindices
+        logging.debug("Unaligned indices on target {}".format(",".join([str(i) for i in unaligned ])))
+        return unaligned
     
     def process_string(self, source_line, target_line, alignment_string, sourceparse, targetparse):
-        
+        print alignment_string 
         aligned_sentence = AlignedSent(source_line.split(),
                                 target_line.split(),
                                 alignment_string)
         sourcerules = get_cfg_rules(sourceparse, True)
         targetrules = get_cfg_rules(targetparse, True)
         
-        
         rule_alignments = []
         
         for sourcerule in sourcerules:
             source_label = sourcerule.lhs
-            target_indices = aligned_sentence.alignment.range(list(sourcerule.indices))
+            logging.debug("Alignment string: {}".format(alignment_string))
+            logging.debug("Source indices: {}".format(sourcerule.indices)) 
+            try:
+                target_indices = aligned_sentence.alignment.range(list(sourcerule.indices))
+            except IndexError:
+                target_indices = []            
+#            logging.warning("AlignedSent from NLTK caused an exception for sourcerule {}".format(sourcerule))
+
+            
+            for unaligned_index in self._get_unaligned_target_indices(target_line, alignment_string):
+                if target_indices and unaligned_index > min(target_indices) and unaligned_index < max(target_indices):
+                    target_indices.append(unaligned_index)
+            logging.debug("label: {} -> {}".format(source_label, ",".join([str(i) for i in sorted(target_indices)])))
             matched_labels = self._match_targetlabels(targetrules, target_indices)
-            rule_alignments.append((source_label, matched_labels))
+            rule_alignments.append((source_label, sourcerule.depth, matched_labels))
           
         atts = {}
-        for source_label, matched_labels in rule_alignments:
+        for source_label, depth, matched_labels in rule_alignments:
             if matched_labels:
                 rule_alignment_string = "{}_{}".format(source_label, "-".join(matched_labels))
             else:
                 rule_alignment_string = "{}_{}".format(source_label, "-none")
-            key = "cfgal_{}".format(rule_alignment_string)
-            atts[key] = atts.setdefault(key, 0) + 1
+            key = xml_normalize("cfgal_{}".format(rule_alignment_string))
+            atts[key] = min([atts.setdefault(key, 100), depth]) 
         return atts
 
     
     def _match_targetlabels(self, targetrules, target_indices):
         candidate_labels = []
         for targetrule in targetrules:
+            logging.debug("t-label: {} -> {}".format(targetrule, ",".join([str(i) for i in targetrule.indices])))
             if targetrule.indices.issubset(target_indices):
-                candidate_labels.append((len(targetrule.indices), targetrule.lhs))
-            
-        max_length , _ = max(candidate_labels)
-        matched_labels = [label for length, label in candidate_labels if length==max_length]
+                candidate_labels.append((targetrule.depth, targetrule.lhs))
+        if not candidate_labels:
+            return []    
+        min_depth , _ = min(candidate_labels)
+        matched_labels = [label for length, label in candidate_labels if length==min_depth]
+        logging.debug("chosen labels: {}".format(matched_labels))
         return matched_labels
-                                
+
+from dataprocessor.ce.cejcml import CEJcmlReader
+from sentence.sentence import SimpleSentence
+from sentence.parallelsentence import ParallelSentence
+from featuregenerator.ibm1 import AlignmentFeatureGenerator
+from dataprocessor.sax import saxjcml
+
 if __name__ == "__main__":
+    logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
+ 
     cfgalignmentprocessor = CfgAlignmentFeatureGenerator()
-    from featuregenerator.ibm1 import AlignmentFeatureGenerator
     srcalignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.2.e2f"
     tgtalignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.2.f2e"
+
     aligner = AlignmentFeatureGenerator(srcalignmentfile, tgtalignmentfile)
-    from sentence.sentence import SimpleSentence
-    from sentence.parallelsentence import ParallelSentence
-    sourcestring = SimpleSentence("Keine befreiende Novelle fuer Tymoshenko durch das Parlament", 
-                                  {'berkeley-tree':"(PSEUDO (NP (PIAT Keine) (ADJA befreiende) (NN Novelle)) (NP (ADJA fuer) (NN Tymoshenko) (PP (APPR durch) (ART das) (NN Parlament)))) )"}
-                                  )
-    targetstring = SimpleSentence("No releasing novella for Tymoshenko by the parliament",
-                                  {'berkeley-tree': "(S (NP (DT No) (VBG releasing)) (VP (VBD novella) (PP (IN for) (NP (NNP Tymoshenko))) (PP (IN by) (NP (DT the) (NN parliament))))) )"}
-                                  )
-    parallelsentence = ParallelSentence(sourcestring, targetstring)
-    parallelsentence = aligner.add_features_parallelsentence(parallelsentence)
-    parallelsentence = cfgalignmentprocessor.add_features_parallelsentence(parallelsentence)
-    print parallelsentence
+#    reader = CEJcmlReader(sys.argv[1])
+#    for parallelsentence in reader.get_parallelsentences():
+    
+
+   # sourcestring = SimpleSentence("Keine befreiende Novelle fuer Tymoshenko durch das Parlament", 
+#                                  {'berkeley-tree':"(PSEUDO (NP (PIAT Keine) (ADJA befreiende) (NN Novelle)) (NP (ADJA fuer) (NN Tymoshenko) (PP (APPR durch) (ART das) (NN Parlament)))) )"}
+#                                  )
+   # targetstring = SimpleSentence("No releasing novella for Tymoshenko by the parliament",
+#                                  {'berkeley-tree': "(S (NP (DT No) (VBG releasing)) (VP (VBD novella) (PP (IN for) (NP (NNP Tymoshenko))) (PP (IN by) (NP (DT the) (NN parliament))))) )"}
+#                                  )
+   # parallelsentence = ParallelSentence(sourcestring, [targetstring], None, {'langsrc' : "de", 'langtgt' : "en"})
+        #parallelsentence = aligner.add_features_parallelsentence(parallelsentence)
+        #parallelsentence3 = cfgalignmentprocessor.add_features_parallelsentence(parallelsentence2)
+        #print parallelsentence
+    input_file = sys.argv[1]
+    output_file = input_file + "out.jcml"
+    analyzers = [aligner, cfgalignmentprocessor ]
+    saxjcml.run_features_generator(input_file, output_file, analyzers)
+#    saxjcml.run_features_generator(input_file, output_file, analyzers)
     
