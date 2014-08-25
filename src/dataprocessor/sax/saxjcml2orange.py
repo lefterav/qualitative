@@ -3,7 +3,7 @@
 '''
 Created on Jul 21, 2011
 
-@author: jogin, Eleftherios Avramidis
+@author: Lukas Poustka, Eleftherios Avramidis
 '''
 
 import codecs

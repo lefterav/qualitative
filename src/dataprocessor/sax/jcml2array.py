@@ -1,7 +1,7 @@
 '''
 Created on Nov 13, 2012
 
-@author: jogin
+@author: Lukas Poustka
 '''
 
 

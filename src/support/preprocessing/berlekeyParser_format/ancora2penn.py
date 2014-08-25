@@ -1,7 +1,7 @@
 '''
 Created on Oct 5, 2011
 
-@author: jogin
+@author: Lukas Poustka
 '''
 import os
 import re
