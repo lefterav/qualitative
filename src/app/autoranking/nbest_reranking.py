@@ -20,17 +20,18 @@ def get_nbest_translations(nbestfilename, n=10):
     
     previous_sentence_id = '0'
     translations = []
+
     nbestfile = open(nbestfilename)
     for line in nbestfile:
-         sentence_id, string = re.findall(pattern, line)[0]
-         sys.stderr.write("sentence id {}\n".format(sentence_id))
-         if sentence_id != previous_sentence_id:
-             yield translations
-             previous_sentence_id = sentence_id
-             translations = []
-         if len(translations) < n:
-             attributes = {'system': 'n_{}'.format(sentence_id)}
-             translations.append(SimpleSentence(string, attributes))
+        sentence_id, string = re.findall(pattern, line)[0]
+        sys.stderr.write("sentence id {}\n".format(sentence_id))
+        if sentence_id != previous_sentence_id:
+            yield translations
+            previous_sentence_id = sentence_id
+            translations = []
+        if len(translations) < n:
+            attributes = {'system': 'n_{}'.format(sentence_id)}
+            translations.append(SimpleSentence(string, attributes))
     nbestfile.close()
     if translations:
         yield translations
