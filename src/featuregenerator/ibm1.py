@@ -8,15 +8,18 @@ Created on 17 Sept 2011, updated 09 August 2014
 
 import math
 from featuregenerator import FeatureGenerator
+import logging
 
 class AlignmentFeatureGenerator(FeatureGenerator):
     '''
     Provides features generation from IBM Model 1 (See Popovic et. al 2011)
     '''
     def __init__(self, source_lexicon_filename, target_lexicon_filename):
+        logging.info("Loading source side IBM1 lexicon...")
         self.sourcelexicon = Lexicon(source_lexicon_filename)
+        logging.info("Done. \nLoading target side IBM1 lexicon...")
         self.targetlexicon = Lexicon(target_lexicon_filename)
-        
+        logging.info("Done.")
     
     def get_features_tgt(self, simplesentence, parallelsentence):
         source_line = parallelsentence.get_source().get_string()
@@ -25,14 +28,14 @@ class AlignmentFeatureGenerator(FeatureGenerator):
     
     def get_features_strings(self, source_line, target_line):
         
-        source_alignment = self.sourcelexicon.get_string_alignment(source_line, target_line)
-        target_alignment = self.sourcelexicon.get_string_alignment(target_line, source_line)
+        source_alignment = self.sourcelexicon.get_alignment(source_line, target_line)
+        target_alignment = self.targetlexicon.get_alignment_inv(source_line, target_line)
         joined_alignment = self.join_alignments(source_alignment, target_alignment)
         
         attributes = {
                       'ibm1-score' : "%.4f" % self.sourcelexicon.get_score(source_line, target_line),
                       'ibm1-alignment' : " ".join(source_alignment),
-                      'ibm1-score-inv' : "%.4f" % self.get_score(target_line, source_line),
+                      'ibm1-score-inv' : "%.4f" % self.targetlexicon.get_score(target_line, source_line),
                       'ibm1-alignment-inv' : " ".join(target_alignment),
                       'imb1-alignment-joined' : " ".join(joined_alignment)
                       }
@@ -40,8 +43,8 @@ class AlignmentFeatureGenerator(FeatureGenerator):
     
     def join_alignments(self, sourcealignment, targetalignment):
         joined_alignment = set(sourcealignment)
-        joined_alignment = joined_alignment.union(set(targetalignment))
-        return list(joined_alignment)
+        joined_alignment.update(targetalignment)
+        return sorted(list(joined_alignment))
 
     
 class Lexicon:
@@ -118,17 +121,21 @@ class Lexicon:
                     continue
                 tokenalignment = TokenAlignment(targettoken, probability)
                 tokenalignments.append(tokenalignment)
-            alignment.add_gaps(sourcetoken, tokenalignments)
+            alignment.add_gaps(sourcetoken, tokenalignments) 
         
+        for sourcetoken in sourcetokens:
+            for targettoken in targettokens:
+                if sourcetoken.string == targettoken.string:
+                    alignment.add(sourcetoken, [TokenAlignment(targettoken, None)])
         return alignment
     
     
     def get_alignment(self, sourcestring, targetstring):
-        alignment = self.get_alignment(sourcestring, targetstring)
+        alignment = self.calculate_alignment(sourcestring, targetstring)
         return alignment.get_alignment_string()           
                 
     def get_alignment_inv(self, targetstring, sourcestring):
-        alignment = self.get_alignment(sourcestring, targetstring)
+        alignment = self.calculate_alignment(sourcestring, targetstring)
         return alignment.get_alignment_string_inv()              
             
         
@@ -186,7 +193,7 @@ class SentenceAlignment(list):
         for sourcetoken, targettokens in sorted(self.sourcealignment.items(), key=lambda alignment: alignment[0].index) :
             
             for targettoken in targettokens:
-                tokenalignmentstring = "{}-{}".format(targettoken, sourcetoken)
+                tokenalignmentstring = "{}-{}".format(targettoken.index, sourcetoken.index)
                 alignmentstrings.append(tokenalignmentstring)
         return alignmentstrings
         

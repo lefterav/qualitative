@@ -376,7 +376,7 @@ def features_gather(singledataset_annotations, gathered_singledataset_annotation
         original_dataset.merge_dataset_symmetrical(appended_dataset, {}, "id")
     Parallelsentence2Jcml(original_dataset.get_parallelsentences()).write_to_file(gathered_singledataset_annotations)
 
-@transform(features_gather, suffix(".all.f.jcml"), ".all.ibm1.f.jcml", cfg.get("general", "ibm1_source_lexicon"), cfg.get("general", "ibm1_target_lexicon"))    
+@transform(features_gather, suffix(".all.f.jcml"), ".all.ibm1.f.jcml", cfg.get("ibm1", "source_lexicon"), cfg.get("ibm1", "target_lexicon"))    
 def features_ibm1(input_file, output_file, sourcelexicon, targetlexicon):
     analyzers = [
              AlignmentFeatureGenerator(sourcelexicon, targetlexicon),

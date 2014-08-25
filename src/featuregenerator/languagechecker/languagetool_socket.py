@@ -1,4 +1,5 @@
 '''
+Wrapper and feature generator for LanguageTool via a Py4J socket 
 Created on 30 Mar 2012
 
 @author: Eleftherios Avramidis

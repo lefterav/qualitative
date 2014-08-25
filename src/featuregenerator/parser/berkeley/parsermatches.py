@@ -1,4 +1,5 @@
 '''
+Feature generator for occurrences of parsing labels with the possibility to match equivalent labels across languages 
 Created on 22 March 2011
 
 @author: Eleftherios Avramidis
@@ -10,7 +11,11 @@ from numpy import average, std
 
 class ParserMatches(LanguageFeatureGenerator):
     '''
-    classdocs
+    Read an existing parse in source and target language and count feature generator for occurrences 
+    of parsing labels with the possibility to match equivalent labels across languages, so that
+    per-label source/target ratios can be calculated
+    @ivar mapping: A dictionary for mapping source labels to target labels
+    @type mapping: dict 
     '''
     mapping = {}
     mapping[("de","en")] = [(["NP"], ["NP"]),
@@ -64,7 +69,9 @@ class ParserMatches(LanguageFeatureGenerator):
 
     def __init__(self, langpair=("de","en")):
         '''
-        Constructor
+        Instantiate a parse label matcher for a particular language pair
+        @param langpair: a tuple with the source and the target language codes
+        @type langpair: (str, str)
         '''
         #reverse mappings as well
         reversed_mapping = {}
@@ -78,6 +85,15 @@ class ParserMatches(LanguageFeatureGenerator):
         
     
     def _count_nodetags(self, treestring="", taglist=[]):
+        """
+        Internal convenience function for shallow counting the the node labels in the given treestring
+        @param treestring: a Berkeley bracketed PCFG parse
+        @type treestring: str
+        @param taglist: a list of tags to be processed
+        @type taglist: [str, ...]
+        @return: the count and the positions for the given tags
+        @rtype: (int, [int, ...])
+        """
         match_count = 0
         match_pos = [] 
         labels = treestring.split() 
@@ -135,16 +151,15 @@ class ParserMatches(LanguageFeatureGenerator):
         
 
     def _canonicalize(self, string):
+        '''
+        Internal convenience function for replacing node label characters 
+        that are not valid XML arguments
+        @param string: the label which needs be canonicalized
+        @type string: str
+        @return: illegal XML labels replaced
+        @rtype: str
+        '''
         string = string.replace("$." , "dot").replace("$," , "comma")
         string = string.replace(".", "dot").replace("," , "comma")
         return string
-        
-        
-        
-                    
-                    
-                    
-                    
-                     
-    
         
