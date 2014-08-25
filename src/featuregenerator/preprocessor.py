@@ -1,4 +1,6 @@
 '''
+Implementation of text preprocessors, including external commandline tools via pipes (tokenizer, truecaser, etc.) 
+
 Created on 24 Mar 2012
 
 @author: Eleftherios Avramidis
@@ -7,17 +9,27 @@ Created on 24 Mar 2012
 from featuregenerator import FeatureGenerator
 import subprocess
 import util
-import codecs
 import os
-
-import Queue
-import threading
-from sentence.dataset import DataSet
 
 class Preprocessor(FeatureGenerator):
     """
+    Base class for a text pre-processor, to be inherited by applied pre-processors such as tokenizers etc.
+    Contrary to the majority of feature generators, pre-processors do not return features/attributes, but
+    instead they modify the string content of the sentences. For this purpose the order of pre-processors
+    in an annotation pipeline is important.
+    
+    Implemented methods of the base class divert the content of source or target sentences to the 
+    process_string function, which should do the job which is particular to the string. Strings are 
+    processed only if they comply with the language of the pre-processor
+    
+    @ivar lang: language code of supported language
+    @type lang: str
     """
     def __init__(self, lang):
+        """
+        @param lang: language code of supported language
+        @type lang: str
+        """
         self.lang = lang
     
     def add_features_src(self, simplesentence, parallelsentence = None):
@@ -32,29 +44,46 @@ class Preprocessor(FeatureGenerator):
             simplesentence.string = self.process_string(simplesentence.string)  
         return simplesentence
     
-    
     def process_string(self, string):
+        """
+        Abstract class to be overriden by implemented pre-processors
+        @param string: The string that needs to be pre-processed
+        @type string: str
+        @return: the string modified after pre-processing
+        @rtype: str
+        """
         raise NotImplementedError
     
     
 class CommandlinePreprocessor(Preprocessor):
-    
-    
+    """
+    Base class for pre-processor wrapping a commandline process
+    @ivar lang: language code
+    @type lang: str
+    @ivar running: boolean variable that signifies whether internal process is running or not
+    @type running: boolena
+    @ivar process: the encapsulated subprocess
+    @type process: subprocess.Popen
+    """    
     def _enqueue_output(self, stdout, queue):
         out = 0
         for line in iter(stdout.readline, ''):
             print "thread received response: ", line
             queue.put(line)
 #            break
-
-
-
-    
-
-
-
     
     def __init__(self, path, lang, params = {}, command_template = ""):
+        """
+        Initialize commandline-based feature generator. 
+        @param path: the path where the command is based
+        @type path: str
+        @param lang: the language code for the supported language
+        @type lang: str
+        @param params: commandline parameters for internal process
+        @type params: dict((str, str))
+        @param command_template: the template of the command
+        @type command_template: str        
+        """
         self.lang = lang
         params["lang"] = lang
         params["path"] = path
