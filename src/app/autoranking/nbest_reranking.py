@@ -24,6 +24,7 @@ def get_nbest_translations(nbestfile):
             if sentence_id != previous_sentence_id:
                 yield translations
                 translations = []
+            
             translations.append(SimpleSentence(string))
     yield translations
 
