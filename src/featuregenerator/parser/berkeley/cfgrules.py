@@ -7,7 +7,7 @@ Created on Jul 13, 2014
 '''
 import logging
 
-#from featuregenerator.alignmentfeaturegenerator import AlignmentFeatureGenerator
+#from featuregenerator.ibm1 import AlignmentFeatureGenerator
 #from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator 
 #from numpy import average
 #from featuregenerator.featuregenerator import FeatureGenerator
@@ -222,7 +222,7 @@ class CfgAlignmentFeatureGenerator():
     def get_features_tgt(self, targetsentence, parallelsentence):
         source_line = parallelsentence.get_source().get_string()
         target_line = targetsentence.get_string()
-        alignment_string = targetsentence.get_attribute("alignment")
+        alignment_string = targetsentence.get_attribute("imb1-alignment-joined")
         sourceparse = parallelsentence.get_source().get_attribute("berkeley-tree")
         targetparse = targetsentence.get_attribute("berkeley-tree")
         
@@ -268,10 +268,21 @@ class CfgAlignmentFeatureGenerator():
         return matched_labels
                                 
 if __name__ == "__main__":
-    alignmentprocessor = CfgAlignmentFeatureGenerator()
-    print alignmentprocessor.process_string("Keine befreiende Novelle fuer Tymoshenko durch das Parlament", 
-                                      "No releasing novella for Tymoshenko by the parliament", 
-                                      "0-0 1-1 2-2 3-3 4-4 5-5 6-6 7-7",
-                                      "(PSEUDO (NP (PIAT Keine) (ADJA befreiende) (NN Novelle)) (NP (ADJA fuer) (NN Tymoshenko) (PP (APPR durch) (ART das) (NN Parlament)))) )",
-                                      "(S (NP (DT No) (VBG releasing)) (VP (VBD novella) (PP (IN for) (NP (NNP Tymoshenko))) (PP (IN by) (NP (DT the) (NN parliament))))) )")
+    cfgalignmentprocessor = CfgAlignmentFeatureGenerator()
+    from featuregenerator.ibm1 import AlignmentFeatureGenerator
+    srcalignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.2.e2f"
+    tgtalignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.2.f2e"
+    aligner = AlignmentFeatureGenerator(srcalignmentfile, tgtalignmentfile)
+    from sentence.sentence import SimpleSentence
+    from sentence.parallelsentence import ParallelSentence
+    sourcestring = SimpleSentence("Keine befreiende Novelle fuer Tymoshenko durch das Parlament", 
+                                  {'berkeley-tree':"(PSEUDO (NP (PIAT Keine) (ADJA befreiende) (NN Novelle)) (NP (ADJA fuer) (NN Tymoshenko) (PP (APPR durch) (ART das) (NN Parlament)))) )"}
+                                  )
+    targetstring = SimpleSentence("No releasing novella for Tymoshenko by the parliament",
+                                  {'berkeley-tree': "(S (NP (DT No) (VBG releasing)) (VP (VBD novella) (PP (IN for) (NP (NNP Tymoshenko))) (PP (IN by) (NP (DT the) (NN parliament))))) )"}
+                                  )
+    parallelsentence = ParallelSentence(sourcestring, targetstring)
+    parallelsentence = aligner.add_features_parallelsentence(parallelsentence)
+    parallelsentence = cfgalignmentprocessor.add_features_parallelsentence(parallelsentence)
+    print parallelsentence
     
