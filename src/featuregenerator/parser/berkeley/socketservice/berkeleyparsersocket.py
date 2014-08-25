@@ -45,6 +45,7 @@ class BerkeleyParserSocket():
         @type gateway: Py4J java gateway object        
         """
         self.grammarfile = grammarfile
+        self.gateway = gateway
         
         bparser_class = os.path.dirname(__file__)
         dir_socket = os.path.dirname(bparser_class)                
@@ -135,22 +136,22 @@ class BerkeleyParserSocket():
 #        signal.signal(signal.SIGALRM, handler)
 #        signal.alarm(20)
         parseresult = None        
-#        while not parseresult:
-#            try:
-        parseresult = self.bp_obj.parse(sentence_string)
+        while not parseresult:
+            try:
+                parseresult = self.bp_obj.parse(sentence_string)
 #            except:
-#        sys.stderr.write("Connection failed. Retrying ...")
-#        time.sleep(5)
+#                sys.stderr.write("Connection failed. Retrying ...")
+#                time.sleep(5)
          
 #        except Exception, exc: 
 #            sys.stderr.write("Exception: {0}\n".format(exc))
 #            parseresult = {}
                 
         
-#        except:
-#            self._reconnect(self.berkeley_parser_jar, self.py4_jar)
-#            parseresult = self.bp_obj.parse(sentence_string)
-#            sys.stderr.write("{0} crashed, restarting object".format(self.parsername))
+            except:
+                self._connect(self.gateway, self.grammarfile)
+                parseresult = self.bp_obj.parse(sentence_string)
+                sys.stderr.write("{0} crashed, restarting object".format(self.parsername))
         sys.stderr.write("<\p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
 
         return parseresult
