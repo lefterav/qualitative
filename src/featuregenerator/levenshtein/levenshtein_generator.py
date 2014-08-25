@@ -1,4 +1,5 @@
 '''
+Feature generator for Levenshtein distance (reference-aware evaluation metric)
 Created on 07.10.2011
 
 @author: Eleftherios Avramidis
@@ -8,7 +9,7 @@ from levenshtein import levenshtein_tok
 
 class LevenshteinGenerator(FeatureGenerator):
     '''
-    classdocs
+    Produce attribute from Levenshtein Distance
     '''
 
 

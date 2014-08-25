@@ -1,4 +1,5 @@
 '''
+Testing function for METEOR classes
 Created on 22 Jun 2012
 
 @author: Eleftherios Avramidis
