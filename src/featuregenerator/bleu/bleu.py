@@ -1,4 +1,5 @@
 '''
+BLEU computation functions in python
 @author: Eleftherios Avramidis
 @note: Modified copy from Hieu Hoang's code for Moses Project
 
@@ -175,6 +176,8 @@ def score_sentence(translation, references, n=4):
     @type translation: str
     @param references: List of reference translations to be used for the evaluation
     @type references: [str, ...]
+    @return: BLEU score for sentence
+    @rtype: float
     """
     r = len(references)
     if r == 0:
@@ -188,7 +191,9 @@ def score_sentences(sentence_tuples, n=4):
     Provides BLEU calculation for many sentences.  
     @param sentence_tuples: a list of tuples generated out of the translated sentences. Each
     tuple should contain one translated sentence and its list of references.
-    @type sentence_tuples: [tuple(str(translation), [str(reference), ...]), ...] 
+    @type sentence_tuples: [tuple(str(translation), [str(reference), ...]), ...]
+    @return: BLEU score for many sentences
+    @rtype: float 
     """
     
     cooked_tests = []

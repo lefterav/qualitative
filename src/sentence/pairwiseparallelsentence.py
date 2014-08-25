@@ -3,7 +3,7 @@
 '''
 Created on Jul 12, 2011
 
-@author: jogin
+@author: Lukas Poustka
 '''
 
 

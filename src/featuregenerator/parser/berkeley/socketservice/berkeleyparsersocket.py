@@ -1,7 +1,9 @@
 '''
+Feature generator from Berkeley PCFG parser by wrapping Berkeley class 
 Created on Sep 21, 2011
 
-@author: jogin
+@author: Lukas Poustka
+@author: Eleftherios Avramidis
 '''
 
 from py4j.java_gateway import JavaGateway
@@ -28,7 +30,9 @@ class BerkeleyParserSocket():
     A flexible wrapper for the Berkeley parser. It starts the Berkeley parser as an object
     which can be called as a Python object. It requires presence of external java libraries.
     The advantage of this class (e.g. vs XMLRPC) is that it can fully control starting and 
-    stopping the parsing engine within Python code.   
+    stopping the parsing engine within Python code.  
+    @ival grammarfile:
+    @ivar parsername: 
     """
     
 #    def __init__(self, grammarfile, classpath):

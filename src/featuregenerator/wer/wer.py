@@ -1,4 +1,5 @@
 """
+Functions for the calculation of Word Error Rate
 @author Eleftherios Avramidis based on original by Maja Popovic
 """
 
@@ -20,7 +21,16 @@ class levNode:
 
 
 def wer(hypWords, refs):
-    
+    """
+    Basic function for returning Word Error Rate between one string and
+    several references
+    @param hypWords: a list of the tokens of the translation to be scored
+    @type hypWords: list
+    @param refs: a list of lists of tokens of the reference translations
+    @type refs: list(list(str))
+    @return: the Word Error Rate score
+    @rtype: float
+    """
     if isinstance(hypWords, str):
         hypWords = PunktWordTokenizer().tokenize(hypWords)
     if isinstance(refs, str):
@@ -232,6 +242,3 @@ def wer(hypWords, refs):
 
     #sys.stdout.write(str(nsent)+"::Wer: "+str("%.4f" % minWer)+"\n")
     return minWer
-
-                 
-    

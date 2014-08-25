@@ -1,5 +1,6 @@
 '''
 Wraps around mGiza's trained models in order to perform force alignment of individual sentences
+Development of this class has been halted due to bug of mGiza.
 
 Created on Aug 2, 2014
 

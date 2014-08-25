@@ -1,4 +1,5 @@
 '''
+Produce ranking of translated sentences based on an attribute value. 
 Created on 07.10.2011
 
 @author: Eleftherios Avramidis
@@ -7,7 +8,7 @@ from featuregenerator import FeatureGenerator
 
 class AttributeRankGenerator(FeatureGenerator):
     '''
-    It produces a new ranking of the translated sentences, based on another value. 
+    It produces a ranking of the translated sentences, based on an attribute value. 
     This "clean" ranking starts from zero and has a maximum ranking difference of 1 
     '''
 

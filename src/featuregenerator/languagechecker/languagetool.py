@@ -1,4 +1,5 @@
 '''
+Wrapper and feature generatore for LanguageTool via external process / commandline
 Created on 24 Mar 2012
 
 @author: Eleftherios Avramidis
