@@ -1,7 +1,7 @@
 '''
 Created on Nov 16, 2011
 
-@author: jogin
+@author: Lukas Poustka
 '''
 
 import sys

@@ -7,7 +7,7 @@ import StringIO
 from ConfigParser import ConfigParser, NoOptionError
 from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator, BerkeleyXMLRPCFeatureGenerator
 from featuregenerator.iq.acrolinxclient import IQFeatureGenerator
-from featuregenerator.lm.srilm.srilm_ngram import SRILMngramGenerator 
+from featuregenerator.lm.server import ServerNgramFeatureGenerator 
 import os
 import re
 import sys
@@ -199,7 +199,7 @@ class ExperimentConfigParser(ConfigParser):
                 lm_url = self.get(lm_name, "url")
                 lm_tokenize = self.getboolean(lm_name, "tokenize")
                 lm_lowercase = self.getboolean(lm_name, "lowercase")
-                srilm_generator = SRILMngramGenerator(lm_url, language, lm_lowercase, lm_tokenize)
+                srilm_generator = ServerNgramFeatureGenerator(lm_url, language, lm_lowercase, lm_tokenize)
                 return srilm_generator
         return None
     

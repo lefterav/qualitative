@@ -1,4 +1,5 @@
 '''
+Contains feature generator for adding BLEU score as an attribute
 Created on 07.10.2011
 
 @author: Eleftherios Avramidis
