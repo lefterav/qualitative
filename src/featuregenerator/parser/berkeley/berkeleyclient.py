@@ -1,3 +1,7 @@
+"""
+Feature generator from Berkeley PCFG parses by using a remote Berkeley parsing server
+"""
+
 # -*- coding: utf-8 -*-
 import xmlrpclib 
 import time

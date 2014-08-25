@@ -37,6 +37,8 @@ class ParallelSentence(object):
         """
         self.src = source 
         self.tgt = translations
+        if type(self.tgt) is not list:
+            raise TypeError("ParalleSentence target sentences should be a list")
         self.ref = reference
         self.attributes = deepcopy (attributes)
         self.rank_name = rank_name
