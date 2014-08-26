@@ -150,12 +150,6 @@ class CfgRulesExtractor(FeatureGenerator):
     '''
     Handle the extraction of features out of CFG rules 
     '''
-
-    def __init__(self):
-        '''
-        Constructor
-        '''
-        pass
     
     def get_features_simplesentence(self, simplesentence, parallelsentence):
         '''
@@ -236,7 +230,7 @@ class CfgAlignmentFeatureGenerator(FeatureGenerator):
     def _get_unaligned_target_indices(self, target_line, alignment_string):
         alignedindices = set()
         for _, targetindex in [t.split("-") for t in alignment_string.split()]:
-             alignedindices.add(int(targetindex))
+            alignedindices.add(int(targetindex))
         allindices = set(range(len(target_line.split())))
         unaligned = allindices - alignedindices
         logging.debug("Unaligned indices on target {}".format(",".join([str(i) for i in unaligned ])))
@@ -276,8 +270,14 @@ class CfgAlignmentFeatureGenerator(FeatureGenerator):
                 rule_alignment_string = "{}_{}".format(source_label, "-".join(matched_labels))
             else:
                 rule_alignment_string = "{}_{}".format(source_label, "-none")
+                
+            #attribute for the depth pf the nodes of the particular alignment
             key = xml_normalize("cfgal_{}".format(rule_alignment_string))
             atts[key] = min([atts.setdefault(key, 100), depth]) 
+            
+            #attribute for the count of occurences of the particular alignment
+            key = xml_normalize("cfgalc_{}".format(rule_alignment_string))
+            atts[key] = atts.setdefault(key, 0) + 1
         return atts
 
     
@@ -294,9 +294,7 @@ class CfgAlignmentFeatureGenerator(FeatureGenerator):
         logging.debug("chosen labels: {}".format(matched_labels))
         return matched_labels
 
-from dataprocessor.ce.cejcml import CEJcmlReader
-from sentence.sentence import SimpleSentence
-from sentence.parallelsentence import ParallelSentence
+
 from featuregenerator.ibm1 import AlignmentFeatureGenerator
 from dataprocessor.sax import saxjcml
 
