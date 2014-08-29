@@ -25,7 +25,3 @@ class Ranker(object):
     def __reduce__(self):
         pass
     
-        
-
-class OrargeRanker(object):
-    pass
