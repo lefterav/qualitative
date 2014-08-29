@@ -344,6 +344,7 @@ class ParallelSentence(object):
         invert_ranks = kwargs.setdefault("invert_ranks", [])
         rank_name = kwargs.setdefault("rank_name", self.rank_name)
         rankless = kwargs.setdefault("rankless", False)
+        ties = kwargs.setdefault("ties", False)
         
         systems = []
         targets = []
@@ -392,6 +393,8 @@ class ParallelSentence(object):
                                              invert_ranks = invert_ranks,
                                              rankless = rankless
                                              ) 
+            if not ties:
+                self.remove_ties()
             yield pairwise_parallel_sentence
     
 
