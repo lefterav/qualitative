@@ -17,7 +17,7 @@ from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentence
 
 from Orange.data import Table
 from Orange.data import Instance, Value, Domain
-#from Orange.evaluation.scoring import CA, Precision, Recall, F1 
+from Orange.evaluation.scoring import CA, Precision, Recall, F1 
 from Orange.evaluation.testing import cross_validation
 from Orange.classification.rules import rule_to_string
 from Orange.classification.svm import get_linear_svm_weights
@@ -30,7 +30,7 @@ from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
 from Orange.classification.tree import TreeLearner
 from Orange.classification.tree import C45Learner
 from Orange.classification.logreg import LogRegLearner #,LibLinearLogRegLearner
-from Orange.classification import Classifier
+from Orange.classification import Classifier 
 from Orange.feature import Continuous
 
 
