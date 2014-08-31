@@ -131,6 +131,8 @@ class AutorankingSuite(PyExperimentSuite):
         
         self.trainset_orange_filename = "trainset.tab"
         self.testset_orange_filename = "testset.tab"
+
+        self.localdir = "/local/tmp/elav01/tmp"
     
     def iterate(self, params, rep, n):
         ret = {}
@@ -165,7 +167,7 @@ class AutorankingSuite(PyExperimentSuite):
         if n == 30:
             print "pairwise testset"
             #self.testset = AnalyticPairwiseDataset(self.testset, replacement = self.replacement, invert_ranks = self.invert_ranks)
-            pairwise_ondisk(self.testset_filename, replacement = self.replacement, invert_ranks = self.invert_ranks)
+            pairwise_ondisk(self.testset_filename, self.pairwise_testset_filename,  replacement = self.replacement, invert_ranks = self.invert_ranks)
         
         if n == 40:
             #print "add difference features : trainset"
@@ -178,7 +180,6 @@ class AutorankingSuite(PyExperimentSuite):
         
         if n == 50:
             #print "add difference feature : testset"
-            self.pairwise_testset_filename = "pairwise_testset.jcml"
             
             #parallelsentences = self.testset.get_parallelsentences()
             #parallelsentences = DiffGenerator().add_features_batch(parallelsentences)
@@ -192,8 +193,8 @@ class AutorankingSuite(PyExperimentSuite):
             input_file = self.pairwise_trainset_filename
             
             
-            if os.path.isdir("/local"):
-                dir = "/local"
+            if os.path.isdir(self.localdir):
+                dir = self.localdir
             else:
                 dir = "."
             
@@ -221,8 +222,8 @@ class AutorankingSuite(PyExperimentSuite):
             input_file = self.pairwise_testset_filename
             
             
-            if os.path.isdir("/local"):
-                dir = "/local"
+            if os.path.isdir(self.localdir):
+                dir = self.localdir
             else:
                 dir = "."
             
