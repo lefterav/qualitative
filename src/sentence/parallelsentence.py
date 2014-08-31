@@ -350,11 +350,12 @@ class ParallelSentence(object):
         targets = []
         systems_list = []
         targets_list = []
+        if not ties:
+            self.remove_ties()
         
         translations = self.get_translations()
         if kwargs.setdefault('filter_unassigned', False):
             translations = [t for t in self.get_translations() if t.get_attribute(self.rank_name) != "-1"]    
-
         #this is used in case we want to include references in the pairwising
         #references are added as translations by system named _ref
         #only single references supported at the moment
@@ -393,8 +394,6 @@ class ParallelSentence(object):
                                              invert_ranks = invert_ranks,
                                              rankless = rankless
                                              ) 
-            if not ties:
-                self.remove_ties()
             yield pairwise_parallel_sentence
     
 

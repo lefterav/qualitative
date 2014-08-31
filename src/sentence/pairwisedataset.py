@@ -285,21 +285,20 @@ class FilteredPairwiseDataset(CompactPairwiseDataset):
 from dataprocessor.ce.cejcml import CEJcmlReader
 from dataprocessor.sax.saxps2jcml import IncrementalJcml
 
-def pairwise_ondisk(self, plain_filename, pairwise_filename, read_method=CEJcmlReader, write_method=IncrementalJcml, **kwargs):
-        self.read_method = read_method
-        self.plain_filename = plain_filename
-        self.pairwise_filename = pairwise_filename
-        plain_dataset = read_method(plain_filename)
+def pairwise_ondisk(plain_filename, pairwise_filename, read_method=CEJcmlReader, write_method=IncrementalJcml, **kwargs):
+        #self.read_method = read_method
+        #self.plain_filename = plain_filename
+        #self.pairwise_filename = pairwise_filename
+        plain_dataset = read_method(plain_filename, all_general=True, all_target=True)
         pairwise_dataset = write_method(pairwise_filename) 
         
         for parallelsentence in plain_dataset.get_parallelsentences():
             pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(**kwargs)
             for pairwise_parallelsentence in pairwise_parallelsentences:
                 pairwise_dataset.add_parallelsentence(pairwise_parallelsentence)
-        plain_dataset.close() 
         pairwise_dataset.close()
         
-        self.pairwise_filename = pairwise_filename 
+        #self.pairwise_filename = pairwise_filename 
     
 #    def get_parallelsentences(self):
 #        pairwise_dataset = self.read_method(self.pairwise_filename)
