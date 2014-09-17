@@ -302,3 +302,7 @@
 
 .settings/org.eclipse.core.resources.prefs
 src/support/preprocessing/.history
+.settings/org.eclipse.ltk.core.refactoring.prefs
+src/.gitignore
+lib/.history
+src/app/autoranking/.gitignore
