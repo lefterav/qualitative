@@ -263,7 +263,7 @@ class AutorankingSuite(PyExperimentSuite):
             learner = self.learner(**self.classifier_params)
             cv = evaluation.testing.cross_validation([learner], orangeData, 10)
             ret["CA"] = evaluation.scoring.CA(cv)[0]
-            ret["AUC"] = evaluation.scoring.AUC(cv)[0]
+            #ret["AUC"] = evaluation.scoring.AUC(cv)[0]
             
         if n == 90:
             print "test_classifier"
