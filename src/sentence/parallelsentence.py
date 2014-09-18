@@ -1,4 +1,5 @@
 """
+Provides the class which contains the information and meta-data of a parallel sentence
 @author: Eleftherios Avramidis
 """
 

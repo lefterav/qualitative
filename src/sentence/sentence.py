@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
+Provides the class which contains the information for a simple (shallow) sentence
 @author: Eleftherios Avramidis
 """
 
@@ -12,6 +13,10 @@ import logging as log
 class SimpleSentence(object):
     """
     A simple (shallow) sentence object, which wraps both a sentence and its attributes
+    @ivar string: the string that the simple sentence will consist of
+    @type string: string
+    @ivar attributes: a dictionary of arguments that describe properties of the simple sentence
+    @type attributes: {str, Object}
     """
 
 
@@ -21,7 +26,7 @@ class SimpleSentence(object):
         @param string: the string that the simple sentence will consist of
         @type string: string
         @param attributes: a dictionary of arguments that describe properties of the simple sentence
-        @type attributes: {String key, String value}
+        @type attributes: {str, Object}
         
         """
         
@@ -57,6 +62,11 @@ class SimpleSentence(object):
         return self.attributes
 
     def get_rank(self):
+        """
+        Get the rank attribute of the sentence
+        @return: the rank attribute of the sentence
+        @rtype: str
+        """
         return self.attributes["rank"]
 
     def add_attribute(self, key, value):
@@ -83,6 +93,11 @@ class SimpleSentence(object):
         del(self.attributes[attribute])
 
     def keep_only_attributes(self, attribute_names):
+        """
+        Modiify current sentence object by removing sentence attributes whose name is not in the given list
+        @param attribute_names: a list of attribute names that we want to keep
+        @type attribute_names: [str, ...]
+        """
         for name in self.attributes.keys():
             if name not in attribute_names:
                 del(self.attributes[name])
@@ -108,6 +123,8 @@ class SimpleSentence(object):
         
         self.attributes.update(incoming_attributes)
         self.string = ss.string
+    
+    #Make sentence also behave as a dictionary
     
     def __getitem__(self, obj, cls=None): 
         return self.get_attribute(obj)

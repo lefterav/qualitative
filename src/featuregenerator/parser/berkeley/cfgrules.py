@@ -19,6 +19,7 @@ from featuregenerator.featuregenerator import FeatureGenerator
 from nltk.align import AlignedSent
 import re
 import sys
+from __builtin__ import enumerate
 
 def xml_normalize(string):
         string = string.replace("$,", "COMMA") #german grammar
@@ -36,7 +37,25 @@ def xml_normalize(string):
 
 
 class Rule:
+    """
+    Class to hold the necessary information for describing a CFG rule
+    @ivar lhs: Left hand side part of the rule
+    @type lhs: str
+    @ivar rhs: Right hand side part of the rule
+    @type rhs: [str, ...]
+    @ivar depth: Distance of the rule from the top of the tree
+    @type depth: int
+    @ivar length: Number of tokens in the rule
+    @type length: int
+    @ivar leaves: The tokens that reside on the (bottom) leaves of this node
+    @type leaves: [str, ...]
+    @ivar indices: The indices of the tokens that this rule applies to
+    @type indices: set([int, ...])
+    """
     def __init__(self):
+        """
+        Initialize an empty Rule
+        """
         self.lhs = None
         self.rhs = []
         self.depth = 0
@@ -44,7 +63,10 @@ class Rule:
         self.leaves = []
         self.indices = set()
     
-    def __str__(self): 
+    def __str__(self):
+        """
+        String representation of the rule, normalized to be comatible for XML attributes
+        """ 
         string = "{}_{}".format(self.lhs, "-".join(self.rhs))
         return xml_normalize(string)        
 
@@ -133,7 +155,7 @@ def get_cfg_rules(string, terminals=False):
             previousrule.length += current_length
             previousrule.leaves.extend(current_leaves)
             previousrule.indices.update(current_indices)
-            logging.debug("Popping previousrule: {}".format(previousrule))
+            logging.debug("Popping previous rule: {}".format(previousrule))
             label = []
         #get characters for the label
         else:
@@ -195,8 +217,17 @@ class CfgRulesExtractor(FeatureGenerator):
                 atts["parse_{}_leaves_max".format(label)] = 0
                 atts["parse_{}_leaves_avg".format(label)] = 0
         
+        #check the position of verbs in comparison to the parent node
         for rule in cfg_rules:
             atts["cfg_{}".format(rule)] =  atts.setdefault("cfg_{}".format(rule), 0) + 1
+            
+            for index, child in enumerate(rule.rhs, 1):
+                if child.startswith("V"):
+                    #position from the beginning
+                    atts["cfgpos_{}-{}".format(rule.lhs, child)] = index
+                    #position from the end
+                    atts["cfgpos_end_{}-{}".format(rule.lhs, child)] = len(rule.rhs) - index + 1
+                    
             try:
                 atts["cfg_{}_depth_max".format(rule)] = max(ruledepth.setdefault(rule, []))
                 atts["cfg_{}_depth_avg".format(rule)] = average(ruledepth.setdefault(rule, []))
@@ -214,9 +245,10 @@ class CfgRulesExtractor(FeatureGenerator):
         return atts    
         
 class CfgAlignmentFeatureGenerator(FeatureGenerator):
-    def __init__(self):
-        #TODO: self.alignment = AlignmentFeatureGenerator(giza_filename)
-        pass
+    """
+    Feature generator for aligning CFG rules between two sentences. It requires
+    that a Berkeley tree and a symmetrized alignment exists
+    """
         
     def get_features_tgt(self, targetsentence, parallelsentence):
         source_line = parallelsentence.get_source().get_string()
@@ -228,6 +260,15 @@ class CfgAlignmentFeatureGenerator(FeatureGenerator):
         return self.process_string(source_line, target_line, alignment_string, sourceparse, targetparse)
    
     def _get_unaligned_target_indices(self, target_line, alignment_string):
+        """
+        Find which target indices have not been aligned
+        @param target_line: the full string of the translated sentence
+        @type target_line: str
+        @param alignment_string: the alignment string in the common hyphen and space separated format like "1-1 2-2" etc
+        @type alignment_string: str
+        @return: a set of indices that have not been aligned
+        @rtype: set([int, ...])
+        """
         alignedindices = set()
         for _, targetindex in [t.split("-") for t in alignment_string.split()]:
             alignedindices.add(int(targetindex))
@@ -237,51 +278,90 @@ class CfgAlignmentFeatureGenerator(FeatureGenerator):
         return unaligned
     
     def process_string(self, source_line, target_line, alignment_string, sourceparse, targetparse):
-        print alignment_string 
+        """
+        The function that processes the alignment between source and target parses
+        @param source_line: the source string of the alignemnt
+        @type source_line: str
+        @param target_line: the target string of the alignment
+        @type target_line: str
+        @param alignment_string: the alignment string in the common hyphen and space separated format like "1-1 2-2" etc
+        @type alignment_string: str
+        @param sourceparse: the parse of the source sentence in bracketed format
+        @type sourceparse: str
+        @param targetparse: the parser of the target sentence in bracketed format
+        @type targetparse: str 
+        """
+        print alignment_string
+        #get the alignment object as wrapped by NTLK 
         aligned_sentence = AlignedSent(source_line.split(),
                                 target_line.split(),
                                 alignment_string)
+        #get source and target CFG rule
         sourcerules = get_cfg_rules(sourceparse, True)
         targetrules = get_cfg_rules(targetparse, True)
         
         rule_alignments = []
         
+        #process one by one the source rules to get the aligned target rules 
         for sourcerule in sourcerules:
             source_label = sourcerule.lhs
             logging.debug("Alignment string: {}".format(alignment_string))
-            logging.debug("Source indices: {}".format(sourcerule.indices)) 
+            logging.debug("Source indices: {}".format(sourcerule.indices))
+            #First get the obviously aligned target indices 
             try:
                 target_indices = aligned_sentence.alignment.range(list(sourcerule.indices))
             except IndexError:
                 target_indices = []            
 #            logging.warning("AlignedSent from NLTK caused an exception for sourcerule {}".format(sourcerule))
 
-            
+            #then fill the gaps of unaligned tokens between source and target alignment to get more aligned nodes
             for unaligned_index in self._get_unaligned_target_indices(target_line, alignment_string):
                 if target_indices and unaligned_index > min(target_indices) and unaligned_index < max(target_indices):
                     target_indices.append(unaligned_index)
             logging.debug("label: {} -> {}".format(source_label, ",".join([str(i) for i in sorted(target_indices)])))
+            
+            #finally get the aligned target rules for the refined set of indices
             matched_labels = self._match_targetlabels(targetrules, target_indices)
             rule_alignments.append((source_label, sourcerule.depth, matched_labels))
           
         atts = {}
+        unaligned = 0
+        
+        #get all alignments from the list and produce attributes
         for source_label, depth, matched_labels in rule_alignments:
             if matched_labels:
                 rule_alignment_string = "{}_{}".format(source_label, "-".join(matched_labels))
             else:
                 rule_alignment_string = "{}_{}".format(source_label, "-none")
+                unaligned += 1
                 
             #attribute for the depth pf the nodes of the particular alignment
-            key = xml_normalize("cfgal_{}".format(rule_alignment_string))
+            key = xml_normalize("cfgal_depth_{}".format(rule_alignment_string))
             atts[key] = min([atts.setdefault(key, 100), depth]) 
             
             #attribute for the count of occurences of the particular alignment
-            key = xml_normalize("cfgalc_{}".format(rule_alignment_string))
+            key = xml_normalize("cfgal_count_{}".format(rule_alignment_string))
             atts[key] = atts.setdefault(key, 0) + 1
+            
+            #the distortion (alignment distance) for the beginning and the end of the source label and target label
+            key = xml_normalize("cfgal_dist-start_{}".format(rule_alignment_string)) 
+            atts[key] = min(sourcerule.indices) - min(target_indices)
+            
+            key = xml_normalize("cfgal_dist-end_{}".format(rule_alignment_string)) 
+            atts[key] = max(sourcerule.indices) - max(target_indices[-1])
+            
+        atts["cfgal_unaligned"] = unaligned 
         return atts
 
     
     def _match_targetlabels(self, targetrules, target_indices):
+        """
+        Get the target labels that match to the given target_indices
+        @param targetrules: a list of target rules
+        @type targetrules: [Rule, Rule, ...]
+        @param target_indices: a list of indices
+        @type target_indices: [int, ...]
+        """
         candidate_labels = []
         for targetrule in targetrules:
             logging.debug("t-label: {} -> {}".format(targetrule, ",".join([str(i) for i in targetrule.indices])))
