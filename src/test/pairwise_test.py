@@ -22,11 +22,44 @@ class PairwiseTesting(unittest.TestCase):
     classdocs
     '''
     def setUp(self):
-        self.filename = "pairwiseparallelsentence_test.jcml"
+        self.filename = "pairwiseparallelsentence_test.1.jcml"
         self.mydataset = JcmlReader(self.filename).get_dataset()
+        self.datasize = 1
+        tgt_per_sentence = 3
+        self.allpairwise = self.datasize * tgt_per_sentence * (tgt_per_sentence-1) 
+        
+    def test_sentence_loading(self):
+        self.assertEqual(len(self.mydataset.get_parallelsentences()), self.datasize, "Not all sentences read properly")
     
+    def test_get_pairwise_parallelsentences_replacement(self):
+        pairwise = []
+        self.pairsize = 0
+        for parallelsentence in self.mydataset.get_parallelsentences():
+            pairwise = parallelsentence.get_pairwise_parallelsentences()
+            len_translations = len(parallelsentence.get_translations())
+            len_pairwise =  len_translations*(len_translations-1)
+            self.assertEqual(len(list(pairwise)), len_pairwise, "Amount of pairwise sentences extracted is wrong")
+    
+    def test_get_pairwise_parallelsentences_noreplacement(self):
+        pairwise = []
+        self.pairsize = 0
+        for parallelsentence in self.mydataset.get_parallelsentences():
+            pairwise = parallelsentence.get_pairwise_parallelsentences(replacement=False)
+            len_translations = len(parallelsentence.get_translations())
+            len_pairwise = 1.00*len_translations*(len_translations-1)/2
+            self.assertEqual(len(list(pairwise)), len_pairwise, "Amount of pairwise sentences extracted is wrong")
+        
+        
+    
+    def test_create_analytic_replacement(self):
+        analytic_testset = AnalyticPairwiseDataset(self.mydataset, replacement=True)
+        self.assertEqual(len(analytic_testset.get_parallelsentences()), self.allpairwise, "Amount of pairwize sentences in Analytic Pairwise Set is wrong")
 
-
+    def test_create_analytic_noreplacement(self):
+        analytic_testset = AnalyticPairwiseDataset(self.mydataset, replacement=False)
+        self.assertEqual(len(analytic_testset.get_parallelsentences()), self.allpairwise/2,  "Amount of pairwize sentences in Analytic Pairwise Set is wrong")
+        
+    
     def test_pairwise_reconstruct_twice(self):
         """
         Loads a dataset, converts that to pairwise once and reconstructs it. Then it loads that again and reconstructs it once more
@@ -35,9 +68,13 @@ class PairwiseTesting(unittest.TestCase):
         
         
         #first perform typical cleanup of the test set
-        analytic_testset = AnalyticPairwiseDataset(self.mydataset) #this 
+        analytic_testset = AnalyticPairwiseDataset(self.mydataset, replacement=True) #this
+        output_filename = "analytic_1.jcml"
+        Parallelsentence2Jcml(analytic_testset.get_parallelsentences(), shuffle_translations=False, sort_attribute="system").write_to_file(output_filename)
+         
+         
         filtered_dataset = FilteredPairwiseDataset(analytic_testset, 1.00)
-        filtered_dataset.remove_ties()
+        #filtered_dataset.remove_ties()
 
         output_filename = "filtered_1.jcml"
         Parallelsentence2Jcml(filtered_dataset.get_parallelsentences(), shuffle_translations=False, sort_attribute="system").write_to_file(output_filename)
