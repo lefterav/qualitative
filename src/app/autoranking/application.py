@@ -16,7 +16,7 @@ import sys
 from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator
 from sentence.sentence import SimpleSentence
 
-from ml.lib.orange import OrangeRanker 
+from ml.lib.orange.ranking import OrangeRanker 
 from sentence.parallelsentence import ParallelSentence
 
 from bootstrap import ExperimentConfigParser
