@@ -1,5 +1,5 @@
 '''
-Utilize the orange machine learning library
+Utilize the orange machine learning library for ranking
 Created on 19 Apr 2013
 
 @author: Eleftherios Avramidis
@@ -35,20 +35,20 @@ from Orange.feature import Continuous
 from support.preprocessing.jcml.align import target_attribute_names
 
 
+# def forname(name, **kwargs):
+#     """
+#     Pythonic way to initialize and return an orange learner. 
+#     Pass any parameters needed for the initialization
+#     @param name: the name of the learner to be returned
+#     @type name: string
+#     @return: an orange learner
+#     @rtype: Orange.classification.Classifier    
+#     """
+#     orangeclass = eval(name)
+#     return orangeclass(**kwargs)
+
+
 def forname(name, **kwargs):
-    """
-    Pythonic way to initialize and return an orange learner. 
-    Pass any parameters needed for the initialization
-    @param name: the name of the learner to be returned
-    @type name: string
-    @return: an orange learner
-    @rtype: Orange.classification.Classifier    
-    """
-    orangeclass = eval(name)
-    return orangeclass(**kwargs)
-
-
-def ranker_forname(name, **kwargs):
     """
     Return particular ranker class given a string
     @return: ranker object wrapping an Orange classifier
@@ -97,7 +97,7 @@ def parallelsentence_to_instance(parallelsentence, domain=None):
     return instance
 
     
-def dataset_to_pairwise_instances(filename, 
+def dataset_to_instances(filename, 
                          attribute_set=None,
                          class_name=None,
                          reader=CEJcmlReader,                         
@@ -203,7 +203,7 @@ class OrangeRanker(PairwiseRanker):
     """    
     
     def train(self, dataset_filename, **kwargs):
-        datatable = dataset_to_pairwise_instances(filename=dataset_filename, **kwargs)
+        datatable = dataset_to_instances(filename=dataset_filename, **kwargs)
         self.learner = self.learner(**kwargs)
         self.classifier = self.learner(datatable)
         self.fit = True
