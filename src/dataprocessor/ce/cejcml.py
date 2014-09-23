@@ -6,13 +6,25 @@ Created on 26 Jun 2012
 
 from numpy import average, std, min, max, asarray
 import logging as log
-import sys
 
 from collections import defaultdict, OrderedDict
-from xml.etree.cElementTree import iterparse
+from xml.etree.ElementTree import iterparse
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 from sentence.dataset import DataSet
+
+def prefix_source_atts(source_attribute_names):
+    return ["src_{}".format(att) for att in source_attribute_names]
+
+def prefix_target_atts(target_attritube_names, target_index):
+    return [["tgt-{}_{}".format(target_index, att) for att in target_attritube_names]]
+
+def get_attribute_names(filename):
+    attribute_names = set()
+    for parallelsentence in CEJcmlReader(filename).get_parallelsentences(compact=True, all_general=True, all_target=True):
+        attribute_names.update((parallelsentence.get_source().get_attributes().keys()))
+    return attribute_names
+
 
 class CEJcmlReader():
     """
@@ -45,6 +57,13 @@ class CEJcmlReader():
         self.all_general = kwargs.setdefault('all_general', False)
         self.all_target = kwargs.setdefault('all_target', False)        
         self.input_filename = input_xml_filename
+    
+    
+    def get_attribute_names(self):
+        attribute_names = set()
+        for parallelsentence in self.get_parallelsentences(compact=True, all_general=True, all_target=True):
+            attribute_names.update((parallelsentence.get_source().get_attributes().keys()))
+        return attribute_names
     
     def get_dataset(self):
         parallelsentences = []
@@ -95,7 +114,6 @@ class CEJcmlReader():
         return DataSet(parallelsentences)       
 
     def get_parallelsentences(self, compact=True):
-        parallelsentences = []
         source_file = open(self.input_filename, "r")
         # get an iterable
         context = iterparse(source_file, events=("start", "end"))
