@@ -7,13 +7,13 @@ Created on 19 Apr 2013
 
 import cPickle as pickle
 import sys
+import os
+import shutil
+import tempfile
 
+from ml.ranker import PairwiseRanker
 from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange
-from dataprocessor.ce.cejcml import CEJcmlReader 
-#from ml.var import Classifier
-
-from sentence.dataset import DataSet
-from sentence.pairwisedataset import AnalyticPairwiseDataset
+from dataprocessor.ce.cejcml import CEJcmlReader
 from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentenceSet
 
 from Orange.data import Table
@@ -24,7 +24,6 @@ from Orange.classification.rules import rule_to_string
 from Orange.classification.svm import get_linear_svm_weights
 from Orange.classification import logreg
 
-#import Orange Learners
 from Orange.classification.bayes import NaiveLearner
 from Orange.classification.knn import kNNLearner
 from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
@@ -34,7 +33,7 @@ from Orange.classification.logreg import LogRegLearner #,LibLinearLogRegLearner
 from Orange.classification import Classifier 
 from Orange.feature import Continuous
 from support.preprocessing.jcml.align import target_attribute_names
-import os
+
 
 def forname(name, **kwargs):
     """
@@ -49,10 +48,11 @@ def forname(name, **kwargs):
     return orangeclass(**kwargs)
 
 
-def runtime_ranker_forname(name, **kwargs):
+def ranker_forname(name, **kwargs):
     """
     Return particular ranker class given a string
-    
+    @return: ranker object wrapping an Orange classifier
+    @rtype: L{PairwiseRanker}
     """
     orangeclass = eval(name)
     return OrangeRanker(orangeclass(**kwargs))
@@ -63,9 +63,9 @@ def parallelsentence_to_instance(parallelsentence, domain=None):
     Receive a parallel sentence and convert it into a memory instance for
     the machine learner. 
     @param parallelsentence:
-    @type parallelsentence: L{sentence.parallelsentence.ParallelSentence}
+    @type parallelsentence: L{ParallelSentence}
     @return: an orange instance    
-    @type: Orange.data.Instance
+    @type: C{Instance} from Orange.data
     """
     attributes = parallelsentence.get_nested_attributes()
     #print "attributes = ", attributes
@@ -73,17 +73,17 @@ def parallelsentence_to_instance(parallelsentence, domain=None):
     
     #features required by the model need to be retrieved from the 
     #dic attributes containing feature values for this sentence
-    if domain: 
-        feature_names = [feature.name for feature in domain.features]
-    else:
-        feature_names = attributes.keys()
+    #if domain: 
+    #    feature_names = [feature.name for feature in domain.features]
+    #else:
+    #    feature_names = attributes.keys()
         #feature_type = feature.var_type
         
-    for feature_name in feature_names:
+    for feature in domain.features:
         try:
-            value = attributes[feature_name]
+            value = attributes[feature.name]
         except KeyError:
-            sys.stderr.write("Feature '{}' not given by the enabled generators\n".format(feature_name))
+            sys.stderr.write("Feature '{}' not given by the enabled generators\n".format(feature.name))
             value = 0 
 
         #this casts the feature value we produced, in an orange value object
@@ -91,52 +91,74 @@ def parallelsentence_to_instance(parallelsentence, domain=None):
         values.append(orange_value)
 
     #create a model without the class value and use it for the new instance
+    #@TODO: make it possible to initialize instance without having the domain
     classless_domain = Domain(domain.features, False)    
     instance = Instance(classless_domain, values)                                            
     return instance
 
-import tempfile
-
     
-def dataset_to_instances_pairwise(filename, 
-                         attribute_set=[],
+def dataset_to_pairwise_instances(filename, 
+                         attribute_set=None,
                          class_name=None,
-                         class_name = None,
-                         reader=CEJcmlReader,
-                         
-                         tempdir = "/tmp"):
+                         reader=CEJcmlReader,                         
+                         tempdir = "/tmp",
+                         output_filename = None):
     """
-    Receive a dataset filename and convert it into a memory table for the orange machine learner
+    Receive a dataset filename and convert it into a memory table for the Orange machine learning
+    toolkit. Since we need support for big data sets and optimal memory usage, the best way
+    seems to create a temporary external tab separated file and load it directly with the Orange
+    loader, which is implemented in C. This way no double object instances need to be on memory
+    during conversion time.
+    @param attribute_set: A description of the attributes we want to be included in the data table
+    @type attribute_set: L{AttributeSet}
+    @param class_name: The name of the class (label) for the machine learning task
+    @type class_name: C{str}
+    @param reader: A class which is able to read from external files. This give the possibility to 
+    change the default reading behaviour (incremental XML reader) and read from other types of data files
+    @type reader: L{DataReader} 
+    @param tempdir: the temporary directory where the incremental file is written. Due to the
+    increased I/O access, this is suggested to be in a storage unit that is locally connected to the
+    computer that does the processsing, and not e.g. via NFS.
+    @type tempdir: C{str}
+    @param ouput_filename: specify here a full path if a copy of the Orange tab separated file needs to be
+    retained (e.g. for debugging purposes)
+    @type output_filename: C{str}
+    @return An Orange Table object
+    @rtype: C{Table}
     """
+    
+    #create a temporary file, to put the incremental output on the go
     temporary_filename = tempfile.mktemp(dir=tempdir, suffix='.tab')
     tabfile = open(temporary_filename, 'w')
-        
-    header = _get_header(attribute_set, class_name)
+    
+    #get the text for the header of the orange file
+    header = _get_pairwise_header(attribute_set, class_name)
     tabfile.write(header)
     
+    #initialize the class that will take over the reading from the file
     dataset = reader(filename, compact=True, 
                      attribute_set=attribute_set)
     
+    #iterate over all parallel sentences provided by the data reader
     for parallelsentence in dataset.get_parallelsentences():
         vectors = parallelsentence.get_vectors_product(attribute_set)
         
+        #every parallelsentence has many instances
         for vector in vectors:
             tabline = "\t".join([str(value) for value in vector])
-            tabfile.write("{}\n".format(tabline))
+            print >>tabfile, tabline
     
     tabfile.close()
-    return Table(temporary_filename)
+    
+    datatable = Table(temporary_filename)
+    
+    if output_filename:
+        #output file should be created only if the writing is finished
+        shutil.copy(temporary_filename, output_filename)
     os.unlink(temporary_filename)
+    return datatable
     
-    
-    
-    
-    
-    #load the names of the attributes so as to be able to create the heading
-    
-
-
-def _get_header(self, attribute_names,
+def _get_pairwise_header(self, attribute_names,
                       class_name):
     """
     Prepare the string that will be used for the orange tab file header
@@ -145,10 +167,7 @@ def _get_header(self, attribute_names,
     @param source_attribute_names: the names of the attributes of the source sentence
     @type source_attribute_names: [C{string}, ...]
     """
-    
-    #open a temporary file for putting the data
-        
-    
+       
     #by default all attributes are continuous
     pairwise_attribute_names = attribute_names.get_names_pairwise()
     attribute_types = ['c']*len(pairwise_attribute_names)
@@ -169,21 +188,25 @@ def _get_header(self, attribute_names,
     header = "{}\n{}\n{}\n".format(line_names, line_types, line_class)
     return header
     
-    
 
-
-class OrangeRanker:
+class OrangeRanker(PairwiseRanker):
     """
     This class represents a ranker implemented over pairwise orange classifiers. 
     This ranker is loaded into the memory from a dump file which contains an already trained
     model and provides functions to rank one source sentence + translations at a time
-    @ivar classifier: the orange classifier object
-    @type classifier: Orange.classification.Classifier
+    @ivar fit: whether the classifier has been fit/trained or not
+    @type fit: C{bool}
+    @ivar learner: the un-trained classifier class to be used for training
+    @type learner: C{Learner} from C{Orange.classification}
+    @ivar classifier: the trained classifier object
+    @type classifier: C{Classifier} from C{Orange.classification}
     """    
     
     def train(self, dataset_filename, **kwargs):
+        datatable = dataset_to_pairwise_instances(filename=dataset_filename, **kwargs)
         self.learner = self.learner(**kwargs)
-        table = dataset_to_instances
+        self.classifier = self.learner(datatable)
+        self.fit = True
     
     def _get_description(self, resultvector):
         output = []
@@ -269,13 +292,6 @@ class OrangeRanker:
         return result, description
         
         
-                           
-        
-        
-        
-        
-        
-        
 
 
 class OrangeClassifier(Classifier):
@@ -291,7 +307,7 @@ class OrangeClassifier(Classifier):
     @ivar test_data_filename: the jcml test file
     @type test_data_filename: str
     @ivar test_table: the Orange "table" of test examples
-    @type \L{Orange.data.Table}
+    @type L{Orange.data.Table}
     '''
     def __init__(self, learner, **kwargs):
         '''
