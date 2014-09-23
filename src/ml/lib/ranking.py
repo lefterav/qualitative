@@ -231,6 +231,7 @@ class OrangeRanker(PairwiseRanker):
             output.append(" \n instance: {} \n probabilities: {}\n".format(instance, distribution))    
         return "".join(output)
     
+    
     def get_ranked_sentence(self, parallelsentence):
         """
         Receive a parallel sentence with features and perform ranking
@@ -290,8 +291,6 @@ class OrangeRanker(PairwiseRanker):
 #        return ranked_sentence.get_target_attribute_values("rank")
         description = self._get_description(resultvector)
         return result, description
-        
-        
 
 
 class OrangeClassifier(Classifier):
