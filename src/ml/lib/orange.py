@@ -73,17 +73,17 @@ def parallelsentence_to_instance(parallelsentence, domain=None):
     
     #features required by the model need to be retrieved from the 
     #dic attributes containing feature values for this sentence
-    if domain: 
-        feature_names = [feature.name for feature in domain.features]
-    else:
-        feature_names = attributes.keys()
+    #if domain: 
+    #    feature_names = [feature.name for feature in domain.features]
+    #else:
+    #    feature_names = attributes.keys()
         #feature_type = feature.var_type
         
-    for feature_name in feature_names:
+    for feature in domain.features:
         try:
-            value = attributes[feature_name]
+            value = attributes[feature.name]
         except KeyError:
-            sys.stderr.write("Feature '{}' not given by the enabled generators\n".format(feature_name))
+            sys.stderr.write("Feature '{}' not given by the enabled generators\n".format(feature.name))
             value = 0 
 
         #this casts the feature value we produced, in an orange value object
@@ -132,7 +132,7 @@ def dataset_to_pairwise_instances(filename,
     tabfile = open(temporary_filename, 'w')
     
     #get the text for the header of the orange file
-    header = _get_header(attribute_set, class_name)
+    header = _get_pairwise_header(attribute_set, class_name)
     tabfile.write(header)
     
     #initialize the class that will take over the reading from the file
@@ -158,7 +158,7 @@ def dataset_to_pairwise_instances(filename,
     os.unlink(temporary_filename)
     return datatable
     
-def _get_header(self, attribute_names,
+def _get_pairwise_header(self, attribute_names,
                       class_name):
     """
     Prepare the string that will be used for the orange tab file header
