@@ -58,6 +58,22 @@ class PairwiseTesting(unittest.TestCase):
     def test_create_analytic_noreplacement(self):
         analytic_testset = AnalyticPairwiseDataset(self.mydataset, replacement=False)
         self.assertEqual(len(analytic_testset.get_parallelsentences()), self.allpairwise/2,  "Amount of pairwize sentences in Analytic Pairwise Set is wrong")
+    
+    
+    def test_io_order(self):
+        #write and read one by one the sentences in a file and check whether what comes back is equal to what went out
+        analytic_testset = AnalyticPairwiseDataset(self.mydataset) #this
+        output_filename = "analytic_1.jcml"
+        
+        for initial_parallelsentence in analytic_testset.get_parallelsentences():
+            Parallelsentence2Jcml([initial_parallelsentence], shuffle_translations=False).write_to_file(output_filename)
+            
+            reimported_parallelsentence = JcmlReader(output_filename).get_dataset().get_parallelsentences()[0]
+            
+            initial_systems = initial_parallelsentence.get_target_attribute_values("system")
+            reimported_systems = reimported_parallelsentence.get_target_attribute_values("system")
+            
+            self.assertEqual(initial_systems, reimported_systems, "One of the pairwise sentences could not be written/read consistently")
         
     
     def test_pairwise_reconstruct_twice(self):
@@ -65,25 +81,28 @@ class PairwiseTesting(unittest.TestCase):
         Loads a dataset, converts that to pairwise once and reconstructs it. Then it loads that again and reconstructs it once more
         This was helpful to detect a problem of wrong 
         """
+        analytic_testset = AnalyticPairwiseDataset(self.mydataset) #this
+        output_filename = "analytic_1.jcml"
+        Parallelsentence2Jcml(analytic_testset.get_parallelsentences(), shuffle_translations=False).write_to_file(output_filename)
         
         
         #first perform typical cleanup of the test set
-        analytic_testset = AnalyticPairwiseDataset(self.mydataset, replacement=True) #this
+        analytic_testset = AnalyticPairwiseDataset(self.mydataset) #this
         output_filename = "analytic_1.jcml"
-        Parallelsentence2Jcml(analytic_testset.get_parallelsentences(), shuffle_translations=False, sort_attribute="system").write_to_file(output_filename)
+        Parallelsentence2Jcml(analytic_testset.get_parallelsentences(), shuffle_translations=False).write_to_file(output_filename)
          
          
         filtered_dataset = FilteredPairwiseDataset(analytic_testset, 1.00)
         #filtered_dataset.remove_ties()
 
         output_filename = "filtered_1.jcml"
-        Parallelsentence2Jcml(filtered_dataset.get_parallelsentences(), shuffle_translations=False, sort_attribute="system").write_to_file(output_filename)
+        Parallelsentence2Jcml(filtered_dataset.get_parallelsentences(), shuffle_translations=False).write_to_file(output_filename)
 
         reconstructed_dataset = filtered_dataset.get_multiclass_set()
 #        reconstructed_dataset.remove_ties()
         
         output_filename = "reconstructed_1.jcml"
-        Parallelsentence2Jcml(reconstructed_dataset.get_parallelsentences(), shuffle_translations=False, sort_attribute="system").write_to_file(output_filename)
+        Parallelsentence2Jcml(reconstructed_dataset.get_parallelsentences(), shuffle_translations=False).write_to_file(output_filename)
         
         #retrieve clean test set from the file and repeat the handling
         simple_testset = JcmlReader(output_filename).get_dataset()
@@ -91,13 +110,13 @@ class PairwiseTesting(unittest.TestCase):
         compact_testset_2 = CompactPairwiseDataset(analytic_testset_2)
 
         output_filename = "filtered_2.jcml"
-        Parallelsentence2Jcml(compact_testset_2.get_parallelsentences(), shuffle_translations=False, sort_attribute="system").write_to_file(output_filename)
+        Parallelsentence2Jcml(compact_testset_2.get_parallelsentences(), shuffle_translations=False).write_to_file(output_filename)
         
 #        self.assertEqual(len(filtered_dataset.get_parallelsentences()), len(compact_testset_2.get_parallelsentences())) 
         
         reconstructed_dataset_2 = compact_testset_2.get_multiclass_set()
         output_filename = "reconstructed_2.jcml"
-        Parallelsentence2Jcml(reconstructed_dataset_2.get_parallelsentences(), shuffle_translations=False, sort_attribute="system").write_to_file(output_filename)
+        Parallelsentence2Jcml(reconstructed_dataset_2.get_parallelsentences(), shuffle_translations=False).write_to_file(output_filename)
         
         reconstructed_1 = reconstructed_dataset.get_parallelsentences()
         reconstructed_2 = reconstructed_dataset_2.get_parallelsentences()
@@ -123,18 +142,18 @@ class PairwiseTesting(unittest.TestCase):
         
         
         #first perform typical cleanup of the test set
-        analytic_testset = AnalyticPairwiseDataset(self.mydataset) #this 
+        analytic_testset = AnalyticPairwiseDataset(self.mydataset, replacement=True) #this 
         filtered_dataset = FilteredPairwiseDataset(analytic_testset, 1.00)
         filtered_dataset.remove_ties()
 
         output_filename = "filtered_1.jcml"
-        Parallelsentence2Jcml(filtered_dataset.get_parallelsentences(), shuffle_translations=False, sort_attribute="system").write_to_file(output_filename)
+        Parallelsentence2Jcml(filtered_dataset.get_parallelsentences(), shuffle_translations=False).write_to_file(output_filename)
 
         reconstructed_dataset = filtered_dataset.get_multiclass_set()
 #        reconstructed_dataset.remove_ties()
         
         output_filename = "reconstructed_1.jcml"
-        Parallelsentence2Jcml(reconstructed_dataset.get_parallelsentences(), shuffle_translations=False, sort_attribute="system").write_to_file(output_filename)
+        Parallelsentence2Jcml(reconstructed_dataset.get_parallelsentences(), shuffle_translations=False).write_to_file(output_filename)
         
         #retrieve pairwise test set from the file and repeat the handling
         simple_testset = JcmlReader("filtered_1.jcml").get_dataset()
@@ -142,13 +161,13 @@ class PairwiseTesting(unittest.TestCase):
         compact_testset_2 = CompactPairwiseDataset(analytic_testset_2)
 
         output_filename = "filtered_2.jcml"
-        Parallelsentence2Jcml(compact_testset_2.get_parallelsentences(), shuffle_translations=False, sort_attribute="system").write_to_file(output_filename)
+        Parallelsentence2Jcml(compact_testset_2.get_parallelsentences(), shuffle_translations=False).write_to_file(output_filename)
         
 #        self.assertEqual(len(filtered_dataset.get_parallelsentences()), len(compact_testset_2.get_parallelsentences())) 
         
         reconstructed_dataset_2 = compact_testset_2.get_multiclass_set()
         output_filename = "reconstructed_2.jcml"
-        Parallelsentence2Jcml(reconstructed_dataset_2.get_parallelsentences(), shuffle_translations=False, sort_attribute="system").write_to_file(output_filename)
+        Parallelsentence2Jcml(reconstructed_dataset_2.get_parallelsentences(), shuffle_translations=False).write_to_file(output_filename)
         
         reconstructed_1 = reconstructed_dataset.get_parallelsentences()
         reconstructed_2 = reconstructed_dataset_2.get_parallelsentences()

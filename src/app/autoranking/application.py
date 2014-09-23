@@ -16,7 +16,7 @@ import sys
 from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator
 from sentence.sentence import SimpleSentence
 
-from ml.lib.orange import OrangeRuntimeRanker 
+from ml.lib.orange import OrangeRanker 
 from sentence.parallelsentence import ParallelSentence
 
 from bootstrap import ExperimentConfigParser
@@ -61,7 +61,7 @@ class Autoranking:
         self.gateway = cfg.java_init()
         
         self.featuregenerators = self.initialize_featuregenerators(cfg)
-        self.ranker = OrangeRuntimeRanker(classifiername)
+        self.ranker = OrangeRanker(classifiername)
         self.source_language =  cfg.get("general", "source_language")
         self.target_language =  cfg.get("general", "target_language")
         
