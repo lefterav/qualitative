@@ -7,7 +7,6 @@ Provides the class which contains the information for a simple (shallow) sentenc
 """
 
 from copy import deepcopy
-import sys
 import logging as log
 
 class SimpleSentence(object):
@@ -29,12 +28,12 @@ class SimpleSentence(object):
         @type attributes: {str, Object}
         
         """
-        
+        attributes={}
         #avoid tabs
         self.string = string.replace("\t", "  ")
         #avoid getting a shallow reference to the attributes in the dict
         self.attributes = deepcopy (attributes) 
-    
+        
     
 #    def __gt__(self, other):
 #        return self.attributes["system"] > other.attributes["system"]
@@ -135,3 +134,5 @@ class SimpleSentence(object):
     def __delete__(self, obj): 
         del(self.attributes[obj])
         
+    def __iter__(self):
+        return self.attributes.iterkeys()
