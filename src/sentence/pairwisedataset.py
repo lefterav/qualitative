@@ -216,7 +216,7 @@ class AnalyticPairwiseDataset(PairwiseDataset):
         pairwise_parallelsentences_per_sid = OrderedDict()
         
         self.include_references = kwargs.setdefault("include_references", False)
-        self.replacement = kwargs.setdefault("replacement", False)
+        self.replacement = kwargs.setdefault("replacement", True)
         self.filter_unassigned = kwargs.setdefault("filter_unassigned", False)
         self.restrict_ranks = kwargs.setdefault("restrict_ranks", [])
         self.rank_name = kwargs.setdefault("rank_name", "rank")
@@ -280,7 +280,7 @@ class FilteredPairwiseDataset(CompactPairwiseDataset):
         self.pairwise_parallelsentence_sets = OrderedDict()
         for sentence_id, analytic_pairwise_parallelsentence_set in analytic_pairwise_dataset.get_pairwise_parallelsentence_sets().iteritems():
             self.pairwise_parallelsentence_sets[sentence_id] = analytic_pairwise_parallelsentence_set.get_filtered_pairwise_parallelsentence_set(threshold)
-
+            
 
 from dataprocessor.ce.cejcml import CEJcmlReader
 from dataprocessor.sax.saxps2jcml import IncrementalJcml

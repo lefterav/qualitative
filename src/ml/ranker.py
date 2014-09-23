@@ -3,25 +3,35 @@ Created on 26 Mar 2013
 
 @author: Eleftherios Avramidis
 '''
+from sentence.pairwisedataset import pairwise_ondisk
+import os
+import cPickle as pickle
+from dataprocessor.ce.utils import join_jcml 
 
-class Ranker(object):
+class PairwiseRanker():
     '''
     classdocs
     '''
-
-    def __init__(self, **kwargs):
-        '''
-        Constructor
-        '''    
-    def set_data(self, **kwargs):
-        pass
     
-    def prepare_data(self, **kwargs):
-        pass
+    def __init__(self, classifier=None, filename=None, learner=None):
+        self.fit = True
+        if classifier:
+            self.classifier = classifier
+        elif filename:
+            classifier_file = open(filename)
+            self.classifier = pickle.load(filename)
+            classifier_file.close()
+        else:
+            self.learner = learner
+            self.fit = False
     
-    def train(self, **kwargs):
-        pass
+    def train(self, dataset_filename, **kwargs):
+        pairwise_dataset_filename = dataset_filename.replace(".jcml", ".pair.jcml")
+        pairwise_ondisk(dataset_filename, pairwise_dataset_filename, **kwargs)
+        super(PairwiseRanker, self).train(pairwise_dataset_filename)
+        #self.classifier = PairwiseRanker(classifier=pairwise_classifier)
+      
     
-    def __reduce__(self):
+    def rank(self, parallelsentence):
+        
         pass
-    
