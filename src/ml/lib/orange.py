@@ -8,7 +8,8 @@ Created on 19 Apr 2013
 import cPickle as pickle
 import sys
 
-from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange 
+from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange
+from dataprocessor.ce.cejcml import CEJcmlReader 
 #from ml.var import Classifier
 
 from sentence.dataset import DataSet
@@ -32,7 +33,8 @@ from Orange.classification.tree import C45Learner
 from Orange.classification.logreg import LogRegLearner #,LibLinearLogRegLearner
 from Orange.classification import Classifier 
 from Orange.feature import Continuous
-
+from support.preprocessing.jcml.align import target_attribute_names
+import os
 
 def forname(name, **kwargs):
     """
@@ -53,10 +55,10 @@ def runtime_ranker_forname(name, **kwargs):
     
     """
     orangeclass = eval(name)
-    return OrangeRuntimeRanker(orangeclass(**kwargs))
+    return OrangeRanker(orangeclass(**kwargs))
 
 
-def parallelsentence_to_instance(domain, parallelsentence):
+def parallelsentence_to_instance(parallelsentence, domain=None):
     """
     Receive a parallel sentence and convert it into a memory instance for
     the machine learner. 
@@ -70,13 +72,14 @@ def parallelsentence_to_instance(domain, parallelsentence):
     values = []
     
     #features required by the model need to be retrieved from the 
-    #dic attributes containing feature values for this sentence 
-    domain_features = domain.features
-    
-    for feature in domain_features:
-        feature_type = feature.var_type
-        feature_name = feature.name
+    #dic attributes containing feature values for this sentence
+    if domain: 
+        feature_names = [feature.name for feature in domain.features]
+    else:
+        feature_names = attributes.keys()
+        #feature_type = feature.var_type
         
+    for feature_name in feature_names:
         try:
             value = attributes[feature_name]
         except KeyError:
@@ -88,22 +91,88 @@ def parallelsentence_to_instance(domain, parallelsentence):
         values.append(orange_value)
 
     #create a model without the class value and use it for the new instance
-    classless_domain = Domain(domain_features, False)    
+    classless_domain = Domain(domain.features, False)    
     instance = Instance(classless_domain, values)                                            
     return instance
+
+import tempfile
+
+    
+def dataset_to_instances_pairwise(filename, 
+                         attribute_set=[],
+                         class_name=None,
+                         class_name = None,
+                         reader=CEJcmlReader,
+                         
+                         tempdir = "/tmp"):
+    """
+    Receive a dataset filename and convert it into a memory table for the orange machine learner
+    """
+    temporary_filename = tempfile.mktemp(dir=tempdir, suffix='.tab')
+    tabfile = open(temporary_filename, 'w')
+        
+    header = _get_header(attribute_set, class_name)
+    tabfile.write(header)
+    
+    dataset = reader(filename, compact=True, 
+                     attribute_set=attribute_set)
+    
+    for parallelsentence in dataset.get_parallelsentences():
+        vectors = parallelsentence.get_vectors_product(attribute_set)
+        
+        for vector in vectors:
+            tabline = "\t".join([str(value) for value in vector])
+            tabfile.write("{}\n".format(tabline))
+    
+    tabfile.close()
+    return Table(temporary_filename)
+    os.unlink(temporary_filename)
     
     
-def dataset_to_instances(domain, dataset):
+    
+    
+    
+    #load the names of the attributes so as to be able to create the heading
+    
+
+
+def _get_header(self, attribute_names,
+                      class_name):
     """
-    Receive a dataset and convert it into a memory table for the machine learner
+    Prepare the string that will be used for the orange tab file header
+    @param parallel_attribute_names: the names of the attributes attached to the level of the parallel sentence
+    @type parallel_attribute_names: [C{string}, ...]
+    @param source_attribute_names: the names of the attributes of the source sentence
+    @type source_attribute_names: [C{string}, ...]
     """
-    for parallelsentence in dataset:
-        instances = parallelsentence_to_instance(parallelsentence)
-    return Table(instances) 
+    
+    #open a temporary file for putting the data
+        
+    
+    #by default all attributes are continuous
+    pairwise_attribute_names = attribute_names.get_names_pairwise()
+    attribute_types = ['c']*len(pairwise_attribute_names)
+    class_definition = ['']*len(pairwise_attribute_names)
+    
+    if class_name:
+        #add class
+        pairwise_attribute_names.append(class_name)
+        attribute_types.append('d')
+        class_definition.append('c')
+    
+    #convert python lists to string the efficient way
+    line_names = "\t".join(pairwise_attribute_names)
+    line_types = "\t".join(attribute_types)
+    line_class = "\t".join(class_definition)
+    
+    #join three lines into one string
+    header = "{}\n{}\n{}\n".format(line_names, line_types, line_class)
+    return header
+    
+    
 
 
-
-class OrangeRuntimeRanker:
+class OrangeRanker:
     """
     This class represents a ranker implemented over pairwise orange classifiers. 
     This ranker is loaded into the memory from a dump file which contains an already trained
@@ -112,16 +181,9 @@ class OrangeRuntimeRanker:
     @type classifier: Orange.classification.Classifier
     """    
     
-    def __init__(self, classifier_filename):
-        """
-        Load previously trained classifier given existing filename
-        @param classifier_filename: the filename which contains the trained classifier
-        @type classifier_filename: str  
-        """
-        classifier_file = open(classifier_filename)
-        self.classifier = pickle.load(classifier_file)
-        classifier_file.close()
-        
+    def train(self, dataset_filename, **kwargs):
+        self.learner = self.learner(**kwargs)
+        table = dataset_to_instances
     
     def _get_description(self, resultvector):
         output = []
@@ -174,7 +236,7 @@ class OrangeRuntimeRanker:
         
         for pairwise_parallelsentence in pairwise_parallelsentences:
             #conver pairwise parallel sentence into an orange instance
-            instance = parallelsentence_to_instance(domain, pairwise_parallelsentence)
+            instance = parallelsentence_to_instance(pairwise_parallelsentence, domain=domain)
             
             #run classifier for this instance
             value, distribution = self.classifier(instance, return_type)

@@ -8,6 +8,32 @@ from copy import deepcopy
 import re
 import sys
 from ranking import Ranking
+import itertools
+
+def _prefix(self, prefix, names):
+        return [prefix.format(name) for name in names]    
+
+class AttributeSet:
+    def __init__(self, 
+                 parallel_attribute_names=[], 
+                 source_attribute_names=[],
+                 target_attribute_names=[],
+                 ref_attribute_names=[]):
+        self.parallel_attribute_names = parallel_attribute_names
+        self.source_attribute_names = source_attribute_names
+        self.target_attribute_names = target_attribute_names
+        self.ref_attribute_names = ref_attribute_names
+    
+    
+    def get_names_pairwise(self):
+        attribute_names = self.parallel_attribute_names
+        #attribute names for source and target pairs need to be prefixed 
+        attribute_names.extend(_prefix("src_{}", self.source_attribute_names))
+        attribute_names.extend(_prefix("tgt-1_{}", self.target_attribute_names))
+        attribute_names.extend(_prefix("tgt-2_{}", self.target_attribute_names))
+        return attribute_names
+        
+            
 
 class ParallelSentence(object):
     """
@@ -472,8 +498,49 @@ class ParallelSentence(object):
                 remaining_translations.append(translation)
                 prev_rank = rank    
         self.tgt = remaining_translations
+
+
+
+    def get_vectors_product(self, attribute_set, class_name=None):
+        """
+        Return a feature vector in an efficient way, where only specified attributes are included
+        @param attribute_set: a definition of the attribute that need to be included
+        @type attribute_set: L{AttributeSet}
+        @return: one vector for each pairwise comparison of target sentences
+        @rtype: C{iterator} of C{lists}
+        """
+        
+        parallel_attribute_values = [self.attributes[name] for name in attribute_set.parallel_attribute_names]
+        source_attribute_values = [self.src.attributes[name] for name in attribute_set.source_attribute_names]
+
+        for target1, target2 in itertools.product(self.tgt, 2):
+            target1_attribute_values = [target1.attributes[name] for name in attribute_set.target_attribute_names]
+            target2_attribute_values = [target2.attributes[name] for name in attribute_set.target_attribute_names]
             
+            vector = []
+            vector.extend(parallel_attribute_values)
+            vector.extend(source_attribute_values)
+            vector.extend(target1_attribute_values)
+            vector.extend(target2_attribute_values)
             
+            if class_name:
+                class_value = self._get_class_pairwise(target1, target2, class_name)
+                vector.append(class_value)
+                
+                
+            yield vector
+        
+            
+    def _get_class_pairwise(self, target1, target2, class_name):
+        class_value = 0
+        if target1[class_name] > target2[class_name]:
+            class_value = 1
+        elif target1[class_name] < target2[class_name]:
+            class_value = -1
+        return class_value
+        
+                
+        
 
 
         
