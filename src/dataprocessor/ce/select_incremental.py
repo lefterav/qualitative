@@ -4,7 +4,7 @@ Created on 7 Jul 2014
 @author: Eleftherios Avramidis
 '''
 
-from ml.lib.orange import OrangeRanker 
+from ml.lib.orange.ranker import OrangeRanker 
 from dataprocessor.ce.cejcml import CEJcmlReader 
 from collections import OrderedDict
 import sys
