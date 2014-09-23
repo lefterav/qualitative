@@ -501,7 +501,7 @@ class ParallelSentence(object):
 
 
 
-    def get_vectors_product(self, attribute_set, class_name=None):
+    def get_vectors(self, attribute_set, mode='product', ties=False, class_name=None):
         """
         Return a feature vector in an efficient way, where only specified attributes are included
         @param attribute_set: a definition of the attribute that need to be included
@@ -513,7 +513,12 @@ class ParallelSentence(object):
         parallel_attribute_values = [self.attributes[name] for name in attribute_set.parallel_attribute_names]
         source_attribute_values = [self.src.attributes[name] for name in attribute_set.source_attribute_names]
 
-        for target1, target2 in itertools.product(self.tgt, 2):
+        if mode=='combinations':
+            iterator = itertools.combinations(self.tgt, 2)
+        else:
+            iterator = itertools.product(self.tgt, 2)
+        
+        for target1, target2 in iterator:
             target1_attribute_values = [target1.attributes[name] for name in attribute_set.target_attribute_names]
             target2_attribute_values = [target2.attributes[name] for name in attribute_set.target_attribute_names]
             
@@ -524,19 +529,23 @@ class ParallelSentence(object):
             vector.extend(target2_attribute_values)
             
             if class_name:
-                class_value = self._get_class_pairwise(target1, target2, class_name)
-                vector.append(class_value)
+                class_value = self._get_class_pairwise(target1, target2, class_name, ties)
+                if class_value:
+                    vector.append(class_value)
                 
                 
             yield vector
         
             
-    def _get_class_pairwise(self, target1, target2, class_name):
-        class_value = 0
+    def _get_class_pairwise(self, target1, target2, class_name, ties):
         if target1[class_name] > target2[class_name]:
             class_value = 1
         elif target1[class_name] < target2[class_name]:
             class_value = -1
+        elif ties:
+            class_value = 0
+        else:
+            class_value = None
         return class_value
         
                 
