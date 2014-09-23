@@ -5,7 +5,7 @@ Created on Sep 19, 2014
 '''
 
 import logging
-from ml.lib.orange import OrangeRanker
+from ml.lib.orange.ranking import OrangeRanker
 #from ml.lib.scikit import ScikitRanker
 from expsuite import PyExperimentSuite 
 
