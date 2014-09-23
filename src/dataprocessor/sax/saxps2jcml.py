@@ -58,21 +58,21 @@ class IncrementalJcml(object):
         
         if isinstance(src, SimpleSentence):            
                                 
-            self.generator._write("\n\t\t")
+            self.generator.characters("\n\t\t")
             src_attributes = dict([(key,str(val)) for key,val in src.get_attributes().iteritems()])
             self.generator.startElement(self.TAG["src"], src_attributes)
             self.generator.characters(c(src.get_string()))
             self.generator.endElement(self.TAG["src"])
         elif isinstance(src, tuple):
             for src in parallelsentence.get_source():
-                self.generator._write("\n\t\t")
+                self.generator.characters("\n\t\t")
                 src_attributes = dict([(key,str(val)) for key,val in src.get_attributes().iteritems()])
                 self.generator.startElement(self.TAG["src"], src_attributes)
                 self.generator.characters(c(src.get_string()))
                 self.generator.endElement(self.TAG["src"])
         
         for tgt in parallelsentence.get_translations():
-            self.generator._write("\n\t\t")
+            self.generator.characters("\n\t\t")
             tgt_attributes = dict([(key,str(val)) for key,val in tgt.get_attributes().iteritems()])
             self.generator.startElement(self.TAG["tgt"], tgt_attributes)
             self.generator.characters(c(tgt.get_string()))
@@ -81,13 +81,13 @@ class IncrementalJcml(object):
         
         ref = parallelsentence.get_reference()
         if ref and ref.get_string() != "":
-            self.generator._write("\n\t\t")
+            self.generator.characters("\n\t\t")
             ref_attributes = dict([(key,str(val)) for key,val in ref.get_attributes().iteritems()])
             self.generator.startElement(self.TAG["ref"], ref_attributes)
             self.generator.characters(c(ref.get_string()))
             self.generator.endElement(self.TAG["ref"])
         
-        self.generator._write("\n\t")
+        self.generator.characters("\n\t")
         self.generator.endElement(self.TAG["sent"])
         
     
@@ -143,13 +143,13 @@ class Parallelsentence2Jcml(object):
             
             if isinstance(src, SimpleSentence):            
                                     
-                generator._write("\n\t\t")
+                generator.characters("\n\t\t")
                 generator.startElement(self.TAG["src"], attributes)
                 generator.characters(c(src.get_string()))
                 generator.endElement(self.TAG["src"])
             elif isinstance(src, tuple):
                 for src in parallelsentence.get_source():
-                    generator._write("\n\t\t")
+                    generator.characters("\n\t\t")
                     generator.startElement(self.TAG["src"], attributes)
                     generator.characters(c(src.get_string()))
                     generator.endElement(self.TAG["src"])
@@ -166,7 +166,7 @@ class Parallelsentence2Jcml(object):
             
             
             for tgt in translations:
-                generator._write("\n\t\t")
+                generator.characters("\n\t\t")
                 attributes = dict([(k,str(v)) for k,v in tgt.get_attributes().iteritems()])
                 generator.startElement(self.TAG["tgt"], attributes)
                 generator.characters(c(tgt.get_string()))
@@ -175,13 +175,13 @@ class Parallelsentence2Jcml(object):
             
             ref = parallelsentence.get_reference()
             if ref and ref.get_string() != "":
-                generator._write("\n\t\t")
+                generator.characters("\n\t\t")
                 attributes = dict([(k,str(v)) for k,v in ref.get_attributes().iteritems()])
                 generator.startElement(self.TAG["ref"], attributes)
                 generator.characters(c(ref.get_string()))
                 generator.endElement(self.TAG["ref"])
             
-            generator._write("\n\t")
+            generator.characters("\n\t")
 
             
             
