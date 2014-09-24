@@ -501,7 +501,7 @@ class ParallelSentence(object):
 
 
 
-    def get_vectors(self, attribute_set, mode='product', ties=False, class_name=None):
+    def get_vectors(self, attribute_set, bidirectional_pairs=True, ties=False, class_name=None):
         """
         Return a feature vector in an efficient way, where only specified attributes are included
         @param attribute_set: a definition of the attribute that need to be included
@@ -513,10 +513,10 @@ class ParallelSentence(object):
         parallel_attribute_values = [self.attributes[name] for name in attribute_set.parallel_attribute_names]
         source_attribute_values = [self.src.attributes[name] for name in attribute_set.source_attribute_names]
 
-        if mode=='combinations':
-            iterator = itertools.combinations(self.tgt, 2)
-        else:
+        if bidirectional_pairs:
             iterator = itertools.product(self.tgt, 2)
+        else:
+            iterator = itertools.combinations(self.tgt, 2)
         
         for target1, target2 in iterator:
             target1_attribute_values = [target1.attributes[name] for name in attribute_set.target_attribute_names]

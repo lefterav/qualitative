@@ -17,7 +17,7 @@ class PairwiseRanker:
     @ivar classifier: the trained classifier object
     @type classifier: toolkit-specific C{object} 
     '''
-    def __init__(self, classifier=None, filename=None, learner=None):
+    def __init__(self, classifier=None, filename=None, learner=None, **kwargs):
         self.fit = True
         if classifier:
             self.classifier = classifier
