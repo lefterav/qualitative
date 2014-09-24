@@ -6,13 +6,7 @@ Created on 24 Sep 2014
 '''
 
 
-
-#!/usr/bin/env python
-
-# Copyright 2012 Maja Popovic
-
 import sys
-import gzip
 
 def take_ngrams(line, m):
     newline = ""
@@ -163,13 +157,16 @@ else:
 
 
 while (hline and rline):
+    
+    #def processs_string(hypUnits, refUnits, n=4)
 
-    nsent += 1
+    U = len(refUnits)
+    
 
 
-    sentRec = [0.0 for y in range(U)]
-    sentPrec = [0.0 for y in range(U)]
-    sentF = [0.0 for y in range(U)]
+    sentRec = [0.0] * U
+    sentPrec = [0.0] * U
+    sentF = [0.0] * U
 
 
     multiSentRec = 0.0
@@ -182,8 +179,8 @@ while (hline and rline):
 
         # preparation for multiple references
 
-        minNgramSentRper = [1000.0 for x in range(n)]
-        minNgramSentHper = [1000.0 for x in range(n)]
+        minNgramSentRper = [1000.0] * n
+        minNgramSentHper = [1000.0] * n
         bestNgramSentRperCount = [0.0 for x in range(n)]
         bestNgramSentHperCount = [0.0 for x in range(n)]
         bestNgramHypLength = [0.0 for x in range(n)]
@@ -241,11 +238,11 @@ while (hline and rline):
 
         # collect ngram counts of unit "u" => total ngram counts
 
-        for i in range(n):
-            totalUnitNgramHperCount[u][i] += bestNgramSentHperCount[i]
-            totalUnitNgramRperCount[u][i] += bestNgramSentRperCount[i]
-            totalUnitNgramRefLength[u][i] += bestNgramRefLength[i]
-            totalUnitNgramHypLength[u][i] += bestNgramHypLength[i]
+#        for i in range(n):
+#            totalUnitNgramHperCount[u][i] += bestNgramSentHperCount[i]
+#            totalUnitNgramRperCount[u][i] += bestNgramSentRperCount[i]
+#            totalUnitNgramRefLength[u][i] += bestNgramRefLength[i]
+#            totalUnitNgramHypLength[u][i] += bestNgramHypLength[i]
 
 
         # sentence precision, recall and F (arithmetic mean of all ngrams) for unit "u"
@@ -272,12 +269,12 @@ while (hline and rline):
                 else:
                     sentNgramF[i] = 0
 
-                if ngramprecrecf:
-                    sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-"+str(i+1)+"gram-F     "+str("%.4f" % sentNgramF[i])+"\n")
-                    if prec:
-                        sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-"+str(i+1)+"gram-Prec  "+str("%.4f" % sentNgramPrec[i])+"\n")
-                    if rec:
-                        sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-"+str(i+1)+"gram-Rec   "+str("%.4f" % sentNgramRec[i])+"\n")
+                #if ngramprecrecf:
+                sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-"+str(i+1)+"gram-F     "+str("%.4f" % sentNgramF[i])+"\n")
+                if prec:
+                    sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-"+str(i+1)+"gram-Prec  "+str("%.4f" % sentNgramPrec[i])+"\n")
+                if rec:
+                    sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-"+str(i+1)+"gram-Rec   "+str("%.4f" % sentNgramRec[i])+"\n")
 
                                    
 
@@ -287,12 +284,12 @@ while (hline and rline):
  
 
 
-            if unitprecrecf:
-                sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-F    "+str("%.4f" % sentF[u])+"\n")
-                if prec:
-                    sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-Prec "+str("%.4f" % sentPrec[u])+"\n")
-                if rec:
-                    sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-Rec  "+str("%.4f" % sentRec[u])+"\n")
+            
+            sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-F    "+str("%.4f" % sentF[u])+"\n")
+            if prec:
+                sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-Prec "+str("%.4f" % sentPrec[u])+"\n")
+            if rec:
+                sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-Rec  "+str("%.4f" % sentRec[u])+"\n")
 
 
         
