@@ -32,7 +32,7 @@ from Orange.classification.tree import C45Learner
 from Orange.classification.logreg import LogRegLearner #,LibLinearLogRegLearner
 from Orange.classification import Classifier 
 from Orange.feature import Continuous
-from support.preprocessing.jcml.align import target_attribute_names
+#from support.preprocessing.jcml.align import target_attribute_names
 
 
 # def forname(name, **kwargs):
@@ -141,7 +141,7 @@ def dataset_to_instances(filename,
     
     #iterate over all parallel sentences provided by the data reader
     for parallelsentence in dataset.get_parallelsentences():
-        vectors = parallelsentence.get_vectors_product(attribute_set)
+        vectors = parallelsentence.get_vectors(attribute_set)
         
         #every parallelsentence has many instances
         for vector in vectors:
