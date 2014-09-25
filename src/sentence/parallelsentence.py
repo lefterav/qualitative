@@ -10,7 +10,7 @@ import sys
 from ranking import Ranking
 import itertools
 
-def _prefix(self, prefix, names):
+def _prefix(prefix, names):
         return [prefix.format(name) for name in names]    
 
 class AttributeSet:

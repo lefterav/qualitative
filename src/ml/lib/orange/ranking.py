@@ -102,7 +102,8 @@ def dataset_to_instances(filename,
                          class_name=None,
                          reader=CEJcmlReader,                         
                          tempdir = "/tmp",
-                         output_filename = None):
+                         output_filename = None,
+                         **kwargs):
     """
     Receive a dataset filename and convert it into a memory table for the Orange machine learning
     toolkit. Since we need support for big data sets and optimal memory usage, the best way
@@ -158,8 +159,7 @@ def dataset_to_instances(filename,
     os.unlink(temporary_filename)
     return datatable
     
-def _get_pairwise_header(self, attribute_names,
-                      class_name):
+def _get_pairwise_header(attribute_names, class_name):
     """
     Prepare the string that will be used for the orange tab file header
     @param parallel_attribute_names: the names of the attributes attached to the level of the parallel sentence
