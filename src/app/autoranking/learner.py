@@ -29,17 +29,27 @@ class RankingExperiment(PyExperimentSuite):
         self.hidden_attributes = params["hidden_attributes"].split(",")
         self.discrete_attributes = params["discrete_attributes"].split(",")
         
-        general_attributes = params["{}_general".format(params["att"])].split(",")
-        source_attributes = params["{}_source".format(params["att"])].split(",")
-        target_attributes = params["{}_target".format(params["att"])].split(",")
+        general_attributes = self.read_attributes(params, "general")
+        source_attributes = self.read_attributes(params, "source")
+        target_attributes = self.read_attributes(params, "target") 
         
         self.attribute_set = AttributeSet(general_attributes, source_attributes, target_attributes)
                 
         self.training_sets = params["training_sets"].format(**params).split(',')
         self.testsets = params["training_sets"].format(**params).split(',')
+    
+    def _read_attributes(self, params, key):
+        attset = params["att"]
+        attribute_key = "{}_{}".format(attset, key)
+        attribute_names = params.setdefault(attribute_key, [])
+        if attribute_names:
+            attribute_names = attribute_names.split()
+        return attribute_names
                 
     def train(self, params):
         params.update(self.learner_params)
+        params["attribute_set"] = self.attribute_set
+        
         dataset_filename = "trainingset.jcml"
         output_filename = "trainingset.tab" 
         ranker_filename = "ranker.dump"
