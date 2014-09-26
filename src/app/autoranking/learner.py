@@ -29,33 +29,49 @@ class RankingExperiment(PyExperimentSuite):
         self.hidden_attributes = params["hidden_attributes"].split(",")
         self.discrete_attributes = params["discrete_attributes"].split(",")
         
-        general_attributes = self.read_attributes(params, "general")
-        source_attributes = self.read_attributes(params, "source")
-        target_attributes = self.read_attributes(params, "target") 
-        
-        self.attribute_set = AttributeSet(general_attributes, source_attributes, target_attributes)
+        self.attribute_set = self._read_attributeset(params)
                 
         self.training_sets = params["training_sets"].format(**params).split(',')
         self.testsets = params["training_sets"].format(**params).split(',')
+    
+    
+    def _read_attributeset(self, params):
+        general_attributes = self._read_attributes(params, "general")
+        source_attributes = self._read_attributes(params, "source")
+        target_attributes = self._read_attributes(params, "target")    
+        attribute_set = AttributeSet(general_attributes, source_attributes, target_attributes)
+        return attribute_set
     
     def _read_attributes(self, params, key):
         attset = params["att"]
         attribute_key = "{}_{}".format(attset, key)
         attribute_names = params.setdefault(attribute_key, [])
+        #print attribute_key
+        #print attribute_names
+        #print type(attribute_names)
         if attribute_names:
-            attribute_names = attribute_names.split()
+            attribute_names = attribute_names.split(',')
+        else:
+            attribute_names = []
+        #print attribute_names
         return attribute_names
+    
                 
     def train(self, params):
+        logging.info("Started training")
         params.update(self.learner_params)
         params["attribute_set"] = self.attribute_set
+        
+        logging.info("train: Attribute_set before training: {}".format(params["attribute_set"]))
         
         dataset_filename = "trainingset.jcml"
         output_filename = "trainingset.tab" 
         ranker_filename = "ranker.dump"
         
+        logging.info("Joining training files")
         join_jcml(self.training_sets, dataset_filename)
                                       
+        logging.info("Launching ranker based on {}".format(params["learner"]))                                                
         ranker = OrangeRanker(learner=params["learner"])
         ranker.train(dataset_filename = dataset_filename, 
                      output_filename = output_filename,
@@ -71,16 +87,31 @@ class RankingExperiment(PyExperimentSuite):
     
     def iterate(self, params, rep, n):
         ret = {}
-        
-        if n==0:
+        logging.info("Iteration {}".format(n))
+        if n==1:
             self.train(params)
+        return ret
         
         
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                    datefmt='%m-%d %H:%M')
+    
+    # define a Handler which writes INFO messages or higher to the sys.stderr
+    #console = logging.StreamHandler()
+    #console.setLevel(logging.INFO)
+    # set a format which is simpler for console use
+    #formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+    # tell the handler to use this format
+    #console.setFormatter(formatter)
+    # add the handler to the root logger
+    #logging.getLogger('').addHandler(console)
     FORMAT = "%(asctime)-15s [%(process)d:%(thread)d] %(message)s "
     #now = datetime.strftime(datetime.now(), "%Y-%m-%d_%H-%M-%S")
 #    logging.basicConfig(filename='autoranking-{}.log'.format(now),level=logging.DEBUG, format=FORMAT)
 #    sys.stderr = StreamToLogger(logging.getLogger('STDERR'), logging.INFO)
 #    sys.stdout = StreamToLogger(logging.getLogger('STDOUT'), logging.INFO)
     mysuite = RankingExperiment();
+    
     mysuite.start()

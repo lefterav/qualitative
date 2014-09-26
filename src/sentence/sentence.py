@@ -28,12 +28,10 @@ class SimpleSentence(object):
         @type attributes: {str, Object}
         
         """
-        attributes={}
         #avoid tabs
         self.string = string.replace("\t", "  ")
         #avoid getting a shallow reference to the attributes in the dict
         self.attributes = deepcopy (attributes) 
-        
     
 #    def __gt__(self, other):
 #        return self.attributes["system"] > other.attributes["system"]
