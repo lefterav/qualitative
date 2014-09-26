@@ -10,6 +10,7 @@ import sys
 import os
 import shutil
 import tempfile
+import logging
 
 from ml.ranker import PairwiseRanker
 from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange
@@ -100,7 +101,7 @@ def parallelsentence_to_instance(parallelsentence, domain=None):
 def dataset_to_instances(filename, 
                          attribute_set=None,
                          class_name=None,
-                         reader=CEJcmlReader,                         
+                         reader=CEJcmlReader,  
                          tempdir = "/tmp",
                          output_filename = None,
                          **kwargs):
@@ -138,11 +139,12 @@ def dataset_to_instances(filename,
     
     #initialize the class that will take over the reading from the file
     dataset = reader(filename, compact=True, 
-                     attribute_set=attribute_set)
+                     all_general=True,
+                     all_target=True)
     
     #iterate over all parallel sentences provided by the data reader
     for parallelsentence in dataset.get_parallelsentences():
-        vectors = parallelsentence.get_vectors(attribute_set)
+        vectors = parallelsentence.get_vectors(attribute_set, class_name=class_name)
         
         #every parallelsentence has many instances
         for vector in vectors:
@@ -204,9 +206,13 @@ class OrangeRanker(PairwiseRanker):
     
     def train(self, dataset_filename, **kwargs):
         datatable = dataset_to_instances(filename=dataset_filename, **kwargs)
-        self.learner = self.learner(**kwargs)
+        learner = eval(self.learner) 
+        self.learner = learner(**kwargs)
         self.classifier = self.learner(datatable)
         self.fit = True
+        
+    def dump(self, dumpfilename):
+        pickle.dump(self.classifier, open(dumpfilename, 'w'))
     
     def _get_description(self, resultvector):
         output = []
