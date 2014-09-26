@@ -6,7 +6,7 @@ Created on 14 Dec 2011
 
 import shutil
 import sys
-import os
+import logging
 import re
 import tempfile
 from random import shuffle
