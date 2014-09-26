@@ -5,7 +5,7 @@ Created on 26 Jun 2012
 '''
 
 from numpy import average, std, min, max, asarray
-import logging as log
+import logging
 
 from collections import defaultdict, OrderedDict
 from xml.etree.ElementTree import iterparse
@@ -62,6 +62,7 @@ class CEJcmlReader(DataReader):
         self.TAG_SRC = 'src'
         self.TAG_TGT = 'tgt'
         self.TAG_DOC = 'jcml'
+
 
         self.desired_general = kwargs.setdefault('desired_general', ["rank","langsrc","langtgt","id","judgement_id"])
         self.desired_source = kwargs.setdefault("desired_source", [])
@@ -131,12 +132,10 @@ class CEJcmlReader(DataReader):
             #new source sentence
             elif event == "start" and elem.tag == self.TAG_SRC:
                 source_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_source or self.all_target])
-            
             #new target sentence
             elif event == "start" and elem.tag == self.TAG_TGT:
                 target_id += 1
                 target_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_target or self.all_target])
-
             elif not compact and event == "end" and elem.tag == self.TAG_SRC and elem.text:
                 src_text = elem.text
                  
@@ -145,12 +144,12 @@ class CEJcmlReader(DataReader):
                     tgt_text = elem.text
                 else:
                     tgt_text = ""
-                targets.append(SimpleSentence(tgt_text, target_attributes))
+                target_sentence = SimpleSentence(tgt_text, target_attributes)
+                targets.append(target_sentence)
             
             elif event == "end" and elem.tag in self.TAG_SENT:
                 source = SimpleSentence(src_text, source_attributes)
                 parallelsentence = ParallelSentence(source, targets, None, attributes)
-                log.debug("cejml.py: Just process sentence {}".format(parallelsentence.get_attribute("judgement_id")))
                 yield parallelsentence
             root.clear() 
         source_file.close()

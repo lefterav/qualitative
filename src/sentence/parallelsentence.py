@@ -7,6 +7,7 @@ from collections import OrderedDict
 from copy import deepcopy
 import re
 import sys
+import logging
 from ranking import Ranking
 import itertools
 
@@ -23,15 +24,18 @@ class AttributeSet:
         self.source_attribute_names = source_attribute_names
         self.target_attribute_names = target_attribute_names
         self.ref_attribute_names = ref_attribute_names
-    
-    
+
     def get_names_pairwise(self):
-        attribute_names = self.parallel_attribute_names
+        all_attribute_names = []
+        all_attribute_names.extend(self.parallel_attribute_names)
         #attribute names for source and target pairs need to be prefixed 
-        attribute_names.extend(_prefix("src_{}", self.source_attribute_names))
-        attribute_names.extend(_prefix("tgt-1_{}", self.target_attribute_names))
-        attribute_names.extend(_prefix("tgt-2_{}", self.target_attribute_names))
-        return attribute_names
+        all_attribute_names.extend(_prefix("src_{}", self.source_attribute_names))
+        all_attribute_names.extend(_prefix("tgt-1_{}", self.target_attribute_names))
+        all_attribute_names.extend(_prefix("tgt-2_{}", self.target_attribute_names))
+        return all_attribute_names
+
+    def __str__(self):
+        return str([self.parallel_attribute_names, self.source_attribute_names, self.target_attribute_names])
         
             
 
@@ -142,7 +146,7 @@ class ParallelSentence(object):
         @return: the value of the attribute with the specified name
         @rtype: string
         """
-        return self.attributes[name]
+        return self.attributes[name]            
     
     def get_target_attribute_values(self, attribute_name, sub=None):
 #       print [t.attributes for t in self.tgt]
@@ -514,9 +518,9 @@ class ParallelSentence(object):
         source_attribute_values = [self.src.attributes[name] for name in attribute_set.source_attribute_names]
 
         if bidirectional_pairs:
-            iterator = itertools.product(self.tgt, 2)
+            iterator = itertools.product(self.tgt, repeat=2)
         else:
-            iterator = itertools.combinations(self.tgt, 2)
+            iterator = itertools.combinations(self.tgt, repeat=2)
         
         for target1, target2 in iterator:
             target1_attribute_values = [target1.attributes[name] for name in attribute_set.target_attribute_names]
@@ -532,9 +536,10 @@ class ParallelSentence(object):
                 class_value = self._get_class_pairwise(target1, target2, class_name, ties)
                 if class_value:
                     vector.append(class_value)
+                    yield vector
                 
-                
-            yield vector
+            else:  
+                yield vector
         
             
     def _get_class_pairwise(self, target1, target2, class_name, ties):
