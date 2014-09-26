@@ -21,7 +21,7 @@ python-libraries
 
 Use pip-install: 
 For Debian/ubuntu: 
->> sudo apt-get install python-dev g++ build-essential python-pip 
+>> sudo apt-get install python-dev g++ build-essential python-pip libblas-dev liblapack-dev
 >> sudo pip install --upgrade pip  
 >> sudo pip install <package-name>
 or for user-specific installation (no root or 
@@ -33,7 +33,6 @@ Packages:
 * orange
 * py4j
 * python-nltk
-* xmlrpclib
 * numpy
 * scipy
 * suds [only for Acrolinx support]
