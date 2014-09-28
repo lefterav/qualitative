@@ -71,6 +71,11 @@ class CEJcmlReader(DataReader):
         self.all_target = kwargs.setdefault('all_target', False)        
         self.input_filename = input_xml_filename
     
+    def length(self):
+        i = 0
+        for _ in self.get_parallelsentences(compact=True):
+            i+=1
+        return i
     
     def get_attribute_names(self):
         """
