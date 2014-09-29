@@ -5,11 +5,14 @@ Created on Sep 19, 2014
 '''
 
 import logging
+from collections import OrderedDict
 from ml.lib.orange.ranking import OrangeRanker
 #from ml.lib.scikit import ScikitRanker
 from expsuite import PyExperimentSuite 
 from sentence.parallelsentence import AttributeSet
+from sentence.scoring import Scoring
 from dataprocessor.ce.utils import join_jcml
+from dataprocessor.ce.cejcml import CEJcmlReader
 
 class RankingExperiment(PyExperimentSuite):
     
@@ -57,7 +60,13 @@ class RankingExperiment(PyExperimentSuite):
         return attribute_names
     
                 
+                
+                
+                
     def train(self, params):
+        """
+        Load training data and train new ranking model
+        """
         logging.info("Started training")
         params.update(self.learner_params)
         params["attribute_set"] = self.attribute_set
@@ -79,19 +88,68 @@ class RankingExperiment(PyExperimentSuite):
         
         ranker.dump(ranker_filename)
         
-    def evaluate(self):
-        test_filename = self.params["test_filename"]
-        testset_filename = "testset.jcml"
-        output_filename = "testset.tab"
+        logging.info("Extracting fitted coefficients")
+        model_description = ranker.get_model_description()
+        
+        return model_description
+        
+
+    def test(self, params):
+        """
+        Load test set and apply machine learning to assign labels
+        """
+        testset_input = self.testsets[0]
+        testset_output = "testset_annotated.jcml"
+        ranker = OrangeRanker(filename="ranker.dump")
+        return ranker.test(testset_input, testset_output)
     
+    
+    def evaluate(self, params):
+        """
+        Load predictions (test) and analyze performance
+        """
+        testset_output = "testset_annotated.jcml"
+        testset = CEJcmlReader(testset_output, all_general=True, all_target=True).get_dataset(compact=True)
+        
+        class_name = params["class_name"]
+        
+        scores = score(testset, class_name, "rank", "rank_hard", invert_ranks=False)
+        return scores
     
     def iterate(self, params, rep, n):
-        ret = {}
+        ret = OrderedDict()
         logging.info("Iteration {}".format(n))
         if n==1:
-            self.train(params)
+            ret.update(self.train(params))
+        if n==2:
+            ret.update(self.test(params))
+        if n==3:
+            ret.update(self.evaluate(params))
+        print ret
         return ret
-        
+    
+
+def get_scoring(testset, class_name, xid, featurename):
+    scoringset = Scoring(testset)
+    ret = {}
+    ret.update(scoringset.get_kendall_tau(featurename, class_name, prefix="{}-".format(xid)))
+    ret.update(scoringset.get_kendall_tau(featurename, class_name, prefix="{}-".format(xid), suffix="-ntp", exclude_ties=False))
+    ret.update(scoringset.get_kendall_tau(featurename, class_name, prefix="{}-".format(xid), suffix="-nt", penalize_predicted_ties=False))
+#    ret["mrr"] = scoringset.mrr(featurename, class_name)
+    ret["kendalltau_b-%s"%xid], ret["kendalltau_b-%s-pi"%xid]  = scoringset.get_kendall_tau_b(featurename, class_name)
+    ret["b1-acc-1-%s"%xid], ret["b1-acc-%s-any"%xid] = scoringset.selectbest_accuracy(featurename, class_name)
+    ret["fr-%s"%xid] = scoringset.avg_first_ranked(featurename, class_name)    
+    ret["pr-%s"%xid] = scoringset.avg_predicted_ranked(featurename, class_name)
+    
+    sb_percentages = scoringset.best_predicted_vs_human(featurename, class_name)  
+    for rank, percentage in sb_percentages.iteritems():
+        ret["sb-{}-{}".format(rank,xid)] = str(percentage)
+    return ret
+
+def score(testset, class_name, xid, featurename, invert_ranks=False):
+    scoringset = Scoring(testset, invert_ranks=invert_ranks)
+    return scoringset.get_metrics_scores(featurename, class_name, prefix=xid)
+      
         
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
