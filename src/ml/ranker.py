@@ -23,7 +23,7 @@ class PairwiseRanker:
             self.classifier = classifier
         elif filename:
             classifier_file = open(filename)
-            self.classifier = pickle.load(filename)
+            self.classifier = pickle.load(open(filename,'r'))
             classifier_file.close()
         else:
             self.learner = learner
