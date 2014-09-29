@@ -102,8 +102,8 @@ class CEJcmlReader(DataReader):
                 pass
         return AttributeSet(list(parallel_attribute_names), list(source_attribute_names), list(target_attribute_names), list(ref_attribute_names))
     
-    def get_dataset(self):
-        return DataSet(list(self.get_parallelsentences()))       
+    def get_dataset(self, **kwargs):
+        return DataSet(list(self.get_parallelsentences(**kwargs)))       
 
     def get_parallelsentences(self, compact=False):
         """
