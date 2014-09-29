@@ -10,6 +10,7 @@ Created on 18 Dec 2012
 import segment
 from numpy import average
 import numpy as np
+import logging
 
 def kendall_tau_set_no_ties(predicted_rank_vectors, original_rank_vectors, **kwargs):
     kwargs["penalize_predicted_ties"] = False
@@ -51,6 +52,9 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
     pairs_overall = 0
     sentences_with_ties = 0
     
+    logging.debug("Predicted: {}".format(predicted_rank_vectors))
+    logging.debug(original_rank_vectors)
+    
     for predicted_rank_vector, original_rank_vector in zip(predicted_rank_vectors, original_rank_vectors):
         
         
@@ -70,7 +74,10 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
             sentences_with_ties += 1
         pairs_overall += pairs
     
-    
+    #this is probably when the test has only has ties
+    if concordant+discordant==0:
+        logging.warn("I had to skip item in tau evaluation because of zero pairs")
+        return {}
     tau = 1.00 * (concordant - discordant) / (concordant + discordant)
     prob = segment.kendall_tau_prob(tau, valid_pairs)
     

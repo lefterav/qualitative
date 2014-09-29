@@ -4,17 +4,20 @@ Created on 19 Apr 2013
 
 @author: Eleftherios Avramidis
 '''
-
+import StringIO
+from collections import OrderedDict
 import cPickle as pickle
 import sys
 import os
 import shutil
 import tempfile
 import logging
+import numpy
 
 from ml.ranker import PairwiseRanker
 from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange
 from dataprocessor.ce.cejcml import CEJcmlReader
+from dataprocessor.sax.saxps2jcml import IncrementalJcml
 from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentenceSet
 
 from Orange.data import Table
@@ -33,6 +36,7 @@ from Orange.classification.tree import C45Learner
 from Orange.classification.logreg import LogRegLearner #,LibLinearLogRegLearner
 from Orange.classification import Classifier 
 from Orange.feature import Continuous
+from checkbox.attribute import Attribute
 #from support.preprocessing.jcml.align import target_attribute_names
 
 
@@ -211,8 +215,117 @@ class OrangeRanker(PairwiseRanker):
         self.classifier = self.learner(datatable)
         self.fit = True
         
+    def test(self, input_filename, output_filename, reader=CEJcmlReader, writer=IncrementalJcml, **kwargs):
+        output = writer(output_filename)
+
+        for parallelsentence in reader(input_filename).get_parallelsentences():
+            ranked_parallelsentence, _ = self.get_ranked_sentence(parallelsentence)
+            output.add_parallelsentence(ranked_parallelsentence)
+            
+        output.close()        
+        return {}
+    
+    #===========================================================================
+    # def _get_test_statistics(self, statistics_vector):
+    #     statistics = OrderedDict()
+    #     confidence_vector = [r['confidence'] for r in statistics_vector]
+    #     statistics['test_confidence_avg'] = numpy.average(confidence_vector)
+    #     statistics['test_confidence_std'] = numpy.std(confidence_vector)
+    #===========================================================================
+        
     def dump(self, dumpfilename):
+        if not self.fit:
+            raise AttributeError("Ranker has not been fit yet")
         pickle.dump(self.classifier, open(dumpfilename, 'w'))
+        
+    def get_model_description(self, basename="model"):
+        if not self.fit:
+            raise AttributeError("Ranker has not been fit yet")
+                #if we are talking about a rule learner, just print its rules out in the file
+        basename = "model"
+        
+        try:
+            return self._get_coefficients_svm()
+        except AttributeError:
+            pass
+        
+        try:
+            self._write_rules(basename)
+        except:
+            pass
+
+        try:
+            self._write_tree(basename)
+        except:
+            pass
+            
+        try:
+            return self._get_coefficients_logreg()
+        except AttributeError:
+            pass
+        
+        return OrderedDict()
+    
+    
+    def _write_tree(self, basename):
+        textfilename = "{}.tree.txt".format(basename)
+        f = open(textfilename, "w")
+        f.write(self.classifier.to_string("leaf", "node"))
+        f.close()
+        
+        graphics_filename = "{}.tree.dot".format(basename)
+        self.classifier.dot(graphics_filename, "leaf", "node")
+        return OrderedDict()
+    
+    def _write_rules(self, basename):
+        rules = self.classifier.rules
+        textfilename = "{}.rules.txt".format(basename)
+        f = open(textfilename, "w")
+        for r in rules:
+            f.write("{}\n".format(rule_to_string(r)))             
+        f.close()
+        return OrderedDict()
+
+    def _get_coefficients_svm(self):
+        weights = get_linear_svm_weights(self.classifier)
+        attributes = OrderedDict()
+        
+        for attribute_descriptor, value in weights.iteritems():
+            name = attribute_descriptor.name
+            if name.startswith("N_"):
+                name = name[2:]
+            attributes[name] = float(value)           
+        
+        attributes["nu"] = self.classifier.fitted_parameters[0]
+        attributes["gamma"] = self.classifier.fitted_parameters[1]
+        return attributes
+
+    def _get_coefficients_logreg(self):
+        output = logreg.dump(self.classifier)
+   
+        active = False
+        attributes = OrderedDict()
+        
+        #parse output of the logreg file and store the coefficients in a dict
+        for line in output.splitlines():
+            row = line.split()
+
+            #attributes are given only after "Intercept" shows up
+            if active:
+                name = row[0]
+                attributes["att_{}_beta".format(name)] = float(row[1])
+                attributes["att_{}_sterror".format(name)] = float(row[2])
+                attributes["att_{}_waldZ".format(name)] = float(row[3])
+                attributes["att_{}_P".format(name)] = float(row[4])
+                attributes["att_{}_OR".format(name)] = float(row[5])   
+            if row and row[0]=="Intercept":
+                active=True
+                attributes["att_Intercept_beta"] = float(row[1])
+                attributes["att_Intercept_sterror"] = float(row[2])
+                attributes["att_Intercept_waldZ"] = float(row[3])
+                attributes["att_Intercept_P"] = float(row[4])
+        return attributes
+                   
     
     def _get_description(self, resultvector):
         output = []
@@ -238,7 +351,7 @@ class OrangeRanker(PairwiseRanker):
         return "".join(output)
     
     
-    def get_ranked_sentence(self, parallelsentence):
+    def get_ranked_sentence(self, parallelsentence, critical_attribute="rank_predicted", new_rank_name="rank_hard", del_orig_class_att=False):
         """
         Receive a parallel sentence with features and perform ranking
         @param parallelsentence: an object containing the parallel sentence
@@ -257,7 +370,7 @@ class OrangeRanker(PairwiseRanker):
         
         resultvector = []
         
-        sys.stderr.write("source sentence before pairwising: '{}'".format(parallelsentence.get_source().get_string()))
+        logging.debug("source sentence before pairwising: '{}'".format(parallelsentence.get_source().get_string()))
         #de-compose multiranked sentence into pairwise comparisons
         pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences()
         
@@ -265,30 +378,35 @@ class OrangeRanker(PairwiseRanker):
         classified_pairwise_parallelsentences = []
         
         for pairwise_parallelsentence in pairwise_parallelsentences:
-            #conver pairwise parallel sentence into an orange instance
+            #convert pairwise parallel sentence into an orange instance
             instance = parallelsentence_to_instance(pairwise_parallelsentence, domain=domain)
             
             #run classifier for this instance
             value, distribution = self.classifier(instance, return_type)
 
-            sys.stderr.write("{}, {}, {}\n".format(pairwise_parallelsentence.get_system_names(), value, distribution))
+            logging.debug("{}, {}, {}\n".format(pairwise_parallelsentence.get_system_names(), value, distribution))
             
+            #gather several metadata from the classification, which may be needed 
             resultvector.append({'systems' : pairwise_parallelsentence.get_system_names(),
                                  'value' : (float(value.value)),
                                  'distribution': distribution,
+                                 'confidence': abs(distribution[0]-0.5),
                                  'instance' : instance})
+            
+            #add the new predicted ranks as attributes of the new pairwise sentence
             pairwise_parallelsentence.add_attributes({"rank_predicted":float(value.value),
                                                        "prob_-1":distribution[0],
                                                        "prob_1":distribution[1]
                                                        })
             
             classified_pairwise_parallelsentences.append(pairwise_parallelsentence)
+
         
-        
-        
-        #gather all classified pairwise comparisons into one sentence again
+        #gather all classified pairwise comparisons of into one parallel sentence again
         sentenceset = CompactPairwiseParallelSentenceSet(classified_pairwise_parallelsentences)
-        ranked_sentence = sentenceset.get_multiranked_sentence("rank_predicted")
+        ranked_sentence = sentenceset.get_multiranked_sentence(critical_attribute=critical_attribute, 
+                                                               new_rank_name=new_rank_name, 
+                                                               del_orig_class_att=del_orig_class_att)
         return ranked_sentence, resultvector
 
     def rank_sentence(self, parallelsentence):
