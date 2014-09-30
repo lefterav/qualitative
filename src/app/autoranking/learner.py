@@ -5,14 +5,18 @@ Created on Sep 19, 2014
 '''
 
 import logging
+import hashlib
+import random
+import os
 from collections import OrderedDict
 from ml.lib.orange.ranking import OrangeRanker
 #from ml.lib.scikit import ScikitRanker
 from expsuite import PyExperimentSuite 
 from sentence.parallelsentence import AttributeSet
 from sentence.scoring import Scoring
-from dataprocessor.ce.utils import join_jcml
+from dataprocessor.ce.utils import join_jcml, fold_jcml
 from dataprocessor.ce.cejcml import CEJcmlReader
+from sentence import scoring
 
 class RankingExperiment(PyExperimentSuite):
     
@@ -21,6 +25,9 @@ class RankingExperiment(PyExperimentSuite):
     def reset(self, params, rep):
         self.restore_supported = True
         
+        #=======================================================================
+        # get method-specific parameters
+        #=======================================================================
         try:
             self.learner_params = eval(params["params_{}".format(params["learner"]).lower()])
         except:
@@ -28,14 +35,88 @@ class RankingExperiment(PyExperimentSuite):
         
         logging.info("Accepted classifier parameters: {}\n".format(self.learner_params))
         
-        self.meta_attributes = params["meta_attributes"].split(",")        
-        self.hidden_attributes = params["hidden_attributes"].split(",")
+        #===============================================================================
+        # get attributes
+        #===============================================================================
+        #self.meta_attributes = params["meta_attributes"].split(",")        
+        #self.hidden_attributes = params["hidden_attributes"].split(",")
         self.discrete_attributes = params["discrete_attributes"].split(",")
-        
         self.attribute_set = self._read_attributeset(params)
-                
-        self.training_sets = params["training_sets"].format(**params).split(',')
-        self.testsets = params["training_sets"].format(**params).split(',')
+        
+        #=======================================================================
+        # prepare training and test data
+        #=======================================================================
+        training_sets = params["training_sets"].format(**params).split(',')
+        training_path = params["training_path"].format(**params)
+        dataset_filename = "all.trainingset.jcml"
+    
+        self._join_or_link(training_path, training_sets, dataset_filename)
+        
+        #if cross validation is enabled
+        if params["test"] == "crossvalidation":
+            self.trainingset_filename = "{}.trainingset.jcml".format(rep)
+            testset_filename = "{}.testset.jcml".format(rep)
+            self.testset_filenames = [testset_filename]
+            self.crossvalidation(dataset_filename, 
+                                 self.trainingset_filename, 
+                                 testset_filename, 
+                                 params, rep, 
+                                 shuffle=params.setdefault("cross_shuffle", False)
+                                 )
+            
+        #if a list of test-sets is given for testing upon
+        elif params["test"] == "list":
+            self.trainingset_filename = dataset_filename
+            testset_filenames = params["test_sets"].format(**params).split(',')
+            self.testset_filenames = [os.path.join(params["test_path"], f) for f in testset_filenames]
+        
+        #if no testing is required
+        elif params["test"] == "None":
+            self.trainingset_filename = dataset_filename
+            self.testset_filenames = []
+            
+        
+    def _join_or_link(self, source_path, source_datasets, ready_dataset):
+        """
+        Create a joined file from the given datasets if needed,
+        or link them if they have already been given as one file
+        """
+        source_datasets = [os.path.join(source_path, source_datasets)]
+        if len(source_datasets)==1:
+            os.link(source_datasets[0], ready_dataset)
+        else:
+            logging.info("Joining training files")
+            join_jcml(source_datasets, ready_dataset)
+        
+          
+        
+    def crossvalidation(self, dataset_filename,
+                        trainingset_filename,
+                        testset_filename,
+                        params, rep, 
+                        shuffle=False):
+        """ This method takes a dataset in form of a numpy array of shape n x d,
+            where n is the number of data points and d is the dimensionality of 
+            the data. It further requires the current params dictionary and the
+            current repetition number. The flag 'shuffle' determines, if the
+            dataset should be shuffled before returning the training and testing
+            batches. There will be params['repetitions'] many equally sized batches, 
+            the rest of the dataset is discarded.
+        """
+
+        #We do not need shuffling and this one it's not easily applicable
+        #key = int(hashlib.sha1(dataset).hexdigest()[:7], 16)
+        #indices = range(dataset.shape[0])
+        #if shuffle:
+        #    # create permutation unique to dataset
+        #    random.seed(key)
+        #    indices = random.permutation(indices)
+        #       
+        fold_jcml(dataset_filename,
+                        trainingset_filename,
+                        testset_filename,
+                        params['repetitions'],
+                        rep)
     
     
     def _read_attributeset(self, params):
@@ -63,7 +144,7 @@ class RankingExperiment(PyExperimentSuite):
                 
                 
                 
-    def train(self, params):
+    def train(self, params, rep):
         """
         Load training data and train new ranking model
         """
@@ -73,12 +154,8 @@ class RankingExperiment(PyExperimentSuite):
         
         logging.info("train: Attribute_set before training: {}".format(params["attribute_set"]))
         
-        dataset_filename = "trainingset.jcml"
-        output_filename = "trainingset.tab" 
-        ranker_filename = "ranker.dump"
-        
-        logging.info("Joining training files")
-        join_jcml(self.training_sets, dataset_filename)
+        output_filename = "trainingset.{}.tab".format(rep) 
+        ranker_filename = "ranker.{}.dump"
                                       
         logging.info("Launching ranker based on {}".format(params["learner"]))                                                
         ranker = OrangeRanker(learner=params["learner"])
@@ -94,7 +171,7 @@ class RankingExperiment(PyExperimentSuite):
         return model_description
         
 
-    def test(self, params):
+    def test(self, params, rep):
         """
         Load test set and apply machine learning to assign labels
         """
@@ -104,51 +181,34 @@ class RankingExperiment(PyExperimentSuite):
         return ranker.test(testset_input, testset_output)
     
     
-    def evaluate(self, params):
+    def evaluate(self, params, rep):
         """
         Load predictions (test) and analyze performance
         """
         testset_output = "testset_annotated.jcml"
-        testset = CEJcmlReader(testset_output, all_general=True, all_target=True).get_dataset(compact=True)
+        testset = CEJcmlReader(testset_output, all_general=True, all_target=True)
         
         class_name = params["class_name"]
-        
-        scores = score(testset, class_name, "rank", "rank_hard", invert_ranks=False)
+        scores = scoring.get_metrics_scores(testset, "rank_hard", class_name , prefix="soft", invert_ranks=False)
         return scores
+    
     
     def iterate(self, params, rep, n):
         ret = OrderedDict()
         logging.info("Iteration {}".format(n))
         if n==1:
-            ret.update(self.train(params))
+            ret.update(self.train(params, rep))
         if n==2:
-            ret.update(self.test(params))
+            ret.update(self.test(params, rep))
         if n==3:
-            ret.update(self.evaluate(params))
+            ret.update(self.evaluate(params, rep))
         print ret
         return ret
     
 
-def get_scoring(testset, class_name, xid, featurename):
-    scoringset = Scoring(testset)
-    ret = {}
-    ret.update(scoringset.get_kendall_tau(featurename, class_name, prefix="{}-".format(xid)))
-    ret.update(scoringset.get_kendall_tau(featurename, class_name, prefix="{}-".format(xid), suffix="-ntp", exclude_ties=False))
-    ret.update(scoringset.get_kendall_tau(featurename, class_name, prefix="{}-".format(xid), suffix="-nt", penalize_predicted_ties=False))
-#    ret["mrr"] = scoringset.mrr(featurename, class_name)
-    ret["kendalltau_b-%s"%xid], ret["kendalltau_b-%s-pi"%xid]  = scoringset.get_kendall_tau_b(featurename, class_name)
-    ret["b1-acc-1-%s"%xid], ret["b1-acc-%s-any"%xid] = scoringset.selectbest_accuracy(featurename, class_name)
-    ret["fr-%s"%xid] = scoringset.avg_first_ranked(featurename, class_name)    
-    ret["pr-%s"%xid] = scoringset.avg_predicted_ranked(featurename, class_name)
-    
-    sb_percentages = scoringset.best_predicted_vs_human(featurename, class_name)  
-    for rank, percentage in sb_percentages.iteritems():
-        ret["sb-{}-{}".format(rank,xid)] = str(percentage)
-    return ret
 
 def score(testset, class_name, xid, featurename, invert_ranks=False):
-    scoringset = Scoring(testset, invert_ranks=invert_ranks)
-    return scoringset.get_metrics_scores(featurename, class_name, prefix=xid)
+    return scoring.get_metrics_scores(testset, featurename, class_name, prefix=xid)
       
         
 if __name__ == '__main__':
