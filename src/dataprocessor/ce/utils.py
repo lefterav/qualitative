@@ -2,30 +2,59 @@ from dataprocessor.sax.saxps2jcml import IncrementalJcml
 from dataprocessor.ce.cejcml import CEJcmlReader
 import logging
 
-def fold_jcml(filename, training_filename, test_filename, batch_size, fold, length=None):
+
+
+
+def fold_jcml(filename, training_filename, test_filename, repetitions, fold, length=None):
+    
+    if repetitions < 2:
+        raise SystemExit('%i-fold cross validation does not make sense. Use at least 2 repetitions.'%repetitions)
+    
     if not length:
-        countreader = CEJcmlReader(filename)
-        length = countreader.length()
+        #check whether the size has been cached on disk
+        #to avoid reading the entire set
+        size_filename = filename.replace(".jcml", ".size")
+        try:
+            size_file = open(size_filename)
+            length = int(size_file.readline().strip())
+            size_file.close()
+        except:
+            countreader = CEJcmlReader(filename)
+            length = countreader.length()
+            size_file = open(size_filename, 'w')
+            size_file.write(str(length))
+            size_file.close()
+            logging.info("Dataset has {} entries".format(length))
+    
+    #get how big each batch should be
+    batch_size = length // repetitions
+    
+    if batch_size == 0:
+            raise SystemExit('Too many repetitions for cross-validation with this dataset. Max. number of repetitions is {}.'.format(length))
+    
+    #create one reader and two writers (for training and test set respectively)    
     reader = CEJcmlReader(filename, all_general=True, all_target=True)
     training_writer = IncrementalJcml(training_filename)
     test_writer = IncrementalJcml(test_filename)
+    
+    #define where is the beginning and the end of the test set
     test_start = len - (batch_size * fold)
     test_end = len - (batch_size * (fold-1))
     
     counter = 0
+    
+    #get one by one the sentences incrementally and put
+    #them in the suitable set
     for parallelsentence in reader.get_parallelsentences():
         if counter >= test_start or counter < test_end:
             test_writer.add_parallelsentence(parallelsentence)
         else:
             training_writer.add_parallelsentence(parallelsentence)
-        
         counter+=1
         
     training_writer.close()
     test_writer.close()
         
-    
-    
     
 
 def join_jcml(filenames, output_filename, compact=False):
