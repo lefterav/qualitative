@@ -6,6 +6,7 @@ Created on 26 Mar 2013
 @author: Eleftherios Avramidis
 '''
 import cPickle as pickle 
+import logging
 
 class PairwiseRanker:
     '''
@@ -24,6 +25,7 @@ class PairwiseRanker:
         elif filename:
             classifier_file = open(filename)
             self.classifier = pickle.load(open(filename,'r'))
+            logging.info("Loaded {} classifier for file {}".format(self.classifier, filename))
             classifier_file.close()
         else:
             self.learner = learner
