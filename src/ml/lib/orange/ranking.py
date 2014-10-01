@@ -4,7 +4,6 @@ Created on 19 Apr 2013
 
 @author: Eleftherios Avramidis
 '''
-import StringIO
 from collections import OrderedDict
 import cPickle as pickle
 import sys
@@ -12,7 +11,7 @@ import os
 import shutil
 import tempfile
 import logging
-import numpy
+import codecs
 
 from ml.ranker import PairwiseRanker
 from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange
@@ -36,7 +35,7 @@ from Orange.classification.tree import C45Learner
 from Orange.classification.logreg import LogRegLearner #,LibLinearLogRegLearner
 from Orange.classification import Classifier 
 from Orange.feature import Continuous
-from checkbox.attribute import Attribute
+#from checkbox.attribute import Attribute
 #from support.preprocessing.jcml.align import target_attribute_names
 
 
@@ -135,7 +134,7 @@ def dataset_to_instances(filename,
     
     #create a temporary file, to put the incremental output on the go
     temporary_filename = tempfile.mktemp(dir=tempdir, suffix='.tab')
-    tabfile = open(temporary_filename, 'w')
+    tabfile = codecs.open(temporary_filename, encoding='utf-8', mode = 'w')
     
     #get the text for the header of the orange file
     header = _get_pairwise_header(attribute_set, class_name)
@@ -370,7 +369,6 @@ class OrangeRanker(PairwiseRanker):
         
         resultvector = []
         
-        logging.debug("source sentence before pairwising: '{}'".format(parallelsentence.get_source().get_string()))
         #de-compose multiranked sentence into pairwise comparisons
         pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences()
         
