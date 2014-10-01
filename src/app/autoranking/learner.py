@@ -20,10 +20,10 @@ from sentence import scoring
 
 class RankingExperiment(PyExperimentSuite):
     
-    restore_supported = True
+    #restore_supported = True
     
     def reset(self, params, rep):
-        self.restore_supported = True
+        #self.restore_supported = True
         
         #=======================================================================
         # get method-specific parameters
@@ -43,37 +43,7 @@ class RankingExperiment(PyExperimentSuite):
         self.discrete_attributes = params["discrete_attributes"].split(",")
         self.attribute_set = self._read_attributeset(params)
         
-        #=======================================================================
-        # prepare training and test data
-        #=======================================================================
-        training_sets = params["training_sets"].format(**params).split(',')
-        training_path = params["training_path"].format(**params)
-        dataset_filename = "all.trainingset.jcml"
-    
-        self._join_or_link(training_path, training_sets, dataset_filename)
         
-        #if cross validation is enabled
-        if params["test"] == "crossvalidation":
-            self.trainingset_filename = "{}.trainingset.jcml".format(rep)
-            testset_filename = "{}.testset.jcml".format(rep)
-            self.testset_filenames = [testset_filename]
-            self.crossvalidation(dataset_filename, 
-                                 self.trainingset_filename, 
-                                 testset_filename, 
-                                 params, rep, 
-                                 shuffle=params.setdefault("cross_shuffle", False)
-                                 )
-            
-        #if a list of test-sets is given for testing upon
-        elif params["test"] == "list":
-            self.trainingset_filename = dataset_filename
-            testset_filenames = params["test_sets"].format(**params).split(',')
-            self.testset_filenames = [os.path.join(params["test_path"], f) for f in testset_filenames]
-        
-        #if no testing is required
-        elif params["test"] == "None":
-            self.trainingset_filename = dataset_filename
-            self.testset_filenames = []
             
         
     def _join_or_link(self, source_path, source_datasets, ready_dataset):
@@ -81,7 +51,8 @@ class RankingExperiment(PyExperimentSuite):
         Create a joined file from the given datasets if needed,
         or link them if they have already been given as one file
         """
-        source_datasets = [os.path.join(source_path, source_datasets)]
+        #get full path for all files
+        source_datasets = [os.path.join(source_path, f) for f in source_datasets]
         if len(source_datasets)==1:
             os.link(source_datasets[0], ready_dataset)
         else:
@@ -141,7 +112,38 @@ class RankingExperiment(PyExperimentSuite):
         return attribute_names
     
                 
-                
+    def prepare_data(self, params, rep):
+        #=======================================================================
+        # prepare training and test data
+        #=======================================================================
+        training_sets = params["training_sets"].format(**params).split(',')
+        training_path = params["training_path"].format(**params)
+        dataset_filename = "all.trainingset.jcml"
+    
+        self._join_or_link(training_path, training_sets, dataset_filename)
+        
+        #if cross validation is enabled
+        if params["test"] == "crossvalidation":
+            self.trainingset_filename = "{}.trainingset.jcml".format(rep)
+            testset_filename = "{}.testset.jcml".format(rep)
+            self.testset_filenames = [testset_filename]
+            self.crossvalidation(dataset_filename, 
+                                 self.trainingset_filename, 
+                                 testset_filename, 
+                                 params, rep, 
+                                 shuffle=params.setdefault("cross_shuffle", False)
+                                 )
+            
+        #if a list of test-sets is given for testing upon
+        elif params["test"] == "list":
+            self.trainingset_filename = dataset_filename
+            testset_filenames = params["test_sets"].format(**params).split(',')
+            self.testset_filenames = [os.path.join(params["test_path"], f) for f in testset_filenames]
+        
+        #if no testing is required
+        elif params["test"] == "None":
+            self.trainingset_filename = dataset_filename
+            self.testset_filenames = []
                 
                 
     def train(self, params, rep):
@@ -154,16 +156,16 @@ class RankingExperiment(PyExperimentSuite):
         
         logging.info("train: Attribute_set before training: {}".format(params["attribute_set"]))
         
-        output_filename = "trainingset.{}.tab".format(rep) 
-        ranker_filename = "ranker.{}.dump"
+        output_filename = "{}.trainingset.tab".format(rep) 
+        self.model_filename = "{}.model.dump".format(rep)
                                       
         logging.info("Launching ranker based on {}".format(params["learner"]))                                                
         ranker = OrangeRanker(learner=params["learner"])
-        ranker.train(dataset_filename = dataset_filename, 
+        ranker.train(dataset_filename = self.trainingset_filename, 
                      output_filename = output_filename,
                      **params)
         
-        ranker.dump(ranker_filename)
+        ranker.dump(self.model_filename)
         
         logging.info("Extracting fitted coefficients")
         model_description = ranker.get_model_description()
@@ -175,18 +177,17 @@ class RankingExperiment(PyExperimentSuite):
         """
         Load test set and apply machine learning to assign labels
         """
-        testset_input = self.testsets[0]
-        testset_output = "testset_annotated.jcml"
-        ranker = OrangeRanker(filename="ranker.dump")
-        return ranker.test(testset_input, testset_output)
+        testset_input = self.testset_filenames[0]
+        self.testset_output = "{}.testset_annotated.jcml".format(rep)
+        ranker = OrangeRanker(filename=self.model_filename)
+        return ranker.test(testset_input, self.testset_output)
     
     
     def evaluate(self, params, rep):
         """
         Load predictions (test) and analyze performance
         """
-        testset_output = "testset_annotated.jcml"
-        testset = CEJcmlReader(testset_output, all_general=True, all_target=True)
+        testset = CEJcmlReader(self.testset_output, all_general=True, all_target=True)
         
         class_name = params["class_name"]
         scores = scoring.get_metrics_scores(testset, "rank_hard", class_name , prefix="soft", invert_ranks=False)
@@ -196,6 +197,8 @@ class RankingExperiment(PyExperimentSuite):
     def iterate(self, params, rep, n):
         ret = OrderedDict()
         logging.info("Iteration {}".format(n))
+        if n==0:
+            self.prepare_data(params, rep)
         if n==1:
             ret.update(self.train(params, rep))
         if n==2:
