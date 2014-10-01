@@ -22,8 +22,9 @@ python-libraries
 Use pip-install:
 
 For Debian/ubuntu:
-sudo apt-get install python-dev g++ build-essential python-pip libblas-dev liblapack-dev
+sudo apt-get install python-dev g++ build-essential python-pip libblas-dev liblapack-dev gfortran
 sudo pip install --upgrade pip  
+sudo easy_install -U setuptools
 sudo pip install --upgrade setuptools
 
 sudo pip install <package-name>

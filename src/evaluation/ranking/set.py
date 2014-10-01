@@ -52,9 +52,6 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
     pairs_overall = 0
     sentences_with_ties = 0
     
-    logging.debug("Predicted: {}".format(predicted_rank_vectors))
-    logging.debug(original_rank_vectors)
-    
     for predicted_rank_vector, original_rank_vector in zip(predicted_rank_vectors, original_rank_vectors):
         
         
