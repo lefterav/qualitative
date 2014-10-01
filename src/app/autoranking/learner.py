@@ -59,36 +59,6 @@ class RankingExperiment(PyExperimentSuite):
             logging.info("Joining training files")
             join_jcml(source_datasets, ready_dataset)
         
-          
-        
-    def crossvalidation(self, dataset_filename,
-                        trainingset_filename,
-                        testset_filename,
-                        params, rep, 
-                        shuffle=False):
-        """ This method takes a dataset in form of a numpy array of shape n x d,
-            where n is the number of data points and d is the dimensionality of 
-            the data. It further requires the current params dictionary and the
-            current repetition number. The flag 'shuffle' determines, if the
-            dataset should be shuffled before returning the training and testing
-            batches. There will be params['repetitions'] many equally sized batches, 
-            the rest of the dataset is discarded.
-        """
-
-        #We do not need shuffling and this one it's not easily applicable
-        #key = int(hashlib.sha1(dataset).hexdigest()[:7], 16)
-        #indices = range(dataset.shape[0])
-        #if shuffle:
-        #    # create permutation unique to dataset
-        #    random.seed(key)
-        #    indices = random.permutation(indices)
-        #       
-        fold_jcml(dataset_filename,
-                        trainingset_filename,
-                        testset_filename,
-                        params['repetitions'],
-                        rep)
-    
     
     def _read_attributeset(self, params):
         general_attributes = self._read_attributes(params, "general")
@@ -113,26 +83,26 @@ class RankingExperiment(PyExperimentSuite):
     
                 
     def prepare_data(self, params, rep):
-        #=======================================================================
-        # prepare training and test data
-        #=======================================================================
+        """
+        prepare training and test data depending on the test mode
+        """
         training_sets = params["training_sets"].format(**params).split(',')
         training_path = params["training_path"].format(**params)
         dataset_filename = "all.trainingset.jcml"
     
-        self._join_or_link(training_path, training_sets, dataset_filename)
+        if rep==0:
+            self._join_or_link(training_path, training_sets, dataset_filename)
         
         #if cross validation is enabled
         if params["test"] == "crossvalidation":
             self.trainingset_filename = "{}.trainingset.jcml".format(rep)
             testset_filename = "{}.testset.jcml".format(rep)
             self.testset_filenames = [testset_filename]
-            self.crossvalidation(dataset_filename, 
-                                 self.trainingset_filename, 
-                                 testset_filename, 
-                                 params, rep, 
-                                 shuffle=params.setdefault("cross_shuffle", False)
-                                 )
+            fold_jcml(dataset_filename,
+                self.trainingset_filename,
+                testset_filename,
+                params['repetitions'],
+                rep)
             
         #if a list of test-sets is given for testing upon
         elif params["test"] == "list":
@@ -196,7 +166,7 @@ class RankingExperiment(PyExperimentSuite):
     
     def iterate(self, params, rep, n):
         ret = OrderedDict()
-        logging.info("Iteration {}".format(n))
+        logging.info("Repetition: {}, Iteration: {}".format(rep, n))
         if n==0:
             self.prepare_data(params, rep)
         if n==1:

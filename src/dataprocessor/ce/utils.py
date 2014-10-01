@@ -38,18 +38,20 @@ def fold_jcml(filename, training_filename, test_filename, repetitions, fold, len
     test_writer = IncrementalJcml(test_filename)
     
     #define where is the beginning and the end of the test set
-    test_start = len - (batch_size * fold)
-    test_end = len - (batch_size * (fold-1))
+    test_start = length - (batch_size * (fold+1))
+    test_end = length - (batch_size * fold)
+    
+    logging.info("Test set for fold {} will be between sentences {} and {}".format(fold, test_start, test_end))
     
     counter = 0
     
     #get one by one the sentences incrementally and put
     #them in the suitable set
     for parallelsentence in reader.get_parallelsentences():
-        if counter >= test_start or counter < test_end:
-            test_writer.add_parallelsentence(parallelsentence)
-        else:
+        if counter < test_start or counter >= test_end:
             training_writer.add_parallelsentence(parallelsentence)
+        else:
+            test_writer.add_parallelsentence(parallelsentence)
         counter+=1
         
     training_writer.close()
