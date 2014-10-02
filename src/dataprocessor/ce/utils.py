@@ -41,6 +41,10 @@ def fold_jcml(filename, training_filename, test_filename, repetitions, fold, len
     test_start = length - (batch_size * (fold+1))
     test_end = length - (batch_size * fold)
     
+    #increase the last fold so as to contain all sentences remaining
+    if fold == repetitions-1:
+        test_start = 0 
+    
     logging.info("Test set for fold {} will be between sentences {} and {}".format(fold, test_start, test_end))
     
     counter = 0
