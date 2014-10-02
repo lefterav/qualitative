@@ -6,7 +6,6 @@ Created on 19 Apr 2013
 '''
 from collections import OrderedDict
 import cPickle as pickle
-import sys
 import os
 import shutil
 import tempfile
@@ -87,7 +86,7 @@ def parallelsentence_to_instance(parallelsentence, domain=None):
         try:
             value = attributes[feature.name]
         except KeyError:
-            sys.stderr.write("Feature '{}' not given by the enabled generators\n".format(feature.name))
+            logging.warn("Feature '{}' not given by the enabled generators\n".format(feature.name))
             value = 0 
 
         #this casts the feature value we produced, in an orange value object
@@ -216,8 +215,9 @@ class OrangeRanker(PairwiseRanker):
         
     def test(self, input_filename, output_filename, reader=CEJcmlReader, writer=IncrementalJcml, **kwargs):
         output = writer(output_filename)
+        input_dataset = reader(input_filename, all_general=True, all_target=True)
 
-        for parallelsentence in reader(input_filename).get_parallelsentences():
+        for parallelsentence in input_dataset.get_parallelsentences():
             ranked_parallelsentence, _ = self.get_ranked_sentence(parallelsentence)
             output.add_parallelsentence(ranked_parallelsentence)
             
@@ -350,7 +350,7 @@ class OrangeRanker(PairwiseRanker):
         return "".join(output)
     
     
-    def get_ranked_sentence(self, parallelsentence, critical_attribute="rank_predicted", new_rank_name="rank_hard", del_orig_class_att=False):
+    def get_ranked_sentence(self, parallelsentence, critical_attribute="rank_predicted", new_rank_name="rank_hard", del_orig_class_att=False, replacement=True):
         """
         Receive a parallel sentence with features and perform ranking
         @param parallelsentence: an object containing the parallel sentence
@@ -369,8 +369,15 @@ class OrangeRanker(PairwiseRanker):
         
         resultvector = []
         
+        if len(parallelsentence.get_translations()) == 1:
+            logging.warning("Parallelsentence has only one target sentence")
+            parallelsentence.tgt[0].add_attribute("rank_predicted", 1)
+            return parallelsentence
+        elif len(parallelsentence.get_translations()) == 0:
+            return parallelsentence
+        
         #de-compose multiranked sentence into pairwise comparisons
-        pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences()
+        pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(replacement=replacement)
         
         #list that will hold the pairwise parallel sentences including the classifier's decision
         classified_pairwise_parallelsentences = []
