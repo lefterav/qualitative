@@ -13,7 +13,6 @@ from ml.lib.orange.ranking import OrangeRanker
 #from ml.lib.scikit import ScikitRanker
 from expsuite import PyExperimentSuite 
 from sentence.parallelsentence import AttributeSet
-from sentence.scoring import Scoring
 from dataprocessor.ce.utils import join_jcml, fold_jcml
 from dataprocessor.ce.cejcml import CEJcmlReader
 from sentence import scoring
