@@ -5,8 +5,6 @@ Created on Sep 19, 2014
 '''
 
 import logging
-import hashlib
-import random
 import os
 from collections import OrderedDict
 from ml.lib.orange.ranking import OrangeRanker
@@ -57,7 +55,14 @@ class RankingExperiment(PyExperimentSuite):
         if len(source_datasets)==1:
             logging.debug("Linking {} to {}".format(source_datasets[0], ready_dataset))
             logging.debug(os.listdir(os.curdir))
-            os.symlink(source_datasets[0], ready_dataset)
+            try:
+                os.symlink(source_datasets[0], ready_dataset)
+            except OSError as e:
+                if '[Errno 17]' in str(e):
+                    logging.warn("Could not create symlink for data. [Errno 17] File exists")
+                else:
+                    raise Exception(e)
+            
             
         else:
             logging.info("Joining training files")
@@ -92,10 +97,9 @@ class RankingExperiment(PyExperimentSuite):
         """
         training_sets = params["training_sets"].format(**params).split(',')
         training_path = params["training_path"].format(**params)
-        dataset_filename = "all.trainingset.jcml"
+        dataset_filename = "{}.dataset.jcml".format(rep)
     
-        if rep==0:
-            self._join_or_link(training_path, training_sets, dataset_filename)
+        self._join_or_link(training_path, training_sets, dataset_filename)
         
         #if cross validation is enabled
         if params["test"] == "crossvalidation":
@@ -183,7 +187,6 @@ class RankingExperiment(PyExperimentSuite):
             ret.update(self.test(params, rep))
         if n==3:
             ret.update(self.evaluate(params, rep))
-        print ret
         return ret
     
 
@@ -193,7 +196,7 @@ def score(testset, class_name, xid, featurename, invert_ranks=False):
       
         
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG,
+    logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M')
     
