@@ -59,21 +59,29 @@ class IncrementalJcml(object):
         if isinstance(src, SimpleSentence):            
                                 
             self.generator.characters("\n\t\t")
-            src_attributes = dict([(key,str(val)) for key,val in src.get_attributes().iteritems()])
+            
+            src_attributes = {}
+#             for key,val in src.get_attributes().iteritems():
+#                 try:
+#                     src_attributes[key] = unicode(val)
+#                 except Exception as e:
+#                     logging.error("Crashed")
+#                     raise Exception(e)
+            src_attributes = dict([(key,unicode(val)) for key,val in src.get_attributes().iteritems()])
             self.generator.startElement(self.TAG["src"], src_attributes)
             self.generator.characters(c(src.get_string()))
             self.generator.endElement(self.TAG["src"])
         elif isinstance(src, tuple):
             for src in parallelsentence.get_source():
                 self.generator.characters("\n\t\t")
-                src_attributes = dict([(key,str(val)) for key,val in src.get_attributes().iteritems()])
+                src_attributes = dict([(key,unicode(val)) for key,val in src.get_attributes().iteritems()])
                 self.generator.startElement(self.TAG["src"], src_attributes)
                 self.generator.characters(c(src.get_string()))
                 self.generator.endElement(self.TAG["src"])
         
         for tgt in parallelsentence.get_translations():
             self.generator.characters("\n\t\t")
-            tgt_attributes = dict([(key,str(val)) for key,val in tgt.get_attributes().iteritems()])
+            tgt_attributes = dict([(key,unicode(val)) for key,val in tgt.get_attributes().iteritems()])
             self.generator.startElement(self.TAG["tgt"], tgt_attributes)
             self.generator.characters(c(tgt.get_string()))
             self.generator.endElement(self.TAG["tgt"])
@@ -82,7 +90,7 @@ class IncrementalJcml(object):
         ref = parallelsentence.get_reference()
         if ref and ref.get_string() != "":
             self.generator.characters("\n\t\t")
-            ref_attributes = dict([(key,str(val)) for key,val in ref.get_attributes().iteritems()])
+            ref_attributes = dict([(key,unicode(val)) for key,val in ref.get_attributes().iteritems()])
             self.generator.startElement(self.TAG["ref"], ref_attributes)
             self.generator.characters(c(ref.get_string()))
             self.generator.endElement(self.TAG["ref"])
