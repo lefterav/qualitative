@@ -304,9 +304,9 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
 #        if del_orig_class_att:
 #            del(attributes[self.rank_name])
         try:
-        	del(attributes[self.rank_name])
+            del(attributes[self.rank_name])
         except:
-             pass
+            pass
         
         return ParallelSentence(source, translations_new_rank, reference, attributes)         
         
