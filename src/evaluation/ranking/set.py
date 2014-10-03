@@ -11,6 +11,7 @@ import segment
 from numpy import average
 import numpy as np
 import logging
+from collections import OrderedDict
 
 def kendall_tau_set_no_ties(predicted_rank_vectors, original_rank_vectors, **kwargs):
     kwargs["penalize_predicted_ties"] = False
@@ -84,7 +85,7 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
     predicted_ties_avg = 100.00*predicted_ties / pairs_overall
     sentence_ties_avg = 100.00*sentences_with_ties / len(predicted_rank_vector)
     
-    stats = {'tau': tau,
+    stats = OrderedDict({'tau': tau,
              'tau_prob': prob,
              'tau_avg_seg': avg_seg_tau,
              'tau_avg_seg_prob': avg_seg_prob,
@@ -98,7 +99,7 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
              'tau_sentence_ties': sentences_with_ties,
              'tau_sentence_ties_per' : sentence_ties_avg
              
-             }
+             })
 
     return stats
 
