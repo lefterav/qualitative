@@ -344,8 +344,40 @@ class ParallelSentence(object):
                 sys.stderr.write("Warning: Target sentence was missing. Adding...\n")
                 self.tgt.append(tgtPS)
 
+    def get_pairwise_parallelsentences(self, 
+                                       bidirectional_pairs=True,
+                                       class_name=None,
+                                       ties=True):
+        
+        from pairwiseparallelsentence import PairwiseParallelSentence
+        
+        #parallel_attribute_values = [self.attributes[name] for name in attribute_set.parallel_attribute_names]
+        #source_attribute_values = [self.src.attributes[name] for name in attribute_set.source_attribute_names]
 
-    def get_pairwise_parallelsentences(self, replacement = True, **kwargs):
+        if bidirectional_pairs:
+            iterator = itertools.permutations(self.tgt, 2)
+        else:
+            iterator = itertools.combinations(self.tgt, 2)
+            #logging.info("{}".format([(s1.get_attribute("system"), s2.get_attribute("system")) for s1,s2 in iterator ]))
+        
+        for target1, target2 in iterator:
+            targets = (target1, target2)
+            systems = (target1.get_attribute("system"), target2.get_attribute("system"))
+            pairwise_parallelsentence = PairwiseParallelSentence(self.src, 
+                                                                 translations=targets, 
+                                                                 systems=systems, 
+                                                                 attributes=self.attributes)
+            if class_name:
+                class_value = self._get_class_pairwise(target1, target2, class_name, ties)
+                if class_value!=None:
+                    rank_attname = pairwise_parallelsentence.rank_name
+                    pairwise_parallelsentence.attributes[rank_attname] = class_value
+                    yield pairwise_parallelsentence 
+                else:
+                    logging.debug("{}, skipped tie".format(systems))                               
+        
+
+    def get_pairwise_parallelsentences_old(self, replacement = True, **kwargs):
         """
         Create a set of all available parallel sentence pairs (in tgt) from one ParallelSentence object.
         @param ps: Object of ParallelSetnece() with one source sentence and more target sentences
@@ -500,7 +532,9 @@ class ParallelSentence(object):
             rank = int(translation.get_rank())
             if prev_rank != rank:
                 remaining_translations.append(translation)
-                prev_rank = rank    
+                prev_rank = rank 
+            else:
+                logging.debug("Filtered translation from {} because it tied".format(system))   
         self.tgt = remaining_translations
 
 
@@ -534,7 +568,7 @@ class ParallelSentence(object):
             
             if class_name:
                 class_value = self._get_class_pairwise(target1, target2, class_name, ties)
-                if class_value:
+                if class_value!=None:
                     vector.append(class_value)
                     yield vector
                 

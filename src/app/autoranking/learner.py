@@ -138,12 +138,13 @@ class RankingExperiment(PyExperimentSuite):
 
         self.model_filename = "{}.model.dump".format(rep)
                                       
-        logging.info("Launching ranker based on {}".format(params["learner"]))                                                
+        logging.info("Fitting ranker based on {}".format(params["learner"]))                                                
         ranker = OrangeRanker(learner=params["learner"])
         ranker.train(dataset_filename = self.trainingset_filename, 
                      output_filename = output_filename,
                      **params)
         
+        logging.info("Ranker fitted sucessfully")                                                
         ranker.dump(self.model_filename)
         
         logging.info("Extracting fitted coefficients")
@@ -160,7 +161,7 @@ class RankingExperiment(PyExperimentSuite):
         self.testset_output = "{}.testset_annotated.jcml".format(rep)
 
         ranker = OrangeRanker(filename=self.model_filename)
-        return ranker.test(testset_input, self.testset_output)
+        return ranker.test(testset_input, self.testset_output, **params)
     
     
     def evaluate(self, params, rep):
@@ -196,7 +197,7 @@ def score(testset, class_name, xid, featurename, invert_ranks=False):
       
         
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO,
+    logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M')
     

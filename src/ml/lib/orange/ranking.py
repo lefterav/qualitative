@@ -213,12 +213,23 @@ class OrangeRanker(PairwiseRanker):
         self.classifier = self.learner(datatable)
         self.fit = True
         
-    def test(self, input_filename, output_filename, reader=CEJcmlReader, writer=IncrementalJcml, **kwargs):
-        output = writer(output_filename)
+    def test(self, input_filename, output_filename, reader=CEJcmlReader, writer=IncrementalJcml, bidirectional_pairs=False, **kwargs):
+        """
+        Use model to assign predicted ranks in a batch of parallel sentences given in an external file
+        """
+        #prepare an incremental reader from the input test set
         input_dataset = reader(input_filename, all_general=True, all_target=True)
-
+        
+        #sentences with predicted ranks will go into a new file
+        output = writer(output_filename)
+        
+        #iterate over given test sentences
         for parallelsentence in input_dataset.get_parallelsentences():
-            ranked_parallelsentence, _ = self.get_ranked_sentence(parallelsentence)
+#             #original tested sentences should not have ties 
+#             parallelsentence.remove_ties()
+            #get the same sentence with predicted ranks assigned
+            ranked_parallelsentence, _ = self.get_ranked_sentence(parallelsentence, bidirectional_pairs=bidirectional_pairs, ties=True)
+            #write sentence with predicted ranks to the new test file
             output.add_parallelsentence(ranked_parallelsentence)
             
         output.close()        
@@ -350,7 +361,7 @@ class OrangeRanker(PairwiseRanker):
         return "".join(output)
     
     
-    def get_ranked_sentence(self, parallelsentence, critical_attribute="rank_predicted", new_rank_name="rank_hard", del_orig_class_att=False, replacement=True):
+    def get_ranked_sentence(self, parallelsentence, critical_attribute="rank_predicted", new_rank_name="rank_hard", del_orig_class_att=False, bidirectional_pairs=False, ties=True):
         """
         Receive a parallel sentence with features and perform ranking
         @param parallelsentence: an object containing the parallel sentence
@@ -362,13 +373,21 @@ class OrangeRanker(PairwiseRanker):
         
         #follow the feature description as needed by the loaded classifier
         domain = self.classifier.domain
+        class_name = domain.class_var.name
+        logging.info("Given classifier's class name: {}".format(class_name))
+        if class_name.startswith("N_"):
+            class_name.replace("N_", "")
         
         #this is a clean-up fixing orange's bug, needed only for some classifiers
         #if self.classifier.__class__.__name__ in ["NaiveClassifier", "CN2UnorderedClassifier"]:
         #     orange_table = self.clean_discrete_features(orange_table)
         
         resultvector = []
-        
+        try:
+            logging.debug("Processing parallel sentence with id: {}".format(parallelsentence.get_attribute("id")))
+        except:
+            pass
+            
         if len(parallelsentence.get_translations()) == 1:
             logging.warning("Parallelsentence has only one target sentence")
             parallelsentence.tgt[0].add_attribute("rank_predicted", 1)
@@ -377,8 +396,9 @@ class OrangeRanker(PairwiseRanker):
             return parallelsentence
         
         #de-compose multiranked sentence into pairwise comparisons
-        pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(replacement=replacement)
-        
+        pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(bidirectional_pairs=bidirectional_pairs,
+                                                                                     class_name=class_name,
+                                                                                     ties=ties)        
         #list that will hold the pairwise parallel sentences including the classifier's decision
         classified_pairwise_parallelsentences = []
         
@@ -388,18 +408,24 @@ class OrangeRanker(PairwiseRanker):
             
             #run classifier for this instance
             value, distribution = self.classifier(instance, return_type)
+            predicted_value = float(value.value)
+            
+            #even if we have a binary classifier, it may be that it cannot decide between two classes
+            #for us, this means a tie
+            if not bidirectional_pairs and distribution and len(distribution)==2 and float(distribution[0])==0.5:
+                predicted_value = 0
 
-            logging.debug("{}, {}, {}\n".format(pairwise_parallelsentence.get_system_names(), value, distribution))
+            logging.debug("{}, {}, {}".format(pairwise_parallelsentence.get_system_names(), predicted_value, distribution))
             
             #gather several metadata from the classification, which may be needed 
             resultvector.append({'systems' : pairwise_parallelsentence.get_system_names(),
-                                 'value' : (float(value.value)),
+                                 'value' : predicted_value,
                                  'distribution': distribution,
                                  'confidence': abs(distribution[0]-0.5),
                                  'instance' : instance})
             
             #add the new predicted ranks as attributes of the new pairwise sentence
-            pairwise_parallelsentence.add_attributes({"rank_predicted":float(value.value),
+            pairwise_parallelsentence.add_attributes({"rank_predicted":predicted_value,
                                                        "prob_-1":distribution[0],
                                                        "prob_1":distribution[1]
                                                        })
