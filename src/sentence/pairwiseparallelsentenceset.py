@@ -270,7 +270,7 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
             #and subtracts from the seconds system's
 
             rank_per_system[system_a] = rank_per_system.setdefault(system_a, 0) + rank
-            #rank_per_system[system_b] = rank_per_system.setdefault(system_b, 0) - rank
+            rank_per_system[system_b] = rank_per_system.setdefault(system_b, 0) - rank
             
             #also gather in a dict the translations per system name, in order to have easy access later
             translations_per_system[system_b] = parallelsentence.get_translations()[1]
