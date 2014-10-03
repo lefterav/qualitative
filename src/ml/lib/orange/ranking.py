@@ -454,7 +454,7 @@ class OrangeRanker(PairwiseRanker):
                                                                del_orig_class_att=del_orig_class_att)
         else:
             attribute1 = "prob_-1"
-            attribute2 = "prob_-2"
+            attribute2 = "prob_1"
             ranked_sentence = sentenceset.get_multiranked_sentence_with_soft_ranks(attribute1, attribute2, critical_attribute, new_rank_name)
         return ranked_sentence, resultvector
 
