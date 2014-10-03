@@ -27,7 +27,7 @@ class PairwiseParallelSentence(ParallelSentence):
     @type rank_name: str   
     """
 
-    def __init__(self, source=None, translations=[], systems=[], reference=None, attributes={}, rank_name = u"rank", **kwargs):
+    def __init__(self, source=None, translations=[], systems=[], reference=None, attributes={}, rank_name = u"rank", normalize_ranks=True, **kwargs):
         """
         Constructor
         @param source: the source text of the parallel sentence
@@ -57,7 +57,7 @@ class PairwiseParallelSentence(ParallelSentence):
             self.ref = reference
             self.attributes = deepcopy(attributes)
             self.rank_name = rank_name
-            if self.tgt and not rankless:
+            if self.tgt and normalize_ranks and not rankless:
                 self._normalize_ranks(invert_ranks)
     #        self.ties_allowed = ties_allowed
 
