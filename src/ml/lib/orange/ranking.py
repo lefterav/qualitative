@@ -213,7 +213,11 @@ class OrangeRanker(PairwiseRanker):
         self.classifier = self.learner(datatable)
         self.fit = True
         
-    def test(self, input_filename, output_filename, reader=CEJcmlReader, writer=IncrementalJcml, bidirectional_pairs=False, **kwargs):
+    def test(self, input_filename, output_filename, reader=CEJcmlReader, writer=IncrementalJcml, 
+             bidirectional_pairs=False,
+             reconstruct='hard', 
+             new_rank_name='rank_hard',
+             **kwargs):
         """
         Use model to assign predicted ranks in a batch of parallel sentences given in an external file
         """
@@ -228,7 +232,11 @@ class OrangeRanker(PairwiseRanker):
 #             #original tested sentences should not have ties 
 #             parallelsentence.remove_ties()
             #get the same sentence with predicted ranks assigned
-            ranked_parallelsentence, _ = self.get_ranked_sentence(parallelsentence, bidirectional_pairs=bidirectional_pairs, ties=True)
+            ranked_parallelsentence, _ = self.get_ranked_sentence(parallelsentence, 
+                                                                  bidirectional_pairs=bidirectional_pairs, 
+                                                                  ties=True, 
+                                                                  reconstruct=reconstruct,
+                                                                  new_rank_name=new_rank_name)
             #write sentence with predicted ranks to the new test file
             output.add_parallelsentence(ranked_parallelsentence)
             
@@ -361,7 +369,12 @@ class OrangeRanker(PairwiseRanker):
         return "".join(output)
     
     
-    def get_ranked_sentence(self, parallelsentence, critical_attribute="rank_predicted", new_rank_name="rank_hard", del_orig_class_att=False, bidirectional_pairs=False, ties=True):
+    def get_ranked_sentence(self, parallelsentence, critical_attribute="rank_predicted", 
+                            new_rank_name="rank_hard", 
+                            del_orig_class_att=False, 
+                            bidirectional_pairs=False, 
+                            ties=True,
+                            reconstruct='hard'):
         """
         Receive a parallel sentence with features and perform ranking
         @param parallelsentence: an object containing the parallel sentence
@@ -435,9 +448,14 @@ class OrangeRanker(PairwiseRanker):
         
         #gather all classified pairwise comparisons of into one parallel sentence again
         sentenceset = CompactPairwiseParallelSentenceSet(classified_pairwise_parallelsentences)
-        ranked_sentence = sentenceset.get_multiranked_sentence(critical_attribute=critical_attribute, 
+        if reconstruct == 'hard':
+            ranked_sentence = sentenceset.get_multiranked_sentence(critical_attribute=critical_attribute, 
                                                                new_rank_name=new_rank_name, 
                                                                del_orig_class_att=del_orig_class_att)
+        else:
+            attribute1 = "prob_-1"
+            attribute2 = "prob_-2"
+            ranked_sentence = sentenceset.get_multiranked_sentence_with_soft_ranks(attribute1, attribute2, critical_attribute, new_rank_name)
         return ranked_sentence, resultvector
 
     def rank_sentence(self, parallelsentence):

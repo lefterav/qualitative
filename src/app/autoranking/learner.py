@@ -158,20 +158,31 @@ class RankingExperiment(PyExperimentSuite):
         Load test set and apply machine learning to assign labels
         """
         testset_input = self.testset_filenames[0]
-        self.testset_output = "{}.testset_annotated.jcml".format(rep)
-
         ranker = OrangeRanker(filename=self.model_filename)
-        return ranker.test(testset_input, self.testset_output, **params)
+
+        self.testset_output_soft = "{}.testset_annotated_soft.jcml".format(rep)
+        ranker.test(testset_input, self.testset_output_soft, reconstruct='soft', new_rank_name='rank_soft', **params)
     
+        self.testset_output_hard = "{}.testset_annotated_hard.jcml".format(rep)
+        ranker.test(testset_input, self.testset_output_hard, reconstruct='hard', new_rank_name='rank_hard', **params)
+        
+        return {}
     
     def evaluate(self, params, rep):
         """
         Load predictions (test) and analyze performance
         """
-        testset = CEJcmlReader(self.testset_output, all_general=True, all_target=True)
-        
         class_name = params["class_name"]
-        scores = scoring.get_metrics_scores(testset, "rank_hard", class_name , prefix="soft", invert_ranks=False)
+        
+        testset = CEJcmlReader(self.testset_output_soft, all_general=True, all_target=True) 
+        scores = scoring.get_metrics_scores(testset, "rank_soft", class_name , prefix="soft", invert_ranks=False)
+               
+        testset = CEJcmlReader(self.testset_output_hard, all_general=True, all_target=True)        
+        scores_hard = scoring.get_metrics_scores(testset, "rank_hard", class_name , prefix="hard", invert_ranks=False)
+        
+        scores.update(scores_hard)
+        logging.debug("Scores: {}".format(scores))
+        
         return scores
     
             
@@ -190,12 +201,7 @@ class RankingExperiment(PyExperimentSuite):
             ret.update(self.evaluate(params, rep))
         return ret
     
-
-
-def score(testset, class_name, xid, featurename, invert_ranks=False):
-    return scoring.get_metrics_scores(testset, featurename, class_name, prefix=xid)
-      
-        
+ 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',

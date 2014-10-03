@@ -6,6 +6,7 @@
 from multirankeddataset import MultiRankedDataset
 import logging
 import sys
+from collections import OrderedDict
 import numpy
 from ranking import Ranking
 from evaluation.ranking.segment import kendall_tau, kendall_tau_prob
@@ -58,7 +59,7 @@ def get_metrics_scores(data, predicted_rank_name, original_rank_name,
         predicted_rank_vectors.append(predicted_ranking)
         original_rank_vectors.append(original_ranking)
     
-    stats = {}
+    stats = OrderedDict()
     
     predicted_rank_vectors = numpy.array(predicted_rank_vectors)
     original_rank_vectors = numpy.array(original_rank_vectors)
@@ -69,8 +70,7 @@ def get_metrics_scores(data, predicted_rank_name, original_rank_name,
         
 #                sys.stderr.write("Error with {}\n".format(name))
     
-    stats = dict([("{}-{}{}".format(prefix, key, suffix),value) for key,value in stats.iteritems()])
-    print stats
+    stats = OrderedDict([("{}-{}{}".format(prefix, key, suffix),value) for key,value in stats.iteritems()])
     return stats
 
 
