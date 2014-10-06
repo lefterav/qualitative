@@ -9,6 +9,7 @@ import argparse
 import sys
 import os
 import logging
+from numpy import mean
 
 """
 Gathers the results from the app folders created with python Experiment Suite
@@ -41,13 +42,18 @@ def retrieve_results(mysuite, path, reps = [0]):
     
     #browse app directories one by one
     for exp in exps:
-        for rep in reps:
-            #get a dictionary with all result values for the current app
-            values = mysuite.get_value(exp, rep, 'all')
-            if values:
-                params = mysuite.get_params(exp)
-                params["app"] = os.path.basename(os.path.dirname(exp))
-                results.append((params, values))
+        values = mysuite.get_histories_over_repetitions(exp=exp, tags='all', agregate=mean)
+        if values:
+            params = mysuite.get_params(exp)
+            params["app"] = os.path.basename(os.path.dirname(exp))
+            results.append((params, values))
+#         for rep in reps:
+#             #get a dictionary with all result values for the current app
+#             values = mysuite.get_value(exp, rep, 'all')
+#             if values:
+#                 params = mysuite.get_params(exp)
+#                 params["app"] = os.path.basename(os.path.dirname(exp))
+#                 results.append((params, values))
     logging.info("found %s experiments", len(results))
     
     return results
