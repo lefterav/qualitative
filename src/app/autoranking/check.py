@@ -9,16 +9,16 @@ import argparse
 import sys
 import os
 import logging
-from numpy import mean
+from numpy import mean, std
 
 """
 Gathers the results from the app folders created with python Experiment Suite
 """
-        
-    
 
 
-    
+
+
+
 def retrieve_results(mysuite, path, reps = [0]):
     """
     Parallelizes and aligned the vectors provided by the Experiment Suite API
@@ -33,7 +33,6 @@ def retrieve_results(mysuite, path, reps = [0]):
     The key of each entry is a tuple containing (attribute_set,classifier_name,discretization,filterscorediff) and 
     its value is a list of (float) values, respectively to their names entered in the list 'required_feature_names'
     """
-    
     results = []
     exps = mysuite.get_exps(path=path)
     logging.info("Found %s experiments", len(exps))    
@@ -42,20 +41,30 @@ def retrieve_results(mysuite, path, reps = [0]):
     
     #browse app directories one by one
     for exp in exps:
-        values = mysuite.get_histories_over_repetitions(exp=exp, tags='all', agregate=mean)
-        if values:
-            params = mysuite.get_params(exp)
-            params["app"] = os.path.basename(os.path.dirname(exp))
-            results.append((params, values))
-#         for rep in reps:
-#             #get a dictionary with all result values for the current app
-#             values = mysuite.get_value(exp, rep, 'all')
-#             if values:
-#                 params = mysuite.get_params(exp)
-#                 params["app"] = os.path.basename(os.path.dirname(exp))
-#                 results.append((params, values))
-    logging.info("found %s experiments", len(results))
-    
+        values = mysuite.get_histories_over_repetitions(exp=exp, tags='all', aggregate=mean)
+        values_std = mysuite.get_histories_over_repetitions(exp=exp, tags='all', aggregate=std)
+        values_std = dict([("{}_std".format(k),v) for k,v in values_std.iteritems()])
+        
+        values_rep = mysuite.get_histories_over_repetitions(exp=exp, tags='all', aggregate=list)
+        for rep, key, vs in enumerate(values_rep.iteritems()):
+            for v in vs:
+                values["rep-{}_{}".format(rep, key)] = v
+                
+        values.update(values_std)
+        #if values:
+        #    params = mysuite.get_params(exp)
+        #    params["app"] = os.path.basename(os.path.dirname(exp))
+        #    results.append((params, values))
+        
+        #         for rep in reps:
+        #             #get a dictionary with all result values for the current app
+        #             values = mysuite.get_value(exp, rep, 'all')
+        #             if values:
+        #                 params = mysuite.get_params(exp)
+        #                 params["app"] = os.path.basename(os.path.dirname(exp))
+        #                 results.append((params, values))
+        logging.info("found %s experiments", len(results))
+        
     return results
 
                 
