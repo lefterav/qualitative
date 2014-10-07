@@ -72,12 +72,12 @@ class SimpleSentence(object):
     def get_attribute(self, key, sub=None):
         try:
             return self.attributes[key]
-        except:
+        except KeyError:
             if sub:
                 return sub
             else:
-                log.debug("Could not find attribute {}\n".format(key))              
-                raise AttributeError
+                log.debug("Could not find attribute '{}' in sentence '{} ...'".format(key, self.string[:100]))              
+                raise KeyError
     
     def add_attributes(self, attributes):
         self.attributes.update(attributes)
