@@ -1,4 +1,7 @@
 '''
+Experiment suite for learning and testing a new model. It comes along with the configuration
+files to be found in /config/learning*
+
 Created on Sep 19, 2014
 
 @author: Eleftherios Avramidis
@@ -203,7 +206,7 @@ class RankingExperiment(PyExperimentSuite):
     
  
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG,
+    logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M')
     
