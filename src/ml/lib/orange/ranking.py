@@ -387,7 +387,7 @@ class OrangeRanker(PairwiseRanker):
         #follow the feature description as needed by the loaded classifier
         domain = self.classifier.domain
         class_name = domain.class_var.name
-        logging.info("Given classifier's class name: {}".format(class_name))
+        logging.debug("Given classifier's class name: {}".format(class_name))
         if class_name.startswith("N_"):
             class_name.replace("N_", "")
         
@@ -403,10 +403,10 @@ class OrangeRanker(PairwiseRanker):
             
         if len(parallelsentence.get_translations()) == 1:
             logging.warning("Parallelsentence has only one target sentence")
-            parallelsentence.tgt[0].add_attribute("rank_predicted", 1)
-            return parallelsentence
+            parallelsentence.tgt[0].add_attribute(new_rank_name, 1)
+            return parallelsentence, {}
         elif len(parallelsentence.get_translations()) == 0:
-            return parallelsentence
+            return parallelsentence, {}
         
         #de-compose multiranked sentence into pairwise comparisons
         pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(bidirectional_pairs=bidirectional_pairs,
