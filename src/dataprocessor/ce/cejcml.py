@@ -5,16 +5,40 @@ Created on 26 Jun 2012
 '''
 
 from numpy import average, std, min, max, asarray
-import logging as log
-import sys
+import logging
 
 from collections import defaultdict, OrderedDict
-from xml.etree.cElementTree import iterparse
+from xml.etree.ElementTree import iterparse
 from sentence.sentence import SimpleSentence
-from sentence.parallelsentence import ParallelSentence
+from sentence.parallelsentence import ParallelSentence, AttributeSet
 from sentence.dataset import DataSet
 
-class CEJcmlReader():
+def prefix_source_atts(source_attribute_names):
+    return ["src_{}".format(att) for att in source_attribute_names]
+
+def prefix_target_atts(target_attritube_names, target_index):
+    return [["tgt-{}_{}".format(target_index, att) for att in target_attritube_names]]
+
+def get_attribute_names(filename):
+    attribute_names = set()
+    for parallelsentence in CEJcmlReader(filename).get_parallelsentences(compact=True, all_general=True, all_target=True):
+        attribute_names.update((parallelsentence.get_source().get_attributes().keys()))
+    return attribute_names
+
+class DataReader:
+    """
+    Abstract base class for classes reading data. To be moved to a more suitable module, when possible. 
+    """
+    def get_attribute_names(self):
+        raise NotImplementedError()
+    
+    def get_dataset(self):
+        raise NotImplementedError()
+    
+    def get_parallelsentences(self, **kwargs):
+        raise NotImplementedError()
+
+class CEJcmlReader(DataReader):
     """
     This class converts jcml format to tab format (orange format).
     The output file is saved to the same folder where input file is.
@@ -39,6 +63,7 @@ class CEJcmlReader():
         self.TAG_TGT = 'tgt'
         self.TAG_DOC = 'jcml'
 
+
         self.desired_general = kwargs.setdefault('desired_general', ["rank","langsrc","langtgt","id","judgement_id"])
         self.desired_source = kwargs.setdefault("desired_source", [])
         self.desired_target = kwargs.setdefault('desired_target', ["system","rank"])
@@ -46,56 +71,49 @@ class CEJcmlReader():
         self.all_target = kwargs.setdefault('all_target', False)        
         self.input_filename = input_xml_filename
     
-    def get_dataset(self):
-        parallelsentences = []
-        source_xml_file = open(self.input_filename, "r")
-        # get an iterable
-        context = iterparse(source_xml_file, events=("start", "end"))
-        # turn it into an iterator
-        context = iter(context)
-        # get the root element
-        event, root = context.next()
+    def length(self):
+        i = 0
+        for _ in self.get_parallelsentences(compact=True):
+            i+=1
+        return i
+    
+    def get_attribute_names(self):
+        """
+        Attributes of parallel sentence files can be sparse, i.e. not all attributes appear in all sentences. Therefore
+        in order to have a full descriptions of which attributes appear in a dataset, one has to parse the entire XML
+        file, read the parallelsentences without the sentence strings, and gather the names (keys) of the seen attributes
+        @return: an object of an attribute set, containing the names of the features for source, target, parallel and 
+        reference features
+        @rtype: L{AttributeSet}
+        """
+        parallel_attribute_names = set()
+        source_attribute_names = set()
+        target_attribute_names = set()
+        ref_attribute_names = set()
         
-        attributes = []
-        target_id = 0
-        
-#        desired_source = []
-        targets = []
-        
-        
-        for event, elem in context:
-            #new sentence: get attributes
-            if event == "start" and elem.tag == self.TAG_SENT:
-                if not self.all_general:
-                    attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if (key in self.desired_general or self.all_general)])
-            #new source sentence
-#            elif event == "start" and elem.tag == self.TAG_SRC:
-#                source_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in desired_source])
-#            
-            #new target sentence
-            elif event == "start" and elem.tag == self.TAG_TGT:
-                target_id += 1
-                target_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if (key in self.desired_target or self.all_target)])
-                targets.append(SimpleSentence("", target_attributes))
+        for parallelsentence in self.get_parallelsentences(compact=True, all_general=True, all_target=True):
+            parallel_attribute_names.update((parallelsentence.get_attributes().keys()))
+            source_attribute_names.update((parallelsentence.get_source().get_attributes().keys()))
+            for tgt in parallelsentence.get_translations():
+                target_attribute_names.update(tgt.get_attributes().keys())
+            try:
+                ref_attribute_names.update(parallelsentence.get_reference().get_attributes().keys())
+            except:
+                pass
+        return AttributeSet(list(parallel_attribute_names), list(source_attribute_names), list(target_attribute_names), list(ref_attribute_names))
+    
+    def get_dataset(self, **kwargs):
+        return DataSet(list(self.get_parallelsentences(**kwargs)))       
 
-#            elif event == "end" and elem.tag == self.TAG_SRC:
-#                src_text = elem.text
-            
-#            elif event == "end" and elem.tag == self.TAG_TGT:
-#                tgt_text.append(elem.text)
-            
-            elif event == "end" and elem.tag in self.TAG_SENT:
-                source = SimpleSentence("",{})
-                parallelsentence = ParallelSentence(source,targets,None,attributes)
-                parallelsentences.append(parallelsentence)
-
-            root.clear()
+    def get_parallelsentences(self, compact=False):
+        """
+        This is a generator that reads the XML file incrementally and returns a parallel sentence object each time a new entry is read.
+        @param compact: do not read the strings of the encapsulate sentences (i.e. to save time and memory)
+        @type compact: C{boolean}
+        @return: an iterator of the read parallel sentences
+        @rtype: an C{iterator} of P{ParallelSentence}
+        """
         
-        
-        return DataSet(parallelsentences)       
-
-    def get_parallelsentences(self, compact=True):
-        parallelsentences = []
         source_file = open(self.input_filename, "r")
         # get an iterable
         context = iterparse(source_file, events=("start", "end"))
@@ -119,12 +137,10 @@ class CEJcmlReader():
             #new source sentence
             elif event == "start" and elem.tag == self.TAG_SRC:
                 source_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_source or self.all_target])
-            
             #new target sentence
             elif event == "start" and elem.tag == self.TAG_TGT:
                 target_id += 1
                 target_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_target or self.all_target])
-
             elif not compact and event == "end" and elem.tag == self.TAG_SRC and elem.text:
                 src_text = elem.text
                  
@@ -133,12 +149,12 @@ class CEJcmlReader():
                     tgt_text = elem.text
                 else:
                     tgt_text = ""
-                targets.append(SimpleSentence(tgt_text, target_attributes))
+                target_sentence = SimpleSentence(tgt_text, target_attributes)
+                targets.append(target_sentence)
             
             elif event == "end" and elem.tag in self.TAG_SENT:
                 source = SimpleSentence(src_text, source_attributes)
                 parallelsentence = ParallelSentence(source, targets, None, attributes)
-                log.debug("cejml.py: Just process sentence {}".format(parallelsentence.get_attribute("judgement_id")))
                 yield parallelsentence
             root.clear() 
         source_file.close()
