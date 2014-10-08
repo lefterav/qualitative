@@ -19,21 +19,25 @@ for more hints on their installation
 python-libraries 
 ----------------
 
-Use pip-install: 
-For Debian/ubuntu: 
->> sudo apt-get install python-dev g++ build-essential python-pip 
->> sudo pip install --upgrade pip  
->> sudo pip install <package-name>
+Use pip-install:
+
+For Debian/ubuntu:
+sudo apt-get install python-dev g++ build-essential python-pip libblas-dev liblapack-dev gfortran
+sudo pip install --upgrade pip  
+sudo easy_install -U setuptools
+sudo pip install --upgrade setuptools
+
+sudo pip install <package-name>
+
 or for user-specific installation (no root or 
 not wanting to risk your python environment) 
->> pip install --user <package-name> 
+ pip install --user <package-name> 
 
 Packages:
 * python 2.7
 * orange
 * py4j
 * python-nltk
-* xmlrpclib
 * numpy
 * scipy
 * suds [only for Acrolinx support]
