@@ -270,7 +270,7 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
             #and subtracts from the seconds system's
 
             rank_per_system[system_a] = rank_per_system.setdefault(system_a, 0) + rank
-            #rank_per_system[system_b] = rank_per_system.setdefault(system_b, 0) - rank
+            rank_per_system[system_b] = rank_per_system.setdefault(system_b, 0) - rank
             
             #also gather in a dict the translations per system name, in order to have easy access later
             translations_per_system[system_b] = parallelsentence.get_translations()[1]
@@ -301,12 +301,12 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         source = deepcopy(self.pps_dict.values()[0].get_source())
         reference = deepcopy(self.pps_dict.values()[0].get_reference())
         attributes = deepcopy(self.pps_dict.values()[0].get_attributes())
-#        if del_orig_class_att:
-#            del(attributes[self.rank_name])
+        if del_orig_class_att:
+            del(attributes[self.rank_name])
         try:
-        	del(attributes[self.rank_name])
+            del(attributes[self.rank_name])
         except:
-             pass
+            pass
         
         return ParallelSentence(source, translations_new_rank, reference, attributes)         
         
@@ -410,7 +410,7 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
             #get the rank value (0, -1, 1)
             
             prob_neg = float(parallelsentence.get_attribute(attribute1))
-#            prob_pos = -1.00 * float(parallelsentence.get_attribute(attribute2))
+            prob_pos = -1.00 * float(parallelsentence.get_attribute(attribute2))
             
             
             #rank value adds up on the first system's rank
@@ -419,10 +419,10 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
                 rank_per_system[system_b] += prob_neg
             except KeyError:
                 rank_per_system[system_b] = prob_neg
-#            try:
-#                rank_per_system[system_a] -= prob_pos
-#            except KeyError:
-#                rank_per_system[system_a] = -1 * prob_pos
+            try:
+                rank_per_system[system_a] -= prob_pos
+            except KeyError:
+                rank_per_system[system_a] = -1 * prob_pos
 #            
             #also gather in a dict the translations per system name, in order to have easy access later
             translations_per_system[system_b] = parallelsentence.get_translations()[1]
