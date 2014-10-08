@@ -195,8 +195,8 @@ class AutorankingSuite(PyExperimentSuite):
             input_file = "pairwise_trainset.jcml"
             self.trainset_orange_filename = "trainset.tab"
             
-            if os.path.isdir("/local"):
-                dir = "/local"
+            if os.path.isdir("/local/tmp/elav01"):
+                dir = "/local/tmp/elav01"
             else:
                 dir = "."
             
@@ -224,8 +224,8 @@ class AutorankingSuite(PyExperimentSuite):
             input_file = "pairwise_testset.jcml"
             self.testset_orange_filename = "testset.tab"
             
-            if os.path.isdir("/local"):
-                dir = "/local"
+            if os.path.isdir("/local/tmp/elav01"):
+                dir = "/local/tmp/elav01"
             else:
                 dir = "."
             
