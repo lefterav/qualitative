@@ -65,7 +65,7 @@ def kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
     predicted_rank_vector = predicted_rank_vector.normalize(ties=ties_handling)
     original_rank_vector = original_rank_vector.normalize(ties=ties_handling)
     
-    logging.debug("\n* Segment tau *")
+    logging.debug("Calculating Segment tau")
     logging.debug("predicted vector: {}".format(predicted_rank_vector))
     logging.debug("original vector : {}".format(original_rank_vector))
     

@@ -2,16 +2,20 @@
 # -*- coding: utf-8 -*-
 
 """
+Provides the class which contains the information for a simple (shallow) sentence
 @author: Eleftherios Avramidis
 """
 
 from copy import deepcopy
-import sys
 import logging as log
 
 class SimpleSentence(object):
     """
     A simple (shallow) sentence object, which wraps both a sentence and its attributes
+    @ivar string: the string that the simple sentence will consist of
+    @type string: string
+    @ivar attributes: a dictionary of arguments that describe properties of the simple sentence
+    @type attributes: {str, Object}
     """
 
 
@@ -21,15 +25,13 @@ class SimpleSentence(object):
         @param string: the string that the simple sentence will consist of
         @type string: string
         @param attributes: a dictionary of arguments that describe properties of the simple sentence
-        @type attributes: {String key, String value}
+        @type attributes: {str, Object}
         
         """
-        
         #avoid tabs
         self.string = string.replace("\t", "  ")
         #avoid getting a shallow reference to the attributes in the dict
         self.attributes = deepcopy (attributes) 
-    
     
 #    def __gt__(self, other):
 #        return self.attributes["system"] > other.attributes["system"]
@@ -57,6 +59,11 @@ class SimpleSentence(object):
         return self.attributes
 
     def get_rank(self):
+        """
+        Get the rank attribute of the sentence
+        @return: the rank attribute of the sentence
+        @rtype: str
+        """
         return self.attributes["rank"]
 
     def add_attribute(self, key, value):
@@ -65,12 +72,12 @@ class SimpleSentence(object):
     def get_attribute(self, key, sub=None):
         try:
             return self.attributes[key]
-        except:
+        except KeyError:
             if sub:
                 return sub
             else:
-                log.debug("Could not find attribute {}\n".format(key))              
-                raise AttributeError
+                log.debug("Could not find attribute '{}' in sentence '{} ...'".format(key, self.string[:100]))              
+                raise KeyError
     
     def add_attributes(self, attributes):
         self.attributes.update(attributes)
@@ -83,6 +90,11 @@ class SimpleSentence(object):
         del(self.attributes[attribute])
 
     def keep_only_attributes(self, attribute_names):
+        """
+        Modiify current sentence object by removing sentence attributes whose name is not in the given list
+        @param attribute_names: a list of attribute names that we want to keep
+        @type attribute_names: [str, ...]
+        """
         for name in self.attributes.keys():
             if name not in attribute_names:
                 del(self.attributes[name])
@@ -109,6 +121,8 @@ class SimpleSentence(object):
         self.attributes.update(incoming_attributes)
         self.string = ss.string
     
+    #Make sentence also behave as a dictionary
+    
     def __getitem__(self, obj, cls=None): 
         return self.get_attribute(obj)
 
@@ -118,3 +132,5 @@ class SimpleSentence(object):
     def __delete__(self, obj): 
         del(self.attributes[obj])
         
+    def __iter__(self):
+        return self.attributes.iterkeys()
