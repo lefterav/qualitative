@@ -10,6 +10,7 @@ import sys
 import logging
 from ranking import Ranking
 import itertools
+import numpy as np
 
 def _prefix(prefix, names):
         return [prefix.format(name) for name in names]    
@@ -539,7 +540,7 @@ class ParallelSentence(object):
 
 
 
-    def get_vectors(self, attribute_set, bidirectional_pairs=True, ties=False, class_name=None):
+    def get_vectors(self, attribute_set, bidirectional_pairs=True, ties=False, class_name=None, default_value=''):
         """
         Return a feature vector in an efficient way, where only specified attributes are included
         @param attribute_set: a definition of the attribute that need to be included
@@ -548,8 +549,10 @@ class ParallelSentence(object):
         @rtype: C{iterator} of C{lists}
         """
         
-        parallel_attribute_values = [self.attributes[name] for name in attribute_set.parallel_attribute_names]
-        source_attribute_values = [self.src.attributes[name] for name in attribute_set.source_attribute_names]
+        parallel_attribute_values = self.get_vector(attribute_set.parallel_attribute_names, default_value)
+        
+        
+        source_attribute_values = self.src.get_vector(attribute_set.source_attribute_names, default_value)
 
         if bidirectional_pairs:
             iterator = itertools.product(self.tgt, repeat=2)
@@ -557,8 +560,8 @@ class ParallelSentence(object):
             iterator = itertools.combinations(self.tgt, repeat=2)
         
         for target1, target2 in iterator:
-            target1_attribute_values = [target1.attributes[name] for name in attribute_set.target_attribute_names]
-            target2_attribute_values = [target2.attributes[name] for name in attribute_set.target_attribute_names]
+            target1_attribute_values = target1.get_vector(attribute_set.target_attribute_names, default_value)
+            target2_attribute_values = target2.get_vector(attribute_set.target_attribute_names, default_value)
             
             vector = []
             vector.extend(parallel_attribute_values)
@@ -574,7 +577,15 @@ class ParallelSentence(object):
                 
             else:  
                 yield vector
-        
+
+    def get_vector(self, attribute_names, default_value=''):
+        vector = []
+        for name in attribute_names:
+            try:
+                vector.append(self.attributes[name])
+            except KeyError:
+                vector.append(default_value)
+        return vector
             
     def _get_class_pairwise(self, target1, target2, class_name, ties):
         if target1[class_name] > target2[class_name]:
