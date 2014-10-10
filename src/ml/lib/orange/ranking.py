@@ -105,7 +105,9 @@ def dataset_to_instances(filename,
                          class_name=None,
                          reader=CEJcmlReader,  
                          tempdir = "/tmp",
-                         output_filename = None,
+                         output_filename=None,
+                         default_value = '',
+                         replace_infinite=None,
                          **kwargs):
     """
     Receive a dataset filename and convert it into a memory table for the Orange machine learning
@@ -146,7 +148,11 @@ def dataset_to_instances(filename,
     
     #iterate over all parallel sentences provided by the data reader
     for parallelsentence in dataset.get_parallelsentences():
-        vectors = parallelsentence.get_vectors(attribute_set, class_name=class_name)
+        vectors = parallelsentence.get_vectors(attribute_set, 
+                                               class_name=class_name, 
+                                               default_value=default_value,
+                                               replace_infinite=False,
+                                               )
         
         #every parallelsentence has many instances
         for vector in vectors:

@@ -540,7 +540,7 @@ class ParallelSentence(object):
 
 
 
-    def get_vectors(self, attribute_set, bidirectional_pairs=True, ties=False, class_name=None, default_value=''):
+    def get_vectors(self, attribute_set, bidirectional_pairs=True, ties=False, class_name=None, default_value='', replace_infinite=False):
         """
         Return a feature vector in an efficient way, where only specified attributes are included
         @param attribute_set: a definition of the attribute that need to be included
@@ -549,10 +549,10 @@ class ParallelSentence(object):
         @rtype: C{iterator} of C{lists}
         """
         
-        parallel_attribute_values = self.get_vector(attribute_set.parallel_attribute_names, default_value)
+        parallel_attribute_values = self.get_vector(attribute_set.parallel_attribute_names, default_value, replace_infinite)
         
         
-        source_attribute_values = self.src.get_vector(attribute_set.source_attribute_names, default_value)
+        source_attribute_values = self.src.get_vector(attribute_set.source_attribute_names, default_value, replace_infinite)
 
         if bidirectional_pairs:
             iterator = itertools.product(self.tgt, repeat=2)
@@ -560,7 +560,7 @@ class ParallelSentence(object):
             iterator = itertools.combinations(self.tgt, repeat=2)
         
         for target1, target2 in iterator:
-            target1_attribute_values = target1.get_vector(attribute_set.target_attribute_names, default_value)
+            target1_attribute_values = target1.get_vector(attribute_set.target_attribute_names, default_value, replace_infinite)
             target2_attribute_values = target2.get_vector(attribute_set.target_attribute_names, default_value)
             
             vector = []
@@ -578,14 +578,19 @@ class ParallelSentence(object):
             else:  
                 yield vector
 
-    def get_vector(self, attribute_names, default_value=''):
+    def get_vector(self, attribute_names, default_value='', replace_infinite):
         vector = []
         for name in attribute_names:
             try:
-                vector.append(self.attributes[name])
+                attvalue = self.attributes[name]
+                if replace_infinite:
+                    attvalue = attvalue.replace("inf", "99999999")
+                    attvalue = attvalue.replace("nan", "0")
+                vector.append(attvalue)
             except KeyError:
                 vector.append(default_value)
         return vector
+    
             
     def _get_class_pairwise(self, target1, target2, class_name, ties):
         if target1[class_name] > target2[class_name]:
