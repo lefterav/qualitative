@@ -123,11 +123,15 @@ class SimpleSentence(object):
     
     #Make sentence also behave as a dictionary
     
-    def get_vector(self, attribute_names, default_value=''):
+    def get_vector(self, attribute_names, default_value='', replace_inifinte):
         vector = []
         for name in attribute_names:
             try:
-                vector.append(self.attributes[name])
+                attvalue = self.attributes[name]
+                if replace_infinite:
+                    attvalue = attvalue.replace("inf", "99999999")
+                    attvalue = attvalue.replace("nan", "0")
+                vector.append(attvalue)
             except KeyError:
                 vector.append(default_value)
         return vector
