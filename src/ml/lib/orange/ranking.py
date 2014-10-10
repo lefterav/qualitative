@@ -107,7 +107,7 @@ def dataset_to_instances(filename,
                          tempdir = "/tmp",
                          output_filename=None,
                          default_value = '',
-                         replace_infinite=None,
+                         replace_infinite=False,
                          **kwargs):
     """
     Receive a dataset filename and convert it into a memory table for the Orange machine learning
@@ -151,7 +151,7 @@ def dataset_to_instances(filename,
         vectors = parallelsentence.get_vectors(attribute_set, 
                                                class_name=class_name, 
                                                default_value=default_value,
-                                               replace_infinite=False,
+                                               replace_infinite=replace_infinite,
                                                )
         
         #every parallelsentence has many instances
