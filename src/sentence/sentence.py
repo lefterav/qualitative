@@ -123,6 +123,15 @@ class SimpleSentence(object):
     
     #Make sentence also behave as a dictionary
     
+    def get_vector(self, attribute_names, default_value=''):
+        vector = []
+        for name in attribute_names:
+            try:
+                vector.append(self.attributes[name])
+            except KeyError:
+                vector.append(default_value)
+        return vector
+            
     def __getitem__(self, obj, cls=None): 
         return self.get_attribute(obj)
 
