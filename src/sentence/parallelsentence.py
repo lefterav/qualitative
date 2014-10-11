@@ -572,11 +572,11 @@ class ParallelSentence(object):
             if class_name:
                 class_value = self._get_class_pairwise(target1, target2, class_name, ties)
                 if class_value!=None:
-                    vector.append(class_value)
-                    yield vector
+                    yield vector, class_value
+                    
                 
             else:  
-                yield vector
+                yield vector, None
 
     def get_vector(self, attribute_names, default_value='', replace_infinite=False):
         vector = []
