@@ -155,7 +155,8 @@ def dataset_to_instances(filename,
                                                )
         
         #every parallelsentence has many instances
-        for vector in vectors:
+        for vector, class_value in vectors:
+            vector.append(class_value)
             tabline = "\t".join([str(value) for value in vector])
             print >>tabfile, tabline
     
