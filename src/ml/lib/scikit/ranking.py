@@ -7,6 +7,8 @@ Created on Sep 24, 2014
 from dataprocessor.ce.cejcml import CEJcmlReader
 import numpy as np
 from ml.ranking import Ranker
+from sklearn.svm import SVC
+import logging as log
 
 def dataset_to_instances(filename, 
                          attribute_set=None,
@@ -84,17 +86,40 @@ def dataset_to_instances(filename,
     return features, labels
 
 
-class ScikitRanker(Ranker):
+class SkRanker(Ranker):
     '''
-    classdocs
+    Basic ranker wrapping scikit-learn functions
     '''
     
-    def train(self, dataset_filename, **kwargs):
+    def train(self, dataset_filename, optimize=True, **kwargs):
         data, labels = dataset_to_instances(filename=dataset_filename, **kwargs)
         learner = eval(self.learner) 
-        self.learner = learner(**kwargs)
-        self.classifier = self.learner.fit(data)
+        
+        
+        if optimize:
+            self.learner = optimize_model(self.learner(), data, labels, )
+        else:
+            self.learner = learner(**kwargs)
+        
+        self.classifier = self.learner.fit(data, labels)
         self.fit = True
 
 
+def optimize_model(estimator, X_train, y_train, params, scores, folds, verbose, n_jobs):
+    clf = None
+    for score_name, score_func in scores:
+        log.info("Tuning hyper-parameters for %s" % score_name)
+        
+        log.debug(params)
+        log.debug(scores)
+        
+        clf = GridSearchCV(estimator, params, loss_func=score_func, 
+                           cv=folds, verbose=verbose, n_jobs=n_jobs)
+        
+        clf.fit(X_train, y_train)
+        
+        log.info("Best parameters set found on development set:")
+        log.info(clf.best_params_)
+        
+    return clf.best_estimator_
         
