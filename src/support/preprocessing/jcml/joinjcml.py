@@ -4,19 +4,11 @@ Created on May 31, 2013
 @author: Eleftherios Avramidis
 '''
 
-from dataprocessor.input.jcmlreader import JcmlReader
-from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.ce.utils import join_jcml
 import sys
 
-
 if __name__ == '__main__':
-    dataset = None
-    for filename in sys.argv[2:]:
-        newdataset = JcmlReader(filename).get_dataset()
-        if dataset:
-            dataset.append_dataset(newdataset)
-        else:
-            dataset = newdataset
-    Parallelsentence2Jcml(dataset).write_to_file(sys.argv[1])
+    filenames = sys.argv[2:]
+    output_filename = sys.argv[1]
+    join_jcml(filenames, output_filename)
     
-        
