@@ -12,7 +12,7 @@ import tempfile
 import logging
 import codecs
 
-from ml.ranker import PairwiseRanker
+from ml.ranking import Ranker
 from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange
 from dataprocessor.ce.cejcml import CEJcmlReader
 from dataprocessor.sax.saxps2jcml import IncrementalJcml
@@ -55,7 +55,7 @@ def forname(name, **kwargs):
     """
     Return particular ranker class given a string
     @return: ranker object wrapping an Orange classifier
-    @rtype: L{PairwiseRanker}
+    @rtype: L{Ranker}
     """
     orangeclass = eval(name)
     return OrangeRanker(orangeclass(**kwargs))
@@ -107,7 +107,7 @@ def dataset_to_instances(filename,
                          tempdir = "/tmp",
                          output_filename=None,
                          default_value = '',
-                         replace_infinite=None,
+                         replace_infinite=False,
                          **kwargs):
     """
     Receive a dataset filename and convert it into a memory table for the Orange machine learning
@@ -151,11 +151,12 @@ def dataset_to_instances(filename,
         vectors = parallelsentence.get_vectors(attribute_set, 
                                                class_name=class_name, 
                                                default_value=default_value,
-                                               replace_infinite=False,
+                                               replace_infinite=replace_infinite,
                                                )
         
         #every parallelsentence has many instances
-        for vector in vectors:
+        for vector, class_value in vectors:
+            vector.append(class_value)
             tabline = "\t".join([str(value) for value in vector])
             print >>tabfile, tabline
     
@@ -199,7 +200,7 @@ def _get_pairwise_header(attribute_names, class_name):
     return header
     
 
-class OrangeRanker(PairwiseRanker):
+class OrangeRanker(Ranker):
     """
     This class represents a ranker implemented over pairwise orange classifiers. 
     This ranker is loaded into the memory from a dump file which contains an already trained
@@ -219,35 +220,7 @@ class OrangeRanker(PairwiseRanker):
         self.classifier = self.learner(datatable)
         self.fit = True
         
-    def test(self, input_filename, output_filename, reader=CEJcmlReader, writer=IncrementalJcml, 
-             bidirectional_pairs=False,
-             reconstruct='hard', 
-             new_rank_name='rank_hard',
-             **kwargs):
-        """
-        Use model to assign predicted ranks in a batch of parallel sentences given in an external file
-        """
-        #prepare an incremental reader from the input test set
-        input_dataset = reader(input_filename, all_general=True, all_target=True)
-        
-        #sentences with predicted ranks will go into a new file
-        output = writer(output_filename)
-        
-        #iterate over given test sentences
-        for parallelsentence in input_dataset.get_parallelsentences():
-#             #original tested sentences should not have ties 
-#             parallelsentence.remove_ties()
-            #get the same sentence with predicted ranks assigned
-            ranked_parallelsentence, _ = self.get_ranked_sentence(parallelsentence, 
-                                                                  bidirectional_pairs=bidirectional_pairs, 
-                                                                  ties=True, 
-                                                                  reconstruct=reconstruct,
-                                                                  new_rank_name=new_rank_name)
-            #write sentence with predicted ranks to the new test file
-            output.add_parallelsentence(ranked_parallelsentence)
-            
-        output.close()        
-        return {}
+
     
     #===========================================================================
     # def _get_test_statistics(self, statistics_vector):

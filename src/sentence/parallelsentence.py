@@ -561,7 +561,7 @@ class ParallelSentence(object):
         
         for target1, target2 in iterator:
             target1_attribute_values = target1.get_vector(attribute_set.target_attribute_names, default_value, replace_infinite)
-            target2_attribute_values = target2.get_vector(attribute_set.target_attribute_names, default_value)
+            target2_attribute_values = target2.get_vector(attribute_set.target_attribute_names, default_value, replace_infinite)
             
             vector = []
             vector.extend(parallel_attribute_values)
@@ -572,20 +572,21 @@ class ParallelSentence(object):
             if class_name:
                 class_value = self._get_class_pairwise(target1, target2, class_name, ties)
                 if class_value!=None:
-                    vector.append(class_value)
-                    yield vector
+                    yield vector, class_value
+                    
                 
             else:  
-                yield vector
+                yield vector, None
 
-    def get_vector(self, attribute_names, default_value='', replace_infinite):
+    def get_vector(self, attribute_names, default_value='', replace_infinite=False):
         vector = []
         for name in attribute_names:
             try:
                 attvalue = self.attributes[name]
                 if replace_infinite:
-                    attvalue = attvalue.replace("inf", "99999999")
-                    attvalue = attvalue.replace("nan", "0")
+                    attvalue = float(str(attvalue).replace("inf", "500"))
+                    attvalue = float(str(attvalue).replace("nan", "0"))
+                    logging.info("!!!Replaced inf!!!")
                 vector.append(attvalue)
             except KeyError:
                 vector.append(default_value)
