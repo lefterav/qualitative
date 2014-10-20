@@ -55,6 +55,7 @@ class RankingExperiment(PyExperimentSuite):
 
         #get full path for all files
         source_datasets = [os.path.join(source_path, f) for f in source_datasets]
+        logging.info("Source datasets: {}".format(source_datasets))
         if len(source_datasets)==1:
             logging.debug("Linking {} to {}".format(source_datasets[0], ready_dataset))
             logging.debug(os.listdir(os.curdir))
