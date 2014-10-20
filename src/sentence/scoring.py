@@ -61,8 +61,9 @@ def get_metrics_scores(data, predicted_rank_name, original_rank_name,
     
     stats = OrderedDict()
     
-    predicted_rank_vectors = numpy.array(predicted_rank_vectors)
-    original_rank_vectors = numpy.array(original_rank_vectors)
+    #this fails
+    #predicted_rank_vectors = numpy.array(predicted_rank_vectors)
+    #original_rank_vectors = numpy.array(original_rank_vectors)
     
     for callback in SET_METRIC_FUNCTIONS:
         current_stats = callback(predicted_rank_vectors, original_rank_vectors)
@@ -465,8 +466,8 @@ class Scoring(MultiRankedDataset):
             predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
             original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
             
-            print "[{0}]".format(" , ".join(predicted_rank_vector)) 
-            print "[{0}]".format(" , ".join(original_rank_vector))
+            logging.debug("[{0}]".format(" , ".join(predicted_rank_vector)))
+            logging.debug("[{0}]".format(" , ".join(original_rank_vector)))
             
             #if had this denominator error, just provide the result of smoothing
             try:
@@ -481,7 +482,7 @@ class Scoring(MultiRankedDataset):
 
             segment_tau += tau
             segment_pi *= pi
-            print tau
+            logging.debug("tau = {}".format(tau))
         
         avg_tau = 1.00 * segment_tau / len(self.parallelsentences)
         
