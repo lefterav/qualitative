@@ -10,6 +10,8 @@ import sys
 import os
 import logging
 from numpy import mean, std
+from collections import OrderedDict
+from fnmatch import fnmatch
 
 """
 Gathers the results from the app folders created with python Experiment Suite
@@ -43,12 +45,12 @@ def retrieve_results(mysuite, path, reps = [0]):
     for exp in exps:
         values = mysuite.get_histories_over_repetitions(exp=exp, tags='all', aggregate=mean)
         values_std = mysuite.get_histories_over_repetitions(exp=exp, tags='all', aggregate=std)
-        values_std = dict([("{}_std".format(k),v) for k,v in values_std.iteritems()])
+        values_std = OrderedDict([("{}_std".format(k),v) for k,v in values_std.iteritems()])
         
-        values_rep = mysuite.get_histories_over_repetitions(exp=exp, tags='all', aggregate=list)
-        for rep, key, vs in enumerate(values_rep.iteritems()):
-            for v in vs:
-                values["rep-{}_{}".format(rep, key)] = v
+        #values_rep = mysuite.get_histories_over_repetitions(exp=exp, tags='all', aggregate=list)
+        #for rep, key, vs in enumerate(values_rep.iteritems()):
+        #    for v in vs:
+        #        values["rep-{}_{}".format(rep, key)] = v
                 
         values.update(values_std)
         #if values:
@@ -63,6 +65,13 @@ def retrieve_results(mysuite, path, reps = [0]):
         #                 params = mysuite.get_params(exp)
         #                 params["app"] = os.path.basename(os.path.dirname(exp))
         #                 results.append((params, values))
+
+
+        if values:
+            params = mysuite.get_params(exp)
+            params["app"] = os.path.basename(os.path.dirname(exp))
+            results.append((params, values))
+
         logging.info("found %s experiments", len(results))
         
     return results
@@ -94,9 +103,16 @@ def get_tabfile(results, preferred_params=[], preferred_scores=[], display_heade
         preferred_params = param_keys
 
     if not preferred_scores:
-        preferred_scores = score_keys
+        preferred_scores = list(score_keys)
+    else:    
+
+        new_preferred_scores = []
+        for preferred_score in preferred_scores:
+            for score_key in score_keys:
+               if fnmatch(score_key, preferred_score):
+                   new_preferred_scores.append(score_key)
     
-    preferred_scores = preferred_scores
+        preferred_scores = new_preferred_scores
 
     if display_header:
         print delimiter.join(preferred_params) + delimiter + delimiter.join(preferred_scores)
