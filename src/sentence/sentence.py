@@ -127,7 +127,7 @@ class SimpleSentence(object):
         vector = []
         for name in attribute_names:
             try:
-                attvalue = self.attributes[name]
+                attvalue = float(self.attributes[name])
                 if replace_infinite:
                     attvalue = float(str(attvalue).replace("inf", "500"))
                     attvalue = float(str(attvalue).replace("nan", "0"))
