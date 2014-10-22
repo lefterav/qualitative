@@ -161,8 +161,8 @@ def set_optimization_params(opt):
 
 def optimize_model(estimator, X_train, y_train, params, scores, folds, verbose, n_jobs):
     clf = None
-    for score_name, score_func in scores:
-        log.info("Tuning hyper-parameters for %s" % score_name)
+    for score_func in scores:
+        log.info("Tuning hyper-parameters for %s" % score_func.__name__)
         
         log.debug(params)
         log.debug(scores)

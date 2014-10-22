@@ -93,7 +93,9 @@ def dataset_to_instances(filename,
             #or initialize the total vectors
             features = newfeatures
             labels = newlabels
-            
+        
+    #print features 
+    #print labels 
     return features, labels
 
 
@@ -135,10 +137,10 @@ class SkLearner:
     
     def run_feature_selection(self, feature_selector, data, labels):
         if feature_selector:
-            log.info("Running feature selection %s" % str(feature_selector))
+            log.info("Running feature selection {}".format(feature_selector))
             
-            log.debug("data dimensions before fit_transform(): %s,%s" % data.shape)
-            log.debug("labels dimensions before fit_transform(): %s" % labels.shape)
+            log.info("data dimensions before fit_transform(): {}".format(data.shape))
+            log.info("labels dimensions before fit_transform(): {}".format(labels.shape))
             feature_selector.fit_transform(data, labels)
             
             log.debug("Dimensions after fit_transform(): %s,%s" % data.shape)
@@ -231,7 +233,7 @@ class SkLearner:
     
     def initialize_optimization_params(self, optimization_params):
         params = {}
-        
+        print "Optimization params", optimization_params
         for key, item in optimization_params.iteritems():
             # checks if the item is a list with numbers (ignores cv and n_jobs params)
             if isinstance(item, list) and (len(item) == 3) and assert_number(item):
@@ -263,7 +265,8 @@ class SkRanker(Ranker, SkLearner):
         
         data, labels = dataset_to_instances(filename=dataset_filename, **kwargs)
         learner = self.learner
-        
+        print "optimization_params =", optimization_params        
+ 
         #scale data to the mean
         if scale:
             data = scale_datasets_crossvalidation(data)
@@ -273,9 +276,9 @@ class SkRanker(Ranker, SkLearner):
         data = self.run_feature_selection(feature_selector, data, labels) 
         
         #initialize learning method and scoring functions and optimize
-        learner = self.initialize_learning_method(learner, data, labels, learning_params, optimization_params, scorers)
+        self.classifier, self.scorers = self.initialize_learning_method(learner, data, labels, learning_params, optimize, optimization_params, scorers)
 
-        self.learner.fit(data, labels)
+        self.classifier.fit(data, labels)
         self.fit = True
 
         
