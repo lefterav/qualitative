@@ -136,6 +136,8 @@ class RankingExperiment(PyExperimentSuite):
         logging.info("Started training")
         params.update(self.learner_params)
         params["attribute_set"] = self.attribute_set
+        print params["scorers"]
+        params["scorers"] = params.setdefault("scorers", "").split(",")
         
         logging.info("train: Attribute_set before training: {}".format(params["attribute_set"]))
         
@@ -144,7 +146,6 @@ class RankingExperiment(PyExperimentSuite):
         self.model_filename = "{}.model.dump".format(rep)
                                       
         logging.info("Fitting ranker based on {}".format(params["learner"]))                                                
-        
         learner = params["learner"]
         if learner in ["SVC"]:
             ranker = SkRanker(learner=learner)
