@@ -17,6 +17,7 @@ from sentence.parallelsentence import AttributeSet
 from dataprocessor.ce.utils import join_jcml, fold_jcml
 from dataprocessor.ce.cejcml import CEJcmlReader
 from sentence import scoring
+from ml.lib.scikit.ranking import SkRanker
 
 class RankingExperiment(PyExperimentSuite):
     
@@ -143,7 +144,12 @@ class RankingExperiment(PyExperimentSuite):
         self.model_filename = "{}.model.dump".format(rep)
                                       
         logging.info("Fitting ranker based on {}".format(params["learner"]))                                                
-        ranker = OrangeRanker(learner=params["learner"])
+        
+        learner = params["learner"]
+        if learner in ["SVC"]:
+            ranker = SkRanker(learner=learner)
+        else:
+            ranker = OrangeRanker(learner=params["learner"])
         ranker.train(dataset_filename = self.trainingset_filename, 
                      output_filename = output_filename,
                      **params)

@@ -148,7 +148,7 @@ class SkLearner:
     
     def initialize_learning_method(self, learner, data, labels, 
                                    learning_params={}, 
-                                   optimize,
+                                   optimize=True,
                                    optimization_params={},
                                    scorers=['mae', 'rmse']):
                                     
@@ -255,10 +255,10 @@ class SkRanker(Ranker, SkLearner):
               feature_selector=None, 
               feature_selection_params={},
               feature_selection_threshold=.25, 
-              learning_params, 
+              learning_params={}, 
               optimize=True, 
-              optimization_params, 
-              scorers = ['f1_score'],
+              optimization_params={}, 
+              scorers=['f1_score'],
               **kwargs):
         
         data, labels = dataset_to_instances(filename=dataset_filename, **kwargs)
