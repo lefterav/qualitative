@@ -136,7 +136,6 @@ class RankingExperiment(PyExperimentSuite):
         logging.info("Started training")
         params.update(self.learner_params)
         params["attribute_set"] = self.attribute_set
-        print params["scorers"]
         params["scorers"] = params.setdefault("scorers", "").split(",")
         
         logging.info("train: Attribute_set before training: {}".format(params["attribute_set"]))
