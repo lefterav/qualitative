@@ -79,4 +79,6 @@ class Ranker:
         raise NotImplementedError()
 
     def dump(self, dumpfilename):
-        raise NotImplementedError()
+        if not self.fit:
+            raise AttributeError("Classifier has not been fit yet")
+        pickle.dump(self.classifier, open(dumpfilename, 'w'))

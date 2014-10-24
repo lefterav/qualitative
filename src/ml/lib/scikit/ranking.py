@@ -156,7 +156,6 @@ class SkLearner:
                                     
         o = optimization_params
         tune_params = self.initialize_optimization_params(optimization_params)        
-        scorers = [eval(scorer) for scorer in scorers]
         method_name = learner
         
         if method_name == "SVR":
@@ -278,5 +277,12 @@ class SkRanker(Ranker, SkLearner):
 
         self.classifier.fit(data, labels)
         self.fit = True
-
+    
+    def get_model_description(self):
+        try:
+            coefficients = self.classifier.coef_
+            return dict([(i,coeff) for i, coeff in enumerate(coefficients)])
+        except:
+            pass
+        return {}
         
