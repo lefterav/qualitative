@@ -157,15 +157,15 @@ def set_optimization_params(opt):
     return params
 
 
-def optimize_model(estimator, X_train, y_train, params, scores, folds, verbose, n_jobs):
+def optimize_model(estimator, X_train, y_train, params, scorers, folds, verbose, n_jobs):
     clf = None
-    for score_func in scores:
-        log.info("Tuning hyper-parameters for %s" % score_func.__name__)
+    for score_func in scorers:
+        log.info("Tuning hyper-parameters for %s" % score_func)
         
         log.debug(params)
-        log.debug(scores)
+        log.debug(scorers)
         
-        clf = GridSearchCV(estimator, params, scoring='f1', 
+        clf = GridSearchCV(estimator, params, scoring=score_func, 
                            cv=folds, verbose=verbose, n_jobs=n_jobs)
         
         clf.fit(X_train, y_train)
