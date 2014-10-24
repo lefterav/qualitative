@@ -33,15 +33,9 @@ or for user-specific installation (no root or
 not wanting to risk your python environment) 
  pip install --user <package-name> 
 
-Packages:
-* python 2.7
-* orange
-* py4j
-* python-nltk
-* numpy
-* scipy
-* suds [only for Acrolinx support]
-* ruffus [only for training]
+sudo pip install orange py4j nltk numpy scipy suds ruffus scikit-learn
+
+Additionally
 * expsuite [only for training] (Manually from https://github.com/lefterav/expsuite)
 
 external programs [need to start separately]
