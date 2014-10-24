@@ -230,10 +230,6 @@ class OrangeRanker(Ranker):
     #     statistics['test_confidence_std'] = numpy.std(confidence_vector)
     #===========================================================================
         
-    def dump(self, dumpfilename):
-        if not self.fit:
-            raise AttributeError("Ranker has not been fit yet")
-        pickle.dump(self.classifier, open(dumpfilename, 'w'))
         
     def get_model_description(self, basename="model"):
         if not self.fit:
