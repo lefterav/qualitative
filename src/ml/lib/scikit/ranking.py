@@ -79,7 +79,7 @@ def dataset_to_instances(filename,
         #create a temporary python array for the new vectors
         for featurevector, class_value in vectors:
             featurevectors.append(np.array(featurevector))
-            class_values.append(np.array([class_value]))
+            class_values.append(class_value)
         
         #convert to numpy
         newfeatures = np.array(featurevectors)
@@ -175,9 +175,9 @@ class SkLearner:
                 estimator = optimize_model(SVC(), data, labels,
                                            tune_params,
                                            scorers,
-                                           o.get('cv', 5),
-                                           o.get('verbose', True),
-                                           o.get('n_jobs', 1))
+                                           o.setdefault('cv', 5),
+                                           o.setdefault('verbose', True),
+                                           o.setdefault('n_jobs', 1))
                 
             else:
                 estimator = SVC(C=learning_params.setdefault('C', 1.0),
@@ -233,7 +233,7 @@ class SkLearner:
     
     def initialize_optimization_params(self, optimization_params):
         params = {}
-        print "Optimization params", optimization_params
+        log.debug("Optimization params = {}".format(optimization_params))
         for key, item in optimization_params.iteritems():
             # checks if the item is a list with numbers (ignores cv and n_jobs params)
             if isinstance(item, list) and (len(item) == 3) and assert_number(item):
@@ -241,7 +241,6 @@ class SkLearner:
                 params[key] = np.linspace(item[0], item[1], num=item[2], endpoint=True)
                 
             elif isinstance(item, list) and assert_string(item):
-                print key, item
                 params[key] = item
         
         return params    
@@ -265,7 +264,6 @@ class SkRanker(Ranker, SkLearner):
         
         data, labels = dataset_to_instances(filename=dataset_filename, **kwargs)
         learner = self.learner
-        print "optimization_params =", optimization_params        
  
         #scale data to the mean
         if scale:
