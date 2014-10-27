@@ -116,6 +116,10 @@ def parallelsentence_to_instance(parallelsentence, attribute_set):
     
 
 class SkLearner:
+    def initialize(self):
+        ranker = eval(self.name)
+        self.learner=self.name
+   
     def initialize_feature_selector(self, feature_selector=None, feature_selection_params={}, feature_selection_threshold=.25):
         p = feature_selection_params
         transformer = None
