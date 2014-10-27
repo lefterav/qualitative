@@ -7,7 +7,7 @@ Created on Sep 19, 2014
 @author: Eleftherios Avramidis
 '''
 
-import logging
+import logging, sys
 import os
 from collections import OrderedDict
 from ml.lib.orange.ranking import OrangeRanker
@@ -18,6 +18,7 @@ from dataprocessor.ce.utils import join_jcml, fold_jcml
 from dataprocessor.ce.cejcml import CEJcmlReader
 from sentence import scoring
 from ml.lib.scikit.ranking import SkRanker
+import cPickle as pickle
 
 class RankingExperiment(PyExperimentSuite):
     
@@ -95,7 +96,6 @@ class RankingExperiment(PyExperimentSuite):
         #print attribute_names
         return attribute_names
     
-                
     def prepare_data(self, params, rep):
         """
         prepare training and test data depending on the test mode
@@ -154,8 +154,9 @@ class RankingExperiment(PyExperimentSuite):
                      output_filename = output_filename,
                      **params)
         
-        logging.info("Ranker fitted sucessfully")                                                
-        ranker.dump(self.model_filename)
+        logging.info("Ranker fitted sucessfully")                                              
+        with open(self.model_filename, 'w') as f: 
+            pickle.dump(ranker, f)
         
         logging.info("Extracting fitted coefficients")
         model_description = ranker.get_model_description()
@@ -168,7 +169,7 @@ class RankingExperiment(PyExperimentSuite):
         Load test set and apply machine learning to assign labels
         """
         testset_input = self.testset_filenames[0]
-        ranker = OrangeRanker(filename=self.model_filename)
+        ranker = pickle.load(open(self.model_filename))
 
         self.testset_output_soft = "{}.testset_annotated_soft.jcml".format(rep)
         ranker.test(testset_input, self.testset_output_soft, reconstruct='soft', new_rank_name='rank_soft', **params)
@@ -213,10 +214,13 @@ class RankingExperiment(PyExperimentSuite):
     
  
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO,
+    loglevel = logging.INFO
+    if "--debug" in sys.argv:
+        loglevel = logging.DEBUG
+    logging.basicConfig(level=loglevel,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M')
-    
+
     # define a Handler which writes INFO messages or higher to the sys.stderr
     #console = logging.StreamHandler()
     #console.setLevel(logging.INFO)
