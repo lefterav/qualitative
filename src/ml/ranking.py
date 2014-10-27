@@ -22,13 +22,17 @@ def forname(learner, **kwargs):
     from lib.orange.ranking import OrangeRanker
     from lib.scikit.ranking import SkRanker
     
-    try:
-        return OrangeRanker(learner=learner)
-    except:
+    rankers = [OrangeRanker, SkRanker]   
+    for ranker_class in rankers:
+        ranker_instance = ranker_class(learner=learner)
         try:
-            return SkRanker(learner=learner)
+            ranker_instance.initialize()
+            return ranker_instance 
         except:
-            logging.error("Requested ranker {} not found".format(learner))
+            pass
+    
+    sys.exit("Requested ranker {} not found".format(learner))
+           
 
 class Ranker:
     '''
@@ -50,7 +54,7 @@ class Ranker:
             logging.info("Loaded {} classifier for file {}".format(self.classifier, filename))
             classifier_file.close()
         else:
-            self.learner = learner
+            self.name = learner
             self.fit = False
     
     def train(self, dataset_filename, **kwargs):
