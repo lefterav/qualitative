@@ -7,8 +7,28 @@ Created on 26 Mar 2013
 '''
 import cPickle as pickle 
 import logging
+import sys
 from dataprocessor.ce.cejcml import CEJcmlReader
 from dataprocessor.sax.saxps2jcml import IncrementalJcml
+
+def forname(learner, **kwargs):
+    """
+    Look up in all available libraries and load ranker whose classifier has a particular name
+    Add here all libraries that contain a Ranker instance
+    @param learner: the name of the classifier that the ranker wraps around
+    @type learner: str
+     
+    """
+    from lib.orange.ranking import OrangeRanker
+    from lib.scikit.ranking import SkRanker
+    
+    try:
+        return OrangeRanker(learner=learner)
+    except:
+        try:
+            return SkRanker(learner=learner)
+        except:
+            logging.error("Requested ranker {} not found".format(learner))
 
 class Ranker:
     '''

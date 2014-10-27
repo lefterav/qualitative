@@ -10,14 +10,12 @@ Created on Sep 19, 2014
 import logging, sys
 import os
 from collections import OrderedDict
-from ml.lib.orange.ranking import OrangeRanker
-#from ml.lib.scikit import ScikitRanker
+from ml.ranking import forname
 from expsuite import PyExperimentSuite 
 from sentence.parallelsentence import AttributeSet
 from dataprocessor.ce.utils import join_jcml, fold_jcml
 from dataprocessor.ce.cejcml import CEJcmlReader
 from sentence import scoring
-from ml.lib.scikit.ranking import SkRanker
 import cPickle as pickle
 
 class RankingExperiment(PyExperimentSuite):
@@ -146,10 +144,8 @@ class RankingExperiment(PyExperimentSuite):
                                       
         logging.info("Fitting ranker based on {}".format(params["learner"]))                                                
         learner = params["learner"]
-        if learner in ["SVC"]:
-            ranker = SkRanker(learner=learner)
-        else:
-            ranker = OrangeRanker(learner=params["learner"])
+        ranker = forname(learner=learner)
+
         ranker.train(dataset_filename = self.trainingset_filename, 
                      output_filename = output_filename,
                      **params)
