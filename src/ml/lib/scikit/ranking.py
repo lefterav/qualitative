@@ -21,6 +21,7 @@ from evaluation_measures import mean_absolute_error, root_mean_squared_error
 from sklearn.metrics.metrics import mean_squared_error, f1_score, precision_score, recall_score
 from ml.lib.scikit.learn_model import optimize_model
 
+
 def dataset_to_instances(filename, 
                          attribute_set=None,
                          class_name=None,
@@ -279,6 +280,14 @@ class SkRanker(Ranker, SkLearner):
         self.fit = True
     
     def get_model_description(self):
+        params = {}
+        if self.classifier.kernel == "rbf":
+            params["gamma"] = self.classifier.gamma
+            params["C"] = self.classifier.C
+            for nclass in self.classifier.n_support_:
+                pass
+            log.info(len(self.classifier.dual_coef_))
+            return params
         try:
             coefficients = self.classifier.coef_
             return dict([(i,coeff) for i, coeff in enumerate(coefficients)])
