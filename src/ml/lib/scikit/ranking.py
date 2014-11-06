@@ -20,6 +20,8 @@ from sklearn.linear_model.least_angle import LassoLars, LassoLarsCV
 from evaluation_measures import mean_absolute_error, root_mean_squared_error
 from sklearn.metrics.metrics import mean_squared_error, f1_score, precision_score, recall_score
 from ml.lib.scikit.learn_model import optimize_model
+from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentenceSet
+from sklearn.preprocessing.imputation import Imputer
 
 
 def dataset_to_instances(filename, 
@@ -97,11 +99,28 @@ def dataset_to_instances(filename,
         
     #print features 
     #print labels 
+    imp = Imputer(missing_values='NaN', strategy='mean', axis=0)
+    features = imp.fit_transform(features)
     return features, labels
 
-
+def parallelsentence_to_instance(parallelsentence, attribute_set):
+    vectors = parallelsentence.get_vectors(attribute_set, bidirectional_pairs=False)
+    #every parallelsentence has many instances
+    featurevectors = []
+    
+    #create a temporary python array for the new vectors
+    for featurevector, _ in vectors:
+        featurevectors.append(np.array(featurevector))
+        
+    #convert to numpy
+    return featurevectors
+    
 
 class SkLearner:
+    def initialize(self):
+        ranker = eval(self.name)
+        self.learner=self.name
+   
     def initialize_feature_selector(self, feature_selector=None, feature_selection_params={}, feature_selection_threshold=.25):
         p = feature_selection_params
         transformer = None
@@ -172,7 +191,7 @@ class SkLearner:
         
         elif method_name == "SVC":
             if optimize:
-                estimator = optimize_model(SVC(), data, labels,
+                estimator = optimize_model(SVC(probability=True), data, labels,
                                            tune_params,
                                            scorers,
                                            o.setdefault('cv', 5),
@@ -245,6 +264,8 @@ class SkLearner:
         
         return params    
     
+
+    
     
 class SkRanker(Ranker, SkLearner):
     '''
@@ -260,10 +281,16 @@ class SkRanker(Ranker, SkLearner):
               optimize=True, 
               optimization_params={}, 
               scorers=['f1_score'],
+              attribute_set=None,
+              class_name=None,
               **kwargs):
         
-        data, labels = dataset_to_instances(filename=dataset_filename, **kwargs)
+        data, labels = dataset_to_instances(dataset_filename, attribute_set, class_name,  **kwargs)
         learner = self.learner
+        
+        #the class must remember the attribute_set and the class_name in order to reproduce the vectors
+        self.attribute_set = attribute_set
+        self.class_name = class_name
  
         #scale data to the mean
         if scale:
@@ -294,4 +321,74 @@ class SkRanker(Ranker, SkLearner):
         except:
             pass
         return {}
+    
+    
+    def get_ranked_sentence(self, parallelsentence, critical_attribute="rank_predicted", 
+                            new_rank_name="rank_hard", 
+                            del_orig_class_att=False, 
+                            bidirectional_pairs=False, 
+                            ties=True,
+                            reconstruct='hard'):
+        """
+        """
         
+        #de-compose multiranked sentence into pairwise comparisons
+        pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(bidirectional_pairs=bidirectional_pairs,
+                                                                                     class_name=self.class_name,
+                                                                                     ties=ties)        
+        if len(parallelsentence.get_translations()) == 1:
+            log.warning("Parallelsentence has only one target sentence")
+            parallelsentence.tgt[0].add_attribute(new_rank_name, 1)
+            return parallelsentence, {}
+        elif len(parallelsentence.get_translations()) == 0:
+            return parallelsentence, {}
+        #list that will hold the pairwise parallel sentences including the classifier's decision
+        classified_pairwise_parallelsentences = []
+        resultvector = []
+        
+        for pairwise_parallelsentence in pairwise_parallelsentences:
+            #convert pairwise parallel sentence into an orange instance
+            instance = parallelsentence_to_instance(pairwise_parallelsentence, attribute_set=self.attribute_set)
+            log.debug('Instance = {}'.format(instance)) 
+            #run classifier for this instance
+            predicted_value = self.classifier.predict(instance)
+            distribution = dict(zip(self.classifier.classes_, self.classifier.predict_proba(instance)[0]))
+            log.debug("Distribution: {}".format(distribution))
+            log.debug("Predicted value: {}".format(predicted_value))
+            #even if we have a binary classifier, it may be that it cannot decide between two classes
+            #for us, this means a tie
+            if not bidirectional_pairs and distribution and len(distribution)==2 and float(distribution[1])==0.5:
+                predicted_value = 0
+                distribution[predicted_value] = 0.5
+                
+            log.debug("{}, {}, {}".format(pairwise_parallelsentence.get_system_names(), predicted_value, distribution))
+            
+            
+            #gather several metadata from the classification, which may be needed 
+            resultvector.append({'systems' : pairwise_parallelsentence.get_system_names(),
+                                 'value' : predicted_value,
+                                 'distribution': distribution,
+                                 'confidence': distribution[int(predicted_value)],
+                                 'instance' : instance})
+            
+            #add the new predicted ranks as attributes of the new pairwise sentence
+            pairwise_parallelsentence.add_attributes({"rank_predicted":predicted_value,
+                                                       "prob_-1":distribution[-1],
+                                                       "prob_1":distribution[1]
+                                                       })
+            
+            classified_pairwise_parallelsentences.append(pairwise_parallelsentence)
+
+        
+        #gather all classified pairwise comparisons of into one parallel sentence again
+        sentenceset = CompactPairwiseParallelSentenceSet(classified_pairwise_parallelsentences)
+        if reconstruct == 'hard':
+            ranked_sentence = sentenceset.get_multiranked_sentence(critical_attribute=critical_attribute, 
+                                                               new_rank_name=new_rank_name, 
+                                                               del_orig_class_att=del_orig_class_att)
+        else:
+            attribute1 = "prob_-1"
+            attribute2 = "prob_1"
+            ranked_sentence = sentenceset.get_multiranked_sentence_with_soft_ranks(attribute1, attribute2, critical_attribute, new_rank_name)
+        return ranked_sentence, resultvector
+   

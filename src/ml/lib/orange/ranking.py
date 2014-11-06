@@ -212,11 +212,13 @@ class OrangeRanker(Ranker):
     @ivar classifier: the trained classifier object
     @type classifier: C{Classifier} from C{Orange.classification}
     """    
-    
+
+    def initialize(self):
+        self.learner = eval(self.name)
+
     def train(self, dataset_filename, **kwargs):
         datatable = dataset_to_instances(filename=dataset_filename, **kwargs)
-        learner = eval(self.learner) 
-        self.learner = learner(**kwargs)
+        self.learner = self.learner(**kwargs)
         self.classifier = self.learner(datatable)
         self.fit = True
         
