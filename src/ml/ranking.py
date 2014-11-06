@@ -7,8 +7,32 @@ Created on 26 Mar 2013
 '''
 import cPickle as pickle 
 import logging
+import sys
 from dataprocessor.ce.cejcml import CEJcmlReader
 from dataprocessor.sax.saxps2jcml import IncrementalJcml
+
+def forname(learner, **kwargs):
+    """
+    Look up in all available libraries and load ranker whose classifier has a particular name
+    Add here all libraries that contain a Ranker instance
+    @param learner: the name of the classifier that the ranker wraps around
+    @type learner: str
+     
+    """
+    from lib.orange.ranking import OrangeRanker
+    from lib.scikit.ranking import SkRanker
+    
+    rankers = [OrangeRanker, SkRanker]   
+    for ranker_class in rankers:
+        ranker_instance = ranker_class(learner=learner)
+        try:
+            ranker_instance.initialize()
+            return ranker_instance 
+        except:
+            pass
+    
+    sys.exit("Requested ranker {} not found".format(learner))
+           
 
 class Ranker:
     '''
@@ -30,7 +54,7 @@ class Ranker:
             logging.info("Loaded {} classifier for file {}".format(self.classifier, filename))
             classifier_file.close()
         else:
-            self.learner = learner
+            self.name = learner
             self.fit = False
     
     def train(self, dataset_filename, **kwargs):
