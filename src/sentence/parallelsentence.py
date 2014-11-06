@@ -555,9 +555,9 @@ class ParallelSentence(object):
         source_attribute_values = self.src.get_vector(attribute_set.source_attribute_names, default_value, replace_infinite)
 
         if bidirectional_pairs:
-            iterator = itertools.product(self.tgt, repeat=2)
+            iterator = itertools.permutations(self.tgt, 2)
         else:
-            iterator = itertools.combinations(self.tgt, repeat=2)
+            iterator = itertools.combinations(self.tgt, 2)
         
         for target1, target2 in iterator:
             target1_attribute_values = target1.get_vector(attribute_set.target_attribute_names, default_value, replace_infinite)
