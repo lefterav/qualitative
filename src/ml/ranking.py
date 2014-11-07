@@ -19,8 +19,8 @@ def forname(learner, **kwargs):
     @type learner: str
      
     """
-    from lib.orange.ranking import OrangeRanker
     from lib.scikit.ranking import SkRanker
+    from lib.orange.ranking import OrangeRanker
     
     rankers = [OrangeRanker, SkRanker]   
     for ranker_class in rankers:
