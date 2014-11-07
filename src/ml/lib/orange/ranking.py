@@ -71,7 +71,7 @@ def parallelsentence_to_instance(parallelsentence, domain=None):
     @type: C{Instance} from Orange.data
     """
     attributes = parallelsentence.get_nested_attributes()
-    #print "attributes = ", attributes
+    logging.debug("attributes = {}".format(attributes))
     values = []
     
     #features required by the model need to be retrieved from the 
