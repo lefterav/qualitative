@@ -81,18 +81,23 @@ def parallelsentence_to_instance(parallelsentence, domain=None):
     #else:
     #    feature_names = attributes.keys()
         #feature_type = feature.var_type
-        
+    
+    keyerrors = []
+    
     for feature in domain.features:
         try:
             value = attributes[feature.name]
         except KeyError:
-            logging.warn("Feature '{}' not given by the enabled generators\n".format(feature.name))
-            value = 0 
-
+            value = 0
+            keyerrors.append(feature.name)
         #this casts the feature value we produced, in an orange value object
         orange_value = feature(value)
         values.append(orange_value)
 
+    if keyerrors:
+        logging.warn(u"Features '{}' not given by the enabled generators\n : Sentence = '{} ...'".format(keyerrors, parallelsentence.get_source().get_string()[:100]))
+        
+        
     #create a model without the class value and use it for the new instance
     #@TODO: make it possible to initialize instance without having the domain
     classless_domain = Domain(domain.features, False)    

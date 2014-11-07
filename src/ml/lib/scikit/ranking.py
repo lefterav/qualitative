@@ -311,8 +311,8 @@ class SkRanker(Ranker, SkLearner):
         if self.classifier.kernel == "rbf":
             params["gamma"] = self.classifier.gamma
             params["C"] = self.classifier.C
-            for nclass in self.classifier.n_support_:
-                pass
+            for i, n_support in enumerate(self.classifier.n_support_):
+                params["n_{}".format(i)] = n_support
             log.info(len(self.classifier.dual_coef_))
             return params
         try:
