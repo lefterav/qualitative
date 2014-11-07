@@ -23,6 +23,7 @@ from ml.lib.scikit.learn_model import optimize_model
 from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentenceSet
 from sklearn.preprocessing.imputation import Imputer
 
+
 def dataset_to_instances(filename, 
                          attribute_set=None,
                          class_name=None,
@@ -306,6 +307,14 @@ class SkRanker(Ranker, SkLearner):
         self.fit = True
     
     def get_model_description(self):
+        params = {}
+        if self.classifier.kernel == "rbf":
+            params["gamma"] = self.classifier.gamma
+            params["C"] = self.classifier.C
+            for i, n_support in enumerate(self.classifier.n_support_):
+                params["n_{}".format(i)] = n_support
+            log.info(len(self.classifier.dual_coef_))
+            return params
         try:
             coefficients = self.classifier.coef_
             return dict([(i,coeff) for i, coeff in enumerate(coefficients)])
