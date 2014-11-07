@@ -315,11 +315,12 @@ class SkRanker(Ranker, SkLearner):
                 params["n_{}".format(i)] = n_support
             log.info(len(self.classifier.dual_coef_))
             return params
-        try:
+        elif self.classifier.kernel == "linear":
             coefficients = self.classifier.coef_
-            return dict([(i,coeff) for i, coeff in enumerate(coefficients)])
-        except:
-            pass
+            att_coefficients = {}
+            for attname, coeff in zip(self.attribute_set.get_names_pairwise(), coefficients[0]):
+                att_coefficients[attname] = coeff
+            return att_coefficients
         return {}
     
     
