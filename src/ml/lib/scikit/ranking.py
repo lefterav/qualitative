@@ -104,7 +104,7 @@ def dataset_to_instances(filename,
     return features, labels
 
 def parallelsentence_to_instance(parallelsentence, attribute_set):
-    vectors = parallelsentence.get_vectors(attribute_set, bidirectional_pairs=False)
+    vectors = parallelsentence.get_vectors(attribute_set, bidirectional_pairs=False, default_value=-500, replace_infinite=True, replace_nan=False)
     #every parallelsentence has many instances
     featurevectors = []
     
