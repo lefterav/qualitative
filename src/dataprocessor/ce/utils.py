@@ -1,6 +1,8 @@
 from dataprocessor.sax.saxps2jcml import IncrementalJcml
 from dataprocessor.ce.cejcml import CEJcmlReader
 import logging
+import cPickle as pickle
+import subprocess
 
 
 
@@ -13,18 +15,21 @@ def fold_jcml(filename, training_filename, test_filename, repetitions, fold, len
     if not length:
         #check whether the size has been cached on disk
         #to avoid reading the entire set
-        size_filename = filename.replace(".jcml", ".size")
-        try:
-            size_file = open(size_filename)
-            length = int(size_file.readline().strip())
-            size_file.close()
-        except:
-            countreader = CEJcmlReader(filename)
-            length = countreader.length()
-            size_file = open(size_filename, 'w')
-            size_file.write(str(length))
-            size_file.close()
-            logging.info("Dataset has {} entries".format(length))
+#         size_filename = ("data.size")
+#         try:
+#             size_file = open(size_filename)
+#             length = pickle.load(size_file)
+#             size_file.close()
+#             logging.info("Dataset size found from earlier")
+#         except:
+#             
+        length = int(subprocess.check_output(["grep", "-c", "<judgedsentence", filename]).strip())
+#             countreader = CEJcmlReader(filename)
+#             #length = countreader.length()
+#             size_file = open(size_filename, 'w')
+#             pickle.dump(length, size_file)
+#             size_file.close()
+        logging.info("Dataset has {} entries".format(length))
     
     #get how big each batch should be
     batch_size = length // repetitions

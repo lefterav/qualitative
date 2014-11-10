@@ -22,6 +22,8 @@ from sklearn.metrics.metrics import mean_squared_error, f1_score, precision_scor
 from ml.lib.scikit.learn_model import optimize_model
 from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentenceSet
 from sklearn.preprocessing.imputation import Imputer
+from sklearn import preprocessing
+from sklearn.preprocessing.data import StandardScaler
 
 
 def dataset_to_instances(filename, 
@@ -119,7 +121,8 @@ def parallelsentence_to_instance(parallelsentence, attribute_set):
 class SkLearner:
     def initialize(self):
         ranker = eval(self.name)
-        self.learner=self.name
+        self.learner = self.name
+        self.scaler = None
    
     def initialize_feature_selector(self, feature_selector=None, feature_selection_params={}, feature_selection_threshold=.25):
         p = feature_selection_params
@@ -294,7 +297,9 @@ class SkRanker(Ranker, SkLearner):
  
         #scale data to the mean
         if scale:
-            data = scale_datasets_crossvalidation(data)
+            log.info("Scaling datasets...")
+            self.scaler = StandardScaler()
+            data = self.scaler.fit_transform(data)
         
         #feature selection
         feature_selector = self.initialize_feature_selector(feature_selector, feature_selection_params, feature_selection_threshold)
@@ -308,6 +313,10 @@ class SkRanker(Ranker, SkLearner):
     
     def get_model_description(self):
         params = {}
+        
+        if self.scaler:
+            params = self.scaler.get_params(deep=True)
+        
         if self.classifier.kernel == "rbf":
             params["gamma"] = self.classifier.gamma
             params["C"] = self.classifier.C
@@ -350,6 +359,9 @@ class SkRanker(Ranker, SkLearner):
         for pairwise_parallelsentence in pairwise_parallelsentences:
             #convert pairwise parallel sentence into an orange instance
             instance = parallelsentence_to_instance(pairwise_parallelsentence, attribute_set=self.attribute_set)
+            #scale data instance to mean, based on trained scaler
+            if self.scaler:
+                instance = self.scaler.transform(instance)
             log.debug('Instance = {}'.format(instance)) 
             #run classifier for this instance
             predicted_value = self.classifier.predict(instance)
