@@ -1,12 +1,12 @@
 '''
-Encapsulates functionality of rgbF metric by Maja Popovic for calculating F-score against reference
-Created on 24 Sep 2014
+Created on 11 Nov 2014
 
-@author: Maja Popovic, Eleftherios Avramidis
+@author: Elefhterios Avramidis based on code by Maja Popovic
 '''
 
+import numpy as np  
+from collections import OrderedDict
 
-import sys
 
 def take_ngrams(line, m):
     newline = ""
@@ -18,7 +18,7 @@ def take_ngrams(line, m):
                     newline += words[k] + "=="
                 newline += words[i+j-1]
                 if j < m:
-                    newline += "#"
+                    newline += "*#"
             if j==m:
                 newline += " "
    
@@ -26,17 +26,17 @@ def take_ngrams(line, m):
 
     newwords = newline.split()
     for newword in newwords:
-        ngrams = newword.split("#")
-        for nnw, nw in enumerate(ngrams):
+        ngrams = newword.split("*#")
+        for current_ngram, nw in zip(ngram, ngrams):
             if nw != "" and nw !="\n":
-                ngram[nnw].append(nw)
-
+                current_ngram.append(nw)
     return ngram
 
 
 def hyp_ref_errors(rwords, hwords):
     errorcount = 0.0
     precrec = 0.0
+    missing = []
 
     for w in hwords:
         if w in rwords:
@@ -44,6 +44,7 @@ def hyp_ref_errors(rwords, hwords):
             del rwords[j]
         else:
             errorcount += 1
+            missing.append(w)
 
         if len(hwords) != 0:
             precrec = 100*errorcount/len(hwords)
@@ -53,204 +54,131 @@ def hyp_ref_errors(rwords, hwords):
             else:
                 precrec = 0
 
-    return errorcount, precrec
+    return errorcount, precrec, missing
 
 
-class RgbfFeatureGenerator(object):
-    '''
-    classdocs
-    '''
 
 
-    def __init__(self, params):
-        '''
-        Constructor
-        '''
+class RgbfGenerator:
+    def __init__(self, n=4, unitweights=[], ngramweights=[]):
+        self.n = n
+        if not ngramweights:
+            ngramweights =  np.ones(n) * 1.00 / n
+        self.ngramweights = ngramweights
+        self.unitweights = unitweights
+        pass
+    
+    def process_string(self, hypothesis, reference):
+        return self.process_string_multiunit([hypothesis], [[reference]])
+    
+    def process_string_multiunit(self, hypUnits, refUnits, ngramprecrecf=True, unitprecrecf=True):
+        U = len(refUnits)
+        n = self.n
+        
+        ngramweights = self.ngramweights
+        unitweights = self.unitweights
+        
+        if not unitweights:
+            unitweights = np.ones(n) * 1.00 / U
+        
+        result = OrderedDict()
+        
+        sentRec = np.zeros(U)
+        sentPrec = np.zeros(U)
+        sentF = np.zeros(U)
         
 
-
-sent = False
-unitprecrecf = False
-ngramprecrecf = False
-prec = False
-rec = False
-nweight = False
-uweight = False
-nweights = []
-uweights = []
-
-n = 4
-
-args = sys.argv
-if len(args) < 5:
-    print("\nrgbF.py \t\t -R, --ref   reference \n \t\t\t -H, --hyp   hypothesis \n\noptional inputs: \t -n,  --ngram     ngram order (default = 4) \n \t\t\t -uw, --uweight   unit weights (default = 1/U, U = number of different units) \n \t\t\t -nw, --nweight   ngram weights (default = 1/n) \n\noptional outputs: \t -p, --prec   show precisions \n  \t\t\t -r, --rec    show recalls \n \t\t\t -u, --unit   show separate unit scores \n \t\t\t -g, --gram   show separate ngram scores \n \t\t\t -s, --sent   show sentence level scores \n")
-    sys.exit()
-for arg in args:
-    if arg == "-R" or arg == "--ref":
-        rtext = args[args.index(arg)+1]
-    elif arg == "-H" or arg == "--hyp":
-        htext = args[args.index(arg)+1]
-    elif arg == "-s" or arg == "--sent":
-        sent = True
-    elif arg == "--ngram" or arg == "-n":
-        n = int(args[args.index(arg)+1])
-    elif arg == "-uw" or arg == "--uweight":
-        uweight = True
-        uweights = (args[args.index(arg)+1]).split("-")
-    elif arg == "-nw" or arg == "--nweight":
-        nweight = True
-        nweights = (args[args.index(arg)+1]).split("-") 
-    elif arg == "-u" or arg == "--unit":
-        unitprecrecf = True
-    elif arg == "-g" or arg == "--gram":
-        ngramprecrecf = True
-    elif arg == "-r" or arg == "--rec":
-        rec = True
-    elif arg == "-p" or arg == "--prec":
-        prec = True
-
-rtxt = open(rtext, 'r')
-htxt = open(htext, 'r')
-
-hline = htxt.readline()
-rline = rtxt.readline()
-
-# separating different units (words, POS, etc)
-
-hypUnits = hline.split("++")
-refUnits = rline.split("++")
-U = len(refUnits)
-
-totalUnitNgramRperCount = [[0.0 for x in range(n)] for y in range(U)]
-totalUnitNgramHperCount = [[0.0 for x in range(n)] for y in range(U)]
-totalUnitNgramHypLength = [[0.0 for x in range(n)] for y in range(U)]
-totalUnitNgramRefLength = [[0.0 for x in range(n)] for y in range(U)]
-
-nsent = 0
-
-ngramweights = []
-unitweights = []
-
-if not(nweight):
-    ngramweights = [1/float(n) for x in range(n)]
-else:
-    if len(nweights) != n:
-        print("error: ngram weights length!")
-        sys.exit()
-    total = 0.0
-    for i in range(len(nweights)):
-        total += float(nweights[i])
-    for i in range(len(nweights)):
-        ngramweights.append(float(nweights[i])/total)
-
-if not(uweight):
-    unitweights = [1/float(U) for y in range(U)]
-else:
-    if len(uweights) != U:
-        print("error: unit weights length!")
-        sys.exit()   
-    total = 0.0
-    for i in range(len(uweights)):
-        total += float(uweights[i])
-    for i in range(len(uweights)):
-        unitweights.append(float(uweights[i])/total) 
-
-
-while (hline and rline):
-    
-    #def processs_string(hypUnits, refUnits, n=4)
-
-    U = len(refUnits)
-    
-
-
-    sentRec = [0.0] * U
-    sentPrec = [0.0] * U
-    sentF = [0.0] * U
-
-
-    multiSentRec = 0.0
-    multiSentPrec = 0.0
-    multiSentF = 0.0
-
-    # going through all units
-
-    for u in range(U):
-
-        # preparation for multiple references
-
-        minNgramSentRper = [1000.0] * n
-        minNgramSentHper = [1000.0] * n
-        bestNgramSentRperCount = [0.0 for x in range(n)]
-        bestNgramSentHperCount = [0.0 for x in range(n)]
-        bestNgramHypLength = [0.0 for x in range(n)]
-        bestNgramRefLength = [0.0 for x in range(n)]
-
-        hngrams = take_ngrams(hypUnits[u], n)
-
-
-        # going through multiple references
-
-        refs = refUnits[u].split("#")
-
-        nref = 0
-
-        for ref in refs:
-            nref += 1
-
-            rngrams = take_ngrams(ref, n)
-            rngrams1 = take_ngrams(ref, n)
-            hngrams1 = take_ngrams(hypUnits[u], n)
-
-
-            #############
-            # precision #
-            #############
-
-            for kh, hypWords in enumerate(hngrams):
-                rwords1 = rngrams1[kh]
-                sentHperCount, sentHper = hyp_ref_errors(rwords1, hypWords)
- 
-                if sentHper < minNgramSentHper[kh]:
-                    minNgramSentHper[kh] = sentHper
-                    bestNgramHypLength[kh] = len(hypWords)
-                    bestNgramSentHperCount[kh] = sentHperCount
-
+        multiSentRec = 0.0
+        multiSentPrec = 0.0
+        multiSentF = 0.0
         
+        for u, (hypUnit, refs) in enumerate(zip(hypUnits, refUnits)):
 
-            ##########
-            # recall #
-            ##########
-
-            for kr, refWords in enumerate(rngrams):
-                hwords1 = hngrams1[kr]
-                sentRperCount, sentRper = hyp_ref_errors(hwords1, refWords)
-
-                if sentRper < minNgramSentRper[kr]:
-                    minNgramSentRper[kr] = sentRper
-                    bestNgramRefLength[kr] = len(refWords)
-                    bestNgramSentRperCount[kr] = sentRperCount
-   
-        
-
-        # all the references are done
-
-
-        # collect ngram counts of unit "u" => total ngram counts
-
-#        for i in range(n):
-#            totalUnitNgramHperCount[u][i] += bestNgramSentHperCount[i]
-#            totalUnitNgramRperCount[u][i] += bestNgramSentRperCount[i]
-#            totalUnitNgramRefLength[u][i] += bestNgramRefLength[i]
-#            totalUnitNgramHypLength[u][i] += bestNgramHypLength[i]
-
-
-        # sentence precision, recall and F (arithmetic mean of all ngrams) for unit "u"
+            # preparation for multiple references
     
-        if sent:
-            sentNgramPrec = [0.0 for x in range(n)]
-            sentNgramRec = [0.0 for x in range(n)]
-            sentNgramF = [0.0 for x in range(n)]
+            minNgramSentRper = np.ones(n) * 1000.0            
+            minNgramSentHper = np.ones(n) * 1000.0
+            bestNgramSentRperCount = np.zeros(n)
+            bestNgramSentHperCount = np.zeros(n)
+            bestNgramHypLength = np.zeros(n)
+            bestNgramRefLength = np.zeros(n)
+            bestSentRMissing = [[]]*n
+            bestSentHMissing = [[]]*n
+    
+            hngrams = take_ngrams(hypUnit, n)
+            
+            for nref, ref in enumerate(refs):
+    
+                rngrams = take_ngrams(ref, n)
+                rngrams1 = take_ngrams(ref, n)
+                hngrams1 = take_ngrams(hypUnit, n)
+    
+    
+                #############
+                # precision #
+                #############
+    
+                for kh, hypWords in enumerate(hngrams):
+                    rwords1 = rngrams1[kh]
+                    sentHperCount, sentHper, sentHmissing = hyp_ref_errors(rwords1, hypWords)
+     
+                    if sentHper < minNgramSentHper[kh]:
+                        minNgramSentHper[kh] = sentHper
+                        bestNgramHypLength[kh] = len(hypWords)
+                        bestNgramSentHperCount[kh] = sentHperCount
+                        bestSentHMissing[kh] = sentHmissing
+    
+            
+    
+                ##########
+                # recall #
+                ##########
+    
+                for kr, refWords in enumerate(rngrams):
+                    hwords1 = hngrams1[kr]
+                    sentRperCount, sentRper, sentRmissing = hyp_ref_errors(hwords1, refWords)
+    
+                    if sentRper < minNgramSentRper[kr]:
+                        minNgramSentRper[kr] = sentRper
+                        bestNgramRefLength[kr] = len(refWords)
+                        bestNgramSentRperCount[kr] = sentRperCount
+                        bestSentRMissing[kr] = sentRmissing  
+            
+    
+            # all the references are done
+    
+    
+            # collect ngram counts of unit "u" => total ngram counts
+    
+#             for i in range(n):
+#                 totalUnitNgramHperCount[u][i] += bestNgramSentHperCount[i]
+#                 totalUnitNgramRperCount[u][i] += bestNgramSentRperCount[i]
+#                 totalUnitNgramRefLength[u][i] += bestNgramRefLength[i]
+#                 totalUnitNgramHypLength[u][i] += bestNgramHypLength[i]
+#     
+#     
+            # analysis of results: which hyp/ref n-grams do not have a match in ref/hyp 
+    
+#             if analyse:
+#                 for ng, ngh in enumerate(bestSentHMissing):
+#                     sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-ref-"+str(ng+1)+"grams: ")
+#                     for wh in ngh:
+#                         sys.stdout.write(wh+" ")
+#                     sys.stdout.write("\n")
+#     
+#                 for ng, ngr in enumerate(bestSentRMissing):
+#                     sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-hyp-"+str(ng+1)+"grams: ")               
+#                     for wr in ngr:
+#                         sys.stdout.write(wr+" ")   
+#                     sys.stdout.write("\n")
+#     
+    
+            # sentence precision, recall and F (arithmetic mean of all ngrams) for unit "u"
+    
+    
+            sentNgramPrec = np.zeros(n)
+            sentNgramRec = np.zeros(n)
+            sentNgramF = np.zeros(n)
 
 
             for i in range(n):
@@ -269,130 +197,31 @@ while (hline and rline):
                 else:
                     sentNgramF[i] = 0
 
-                #if ngramprecrecf:
-                sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-"+str(i+1)+"gram-F     "+str("%.4f" % sentNgramF[i])+"\n")
-                if prec:
-                    sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-"+str(i+1)+"gram-Prec  "+str("%.4f" % sentNgramPrec[i])+"\n")
-                if rec:
-                    sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-"+str(i+1)+"gram-Rec   "+str("%.4f" % sentNgramRec[i])+"\n")
+                if ngramprecrecf:
+                    result["u{}-{}gram-F".format(u+1, i+1)] = sentNgramF[i]
+                    result["u{}-{}gram-Prec".format(u+1, i+1)] = sentNgramPrec[i]
+                    result["u{}-{}gram-Rec".format(u+1, i+1)] = sentNgramRec[i]                                
 
-                                   
-
-                sentRec[u] += ngramweights[i]*sentNgramRec[i]
-                sentPrec[u] += ngramweights[i]*sentNgramPrec[i]
-                sentF[u] += ngramweights[i]*sentNgramF[i]
+                sentRec[u] += ngramweights[i] * sentNgramRec[i]
+                sentPrec[u] += ngramweights[i] * sentNgramPrec[i]
+                sentF[u] += ngramweights[i] * sentNgramF[i]
  
+#             ==end if sent
 
 
-            
-            sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-F    "+str("%.4f" % sentF[u])+"\n")
-            if prec:
-                sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-Prec "+str("%.4f" % sentPrec[u])+"\n")
-            if rec:
-                sys.stdout.write(str(nsent)+"::u"+str(u+1)+"-Rec  "+str("%.4f" % sentRec[u])+"\n")
-
-
-        
-        multiSentRec += unitweights[u]*sentRec[u]
-        multiSentPrec += unitweights[u]*sentPrec[u]
-        multiSentF += unitweights[u]*sentF[u]
-
-        
-
-
-    # sentence level multiscores
-
-    if sent:
-        sys.stdout.write(str(nsent)+"::rgbF    "+str("%.4f" % multiSentF)+"\n")   
-        if prec:
-            sys.stdout.write(str(nsent)+"::rgbPrec "+str("%.4f" % multiSentPrec)+"\n")
-        if rec:
-            sys.stdout.write(str(nsent)+"::rgbRec  "+str("%.4f" % multiSentRec)+"\n")
-   
-
-    hline = htxt.readline()
-    rline = rtxt.readline()
-
-    hypUnits = hline.split("++")
-    refUnits = rline.split("++")
-
-        
-        
-# total precision, recall and F (aritmetic mean of all ngrams and all units)
-
-multiPrec = 0.0
-multiRec = 0.0
-multiF = 0.0
-
-totRec = [0.0 for y in range(U)] # if separate unit scores are needed
-totPrec = [0.0 for y in range(U)]
-totF = [0.0 for y in range(U)]
-
-
-for u in range(U):  
-    totalPrec = [0.0 for x in range(n)]
-    totalRec = [0.0 for x in range(n)]
-    totalF = [0.0 for x in range(n)]
-
-    for i in range(n):
-        if totalUnitNgramRefLength[u][i] != 0:
-            totalRec[i] = 100 - 100*totalUnitNgramRperCount[u][i]/totalUnitNgramRefLength[u][i]
-        else:
-            totalRec[i] = 0
-
-        if totalUnitNgramHypLength[u][i] != 0:
-            totalPrec[i] = 100 - 100*totalUnitNgramHperCount[u][i]/totalUnitNgramHypLength[u][i]
-        else:
-            totalPrec[i] = 0
-
-        if totalUnitNgramRefLength[u][i] != 0 or totalUnitNgramHypLength[u][i] != 0:
-            totalF[i] = 100 - 100*(totalUnitNgramRperCount[u][i]+totalUnitNgramHperCount[u][i])/(totalUnitNgramRefLength[u][i]+totalUnitNgramHypLength[u][i])
-        else:
-            totalF[i] = 0
-
-        if ngramprecrecf:
-            sys.stdout.write("u"+str(u+1)+"-"+str(i+1)+"gram-F     "+str("%.4f" % totalF[i])+"\n")
-            if prec:
-                sys.stdout.write("u"+str(u+1)+"-"+str(i+1)+"gram-Prec  "+str("%.4f" % totalPrec[i])+"\n")
-            if rec:
-                sys.stdout.write("u"+str(u+1)+"-"+str(i+1)+"gram-Rec   "+str("%.4f" % totalRec[i])+"\n")
-
-
-        totRec[u] += ngramweights[i]*totalRec[i]
-        totPrec[u] += ngramweights[i]*totalPrec[i]
-        totF[u] += ngramweights[i]*totalF[i]
     
-
-    if unitprecrecf:
-        sys.stdout.write("u"+str(u+1)+"-F    "+str("%.4f" % totF[u])+"\n")
-        if prec:
-            sys.stdout.write("u"+str(u+1)+"-Prec "+str("%.4f" % totPrec[u])+"\n")
-        if rec:
-            sys.stdout.write("u"+str(u+1)+"-Rec  "+str("%.4f" % totRec[u])+"\n")
- 
-
-    multiRec += unitweights[u]*totRec[u]
-    multiPrec += unitweights[u]*totPrec[u]
-    multiF += unitweights[u]*totF[u]
-
-sys.stdout.write("rgbF    "+str("%.4f" % multiF)+"\n")
-if prec:
-    sys.stdout.write("rgbPrec "+str("%.4f" % multiPrec)+"\n")
-if rec:
-    sys.stdout.write("rgbRec  "+str("%.4f" % multiRec)+"\n")
-
-
-
-htxt.close()
-rtxt.close()
-
-
-
-
-
-
-
-
-
+            
+            multiSentRec += unitweights[u] * sentRec[u]
+            multiSentPrec += unitweights[u] * sentPrec[u]
+            multiSentF += unitweights[u] * sentF[u]   
+            
+        result["rgbF"] = multiSentF
+        result["rgbPrec"] = multiSentPrec
+        result["rgbRec"] = multiSentRec
+        #for x,y in result.iteritems():
+        #    print x, "=", y
+        
+        return result
+    
 
 
