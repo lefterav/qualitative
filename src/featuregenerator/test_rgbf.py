@@ -15,7 +15,7 @@ class Test(unittest.TestCase):
         self.refunits = "This time the fall in stocks on Wall Street is responsible for the drop . ++ This time the fall in stock on Wall Street be responsible for the drop . ++ Th is time the fall in stock s on Wall Street is responsible for the drop .  ++ DT NN DT NN IN NNS IN NP NP VBZ JJ IN DT NN SENT".split("++")
         self.hypunits = "This time , the reason for the collapse on Wall Street . ++ This time , the reason for the collapse on Wall Street . ++ Th is time , the reason for the collapse on Wall Street .  ++ DT NN , DT NN IN DT NN IN NP NP SENT".split("++")
 
-    def scoreExampleSentence(self):
+    def test_scoreExampleSentence(self):
         result = self.scorer.process_string_multiunit(self.hypunits, [self.refunits])
         
         correct_result = {'u1-1gram-F': 66.6666666667,
