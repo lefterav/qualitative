@@ -7,7 +7,7 @@ Created on Jul 13, 2014
 '''
 import logging
 
-#from featuregenerator.ibm1 import AlignmentFeatureGenerator
+#from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
 #from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator 
 #from numpy import average
 #from featuregenerator.featuregenerator import FeatureGenerator
@@ -375,7 +375,7 @@ class CfgAlignmentFeatureGenerator(FeatureGenerator):
         return matched_labels
 
 
-from featuregenerator.ibm1 import AlignmentFeatureGenerator
+from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
 from dataprocessor.sax import saxjcml
 
 if __name__ == "__main__":
