@@ -7,9 +7,9 @@ import xmlrpclib
 import time
 import sys
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
-from featuregenerator.parser.berkeley import socketservice
+from featuregenerator.blackbox.parser.berkeley import socketservice
 from nltk import PunktWordTokenizer, PunktSentenceTokenizer
-from featuregenerator.parser.berkeley.socketservice.berkeleyparsersocket import BerkeleyParserSocket
+from featuregenerator.blackbox.parser.berkeley.socketservice.berkeleyparsersocket import BerkeleyParserSocket
 
 from py4j.java_gateway import JavaGateway
 from py4j.java_gateway import GatewayClient

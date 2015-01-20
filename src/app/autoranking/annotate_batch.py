@@ -20,17 +20,17 @@ cfg = bootstrap.get_cfg()
 from dataprocessor.input.jcmlreader import JcmlReader
 from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml 
 from dataprocessor.sax import saxjcml
-from featuregenerator.parser.berkeley.parsermatches import ParserMatches
-from featuregenerator.parser.berkeley.cfgrules import CfgRulesExtractor, CfgAlignmentFeatureGenerator
-from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
+from featuregenerator.blackbox.parser.berkeley.parsermatches import ParserMatches
+from featuregenerator.blackbox.parser.berkeley.cfgrules import CfgRulesExtractor, CfgAlignmentFeatureGenerator
+from featuregenerator.blackbox.counts import LengthFeatureGenerator
 from featuregenerator.ratio_generator import RatioGenerator
-from featuregenerator.ibm1 import AlignmentFeatureGenerator
-from featuregenerator.levenshtein.levenshtein_generator import LevenshteinGenerator
-from featuregenerator.bleu.bleugenerator import CrossBleuGenerator, BleuGenerator
-from featuregenerator.meteor.meteor import CrossMeteorGenerator, MeteorGenerator
+from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
+from featuregenerator.reference.levenshtein.levenshtein_generator import LevenshteinGenerator
+from featuregenerator.reference.bleu.bleugenerator import CrossBleuGenerator, BleuGenerator
+from featuregenerator.reference.meteor.meteor import CrossMeteorGenerator, MeteorGenerator
 from featuregenerator.attribute_rank import AttributeRankGenerator
 from dataprocessor.input.xmlreader import XmlReader
-from featuregenerator.languagechecker.languagetool_socket import LanguageToolSocketFeatureGenerator
+from featuregenerator.blackbox.languagechecker.languagetool_socket import LanguageToolSocketFeatureGenerator
 from featuregenerator.preprocessor import Normalizer
 from featuregenerator.preprocessor import Tokenizer
 

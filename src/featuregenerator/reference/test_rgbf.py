@@ -4,7 +4,7 @@ Created on 12 Nov 2014
 @author: Eelftherios Avramidis
 '''
 import unittest
-from rgbf import RgbfGenerator
+from featuregenerator.reference.rgbf import RgbfGenerator
 
 
 class Test(unittest.TestCase):

@@ -3,13 +3,13 @@
 Loads IBM1 lexicon models and provides word-level probabilities and alignments
 Created on 17 Sept 2011, updated 09 August 2014
 
-@author: Eleftherios Avramidis based on code from Maja Popovic, David Vilar
+@author: Eleftherios Avramidis including code from Maja Popovic, David Vilar
 '''
 
 import math
 import logging
 from collections import defaultdict
-from featuregenerator import FeatureGenerator
+from featuregenerator.featuregenerator import FeatureGenerator
 
 class AlignmentFeatureGenerator(FeatureGenerator):
     '''
