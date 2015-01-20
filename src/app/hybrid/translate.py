@@ -1,4 +1,6 @@
 import xmlrpclib
+from featuregenerator.reference.hjerson import Hjerson
+from featuregenerator.reference.rgbf import RgbfGenerator
 
 
 
@@ -35,12 +37,13 @@ class MosesWorker:
     def translate(self, string):
         #send request to moses client
         #response = self.server.translate(string)
+        pass
 
 
 class LucyWorker:
     """
     """
-    def 
+    pass
 
 class HybridTranslator:
     def __init__(self, workers):
@@ -55,5 +58,5 @@ class HybridTranslator:
 
 
 if __name__ == '__main__':
-    run()
+    pass
 

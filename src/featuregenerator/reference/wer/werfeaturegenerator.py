@@ -32,7 +32,7 @@ class WERFeatureGenerator(FeatureGenerator):
         
         target_tokens    =  " ".join(PunktWordTokenizer().tokenize(target_untokenized))
         wer_value = wer(target_tokens, [ref_tokens])
-        return {'wer': str(wer_value)}
+        return {'ref-wer': str(wer_value)}
         
         
         
