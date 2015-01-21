@@ -7,7 +7,7 @@ Created on Nov 16, 2011
 import sys
 sys.path.append("/home/Lukas Poustka/taraxuscripts")
 
-from featuregenerator.levenshtein.levenshtein import levenshtein_tok
+from featuregenerator.reference.levenshtein.levenshtein import levenshtein_tok
 
 
 class OOLinkage():
