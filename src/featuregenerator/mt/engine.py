@@ -12,6 +12,10 @@ class MtEngine(FeatureGenerator):
     A generic abstract class for handling basic functions for an MT engine, to be extended
     by particular subclasses
     '''
+    def __init__(self, source_language, target_language, **kwargs):
+        self.source_language = source_language
+        self.target_language = target_language 
+        
         
     def traslate_string(self, string):
         raise NotImplementedError("This function needs to be implemented by an engine class")
