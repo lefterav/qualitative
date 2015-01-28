@@ -139,8 +139,15 @@ class BitParserFeatureGenerator(LanguageFeatureGenerator):
 		self.parser = BitParChartParser(lexicon_filename, grammar_filename, unknownwords, openclassdfsa, n, path, timeout)
 	
 	def process_string(self, string):
-		parses = self.parser.nbest_parse(string) 
 		att = OrderedDict()
+		try: 
+			parses = self.parser.nbest_parse(string)
+		except:
+			parses = []
+			
+		if not parses:
+			return {'bit_failed': 1}
+		att['bit_failed': 0]	 
 		best_parse = sorted(parses)[0]
 		att["bit_tree"], att["bit_prob"] = best_parse
 		att["bit_n"] = len(parses)
