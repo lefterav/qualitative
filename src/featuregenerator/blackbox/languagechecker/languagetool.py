@@ -194,6 +194,7 @@ class LanguageCheckerCmd(LanguageFeatureGenerator):
 
 if __name__ == '__main__':
     path = "/home/Eleftherios Avramidis/taraxu_tools/LanguageTool-1.6/LanguageTool.jar"
+    from util.jvm import JVM
     cmdfg = LanguageToolFeatureGenerator(path, 'en')
     from dataprocessor.input.jcmlreader import JcmlReader
     from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
