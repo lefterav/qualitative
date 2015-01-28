@@ -9,7 +9,6 @@ Created on Aug 2, 2014
 import tempfile
 import os
 import subprocess
-import re        
 
 class GizaFeatureGenerator:
     """
