@@ -85,5 +85,3 @@ class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
     
 #    def __del__(self):
 #        self.jvm.terminate()
-        
-    
