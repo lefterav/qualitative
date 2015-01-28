@@ -232,13 +232,13 @@ def get_alignment_inv(self, targetstring, sourcestring):
 
 
 class Token:
-'''
-Object that wraps the required variables for a token in a word alignment
-@ivar string: the string (text) of the token
-@param string: str
-@ivar index: the position of the token in the alignment
-@param index: int
-'''
+    '''
+    Object that wraps the required variables for a token in a word alignment
+    @ivar string: the string (text) of the token
+    @param string: str
+    @ivar index: the position of the token in the alignment
+    @param index: int
+    '''
     def __init__(self, string, index):
         self.string = string
         self.index = index
