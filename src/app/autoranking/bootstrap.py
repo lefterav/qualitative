@@ -5,9 +5,9 @@
 
 import StringIO
 from ConfigParser import ConfigParser, NoOptionError
-from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator, BerkeleyXMLRPCFeatureGenerator
-from featuregenerator.iq.acrolinxclient import IQFeatureGenerator
-from featuregenerator.lm.server import ServerNgramFeatureGenerator 
+from featuregenerator.blackbox.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator, BerkeleyXMLRPCFeatureGenerator
+from featuregenerator.blackbox.iq.acrolinxclient import IQFeatureGenerator
+from featuregenerator.blackbox.lm.server import ServerNgramFeatureGenerator 
 import os
 import re
 import sys

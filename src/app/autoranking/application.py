@@ -13,16 +13,16 @@ Created on 2 Aug 2013
 import time
 import sys
 
-from featuregenerator.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator
+from featuregenerator.blackbox.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator
 from sentence.sentence import SimpleSentence
 
 from ml.lib.orange.ranking import OrangeRanker 
 from sentence.parallelsentence import ParallelSentence
 
 from bootstrap import ExperimentConfigParser
-from featuregenerator.parser.berkeley.parsermatches import ParserMatches
-from featuregenerator.lengthfeaturegenerator import LengthFeatureGenerator
-from featuregenerator.meteor.meteor import CrossMeteorGenerator
+from featuregenerator.blackbox.parser.berkeley.parsermatches import ParserMatches
+from featuregenerator.blackbox.counts import LengthFeatureGenerator
+from featuregenerator.reference.meteor.meteor import CrossMeteorGenerator
 from featuregenerator.preprocessor import Normalizer
 from featuregenerator.preprocessor import Tokenizer
 from featuregenerator.preprocessor import Truecaser

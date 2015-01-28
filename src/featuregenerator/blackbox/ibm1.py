@@ -3,13 +3,13 @@
 Loads IBM1 lexicon models and provides word-level probabilities and alignments
 Created on 17 Sept 2011, updated 09 August 2014
 
-@author: Eleftherios Avramidis based on code from Maja Popovic, David Vilar
+@author: Eleftherios Avramidis including code from Maja Popovic, David Vilar
 '''
 
 import math
 import logging
 from collections import defaultdict
-from featuregenerator import FeatureGenerator
+from featuregenerator.featuregenerator import FeatureGenerator
 
 class AlignmentFeatureGenerator(FeatureGenerator):
     '''
@@ -40,18 +40,40 @@ class AlignmentFeatureGenerator(FeatureGenerator):
     
     def get_features_strings(self, source_line, target_line):
         
-        source_alignment = self.sourcelexicon.get_alignment(source_line, target_line)
-        target_alignment = self.targetlexicon.get_alignment_inv(source_line, target_line)
-        joined_alignment = self.join_alignments(source_alignment, target_alignment)
+        source_alignment = self.sourcelexicon.calculate_alignment(source_line, target_line)
+        target_alignment = self.targetlexicon.calculate_alignment_inv(source_line, target_line)
+
+        source_alignment_string = source_alignment.get_alignment_string()
+        target_alignment_string = target_alignment.get_alignment_string()
+        joined_alignment = self.join_alignments(source_alignment_string, target_alignment_string)
+
+        #translations per source word
+        attributes_translation_ratio = self._get_translations_ratio(source_alignment, source_line, thresholds)
         
         attributes = {
                       'ibm1-score' : "%.4f" % self.sourcelexicon.get_score(source_line, target_line),
-                      'ibm1-alignment' : " ".join(source_alignment),
+                      'ibm1-alignment' : " ".join(source_alignment_string),
                       'ibm1-score-inv' : "%.4f" % self.targetlexicon.get_score(target_line, source_line),
-                      'ibm1-alignment-inv' : " ".join(target_alignment),
-                      'imb1-alignment-joined' : " ".join(joined_alignment)
+                      'ibm1-alignment-inv' : " ".join(target_alignment_string),
+                      'imb1-alignment-joined' : " ".join(joined_alignment_string)
                       }
+        attributes.update(attributes_translation_ratio)
+
         return attributes
+
+    def _get_translations_ratio(self, source_alignment, thresholds):
+        """
+        Average number of translations per source word, as given by IBM-1 
+        table thresholded so that prob(t|s) > threshold
+        """
+        count = 0
+        att = {}
+        for threshold in thresholds:
+            for source_item, tokenalignments in source_alignment.iteritems():
+                count += len([t for t in tokenalignments if t.probability>threshold])
+            att['ibm1-ratio-{}'.format(threshold).replace(".","")] = 1.00 * count / len(source_alignment.keys())
+        return att       
+
     
     def join_alignments(self, sourcealignment, targetalignment):
         """
@@ -182,46 +204,46 @@ class Lexicon:
                     alignment.add(sourcetoken, [TokenAlignment(targettoken, None)])
         return alignment
     
-    def get_alignment(self, sourcestring, targetstring):
-        '''
-        Return the word-level alignment string for source to target
-        @param sourcestring: the tokenized source sentence string
-        @type sourcestring: str
-        @param targetstring: the tokenized target sentence string
-        @type targetstring: str
-        @return: the string of the source-to-target alignment
-        @rtype: str
-        '''
-        alignment = self.calculate_alignment(sourcestring, targetstring)
-        return alignment.get_alignment_string()           
-                
-    def get_alignment_inv(self, targetstring, sourcestring):
-        '''
-        Return the word-level alignment string for target to source, inverted as seen by the source
-        @param targetstring: the tokenized target sentence string
-        @type targetstring: str
-        @param sourcestring: the tokenized source sentence string
-        @type sourcestring: str
-        @return: the string of the the alignment
-        @rtype: str
-        '''
-        alignment = self.calculate_alignment(sourcestring, targetstring)
-        return alignment.get_alignment_string_inv()              
+def get_alignment(self, sourcestring, targetstring):
+    '''
+    Return the word-level alignment string for source to target
+    @param sourcestring: the tokenized source sentence string
+    @type sourcestring: str
+    @param targetstring: the tokenized target sentence string
+    @type targetstring: str
+    @return: the string of the source-to-target alignment
+    @rtype: str
+    '''
+    alignment = self.calculate_alignment(sourcestring, targetstring)
+    return alignment.get_alignment_string()           
+            
+def get_alignment_inv(self, targetstring, sourcestring):
+    '''
+    Return the word-level alignment string for target to source, inverted as seen by the source
+    @param targetstring: the tokenized target sentence string
+    @type targetstring: str
+    @param sourcestring: the tokenized source sentence string
+    @type sourcestring: str
+    @return: the string of the the alignment
+    @rtype: str
+    '''
+    alignment = self.calculate_alignment(sourcestring, targetstring)
+    return alignment.get_alignment_string_inv()              
 
 
 class Token:
-    '''
-    Object that wraps the required variables for a token in a word alignment
-    @ivar string: the string (text) of the token
-    @param string: str
-    @ivar index: the position of the token in the alignment
-    @param index: int
-    '''
-    def __init__(self, string, index):
-        self.string = string
-        self.index = index
-    
-    
+'''
+Object that wraps the required variables for a token in a word alignment
+@ivar string: the string (text) of the token
+@param string: str
+@ivar index: the position of the token in the alignment
+@param index: int
+'''
+def __init__(self, string, index):
+    self.string = string
+    self.index = index
+
+
 class TokenAlignment:
     '''
     Object that wraps the required information for an aligned target token in a word alignment
