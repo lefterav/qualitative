@@ -239,9 +239,9 @@ Object that wraps the required variables for a token in a word alignment
 @ivar index: the position of the token in the alignment
 @param index: int
 '''
-def __init__(self, string, index):
-    self.string = string
-    self.index = index
+    def __init__(self, string, index):
+        self.string = string
+        self.index = index
 
 
 class TokenAlignment:
