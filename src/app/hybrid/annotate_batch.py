@@ -28,12 +28,14 @@ from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
 from featuregenerator.reference.levenshtein.levenshtein_generator import LevenshteinGenerator
 from featuregenerator.reference.bleu.bleugenerator import CrossBleuGenerator, BleuGenerator
 from featuregenerator.reference.meteor.meteor import CrossMeteorGenerator, MeteorGenerator
+from featuregenerator.reference.rgbf import RgbfGenerator
+from featuregenerator.reference.wer.werfeaturegenerator import WERFeatureGenerator
+from featuregenerator.reference.hjerson import Hjerson
 from featuregenerator.attribute_rank import AttributeRankGenerator
 from dataprocessor.input.xmlreader import XmlReader
 from featuregenerator.blackbox.languagechecker.languagetool_socket import LanguageToolSocketFeatureGenerator
 from featuregenerator.preprocessor import Normalizer
 from featuregenerator.preprocessor import Tokenizer
-
 
 
 
@@ -342,11 +344,14 @@ if cfg.has_section('quest'):
 @transform(data_fetch, suffix(".orig.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
 def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_atts, classpath, dir_path):
     analyzers = [LevenshteinGenerator(),
-                 BleuGenerator()]
-    saxjcml.run_features_generator(input_file, output_file, analyzers)
-    
+                 BleuGenerator(),
+                 RgbfGenerator(),
+                 WERFeatureGenerator(),
+                 Hjerson()]
     if cfg.has_section("meteor"):
         analyzers.append(MeteorGenerator(target_language, classpath, dir_path))
+    saxjcml.run_features_generator(input_file, output_file, analyzers)
+    
         
 if cfg.getboolean("annotation", "reference_features"):
     parallel_feature_functions.append(reference_features)
