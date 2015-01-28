@@ -15,7 +15,7 @@ import os, re
 import logging as log
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 from collections import OrderedDict
-from numpy import average
+from numpy import average, std
 
 class BitParChartParser:
 	def __init__(self, lexicon_filename=None, grammar_filename=None, rootsymbol="TOP", unknownwords=None, openclassdfsa=None, cleanup=True, n=3, path=None, timeout=200):
@@ -153,7 +153,12 @@ class BitParserFeatureGenerator(LanguageFeatureGenerator):
 		att["bit_n"] = len(parses)
 		probabilities = [prob for _, prob in parses]
 		att["bit_avgprob"] = average(probabilities)
+		att["bit_stdprob"] = std(probabilities)
 		att["bit_minprob"] = min(probabilities)
+		if att["bit_prob"] > (att["bit_avgprob"] + att["bit_stdprob"]):
+			att["bit_probhigh"] = 1
+		else:
+			att["bit_probhigh"] = 0
 		return att
 		
 		
