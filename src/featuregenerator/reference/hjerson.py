@@ -25,8 +25,8 @@
 # Mathematical Linguistics No. 96, pp. 59--68, October 2011
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-from languagefeaturegenerator import LanguageFeatureGenerator
-from preprocessor import Tokenizer
+from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from featuregenerator.preprocessor import Tokenizer
 from util.treetaggerwrapper import TreeTagger
 import logging
 import os
