@@ -345,10 +345,16 @@ class CfgAlignmentFeatureGenerator(FeatureGenerator):
             
             #the distortion (alignment distance) for the beginning and the end of the source label and target label
             key = xml_normalize("cfgal_dist-start_{}".format(rule_alignment_string)) 
+
+            #deal with the case when indices for this rule is apparently empty 
+            if not sourcerule.indices: 
+                sourcerule.indices = [0]
+            if not target_indices:
+                target_indices = [0]
             atts[key] = min(sourcerule.indices) - min(target_indices)
             
             key = xml_normalize("cfgal_dist-end_{}".format(rule_alignment_string)) 
-            atts[key] = max(sourcerule.indices) - max(target_indices[-1])
+            atts[key] = max(sourcerule.indices) - max(target_indices)
             
         atts["cfgal_unaligned"] = unaligned 
         return atts
