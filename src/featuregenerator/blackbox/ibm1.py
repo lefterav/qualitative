@@ -204,31 +204,31 @@ class Lexicon:
                     alignment.add(sourcetoken, [TokenAlignment(targettoken, None)])
         return alignment
     
-def get_alignment(self, sourcestring, targetstring):
-    '''
-    Return the word-level alignment string for source to target
-    @param sourcestring: the tokenized source sentence string
-    @type sourcestring: str
-    @param targetstring: the tokenized target sentence string
-    @type targetstring: str
-    @return: the string of the source-to-target alignment
-    @rtype: str
-    '''
-    alignment = self.calculate_alignment(sourcestring, targetstring)
-    return alignment.get_alignment_string()           
+    def get_alignment(self, sourcestring, targetstring):
+        '''
+        Return the word-level alignment string for source to target
+        @param sourcestring: the tokenized source sentence string
+        @type sourcestring: str
+        @param targetstring: the tokenized target sentence string
+        @type targetstring: str
+        @return: the string of the source-to-target alignment
+        @rtype: str
+        '''
+        alignment = self.calculate_alignment(sourcestring, targetstring)
+        return alignment.get_alignment_string()           
             
-def get_alignment_inv(self, targetstring, sourcestring):
-    '''
-    Return the word-level alignment string for target to source, inverted as seen by the source
-    @param targetstring: the tokenized target sentence string
-    @type targetstring: str
-    @param sourcestring: the tokenized source sentence string
-    @type sourcestring: str
-    @return: the string of the the alignment
-    @rtype: str
-    '''
-    alignment = self.calculate_alignment(sourcestring, targetstring)
-    return alignment.get_alignment_string_inv()              
+    def get_alignment_inv(self, targetstring, sourcestring):
+        '''
+        Return the word-level alignment string for target to source, inverted as seen by the source
+        @param targetstring: the tokenized target sentence string
+        @type targetstring: str
+        @param sourcestring: the tokenized source sentence string
+        @type sourcestring: str
+        @return: the string of the the alignment
+        @rtype: str
+        '''
+        alignment = self.calculate_alignment(sourcestring, targetstring)
+        return alignment.get_alignment_string_inv()              
 
 
 class Token:
