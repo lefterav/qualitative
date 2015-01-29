@@ -251,6 +251,15 @@ def truecase(input_file, output_file, language, model):
     saxjcml.run_features_generator(input_file, output_file, [truecaser])
     
 
+@transform(preprocess_data, suffix(".tok.jcml"), ".tc.jcml", cfg.get_truecaser_model(source_language), cfg.get_truecaser_model(target_language))
+def truecase_both(input_file, output_file, source_model, target_model):
+    from featuregenerator.preprocessor import Truecaser
+    
+    truecaser_src = Truecaser(source_language, source_model)
+    truecaser_tgt = Truecaser(target_language, target_model )
+    
+    fgs = [truecaser_src, truecaser_tgt]
+    saxjcml.run_features_generator(input_file, output_file, fgs, True)
 
 
 @transform(truecase_target, suffix(".tc.%s.jcml" % target_language), ".bleu.%s.f.jcml" % target_language)
@@ -340,6 +349,18 @@ def features_quest(input_file, output_file, source_language, target_language, co
 if cfg.has_section('quest'):
     parallel_feature_functions.append(features_quest)
 
+
+@transform(truecase_both, suffix(".tc.jcml"), ".all.ibm1.f.jcml", cfg.get("ibm1", "source_lexicon"), cfg.get("ibm1", "target_lexicon"))    
+def features_ibm1(input_file, output_file, sourcelexicon, targetlexicon):
+    analyzers = [
+             AlignmentFeatureGenerator(sourcelexicon, targetlexicon),
+             CfgAlignmentFeatureGenerator(),
+             CfgRulesExtractor()
+             ]
+    saxjcml.run_features_generator(input_file, output_file, analyzers)
+parallel_feature_functions.append(features_ibm1)
+
+
 @active_if(cfg.getboolean("annotation", "reference_features"))
 @transform(data_fetch, suffix(".orig.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
 def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_atts, classpath, dir_path):
@@ -355,7 +376,7 @@ def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_
         
 if cfg.getboolean("annotation", "reference_features"):
     parallel_feature_functions.append(reference_features)
-        
+
 #    analyzers.append(RatioGenerator())
     
 #    for attribute in moreisbetter_atts:
@@ -366,6 +387,8 @@ if cfg.getboolean("annotation", "reference_features"):
 
 #active_parallel_feature_functions = [function for function in parallel_feature_functions if function.is_active]
 
+
+    
 
 #first part of the regular expression is the basename of the dataset
 @collate(parallel_feature_functions, regex(r"([^.]+)\.(.+)\.f.jcml"),  r"\1.all.f.jcml")
@@ -381,13 +404,7 @@ def features_gather(singledataset_annotations, gathered_singledataset_annotation
         original_dataset.merge_dataset_symmetrical(appended_dataset, {}, "id")
     Parallelsentence2Jcml(original_dataset.get_parallelsentences()).write_to_file(gathered_singledataset_annotations)
 
-@transform(features_gather, suffix(".all.f.jcml"), ".all.ibm1.f.jcml", cfg.get("ibm1", "source_lexicon"), cfg.get("ibm1", "target_lexicon"))    
-def features_ibm1(input_file, output_file, sourcelexicon, targetlexicon):
-    analyzers = [
-             AlignmentFeatureGenerator(sourcelexicon, targetlexicon),
-             CfgAlignmentFeatureGenerator(),
-             ]
-    saxjcml.run_features_generator(input_file, output_file, analyzers)
+
     
 @transform(features_ibm1, suffix(".all.ibm1.f.jcml"), ".all.analyzed.f.jcml", cfg.get("general", "source_language"), cfg.get("general", "target_language"))    
 def analyze_external_features(input_file, output_file, source_language, target_language):
@@ -395,7 +412,6 @@ def analyze_external_features(input_file, output_file, source_language, target_l
 
     analyzers = [
                  ParserMatches(langpair),
-                 CfgRulesExtractor(),
                  RatioGenerator(),
 
                  ]
