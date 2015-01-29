@@ -355,7 +355,6 @@ def features_ibm1(input_file, output_file, sourcelexicon, targetlexicon):
     analyzers = [
              AlignmentFeatureGenerator(sourcelexicon, targetlexicon),
              CfgAlignmentFeatureGenerator(),
-             CfgRulesExtractor()
              ]
     saxjcml.run_features_generator(input_file, output_file, analyzers)
 parallel_feature_functions.append(features_ibm1)
@@ -412,8 +411,8 @@ def analyze_external_features(input_file, output_file, source_language, target_l
 
     analyzers = [
                  ParserMatches(langpair),
+                 CfgRulesExtractor(),
                  RatioGenerator(),
-
                  ]
     saxjcml.run_features_generator(input_file, output_file, analyzers)
     
