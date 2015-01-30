@@ -211,13 +211,15 @@ def features_berkeley(input_file, output_file, language):
 #    parser = BerkeleyXMLRPCFeatureGenerator(parser_url, language, parser_tokenize)
 #    saxjcml.run_features_generator(input_file, output_file, [parser])
 
+parse_functions = []
+
 @active_if(cfg.exists_parser(source_language))
 #@merge(features_berkeley_source, "parsed.%s.f.jcml" % source_language)
 @collate(features_berkeley_source, regex(r"([^.]+)\.\s?(\d+)\.part.parsed.([^.]+).f.jcml"),  r"\1.parsed.\3.f.jcml")
 def merge_parse_parts_source(inputs, output):
     merge_parts(inputs, output)
 if (cfg.exists_parser(source_language)):
-    parallel_feature_functions.append(merge_parse_parts_source)
+    parse_functions.append(merge_parse_parts_source)
 
 @active_if(cfg.exists_parser(target_language))
 #@merge(features_berkeley_target, "parsed.%s.f.jcml" % target_language)
@@ -225,7 +227,7 @@ if (cfg.exists_parser(source_language)):
 def merge_parse_parts_target(inputs, output):
     merge_parts(inputs, output)
 if (cfg.exists_parser(target_language)):
-    parallel_feature_functions.append(merge_parse_parts_target)
+    parse_functions.append(merge_parse_parts_target)
 
 
 def merge_parts(inputs, output):
@@ -235,6 +237,26 @@ def merge_parts(inputs, output):
         parallelsentences.extend(JcmlReader(inp).get_parallelsentences())
     Parallelsentence2Jcml(parallelsentences).write_to_file(output)    
 
+
+#first part of the regular expression is the basename of the dataset
+@collate(parse_functions, regex(r"([^.]+)\.\s?(\d+)\.parsed.([^.]+).f.jcml"),  r"\1.parsed.f.jcml")
+def merge_parse_source_target(tobermerged, gathered_singledataset_annotations):
+    
+    print "gathering berkeley parsing source and target ", parallel_feature_functions
+    original_dataset = JcmlReader(tobermerged[0]).get_dataset()
+    appended_dataset = JcmlReader(tobermerged[1]).get_dataset()
+    original_dataset.merge_dataset_symmetrical(appended_dataset, {}, "id")
+    Parallelsentence2Jcml(original_dataset.get_parallelsentences()).write_to_file(gathered_singledataset_annotations)
+    
+    
+@transform(merge_parse_source_target, suffix(".parsed.f.jcml"), ".ibm1.f.jcml", cfg.get("ibm1", "source_lexicon"), cfg.get("ibm1", "target_lexicon"))    
+def features_ibm1(input_file, output_file, sourcelexicon, targetlexicon):
+    analyzers = [
+             AlignmentFeatureGenerator(sourcelexicon, targetlexicon),
+             CfgAlignmentFeatureGenerator(),
+             ]
+    saxjcml.run_features_generator(input_file, output_file, analyzers)
+parallel_feature_functions.append(features_ibm1)
 
 
 @transform(preprocess_data, suffix(".tok.jcml"), ".tc.%s.jcml" % source_language, source_language, cfg.get_truecaser_model(source_language))
@@ -350,15 +372,6 @@ if cfg.has_section('quest'):
     parallel_feature_functions.append(features_quest)
 
 
-@transform(truecase_both, suffix(".tc.jcml"), ".all.ibm1.f.jcml", cfg.get("ibm1", "source_lexicon"), cfg.get("ibm1", "target_lexicon"))    
-def features_ibm1(input_file, output_file, sourcelexicon, targetlexicon):
-    analyzers = [
-             AlignmentFeatureGenerator(sourcelexicon, targetlexicon),
-             CfgAlignmentFeatureGenerator(),
-             ]
-    saxjcml.run_features_generator(input_file, output_file, analyzers)
-parallel_feature_functions.append(features_ibm1)
-
 
 @active_if(cfg.getboolean("annotation", "reference_features"))
 @transform(data_fetch, suffix(".orig.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
@@ -393,9 +406,9 @@ if cfg.getboolean("annotation", "reference_features"):
 @collate(parallel_feature_functions, regex(r"([^.]+)\.(.+)\.f.jcml"),  r"\1.all.f.jcml")
 def features_gather(singledataset_annotations, gathered_singledataset_annotations):
     
-    print "gathering features from tasks ", parallel_feature_functions
     
     tobermerged = singledataset_annotations
+    print "gathering features from tasks ", parallel_feature_functions, tobermerged
     original_file = tobermerged[0]
     original_dataset = JcmlReader(original_file).get_dataset()
     for appended_file in tobermerged[1:]:
@@ -405,7 +418,7 @@ def features_gather(singledataset_annotations, gathered_singledataset_annotation
 
 
     
-@transform(features_ibm1, suffix(".all.ibm1.f.jcml"), ".all.analyzed.f.jcml", cfg.get("general", "source_language"), cfg.get("general", "target_language"))    
+@transform(features_gather, suffix(".all.f.jcml"), ".all.analyzed.f.jcml", cfg.get("general", "source_language"), cfg.get("general", "target_language"))    
 def analyze_external_features(input_file, output_file, source_language, target_language):
     langpair = (source_language, target_language)
 
