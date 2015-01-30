@@ -17,9 +17,11 @@ def get_libs():
     components = path.split(os.sep)
     rootpath = os.path.join(os.sep, *components[:-3])
     libpath = os.path.join(rootpath, "lib")
-    libpath_all = os.path.join(libpath, "*")    
-    libs = [libpath, libpath_all]
-    return libs
+    libpath_all = os.path.join(libpath, "*")   
+    #get all subdirs
+    dirs = [os.path.join(libpath, name, "*") for name in os.listdir(libpath) if os.path.isdir(os.path.join(libpath, name)) ]
+    dirs.extend([libpath, libpath_all])
+    return dirs
 
 class JVM(object):
     '''
@@ -35,11 +37,12 @@ class JVM(object):
         '''
            
         #java_classpath.extend(get_libs())
-        java_classpath = get_libs()
+        default_java_classpath = get_libs()
         path = os.path.abspath(__file__)
         #java_classpath.append(os.path.dirname(path))
         
-        classpath = ":".join(java_classpath)
+        classpath = ":".join(default_java_classpath)
+        classpath = ":".join([classpath, java_classpath])
         print "classpath = ", classpath
 
         #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
