@@ -376,7 +376,7 @@ if cfg.has_section('quest'):
 
 
 @active_if(cfg.getboolean("annotation", "reference_features"))
-@transform(preprocess_data, suffix(".tok.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
+@transform(truecase_target_append, suffix(".tok.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
 def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_atts, classpath, dir_path):
     analyzers = [LevenshteinGenerator(),
                  BleuGenerator(),
