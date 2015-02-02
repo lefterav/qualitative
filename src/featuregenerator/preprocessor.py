@@ -43,7 +43,7 @@ class Preprocessor(FeatureGenerator):
         if tgt_lang == self.lang:
             simplesentence.string = self.process_string(simplesentence.string)  
         return simplesentence
-    
+
     def process_string(self, string):
         """
         Abstract class to be overriden by implemented pre-processors
@@ -214,13 +214,14 @@ class Truecaser(CommandlinePreprocessor):
 if __name__ == '__main__':
     from dataprocessor.input.jcmlreader import JcmlReader
     from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
+    import sys
     #path = "/home/Eleftherios Avramidis/taraxu_tools/scripts/tokenizer/tokenizer.perl"
     #command_template = "{path} -b -l {lang}"
 #    path = "/home/Eleftherios Avramidis/taraxu_tools/scripts/tokenizer/normalize-punctuation.perl"
 #    command_template = "perl {path} -l {lang} -b"
     tokenizer = Tokenizer("en")
-    parallelsentences = JcmlReader("/home/Eleftherios Avramidis/taraxu_data/jcml-latest/clean/wmt2011.newstest.en-de.rank-clean.jcml").get_parallelsentences()
+    parallelsentences = JcmlReader(sys.argv[1]).get_parallelsentences()
     tokenized = tokenizer.add_features_batch(parallelsentences)
     #tokenizer.close()
-    Parallelsentence2Jcml(tokenized).write_to_file("/home/Eleftherios Avramidis/taraxu_data/jcml-latest/tok/wmt2011.newstest.en-de.rank-clean.jcml")
+    Parallelsentence2Jcml(tokenized).write_to_file(sys.argv[1].replace(".jcml", ".tok.jcml"))
     

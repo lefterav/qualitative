@@ -221,13 +221,11 @@ class SaxJCMLProcessor(XMLGenerator):
             ref = parallelsentence.get_reference()
             
             XMLGenerator._write(self, "\n\t\t")
-            try:
-		ref_attributes = dict_string(ref.get_attributes)
+            if ref:
+                ref_attributes = dict_string(ref.get_attributes())
                 XMLGenerator.startElement(self, self.TAG_REF, ref_attributes)
                 XMLGenerator.characters(self, ref.get_string())
                 XMLGenerator.endElement(self, self.TAG_REF)
                 XMLGenerator._write(self, "\n\t")
-            except:
-                pass
 
             XMLGenerator.endElement(self, name)

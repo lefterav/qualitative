@@ -5,7 +5,7 @@ Created on Jul 13, 2014
 
 @author: Eleftherios Avramidis
 '''
-import logging
+import logging as log
 
 #from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
 #from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator 
@@ -103,8 +103,6 @@ def get_cfg_rules(string, terminals=False):
     #get characters one by one (to catch-up with brackets)
     prevchar = None
     for char in list(string):
-        logging.debug(char)
-        
         #opening bracket initiates a rule (remains open)
         if char=="(":
             depth += 1
@@ -119,11 +117,11 @@ def get_cfg_rules(string, terminals=False):
             previousrule.rhs.append(labelstr)
             nextrule.lhs = labelstr
             nextrule.depth = depth
-            logging.debug("Next rule: {}".format(nextrule))
+            log.debug("Next rule: {}".format(nextrule))
             
             #previous rule from upper nodes goes to the stack
             stack.append(previousrule)
-            logging.debug("Stacking previous rule: {}".format(previousrule))
+            log.debug("Stacking previous rule: {}".format(previousrule))
             #and next rule (still open) becomes current rule 
             #waiting for children
             previousrule = nextrule
@@ -147,7 +145,7 @@ def get_cfg_rules(string, terminals=False):
             if previousrule.rhs or terminals:
                 rules.append(previousrule)
                 
-            logging.debug("Previous rule getting stored: {}".format(previousrule))
+            log.debug("Previous rule getting stored: {}".format(previousrule))
             
             #we need to pop the rule from the node above, because
             #it may get more RHS in the next loop
@@ -155,12 +153,12 @@ def get_cfg_rules(string, terminals=False):
             previousrule.length += current_length
             previousrule.leaves.extend(current_leaves)
             previousrule.indices.update(current_indices)
-            logging.debug("Popping previous rule: {}".format(previousrule))
+            log.debug("Popping previous rule: {}".format(previousrule))
             label = []
         #get characters for the label
         else:
             label.append(char)
-        logging.debug("---")
+        log.debug("---")
         
         #remember the previous character, to consider space after 
         #closing bracket
@@ -180,7 +178,7 @@ class CfgRulesExtractor(FeatureGenerator):
         try:
             parsestring = simplesentence.get_attribute("berkeley-tree")
         except:
-            print "error reading berkeley tree"
+            log.error("error reading berkeley tree")
             return {}
         cfg_rules = get_cfg_rules(parsestring)
         atts = {}
@@ -254,8 +252,12 @@ class CfgAlignmentFeatureGenerator(FeatureGenerator):
         source_line = parallelsentence.get_source().get_string()
         target_line = targetsentence.get_string()
         alignment_string = targetsentence.get_attribute("imb1-alignment-joined")
-        sourceparse = parallelsentence.get_source().get_attribute("berkeley-tree")
-        targetparse = targetsentence.get_attribute("berkeley-tree")
+        try:
+            sourceparse = parallelsentence.get_source().get_attribute("berkeley-tree")
+            targetparse = targetsentence.get_attribute("berkeley-tree")
+        except KeyError:
+            log.warning("Sentence does not have Berkeley parse trees")
+            return {}
         
         return self.process_string(source_line, target_line, alignment_string, sourceparse, targetparse)
    
@@ -274,7 +276,7 @@ class CfgAlignmentFeatureGenerator(FeatureGenerator):
             alignedindices.add(int(targetindex))
         allindices = set(range(len(target_line.split())))
         unaligned = allindices - alignedindices
-        logging.debug("Unaligned indices on target {}".format(",".join([str(i) for i in unaligned ])))
+        log.debug("Unaligned indices on target {}".format(",".join([str(i) for i in unaligned ])))
         return unaligned
     
     def process_string(self, source_line, target_line, alignment_string, sourceparse, targetparse):
@@ -291,11 +293,14 @@ class CfgAlignmentFeatureGenerator(FeatureGenerator):
         @param targetparse: the parser of the target sentence in bracketed format
         @type targetparse: str 
         """
-        print alignment_string
         #get the alignment object as wrapped by NTLK 
-        aligned_sentence = AlignedSent(source_line.split(),
+        try:
+            aligned_sentence = AlignedSent(source_line.split(),
                                 target_line.split(),
                                 alignment_string)
+        except IndexError:
+            print alignment_string + " " + source_line + " " + target_line
+            raise IndexError("Alignment is outside boundary of mots")
         #get source and target CFG rule
         sourcerules = get_cfg_rules(sourceparse, True)
         targetrules = get_cfg_rules(targetparse, True)
@@ -305,8 +310,8 @@ class CfgAlignmentFeatureGenerator(FeatureGenerator):
         #process one by one the source rules to get the aligned target rules 
         for sourcerule in sourcerules:
             source_label = sourcerule.lhs
-            logging.debug("Alignment string: {}".format(alignment_string))
-            logging.debug("Source indices: {}".format(sourcerule.indices))
+            log.debug("Alignment string: {}".format(alignment_string))
+            log.debug("Source indices: {}".format(sourcerule.indices))
             #First get the obviously aligned target indices 
             try:
                 target_indices = aligned_sentence.alignment.range(list(sourcerule.indices))
@@ -318,7 +323,7 @@ class CfgAlignmentFeatureGenerator(FeatureGenerator):
             for unaligned_index in self._get_unaligned_target_indices(target_line, alignment_string):
                 if target_indices and unaligned_index > min(target_indices) and unaligned_index < max(target_indices):
                     target_indices.append(unaligned_index)
-            logging.debug("label: {} -> {}".format(source_label, ",".join([str(i) for i in sorted(target_indices)])))
+            log.debug("label: {} -> {}".format(source_label, ",".join([str(i) for i in sorted(target_indices)])))
             
             #finally get the aligned target rules for the refined set of indices
             matched_labels = self._match_targetlabels(targetrules, target_indices)
@@ -370,14 +375,14 @@ class CfgAlignmentFeatureGenerator(FeatureGenerator):
         """
         candidate_labels = []
         for targetrule in targetrules:
-            logging.debug("t-label: {} -> {}".format(targetrule, ",".join([str(i) for i in targetrule.indices])))
+            log.debug("t-label: {} -> {}".format(targetrule, ",".join([str(i) for i in targetrule.indices])))
             if targetrule.indices.issubset(target_indices):
                 candidate_labels.append((targetrule.depth, targetrule.lhs))
         if not candidate_labels:
             return []    
         min_depth , _ = min(candidate_labels)
         matched_labels = [label for length, label in candidate_labels if length==min_depth]
-        logging.debug("chosen labels: {}".format(matched_labels))
+        log.debug("chosen labels: {}".format(matched_labels))
         return matched_labels
 
 
@@ -385,7 +390,7 @@ from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
 from dataprocessor.sax import saxjcml
 
 if __name__ == "__main__":
-    logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
+    log.basicConfig(format='%(asctime)s %(message)s', level=log.debug)
  
     cfgalignmentprocessor = CfgAlignmentFeatureGenerator()
     srcalignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.2.e2f"
