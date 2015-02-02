@@ -247,9 +247,19 @@ def merge_parse_source_target(tobermerged, gathered_singledataset_annotations):
     appended_dataset = JcmlReader(tobermerged[1]).get_dataset()
     original_dataset.merge_dataset_symmetrical(appended_dataset, {}, "id")
     Parallelsentence2Jcml(original_dataset.get_parallelsentences()).write_to_file(gathered_singledataset_annotations)
+
+
+@transform(merge_parse_source_target, suffix(".parsed.f.jcml"), ".tc.parsed.f.jcml", cfg.get_truecaser_model(source_language), cfg.get_truecaser_model(target_language))
+def truecase_parse_output(input_file, output_file, source_model, target_model):
+    from featuregenerator.preprocessor import Truecaser
     
+    truecaser_src = Truecaser(source_language, source_model)
+    truecaser_tgt = Truecaser(target_language, target_model )
     
-@transform(merge_parse_source_target, suffix(".parsed.f.jcml"), ".ibm1.f.jcml", cfg.get("ibm1", "source_lexicon"), cfg.get("ibm1", "target_lexicon"))    
+    fgs = [truecaser_src, truecaser_tgt]
+    saxjcml.run_features_generator(input_file, output_file, fgs, True)
+    
+@transform(truecase_parse_output, suffix(".tc.parsed.f.jcml"), ".ibm1.f.jcml", cfg.get("ibm1", "source_lexicon"), cfg.get("ibm1", "target_lexicon"))    
 def features_ibm1(input_file, output_file, sourcelexicon, targetlexicon):
     analyzers = [
              AlignmentFeatureGenerator(sourcelexicon, targetlexicon),
@@ -272,7 +282,7 @@ def truecase(input_file, output_file, language, model):
     truecaser = Truecaser(language, model)
     saxjcml.run_features_generator(input_file, output_file, [truecaser])
     
-
+#Probably not used
 @transform(preprocess_data, suffix(".tok.jcml"), ".tc.jcml", cfg.get_truecaser_model(source_language), cfg.get_truecaser_model(target_language))
 def truecase_both(input_file, output_file, source_model, target_model):
     from featuregenerator.preprocessor import Truecaser
