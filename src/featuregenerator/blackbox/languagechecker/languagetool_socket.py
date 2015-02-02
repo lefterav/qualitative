@@ -49,7 +49,7 @@ class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
         
         tool_language = ltool_view.Language.getLanguageForShortName(lang)
         self.ltool = ltool_view.JLanguageTool(tool_language)
-        self.ltool.activateDefaultPatternRules();
+        #self.ltool.activateDefaultPatternRules();
         
         
     def get_features_string(self, string):

@@ -19,7 +19,7 @@ class AlignmentFeatureGenerator(FeatureGenerator):
     @ivar targetlexicon: object containing IBM-1 word-level lexical probabilities for translating source-to-target
     @type targetlexicon: Lexicon
     '''
-    def __init__(self, source_lexicon_filename, target_lexicon_filename):
+    def __init__(self, source_lexicon_filename, target_lexicon_filename, thresholds=[0.2, 0.01]):
         """
         Initialize an instance of a feature generator able to generate IBM-1 features and multilingual string alignments
         @param source_lexicon_filename: table with IBM-1 word-level lexical probabilities for translating source-to-target
@@ -32,6 +32,7 @@ class AlignmentFeatureGenerator(FeatureGenerator):
         logging.info("Done. \nLoading target side IBM1 lexicon...")
         self.targetlexicon = Lexicon(target_lexicon_filename)
         logging.info("Done.")
+        self.thresholds = thresholds
     
     def get_features_tgt(self, simplesentence, parallelsentence):
         source_line = parallelsentence.get_source().get_string()
@@ -40,15 +41,15 @@ class AlignmentFeatureGenerator(FeatureGenerator):
     
     def get_features_strings(self, source_line, target_line):
         
-        source_alignment = self.sourcelexicon.calculate_alignment(source_line, target_line)
-        target_alignment = self.targetlexicon.calculate_alignment_inv(source_line, target_line)
+        source_alignment = self.sourcelexicon.get_alignment(source_line, target_line)
+        target_alignment = self.targetlexicon.get_alignment(target_line, source_line)
 
         source_alignment_string = source_alignment.get_alignment_string()
-        target_alignment_string = target_alignment.get_alignment_string()
-        joined_alignment = self.join_alignments(source_alignment_string, target_alignment_string)
+        target_alignment_string = target_alignment.get_alignment_string_inv()
+        joined_alignment_string = self.join_alignments(source_alignment_string, target_alignment_string)
 
         #translations per source word
-        attributes_translation_ratio = self._get_translations_ratio(source_alignment, source_line, thresholds)
+        attributes_translation_ratio = self._get_translations_ratio(source_alignment, self.thresholds)
         
         attributes = {
                       'ibm1-score' : "%.4f" % self.sourcelexicon.get_score(source_line, target_line),
@@ -61,7 +62,7 @@ class AlignmentFeatureGenerator(FeatureGenerator):
 
         return attributes
 
-    def _get_translations_ratio(self, source_alignment, thresholds):
+    def _get_translations_ratio(self, alignment, thresholds):
         """
         Average number of translations per source word, as given by IBM-1 
         table thresholded so that prob(t|s) > threshold
@@ -69,9 +70,14 @@ class AlignmentFeatureGenerator(FeatureGenerator):
         count = 0
         att = {}
         for threshold in thresholds:
-            for source_item, tokenalignments in source_alignment.iteritems():
+            for source_item, tokenalignments in alignment.sourcealignment_probs.iteritems():
                 count += len([t for t in tokenalignments if t.probability>threshold])
-            att['ibm1-ratio-{}'.format(threshold).replace(".","")] = 1.00 * count / len(source_alignment.keys())
+            try:
+                att['ibm1-ratio-{}'.format(threshold).replace(".","")] = 1.00 * count / len(alignment.sourcealignment_probs.keys())
+            except ZeroDivisionError:
+                att['ibm1-ratio-{}'.format(threshold).replace(".","")] = 0
+                logging.warning("Cannot calculate ibm1 ratio because of empty alignment")
+
         return att       
 
     
@@ -215,7 +221,7 @@ class Lexicon:
         @rtype: str
         '''
         alignment = self.calculate_alignment(sourcestring, targetstring)
-        return alignment.get_alignment_string()           
+        return alignment           
             
     def get_alignment_inv(self, targetstring, sourcestring):
         '''
@@ -228,7 +234,7 @@ class Lexicon:
         @rtype: str
         '''
         alignment = self.calculate_alignment(sourcestring, targetstring)
-        return alignment.get_alignment_string_inv()              
+        return alignment              
 
 
 class Token:
@@ -282,6 +288,7 @@ class SentenceAlignment(list):
         @type targetalignment: {Token: [Token, ...], ...}
         '''
         self.sourcealignment = defaultdict(list)
+        self.sourcealignment_probs = defaultdict(list)
         self.targetalignment = {}
     
     def add(self, sourcetoken, tokenalignments):
@@ -299,6 +306,7 @@ class SentenceAlignment(list):
             if targettoken not in self.targetalignment and sourcetoken not in self.sourcealignment:
                 self.targetalignment[targettoken] = sourcetoken
                 self.sourcealignment[sourcetoken].append(targettoken)
+                self.sourcealignment_probs[sourcetoken].append(tokenalignment)
     
     def add_gaps(self, sourcetoken, tokenalignments):
         '''
@@ -315,6 +323,7 @@ class SentenceAlignment(list):
             if targettoken not in self.targetalignment:
                 self.targetalignment[targettoken] = sourcetoken
                 self.sourcealignment[sourcetoken].append(targettoken)
+                self.sourcealignment_probs[sourcetoken].append(tokenalignment)
         
     def get_alignment_string(self):
         '''
@@ -335,10 +344,7 @@ class SentenceAlignment(list):
         '''
         Return a list of inverted aligned tokens, each alignment is a string with digits separated by a hyphen 
         e.g. ['1-2', '2-1' ...]
-        @return: alignmentstrings
-        @rtype: [str, str, ...]
         '''
-        alignmentstrings = []
         for sourcetoken, targettokens in sorted(self.sourcealignment.items(), key=lambda alignment: alignment[0].index) :
             
             for targettoken in targettokens:
