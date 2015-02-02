@@ -76,7 +76,8 @@ class AlignmentFeatureGenerator(FeatureGenerator):
                 att['ibm1-ratio-{}'.format(threshold).replace(".","")] = 1.00 * count / len(alignment.sourcealignment_probs.keys())
             except ZeroDivisionError:
                 att['ibm1-ratio-{}'.format(threshold).replace(".","")] = 0
-                logging.warning("Cannot calculate ibm1 ratio because of empty alignment")
+                att['imb1-ratio-failed'] = 1
+                logging.warning("Cannot calculate ibm1 ratio because of empty alignment: {} ".format(alignment))
 
         return att       
 
@@ -345,6 +346,7 @@ class SentenceAlignment(list):
         Return a list of inverted aligned tokens, each alignment is a string with digits separated by a hyphen 
         e.g. ['1-2', '2-1' ...]
         '''
+        alignmentstrings = []
         for sourcetoken, targettokens in sorted(self.sourcealignment.items(), key=lambda alignment: alignment[0].index) :
             
             for targettoken in targettokens:
