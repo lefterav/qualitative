@@ -18,7 +18,7 @@ from collections import OrderedDict
 from numpy import average, std
 
 class BitParChartParser:
-	def __init__(self, lexicon_filename=None, grammar_filename=None, rootsymbol="TOP", unknownwords=None, openclassdfsa=None, cleanup=True, n=3, path=None, timeout=200):
+	def __init__(self, lexicon_filename=None, grammar_filename=None, rootsymbol="TOP", unknownwords=None, openclassdfsa=None, cleanup=True, n=3, path=None, timeout=10):
 		""" Interface to bitpar chart parser. Expects a list of weighted
 		productions with frequencies (not probabilities).
 		
@@ -36,7 +36,8 @@ class BitParChartParser:
 
 		self.grammar_filename = grammar_filename
 		self.lexicon_filename = lexicon_filename
-		self.path = path		
+		self.path = path
+		log.debug("BitParChartParser path: {}".format(path))
 		self.rootsymbol = rootsymbol
 		self.timeout = timeout
 		self.cleanup = cleanup
@@ -61,7 +62,7 @@ class BitParChartParser:
 			self.cmd += "-w %s " % self.openclassdfsa
 		if self.lexicon_filename and self.grammar_filename:
 			self.cmd += " %s %s" % (self.grammar_filename, self.lexicon_filename)
-		log.debug(self.cmd)
+		log.debug("BitParChartParser command: {}".format(self.cmd))
 		self.bitpar = spawn(self.cmd)
 		self.bitpar.setecho(False)
 		# allow bitpar to initialize; just to be sure
@@ -82,19 +83,26 @@ class BitParChartParser:
 		potentially expensive restarts of bitpar. """
 		
 		if self.bitpar.terminated: self.start()
-		sent = "\n".join(sent.split()) + "\n\n"
-		print sent
+		log.debug("BitParChartParser: sending sentence '{}'".format(sent))
+		sent = "\n".join(sent.strip().split()) + "\n\n\n\n"
 		self.bitpar.send(sent)
-		output = ""
+		log.debug("BitParChartParser: sent '{}'".format(sent.strip().replace("\n"," ")))
+		output = []
 		while not output.endswith("\r\n\r\n"):
 			try:
-				output += self.bitpar.read_nonblocking(size=32767, timeout=self.timeout)
+				chars = self.bitpar.read_nonblocking(size=32767, timeout=self.timeout)
+				log.debug("Characters: {}".format(chars))
+				output.append(chars)
 			except:
-				break
+			    log.warning("BitParChartParser: exception caused by sentence '{}'".format(sent.strip().replace("\n", " ")))
+			    break
+			sleep(1)
+			log.debug("Waiting one more second")
+		output = "".join(output)
+		log.debug("BitParChartParser: received sentence '{}'".format(sent.replace("\n", " ")))
 		# remove bitpar's escaping (why does it do that?), strip trailing blank line
 		results = re.sub(r"\\([/{}\[\]<>'\$])", r"\1", output).splitlines()[:-1]
 		
-		print results
 		probs = [float(a.split("=")[1]) for a in results[::2] if "=" in a]
 		trees = [a for a in results[1::2]]
 		return zip(trees, probs)
@@ -136,9 +144,17 @@ class BitParserFeatureGenerator(LanguageFeatureGenerator):
 				language,
 				timeout=30,
 				n=100):
-		self.parser = BitParChartParser(lexicon_filename, grammar_filename, unknownwords, openclassdfsa, n, path, timeout)
+		log.debug("BitParserFeatureGenerator path: {}".format(path))
+		self.lang = language
+		self.parser = BitParChartParser(lexicon_filename=lexicon_filename, 
+		        grammar_filename=grammar_filename, 
+		        unknownwords=unknownwords, 
+		        openclassdfsa=openclassdfsa, 
+		        n=n, 
+		        path=path, 
+		        timeout=timeout)
 	
-	def process_string(self, string):
+	def get_features_string(self, string):
 		att = OrderedDict()
 		try: 
 			parses = self.parser.nbest_parse(string)
@@ -147,7 +163,7 @@ class BitParserFeatureGenerator(LanguageFeatureGenerator):
 			
 		if not parses:
 			return {'bit_failed': 1}
-		att['bit_failed': 0]	 
+		att['bit_failed'] = 0
 		best_parse = sorted(parses)[0]
 		att["bit_tree"], att["bit_prob"] = best_parse
 		att["bit_n"] = len(parses)
