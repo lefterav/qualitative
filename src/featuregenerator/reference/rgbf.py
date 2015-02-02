@@ -6,7 +6,7 @@ Created on 11 Nov 2014
 
 import numpy as np  
 from collections import OrderedDict
-
+from featuregenerator.featuregenerator import FeatureGenerator
 
 def take_ngrams(line, m):
     newline = ""
@@ -59,7 +59,7 @@ def hyp_ref_errors(rwords, hwords):
 
 
 
-class RgbfGenerator:
+class RgbfGenerator(FeatureGenerator):
     def __init__(self, n=4, unitweights=[], ngramweights=[]):
         self.n = n
         if not ngramweights:
