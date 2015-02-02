@@ -11,8 +11,9 @@ from xml import sax
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 import shutil
-import codecs
-import sys
+import logging as log
+import subprocess
+from progress.bar import Bar
 
 def dict_string(dic):
     return dict([(str(key), str(value)) for key, value in dic.iteritems()])
@@ -28,12 +29,14 @@ def run_features_generator(input_file, output_file, generators, encode=False):
     @param generators List of generators to be applied on each of the parallelsentences contained in the XMLs   
     """
     
-
     input_file_object = open(input_file, 'r' )
+    log.info("Sax parser starts processing {} -> {} with {}".format(input_file, output_file, [fg.__class__.__name__ for fg in generators]))
+    size = int(subprocess.check_output(["grep", "-c" , "<judged", input_file]))
     tmpfile = "%s.tmp" % output_file
     output_file_object = open(tmpfile, 'w' )
-    saxhandler = SaxJCMLProcessor(output_file_object, generators)
-    sax.parse(input_file_object, saxhandler)    
+    saxhandler = SaxJCMLProcessor(output_file_object, generators, size)
+    sax.parse(input_file_object, saxhandler)
+    log.info("Sax parser finished processing {} -> {} with {}".format(input_file, output_file, [fg.__class__.__name__ for fg in generators]))    
     input_file_object.close()
     output_file_object.close()
     shutil.move(tmpfile, output_file)
@@ -45,7 +48,7 @@ class SaxJCMLProcessor(XMLGenerator):
     Processing of any other XML type should follow this example.
     """
     
-    def __init__(self, out, feature_generators = []):
+    def __init__(self, out, feature_generators = [], size=None):
         """
         @param out: file object to receive processed changes
         @type out: file
@@ -75,6 +78,11 @@ class SaxJCMLProcessor(XMLGenerator):
         self._encoding = "utf-8"
         XMLGenerator._encoding = "utf-8"
         XMLGenerator._out = out
+        
+        self.counter = 0
+        self.bar = None
+        if size:
+            self.bar = Bar('Processing', message='eta_td', max=size)
         
     def set_tags(self):
         """
@@ -180,13 +188,12 @@ class SaxJCMLProcessor(XMLGenerator):
         elif name == self.TAG_SENT:
             #when the judged sentence gets closed, all previously inserted data have to be converted to objects 
             parallelsentence = ParallelSentence(self.src, self.tgt, self.ref, self.ps_attributes)
-            sys.stderr.write("\\")
+
             #apply feature generators
             for fg in self.feature_generators:
                 #sys.stderr.write("Processing sentence with {}".format(fg.__class__.__name__))
                 parallelsentence = fg.add_features_parallelsentence(parallelsentence)
                 #parallelsentence.add_attributes( fg.get_features_parallelsentence(parallelsentence) )
-            sys.stderr.write("/")
             #print parallelsentence
             src = parallelsentence.get_source()
 #            #print src.get_string()
@@ -230,3 +237,6 @@ class SaxJCMLProcessor(XMLGenerator):
                 XMLGenerator._write(self, "\n\t")
 
             XMLGenerator.endElement(self, name)
+            
+            if self.bar:
+                self.bar.next()
