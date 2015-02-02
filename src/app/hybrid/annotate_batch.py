@@ -295,7 +295,7 @@ parallel_feature_functions.append(cross_bleu)
 @active_if(cfg.has_section("meteor"))
 @transform(truecase_target, suffix(".tc.%s.jcml" % target_language), ".meteor.%s.f.jcml" % target_language, target_language, cfg.get_classpath()[0], cfg.get_classpath()[1])
 def cross_meteor(input_file, output_file, target_language, classpath, dir_path):
-    saxjcml.run_features_generator(input_file, output_file, [CrossMeteorGenerator(target_language, classpath, dir_path)])
+    saxjcml.run_features_generator(input_file, output_file, [CrossMeteorGenerator(target_language, gateway)])
 
 if cfg.has_section("meteor"):    
     parallel_feature_functions.append(cross_meteor)
@@ -376,7 +376,7 @@ if cfg.has_section('quest'):
 
 
 @active_if(cfg.getboolean("annotation", "reference_features"))
-@transform(truecase_target_append, suffix(".tc.%s-%s.jcml" % (source_language, target_language)), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
+@transform(truecase_target_append, suffix(".tok.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
 def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_atts, classpath, dir_path):
     analyzers = [LevenshteinGenerator(),
                  BleuGenerator(),
@@ -384,7 +384,7 @@ def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_
                  WERFeatureGenerator(),
                  Hjerson()]
     if cfg.has_section("meteor"):
-        analyzers.append(MeteorGenerator(target_language, classpath, dir_path))
+        analyzers.append(MeteorGenerator(target_language, gateway))
     saxjcml.run_features_generator(input_file, output_file, analyzers)
     
         

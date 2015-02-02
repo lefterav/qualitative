@@ -5,12 +5,8 @@ Created on 15 Jun 2012
 @author: Eleftherios Avramidis
 '''
 
-from py4j.java_gateway import JavaGateway
-from py4j.java_gateway import GatewayClient
 from py4j.java_gateway import java_import
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
-from util.jvm import JVM
-import sys
 
 class MeteorGenerator(LanguageFeatureGenerator):
     '''
@@ -28,7 +24,7 @@ class MeteorGenerator(LanguageFeatureGenerator):
     '''
     __name__ = "Meteor"
 
-    def __init__(self, lang, java_classpath, dir_path):
+    def __init__(self, lang, gateway):
         '''
         Constructor
         @param lang: The language code for the proper initialization of this language-dependent tool
@@ -37,11 +33,11 @@ class MeteorGenerator(LanguageFeatureGenerator):
         @type gateway: py4j.java_gateway.JavaGateway
         '''
         self.lang = lang
-        self.jvm = JVM(java_classpath)
-        socket_no = self.jvm.socket_no
-        gatewayclient = GatewayClient('localhost', socket_no)
-        gateway = JavaGateway(gatewayclient, auto_convert=True, auto_field=True)
-        sys.stderr.write("Initialized local Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
+        #self.jvm = JVM(java_classpath)
+        #socket_no = self.jvm.socket_no
+        #gatewayclient = GatewayClient('localhost', socket_no)
+        #gateway = JavaGateway(gatewayclient, auto_convert=True, auto_field=True)
+        #sys.stderr.write("Initialized local Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
     
         self.meteor_view = gateway.new_jvm_view()
         #import necessary java packages from meteor jar
