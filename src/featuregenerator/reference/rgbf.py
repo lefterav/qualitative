@@ -68,6 +68,22 @@ class RgbfGenerator(FeatureGenerator):
         self.unitweights = unitweights
         pass
     
+    def get_features_tgt(self, simplesentence, parallelsentence):        
+        """
+        Override language feature generator function in order to return sentence level error classes
+        @param simplesentence: a simple sentence object, containing the target sentence
+        @type L{sentence.sentence.SimpleSentence}
+        @param parallelsentence: a parallel sentence object which is needed to derive the reference
+        @type L{sentence.parallelsentence.ParallelSentence}
+        @return: a dictionary with the attributes retrieved
+        @rtype: {str: object, ... } 
+        """
+        target_string = simplesentence.get_string()
+        ref_string = parallelsentence.ref.get_string()
+         
+        atts = self.process_string(target_string, ref_string)
+        return atts
+    
     def process_string(self, hypothesis, reference):
         return self.process_string_multiunit([hypothesis], [[reference]])
     
@@ -198,9 +214,9 @@ class RgbfGenerator(FeatureGenerator):
                     sentNgramF[i] = 0
 
                 if ngramprecrecf:
-                    result["u{}-{}gram-F".format(u+1, i+1)] = sentNgramF[i]
-                    result["u{}-{}gram-Prec".format(u+1, i+1)] = sentNgramPrec[i]
-                    result["u{}-{}gram-Rec".format(u+1, i+1)] = sentNgramRec[i]                                
+                    result["ref-rgbu{}-{}gram-F".format(u+1, i+1)] = sentNgramF[i]
+                    result["ref-rgbu{}-{}gram-Prec".format(u+1, i+1)] = sentNgramPrec[i]
+                    result["ref-rgbu{}-{}gram-Rec".format(u+1, i+1)] = sentNgramRec[i]                                
 
                 sentRec[u] += ngramweights[i] * sentNgramRec[i]
                 sentPrec[u] += ngramweights[i] * sentNgramPrec[i]
@@ -215,9 +231,9 @@ class RgbfGenerator(FeatureGenerator):
             multiSentPrec += unitweights[u] * sentPrec[u]
             multiSentF += unitweights[u] * sentF[u]   
             
-        result["rgbF"] = multiSentF
-        result["rgbPrec"] = multiSentPrec
-        result["rgbRec"] = multiSentRec
+        result["ref-rgbF"] = multiSentF
+        result["ref-rgbPrec"] = multiSentPrec
+        result["ref-rgbRec"] = multiSentRec
         #for x,y in result.iteritems():
         #    print x, "=", y
         

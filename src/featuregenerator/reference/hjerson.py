@@ -102,7 +102,10 @@ class Hjerson(LanguageFeatureGenerator):
         target_string = simplesentence.get_string()
         ref_string = parallelsentence.ref.get_string()
          
-        return self.get_features_strings(target_string, [ref_string])
+        atts = self.get_features_strings(target_string, [ref_string])
+        atts = dict([("ref-hj_{}".format(key), value) for key, value in atts.iteritems()])
+        return atts
+    
     
     def _tag(self, string):
         strings_tagged = self.treetager.TagText(string, encoding='utf-8')
