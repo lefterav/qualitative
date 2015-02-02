@@ -16,6 +16,71 @@ import logging as log
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 from collections import OrderedDict
 from numpy import average, std
+from featuregenerator.preprocessor import CommandlinePreprocessor
+
+
+class BitPar(CommandlinePreprocessor, LanguageFeatureGenerator):
+	def __init__(self, path,
+				lexicon_filename,
+				grammar_filename,
+				unknownwords,
+				openclassdfsa, 
+				language,
+				timeout=30,
+				rootsymbol='TOP',
+				n=100):
+		path = os.path.join(path, "bitpar")
+		command_template = "{path} -q -b {n} -vp -s {rootsymbol} -u {unknownwords} -w {openclassdfsa} {grammar} {lexicon}".format(path=path,
+																																n=n,
+																																rootsymbol=rootsymbol,
+																																unknownwords=unknownwords,
+																																openclassdfsa=openclassdfsa,
+																																grammar=grammar_filename,
+																																lexicon=lexicon_filename
+																																)
+		super(BitPar, self).__init__(path, language, {}, command_template)
+	
+		
+	def get_features_string(self, string):
+		att = OrderedDict()
+		try: 
+			parses = self.nbest_parse(string)
+		except:
+			parses = []
+			
+		if not parses:
+			return {'bit_failed': 1}
+		att['bit_failed'] = 0
+		best_parse = sorted(parses)[0]
+		att["bit_tree"], att["bit_prob"] = best_parse
+		att["bit_n"] = len(parses)
+		probabilities = [prob for _, prob in parses]
+		att["bit_avgprob"] = average(probabilities)
+		att["bit_stdprob"] = std(probabilities)
+		att["bit_minprob"] = min(probabilities)
+		if att["bit_prob"] > (att["bit_avgprob"] + att["bit_stdprob"]):
+			att["bit_probhigh"] = 1
+		else:
+			att["bit_probhigh"] = 0
+		return att
+		
+	def nbest_parse(self, sent):
+		""" n has to be specified in the constructor because it is specified
+		as a command line parameter to bitpar, allowing it here would require
+		potentially expensive restarts of bitpar. """
+		
+		if self.bitpar.terminated: self.start()
+		log.debug("BitParChartParser: sending sentence '{}'".format(sent))
+		sent = "\n".join(sent.strip().split()) + "\n\n"
+		output = self.process_string(sent)
+		log.debug("BitParChartParser: received sentence '{}'".format(sent.replace("\n", " ")))
+		# remove bitpar's escaping (why does it do that?), strip trailing blank line
+		results = re.sub(r"\\([/{}\[\]<>'\$])", r"\1", output).splitlines()[:-1]
+		
+		probs = [float(a.split("=")[1]) for a in results[::2] if "=" in a]
+		trees = [a for a in results[1::2]]
+		return zip(trees, probs)
+	
 
 class BitParChartParser:
 	def __init__(self, lexicon_filename=None, grammar_filename=None, rootsymbol="TOP", unknownwords=None, openclassdfsa=None, cleanup=True, n=3, path=None, timeout=10):
