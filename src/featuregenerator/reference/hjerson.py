@@ -25,7 +25,7 @@
 # Mathematical Linguistics No. 96, pp. 59--68, October 2011
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from featuregenerator.featuregenerator import FeatureGenerator
 from featuregenerator.preprocessor import Tokenizer
 from util.treetaggerwrapper import TreeTagger
 import logging
@@ -35,7 +35,7 @@ sent = False
 TAGDIR = "~/taraxu_tools/treetager/"
 
 
-class Hjerson(LanguageFeatureGenerator):
+class Hjerson(FeatureGenerator):
     """
     This is a class that wraps the Hjerson functionality on a sentence level.
     """
