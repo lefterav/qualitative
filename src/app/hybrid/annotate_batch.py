@@ -300,17 +300,21 @@ bitpar = {}
 for language in [source_language, target_language]:
     bitpar_section = "parser:bitpar:{}".format(language)
     if cfg.has_section(bitpar_section):
+        try:
+            n = cfg.getint(bitpar_section, "n")
+        except:
+            n = 500
         bitpar[language] = BitParserFeatureGenerator(cfg.get(bitpar_section, "path"),
                                                   cfg.get(bitpar_section, "lexicon"),
                                                   cfg.get(bitpar_section, "grammar"),
                                                   cfg.get(bitpar_section, "unknownwords"),
                                                   cfg.get(bitpar_section, "openclassdfsa"),
-                                                  cfg.get(bitpar_section, "n"),
-                                                  source_language)
+                                                  language=language,
+                                                  n=n)
 
 
 @active_if(source_language in bitpar)
-@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % source_language, source_language, bitpar)
+@transform(preprocess_data, suffix("tok.jcml"), "part.bit.%s.f.jcml" % source_language, source_language, bitpar)
 def features_bitpar_source(input_file, output_file, language, bitpar):
     saxjcml.run_features_generator(input_file, output_file, [bitpar[language]])
     
@@ -319,7 +323,7 @@ if source_language in bitpar:
 
 
 @active_if(target_language in bitpar)
-@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % target_language, target_language, bitpar)
+@transform(preprocess_data, suffix("tok.jcml"), "part.bit.%s.f.jcml" % target_language, target_language, bitpar)
 def features_bitpar_target(input_file, output_file, language, bitpar):
     saxjcml.run_features_generator(input_file, output_file, [bitpar[language]])
     
