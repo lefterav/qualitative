@@ -183,6 +183,7 @@ class SaxJCMLProcessor(XMLGenerator):
             sys.stderr.write("\\")
             #apply feature generators
             for fg in self.feature_generators:
+                #sys.stderr.write("Processing sentence with {}".format(fg.__class__.__name__))
                 parallelsentence = fg.add_features_parallelsentence(parallelsentence)
                 #parallelsentence.add_attributes( fg.get_features_parallelsentence(parallelsentence) )
             sys.stderr.write("/")
