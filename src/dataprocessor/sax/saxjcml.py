@@ -30,11 +30,11 @@ def run_features_generator(input_file, output_file, generators, encode=False):
     """
     
     input_file_object = open(input_file, 'r' )
-    log.info("Sax parser starts processing {} -> {} with {}".format(input_file, output_file, [fg.__class__.__name__ for fg in generators]))
     size = int(subprocess.check_output(["grep", "-c" , "<judged", input_file]))
+    log.info("Sax parser starts processing [{}] {} -> {} with {}".format(size, input_file, output_file, [fg.__class__.__name__ for fg in generators]))
     tmpfile = "%s.tmp" % output_file
     output_file_object = open(tmpfile, 'w' )
-    saxhandler = SaxJCMLProcessor(output_file_object, generators, size)
+    saxhandler = SaxJCMLProcessor(output_file_object, generators, size=size)
     sax.parse(input_file_object, saxhandler)
     log.info("Sax parser finished processing {} -> {} with {}".format(input_file, output_file, [fg.__class__.__name__ for fg in generators]))    
     input_file_object.close()
@@ -48,7 +48,7 @@ class SaxJCMLProcessor(XMLGenerator):
     Processing of any other XML type should follow this example.
     """
     
-    def __init__(self, out, feature_generators = [], size=None):
+    def __init__(self, out, feature_generators = [], size=100):
         """
         @param out: file object to receive processed changes
         @type out: file
@@ -80,9 +80,9 @@ class SaxJCMLProcessor(XMLGenerator):
         XMLGenerator._out = out
         
         self.counter = 0
-        self.bar = None
-        if size:
-            self.bar = Bar('Processing', message='eta_td', max=size)
+        
+        log.debug("File size given: {}. Loading progress bar.".format(size))
+        self.bar = Bar('Processing', suffix='eta_td', max=size)
         
     def set_tags(self):
         """
@@ -238,5 +238,7 @@ class SaxJCMLProcessor(XMLGenerator):
 
             XMLGenerator.endElement(self, name)
             
-            if self.bar:
-                self.bar.next()
+            self.counter+=1
+            if self.counter%1 == 0:
+                log.info("{}: Processed {} sentences".format(XMLGenerator._out.name, self.counter))
+            self.bar.next()
