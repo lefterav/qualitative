@@ -16,6 +16,7 @@ from ruffus.task import pipeline_printout_graph, pipeline_printout
 
 #internal code classes
 from app.autoranking import bootstrap 
+from featuregenerator.blackbox.parser.bitpar import BitParserFeatureGenerator
 cfg = bootstrap.get_cfg()
 from dataprocessor.input.jcmlreader import JcmlReader
 from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml 
@@ -170,6 +171,9 @@ if cfg.has_section("languagetool"):
     parallel_feature_functions.append(features_langtool)
 
 
+'''
+Parallelized Berkley parser
+'''
             
 @split(preprocess_data, "*.part.jcml", cores)
 def original_data_split(input_files, output_files, parts):
@@ -240,6 +244,9 @@ def merge_parse_source_target(tobermerged, gathered_singledataset_annotations):
     original_dataset.merge_dataset_symmetrical(appended_dataset, {}, "id")
     Parallelsentence2Jcml(original_dataset.get_parallelsentences()).write_to_file(gathered_singledataset_annotations)
 
+'''
+IBM1 features over Berkeley parser output
+'''
 
 @transform(merge_parse_source_target, suffix(".parsed.f.jcml"), ".tc.parsed.f.jcml", cfg.get_truecaser_model(source_language), cfg.get_truecaser_model(target_language))
 def truecase_parse_output(input_file, output_file, source_model, target_model):
@@ -285,6 +292,45 @@ def truecase_both(input_file, output_file, source_model, target_model):
     fgs = [truecaser_src, truecaser_tgt]
     saxjcml.run_features_generator(input_file, output_file, fgs, True)
 
+
+'''
+Parallelized BitPar parsing
+'''
+bitpar = {}
+for language in [source_language, target_language]:
+    bitpar_section = "parser:bitpar:{}".format(language)
+    if cfg.has_section(bitpar_section):
+        bitpar[language] = BitParserFeatureGenerator(cfg.get(bitpar_section, "path"),
+                                                  cfg.get(bitpar_section, "lexicon"),
+                                                  cfg.get(bitpar_section, "grammar"),
+                                                  cfg.get(bitpar_section, "unknownwords"),
+                                                  cfg.get(bitpar_section, "openclassdfsa"),
+                                                  cfg.get(bitpar_section, "n"),
+                                                  source_language)
+
+
+@active_if(source_language in bitpar)
+@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % source_language, source_language, bitpar)
+def features_bitpar_source(input_file, output_file, language, bitpar):
+    saxjcml.run_features_generator(input_file, output_file, [bitpar[language]])
+    
+if source_language in bitpar:
+    parallel_feature_functions.append(features_bitpar_source)
+
+
+@active_if(target_language in bitpar)
+@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % target_language, target_language, bitpar)
+def features_bitpar_target(input_file, output_file, language, bitpar):
+    saxjcml.run_features_generator(input_file, output_file, [bitpar[language]])
+    
+if target_language in bitpar:
+    parallel_feature_functions.append(features_bitpar_target)
+
+
+
+'''
+Cross BLEU and other features
+'''
 
 @transform(truecase_target, suffix(".tc.%s.jcml" % target_language), ".bleu.%s.f.jcml" % target_language)
 def cross_bleu(input_file, output_file):
