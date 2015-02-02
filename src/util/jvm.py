@@ -31,7 +31,7 @@ class JVM(object):
     @ivar pid: The system process id of the Java Server 
     '''
 
-    def __init__(self, java_classpath):
+    def __init__(self, java_classpath, java="java"):
         '''
         Star running java
         '''
@@ -42,7 +42,7 @@ class JVM(object):
         #java_classpath.append(os.path.dirname(path))
         
         classpath = ":".join(default_java_classpath)
-        classpath = ":".join([classpath, java_classpath])
+        #classpath = ":".join([classpath, java_classpath])
         print "classpath = ", classpath
 
         #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
@@ -54,7 +54,7 @@ class JVM(object):
         
         # prepare and run Java server
         #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
-        cmd = ["java", "-cp", classpath, "JavaServer" ]
+        cmd = [java, "-cp", classpath, "JavaServer" ]
         print cmd
         cmd = " ".join(cmd)
         

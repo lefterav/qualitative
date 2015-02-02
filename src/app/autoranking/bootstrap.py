@@ -39,8 +39,11 @@ class ExperimentConfigParser(ConfigParser):
         java_classpath, dir_path = self.get_classpath()
         
         if java_classpath:
-            
-            self.jvm = JVM(java_classpath)
+            try:
+                java = self.get("general","java")
+                self.jvm = JVM(java_classpath, java)
+            except:
+                self.jvm = JVM(java_classpath)
             socket_no = self.jvm.socket_no
             #socket_no = 25336
             self.gatewayclient = GatewayClient('localhost', socket_no)

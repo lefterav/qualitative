@@ -159,23 +159,15 @@ if cfg.exists_checker(target_language):
 
 @jobs_limit(1, "ltool") #Dunno why, but only one language tool at a time
 @active_if(cfg.has_section("languagetool"))
-@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % source_language, source_language)
-def features_langtool_source(input_file, output_file, language):
-    features_langtool(input_file, output_file, language)
+@transform(data_fetch, suffix(".orig.jcml"), ".lt.f.jcml" , source_language, target_language)
+def features_langtool(input_file, output_file, source_language, target_language):
+    fg_source = LanguageToolSocketFeatureGenerator(source_language, cfg.gateway)
+    fg_target = LanguageToolSocketFeatureGenerator(target_language, cfg.gateway)
+    saxjcml.run_features_generator(input_file, output_file, [fg_source, fg_target])
 
-@jobs_limit(1, "ltool")
-@active_if(cfg.has_section("languagetool"))
-@transform(data_fetch, suffix(".orig.jcml"), ".lt.%s.f.jcml" % target_language, target_language)
-def features_langtool_target(input_file, output_file, language):
-    features_langtool(input_file, output_file, language)
+
 if cfg.has_section("languagetool"):
-    parallel_feature_functions.append(features_langtool_target)
-    parallel_feature_functions.append(features_langtool_source)
-
-def features_langtool(input_file, output_file, language):
-    fg = LanguageToolSocketFeatureGenerator(language, cfg.gateway)
-    saxjcml.run_features_generator(input_file, output_file, [fg])
-
+    parallel_feature_functions.append(features_langtool)
 
 
             
@@ -239,7 +231,7 @@ def merge_parts(inputs, output):
 
 
 #first part of the regular expression is the basename of the dataset
-@collate(parse_functions, regex(r"([^.]+)\.\s?(\d+)\.parsed.([^.]+).f.jcml"),  r"\1.parsed.f.jcml")
+@collate(parse_functions, regex(r"(.*)\.parsed.([^.]+).f.jcml"),  r"\1.parsed.f.jcml")
 def merge_parse_source_target(tobermerged, gathered_singledataset_annotations):
     
     print "gathering berkeley parsing source and target ", parallel_feature_functions
@@ -374,7 +366,7 @@ if cfg.has_section('quest'):
 
 
 @active_if(cfg.getboolean("annotation", "reference_features"))
-@transform(data_fetch, suffix(".orig.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
+@transform(preprocess_data, suffix(".tok.jcml"), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
 def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_atts, classpath, dir_path):
     analyzers = [LevenshteinGenerator(),
                  BleuGenerator(),
