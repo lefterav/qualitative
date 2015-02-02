@@ -18,6 +18,7 @@ import fnmatch
 import socket
 from util.jvm import JVM
 from py4j.java_gateway import GatewayClient, JavaGateway
+import logging as log
 
 # --- config and options---
 CONFIG_FILENAME = os.path.abspath(os.path.join(os.path.dirname(__name__), 'config/pipeline.cfg'))
@@ -305,6 +306,7 @@ def get_cfg():
                                           specify its folder name heres. This must be 
                                           an existing dir name""")
     parser.add_argument('--cores',  help='How many cores should be parallelized')
+    parser.add_argument('--debug', action='store_true',  help='Display debugging information')
     
     args = parser.parse_args()
     
@@ -327,6 +329,14 @@ def get_cfg():
     
     if args.cores:
         cfg.set("general", "cores", args.cores)
+
+    loglevel = log.INFO
+    if args.debug:
+        loglevel = log.DEBUG
+    
+    log.basicConfig(level=loglevel, 
+        format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+        datefmt='%m-%d %H:%M')
     
     path = cfg.prepare_dir(continue_experiment)
     
