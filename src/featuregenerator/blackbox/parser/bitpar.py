@@ -17,6 +17,9 @@ from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 from collections import OrderedDict
 from numpy import average, std
 from featuregenerator.preprocessor import CommandlinePreprocessor
+from xml.etree import cElementTree
+from dataprocessor.sax.saxps2jcml import IncrementalJcml
+from dataprocessor.ce.cejcml import CEJcmlReader
 
 
 class BitPar(CommandlinePreprocessor, LanguageFeatureGenerator):
@@ -220,7 +223,7 @@ class BitParserFeatureGenerator(LanguageFeatureGenerator):
 		        timeout=timeout)
 	
 	def get_features_string(self, string):
-		att = OrderedDict()
+		 
 		try: 
 			parses = self.parser.nbest_parse(string)
 		except:
@@ -228,24 +231,93 @@ class BitParserFeatureGenerator(LanguageFeatureGenerator):
 			
 		if not parses:
 			return {'bit_failed': 1}
-		att['bit_failed'] = 0
-		best_parse = sorted(parses)[0]
-		att["bit_tree"], att["bit_prob"] = best_parse
-		att["bit_n"] = len(parses)
-		probabilities = [prob for _, prob in parses]
-		att["bit_avgprob"] = average(probabilities)
-		att["bit_stdprob"] = std(probabilities)
-		att["bit_minprob"] = min(probabilities)
-		if att["bit_prob"] > (att["bit_avgprob"] + att["bit_stdprob"]):
-			att["bit_probhigh"] = 1
 		else:
-			att["bit_probhigh"] = 0
-		return att
+			return get_bitpar_features(parses)
 		
+
+from subprocess import check_call
+from __future__ import print_function	
+	
+class BitParserBatchProcessor:
+	
+	def __init__(self, lang, reader=None, writer=None):
+		self.lang = lang
+		self.command = []
+		if not reader: reader = CEJcmlReader
+		if not writer: writer = IncrementalJcml
+		self.reader = reader
+		self.writer = writer
+
+	
+	def process_sourcebatch(self, input_filename, output_filename):
 		
-		
+		input_textfilename = self._sourcebatch_to_textfile(input_filename)
+		output_textfilename = "/tmp/filename.out.blah"
+				
+		check_call(self.command, 
+				stdin=open(input_textfilename), 
+				stdout=open(output_textfilename, 'w'))
+
+		features = self.get_features_batch(output_textfilename, output_filename, self.writer)
+		self._add_features_to_sourcebatch(input_filename, output_filename, features)
 		
 	
+	def _sourcebatch_to_textfile(self, input_filename):
+		input_textfilename = "/tmp/filename.in.blah"		
+		input_textfile = open(input_textfilename, 'w')
+		
+		input_batch = self.reader(input_filename)
+		for parallelsentence in input_batch.get_parallelsentences():
+			print(parallelsentence.get_source(), file=input_textfile)
+		input_textfile.close()
+		return input_textfilename
+	
+	
+	def _add_features_to_sourcebatch(self, input_filename, output_filename, features=[]):
+		input_batch = self.reader(input_filename)
+		output_batch = self.writer(output_filename)
+		i = 0
+		for parallelsentence in input_batch.get_parallelsentences():
+			sentence_features = features[i]
+			parallelsentence.source.att.update(sentence_features)
+			i+=1
+			output_batch.add_parallelsentence(parallelsentence)
+		
+		
+
+	def get_features_batch(self, output_textfilename):
+		textfile = open(output_textfilename)
+		
+		output = textfile.read()
+		output = re.sub(r"\\([/{}\[\]<>'\$])", r"\1", output).split("\n\n")[:-1]
+		#result = []
+		for a in output:
+			results = a.splitlines()
+			if "No parse" in results[0]:
+				yield {'bit_failed': 1}
+				continue
+			probs = [float(a.split("=")[1]) for a in results[::2] if "=" in a]
+			trees = [a for a in results[1::2]]
+			parses = zip(trees, probs)
+			yield get_bitpar_features(parses)
+		
+
+	
+def get_bitpar_features(parses):
+	att = OrderedDict()
+	best_parse = sorted(parses)[0]
+	att["bit_tree"], att["bit_prob"] = best_parse
+	att["bit_n"] = len(parses)
+	probabilities = [prob for _, prob in parses]
+	att["bit_avgprob"] = average(probabilities)
+	att["bit_stdprob"] = std(probabilities)
+	att["bit_minprob"] = min(probabilities)
+	if att["bit_prob"] > (att["bit_avgprob"] + att["bit_stdprob"]):
+		att["bit_probhigh"] = 1
+	else:
+		att["bit_probhigh"] = 0
+	return att
+
 
 	
 if __name__ == '__main__': 
