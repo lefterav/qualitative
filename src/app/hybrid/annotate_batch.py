@@ -16,7 +16,8 @@ from ruffus.task import pipeline_printout_graph, pipeline_printout
 
 #internal code classes
 from app.autoranking import bootstrap 
-from featuregenerator.blackbox.parser.bitpar import BitParserFeatureGenerator
+from featuregenerator.blackbox.parser.bitpar import BitParserFeatureGenerator,\
+    BitParserBatchProcessor
 cfg = bootstrap.get_cfg()
 from dataprocessor.input.jcmlreader import JcmlReader
 from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml 
@@ -296,41 +297,49 @@ def truecase_both(input_file, output_file, source_model, target_model):
 '''
 Parallelized BitPar parsing
 '''
-bitpar = {}
-for language in [source_language, target_language]:
+bitpar_functions = []
+
+@active_if(cfg.has_section("parser:bitpar:{}".format(source_language)))
+@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % source_language, source_language, cfg)
+def features_bitpar_source(input_file, output_file, language, cfg):
     bitpar_section = "parser:bitpar:{}".format(language)
-    if cfg.has_section(bitpar_section):
-        try:
-            n = cfg.getint(bitpar_section, "n")
-        except:
-            n = 500
-        bitpar[language] = BitParserFeatureGenerator(cfg.get(bitpar_section, "path"),
-                                                  cfg.get(bitpar_section, "lexicon"),
-                                                  cfg.get(bitpar_section, "grammar"),
-                                                  cfg.get(bitpar_section, "unknownwords"),
-                                                  cfg.get(bitpar_section, "openclassdfsa"),
-                                                  language=language,
-                                                  n=n)
-
-
-@active_if(source_language in bitpar)
-@transform(preprocess_data, suffix("tok.jcml"), "part.bit.%s.f.jcml" % source_language, source_language, bitpar)
-def features_bitpar_source(input_file, output_file, language, bitpar):
-    saxjcml.run_features_generator(input_file, output_file, [bitpar[language]])
+    bitpar = BitParserBatchProcessor(cfg.get(bitpar_section, "path"),
+                                     cfg.get(bitpar_section, "lexicon"),
+                                     cfg.get(bitpar_section, "grammar"),
+                                     cfg.get(bitpar_section, "unknownwords"),
+                                     cfg.get(bitpar_section, "openclassdfsa"),
+                                     n=cfg.get(bitpar_section, "n"))
+    bitpar.process_source_batch(input_file, output_file)
     
-if source_language in bitpar:
-    parallel_feature_functions.append(features_bitpar_source)
+if cfg.has_section("parser:bitpar:{}".format(source_language)):
+    bitpar_functions.append(features_bitpar_source)
 
 
-@active_if(target_language in bitpar)
-@transform(preprocess_data, suffix("tok.jcml"), "part.bit.%s.f.jcml" % target_language, target_language, bitpar)
-def features_bitpar_target(input_file, output_file, language, bitpar):
-    saxjcml.run_features_generator(input_file, output_file, [bitpar[language]])
+@active_if(cfg.has_section("parser:bitpar:{}".format(target_language)))
+@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % target_language, target_language, cfg)
+def features_bitpar_target(input_file, output_file, language, cfg):
+    bitpar_section = "parser:bitpar:{}".format(language)
+    bitpar = BitParserFeatureGenerator(cfg.get(bitpar_section, "path"),
+                                       cfg.get(bitpar_section, "lexicon"),
+                                       cfg.get(bitpar_section, "grammar"),
+                                       cfg.get(bitpar_section, "unknownwords"),
+                                       cfg.get(bitpar_section, "openclassdfsa"),
+                                       n=cfg.get(bitpar_section, "n"))
+    bitpar.process_target_batch(input_file, output_file)
     
-if target_language in bitpar:
-    parallel_feature_functions.append(features_bitpar_target)
+if cfg.has_section("parser:bitpar:{}".format(target_language)):
+    bitpar_functions.append(features_bitpar_target)
 
+@collate(bitpar_functions, regex(r"(.*)\.bit.([^.]+).f.jcml"),  r"\1.bit.f.jcml")
+def merge_bitpar_source_target(tobermerged, gathered_singledataset_annotations):
+    
+    print "gathering berkeley parsing source and target ", parallel_feature_functions
+    original_dataset = JcmlReader(tobermerged[0]).get_dataset()
+    appended_dataset = JcmlReader(tobermerged[1]).get_dataset()
+    original_dataset.merge_dataset_symmetrical(appended_dataset, {}, "id")
+    Parallelsentence2Jcml(original_dataset.get_parallelsentences()).write_to_file(gathered_singledataset_annotations)
 
+parallel_feature_functions.append(merge_bitpar_source_target)
 
 '''
 Cross BLEU and other features
