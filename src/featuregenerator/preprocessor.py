@@ -10,10 +10,6 @@ from featuregenerator import FeatureGenerator
 import subprocess
 import util
 import os
-import time
-import logging as log
-from fcntl import fcntl, F_GETFL, F_SETFL
-from os import O_NONBLOCK, read
 
 class Preprocessor(FeatureGenerator):
     """
@@ -102,9 +98,7 @@ class CommandlinePreprocessor(Preprocessor):
                                         stdin=subprocess.PIPE, 
                                         stdout=subprocess.PIPE,
                                         )
-        # set the O_NONBLOCK flag of p.stdout file descriptor:
-        flags = fcntl(self.process.stdout, F_GETFL) # get current p.stdout flags
-        fcntl(self.process.stdout, F_SETFL, flags | O_NONBLOCK)
+        
 
 #        self.q = Queue.Queue()
 #        t = threading.Thread(target = self._enqueue_output, args = (self.process.stdout, self.q))
@@ -123,26 +117,16 @@ class CommandlinePreprocessor(Preprocessor):
         #string = string.decode('utf-8')
         
         #string = string.encode('utf-8')
-#        self.process.stdin.write('{0}{1}\n'.format(string, ' '*10240))
-        self.process.stdin.write(string)
-        #self.process.stdin.flush()   
-        #self.process.stdout.flush()
-        time.sleep(0.1)
-        #output = self.process.stdout.readline().strip()
+        self.process.stdin.write('{0}{1}\n'.format(string, ' '*10240))
+        self.process.stdin.flush()   
+        self.process.stdout.flush()
+        
+        output = self.process.stdout.readline().strip()
         
         #some preprocessors occasionally return an empty string. In that case read once more
-        #if output == "" and len(string) > 1:
-        #    output = self.process.stdout.readline().strip()
-        output = []
-        while True:
-           try:
-               output.append(read(self.process.stdout.fileno(), 1024))
-               log.debug("read one line")
-           except OSError:
-               # the os throws an exception if there is no data
-               log.debug('[No more data]')
-               break
-        output = "".join(output)
+        if output == "" and len(string) > 1:
+            output = self.process.stdout.readline().strip()
+        
         return output
     
     def close(self):

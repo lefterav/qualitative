@@ -314,21 +314,24 @@ for language in [source_language, target_language]:
 
 
 @active_if(source_language in bitpar)
-@transform(preprocess_data, suffix("tok.jcml"), "part.bit.%s.f.jcml" % source_language, source_language, bitpar)
-def features_bitpar_source(input_file, output_file, language, bitpar):
-    saxjcml.run_features_generator(input_file, output_file, [bitpar[language]])
+@jobs_limit(1, "bitpar")
+@transform(preprocess_data, suffix("tok.jcml"), "bit.f.jcml" , source_language, target_language, bitpar)
+def features_bitpar_source(input_file, output_file, source_language, target_language, bitpar):
+    saxjcml.run_features_generator(input_file, output_file, [bitpar[source_language]])
+    saxjcml.run_features_generator(input_file, output_file, [bitpar[target_language]])
     
 if source_language in bitpar:
     parallel_feature_functions.append(features_bitpar_source)
 
 
+@jobs_limit(1, "bitpar")
 @active_if(target_language in bitpar)
 @transform(preprocess_data, suffix("tok.jcml"), "part.bit.%s.f.jcml" % target_language, target_language, bitpar)
 def features_bitpar_target(input_file, output_file, language, bitpar):
     saxjcml.run_features_generator(input_file, output_file, [bitpar[language]])
     
-if target_language in bitpar:
-    parallel_feature_functions.append(features_bitpar_target)
+#if target_language in bitpar:
+#    parallel_feature_functions.append(features_bitpar_target)
 
 
 
