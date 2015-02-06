@@ -40,10 +40,6 @@ from featuregenerator.preprocessor import Normalizer
 from featuregenerator.preprocessor import Tokenizer
 
 
-
-
-
-
 gateway = cfg.java_init()
 
 cores = int(cfg.get("general", "cores"))
@@ -299,41 +295,63 @@ Parallelized BitPar parsing
 '''
 bitpar_functions = []
 
+bitpar_section = "parser:bitpar:{}".format(source_language)
 @active_if(cfg.has_section("parser:bitpar:{}".format(source_language)))
-@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % source_language, source_language, cfg)
-def features_bitpar_source(input_file, output_file, language, cfg):
+@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % source_language, source_language, cfg.get(bitpar_section,"path"),  
+        cfg.get(bitpar_section,"lexicon"),
+        cfg.get(bitpar_section,"grammar"),
+        cfg.get(bitpar_section,"unknownwords"),
+        cfg.get(bitpar_section,"openclassdfsa"),
+        path
+        )
+
+def features_bitpar_source(input_file, output_file, language, path, lexicon, grammar, unk, openclass, tmpdir):
     bitpar_section = "parser:bitpar:{}".format(language)
-    bitpar = BitParserBatchProcessor(cfg.get(bitpar_section, "path"),
-                                     cfg.get(bitpar_section, "lexicon"),
-                                     cfg.get(bitpar_section, "grammar"),
-                                     cfg.get(bitpar_section, "unknownwords"),
-                                     cfg.get(bitpar_section, "openclassdfsa"),
-                                     n=cfg.get(bitpar_section, "n"))
+    bitpar = BitParserBatchProcessor(path,
+                                     lexicon,
+                                     grammar,
+                                     unk,
+                                     openclass,
+                                     tmpdir=tmpdir
+                                     )
     bitpar.process_source_batch(input_file, output_file)
     
-if cfg.has_section("parser:bitpar:{}".format(source_language)):
-    bitpar_functions.append(features_bitpar_source)
-
-
+bitpar_section = "parser:bitpar:{}".format(target_language)
 @active_if(cfg.has_section("parser:bitpar:{}".format(target_language)))
-@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % target_language, target_language, cfg)
-def features_bitpar_target(input_file, output_file, language, cfg):
+@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % target_language, target_language, 
+        cfg.get(bitpar_section,"path"),
+        cfg.get(bitpar_section,"lexicon"),
+        cfg.get(bitpar_section,"grammar"),
+        cfg.get(bitpar_section,"unknownwords"),
+        cfg.get(bitpar_section,"openclassdfsa"),
+        path
+        )
+
+def features_bitpar_target(input_file, output_file, language, path, lexicon, grammar, unk, openclass, tmpdir):
     bitpar_section = "parser:bitpar:{}".format(language)
-    bitpar = BitParserFeatureGenerator(cfg.get(bitpar_section, "path"),
-                                       cfg.get(bitpar_section, "lexicon"),
-                                       cfg.get(bitpar_section, "grammar"),
-                                       cfg.get(bitpar_section, "unknownwords"),
-                                       cfg.get(bitpar_section, "openclassdfsa"),
-                                       n=cfg.get(bitpar_section, "n"))
+    bitpar = BitParserBatchProcessor(path,
+                                     lexicon,
+                                     grammar,
+                                     unk,
+                                     openclass,
+                                     tmpdir=tmpdir
+                                     )
     bitpar.process_target_batch(input_file, output_file)
     
+@collate(features_bitpar_source, regex(r"([^.]+)\.\s?(\d+)\.part.bit.([^.]+).f.jcml"),  r"\1.bit.\3.f.jcml")
+def merge_bitpar_parts_source(inputs, output):
+    merge_parts(inputs, output)
+if cfg.has_section("parser:bitpar:{}".format(source_language)):
+    bitpar_functions.append(merge_bitpar_parts_source)
+
+@collate(features_bitpar_target, regex(r"([^.]+)\.\s?(\d+)\.part.bit.([^.]+).f.jcml"),  r"\1.bit.\3.f.jcml")
+def merge_bitpar_parts_target(inputs, output):
+    merge_parts(inputs, output)
 if cfg.has_section("parser:bitpar:{}".format(target_language)):
-    bitpar_functions.append(features_bitpar_target)
+    bitpar_functions.append(merge_bitpar_parts_target)
 
 @collate(bitpar_functions, regex(r"(.*)\.bit.([^.]+).f.jcml"),  r"\1.bit.f.jcml")
 def merge_bitpar_source_target(tobermerged, gathered_singledataset_annotations):
-    
-    print "gathering berkeley parsing source and target ", parallel_feature_functions
     original_dataset = JcmlReader(tobermerged[0]).get_dataset()
     appended_dataset = JcmlReader(tobermerged[1]).get_dataset()
     original_dataset.merge_dataset_symmetrical(appended_dataset, {}, "id")
