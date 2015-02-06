@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#from __future__ import print_function	
+#from __future__ import print_function    
 
 """ 
 Code from https://github.com/andreasvc/eodop/blob/master/bitpar.py
@@ -18,7 +18,7 @@ import logging as log
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 from collections import OrderedDict
 from numpy import average, std
-from featuregenerator.preprocessor import CommandlinePreprocessor
+#from featuregenerator.preprocessor import CommandlinePreprocessor
 from xml.etree import cElementTree
 from dataprocessor.sax.saxps2jcml import IncrementalJcml
 from dataprocessor.ce.cejcml import CEJcmlReader
@@ -27,7 +27,7 @@ import codecs
 
 from subprocess import check_call
 
-class BitPar(CommandlinePreprocessor, LanguageFeatureGenerator):
+class BitPar(LanguageFeatureGenerator):
     def __init__(self, path,
                 lexicon_filename,
                 grammar_filename,
@@ -220,35 +220,35 @@ class BitParChartParser:
     #     
     
 class BitParserFeatureGenerator(LanguageFeatureGenerator):
-	def __init__(self, path,
-				lexicon_filename,
-				grammar_filename,
-				unknownwords,
-				openclassdfsa, 
-				language,
-				timeout=30,
-				n=100):
-		log.debug("BitParserFeatureGenerator path: {}".format(path))
-		self.lang = language
-		self.parser = BitParChartParser(lexicon_filename=lexicon_filename, 
-		        grammar_filename=grammar_filename, 
-		        unknownwords=unknownwords, 
-		        openclassdfsa=openclassdfsa, 
-		        n=n, 
-		        path=path, 
-		        timeout=timeout)
-	
-	def get_features_string(self, string):
-		try: 
-			parses = self.parser.nbest_parse(string)
-		except:
-			parses = []
-			
-		if not parses:
-			return {'bit_failed': 1}
-		else:
-			return get_bitpar_features(parses)
-		
+    def __init__(self, path,
+                lexicon_filename,
+                grammar_filename,
+                unknownwords,
+                openclassdfsa, 
+                language,
+                timeout=30,
+                n=100):
+        log.debug("BitParserFeatureGenerator path: {}".format(path))
+        self.lang = language
+        self.parser = BitParChartParser(lexicon_filename=lexicon_filename, 
+                grammar_filename=grammar_filename, 
+                unknownwords=unknownwords, 
+                openclassdfsa=openclassdfsa, 
+                n=n, 
+                path=path, 
+                timeout=timeout)
+    
+    def get_features_string(self, string):
+        try: 
+            parses = self.parser.nbest_parse(string)
+        except:
+            parses = []
+            
+        if not parses:
+            return {'bit_failed': 1}
+        else:
+            return get_bitpar_features(parses)
+        
 
 
 
@@ -256,179 +256,178 @@ class BitParserFeatureGenerator(LanguageFeatureGenerator):
 
 class BatchProcessor:
 
+    def get_features_string(self, string):
+        raise NotImplementedError
 
-	def process_source_batch(self, input_filename, output_filename):
-		input_textfilename = self.source_batch_to_textfile(input_filename)
-		_, output_textfilename = mkstemp(suffix=".src.out", prefix="tmp_", dir=self.tmpdir)
-		
-		log.error(" ".join(self.command))
-		log.error(input_textfilename)
-		log.error(output_textfilename)
-		
-		check_call(self.command, 
-				stdin=open(input_textfilename), 
-				stdout=open(output_textfilename, 'w'))
+    def process_source_batch(self, input_filename, output_filename):
+        input_textfilename = self.source_batch_to_textfile(input_filename)
+        _, output_textfilename = mkstemp(suffix=".src.out", prefix="tmp_", dir=self.tmpdir)
+        
+        log.error(" ".join(self.command))
+        log.error(input_textfilename)
+        log.error(output_textfilename)
+        
+        check_call(self.command, 
+                stdin=open(input_textfilename), 
+                stdout=open(output_textfilename, 'w'))
 
-		features = self.get_features_batch(output_textfilename)
-		self._add_features_to_source_batch(input_filename, output_filename, features)
+        #os.unlink(input_textfilename)
+        features = self.get_features_batch(output_textfilename)
+        #os.unlink(output_textfilename)
+        self._add_features_to_source_batch(input_filename, output_filename, features)
 
-	def get_features_string(self, string):
-		raise NotImplementedError
+    def source_batch_to_textfile(self, input_filename):
+        raise NotImplementedError
+    
+    def _add_features_to_source_batch(self, input_filename, output_filename, features=[]):
+        input_batch = self.reader(input_filename)
+        output_batch = self.writer(output_filename)
+        for parallelsentence in input_batch.get_parallelsentences():
+            sentence_features = features.next()
+            parallelsentence.src.attributes.update(sentence_features)
+            output_batch.add_parallelsentence(parallelsentence)        
+        output_batch.close()
+            
 
-	def source_batch_to_textfile(self, input_filename):
-		raise NotImplementedError
-	
-	def target_batch_to_textfile(self, input_filename):
-		raise NotImplementedError
+    def process_target_batch(self, input_filename, output_filename):
+        input_textfilename = self.target_batch_to_textfile(input_filename)
+        _, output_textfilename = mkstemp(suffix=".tgt.out", prefix="tmp_", dir=self.tmpdir)
+                
+        check_call(self.command, 
+                stdin=open(input_textfilename), 
+                stdout=open(output_textfilename, 'w'))
 
+        #os.unlink(input_textfilename)
+        features = self.get_features_batch(output_textfilename)
+        #os.unlink(output_textfilename)
+        self._add_features_to_target_batch(input_filename, output_filename, features)
+                
+    def target_batch_to_textfile(self, input_filename):
+        raise NotImplementedError
 
-	
-	def _add_features_to_source_batch(self, input_filename, output_filename, features=[]):
-		input_batch = self.reader(input_filename)
-		output_batch = self.writer(output_filename)
-		for parallelsentence in input_batch.get_parallelsentences():
-			sentence_features = features.next()
-			parallelsentence.src.attributes.update(sentence_features)
-			output_batch.add_parallelsentence(parallelsentence)		
-		output_batch.close()
-			
-
-	def process_target_batch(self, input_filename, output_filename):
-		input_textfilename = self.target_batch_to_textfile(input_filename)
-		_, output_textfilename = mkstemp(suffix=".tgt.out", prefix="tmp_", dir=self.tmpdir)
-				
-		check_call(self.command, 
-				stdin=open(input_textfilename), 
-				stdout=open(output_textfilename, 'w'))
-
-		features = self.get_features_batch(output_textfilename)
-		self._add_features_to_target_batch(input_filename, output_filename, features)
-				
-
-	
-	def _add_features_to_target_batch(self, input_filename, output_filename, features=[]):
-		input_batch = self.reader(input_filename)
-		output_batch = self.writer(output_filename)
-		for parallelsentence in input_batch.get_parallelsentences():
-			for target in parallelsentence.tgt:
-				sentence_features = features.next()
-				#log.error(sentence_features)
-				target.attributes.update(sentence_features)
-			#parallelsentence.tgt = [tgt.attributes.update(features.next()) for tgt in parallelsentence.tgt]
-			output_batch.add_parallelsentence(parallelsentence)	
-		output_batch.close()
-	
+    def _add_features_to_target_batch(self, input_filename, output_filename, features=[]):
+        input_batch = self.reader(input_filename)
+        output_batch = self.writer(output_filename)
+        for parallelsentence in input_batch.get_parallelsentences():
+            for target in parallelsentence.tgt:
+                sentence_features = features.next()
+                #log.error(sentence_features)
+                target.attributes.update(sentence_features)
+            #parallelsentence.tgt = [tgt.attributes.update(features.next()) for tgt in parallelsentence.tgt]
+            output_batch.add_parallelsentence(parallelsentence)    
+        output_batch.close()
+    
 class BitParserBatchProcessor(BatchProcessor):
-	def __init__(self, 
-				path,
-				lexicon_filename,
-				grammar_filename,
-				unknownwords,
-				openclassdfsa, 
-				timeout=30,
-				n=100,
-				reader=None, 
-				writer=None,
-				tmpdir="/tmp",
-				rootsymbol = "TOP"):
-		self.command = []
-		if not reader: reader = CEJcmlReader
-		if not writer: writer = IncrementalJcml
-		self.reader = reader
-		self.writer = writer	
-		self.tmpdir = tmpdir
-		
-		self.command = [os.path.join(path,"bitpar"), "-q", "-b", str(n), "-vp", "-s", rootsymbol, "-u", unknownwords, "-w", openclassdfsa, grammar_filename, lexicon_filename] 
-		
+    def __init__(self, 
+                path,
+                lexicon_filename,
+                grammar_filename,
+                unknownwords,
+                openclassdfsa, 
+                timeout=30,
+                n=100,
+                reader=None, 
+                writer=None,
+                tmpdir="/tmp",
+                rootsymbol = "TOP"):
+        self.command = []
+        if not reader: reader = CEJcmlReader
+        if not writer: writer = IncrementalJcml
+        self.reader = reader
+        self.writer = writer    
+        self.tmpdir = tmpdir
+        
+        self.command = [os.path.join(path,"bitpar"), "-q", "-b", str(n), "-vp", "-s", rootsymbol, "-u", unknownwords, "-w", openclassdfsa, grammar_filename, lexicon_filename] 
+        
 
 
-	def get_features_batch(self, output_textfilename):
-		textfile = codecs.open(output_textfilename, 'r', 'utf-8')
-		
-		output = textfile.read()
-		output = re.sub(r"\\([/{}\[\]<>'\$])", r"\1", output).split("\n\n")[:-1]
-		#result = []
-		for a in output:
-			results = a.splitlines()
-			if "No parse" in results[0]:
-				yield {'bit_failed': 1}
-				continue
-			probs = [float(a.split("=")[1]) for a in results[::2] if "=" in a]
-			trees = [a for a in results[1::2]]
-			parses = zip(trees, probs)
-			yield get_bitpar_features(parses)
-			
-	
-	def source_batch_to_textfile(self, input_filename):
-		_, input_textfilename = mkstemp(suffix=".src.txt", prefix="tmp_bitpar_", dir=self.tmpdir)
-		input_textfile = codecs.open(input_textfilename, 'w', 'utf-8')		
-		
-		input_batch = self.reader(input_filename)
-		for parallelsentence in input_batch.get_parallelsentences():
-			#print (parallelsentence.get_source().get_string(), file=input_textfile)
-			converted_line = u"\n".join(parallelsentence.get_source().get_string().strip().split())
-			input_textfile.write(u"{}\n\n\n".format(converted_line))
-		input_textfile.close()
-		return input_textfilename
+    def get_features_batch(self, output_textfilename):
+        textfile = codecs.open(output_textfilename, 'r', 'utf-8', errors='replace')
+        
+        output = textfile.read()
+        output = re.sub(r"\\([/{}\[\]<>'\$])", r"\1", output).split("\n\n")[:-1]
+        #result = []
+        for a in output:
+            results = a.splitlines()
+            if "No parse" in results[0]:
+                yield {'bit_failed': 1}
+                continue
+            probs = [float(a.split("=")[1]) for a in results[::2] if "=" in a]
+            trees = [a for a in results[1::2]]
+            parses = zip(trees, probs)
+            yield get_bitpar_features(parses)
+            
+    
+    def source_batch_to_textfile(self, input_filename):
+        _, input_textfilename = mkstemp(suffix=".src.txt", prefix="tmp_bitpar_", dir=self.tmpdir)
+        input_textfile = codecs.open(input_textfilename, 'w', 'utf-8', errors='replace')        
+        
+        input_batch = self.reader(input_filename)
+        for parallelsentence in input_batch.get_parallelsentences():
+            #print (parallelsentence.get_source().get_string(), file=input_textfile)
+            converted_line = u"\n".join(parallelsentence.get_source().get_string().strip().split())
+            input_textfile.write(u"{}\n\n\n".format(converted_line))
+        input_textfile.close()
+        return input_textfilename
 
-	def target_batch_to_textfile(self, input_filename):
-		_, input_textfilename = mkstemp(".tgt.txt", "tmp_bitpar_", dir=self.tmpdir)
-		input_textfile = codecs.open(input_textfilename, 'w', "utf-8")		
-		
-		input_batch = self.reader(input_filename)
-		for parallelsentence in input_batch.get_parallelsentences():
-			for target in parallelsentence.get_translations():
-				converted_line = u"\n".join(target.get_string().strip().split())
-				input_textfile.write(u"{}\n\n\n".format(converted_line))
-				#print(target.get_string(), file=input_textfile)
-		input_textfile.close()
-		return input_textfilename	
-		
+    def target_batch_to_textfile(self, input_filename):
+        _, input_textfilename = mkstemp(".tgt.txt", "tmp_bitpar_", dir=self.tmpdir)
+        input_textfile = codecs.open(input_textfilename, 'w', "utf-8", errors='replace')        
+        
+        input_batch = self.reader(input_filename)
+        for parallelsentence in input_batch.get_parallelsentences():
+            for target in parallelsentence.get_translations():
+                converted_line = u"\n".join(target.get_string().strip().split())
+                input_textfile.write(u"{}\n\n\n".format(converted_line))
+                #print(target.get_string(), file=input_textfile)
+        input_textfile.close()
+        return input_textfilename    
+        
 
-	
+    
 def get_bitpar_features(parses):
-	att = OrderedDict()
-	best_parse = sorted(parses)[0]
-	att["bit_tree"] , att["bit_prob"] = best_parse
-	att["bit_n"] = len(parses)
-	probabilities = [prob for _, prob in parses]
-	att["bit_avgprob"] = average(probabilities)
-	att["bit_stdprob"] = std(probabilities)
-	att["bit_minprob"] = min(probabilities)
-	if att["bit_prob"] > (att["bit_avgprob"] + att["bit_stdprob"]):
-		att["bit_probhigh"] = 1
-	else:
-		att["bit_probhigh"] = 0
-	return att
+    att = OrderedDict()
+    best_parse = sorted(parses)[0]
+    att["bit_tree"] , att["bit_prob"] = best_parse
+    att["bit_n"] = len(parses)
+    probabilities = [prob for _, prob in parses]
+    att["bit_avgprob"] = average(probabilities)
+    att["bit_stdprob"] = std(probabilities)
+    att["bit_minprob"] = min(probabilities)
+    if att["bit_prob"] > (att["bit_avgprob"] + att["bit_stdprob"]):
+        att["bit_probhigh"] = 1
+    else:
+        att["bit_probhigh"] = 0
+    return att
 
 
-	
+    
 if __name__ == '__main__': 
 #===============================================================================
-# 	parser = BitParChartParser(path="/home/lefterav/tools/bitpar/GermanParser/bin",
-# 							lexicon_filename="/home/lefterav/tools/bitpar/GermanParser/Tiger/lexicon",
-# 							grammar_filename="/home/lefterav/tools/bitpar/GermanParser/Tiger/grammar",
-# 							unknownwords="/home/lefterav/tools/bitpar/GermanParser/Tiger/open-class-tags", 
-# 							openclassdfsa="/home/lefterav/tools/bitpar/GermanParser/Tiger/wordclass.txt",
-# 							n=100
-# 							)
-# 	print parser.nbest_parse("der Vorsitzende hat gesagt , dass es eine gute Frage ist .")
-# 							
-# 							
+#     parser = BitParChartParser(path="/home/lefterav/tools/bitpar/GermanParser/bin",
+#                             lexicon_filename="/home/lefterav/tools/bitpar/GermanParser/Tiger/lexicon",
+#                             grammar_filename="/home/lefterav/tools/bitpar/GermanParser/Tiger/grammar",
+#                             unknownwords="/home/lefterav/tools/bitpar/GermanParser/Tiger/open-class-tags", 
+#                             openclassdfsa="/home/lefterav/tools/bitpar/GermanParser/Tiger/wordclass.txt",
+#                             n=100
+#                             )
+#     print parser.nbest_parse("der Vorsitzende hat gesagt , dass es eine gute Frage ist .")
+#                             
+#                             
 # 
-# 	
+#     
 #===============================================================================
-	path = "/home/lefterav/tools/bitpar/GermanParser/"
-	parser = BitParserBatchProcessor(
-									path=os.path.join(path,"bin"),
-									lexicon_filename=os.path.join(path,"Tiger/lexicon"),
-									grammar_filename=os.path.join(path,"Tiger/grammar"),
-									unknownwords=os.path.join(path,"Tiger/open-class-tags"),
-									openclassdfsa=os.path.join(path,"Tiger/wordclass.txt"),
-									tmpdir=os.path.join(path,"tmp"),
-									n=500)
-									
-	
-	input_filename = os.path.join(path, "tmp", "0.trainingset.dev.jcml")
-	output_filename = os.path.join(path, "tmp", "0.trainingset.dev.out.jcml")
-	parser.process_target_batch(input_filename, output_filename)
+    path = "/home/lefterav/tools/bitpar/GermanParser/"
+    parser = BitParserBatchProcessor(
+                                    path=os.path.join(path,"bin"),
+                                    lexicon_filename=os.path.join(path,"Tiger/lexicon"),
+                                    grammar_filename=os.path.join(path,"Tiger/grammar"),
+                                    unknownwords=os.path.join(path,"Tiger/open-class-tags"),
+                                    openclassdfsa=os.path.join(path,"Tiger/wordclass.txt"),
+                                    tmpdir=os.path.join(path,"tmp"),
+                                    n=500)
+                                    
+    
+    input_filename = os.path.join(path, "tmp", "0.trainingset.dev.jcml")
+    output_filename = os.path.join(path, "tmp", "0.trainingset.dev.out.jcml")
+    parser.process_target_batch(input_filename, output_filename)
