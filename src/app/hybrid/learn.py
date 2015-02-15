@@ -17,6 +17,7 @@ from dataprocessor.ce.utils import join_jcml, fold_jcml
 from dataprocessor.ce.cejcml import CEJcmlReader
 from sentence import scoring
 import cPickle as pickle
+from featuregenerator.bestsystem import BestSystemFeatureGenerator
 
 class RankingExperiment(PyExperimentSuite):
     
@@ -192,6 +193,12 @@ class RankingExperiment(PyExperimentSuite):
         
         return scores
     
+    def _evaluate_system_selection(self, params, rep):
+        reference_metrics = []
+        for critical_feature in reference_metrics:
+            selector = BestSystemFeatureGenerator(critical_feature, critical_function)
+        pass
+        
             
     
     def iterate(self, params, rep, n):
