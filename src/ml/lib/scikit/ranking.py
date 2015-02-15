@@ -32,7 +32,7 @@ def dataset_to_instances(filename,
                          reader=CEJcmlReader,  
                          tempdir = "/tmp",
                          output_filename=None,
-                         default_value = '',
+                         default_value = 0,
                          replace_infinite=False,
                          **kwargs):
     """
@@ -70,7 +70,12 @@ def dataset_to_instances(filename,
     labels = None
     
     #iterate over all parallel sentences provided by the data reader
+    i = 0
+
+    imp = Imputer(missing_values='NaN', strategy='mean', axis=0)
     for parallelsentence in dataset.get_parallelsentences():
+        i += 1
+        log.debug("Sentence {}".format(i))
         vectors = parallelsentence.get_vectors(attribute_set, 
                                                class_name=class_name, 
                                                default_value=default_value,
@@ -83,26 +88,43 @@ def dataset_to_instances(filename,
         
         #create a temporary python array for the new vectors
         for featurevector, class_value in vectors:
-            featurevectors.append(np.array(featurevector))
+            log.debug("Featurevector before converting to numpy {}".format(featurevector))
+            featurevector = np.array(featurevector)
+            log.debug("Featurevector after converting to numpy {}".format(featurevector))
+            featurevectors.append(featurevector)
             class_values.append(class_value)
         
+        log.debug("Featurevectors before converting to numpy {}".format(featurevectors))
+
         #convert to numpy
         newfeatures = np.array(featurevectors)
         newlabels = np.array(class_values)
+        log.debug("Featurevectors after converting to numpy {}".format(newfeatures))
         
         #append them to existing vectors if there are
         try:
             features = np.concatenate((features, newfeatures), axis=0)
             labels = np.concatenate((labels, newlabels), axis=0)
+            log.debug("Featurevectors after concatenating: {}".format(features))
         except ValueError:
-            #or initialize the total vectors
+            #or initialize the total vectors 
+            log.debug("Initializing featurevectors")
             features = newfeatures
             labels = newlabels
+        try:
+            #log.debug("{}: {} , {}".format(i, parallelsentence, newfeatures))
+            newfeatures = imp.fit_transform(newfeatures)
+        except:
+            log.debug("{}: {} , {}".format(i, parallelsentence, newfeatures))
+            raise ValueError 
         
     #print features 
     #print labels 
     imp = Imputer(missing_values='NaN', strategy='mean', axis=0)
-    features = imp.fit_transform(features)
+    try:
+        features = imp.fit_transform(features)
+    except ValueError as exc:
+        log.warning("Exception trying to run scikit imputation: {}".format(exc))
     return features, labels
 
 def parallelsentence_to_instance(parallelsentence, attribute_set):
@@ -361,7 +383,11 @@ class SkRanker(Ranker, SkLearner):
             instance = parallelsentence_to_instance(pairwise_parallelsentence, attribute_set=self.attribute_set)
             #scale data instance to mean, based on trained scaler
             if self.scaler:
-                instance = self.scaler.transform(instance)
+                try:
+                    instance = self.scaler.transform(instance)
+                except ValueError as e:
+                    log.error("Could not transform instance: {}".format(instance))
+                    raise ValueError(e)
             log.debug('Instance = {}'.format(instance)) 
             #run classifier for this instance
             predicted_value = self.classifier.predict(instance)
@@ -404,4 +430,25 @@ class SkRanker(Ranker, SkLearner):
             attribute2 = "prob_1"
             ranked_sentence = sentenceset.get_multiranked_sentence_with_soft_ranks(attribute1, attribute2, critical_attribute, new_rank_name)
         return ranked_sentence, resultvector
-   
+
+if __name__ == '__main__':
+    import sys, logging
+    from sentence.parallelsentence import AttributeSet
+    filename = sys.argv[1]
+    output_filename = sys.argv[2]
+    attribute_set = AttributeSet()
+    attribute_set.target_attribute_names = ['cross-meteor_score', 'lm_unk', 'l_tokens', 'berkeley-n', 'parse-VP', 'berkley-loglikelihood']
+    class_name = "ref-rgbF"
+
+    loglevel = logging.DEBUG
+    logging.basicConfig(level=loglevel,
+                                format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                                                    datefmt='%m-%d %H:%M')
+
+
+    dataset_to_instances(filename, 
+                         attribute_set,
+                         class_name,
+                         output_filename=output_filename,
+                         )
+

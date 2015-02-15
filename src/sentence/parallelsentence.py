@@ -8,6 +8,7 @@ from copy import deepcopy
 import re
 import sys
 import logging
+import logging as log
 from ranking import Ranking
 import itertools
 import numpy as np
@@ -562,13 +563,19 @@ class ParallelSentence(object):
         for target1, target2 in iterator:
             target1_attribute_values = target1.get_vector(attribute_set.target_attribute_names, default_value, replace_infinite, replace_nan)
             target2_attribute_values = target2.get_vector(attribute_set.target_attribute_names, default_value, replace_infinite, replace_nan)
-            
+           
+            log.debug("Parallelsentence received vector 1: {} ".format(target1_attribute_values))
+            log.debug("Parallelsentence received vector 2: {} ".format(target2_attribute_values))
+
+
             vector = []
             vector.extend(parallel_attribute_values)
             vector.extend(source_attribute_values)
             vector.extend(target1_attribute_values)
             vector.extend(target2_attribute_values)
             
+            log.debug("Combined vector: {}".format(vector))
+
             if class_name:
                 class_value = self._get_class_pairwise(target1, target2, class_name, ties)
                 if class_value!=None:
