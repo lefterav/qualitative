@@ -133,8 +133,11 @@ class SimpleSentence(object):
                 if replace_nan:
                     attvalue = float(str(attvalue).replace("nan", "0"))
                 vector.append(attvalue)
+                log.debug("Adding attribute[{}]='{}'".format(name,attvalue))
             except KeyError:
                 vector.append(default_value)
+                log.debug("Adding fallback attribute[{}]='{}'".format(name,attvalue))
+        log.debug("Simple sentence returns vector: {}".format(vector))
         return vector
             
     def __getitem__(self, obj, cls=None): 
