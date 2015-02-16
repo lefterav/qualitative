@@ -72,7 +72,6 @@ def dataset_to_instances(filename,
     #iterate over all parallel sentences provided by the data reader
     i = 0
 
-    imp = Imputer(missing_values='NaN', strategy='mean', axis=0)
     for parallelsentence in dataset.get_parallelsentences():
         i += 1
         log.debug("Sentence {}".format(i))
@@ -111,12 +110,6 @@ def dataset_to_instances(filename,
             log.debug("Initializing featurevectors")
             features = newfeatures
             labels = newlabels
-        try:
-            #log.debug("{}: {} , {}".format(i, parallelsentence, newfeatures))
-            newfeatures = imp.fit_transform(newfeatures)
-        except:
-            log.debug("{}: {} , {}".format(i, parallelsentence, newfeatures))
-            raise ValueError 
         
     #print features 
     #print labels 
