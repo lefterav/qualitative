@@ -6,6 +6,7 @@ Created on 07.10.2011
 '''
 from featuregenerator.featuregenerator import FeatureGenerator
 from levenshtein import levenshtein_tok
+from numpy.lib.function_base import average
 
 class LevenshteinGenerator(FeatureGenerator):
     '''
@@ -22,8 +23,8 @@ class LevenshteinGenerator(FeatureGenerator):
         @return: dictionary containing Levenshtein distance as an attribute 
         """
         target_untokenized = target.get_string()
-	try:
-	    ref_untokenized = parallelsentence.get_reference().get_string()
+        try:
+            ref_untokenized = parallelsentence.get_reference().get_string()
         
 
             wer_value = levenshtein_tok(target_untokenized, ref_untokenized)
@@ -31,3 +32,6 @@ class LevenshteinGenerator(FeatureGenerator):
         except:
             return {}
         
+
+    def analytic_score_sentences(self, sentence_tuples):
+        return {'ref-lev': average([levenshtein_tok(h, r) for h, r in sentence_tuples])} 
