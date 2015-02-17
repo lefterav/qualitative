@@ -124,6 +124,7 @@ def wer(hypWords, refs):
         for nr in range(0, len(ref)+1):
             p = (nr, 0)
             Q[p]=nr
+            
             B[p] = levNode(nr-1, 0, 2)
             
 

@@ -17,14 +17,14 @@ from dataprocessor.ce.utils import join_jcml, fold_jcml
 from dataprocessor.ce.cejcml import CEJcmlReader
 from sentence import scoring
 import cPickle as pickle
-from featuregenerator.bestsystem import BestSystemFeatureGenerator
+from evaluation.selection.set import evaluate_selection
 
 class RankingExperiment(PyExperimentSuite):
     
     #restore_supported = True
     
     def reset(self, params, rep):
-        #self.restore_supported = True
+        #self.restore_supp evaluation.selection.set import evaluate_selectionsorted = True
         logging.info("Running in {}".format(os.getcwd()))
         logging.debug("params = {}".format(params))        
         #=======================================================================
@@ -72,7 +72,6 @@ class RankingExperiment(PyExperimentSuite):
         else:
             logging.info("Joining training files")
             join_jcml(source_datasets, ready_dataset)
-        
     
     def _read_attributeset(self, params):
         general_attributes = self._read_attributes(params, "general")
@@ -131,7 +130,7 @@ class RankingExperiment(PyExperimentSuite):
     def train(self, params, rep):
         """
         Load training data and train new ranking model
-        """
+        """         
         logging.info("Started training")
         params.update(self.learner_params)
         params["attribute_set"] = self.attribute_set
@@ -151,7 +150,8 @@ class RankingExperiment(PyExperimentSuite):
                      output_filename = output_filename,
                      **params)
         
-        logging.info("Ranker fitted sucessfully")                                              
+        logging.info("Ranker fitted sucessfully")                             
+                         
         with open(self.model_filename, 'w') as f: 
             pickle.dump(ranker, f)
         
@@ -173,33 +173,52 @@ class RankingExperiment(PyExperimentSuite):
     
         self.testset_output_hard = "{}.testset_annotated_hard.jcml".format(rep)
         ranker.test(testset_input, self.testset_output_hard, reconstruct='hard', new_rank_name='rank_hard', **params)
-        
+
         return {}
     
-    def evaluate(self, params, rep):
+    def evaluate_ranking(self, params, rep):
         """
         Load predictions (test) and analyze performance
         """
         class_name = params["class_name"]
         
+        if class_name.startswith("ref-"):
+            invert_ranks = True
+        
+        scores = OrderedDict()
+        
         testset = CEJcmlReader(self.testset_output_soft, all_general=True, all_target=True) 
-        scores = scoring.get_metrics_scores(testset, "rank_soft", class_name , prefix="soft", invert_ranks=False)
+        scores_soft = scoring.get_metrics_scores(testset, "rank_soft", class_name , prefix="soft", invert_ranks=invert_ranks)
+        scores.update(scores_soft)
                
         testset = CEJcmlReader(self.testset_output_hard, all_general=True, all_target=True)        
-        scores_hard = scoring.get_metrics_scores(testset, "rank_hard", class_name , prefix="hard", invert_ranks=False)
+        scores_hard = scoring.get_metrics_scores(testset, "rank_hard", class_name , prefix="hard", invert_ranks=invert_ranks)
         
         scores.update(scores_hard)
         logging.debug("Scores: {}".format(scores))
         
         return scores
     
-    def _evaluate_system_selection(self, params, rep):
-        reference_metrics = []
-        for critical_feature in reference_metrics:
-            selector = BestSystemFeatureGenerator(critical_feature, min)
-        pass
+    
+    def evaluate_selection(self, params, rep):
+        refscores = OrderedDict()
         
-            
+        testset = CEJcmlReader(self.testset_output_soft, all_general=True, all_target=True)
+        refscores_soft = evaluate_selection(testset.get_parallelsentences(), 
+                                            rank_name="rank_soft",
+                                            out_filename="testset.soft.sel.txt",
+                                            ref_filename="testset.ref.txt")
+        refscores.update(_dictprefix(refscores_soft, 'soft'))
+        
+        testset = CEJcmlReader(self.testset_output_hard, all_general=True, all_target=True)        
+        refscores_hard = evaluate_selection(testset.get_parallelsentences(),
+                                            rank_name="rank_hard",
+                                            out_filename="testset.hard.sel.txt",)
+        refscores.update(_dictprefix(refscores_hard, 'hard'))
+        
+        return refscores
+    
+    
     
     def iterate(self, params, rep, n):
         ret = OrderedDict()
@@ -212,9 +231,15 @@ class RankingExperiment(PyExperimentSuite):
         if n==2:
             ret.update(self.test(params, rep))
         if n==3:
-            ret.update(self.evaluate(params, rep))
+            ret.update(self.evaluate_ranking(params, rep))
+        if n==4:
+            ret.update(self.evaluate_selection(params, rep))
         return ret
+
+def _dictprefix(prefix, dictionary):
+    return OrderedDict([(("{}_{}".format(prefix, key),value) for key,value in dictionary.iteritems())])
     
+ 
  
 if __name__ == '__main__':
     loglevel = logging.INFO

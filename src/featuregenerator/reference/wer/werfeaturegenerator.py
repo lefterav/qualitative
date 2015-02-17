@@ -5,6 +5,7 @@
 from featuregenerator.featuregenerator import FeatureGenerator
 from nltk.tokenize.punkt import PunktWordTokenizer
 from wer import wer
+from numpy import average
 
 class WERFeatureGenerator(FeatureGenerator):
     """
@@ -24,17 +25,19 @@ class WERFeatureGenerator(FeatureGenerator):
         @rtype: dict
         @return: dictionary containing lenght attribute 
         """
-        target_untokenized = target.get_string()
-        ref_untokenized = parallelsentence.get_reference().get_string()
-        ref_tokens = PunktWordTokenizer().tokenize(ref_untokenized)
+        target = target.get_string()
+        ref = parallelsentence.get_reference().get_string()
+        #ef_tokens = PunktWordTokenizer().tokenize(ref_untokenized)
         #print ref_untokenized
         #print target_untokenized
         
-        target_tokens    =  " ".join(PunktWordTokenizer().tokenize(target_untokenized))
-        wer_value = wer(target_tokens, [ref_tokens])
+        #target_tokens    =  " ".join(PunktWordTokenizer().tokenize(target_untokenized))
+        wer_value = wer(target, [ref])
         return {'ref-wer': str(wer_value)}
         
-        
+    
+    def analytic_score_sentences(self, sentence_tuples):
+        return average([wer(h,[r]) for h,r in sentence_tuples])
         
         
         

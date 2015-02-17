@@ -82,7 +82,7 @@ class MeteorGenerator(LanguageFeatureGenerator):
                 'meteor_fragPenalty' : '{:.4}'.format(stats.fragPenalty),  
                 'meteor_score' : '{:.4}'.format(stats.score)}
     
-    def full_score_sentences(self, sentence_tuples):    
+    def analytic_score_sentences(self, sentence_tuples):    
         """
         Score many sentences using METEOR and return all basic scores. 
         @param sentence_tuples: a list of tuples generated out of the translated sentences. Each
@@ -112,7 +112,7 @@ class MeteorGenerator(LanguageFeatureGenerator):
         @return: the basic score float value
         @rtype: float
         """ 
-        return float(self.full_score_sentences(sentence_tuples)['meteor_score'])
+        return float(self.analytic_score_sentences(sentence_tuples)['meteor_score'])
 
 
 class CrossMeteorGenerator(MeteorGenerator):
