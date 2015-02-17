@@ -80,6 +80,10 @@ class Ranker:
 #             #original tested sentences should not have ties 
 #             parallelsentence.remove_ties()
             #get the same sentence with predicted ranks assigned
+            try:
+                logging.debug("Parallel sentence with id {}".format(parallelsentence.get_attribute("judgement_id")))
+            except:
+                pass
             ranked_parallelsentence, _ = self.get_ranked_sentence(parallelsentence, 
                                                                   bidirectional_pairs=bidirectional_pairs, 
                                                                   ties=True, 

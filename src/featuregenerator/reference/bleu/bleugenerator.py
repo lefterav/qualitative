@@ -16,8 +16,17 @@ import sys
 import codecs
 import bleu
 
+class BleuMetric:
+    def full_score_sentences(sentences):
+        target_untokenized = target.get_string()
+        try:
+            ref_untokenized = parallelsentence.get_reference().get_string()
 
-  
+            bleu_value = bleu.score_sentence(target_untokenized, [ref_untokenized])
+            return {'ref-bleu': '{:.4}'.format(bleu_value)}
+        except:
+            return {}
+
 
 class BleuGenerator(FeatureGenerator):
     '''

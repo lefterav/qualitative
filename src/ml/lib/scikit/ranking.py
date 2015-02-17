@@ -34,6 +34,7 @@ def dataset_to_instances(filename,
                          output_filename=None,
                          default_value = 0,
                          replace_infinite=False,
+                         imputer=True,
                          **kwargs):
     """
     Receive a dataset filename and convert it into a memory table for the Orange machine learning
@@ -87,24 +88,24 @@ def dataset_to_instances(filename,
         
         #create a temporary python array for the new vectors
         for featurevector, class_value in vectors:
-            log.debug("Featurevector before converting to numpy {}".format(featurevector))
+            log.debug("Featurevector {} before converting to numpy {}".format(len(featurevector), featurevector))
             featurevector = np.array(featurevector)
-            log.debug("Featurevector after converting to numpy {}".format(featurevector))
+            log.debug("Featurevector {} after converting to numpy {}".format(featurevector.shape, featurevector))
             featurevectors.append(featurevector)
             class_values.append(class_value)
         
-        log.debug("Featurevectors before converting to numpy {}".format(featurevectors))
+        log.debug("Featurevectors {} before converting to numpy {}".format(len(featurevector), featurevectors))
 
         #convert to numpy
         newfeatures = np.array(featurevectors)
         newlabels = np.array(class_values)
-        log.debug("Featurevectors after converting to numpy {}".format(newfeatures))
+        log.debug("Featurevectors {} after converting to numpy {}".format(newfeatures.shape, newfeatures))
         
         #append them to existing vectors if there are
         try:
             features = np.concatenate((features, newfeatures), axis=0)
             labels = np.concatenate((labels, newlabels), axis=0)
-            log.debug("Featurevectors after concatenating: {}".format(features))
+            log.debug("Featurevectors {} after concatenating: {}".format(features.shape, features))
         except ValueError:
             #or initialize the total vectors 
             log.debug("Initializing featurevectors")
@@ -113,11 +114,25 @@ def dataset_to_instances(filename,
         
     #print features 
     #print labels 
-    imp = Imputer(missing_values='NaN', strategy='mean', axis=0)
-    try:
-        features = imp.fit_transform(features)
-    except ValueError as exc:
-        log.warning("Exception trying to run scikit imputation: {}".format(exc))
+    if not imputer: #run imputer only if enabled (default)
+        return np.nan_to_num(features)
+    else:
+        imp = Imputer(missing_values='NaN', strategy='mean', axis=0, verbose=2)
+        try:
+            impfeatures = imp.fit_transform(features)
+        except ValueError as exc:
+            #catch errors with illegal values (e.g. strings)
+            log.warning("Exception trying to run scikit imputation: {}".format(exc))
+        #show size for debugging purposes
+        log.debug("Featurevectors {} after imputation: {}".format(impfeatures.shape, features))
+
+
+        #we don't want shape to change, so if this happens, then just replace nans with zero and infinites
+        if impfeatures.shape == features.shape:
+            features = impfeatures
+        else:
+            log.warning("Using numpy NaN substitution")
+            features = np.nan_to_num(features)
     return features, labels
 
 def parallelsentence_to_instance(parallelsentence, attribute_set):
@@ -309,12 +324,18 @@ class SkRanker(Ranker, SkLearner):
         #the class must remember the attribute_set and the class_name in order to reproduce the vectors
         self.attribute_set = attribute_set
         self.class_name = class_name
+
  
         #scale data to the mean
         if scale:
             log.info("Scaling datasets...")
+            log.debug("Data shape before scaling: {}".format(data.shape))
             self.scaler = StandardScaler()
             data = self.scaler.fit_transform(data)
+        
+        #avoid any NaNs and Infs that may have occurred due to the scaling
+        data = np.nan_to_num(data)
+        log.debug("Mean: {} , Std: {}".format(self.scaler.mean_, self.scaler.std_))
         
         #feature selection
         feature_selector = self.initialize_feature_selector(feature_selector, feature_selection_params, feature_selection_threshold)
@@ -322,6 +343,8 @@ class SkRanker(Ranker, SkLearner):
         
         #initialize learning method and scoring functions and optimize
         self.classifier, self.scorers = self.initialize_learning_method(learner, data, labels, learning_params, optimize, optimization_params, scorers)
+
+        log.debug("Data shape before fitting: {}".format(data.shape))
 
         self.classifier.fit(data, labels)
         self.fit = True
@@ -382,6 +405,8 @@ class SkRanker(Ranker, SkLearner):
                     log.error("Could not transform instance: {}".format(instance))
                     raise ValueError(e)
             log.debug('Instance = {}'.format(instance)) 
+            #make sure no NaN or inf appears in the instance
+            instance = np.nan_to_num(instance)
             #run classifier for this instance
             predicted_value = self.classifier.predict(instance)
             distribution = dict(zip(self.classifier.classes_, self.classifier.predict_proba(instance)[0]))

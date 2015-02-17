@@ -5,6 +5,7 @@ Created on 15 Feb 2015
 '''
 import cPickle as pickle
 import sys
+import logging
 
 class HybridTranslator:
     
@@ -20,6 +21,14 @@ class HybridTranslator:
     
 
 if __name__ == "__main__":
+
+    #loglevel = logging.INFO
+    loglevel = logging.DEBUG
+    logging.basicConfig(level=loglevel, 
+            format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+            datefmt='%m-%d %H:%M')
+
+
     model_filename = sys.argv[1]
     testset_input_filename = sys.argv[2]
     testset_output_filename = sys.argv[2]
