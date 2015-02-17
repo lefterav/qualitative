@@ -242,8 +242,8 @@ def _dictprefix(prefix, dictionary):
  
  
 if __name__ == '__main__':
-    loglevel = logging.INFO
-    #loglevel = logging.DEBUG
+    #loglevel = logging.INFO
+    loglevel = logging.DEBUG
     logging.basicConfig(level=loglevel,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M')

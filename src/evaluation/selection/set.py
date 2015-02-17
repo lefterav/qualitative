@@ -11,6 +11,7 @@ from featuregenerator.reference.levenshtein.levenshtein_generator import Levensh
 from featuregenerator.reference.rgbf import RgbfGenerator
 from featuregenerator.reference.wer.werfeaturegenerator import WERFeatureGenerator
 from featuregenerator.reference.hjerson import Hjerson
+import logging as log
 
 def evaluate_selection(parallelsentences, 
                         metrics=[], 
@@ -27,16 +28,22 @@ def evaluate_selection(parallelsentences,
     
     #iterate over all parallelsentences, get the selected ones in a list along with references
     for parallelsentence in parallelsentences:
-        ranking = parallelsentence.get_ranking()
+
+        ranking = [tgt.get_attribute(rank_name) for tgt in parallelsentence.get_translations()]
+        log.debug("ranking: {}".format(ranking))
         #get the best sentence according to ranking
         best_rank = function(ranking)
+        log.debug("Best rank: {}".format(best_rank))
+
         reference = parallelsentence.get_reference()
         #for statistic reasons we collect statistics for all sentences that have the best rank
         for counter, translation in enumerate(parallelsentence.get_translations()):
-            if translation.get_attribute(rank_name) == best_rank:
+            log.debug("Sentence rank: {} {}".format(translation.get_attribute("system"), translation.get_attribute(rank_name)))
+
+            if int(translation.get_attribute(rank_name)) == int(best_rank):
                 system_name = translation.get_attribute("system")
                 selected_systems[system_name] += 1
-                if (default_system and default_system == system_name) or (not default_system and counter == 0):
+                if counter == 0:
                     selected_sentences.append((translation.get_string(), [reference.get_string()]))
     
     for system_name, counts in selected_systems.iteritems():

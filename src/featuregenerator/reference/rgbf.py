@@ -7,6 +7,7 @@ Created on 11 Nov 2014
 import numpy as np  
 from collections import OrderedDict
 from featuregenerator.featuregenerator import FeatureGenerator
+import logging as log
 
 def take_ngrams(line, m):
     newline = ""
@@ -87,6 +88,7 @@ class RgbfGenerator(FeatureGenerator):
     def analytic_score_sentences(self, sentence_tuples):
         hypotheses = [h for h,_ in sentence_tuples]
         references = [[r] for _,r in sentence_tuples]
+        log.info("references {}, {}".format(sentence_tuples, references))
         return self.process_string_multiunit(hypotheses, references)
     
     def process_string(self, hypothesis, reference):
