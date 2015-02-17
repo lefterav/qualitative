@@ -4,19 +4,26 @@ Created on 16 Feb 2015
 @author: Eleftherios Avramidis
 '''
 from collections import defaultdict, OrderedDict
-from operator import attrgetter
-from featuregenerator.reference.bleu import BleuMetric
+from featuregenerator.reference.bleu import BleuGenerator
+from featuregenerator.reference.meteor.meteor import MeteorGenerator 
+import os
+from featuregenerator.reference.levenshtein.levenshtein_generator import LevenshteinGenerator
+from featuregenerator.reference.rgbf import RgbfGenerator
+from featuregenerator.reference.wer.werfeaturegenerator import WERFeatureGenerator
+from featuregenerator.reference.hjerson import Hjerson
 
-
-def evaluate_selections(parallelsentences, 
+def evaluate_selection(parallelsentences, 
                         metrics=[], 
                         function=max,
-                        rank_name="rank-predicted",
-                        default_system=None
-                        out_filename=None):
+                        rank_name="rank_hard",
+                        default_system=None,
+                        out_filename=None,
+                        ref_filename=None):
+    
     selected_sentences = []
     results = OrderedDict()
     selected_systems = defaultdict(int) #collect the winnings of each system
+    
     
     #iterate over all parallelsentences, get the selected ones in a list along with references
     for parallelsentence in parallelsentences:
@@ -36,8 +43,22 @@ def evaluate_selections(parallelsentences,
         results["sel-counts_{}".format(system_name)] = counts
         results["sel-perc_{}".format(system_name)] = 1.00*counts/len(selected_sentences)
 
+    #generate a default list of metric objects, if not specified by parameters
+    if not metrics:
+        metrics = [LevenshteinGenerator(),
+                 BleuGenerator(),
+                 RgbfGenerator(),
+                 WERFeatureGenerator(),
+                 Hjerson()]
+    
     for metric in metrics:
-        results.update(metric.full_score_sentences(selected_sentences))
+        results.update(metric.analytic_score_sentences(selected_sentences))
+        
+    with open(out_filename, 'w') as f:
+        f.write(os.linesep.join([t for t,_ in selected_sentences]))
+    
+    with open(ref_filename, 'w') as f:
+        f.write(os.linesep.join([r for _,r in selected_sentences]))
 
     return results
 

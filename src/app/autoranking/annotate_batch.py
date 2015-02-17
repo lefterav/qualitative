@@ -26,7 +26,7 @@ from featuregenerator.blackbox.counts import LengthFeatureGenerator
 from featuregenerator.ratio_generator import RatioGenerator
 from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
 from featuregenerator.reference.levenshtein.levenshtein_generator import LevenshteinGenerator
-from featuregenerator.reference.bleu.bleugenerator import CrossBleuGenerator, BleuGenerator
+from featuregenerator.reference.bleu import CrossBleuGenerator, BleuGenerator
 from featuregenerator.reference.meteor.meteor import CrossMeteorGenerator, MeteorGenerator
 from featuregenerator.attribute_rank import AttributeRankGenerator
 from dataprocessor.input.xmlreader import XmlReader

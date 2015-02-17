@@ -28,7 +28,7 @@ from featuregenerator.blackbox.counts import LengthFeatureGenerator
 from featuregenerator.ratio_generator import RatioGenerator
 from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
 from featuregenerator.reference.levenshtein.levenshtein_generator import LevenshteinGenerator
-from featuregenerator.reference.bleu.bleugenerator import CrossBleuGenerator, BleuGenerator
+from featuregenerator.reference.bleu import CrossBleuGenerator, BleuGenerator
 from featuregenerator.reference.meteor.meteor import CrossMeteorGenerator, MeteorGenerator
 from featuregenerator.reference.rgbf import RgbfGenerator
 from featuregenerator.reference.wer.werfeaturegenerator import WERFeatureGenerator
@@ -207,7 +207,7 @@ def features_berkeley(input_file, output_file, language):
 parse_functions = []
 
 @active_if(cfg.exists_parser(source_language))
-#@merge(features_berkeley_source, "parsed.%s.f.jcml" % source_language)
+#@merge(features_berkeley_source, "parsed.%s.f.jcml" % sourcbleugeneratore_language)
 @collate(features_berkeley_source, regex(r"([^.]+)\.\s?(\d+)\.part.parsed.([^.]+).f.jcml"),  r"\1.parsed.\3.f.jcml")
 def merge_parse_parts_source(inputs, output):
     merge_parts(inputs, output)
@@ -272,7 +272,7 @@ def truecase_source(input_file, output_file, language, model):
 @transform(preprocess_data, suffix(".tok.jcml"), ".tc.%s.jcml" % target_language, target_language, cfg.get_truecaser_model(target_language))
 def truecase_target(input_file, output_file, language, model):
     truecase(input_file, output_file, language, model)
-
+bleugenerator
 def truecase(input_file, output_file, language, model):
     from featuregenerator.preprocessor import Truecaser
     truecaser = Truecaser(language, model)
@@ -346,7 +346,7 @@ if cfg.has_section("parser:bitpar:{}".format(source_language)):
 
 @collate(features_bitpar_target, regex(r"([^.]+)\.\s?(\d+)\.part.bit.([^.]+).f.jcml"),  r"\1.bit.\3.f.jcml")
 def merge_bitpar_parts_target(inputs, output):
-    merge_parts(inputs, output)
+    merge_parts(inputs, output)bleugenerator
 if cfg.has_section("parser:bitpar:{}".format(target_language)):
     bitpar_functions.append(merge_bitpar_parts_target)
 
@@ -411,7 +411,7 @@ def features_lm_batch(input_file, output_file, language, lm_name):
 
 #unimplemented
 def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, lm_lowercase):
-    pass
+    passbleugenerator
 
 
 #language_checker_source = cfg.get_checker(source_language)
