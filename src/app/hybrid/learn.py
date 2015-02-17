@@ -196,7 +196,7 @@ class RankingExperiment(PyExperimentSuite):
     def _evaluate_system_selection(self, params, rep):
         reference_metrics = []
         for critical_feature in reference_metrics:
-            selector = BestSystemFeatureGenerator(critical_feature, critical_function)
+            selector = BestSystemFeatureGenerator(critical_feature, min)
         pass
         
             
