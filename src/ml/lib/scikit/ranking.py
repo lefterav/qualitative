@@ -88,9 +88,9 @@ def dataset_to_instances(filename,
         
         #create a temporary python array for the new vectors
         for featurevector, class_value in vectors:
-            log.debug("Featurevector {} before converting to numpy {}".format(len(featurevector), featurevector))
+            #log.debug("Featurevector {} before converting to numpy {}".format(len(featurevector), featurevector))
             featurevector = np.array(featurevector)
-            log.debug("Featurevector {} after converting to numpy {}".format(featurevector.shape, featurevector))
+            #log.debug("Featurevector {} after converting to numpy {}".format(featurevector.shape, featurevector))
             featurevectors.append(featurevector)
             class_values.append(class_value)
         
@@ -99,16 +99,16 @@ def dataset_to_instances(filename,
         #convert to numpy
         newfeatures = np.array(featurevectors)
         newlabels = np.array(class_values)
-        log.debug("Featurevectors {} after converting to numpy {}".format(newfeatures.shape, newfeatures))
+        #log.debug("Featurevectors {} after converting to numpy {}".format(newfeatures.shape, newfeatures))
         
         #append them to existing vectors if there are
         try:
             features = np.concatenate((features, newfeatures), axis=0)
             labels = np.concatenate((labels, newlabels), axis=0)
-            log.debug("Featurevectors {} after concatenating: {}".format(features.shape, features))
+            #log.debug("Featurevectors {} after concatenating: {}".format(features.shape, features))
         except ValueError:
             #or initialize the total vectors 
-            log.debug("Initializing featurevectors")
+            #log.debug("Initializing featurevectors")
             features = newfeatures
             labels = newlabels
         
@@ -124,8 +124,7 @@ def dataset_to_instances(filename,
             #catch errors with illegal values (e.g. strings)
             log.warning("Exception trying to run scikit imputation: {}".format(exc))
         #show size for debugging purposes
-        log.debug("Featurevectors {} after imputation: {}".format(impfeatures.shape, features))
-
+        #log.debug("Featurevectors {} after imputation: {}".format(impfeatures.shape, features))i
 
         #we don't want shape to change, so if this happens, then just replace nans with zero and infinites
         if impfeatures.shape == features.shape:
