@@ -37,7 +37,7 @@ class WERFeatureGenerator(FeatureGenerator):
         
     
     def analytic_score_sentences(self, sentence_tuples):
-        return average([wer(h,[r]) for h,r in sentence_tuples])
+        return {'ref-wer': average([wer(h,[r]) for h,r in sentence_tuples])}
         
         
         
