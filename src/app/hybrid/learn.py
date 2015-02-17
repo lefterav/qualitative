@@ -165,14 +165,17 @@ class RankingExperiment(PyExperimentSuite):
         """
         Load test set and apply machine learning to assign labels
         """
-        testset_input = self.testset_filenames[0]
+        self.testset_output_soft = {}
+        self.testset_output_hard = {}
+        
         ranker = pickle.load(open(self.model_filename))
-
-        self.testset_output_soft = "{}.testset_annotated_soft.jcml".format(rep)
-        ranker.test(testset_input, self.testset_output_soft, reconstruct='soft', new_rank_name='rank_soft', **params)
-    
-        self.testset_output_hard = "{}.testset_annotated_hard.jcml".format(rep)
-        ranker.test(testset_input, self.testset_output_hard, reconstruct='hard', new_rank_name='rank_hard', **params)
+        for i, testset_input in enumerate(self.testset_filenames):
+            
+            self.testset_output_soft[i] = "{}.{}.testset_annotated_soft.jcml".format(rep, i)
+            ranker.test(testset_input, self.testset_output_soft[i], reconstruct='soft', new_rank_name='rank_soft', **params)
+        
+            self.testset_output_hard[i] = "{}.{}.testset_annotated_hard.jcml".format(rep, i)
+            ranker.test(testset_input, self.testset_output_hard[i], reconstruct='hard', new_rank_name='rank_hard', **params)
 
         return {}
     
@@ -187,35 +190,38 @@ class RankingExperiment(PyExperimentSuite):
         
         scores = OrderedDict()
         
-        testset = CEJcmlReader(self.testset_output_soft, all_general=True, all_target=True) 
-        scores_soft = scoring.get_metrics_scores(testset, "rank_soft", class_name , prefix="soft", invert_ranks=invert_ranks)
-        scores.update(scores_soft)
-               
-        testset = CEJcmlReader(self.testset_output_hard, all_general=True, all_target=True)        
-        scores_hard = scoring.get_metrics_scores(testset, "rank_hard", class_name , prefix="hard", invert_ranks=invert_ranks)
+        for i, _ in enumerate(self.testset_filenames):
         
-        scores.update(scores_hard)
-        logging.debug("Scores: {}".format(scores))
-        
+            testset = CEJcmlReader(self.testset_output_soft[i], all_general=True, all_target=True) 
+            scores_soft = scoring.get_metrics_scores(testset, "rank_soft", class_name , prefix="{}.soft".format(i), invert_ranks=invert_ranks)
+            scores.update(scores_soft)
+                   
+            testset = CEJcmlReader(self.testset_output_hard[i], all_general=True, all_target=True)        
+            scores_hard = scoring.get_metrics_scores(testset, "rank_hard", class_name , prefix="{}.hard".format(i), invert_ranks=invert_ranks)
+            
+            scores.update(scores_hard)
+            logging.debug("Scores: {}".format(scores))
+            
         return scores
     
     
     def evaluate_selection(self, params, rep):
         refscores = OrderedDict()
         
-        testset = CEJcmlReader(self.testset_output_soft, all_general=True, all_target=True)
-        refscores_soft = evaluate_selection(testset.get_parallelsentences(), 
-                                            rank_name="rank_soft",
-                                            out_filename="testset.soft.sel.txt",
-                                            ref_filename="testset.ref.txt")
-        refscores.update(_dictprefix(refscores_soft, 'soft'))
-        
-        testset = CEJcmlReader(self.testset_output_hard, all_general=True, all_target=True)        
-        refscores_hard = evaluate_selection(testset.get_parallelsentences(),
-                                            rank_name="rank_hard",
-                                            out_filename="testset.hard.sel.txt",)
-        refscores.update(_dictprefix(refscores_hard, 'hard'))
-        
+        for i, _ in enumerate(self.testset_filenames):
+            testset = CEJcmlReader(self.testset_output_soft[i], all_general=True, all_target=True)
+            refscores_soft = evaluate_selection(testset.get_parallelsentences(), 
+                                                rank_name="rank_soft",
+                                                out_filename="testset.{}.soft.sel.txt".format(i),
+                                                ref_filename="testset.{}.ref.txt".format(i))
+            refscores.update(_dictprefix(refscores_soft, '{}.soft'.format(i)))
+            
+            testset = CEJcmlReader(self.testset_output_hard[i], all_general=True, all_target=True)        
+            refscores_hard = evaluate_selection(testset.get_parallelsentences(),
+                                                rank_name="rank_hard",
+                                                out_filename="testset.{}.hard.sel.txt".format(i),)
+            refscores.update(_dictprefix(refscores_hard, '{}.hard'.format(i)))
+            
         return refscores
     
     
