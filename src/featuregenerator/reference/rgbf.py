@@ -84,6 +84,11 @@ class RgbfGenerator(FeatureGenerator):
         atts = self.process_string(target_string, ref_string)
         return atts
     
+    def analytic_score_sentences(self, sentence_tuples):
+        hypotheses = [h for h,_ in sentence_tuples]
+        references = [[r] for _,r in sentence_tuples]
+        return self.process_string_multiunit(hypotheses, references)
+    
     def process_string(self, hypothesis, reference):
         return self.process_string_multiunit([hypothesis], [[reference]])
     

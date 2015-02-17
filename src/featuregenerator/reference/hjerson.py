@@ -28,8 +28,11 @@
 from featuregenerator.featuregenerator import FeatureGenerator
 from featuregenerator.preprocessor import Tokenizer
 from util.treetaggerwrapper import TreeTagger
+from collections import defaultdict
+from numpy import average
 import logging
 import os
+from collections import OrderedDict
 sent = False
 
 TAGDIR = "~/taraxu_tools/treetager/"
@@ -105,6 +108,19 @@ class Hjerson(FeatureGenerator):
         atts = self.get_features_strings(target_string, [ref_string])
         atts = dict([("ref-hj_{}".format(key), value) for key, value in atts.iteritems()])
         return atts
+    
+    def analytic_score_sentences(self, sentence_tuples):
+    
+        
+        res = defaultdict(int)
+        reflength = 0
+        for hypothesis, reference in sentence_tuples:
+            results = self.get_features_strings(hypothesis, [reference])
+            for errortype in ['aMissErr', 'aExtErr', 'arLexErr', 'arRer']:
+                res[errortype] += results[errortype]
+                reflength += results["refLength"]
+        res['TER'] = sum(res.values())/reflength
+                    
     
     
     def _tag(self, string):
@@ -192,7 +208,8 @@ class Hjerson(FeatureGenerator):
         maxLength = []
         
         hypWords = hline.split()
-        addhypWords = addhline.split()
+        addhypWords = addhline.split
+        ()
         if len(addhypWords) < hypWords:
             addhypWords = [""] * len(hypWords)
         baseHypWords = basehline.split()
@@ -210,7 +227,7 @@ class Hjerson(FeatureGenerator):
     
         # reading reference(s)
     
-        nref = 0
+        nref = {}
         
         for reference in refs:
             ir = refs.index(reference)
@@ -248,6 +265,7 @@ class Hjerson(FeatureGenerator):
                 
             for nr in range(0, len(ref)+1):
                 p = (nr, 0)
+        
                 Q[p] = nr
                 B[p] = levNode(nr-1, 0, 2)
                 
@@ -341,6 +359,7 @@ class Hjerson(FeatureGenerator):
             hp = B[p].hpos
     
     
+        
             while hp >= 0 and rp >= 0:
                 p1 = (rp, hp)
                 err = B[p1].error
@@ -404,6 +423,7 @@ class Hjerson(FeatureGenerator):
         bestWerHypWords.reverse()
         bestWerRefAdd.reverse()
         bestWerHypAdd.reverse()
+        
     
     
         # preparations for HPER and RPER
@@ -521,7 +541,7 @@ class Hjerson(FeatureGenerator):
     
     
         # write sentence error rates
-        res = {}
+        res = OrderedDict()
         
         res['wer'] = 100*minSentWer        
         res['hper'] = 100*sentHper
