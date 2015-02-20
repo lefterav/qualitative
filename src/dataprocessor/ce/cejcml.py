@@ -5,7 +5,7 @@ Created on 26 Jun 2012
 '''
 
 from numpy import average, std, min, max, asarray
-import logging
+import logging as log
 
 from collections import defaultdict, OrderedDict
 from xml.etree.ElementTree import iterparse
@@ -61,6 +61,7 @@ class CEJcmlReader(DataReader):
         self.TAG_SENT = 'judgedsentence'
         self.TAG_SRC = 'src'
         self.TAG_TGT = 'tgt'
+        self.TAG_REF = 'ref'
         self.TAG_DOC = 'jcml'
 
 
@@ -127,22 +128,33 @@ class CEJcmlReader(DataReader):
         
         src_text = ""
         tgt_text = ""
-        
+        ref_attributes = {}    
 
         for event, elem in context:
             #new sentence: get attributes
             if event == "start" and elem.tag == self.TAG_SENT:
                 attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_general or self.all_general])
                 targets = []
+                src_text = None
+                ref_text = None
             #new source sentence
             elif event == "start" and elem.tag == self.TAG_SRC:
                 source_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_source or self.all_target])
+
+            elif event == "start" and elem.tag == self.TAG_REF:
+                ref_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_target or self.all_target])
+
             #new target sentence
             elif event == "start" and elem.tag == self.TAG_TGT:
                 target_id += 1
                 target_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_target or self.all_target])
             elif not compact and event == "end" and elem.tag == self.TAG_SRC and elem.text:
                 src_text = elem.text
+
+            elif not compact and event == "end" and elem.tag == self.TAG_REF and elem.text:
+                ref_text = elem.text
+                #log.info("read reference text {}".format(ref_text))
+ 
                  
             elif event == "end" and elem.tag == self.TAG_TGT:
                 if not compact and elem.text:
@@ -151,10 +163,17 @@ class CEJcmlReader(DataReader):
                     tgt_text = ""
                 target_sentence = SimpleSentence(tgt_text, target_attributes)
                 targets.append(target_sentence)
-            
+
+
             elif event == "end" and elem.tag in self.TAG_SENT:
                 source = SimpleSentence(src_text, source_attributes)
-                parallelsentence = ParallelSentence(source, targets, None, attributes)
+                ref = None
+                if ref_text:
+                    #log.info("Adding reference text {}".format(ref_text))
+                    ref = SimpleSentence(ref_text, ref_attributes)
+                else:
+                    log.warning("Reference is none in sentence {}".format(attributes["judgement_id"]))
+                parallelsentence = ParallelSentence(source, targets, ref, attributes)
                 yield parallelsentence
             root.clear() 
         source_file.close()
