@@ -87,14 +87,13 @@ class RgbfGenerator(FeatureGenerator):
     
     def analytic_score_sentences(self, sentence_tuples):
         hypotheses = [h for h,_ in sentence_tuples]
-        references = [[r] for _,r in sentence_tuples]
-        log.info("references {}, {}".format(sentence_tuples, references))
+        references = [r for _,r in sentence_tuples]
         return self.process_string_multiunit(hypotheses, references)
     
     def process_string(self, hypothesis, reference):
         return self.process_string_multiunit([hypothesis], [[reference]])
     
-    def process_string_multiunit(self, hypUnits, refUnits, ngramprecrecf=True, unitprecrecf=True):
+    def process_string_multiunit(self, hypUnits, refUnits, ngramprecrecf=False, unitprecrecf=False):
         U = len(refUnits)
         n = self.n
         
@@ -102,7 +101,7 @@ class RgbfGenerator(FeatureGenerator):
         unitweights = self.unitweights
         
         if not unitweights:
-            unitweights = np.ones(n) * 1.00 / U
+            unitweights = np.ones(U) * 1.00 / U
         
         result = OrderedDict()
         

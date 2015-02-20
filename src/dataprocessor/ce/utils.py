@@ -72,7 +72,7 @@ def join_jcml(filenames, output_filename, compact=False):
     writer = IncrementalJcml(output_filename)
     for filename in filenames:
         reader = CEJcmlReader(filename, all_general=True, all_target=True)
-        for parallelsentence in reader.get_parallelsentences(compact=True):
+        for parallelsentence in reader.get_parallelsentences():
             writer.add_parallelsentence(parallelsentence)
 
     writer.close()

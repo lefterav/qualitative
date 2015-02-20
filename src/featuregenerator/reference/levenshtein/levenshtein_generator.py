@@ -5,7 +5,7 @@ Created on 07.10.2011
 @author: Eleftherios Avramidis
 '''
 from featuregenerator.featuregenerator import FeatureGenerator
-from levenshtein import levenshtein_tok
+from levenshtein import levenshtein
 from numpy.lib.function_base import average
 
 class LevenshteinGenerator(FeatureGenerator):
@@ -34,4 +34,4 @@ class LevenshteinGenerator(FeatureGenerator):
         
 
     def analytic_score_sentences(self, sentence_tuples):
-        return {'ref-lev': average([levenshtein_tok(h, r) for h, r in sentence_tuples])} 
+        return {'ref-lev': average([levenshtein(h, r) for h, r in sentence_tuples])} 
