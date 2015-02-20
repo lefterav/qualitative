@@ -142,14 +142,22 @@ def dataset_to_instances(filename,
     temporary_filename = tempfile.mktemp(dir=tempdir, suffix='.tab')
     tabfile = codecs.open(temporary_filename, encoding='utf-8', mode = 'w')
     
+    #if attribute set is empty, get all numeric attributes
+    if not attribute_set:
+        attribute_set, _ = reader(filename, compact=True, 
+                     all_general=True,
+                     all_target=True).get_attribute_names()
+                     
     #get the text for the header of the orange file
     header = _get_pairwise_header(attribute_set, class_name)
     tabfile.write(header)
     
+                     
     #initialize the class that will take over the reading from the file
     dataset = reader(filename, compact=True, 
                      all_general=True,
                      all_target=True)
+    
     
     #iterate over all parallel sentences provided by the data reader
     for parallelsentence in dataset.get_parallelsentences():
@@ -158,7 +166,7 @@ def dataset_to_instances(filename,
                                                default_value=default_value,
                                                replace_infinite=replace_infinite,
                                                )
-        
+                
         #every parallelsentence has many instances
         for vector, class_value in vectors:
             vector.append(class_value)
@@ -167,6 +175,7 @@ def dataset_to_instances(filename,
     
     tabfile.close()
     
+
     datatable = Table(temporary_filename)
     
     if output_filename:
