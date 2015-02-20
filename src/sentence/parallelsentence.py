@@ -14,7 +14,26 @@ import itertools
 import numpy as np
 
 def _prefix(prefix, names):
-        return [prefix.format(name) for name in names]    
+    return [prefix.format(name) for name in names]    
+
+def _deprefix(prefix, names):
+    pattern = re.compile("{}_(.*)".format(prefix))
+    deprefixed = []
+    for attname in names:
+        try:
+            name = re.findall(pattern, attname)[0]
+            deprefixed.append(name)
+        except:
+            pass
+    return deprefixed
+
+def _noprefix(prefixes, names):
+    notprefixed = []
+    for name in names:
+        for prefix in prefixes:
+            if not name.startswith("{}".format(prefix)):
+                notprefixed.append(name)
+    return notprefixed
 
 class AttributeSet:
     def __init__(self, 
@@ -35,6 +54,12 @@ class AttributeSet:
         all_attribute_names.extend(_prefix("tgt-1_{}", self.target_attribute_names))
         all_attribute_names.extend(_prefix("tgt-2_{}", self.target_attribute_names))
         return all_attribute_names
+    
+    def set_names_from_pairwise(self, pairwise_names=[]):
+        self.source_attribute_names = _deprefix("src", pairwise_names)
+        self.target_attribute_names = _deprefix("tgt-1", pairwise_names)
+        self.ref_attribute_names = _deprefix("ref", pairwise_names)
+        self.parallel_attribute_names = _noprefix(["src", "tgt", "ref"], pairwise_names)
 
     def __str__(self):
         return str([self.parallel_attribute_names, self.source_attribute_names, self.target_attribute_names])
