@@ -30,9 +30,8 @@ def _deprefix(prefix, names):
 def _noprefix(prefixes, names):
     notprefixed = []
     for name in names:
-        for prefix in prefixes:
-            if not name.startswith("{}".format(prefix)):
-                notprefixed.append(name)
+        if not True in [name.startswith("{}".format(prefix)) for prefix in prefixes]:
+            notprefixed.append(name)
     return notprefixed
 
 class AttributeSet:
