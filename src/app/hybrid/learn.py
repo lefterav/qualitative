@@ -44,7 +44,7 @@ class RankingExperiment(PyExperimentSuite):
         #self.hidden_attributes = params["hidden_attributes"].split(",")
         self.discrete_attributes = params["discrete_attributes"].split(",")
         self.attribute_set = self._read_attributeset(params)
-        
+       
         
             
         
@@ -207,19 +207,24 @@ class RankingExperiment(PyExperimentSuite):
     
     def evaluate_selection(self, params, rep):
         refscores = OrderedDict()
+        target_language = params["langpair"].split("-")[1]
         
         for i, _ in enumerate(self.testset_filenames):
             testset = CEJcmlReader(self.testset_output_soft[i], all_general=True, all_target=True)
             refscores_soft = evaluate_selection(testset.get_parallelsentences(), 
                                                 rank_name="rank_soft",
                                                 out_filename="testset.{}.soft.sel.txt".format(i),
-                                                ref_filename="testset.{}.ref.txt".format(i))
+                                                ref_filename="testset.{}.ref.txt".format(i),
+                                                language=target_language,
+                                                )
             refscores.update(_dictprefix(refscores_soft, '{}.soft'.format(i)))
             
             testset = CEJcmlReader(self.testset_output_hard[i], all_general=True, all_target=True)        
             refscores_hard = evaluate_selection(testset.get_parallelsentences(),
                                                 rank_name="rank_hard",
-                                                out_filename="testset.{}.hard.sel.txt".format(i),)
+                                                out_filename="testset.{}.hard.sel.txt".format(i),
+                                                language=target_language,
+                                                )
             refscores.update(_dictprefix(refscores_hard, '{}.hard'.format(i)))
             
         return refscores
@@ -242,14 +247,14 @@ class RankingExperiment(PyExperimentSuite):
             ret.update(self.evaluate_selection(params, rep))
         return ret
 
-def _dictprefix(prefix, dictionary):
-    return OrderedDict([(("{}_{}".format(prefix, key),value) for key,value in dictionary.iteritems())])
+def _dictprefix(dictionary, prefix):
+    return OrderedDict([("{}_{}".format(prefix, key),value) for key,value in dictionary.iteritems()])
     
  
  
 if __name__ == '__main__':
-    #loglevel = logging.INFO
-    loglevel = logging.DEBUG
+    loglevel = logging.INFO
+    #loglevel = logging.DEBUG
     logging.basicConfig(level=loglevel,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M')

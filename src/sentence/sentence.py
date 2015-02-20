@@ -29,6 +29,8 @@ class SimpleSentence(object):
         
         """
         #avoid tabs
+        if not string:
+            string = ""
         self.string = string.replace("\t", "  ")
         #avoid getting a shallow reference to the attributes in the dict
         self.attributes = deepcopy (attributes) 
@@ -136,7 +138,7 @@ class SimpleSentence(object):
                 log.debug("Adding attribute[{}]='{}'".format(name,attvalue))
             except KeyError:
                 vector.append(default_value)
-                log.debug("Adding fallback attribute[{}]='{}'".format(name,attvalue))
+                log.debug("Adding fallback attribute[{}]='{}'".format(name,default_value))
         log.debug("Simple sentence returns vector: {}".format(vector))
         return vector
             
