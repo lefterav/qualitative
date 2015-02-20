@@ -120,6 +120,7 @@ class Hjerson(FeatureGenerator):
                 res[errortype] += results[errortype]
                 reflength += results["refLength"]
         res['TER'] = sum(res.values())/reflength
+        return res
                     
     
     
@@ -208,8 +209,7 @@ class Hjerson(FeatureGenerator):
         maxLength = []
         
         hypWords = hline.split()
-        addhypWords = addhline.split
-        ()
+        addhypWords = addhline.split()
         if len(addhypWords) < hypWords:
             addhypWords = [""] * len(hypWords)
         baseHypWords = basehline.split()
@@ -227,7 +227,7 @@ class Hjerson(FeatureGenerator):
     
         # reading reference(s)
     
-        nref = {}
+        nref = 0
         
         for reference in refs:
             ir = refs.index(reference)
