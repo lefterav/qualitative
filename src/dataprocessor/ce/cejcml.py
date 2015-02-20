@@ -7,6 +7,7 @@ Created on 26 Jun 2012
 from numpy import average, std, min, max, asarray
 import logging as log
 
+import sys
 from collections import defaultdict, OrderedDict
 from xml.etree.ElementTree import iterparse
 from sentence.sentence import SimpleSentence
@@ -78,30 +79,43 @@ class CEJcmlReader(DataReader):
             i+=1
         return i
     
+    
+    def _separate_continuous_attributes(self, attributevectors):
+        """
+        Loop in dictionaries of an attribute vector per feature and separate continuous from discrete attributes
+        based on their actual values
+        """
+        continuous_attribute_names = []
+        discrete_attribute_names = []
+        
+        for key, values in attributevectors.iteritems():
+            try:
+                values = [float(v) for v in values]
+                continuous_attribute_names.append(key)
+            except ValueError:
+                discrete_attribute_names.append(key)
+        return continuous_attribute_names, discrete_attribute_names
+    
+    
     def get_attribute_names(self):
         """
         Attributes of parallel sentence files can be sparse, i.e. not all attributes appear in all sentences. Therefore
         in order to have a full descriptions of which attributes appear in a dataset, one has to parse the entire XML
         file, read the parallelsentences without the sentence strings, and gather the names (keys) of the seen attributes
-        @return: an object of an attribute set, containing the names of the features for source, target, parallel and 
+        @return: an object of an attribute set,s containing the names of the features for source, target, parallel and 
         reference features
         @rtype: L{AttributeSet}
         """
-        parallel_attribute_names = set()
-        source_attribute_names = set()
-        target_attribute_names = set()
-        ref_attribute_names = set()
         
-        for parallelsentence in self.get_parallelsentences(compact=True, all_general=True, all_target=True):
-            parallel_attribute_names.update((parallelsentence.get_attributes().keys()))
-            source_attribute_names.update((parallelsentence.get_source().get_attributes().keys()))
-            for tgt in parallelsentence.get_translations():
-                target_attribute_names.update(tgt.get_attributes().keys())
-            try:
-                ref_attribute_names.update(parallelsentence.get_reference().get_attributes().keys())
-            except:
-                pass
-        return AttributeSet(list(parallel_attribute_names), list(source_attribute_names), list(target_attribute_names), list(ref_attribute_names))
+        general_attributes, source_attributes, target_attributes, ref_attributes = self.get_attribute_vectors()
+        general_continuous_attnames, general_discrete_attnames = self._separate_continuous_attributes(general_attributes)
+        source_continuous_attnames, source_discrete_attnames = self._separate_continuous_attributes(source_attributes)
+        target_continuous_attnames, target_discrete_attnames = self._separate_continuous_attributes(target_attributes)
+        ref_continuous_attnames, ref_discrete_attnames = self._separate_continuous_attributes(ref_attributes)
+        
+        return AttributeSet(general_continuous_attnames, source_continuous_attnames, target_continuous_attnames, ref_continuous_attnames), \
+            AttributeSet(general_discrete_attnames, source_discrete_attnames, target_discrete_attnames, ref_discrete_attnames),
+    
     
     def get_dataset(self, **kwargs):
         return DataSet(list(self.get_parallelsentences(**kwargs)))       
@@ -188,6 +202,111 @@ class CEJcmlReader(DataReader):
 
    
 
+            
+
+
+# class CEJcmlStats:
+#     """calculates statistics about specified attributes on an annotated JCML corpus. Low memory load"""
+#     
+#     def __init__(self, input_xml_filenames, **kwargs):
+#     
+#         self.TAG_SENT = 'judgedsentence'
+#         self.TAG_SRC = 'src'
+#         self.TAG_TGT = 'tgt'
+#         self.TAG_DOC = 'jcml'
+#     
+#         self.input_filenames = input_xml_filenames
+#         self.desired_general = kwargs.setdefault("desired_general", [])
+#         self.desired_source = kwargs.setdefault("desired_source", [])
+#         self.desired_target = kwargs.setdefault("desired_target", [])
+#         self.desired_ref = kwargs.setdefault("desired_ref", [])
+        
+       
+    def _print_statistics(self, key, values, fileobject=sys.stdout, show_discrete=False):
+        try:
+            values = asarray([float(v) for v in values])
+            fileobject.write("{}\t{}\t{:5.3f}\t{:5.3f}\t{:5.3f}\t{:5.3f}\n".format(key,
+                len(values),                                                  
+                average(values),
+                std(values),
+                min(values),
+                max(values),
+            ))
+        except ValueError:
+            if show_discrete:
+                fileobject.write( "{}\tdisc\n".format(key))
+   
+    
+  
+    def get_attribute_statistics(self, fileobject=sys.stdout, attribute_vectors=None):
+        if not attribute_vectors:
+            general_attributes, source_attributes, target_attributes, ref_attributes = self.get_attribute_vectors()
+        else:
+            general_attributes, source_attributes, target_attributes, ref_attributes = attribute_vectors
+        
+        for key, value in general_attributes.iteritems():
+            self._print_statistics(key, value, fileobject)            
+        
+        for key, value in source_attributes.iteritems():
+            self._print_statistics(key, value, fileobject)
+                
+        for key, value in target_attributes.iteritems():
+            self._print_statistics(key, value, fileobject)            
+            
+        
+    
+    
+    def get_attribute_vectors(self):
+        """
+        Extract a list of values for each attribute
+        """
+        general_attributes = defaultdict(list)
+        source_attributes = defaultdict(list)
+        target_attributes = defaultdict(list)
+        ref_attributes = defaultdict(list)
+        
+        input_filename = self.input_filename
+    
+        source_xml_file = open(input_filename, "r")
+        # get an iterable
+        context = iterparse(source_xml_file, events=("start", "end"))
+        # turn it into an iterator
+        context = iter(context)
+        # get the root element
+        event, root = context.next()
+        
+        for event, elem in context:
+            #new sentence: get attributes
+            if event == "start" and elem.tag == self.TAG_SENT:
+                for key, value in elem.attrib.iteritems():
+
+               
+                        general_attributes[key].append(value)
+                    
+            #new source sentence
+            elif event == "start" and elem.tag == self.TAG_SRC:
+                for key, value in elem.attrib.iteritems():
+
+                        source_attributes[key].append(value)
+
+            #new target sentence
+            elif event == "start" and elem.tag == self.TAG_TGT:
+                for key, value in elem.attrib.iteritems():
+
+                        target_attributes[key].append(value)
+                        
+            elif event == "start" and elem.tag == self.TAG_REF:
+                for key, value in elem.attrib.iteritems():
+
+                        ref_attributes[key].append(value)
+
+            root.clear()
+            
+        source_xml_file.close()
+        
+        return general_attributes, source_attributes, target_attributes, ref_attributes
+
+
 def get_statistics(input_xml_filenames, **kwargs):
     vector = defaultdict(list)
     for input_xml_filename in input_xml_filenames:
@@ -211,7 +330,7 @@ def get_statistics(input_xml_filenames, **kwargs):
                 for att, value in target.get_attributes().iteritems():
                      vector["tgt_{}".format(att)].append(value)
     yield "feat \t avg \t std \t min \t max " 
-    for att, values in vector.iteritems():	
+    for att, values in vector.iteritems():    
         try:
             values = asarray([float(v) for v in values])
         except:
@@ -223,113 +342,3 @@ def get_statistics(input_xml_filenames, **kwargs):
                                                            min(values),
                                                            max(values)
                                                            )
-            
-
-
-class CEJcmlStats:
-    """calculates statistics about specified attributes on an annotated JCML corpus. Low memory load"""
-    
-    def __init__(self, input_xml_filenames, **kwargs):
-    
-        self.TAG_SENT = 'judgedsentence'
-        self.TAG_SRC = 'src'
-        self.TAG_TGT = 'tgt'
-        self.TAG_DOC = 'jcml'
-    
-        self.input_filenames = input_xml_filenames
-        self.desired_general = kwargs.setdefault("desired_general", [])
-        self.desired_source = kwargs.setdefault("desired_source", [])
-        self.desired_target = kwargs.setdefault("desired_target", [])
-        self.desired_ref = kwargs.setdefault("desired_ref", [])
-        
-       
-    def _print_statistics(self, key, values):
-        try:
-            values = asarray([float(v) for v in values])
-            print "{}\t{:5.3f}\t{:5.3f}\t{:5.3f}\t{:5.3f}".format(key,
-                average(values),
-                std(values),
-                min(values),
-                max(values)
-            )
-        except ValueError:
-            print "[{}] : distinct values ".format(key)
-   
-    
-    def get_attribute_statistics(self):
-        general_attributes, source_attributes, target_attributes, ref_attributes = self.get_attribute_vectors()
-        
-        print "Source:"
-        
-        print '"{}"'.format('","'.join([key for key in source_attributes.iterkeys() if not key.endswith("_ratio") and not key.startswith("q_")]))
-        
-        print "\n Target:"
-        
-        target_attributes = OrderedDict(sorted(target_attributes.iteritems(), key=lambda t: t[0]))
-        print '"{}"'.format('","'.join([key for key in target_attributes.iterkeys() if not key.endswith("_ratio") and not key.startswith("q_")]))
-        
-        print
-        
-        for key, value in general_attributes.iteritems():
-            print "General attributes:\n"
-            self._print_statistics(key, value)            
-        
-        for key, value in source_attributes.iteritems():
-            print "Source attributes:\n"        
-            self._print_statistics(key, value)
-        
-        for key, value in target_attributes.iteritems():
-            print "Target attributes:\n"        
-            self._print_statistics(key, value)            
-            
-        
-    
-    
-    def get_attribute_vectors(self):
-        """
-        Extract a list of values for each attribute
-        """
-        general_attributes = defaultdict(list)
-        source_attributes = defaultdict(list)
-        target_attributes = defaultdict(list)
-        ref_attributes = defaultdict(list)
-        
-        for input_filename in self.input_filenames:
-            source_xml_file = open(input_filename, "r")
-            # get an iterable
-            context = iterparse(source_xml_file, events=("start", "end"))
-            # turn it into an iterator
-            context = iter(context)
-            # get the root element
-            event, root = context.next()
-            
-            for event, elem in context:
-                #new sentence: get attributes
-                if event == "start" and elem.tag == self.TAG_SENT:
-                    for key, value in elem.attrib.iteritems():
-    
-                            general_attributes[key].append(value)
-                        
-                #new source sentence
-                elif event == "start" and elem.tag == self.TAG_SRC:
-                    for key, value in elem.attrib.iteritems():
-    
-                            source_attributes[key].append(value)
-    
-                #new target sentence
-                elif event == "start" and elem.tag == self.TAG_TGT:
-                    for key, value in elem.attrib.iteritems():
-    
-                            target_attributes[key].append(value)
-                            
-                elif event == "start" and elem.tag == self.TAG_REF:
-                    for key, value in elem.attrib.iteritems():
-    
-                            ref_attributes[key].append(value)
-    
-                root.clear()
-            
-            source_xml_file.close()
-        
-        return general_attributes, source_attributes, target_attributes, ref_attributes
-    
