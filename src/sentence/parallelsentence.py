@@ -368,7 +368,8 @@ class ParallelSentence(object):
             pairwise_parallelsentence = PairwiseParallelSentence(self.src, 
                                                                  translations=targets, 
                                                                  systems=systems, 
-                                                                 attributes=self.attributes)
+                                                                 attributes=self.attributes,
+                                                                 reference=self.ref)
             if class_name:
                 class_value = self._get_class_pairwise(target1, target2, class_name, ties)
                 if class_value!=None:
