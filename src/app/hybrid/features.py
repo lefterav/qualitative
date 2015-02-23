@@ -25,7 +25,7 @@ if __name__ == '__main__':
     
     f = open(os.path.join(location, "stats_basic.csv"), 'w')
 
-    CEJcmlReader(filename).get_attribute_statistics(fileobject=f)
+    #CEJcmlReader(filename).get_attribute_statistics(fileobject=f)
     f.close()
     
     #===========================================================================
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     f.write("\t{}".format("\t".join([m.__class__.__name__ for m in measures])))
     for metric in metrics:
         f.write("{}\n".format(metric))
-        data = dataset_to_instances(filename=filename, class_name=metric)
+        data = dataset_to_instances(filename=filename, class_name=metric, tempdir="./tmp")
         attset[metric] = defaultdict(list)
         print type(attset)
         n = 50
