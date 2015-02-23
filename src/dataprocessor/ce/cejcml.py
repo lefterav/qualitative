@@ -233,6 +233,7 @@ class CEJcmlReader(DataReader):
                 max(values),
             ))
         except ValueError:
+            log.warning("Could not calculate vector")
             if show_discrete:
                 fileobject.write( "{}\tdisc\n".format(key))
    
