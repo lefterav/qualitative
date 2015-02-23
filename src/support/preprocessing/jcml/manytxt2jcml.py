@@ -9,8 +9,8 @@ import argparse
 from sentence.sentence import SimpleSentence
 from collections import OrderedDict
 from sentence.parallelsentence import ParallelSentence
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
-from featuregenerator.glassbox.moses.extractor import MosesGlassboxExtractor
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
+#from featuregenerator.glassbox.moses.extractor import MosesGlassboxExtractor
 
 if __name__ == '__main__':
 
@@ -99,17 +99,17 @@ if __name__ == '__main__':
         i+=1
         atts = OrderedDict()
         source_line = source_line.strip()
+        if reference_file:
+            reference_line = reference_file.readline().strip()
+            reference_sentence = SimpleSentence(reference_line)
+        else:
+            reference_sentence = None
         target_sentences = []
         for target_file, system in zip(target_files, args.system_names):
             target_line = target_file.readline().strip()
             atts["system"] = system
         
-            if reference_file:
-                reference_line = reference_file.readline().strip()
-                reference_sentence = SimpleSentence(reference_line)
-            else:
-                reference_sentence = None
-            
+           
             #target sentence features        
             if score_file:
                 score = score_file.readline().strip()
