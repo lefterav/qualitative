@@ -26,6 +26,7 @@ def evaluate_selection(parallelsentences,
                         language=None):
     
     selected_sentences = []
+    original_sentences = defaultdict(list)
     results = OrderedDict()
     selected_systems = defaultdict(int) #collect the winnings of each system
     
@@ -48,9 +49,9 @@ def evaluate_selection(parallelsentences,
         counter = 0
         for translation in parallelsentence.get_translations():
 
-
+            system_name = translation.get_attribute("system")
+            original_sentences[system_name].append((translation.get_string(), [reference.get_string()]))
             if int(translation.get_attribute(rank_name)) == int(best_rank):
-                system_name = translation.get_attribute("system")
                 selected_systems[system_name] += 1
                 #if there is a tie, collect the first sentence that appears TODO:improve
                 if counter == 0:
@@ -77,6 +78,11 @@ def evaluate_selection(parallelsentences,
     for metric in metrics:
         metric_results = metric.analytic_score_sentences(selected_sentences)
         results.update(metric_results)
+        
+        for system_name, original_system_sentences in original_sentences.iteritems():
+            metric_results = metric.analutic_score_sentences(original_system_sentences)
+            metric_results = OrderedDict([("{}_{}".format(system_name, metric_name), values) for metric_name, values in metric_results.iteritems()])
+            results.update(metric_results)
         
     with open(out_filename, 'w') as f:
         f.write(os.linesep.join([t for t,_ in selected_sentences]))
