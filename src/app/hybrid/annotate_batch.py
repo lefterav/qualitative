@@ -8,6 +8,7 @@ import shutil
 import os
 import re
 import sys
+import logging as log
 
 #pipeline essentials
 from ruffus import *
@@ -272,7 +273,6 @@ def truecase_source(input_file, output_file, language, model):
 @transform(preprocess_data, suffix(".tok.jcml"), ".tc.%s.jcml" % target_language, target_language, cfg.get_truecaser_model(target_language))
 def truecase_target(input_file, output_file, language, model):
     truecase(input_file, output_file, language, model)
-bleugenerator
 def truecase(input_file, output_file, language, model):
     from featuregenerator.preprocessor import Truecaser
     truecaser = Truecaser(language, model)
@@ -346,7 +346,7 @@ if cfg.has_section("parser:bitpar:{}".format(source_language)):
 
 @collate(features_bitpar_target, regex(r"([^.]+)\.\s?(\d+)\.part.bit.([^.]+).f.jcml"),  r"\1.bit.\3.f.jcml")
 def merge_bitpar_parts_target(inputs, output):
-    merge_parts(inputs, output)bleugenerator
+    merge_parts(inputs, output)
 if cfg.has_section("parser:bitpar:{}".format(target_language)):
     bitpar_functions.append(merge_bitpar_parts_target)
 
@@ -521,9 +521,9 @@ if __name__ == '__main__':
     
     
     pipeline_printout_graph("flowchart.pdf", "pdf", [analyze_external_features])
-    
-    pipeline_run([analyze_external_features], multiprocess = cores, verbose = 5)
+    if not "--onlygraph" in sys.argv: 
+        pipeline_run([analyze_external_features], multiprocess = cores, verbose = 5)
     #pipeline_run([original_data_split], multiprocess = 2)
 
-print "Done!"
+    log.info("Done!")
 cfg.java_terminate()

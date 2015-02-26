@@ -13,7 +13,6 @@ from sentence.parallelsentence import ParallelSentence
 import shutil
 import logging as log
 import subprocess
-from progress.bar import Bar
 
 def dict_string(dic):
     return dict([(str(key), str(value)) for key, value in dic.iteritems()])
@@ -82,7 +81,6 @@ class SaxJCMLProcessor(XMLGenerator):
         self.counter = 0
         
         log.debug("File size given: {}. Loading progress bar.".format(size))
-        self.bar = Bar('Processing', suffix='eta_td', max=size)
         
     def set_tags(self):
         """
@@ -188,6 +186,7 @@ class SaxJCMLProcessor(XMLGenerator):
         elif name == self.TAG_SENT:
             #when the judged sentence gets closed, all previously inserted data have to be converted to objects 
             parallelsentence = ParallelSentence(self.src, self.tgt, self.ref, self.ps_attributes)
+            log.debug("Parallelsentence {} complete".format(self.counter))
 
             #apply feature generators
             for fg in self.feature_generators:
@@ -239,6 +238,5 @@ class SaxJCMLProcessor(XMLGenerator):
             XMLGenerator.endElement(self, name)
             
             self.counter+=1
-            if self.counter%1 == 0:
+            if self.counter%100 == 0:
                 log.info("{}: Processed {} sentences".format(XMLGenerator._out.name, self.counter))
-            self.bar.next()
