@@ -80,7 +80,7 @@ def evaluate_selection(parallelsentences,
         results.update(metric_results)
         
         for system_name, original_system_sentences in original_sentences.iteritems():
-            metric_results = metric.analutic_score_sentences(original_system_sentences)
+            metric_results = metric.analytic_score_sentences(original_system_sentences)
             metric_results = OrderedDict([("{}_{}".format(system_name, metric_name), values) for metric_name, values in metric_results.iteritems()])
             results.update(metric_results)
         

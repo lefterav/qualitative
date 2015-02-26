@@ -57,7 +57,7 @@ class PairwiseParallelSentence(ParallelSentence):
             self.ref = reference
             self.attributes = deepcopy(attributes)
             self.rank_name = rank_name
-            if self.tgt and normalize_ranks and not rankless:
+            if self.tgt and normalize_ranks and not rankless and rank_name:
                 self._normalize_ranks(invert_ranks)
     #        self.ties_allowed = ties_allowed
 
@@ -92,8 +92,9 @@ class PairwiseParallelSentence(ParallelSentence):
         try:
             rank_a = float(self.tgt[0].get_attribute(self.rank_name)) * factor
             rank_b = float(self.tgt[1].get_attribute(self.rank_name)) * factor
-        except AttributeError:
+        except KeyError:
             #this happens if for some reasons no rank values have been written
+            #in that case normalization does not make sense
             return
         
         if rank_a > rank_b:

@@ -6,6 +6,7 @@ Feature generator from Berkeley PCFG parses by using a remote Berkeley parsing s
 import xmlrpclib 
 import time
 import sys
+import logging as log
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 from featuregenerator.blackbox.parser.berkeley import socketservice
 from nltk import PunktWordTokenizer, PunktSentenceTokenizer
@@ -183,42 +184,18 @@ class BerkeleySocketFeatureGenerator(BerkeleyFeatureGenerator):
     experiments. In that case use an XMLRPC server    
     """
     
-#    def __init__(self, lang, grammarfile, socket_no, tokenize = False):
     def __init__(self, lang, grammarfile, gateway, tokenize = False):
-#def __init__(self, lang, grammarfile, socket_no, tokenize = False):        
         self.lang = lang
         self.tokenize = tokenize
-#        self.berkeleyparser = BerkeleyParserSocket(grammarfile, socket_no)
-        print "berkeleyclient.py: initializing BerkeleyParserSocket"
-        #self.berkeleyparser = BerkeleyParserSocket(grammarfile, gateway)
-
-        #try:
-        #    self.gateway = gateway
-        #    self.module_view = self.gateway.new_jvm_view()      
-        #    java_import(self.module_view, 'BParser')
-            
-            # get the application instance
-        #    self.berkeleyparser = self.module_view.BParser(grammarfile)
-        #    #print self.berkeleyparser.parse("This is a test")
-        #except Py4JError:
+        log.info("berkeleyclient: initializing BerkeleyParserSocket")
         self.berkeleyparser = BerkeleyParserSocket(grammarfile, gateway)
-        #sys.stderr.write("avoided BParser exception\n")
-            
-        sys.stderr.write("got BParser object\n")
+        log.info("berkeleyclient: got BParser object")
        
-    
     def parse(self, string):
+        log.info("berkeleyclient: parsing sentence")
         parse = self.berkeleyparser.parse(string)
         return parse
     
-#    def __del__(self):
-#        try:
-#            self.berkeleyparser.__del__()
-#        except:
-#            pass
-
-    
-        
 
 class BerkeleyXMLRPCFeatureGenerator(BerkeleyFeatureGenerator):
     def __init__(self, url, lang="", tokenize = False):

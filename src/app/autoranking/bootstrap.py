@@ -307,6 +307,7 @@ def get_cfg():
                                           an existing dir name""")
     parser.add_argument('--cores',  help='How many cores should be parallelized')
     parser.add_argument('--debug', action='store_true',  help='Display debugging information')
+    parser.add_argument('--onlygraph', action='store_true',  help='Create flowchart graph without running')
     
     args = parser.parse_args()
     

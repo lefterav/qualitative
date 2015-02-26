@@ -8,6 +8,7 @@ Provides the class which contains the information for a simple (shallow) sentenc
 
 from copy import deepcopy
 import logging as log
+from collections import OrderedDict
 
 class SimpleSentence(object):
     """
@@ -19,7 +20,7 @@ class SimpleSentence(object):
     """
 
 
-    def __init__(self, string="", attributes={}):
+    def __init__(self, string="", attributes=OrderedDict()):
         """
         Initializes a simple (shallow) sentence object, which wraps both a sentence and its attributes
         @param string: the string that the simple sentence will consist of
@@ -78,8 +79,7 @@ class SimpleSentence(object):
             if sub:
                 return sub
             else:
-                log.debug("Could not find attribute '{}' in sentence '{} ...'".format(key, self.string[:100]))              
-                raise KeyError
+                raise KeyError("Could not find attribute '{}' in sentence '{} ...'".format(key, self.string[:100]))              
     
     def add_attributes(self, attributes):
         self.attributes.update(attributes)

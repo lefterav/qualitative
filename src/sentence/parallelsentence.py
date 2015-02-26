@@ -393,7 +393,8 @@ class ParallelSentence(object):
                                                                  translations=targets, 
                                                                  systems=systems, 
                                                                  attributes=self.attributes,
-                                                                 reference=self.ref)
+                                                                 reference=self.ref,
+                                                                 rank_name=class_name)
             if class_name:
                 class_value = self._get_class_pairwise(target1, target2, class_name, ties)
                 if class_value!=None:
@@ -401,7 +402,7 @@ class ParallelSentence(object):
                     pairwise_parallelsentence.attributes[rank_attname] = class_value
                     yield pairwise_parallelsentence 
                 else:
-                    logging.debug("{}, skipped tie".format(systems))                               
+                    logging.info("{}, skipped tie".format(systems))                               
         
 
     def get_pairwise_parallelsentences_old(self, replacement = True, **kwargs):
@@ -626,15 +627,18 @@ class ParallelSentence(object):
     
             
     def _get_class_pairwise(self, target1, target2, class_name, ties):
-        if target1[class_name] > target2[class_name]:
-            class_value = 1
-        elif target1[class_name] < target2[class_name]:
-            class_value = -1
-        elif ties:
-            class_value = 0
-        else:
-            class_value = None
-        return class_value
+        try:
+            if target1[class_name] > target2[class_name]:
+                class_value = 1
+            elif target1[class_name] < target2[class_name]:
+                class_value = -1
+            elif ties:
+                class_value = 0
+            else:
+                class_value = None
+            return class_value
+        except KeyError:
+            return None
         
                 
         

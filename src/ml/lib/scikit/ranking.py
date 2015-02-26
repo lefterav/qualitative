@@ -8,6 +8,7 @@ from dataprocessor.ce.cejcml import CEJcmlReader
 import numpy as np
 from ml.ranking import Ranker
 from sklearn.svm import SVC
+from sklearn.ensemble import AdaBoostClassifier
 import logging as log
 from sklearn_utils import scale_datasets_crossvalidation
 from sklearn.linear_model.randomized_l1 import RandomizedLasso
@@ -189,13 +190,13 @@ class SkLearner:
     
     def run_feature_selection(self, feature_selector, data, labels):
         if feature_selector:
-            log.info("Running feature selection {}".format(feature_selector))
+            log.info("scikit: Running feature selection {}".format(feature_selector))
             
-            log.info("data dimensions before fit_transform(): {}".format(data.shape))
-            log.info("labels dimensions before fit_transform(): {}".format(labels.shape))
+            log.info("scikit: data dimensions before fit_transform(): {}".format(data.shape))
+            log.info("scikit: labels dimensions before fit_transform(): {}".format(labels.shape))
             feature_selector.fit_transform(data, labels)
             
-            log.debug("Dimensions after fit_transform(): %s,%s" % data.shape)
+            log.info("scikit: Dimensions after fit_transform(): %s,%s" % data.shape)
         return data
     
     
@@ -270,7 +271,6 @@ class SkLearner:
         
             
         elif method_name == "LassoLarsCV":
-            
             estimator = LassoLarsCV(max_iter=learning_params.setdefault('max_iter', 500),
                                         normalize=learning_params.setdefault('normalize', True),
                                         max_n_alphas=learning_params.setdefault('max_n_alphas', 1000),
@@ -278,7 +278,9 @@ class SkLearner:
                                         cv=learning_params.setdefault('cv', 10),
                                         verbose=False)
 
-                
+        else:
+            estimator_obj = eval(method_name)
+            estimator = estimator_obj()
         return estimator, scorers
                 
     
@@ -353,20 +355,27 @@ class SkRanker(Ranker, SkLearner):
         
         if self.scaler:
             params = self.scaler.get_params(deep=True)
-        
-        if self.classifier.kernel == "rbf":
-            params["gamma"] = self.classifier.gamma
-            params["C"] = self.classifier.C
-            for i, n_support in enumerate(self.classifier.n_support_):
-                params["n_{}".format(i)] = n_support
-            log.info(len(self.classifier.dual_coef_))
+        try: #these are for SVC
+            if self.classifier.kernel == "rbf":
+                params["gamma"] = self.classifier.gamma
+                params["C"] = self.classifier.C
+                for i, n_support in enumerate(self.classifier.n_support_):
+                    params["n_{}".format(i)] = n_support
+                log.info(len(self.classifier.dual_coef_))
+                return params
+            elif self.classifier.kernel == "linear":
+                coefficients = self.classifier.coef_
+                att_coefficients = {}
+                for attname, coeff in zip(self.attribute_set.get_names_pairwise(), coefficients[0]):
+                    att_coefficients[attname] = coeff
+                return att_coefficients
+        except AttributeError:
+            pass
+        try: #adaboost
+            params = self.classifier.get_params()
             return params
-        elif self.classifier.kernel == "linear":
-            coefficients = self.classifier.coef_
-            att_coefficients = {}
-            for attname, coeff in zip(self.attribute_set.get_names_pairwise(), coefficients[0]):
-                att_coefficients[attname] = coeff
-            return att_coefficients
+        except:
+            pass
         return {}
     
     
@@ -399,6 +408,7 @@ class SkRanker(Ranker, SkLearner):
             #scale data instance to mean, based on trained scaler
             if self.scaler:
                 try:
+                    instance = np.nan_to_num(instance)
                     instance = self.scaler.transform(instance)
                 except ValueError as e:
                     log.error("Could not transform instance: {}".format(instance))

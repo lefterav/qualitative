@@ -6,6 +6,7 @@ from featuregenerator.featuregenerator import FeatureGenerator
 from nltk.tokenize.punkt import PunktWordTokenizer
 from wer import wer
 from numpy import average
+import logging as log
 
 class WERFeatureGenerator(FeatureGenerator):
     """
@@ -26,7 +27,11 @@ class WERFeatureGenerator(FeatureGenerator):
         @return: dictionary containing lenght attribute 
         """
         target = target.get_string()
-        ref = parallelsentence.get_reference().get_string()
+        try:
+            ref = parallelsentence.get_reference().get_string()
+        except:
+            log.error("No reference. Aborting WER calculation")
+            return {}
         #ef_tokens = PunktWordTokenizer().tokenize(ref_untokenized)
         #print ref_untokenized
         #print target_untokenized

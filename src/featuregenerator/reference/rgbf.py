@@ -80,7 +80,10 @@ class RgbfGenerator(FeatureGenerator):
         @rtype: {str: object, ... } 
         """
         target_string = simplesentence.get_string()
-        ref_string = parallelsentence.ref.get_string()
+        try:
+            ref_string = parallelsentence.ref.get_string()
+        except:
+            return {}
          
         atts = self.process_string(target_string, ref_string)
         return atts
