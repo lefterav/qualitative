@@ -8,6 +8,7 @@ from sentence.dataset import DataSet
 from dataprocessor.input.xmlreader import XmlReader
 from dataprocessor.output.xmlwriter import XmlWriter
 from featuregenerator import FeatureGenerator
+from collections import OrderedDict
 #from abc import ABCMeta
 from sys import stderr
 
@@ -35,7 +36,7 @@ class LanguageFeatureGenerator(FeatureGenerator):
         It receives a source simple sentence and returns a list of source features. 
         """
 
-        attributes = {}
+        attributes = OrderedDict()
         src_lang = parallelsentence.get_attribute("langsrc") #TODO: make this format independent by adding it as an attribute of the sentence objects
         if src_lang == self.lang:
             attributes = self.get_features_simplesentence(simplesentence, parallelsentence)
@@ -46,7 +47,7 @@ class LanguageFeatureGenerator(FeatureGenerator):
         Function that falls back to the general simple sentence feature generation, only if the language is supported by the feature generator 
         It receives a target simple sentence and returns a list of target features. 
         """
-        attributes = {}
+        attributes = OrderedDict()
         src_lang = parallelsentence.get_attribute("langtgt") #TODO: make this format independent by adding it as an attribute of the sentence objects
         if src_lang == self.lang:
             attributes = self.get_features_simplesentence(simplesentence, parallelsentence)

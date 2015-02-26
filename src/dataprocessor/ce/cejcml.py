@@ -144,6 +144,8 @@ class CEJcmlReader(DataReader):
         tgt_text = ""
         ref_attributes = {}    
 
+        counter = 0
+
         for event, elem in context:
             #new sentence: get attributes
             if event == "start" and elem.tag == self.TAG_SENT:
@@ -181,12 +183,16 @@ class CEJcmlReader(DataReader):
 
             elif event == "end" and elem.tag in self.TAG_SENT:
                 source = SimpleSentence(src_text, source_attributes)
+                counter += 1
                 ref = None
                 if ref_text:
                     #log.info("Adding reference text {}".format(ref_text))
                     ref = SimpleSentence(ref_text, ref_attributes)
                 else:
-                    log.warning("Reference is none in sentence {}".format(attributes["judgement_id"]))
+                    try:
+                        log.warning("Reference is none in {} id:{}".format(self.input_filename, attributes["judgement_id"]))
+                    except KeyError:
+                        log.warning("Reference is none in {}:{}".format(self.input_filename, counter))
                 parallelsentence = ParallelSentence(source, targets, ref, attributes)
                 yield parallelsentence
             root.clear() 
@@ -225,17 +231,20 @@ class CEJcmlReader(DataReader):
     def _print_statistics(self, key, values, fileobject=sys.stdout, show_discrete=False):
         try:
             values = asarray([float(v) for v in values])
-            fileobject.write("{}\t{}\t{:5.3f}\t{:5.3f}\t{:5.3f}\t{:5.3f}\n".format(key,
-                len(values),                                                  
-                average(values),
-                std(values),
-                min(values),
-                max(values),
-            ))
-        except ValueError:
-            log.warning("Could not calculate vector")
-            if show_discrete:
-                fileobject.write( "{}\tdisc\n".format(key))
+        except:
+            return
+
+        f = {}
+        functions = [len, average, std, min, max]
+        for func in functions:
+                try:
+                    f[func.__name__] = func(values)
+                except:
+                    f[func.__name__] = -1
+            
+        display = "\t".join(["{:5.3f}".format(value) for name, value in f.iteritems()])
+
+        fileobject.write("{}\t{}\n".format(key,display))
    
     
   

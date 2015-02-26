@@ -185,7 +185,7 @@ class RankingExperiment(PyExperimentSuite):
         """
         class_name = params["class_name"]
         
-        if class_name.startswith("ref-"):
+        if "rank" not in class_name:
             invert_ranks = True
         
         scores = OrderedDict()
@@ -208,6 +208,10 @@ class RankingExperiment(PyExperimentSuite):
     def evaluate_selection(self, params, rep):
         refscores = OrderedDict()
         target_language = params["langpair"].split("-")[1]
+        if "rank" in params["class_name"]:
+            function=min
+        else:
+            function=max
         
         for i, _ in enumerate(self.testset_filenames):
             testset = CEJcmlReader(self.testset_output_soft[i], all_general=True, all_target=True)
@@ -216,6 +220,7 @@ class RankingExperiment(PyExperimentSuite):
                                                 out_filename="testset.{}.soft.sel.txt".format(i),
                                                 ref_filename="testset.{}.ref.txt".format(i),
                                                 language=target_language,
+                                                function=function
                                                 )
             refscores.update(_dictprefix(refscores_soft, '{}.soft'.format(i)))
             

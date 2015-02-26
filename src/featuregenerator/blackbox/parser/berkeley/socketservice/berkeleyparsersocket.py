@@ -200,7 +200,7 @@ if __name__ == "__main__":
     gatewayclient = GatewayClient('localhost', socket_no)
     gateway = JavaGateway(gatewayclient, auto_convert=True, auto_field=True)
 
-    bps = BerkeleyParserSocket("/home/Eleftherios Avramidis/tools/berkeleyparser/grammars/eng_sm6.gr", gateway)
+    bps = BerkeleyParserSocket("/home/elav01/tools/berkeleyparser/grammars/eng_sm6.gr", gateway)
 #bps2 = BerkeleyParserSocket("/home/Eleftherios Avramidis/taraxu_tools/berkeleyParser/grammars/eng_sm6.gr", "/home/Eleftherios Avramidis/workspace/TaraXUscripts/src/support/berkeley-server/lib/BerkeleyParser.jar", "/usr/share/py4j/py4j0.7.jar")
 #print bps2.parse("This is a sentence")
 #bps2.close()
