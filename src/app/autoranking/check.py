@@ -43,8 +43,11 @@ def retrieve_results(mysuite, path, reps = [0]):
     
     #browse app directories one by one
     for exp in exps:
-        values = mysuite.get_histories_over_repetitions(exp=exp, tags='all', aggregate=mean)
-        values_std = mysuite.get_histories_over_repetitions(exp=exp, tags='all', aggregate=std)
+        try:
+            values = mysuite.get_histories_over_repetitions(exp=exp, tags='all', aggregate=mean)
+            values_std = mysuite.get_histories_over_repetitions(exp=exp, tags='all', aggregate=std)
+        except ValueError:
+            continue
         values_std = OrderedDict([("{}_std".format(k),v) for k,v in values_std.iteritems()])
         
         #values_rep = mysuite.get_histories_over_repetitions(exp=exp, tags='all', aggregate=list)

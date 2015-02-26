@@ -13,7 +13,7 @@ Todo:
 
 from pexpect import spawn
 from time import sleep
-import os, re
+import os, re, sys
 import logging as log
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 from collections import OrderedDict
@@ -37,6 +37,7 @@ class BitPar(LanguageFeatureGenerator):
                 timeout=30,
                 rootsymbol='TOP',
                 n=100):
+        n=10
         path = os.path.join(path, "bitpar")
         command_template = "{path} -q -b {n} -vp -s {rootsymbol} -u {unknownwords} -w {openclassdfsa} {grammar} {lexicon}".format(path=path,
                                                                                                                                 n=n,
@@ -175,8 +176,8 @@ class BitParChartParser:
                 log.debug("Characters: {}".format(chars))
                 output.append(chars)
             except  Exception as inst:
-                log.error(type(inst))
-                log.error(inst)
+                log.debug(type(inst))
+                log.debug(inst)
                 log.warning("BitParChartParser: exception caused by sentence '{}'".format(sent.strip().replace("\n", " ")))
                 break
             if not chars.endswith("\r\n\r\n"):
@@ -261,20 +262,21 @@ class BatchProcessor:
 
     def process_source_batch(self, input_filename, output_filename):
         input_textfilename = self.source_batch_to_textfile(input_filename)
-        _, output_textfilename = mkstemp(suffix=".src.out", prefix="tmp_", dir=self.tmpdir)
+        #_, output_textfilename = mkstemp(suffix=".src.out", prefix="tmp_", dir=self.tmpdir)
+        output_textfilename = output_filename.replace(".jcml", ".bit.out")
         
-        log.error(" ".join(self.command))
-        log.error(input_textfilename)
-        log.error(output_textfilename)
+        log.debug(" ".join(self.command))
+        log.debug(input_textfilename)
+        log.debug(output_textfilename)
         
         check_call(self.command, 
                 stdin=open(input_textfilename), 
                 stdout=open(output_textfilename, 'w'))
 
-        #os.unlink(input_textfilename)
         features = self.get_features_batch(output_textfilename)
-        #os.unlink(output_textfilename)
         self._add_features_to_source_batch(input_filename, output_filename, features)
+        #os.unlink(input_textfilename)
+        #os.unlink(output_textfilename)
 
     def source_batch_to_textfile(self, input_filename):
         raise NotImplementedError
@@ -282,8 +284,14 @@ class BatchProcessor:
     def _add_features_to_source_batch(self, input_filename, output_filename, features=[]):
         input_batch = self.reader(input_filename)
         output_batch = self.writer(output_filename)
+        counter = 0
         for parallelsentence in input_batch.get_parallelsentences():
-            sentence_features = features.next()
+            counter+=1
+            try:
+                sentence_features = features.next()
+            except:
+                log.error("Bitpar: Sentence features for source less than expected in file {}:{}".format(input_filename, counter))
+                sentence_features = {}
             parallelsentence.src.attributes.update(sentence_features)
             output_batch.add_parallelsentence(parallelsentence)        
         output_batch.close()
@@ -291,7 +299,8 @@ class BatchProcessor:
 
     def process_target_batch(self, input_filename, output_filename):
         input_textfilename = self.target_batch_to_textfile(input_filename)
-        _, output_textfilename = mkstemp(suffix=".tgt.out", prefix="tmp_", dir=self.tmpdir)
+        #_, output_textfilename = mkstemp(suffix=".tgt.out", prefix="tmp_", dir=self.tmpdir)
+        output_textfilename = output_filename.replace(".jcml", ".bit.out")
                 
         check_call(self.command, 
                 stdin=open(input_textfilename), 
@@ -306,11 +315,17 @@ class BatchProcessor:
         raise NotImplementedError
 
     def _add_features_to_target_batch(self, input_filename, output_filename, features=[]):
+        counter=0
         input_batch = self.reader(input_filename)
         output_batch = self.writer(output_filename)
         for parallelsentence in input_batch.get_parallelsentences():
-            for target in parallelsentence.tgt:
-                sentence_features = features.next()
+            counter+=1
+            for t, target in enumerate(parallelsentence.tgt):
+                try:
+                    sentence_features = features.next()
+                except:
+                    log.error("Bitpar: Sentence features for target less than expected in file {}:{}:{}".format(input_filename, counter, t))
+                    sentence_features = {}
                 #log.error(sentence_features)
                 target.attributes.update(sentence_features)
             #parallelsentence.tgt = [tgt.attributes.update(features.next()) for tgt in parallelsentence.tgt]
@@ -345,6 +360,7 @@ class BitParserBatchProcessor(BatchProcessor):
         textfile = codecs.open(output_textfilename, 'r', 'utf-8', errors='replace')
         
         output = textfile.read()
+        output = output.replace("\r", "\n")
         output = re.sub(r"\\([/{}\[\]<>'\$])", r"\1", output).split("\n\n")[:-1]
         #result = []
         for a in output:
@@ -359,25 +375,36 @@ class BitParserBatchProcessor(BatchProcessor):
             
     
     def source_batch_to_textfile(self, input_filename):
-        _, input_textfilename = mkstemp(suffix=".src.txt", prefix="tmp_bitpar_", dir=self.tmpdir)
+        #_, input_textfilename = mkstemp(suffix=".src.txt", prefix="tmp_bitpar_", dir=self.tmpdir)
+        input_textfilename = input_filename.replace(".jcml", ".bit.in")
         input_textfile = codecs.open(input_textfilename, 'w', 'utf-8', errors='replace')        
         
         input_batch = self.reader(input_filename)
         for parallelsentence in input_batch.get_parallelsentences():
-            #print (parallelsentence.get_source().get_string(), file=input_textfile)
-            converted_line = u"\n".join(parallelsentence.get_source().get_string().strip().split())
+            source_string = parallelsentence.get_source().get_string().strip()
+            #if line is empty, give something so that it does not get misaligned.
+            if source_string == "": 
+                source_string = "."
+                log.warning("bitparser: Empty source sentence while batching")
+            converted_line = u"\n".join(source_string.split())
             input_textfile.write(u"{}\n\n\n".format(converted_line))
         input_textfile.close()
         return input_textfilename
 
     def target_batch_to_textfile(self, input_filename):
-        _, input_textfilename = mkstemp(".tgt.txt", "tmp_bitpar_", dir=self.tmpdir)
+        #_, input_textfilename = mkstemp(".tgt.txt", "tmp_bitpar_", dir=self.tmpdir)
+        input_textfilename = input_filename.replace(".jcml", ".bit.in")
         input_textfile = codecs.open(input_textfilename, 'w', "utf-8", errors='replace')        
         
         input_batch = self.reader(input_filename)
         for parallelsentence in input_batch.get_parallelsentences():
             for target in parallelsentence.get_translations():
-                converted_line = u"\n".join(target.get_string().strip().split())
+                target_string = target.get_string().strip()
+                #if line is empty, give something so that it does not get misaligned.
+                if target_string == "":
+                    target_string = "."
+                    log.warning("bitparser: Empty target sentence while batching")
+                converted_line = u"\n".join(target_string.split())
                 input_textfile.write(u"{}\n\n\n".format(converted_line))
                 #print(target.get_string(), file=input_textfile)
         input_textfile.close()
@@ -417,7 +444,8 @@ if __name__ == '__main__':
 # 
 #     
 #===============================================================================
-    path = "/home/lefterav/tools/bitpar/GermanParser/"
+#    path = "/home/elav01/tools/bitpar/GermanParser/"
+    path = "/project/qtleap/software/bitpar/GermanParser/"
     parser = BitParserBatchProcessor(
                                     path=os.path.join(path,"bin"),
                                     lexicon_filename=os.path.join(path,"Tiger/lexicon"),
@@ -425,9 +453,9 @@ if __name__ == '__main__':
                                     unknownwords=os.path.join(path,"Tiger/open-class-tags"),
                                     openclassdfsa=os.path.join(path,"Tiger/wordclass.txt"),
                                     tmpdir=os.path.join(path,"tmp"),
-                                    n=500)
+                                    n=1)
                                     
     
-    input_filename = os.path.join(path, "tmp", "0.trainingset.dev.jcml")
-    output_filename = os.path.join(path, "tmp", "0.trainingset.dev.out.jcml")
+    input_filename = sys.argv[1] #os.path.join(path, "tmp", "0.trainingset.dev.jcml")
+    output_filename = sys.argv[2] #os.path.join(path, "tmp", "0.trainingset.dev.out.jcml")
     parser.process_target_batch(input_filename, output_filename)
