@@ -18,10 +18,14 @@ from dataprocessor.ce.cejcml import CEJcmlReader
 from sentence import scoring
 import cPickle as pickle
 from evaluation.selection.set import evaluate_selection
+from util.jvm import JVM
 
 class RankingExperiment(PyExperimentSuite):
     
     #restore_supported = True
+    def __init__(self, jvm):
+	self.jvm = jvm
+	super(RankingExperiment, self).__init__()
     
     def reset(self, params, rep):
         #self.restore_supp evaluation.selection.set import evaluate_selectionsorted = True
@@ -220,7 +224,8 @@ class RankingExperiment(PyExperimentSuite):
                                                 out_filename="testset.{}.soft.sel.txt".format(i),
                                                 ref_filename="testset.{}.ref.txt".format(i),
                                                 language=target_language,
-                                                function=function
+                                                function=function,
+						jvm=jvm
                                                 )
             refscores.update(_dictprefix(refscores_soft, '{}.soft'.format(i)))
             
@@ -229,6 +234,7 @@ class RankingExperiment(PyExperimentSuite):
                                                 rank_name="rank_hard",
                                                 out_filename="testset.{}.hard.sel.txt".format(i),
                                                 language=target_language,
+						jvm=jvm
                                                 )
             refscores.update(_dictprefix(refscores_hard, '{}.hard'.format(i)))
             
@@ -278,7 +284,9 @@ if __name__ == '__main__':
 #    logging.basicConfig(filename='autoranking-{}.log'.format(now),level=logging.DEBUG, format=FORMAT)
 #    sys.stderr = StreamToLogger(logging.getLogger('STDERR'), logging.INFO)
 #    sys.stdout = StreamToLogger(logging.getLogger('STDOUT'), logging.INFO)
-    mysuite = RankingExperiment();
+    jvm = JVM(None)
+    mysuite = RankingExperiment(jvm);
+    
     
     mysuite.start()
     logging.info("Done!")

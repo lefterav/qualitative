@@ -23,14 +23,18 @@ def evaluate_selection(parallelsentences,
                         default_system=None,
                         out_filename=None,
                         ref_filename=None,
-                        language=None):
+                        language=None,
+                        jvm=None):
     
     selected_sentences = []
     original_sentences = defaultdict(list)
     results = OrderedDict()
     selected_systems = defaultdict(int) #collect the winnings of each system
     
-    gateway = JavaGateway(GatewayClient('localhost', JVM(None).socket_no), auto_convert=True, auto_field=True)
+    if not jvm:
+        jvm = JVM(None)
+    
+    gateway = JavaGateway(GatewayClient('localhost', jvm.socket_no), auto_convert=True, auto_field=True)
  
     
     
