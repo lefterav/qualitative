@@ -24,8 +24,8 @@ class RankingExperiment(PyExperimentSuite):
     
     #restore_supported = True
     def __init__(self, jvm):
-	self.jvm = jvm
-	super(RankingExperiment, self).__init__()
+        self.jvm = jvm
+        super(RankingExperiment, self).__init__()
     
     def reset(self, params, rep):
         #self.restore_supp evaluation.selection.set import evaluate_selectionsorted = True
@@ -225,7 +225,7 @@ class RankingExperiment(PyExperimentSuite):
                                                 ref_filename="testset.{}.ref.txt".format(i),
                                                 language=target_language,
                                                 function=function,
-						jvm=jvm
+                                                jvm=self.jvm
                                                 )
             refscores.update(_dictprefix(refscores_soft, '{}.soft'.format(i)))
             
@@ -234,7 +234,7 @@ class RankingExperiment(PyExperimentSuite):
                                                 rank_name="rank_hard",
                                                 out_filename="testset.{}.hard.sel.txt".format(i),
                                                 language=target_language,
-						jvm=jvm
+                                                jvm=self.jvm
                                                 )
             refscores.update(_dictprefix(refscores_hard, '{}.hard'.format(i)))
             
