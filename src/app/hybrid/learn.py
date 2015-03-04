@@ -22,10 +22,11 @@ from util.jvm import JVM
 
 class RankingExperiment(PyExperimentSuite):
     
-    #restore_supported = True
+    restore_supported = True
     def __init__(self, jvm):
         self.jvm = jvm
         super(RankingExperiment, self).__init__()
+        self.restore_supported = True
     
     def reset(self, params, rep):
         #self.restore_supp evaluation.selection.set import evaluate_selectionsorted = True
@@ -257,6 +258,19 @@ class RankingExperiment(PyExperimentSuite):
         if n==4:
             ret.update(self.evaluate_selection(params, rep))
         return ret
+    
+    def restore_state(self, params, rep, n):
+        if n < 2:
+            self.model_filename = "{}.model.dump".format(rep)
+        
+        if n < 3:
+            for i, testset_input in enumerate(self.testset_filenames):                
+                #restore the names of the test set files
+                self.testset_output_soft[i] = "{}.{}.testset_annotated_soft.jcml".format(rep, i)
+                self.testset_output_hard[i] = "{}.{}.testset_annotated_hard.jcml".format(rep, i)
+
+        
+    
 
 def _dictprefix(dictionary, prefix):
     return OrderedDict([("{}_{}".format(prefix, key),value) for key,value in dictionary.iteritems()])
