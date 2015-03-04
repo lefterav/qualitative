@@ -98,10 +98,10 @@ class MeteorGenerator(LanguageFeatureGenerator):
             aggregated_stats.addStats(stats)
             
         self.scorer.computeMetrics(aggregated_stats)
-        return {'meteor_precision' : '{:.4}'.format(stats.precision), 
-                'meteor_recall' : '{:.4}'.format(stats.recall), 
-                'meteor_fragPenalty' : '{:.4}'.format(stats.fragPenalty),  
-                'meteor_score' : '{:.4}'.format(stats.score)}
+        return {'meteor_precision' : '{:.4}'.format(aggregated_stats.precision), 
+                'meteor_recall' : '{:.4}'.format(aggregated_stats.recall), 
+                'meteor_fragPenalty' : '{:.4}'.format(aggregated_stats.fragPenalty),  
+                'meteor_score' : '{:.4}'.format(aggregated_stats.score)}
     
     def score_sentences(self, sentence_tuples):
         """
