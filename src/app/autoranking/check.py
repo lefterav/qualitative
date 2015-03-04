@@ -44,7 +44,9 @@ def retrieve_results(mysuite, path, reps = [0]):
     #browse app directories one by one
     for exp in exps:
         try:
+            logging.debug("Getting histories over repetitions for mean")
             values = mysuite.get_histories_over_repetitions(exp=exp, tags='all', aggregate=mean)
+            logging.debug("Getting histories over repetitions for std")
             values_std = mysuite.get_histories_over_repetitions(exp=exp, tags='all', aggregate=std)
         except ValueError:
             continue
