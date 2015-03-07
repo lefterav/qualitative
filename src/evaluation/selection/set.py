@@ -75,11 +75,13 @@ def evaluate_selection(parallelsentences,
                  BleuGenerator(),
                  RgbfGenerator(),
                  WERFeatureGenerator(),
-                 Hjerson()]
+                 Hjerson(lang=language)
+                 ]
         if language and gateway:
             metrics.append(MeteorGenerator(language, gateway))
     
     for metric in metrics:
+        log.info("Running metric: {}.".format(metric.__class__.__name__))  
         metric_results = metric.analytic_score_sentences(selected_sentences)
         results.update(metric_results)
         
