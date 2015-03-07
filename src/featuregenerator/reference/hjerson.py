@@ -114,7 +114,11 @@ class Hjerson(FeatureGenerator):
         
         res = defaultdict(int)
         reflength = 0
+        i = 0
         for hypothesis, reference in sentence_tuples:
+            i+=1 
+            if i % 100 == 0:
+                logging.info("Hjerson analyzed {} sentences".format(i))
             results = self.get_features_strings(hypothesis, [reference])
             for errortype in ['aMissErr', 'aExtErr', 'arLexErr', 'arRer']:
                 res[errortype] += results[errortype]
