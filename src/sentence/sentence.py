@@ -9,6 +9,7 @@ Provides the class which contains the information for a simple (shallow) sentenc
 from copy import deepcopy
 import logging as log
 from collections import OrderedDict
+import unicodedata
 
 class SimpleSentence(object):
     """
@@ -79,7 +80,7 @@ class SimpleSentence(object):
             if sub:
                 return sub
             else:
-                raise KeyError("Could not find attribute '{}' in sentence '{} ...'".format(key, self.string[:100]))              
+                raise KeyError("Could not find attribute '{}' in sentence '{} ...'".format(key, unicodedata.normalize('NFKD', unicode(self.string[:100])).encode('ascii','ignore')))              
     
     def add_attributes(self, attributes):
         self.attributes.update(attributes)
