@@ -455,7 +455,10 @@ class SkRanker(Ranker, SkLearner):
         else:
             attribute1 = "prob_-1"
             attribute2 = "prob_1"
-            ranked_sentence = sentenceset.get_multiranked_sentence_with_soft_ranks(attribute1, attribute2, critical_attribute, new_rank_name)
+            try:
+                ranked_sentence = sentenceset.get_multiranked_sentence_with_soft_ranks(attribute1, attribute2, critical_attribute, new_rank_name)
+            except:
+                raise ValueError("Sentenceset {} from {} caused exception".format(classified_pairwise_parallelsentences, parallelsentence))
         return ranked_sentence, resultvector
 
 if __name__ == '__main__':
