@@ -260,10 +260,31 @@ class RankingExperiment(PyExperimentSuite):
         return ret
     
     def restore_state(self, params, rep, n):
-        if n < 2:
+        training_sets = params["training_sets"].format(**params).split(',')
+        training_path = params["training_path"].format(**params)
+        dataset_filename = "{}.dataset.jcml".format(rep)
+        #if cross validation is enabled
+        if params["test"] == "crossvalidation":
+            self.trainingset_filename = "{}.trainingset.jcml".format(rep)
+            testset_filename = "{}.testset.jcml".format(rep)
+            self.testset_filenames = [testset_filename]
+        #if a list of test-sets is given for testing upon
+        elif params["test"] == "list":
+            self.trainingset_filename = dataset_filename
+            testset_filenames = params["test_sets"].format(**params).split(',')
+            self.testset_filenames = [os.path.join(params["test_path"], f) for f in testset_filenames]
+        #if no testing is required
+        elif params["test"] == "None":
+            self.trainingset_filename = dataset_filename
+            self.testset_filenames = []
+
+        if n > 1:
             self.model_filename = "{}.model.dump".format(rep)
         
-        if n < 3:
+        if n > 2:
+            self.testset_output_soft = {}
+            self.testset_output_hard = {}
+
             for i, testset_input in enumerate(self.testset_filenames):                
                 #restore the names of the test set files
                 self.testset_output_soft[i] = "{}.{}.testset_annotated_soft.jcml".format(rep, i)
@@ -304,5 +325,6 @@ if __name__ == '__main__':
     
     mysuite.start()
     logging.info("Done!")
+    jvm.terminate()
     #params = params =  {'params_svmeasylearner': "{'verbose':True}", 'test_path': '/home/dupo/taraxu_data/qualitative/', 'class_name': 'rank', 'iterations': 4, 'path': '/home/dupo/taraxu_data/qualitative/', 'langpair': 'de-en', 'discrete_attributes': 'src_reuse_status,src_terminologyAdmitted_status,src_total_status,src_spelling_status,src_style_status,src_grammar_status,src_terminology_status,src_resultStats_projectStatus,tgt-1_reuse_status,tgt-1_terminologyAdmitted_status,tgt-1_total_status,tgt-1_spelling_status,tgt-1_style_status,tgt-1_grammar_status,tgt-1_terminology_status,tgt-1_resultStats_projectStatus,tgt-2_reuse_status,tgt-2_terminologyAdmitted_status,tgt-2_total_status,tgt-2_spelling_status,tgt-2_style_status,tgt-2_grammar_status,tgt-2_terminology_status,tgt-2_resultStats_projectStatus', 'params_logreg': "{'stepwise_lr':True}", 'learner': 'LogRegLearner', 'experiment': 'grid', 'test': 'crossvalidation', 'test_sets': 'wmt2008-de-en-jcml-rank.all.analyzed.f.dev.jcml', 'attset_24_source': 'l_tokens', 'hidden_attributes': 'tgt-1_berkeley-tree,tgt-2_berkeley-tree,src_berkeley-tree,rank_diff,tgt-1_ref-lev,tgt-1_ref-meteor_score,tgt-1_ref-meteor_fragPenalty,tgt-1_ref-meteor_recall,tgt-1_ref-meteor_precision,tgt-1_ref-bleu,tgt-2_ref-lev,tgt-2_ref-meteor_score,tgt-2_ref-meteor_fragPenalty,tgt-2_ref-meteor_recall,tgt-2_ref-meteor_precision,tgt-2_ref-bleu,tgt-1_rank,tgt-2_rank', 'repetitions': 1, 'attset_24_target': 'cross-meteor_score,l_tokens,parse-VP', 'training_path': '/home/elav01/taraxu_data/qualitative/', 'tempdir': '/home/elav01/taraxu_data/qualitative/tmp', 'bidirectional_pairs': True, 'ties': False, 'training_sets': 'wmt2008-de-en-jcml-rank.all.analyzed.f.dev.jcml', 'remove_infinite': False, 'name': 'dev/learnerLogRegLearnerattattset_24', 'meta_attributes': 'testset,judgement_id,langsrc,langtgt,ps1_judgement_id,ps2_judgement_id,id,tgt-1_score,tgt-1_system,tgt-2_score,tgt-2_system,document_id,judge_id,segment_id', 'attset_24_general': None, 'att': 'attset_24'}
     #mysuite.reset(params, 1)
