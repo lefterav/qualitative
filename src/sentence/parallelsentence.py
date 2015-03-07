@@ -396,13 +396,15 @@ class ParallelSentence(object):
                                                                  reference=self.ref,
                                                                  rank_name=class_name)
             if class_name:
-                class_value = self._get_class_pairwise(target1, target2, class_name, ties)
-                if class_value!=None:
+                class_value = self._get_class_pairwise(target1, target2, class_name, ties=False)
+                if class_value == 0 and not ties:
+                    logging.info("{}, skipped tie".format(systems))                               
+                elif class_value!= None:
                     rank_attname = pairwise_parallelsentence.rank_name
                     pairwise_parallelsentence.attributes[rank_attname] = class_value
                     yield pairwise_parallelsentence 
-                else:
-                    logging.info("{}, skipped tie".format(systems))                               
+                else: 
+                    yield pairwise_parallelsentence 
         
 
     def get_pairwise_parallelsentences_old(self, replacement = True, **kwargs):
