@@ -24,17 +24,16 @@ def evaluate_selection(parallelsentences,
                         out_filename=None,
                         ref_filename=None,
                         language=None,
-                        jvm=None):
+                        gateway=None):
     
     selected_sentences = []
     original_sentences = defaultdict(list)
     results = OrderedDict()
     selected_systems = defaultdict(int) #collect the winnings of each system
     
-    if not jvm:
-        jvm = JVM(None)
+    if not gateway:
+        gateway = JVM(None)
     
-    gateway = JavaGateway(GatewayClient('localhost', jvm.socket_no), auto_convert=True, auto_field=True)
  
     
     
@@ -96,6 +95,7 @@ def evaluate_selection(parallelsentences,
     if ref_filename:
         with open(ref_filename, 'w') as f:
             f.write(os.linesep.join([r[0] for _,r in selected_sentences]))
+
 
     return results
 
