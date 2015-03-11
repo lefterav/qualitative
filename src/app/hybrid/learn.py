@@ -19,17 +19,28 @@ from sentence import scoring
 import cPickle as pickle
 from evaluation.selection.set import evaluate_selection
 from util.jvm import JVM
+from py4j.java_gateway import GatewayClient, JavaGateway
+
 
 class RankingExperiment(PyExperimentSuite):
     
     restore_supported = True
-    def __init__(self, jvm):
-        self.jvm = jvm
-        super(RankingExperiment, self).__init__()
+    def __init__(self):
+        self.jvm = JVM(None)
+        import time
+        time.sleep(10)
+        
         self.restore_supported = True
+        super(RankingExperiment, self).__init__()
     
     def reset(self, params, rep):
         #self.restore_supp evaluation.selection.set import evaluate_selectionsorted = True
+        socket_no = self.jvm.socket_no
+        gatewayclient = GatewayClient('localhost', socket_no)
+        gateway = JavaGateway(gatewayclient, auto_convert=True, auto_field=True)
+        logging.info("Initialized global Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
+        self.gateway = gateway
+        
         logging.info("Running in {}".format(os.getcwd()))
         logging.debug("params = {}".format(params))        
         #=======================================================================
@@ -190,17 +201,25 @@ class RankingExperiment(PyExperimentSuite):
         """
         class_name = params["class_name"]
         
+        #set default values for inverting rank, if not provided as param
         if "rank" not in class_name:
             invert_ranks = True
+        else:
+            invert_ranks = False
         
+        #otherwise load param setting
+        invert_ranks = params.setdefault("invert_ranks", invert_ranks)
+
+        #empty ordered dict to load scores
         scores = OrderedDict()
         
         for i, _ in enumerate(self.testset_filenames):
-        
+            #measure ranking scores for soft recomposition
             testset = CEJcmlReader(self.testset_output_soft[i], all_general=True, all_target=True) 
             scores_soft = scoring.get_metrics_scores(testset, "rank_soft", class_name , prefix="{}.soft".format(i), invert_ranks=invert_ranks)
             scores.update(scores_soft)
-                   
+            
+            #ranking scores for hard recomposition
             testset = CEJcmlReader(self.testset_output_hard[i], all_general=True, all_target=True)        
             scores_hard = scoring.get_metrics_scores(testset, "rank_hard", class_name , prefix="{}.hard".format(i), invert_ranks=invert_ranks)
             
@@ -226,7 +245,7 @@ class RankingExperiment(PyExperimentSuite):
                                                 ref_filename="testset.{}.ref.txt".format(i),
                                                 language=target_language,
                                                 function=function,
-                                                jvm=self.jvm
+                                                gateway=self.gateway
                                                 )
             refscores.update(_dictprefix(refscores_soft, '{}.soft'.format(i)))
             
@@ -235,7 +254,7 @@ class RankingExperiment(PyExperimentSuite):
                                                 rank_name="rank_hard",
                                                 out_filename="testset.{}.hard.sel.txt".format(i),
                                                 language=target_language,
-                                                jvm=self.jvm
+                                                gateway=self.gateway
                                                 )
             refscores.update(_dictprefix(refscores_hard, '{}.hard'.format(i)))
             
@@ -249,14 +268,14 @@ class RankingExperiment(PyExperimentSuite):
         logging.info("Repetition: {}, Iteration: {}".format(rep, n))
         if n==0:
             self.prepare_data(params, rep)
-        if n==1:
-            ret.update(self.train(params, rep))
-        if n==2:
-            ret.update(self.test(params, rep))
-        if n==3:
-            ret.update(self.evaluate_ranking(params, rep))
-        if n==4:
-            ret.update(self.evaluate_selection(params, rep))
+        elif n==1:
+            ret = self.train(params, rep)
+        elif n==2:
+            ret = self.test(params, rep)
+        elif n==3 and params.setdefault("evaluate_ranking", True):
+            ret = self.evaluate_ranking(params, rep)
+        elif n==4:
+            ret = self.evaluate_selection(params, rep)
         return ret
     
     def restore_state(self, params, rep, n):
@@ -319,12 +338,11 @@ if __name__ == '__main__':
 #    logging.basicConfig(filename='autoranking-{}.log'.format(now),level=logging.DEBUG, format=FORMAT)
 #    sys.stderr = StreamToLogger(logging.getLogger('STDERR'), logging.INFO)
 #    sys.stdout = StreamToLogger(logging.getLogger('STDOUT'), logging.INFO)
-    jvm = JVM(None)
-    mysuite = RankingExperiment(jvm);
+    
+    mysuite = RankingExperiment();
     
     
     mysuite.start()
     logging.info("Done!")
-    jvm.terminate()
     #params = params =  {'params_svmeasylearner': "{'verbose':True}", 'test_path': '/home/dupo/taraxu_data/qualitative/', 'class_name': 'rank', 'iterations': 4, 'path': '/home/dupo/taraxu_data/qualitative/', 'langpair': 'de-en', 'discrete_attributes': 'src_reuse_status,src_terminologyAdmitted_status,src_total_status,src_spelling_status,src_style_status,src_grammar_status,src_terminology_status,src_resultStats_projectStatus,tgt-1_reuse_status,tgt-1_terminologyAdmitted_status,tgt-1_total_status,tgt-1_spelling_status,tgt-1_style_status,tgt-1_grammar_status,tgt-1_terminology_status,tgt-1_resultStats_projectStatus,tgt-2_reuse_status,tgt-2_terminologyAdmitted_status,tgt-2_total_status,tgt-2_spelling_status,tgt-2_style_status,tgt-2_grammar_status,tgt-2_terminology_status,tgt-2_resultStats_projectStatus', 'params_logreg': "{'stepwise_lr':True}", 'learner': 'LogRegLearner', 'experiment': 'grid', 'test': 'crossvalidation', 'test_sets': 'wmt2008-de-en-jcml-rank.all.analyzed.f.dev.jcml', 'attset_24_source': 'l_tokens', 'hidden_attributes': 'tgt-1_berkeley-tree,tgt-2_berkeley-tree,src_berkeley-tree,rank_diff,tgt-1_ref-lev,tgt-1_ref-meteor_score,tgt-1_ref-meteor_fragPenalty,tgt-1_ref-meteor_recall,tgt-1_ref-meteor_precision,tgt-1_ref-bleu,tgt-2_ref-lev,tgt-2_ref-meteor_score,tgt-2_ref-meteor_fragPenalty,tgt-2_ref-meteor_recall,tgt-2_ref-meteor_precision,tgt-2_ref-bleu,tgt-1_rank,tgt-2_rank', 'repetitions': 1, 'attset_24_target': 'cross-meteor_score,l_tokens,parse-VP', 'training_path': '/home/elav01/taraxu_data/qualitative/', 'tempdir': '/home/elav01/taraxu_data/qualitative/tmp', 'bidirectional_pairs': True, 'ties': False, 'training_sets': 'wmt2008-de-en-jcml-rank.all.analyzed.f.dev.jcml', 'remove_infinite': False, 'name': 'dev/learnerLogRegLearnerattattset_24', 'meta_attributes': 'testset,judgement_id,langsrc,langtgt,ps1_judgement_id,ps2_judgement_id,id,tgt-1_score,tgt-1_system,tgt-2_score,tgt-2_system,document_id,judge_id,segment_id', 'attset_24_general': None, 'att': 'attset_24'}
     #mysuite.reset(params, 1)
