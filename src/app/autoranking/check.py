@@ -9,9 +9,11 @@ import argparse
 import sys
 import os
 import logging
+from decimal import Decimal
 from numpy import mean, std
 from collections import OrderedDict
 from fnmatch import fnmatch
+from operator import itemgetter
 
 """
 Gathers the results from the app folders created with python Experiment Suite
@@ -21,7 +23,7 @@ Gathers the results from the app folders created with python Experiment Suite
 
 
 
-def retrieve_results(mysuite, path, reps = [0]):
+def retrieve_results(mysuite, path, reps = [0], tags='all'):
     """
     Parallelizes and aligned the vectors provided by the Experiment Suite API
     @param mysuite: instance of the Experiment Suite or subclass
@@ -45,9 +47,9 @@ def retrieve_results(mysuite, path, reps = [0]):
     for exp in exps:
         try:
             logging.debug("Getting histories over repetitions for mean")
-            values = mysuite.get_histories_over_repetitions(exp=exp, tags='all', aggregate=mean)
+            values = mysuite.get_histories_over_repetitions(exp=exp, tags=tags, aggregate=mean)
             logging.debug("Getting histories over repetitions for std")
-            values_std = mysuite.get_histories_over_repetitions(exp=exp, tags='all', aggregate=std)
+            values_std = mysuite.get_histories_over_repetitions(exp=exp, tags=tags, aggregate=std)
         except ValueError:
             continue
         values_std = OrderedDict([("{}_std".format(k),v) for k,v in values_std.iteritems()])
@@ -122,24 +124,33 @@ def get_tabfile(results, preferred_params=[], preferred_scores=[], display_heade
     if display_header:
         print delimiter.join(preferred_params) + delimiter + delimiter.join(preferred_scores)
     
+    results = sorted(results, key=lambda result: result[0])
+    THREEPLACES = Decimal('0.001')
+    
     for params, values in results:
 
         #retain only the preferred params
         params = [str(params.setdefault(param_name,"None")) for param_name in preferred_params]
         
-        
         onlyvalues = []
         
         #collect a list with the values
         for key in preferred_scores:
+
             #extract from array, if possible
             try:
-                onlyvalues.append(str(values[key][0]))
-            except:
+                val = values[key][0]
+            except IndexError:
                 try:
-                    onlyvalues.append(str(values[key]))
+                    val = values[key]
                 except KeyError:
-                    onlyvalues.append('')
+                    val = ''
+
+            try:
+                val = Decimal(val).quantize(THREEPLACES)
+            except:
+                pass
+            onlyvalues.append(str(val))
                     
         print delimiter.join(params) + delimiter + delimiter.join(onlyvalues)
             
@@ -159,13 +170,13 @@ if __name__ == "__main__":
     parser.add_argument('--params', nargs='*',                   
                    help='Names of parameters to be displayed (default: all)')
     
-    parser.add_argument('--metrics', nargs='*',                   
+    parser.add_argument('--metrics', nargs='*', default='all',                   
                    help='Names of metrics to be displayed (default: all)')
     
     parser.add_argument('--config', nargs=1,                   
                    help='the configuration file to be checked')
                    
-    parser.add_argument('--logging', nargs="?", default = None,
+    parser.add_argument('--logging', nargs="?", default=None,
                    help='should logging be performed, if set to True writes the debug level to debug.log, ')
 
 
@@ -184,7 +195,7 @@ if __name__ == "__main__":
     preferred_params = args.params
     preferred_scores = args.metrics
     
-    results = retrieve_results(mysuite, path, reps)
+    results = retrieve_results(mysuite, path, reps, preferred_scores)
     get_tabfile(results, preferred_params, preferred_scores)
                 
         
