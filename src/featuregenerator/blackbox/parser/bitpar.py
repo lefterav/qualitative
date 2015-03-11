@@ -340,7 +340,7 @@ class BitParserBatchProcessor(BatchProcessor):
                 unknownwords,
                 openclassdfsa, 
                 timeout=30,
-                n=100,
+                n=1,
                 reader=None, 
                 writer=None,
                 tmpdir="/tmp",
