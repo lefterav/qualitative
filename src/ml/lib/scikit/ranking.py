@@ -4,28 +4,41 @@ Created on Sep 24, 2014
 
 @author: Eleftherios Avramidis
 '''
-from dataprocessor.ce.cejcml import CEJcmlReader
-import numpy as np
+
+#our modules
+from ml.lib.scikit.sklearn_utils import assert_number, assert_string
 from ml.ranking import Ranker
-from sklearn.svm import SVC
-from sklearn.ensemble import AdaBoostClassifier
-import logging as log
+from ml.lib.scikit.learn_model import optimize_model
+from evaluation_measures import mean_absolute_error, root_mean_squared_error
+from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentenceSet
+from dataprocessor.ce.cejcml import CEJcmlReader
 from sklearn_utils import scale_datasets_crossvalidation
+
+#generic
+import numpy as np
+import logging as log
+from collections import OrderedDict
+
+#scikit classifiers
+from sklearn.svm import SVC, LinearSVC
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import AdaBoostClassifier, RandomForestClassifier
 from sklearn.linear_model.randomized_l1 import RandomizedLasso
 from sklearn.ensemble.forest import ExtraTreesClassifier
-from ml.lib.scikit.sklearn_utils import assert_number, assert_string
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.lda import LDA
+from sklearn.qda import QDA
+
+#scikit others
 from sklearn.svm.classes import SVR
 from sklearn.linear_model.coordinate_descent import LassoCV
 from sklearn.linear_model.least_angle import LassoLars, LassoLarsCV
-
-from evaluation_measures import mean_absolute_error, root_mean_squared_error
-from sklearn.metrics.metrics import mean_squared_error, f1_score, precision_score, recall_score
-from ml.lib.scikit.learn_model import optimize_model
-from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentenceSet
 from sklearn.preprocessing.imputation import Imputer
 from sklearn import preprocessing
 from sklearn.preprocessing.data import StandardScaler
-
+from sklearn.metrics.metrics import mean_squared_error, f1_score, precision_score, recall_score
 
 def dataset_to_instances(filename, 
                          attribute_set=None,
@@ -95,7 +108,7 @@ def dataset_to_instances(filename,
             featurevectors.append(featurevector)
             class_values.append(class_value)
         
-        log.debug("Featurevectors {} before converting to numpy {}".format(len(featurevector), featurevectors))
+        log.debug("Featurevectors {} before converting to numpy {}".format(len(featurevectors), featurevectors))
 
         #convert to numpy
         newfeatures = np.array(featurevectors)
@@ -371,9 +384,16 @@ class SkRanker(Ranker, SkLearner):
                 return att_coefficients
         except AttributeError:
             pass
-        try: #adaboost
+        try: #adaboost etc
             params = self.classifier.get_params()
-            return params
+            numeric_params = OrderedDict()
+            for key, value in params.iteritems():
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+                numeric_params[key] = value
+            return numeric_params
         except:
             pass
         return {}
@@ -418,7 +438,11 @@ class SkRanker(Ranker, SkLearner):
             instance = np.nan_to_num(instance)
             #run classifier for this instance
             predicted_value = self.classifier.predict(instance)
-            distribution = dict(zip(self.classifier.classes_, self.classifier.predict_proba(instance)[0]))
+            try:
+                distribution = dict(zip(self.classifier.classes_, self.classifier.predict_proba(instance)[0]))
+            except AttributeError: 
+                #if classifier does not support per-class probability (e.g. LinearSVC) assign 0.5
+                distribution = dict([(cl, 0.5) for cl in self.classifier.classes_])
             log.debug("Distribution: {}".format(distribution))
             log.debug("Predicted value: {}".format(predicted_value))
             #even if we have a binary classifier, it may be that it cannot decide between two classes
