@@ -1,7 +1,7 @@
 import xmlrpclib
 from featuregenerator.reference.hjerson import Hjerson
 from featuregenerator.reference.rgbf import RgbfGenerator
-
+import logging as logger
 
 
 class Worker:
@@ -10,37 +10,68 @@ class Worker:
     """
     def translate(self, string):
         """
-	Translate given string and return the result and any translation information
-	@param string: the string to be translated
-	@type string: string
-	@return translated_string, translation_info
-	@rtype: string, dict of (string, float) or (string, int) or (string, string)
-	"""
-	raise NotImplementedError("This function needs to be implemented by a subclass of Worker")
+    	Translate given string and return the result and any translation information
+    	@param string: the string to be translated
+    	@type string: string
+    	@return translated_string, translation_info
+    	@rtype: string, dict of (string, float) or (string, int) or (string, string)
+    	"""
+        raise NotImplementedError("This function needs to be implemented by a subclass of Worker")
 
 
-class MosesWorker:
+class MosesWorker(Worker):
     """
     Wrapper class for Moses server
     """
     def __init__(self, uri, **params):
         """
-	Initialize connection to Moses server
-	@param uri: ip address or url of mosesserver followed by : and the port number
-	@type uri: string
-	"""
+    	Initialize connection to Moses server
+    	@param uri: ip address or url of mosesserver followed by : and the port number
+    	@type uri: string
+    	"""
         #initialize XML rpc client
-	#throw error if Moses server not started
+        #throw error if Moses server not started
         #self.server = xmlrpc.initialize("{}:{}".format(address, port))
-	self.server = xmlrpclib.ServerProxy(uri)
+        self.server = xmlrpclib.ServerProxy(uri)
 
     def translate(self, string):
         #send request to moses client
-        #response = self.server.translate(string)
-        pass
+        response = self.server.translate({ 'text': 'test' })
+        return response['text'], response
 
 
-class LucyWorker:
+class MtMonkey(Worker):
+    """
+    Wrapper class for Moses server
+    """
+    def __init__(self, uri, **params):
+        """
+        Initialize connection to Moses server
+        @param uri: ip address or url of mosesserver followed by : and the port number
+        @type uri: string
+        """
+        #initialize XML rpc client
+        #throw error if Moses server not started
+        #self.server = xmlrpc.initialize("{}:{}".format(address, port))
+        self.server = xmlrpclib.ServerProxy(uri)
+
+    def translate(self, string):
+        
+        #try:
+        request = {"action": "translate",
+        "sourceLang": "en",
+        "targetLang": "de",
+        "text": string}
+        result = self.server.process_task(request)
+        #    logger.info('Worker alive check -- result: %s' % result)
+        return result
+        #except Exception, e:
+        #    logger.info('Failed: Worker is busy (%s).' % e)
+        #return False
+
+
+
+class LucyWorker(Worker):
     """
     """
     pass
@@ -50,7 +81,7 @@ class HybridTranslator:
         self.workers = workers
         pass
     
-    def process(self, source_string):
+    def translate(self, source_string):
         translated_string = None
         #TODO
         return translated_string 
@@ -58,5 +89,7 @@ class HybridTranslator:
 
 
 if __name__ == '__main__':
-    pass
+    system1 = MtMonkey("http://134.96.187.247:7200")
+    text = system1.translate("This is a test, my dear.")
+    print text
 
