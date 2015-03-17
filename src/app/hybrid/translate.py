@@ -1,6 +1,4 @@
 import xmlrpclib
-from featuregenerator.reference.hjerson import Hjerson
-from featuregenerator.reference.rgbf import RgbfGenerator
 import logging as logger
 
 
@@ -63,18 +61,40 @@ class MtMonkey(Worker):
         "targetLang": "de",
         "text": string}
         result = self.server.process_task(request)
+        text = " ".join([t['text'] for t in result['translation']])
         #    logger.info('Worker alive check -- result: %s' % result)
-        return result
+        return text, result
         #except Exception, e:
         #    logger.info('Failed: Worker is busy (%s).' % e)
         #return False
 
-
+import requests
+from requests.auth import HTTPBasicAuth
+from xml.sax.saxutils import escape
 
 class LucyWorker(Worker):
     """
     """
-    pass
+    def __init__(self, url, username="traductor", password="traductor"):
+        
+        self.url = 'http://ES_search_demo.com/document/record/_search?pretty=true'
+        self.username = username
+        self.password = password
+    
+    def translate(self, string):
+        data = """<task>
+        <inputParams>
+            <param name='TRANSLATION_DIRECTION' value='ENGLISH-GERMAN'/>
+            <param name='INPUT' value='{}'/>
+                <param name='SUBJECT_AREAS' value='(DP TECH CTV ECON)'/>
+        </inputParams>
+        </task>""".format(escape(string))
+        headers = {'Content-type': 'application/xml'}
+        auth = HTTPBasicAuth(self.username, self.password)
+        print requests.post(url=self.url, auth=auth)
+        response = requests.post(url=self.url, data=data,  headers=headers, auth=auth)
+        print response
+    
 
 class HybridTranslator:
     def __init__(self, workers):
@@ -89,7 +109,8 @@ class HybridTranslator:
 
 
 if __name__ == '__main__':
-    system1 = MtMonkey("http://134.96.187.247:7200")
-    text = system1.translate("This is a test, my dear.")
-    print text
+    #system1 = MtMonkey("http://134.96.187.247:7200")
+    #text = system1.translate("This is a test, my dear.")
+    system2 = LucyWorker("http://msv-3251.sb.dfki.de:8080/AutoTranslateRS/V1.2/mtrans/exec")
+    system2.translate("Testing this thing here.")
 
