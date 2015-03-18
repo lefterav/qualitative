@@ -93,7 +93,6 @@ class LucyWorker(Worker):
         self.username = username
         self.password = password
         self.subject_areas = subject_areas
-        print system2.translate("The solution to our problem has to go through several consultations and we also have to ask our friends, our family and our partners, before we reach a conclusion on this topic.")[0]
 
     def translate(self, string):
         data = """<task>
@@ -135,7 +134,33 @@ class HybridTranslator(Worker):
         #TODO
         return translated_string 
 
+
+class DummyTriangleTranslator():
+    def __init__(self,
+                 moses_url,
+                 lucy_url, 
+                 lcm_url,  
+                 lucy_username="traductor", lucy_password="traductor",                
+                 source_language="en", target_language="de",
+                 configfilenames=[],
+                 classifiername=None):
+        self.moses_worker = MtMonkeyWorker(moses_url)
+        self.lucy_worker = LucyWorker(url=lucy_url,
+                                      username=lucy_username, password=lucy_password,
+                                      source_language=source_language,
+                                      target_language=target_language) 
+        self.lcm_worker = MtMonkeyWorker(lcm_url)
+        print "Loaded systems"
     
+    def translate(self, string):
+        print "Sending to Moses"
+        moses_translation, _ = self.moses_worker.translate(string)
+        print "Sending to Lucy"
+        lucy_translation, _ = self.lucy_worker.translate(string)
+        print "Sending to LcM"
+        lcm_translation, _ = self.lcm_worker.translate(lucy_translation)
+        outputs_ordered = [moses_translation, lucy_translation, lcm_translation]
+        print " ".join(outputs_ordered)
 
 class SimpleTriangleTranslator(Worker):
     def __init__(self,
@@ -147,12 +172,12 @@ class SimpleTriangleTranslator(Worker):
                  configfilenames=[],
                  classifiername=None):
         self.selector =  Autoranking(configfilenames, classifiername)
-        self.moses_worker = MtMonkeyWorker(url=moses_url)
+        self.moses_worker = MtMonkeyWorker(moses_url)
         self.lucy_worker = LucyWorker(url=lucy_url,
                                       username=lucy_username, password=lucy_password,
                                       source_language=source_language,
                                       target_language=target_language) 
-        self.lcm_worker = MtMonkeyWorker(url=lcm_url)
+        self.lcm_worker = MtMonkeyWorker(lcm_url)
     
     def translate(self, string):
         moses_translation, _ = self.moses_worker.translate(string)
@@ -168,9 +193,9 @@ class SimpleTriangleTranslator(Worker):
 import sys
 
 if __name__ == '__main__':
-    moses = SimpleTriangleTranslator(moses_url="http://134.96.187.247:7200", 
+    hybridsystem = DummyTriangleTranslator(moses_url="http://134.96.187.247:7200", 
                                      lucy_url="http://msv-3251.sb.dfki.de:8080/AutoTranslateRS/V1.2/mtrans/exec",
-                                     lcm_url="http://134.96.187.247:7200",
+                                     lcm_url="http://lns-87009.dfki.uni-sb.de:9200",
                                      source_language="en",
                                      target_language="de",
                                      )
@@ -186,7 +211,7 @@ if __name__ == '__main__':
 
     
     #moses.translate(sys.argv[1])
-    moses.translate("Hello! How are you?")
+    hybridsystem.translate("Hello! How are you?")
     
     
     #text = system1.translate("This is a test, my dear.")
