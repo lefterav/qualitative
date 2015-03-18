@@ -61,7 +61,14 @@ class MtMonkeyWorker(Worker):
         "targetLang": "de",
         "text": string}
         result = self.server.process_task(request)
-        text = " ".join([t['text'] for t in result['translation']])
+        string_result = []
+        try:
+            for translation in result['translation']:
+                for translated in translation['translated']:
+                    string_result.append(translated['text'])
+            text = " ".join(string_result)
+        except:
+            text = str(result)
         #    logger.info('Worker alive check -- result: %s' % result)
         return text, result
         #except Exception, e:
@@ -111,7 +118,7 @@ class LucyWorker(Worker):
         # Interpret the XML response 
         try:        
             # get the xml node with the response
-            xml = et.fromstring(response.text)
+            xml = et.fromstring(response.text.decode('utf-8'))
             output = xml.findall("outputParams/param[@name='OUTPUT']")
             params = xml.findall("outputParams/param")
         except:
@@ -150,17 +157,17 @@ class DummyTriangleTranslator():
                                       source_language=source_language,
                                       target_language=target_language) 
         self.lcm_worker = MtMonkeyWorker(lcm_url)
-        print "Loaded systems"
+        #print "Loaded systems"
     
     def translate(self, string):
-        print "Sending to Moses"
+        #print "Sending to Moses"
         moses_translation, _ = self.moses_worker.translate(string)
-        print "Sending to Lucy"
+        #print "Sending to Lucy"
         lucy_translation, _ = self.lucy_worker.translate(string)
-        print "Sending to LcM"
+        #print "Sending to LcM"
         lcm_translation, _ = self.lcm_worker.translate(lucy_translation)
-        outputs_ordered = [moses_translation, lucy_translation, lcm_translation]
-        print " ".join(outputs_ordered)
+        #outputs_ordered = [moses_translation, lucy_translation, lcm_translation]
+        return lucy_translation 
 
 class SimpleTriangleTranslator(Worker):
     def __init__(self,
@@ -210,8 +217,8 @@ if __name__ == '__main__':
     #7. Wrap in XML-rpc service
 
     
-    #moses.translate(sys.argv[1])
-    hybridsystem.translate("Hello! How are you?")
+    #hybridsystem.translate(sys.argv[1])
+    hybridsystem.translate("This is a test")
     
     
     #text = system1.translate("This is a test, my dear.")
