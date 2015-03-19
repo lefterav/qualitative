@@ -223,7 +223,7 @@ class SystemSelector(Autoranking):
         self.gateway = cfg.java_init()
         
         self.featuregenerators = self.initialize_featuregenerators(cfg)
-        self.ranker = pickle.load(open(self.model_filename))
+        self.ranker = pickle.load(open(classifiername))
         self.source_language = cfg.get("general", "source_language")
         self.target_language = cfg.get("general", "target_language")
     
