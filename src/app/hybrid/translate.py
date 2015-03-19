@@ -280,10 +280,13 @@ if __name__ == '__main__':
                                      lcm_url="http://lns-87009.dfki.uni-sb.de:9200",
                                      source_language="en",
                                      target_language="de",
+                                     configfilenames=sys.argv[2:],
+                                     classifiername=sys.argv[1]
                                      )
     
     #TODO:
-    #1. binarize LCM model.
+    #1. binarize LCM model.configfilenames=[],
+                 #classifiername=None
     #2. start MtMonkey worker for LCM
     #3. Make sure LM servers are running in percival
     #4. Make sure all Featuregenerators work sentence-level
