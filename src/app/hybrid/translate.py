@@ -1,6 +1,15 @@
 import xmlrpclib
 import logging as logger
 from app.autoranking.application import Autoranking
+from featuregenerator.preprocessor import Normalizer, Tokenizer, Truecaser
+from featuregenerator.blackbox.parser.berkeley.parsermatches import ParserMatches
+from featuregenerator.blackbox.counts import LengthFeatureGenerator
+from featuregenerator.reference.meteor.meteor import CrossMeteorGenerator
+from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
+from featuregenerator.blackbox.parser.berkeley.cfgrules import CfgAlignmentFeatureGenerator
+from featuregenerator.blackbox.languagechecker.languagetool_socket import LanguageToolSocketFeatureGenerator
+from app.autoranking.bootstrap import ExperimentConfigParser
+import pickle
 
 class Worker:
     """
@@ -196,11 +205,77 @@ class SimpleTriangleTranslator(Worker):
             if rank_item==1:
                 return output, None
             
+
+class SystemSelector(Autoranking):
+    def __init__(self, configfilenames, classifiername):
+        """
+        Initialize the class.
+        @param configfilenames: a list of annotation configuration files that contain
+        the settings for all feature generators etc.
+        @type configfilenames: list(str)
+        @param classifiername: the filename of a picked classifier object
+        @type classifiername: str
+        """
+        cfg = ExperimentConfigParser()
+        for config_filename in configfilenames:
+            cfg.read(config_filename)
+        
+        self.gateway = cfg.java_init()
+        
+        self.featuregenerators = self.initialize_featuregenerators(cfg)
+        self.ranker = pickle.load(open(self.model_filename))
+        self.source_language = cfg.get("general", "source_language")
+        self.target_language = cfg.get("general", "target_language")
+    
+    def initialize_featuregenerators(self, cfg):
+        """
+        Initialize the featuregenerators that handle superficial analysis of given translations
+        @param cfg: the loaded configuration object
+        """
+        source_language =  cfg.get("general", "source_language")
+        target_language =  cfg.get("general", "target_language")
+        
+        src_parser = cfg.get_parser(source_language)
+        tgt_parser = cfg.get_parser(target_language)
+
+        langpair = (source_language, target_language)
+        
+        #attset_242_source = "lm_unk,l_tokens,berkeley-n,parse-VP,berkley-loglikelihood"
+        #attset_242_target = "lm_prob,lm_unk,l_tokens,berkeley-n,parse-VP,berkley-loglikelihood,cfgal_unaligned,ibm1-score,ibm1-score-inv,l_avgoccurences,cfg_fulldepth,parse-comma,parse-dot,parse_S_depth_max,parse_S_depth_min,cfgpos_S-VP,cfgpos_end_VP-VZ,cfgpos_end_VP-VP,cfgpos_VP-VP,cfgpos_end_VP-VVINF,cfgpos_VP-VVINF,cfgpos_VP-VB,cfgpos_VP-VBZ,cfgpos_end_S-VVPP,cfgpos_VP-VBG,lt_UNPAIRED_BRACKETS,lt_DE_COMPOUNDS"
+
+        
+        featuregenerators = [
+            Normalizer(source_language),
+            Normalizer(target_language),
+            Tokenizer(source_language),
+            Tokenizer(target_language),
             
+            src_parser,
+            tgt_parser,
+            
+            ParserMatches(langpair),
+            
+            #truecase only for the language model
+            Truecaser(source_language, cfg.get_truecaser_model(source_language)),
+            Truecaser(target_language, cfg.get_truecaser_model(target_language)),
+            
+            cfg.get_lm(source_language),
+            cfg.get_lm(target_language),    
+                    
+            AlignmentFeatureGenerator(cfg.get("ibm1", "source_lexicon"), cfg.get("ibm1", "target_lexicon")),
+            CfgAlignmentFeatureGenerator(),
+            LanguageToolSocketFeatureGenerator(target_language, self.gateway),
+            CrossMeteorGenerator(target_language, cfg.get_classpath()[0], cfg.get_classpath()[1]),
+            LengthFeatureGenerator()
+        ]
+        
+        return featuregenerators
+ 
+  
 import sys
 
 if __name__ == '__main__':
-    hybridsystem = DummyTriangleTranslator(moses_url="http://134.96.187.247:7200", 
+    hybridsystem = SimpleTriangleTranslator(moses_url="http://134.96.187.247:7200", 
                                      lucy_url="http://msv-3251.sb.dfki.de:8080/AutoTranslateRS/V1.2/mtrans/exec",
                                      lcm_url="http://lns-87009.dfki.uni-sb.de:9200",
                                      source_language="en",
