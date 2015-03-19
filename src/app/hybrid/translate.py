@@ -264,7 +264,7 @@ class SystemSelector(Autoranking):
             AlignmentFeatureGenerator(cfg.get("ibm1", "source_lexicon"), cfg.get("ibm1", "target_lexicon")),
             CfgAlignmentFeatureGenerator(),
             LanguageToolSocketFeatureGenerator(target_language, self.gateway),
-            CrossMeteorGenerator(target_language, cfg.get_classpath()[0], cfg.get_classpath()[1]),
+            CrossMeteorGenerator(target_language, self.gateway),
             LengthFeatureGenerator()
         ]
         
