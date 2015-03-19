@@ -187,7 +187,7 @@ class SimpleTriangleTranslator(Worker):
                  source_language="en", target_language="de",
                  configfilenames=[],
                  classifiername=None):
-        self.selector =  Autoranking(configfilenames, classifiername)
+        self.selector =  SystemSelector(configfilenames, classifiername)
         self.moses_worker = MtMonkeyWorker(moses_url)
         self.lucy_worker = LucyWorker(url=lucy_url,
                                       username=lucy_username, password=lucy_password,
@@ -208,7 +208,7 @@ class SimpleTriangleTranslator(Worker):
 
 class SystemSelector(Autoranking):
     def __init__(self, configfilenames, classifiername):
-        """
+        """Autoranking
         Initialize the class.
         @param configfilenames: a list of annotation configuration files that contain
         the settings for all feature generators etc.
@@ -243,7 +243,6 @@ class SystemSelector(Autoranking):
         #attset_242_source = "lm_unk,l_tokens,berkeley-n,parse-VP,berkley-loglikelihood"
         #attset_242_target = "lm_prob,lm_unk,l_tokens,berkeley-n,parse-VP,berkley-loglikelihood,cfgal_unaligned,ibm1-score,ibm1-score-inv,l_avgoccurences,cfg_fulldepth,parse-comma,parse-dot,parse_S_depth_max,parse_S_depth_min,cfgpos_S-VP,cfgpos_end_VP-VZ,cfgpos_end_VP-VP,cfgpos_VP-VP,cfgpos_end_VP-VVINF,cfgpos_VP-VVINF,cfgpos_VP-VB,cfgpos_VP-VBZ,cfgpos_end_S-VVPP,cfgpos_VP-VBG,lt_UNPAIRED_BRACKETS,lt_DE_COMPOUNDS"
 
-        
         featuregenerators = [
             Normalizer(source_language),
             Normalizer(target_language),
