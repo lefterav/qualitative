@@ -106,6 +106,23 @@ class Ranker:
     def get_ranked_sentence(self, parallelsentence):
         raise NotImplementedError()
 
+    def rank_sentence(self, parallelsentence, reconstruct='hard'):
+        """
+        Convenience function that only returns the rank, without the parallel sentences
+        @param parallelsentence: an annotated parallel sentence
+        @type parallelsentence: ParallelSentence
+        @return: a tuple with the ranking result and a textual description object
+        @rtype: tuple of list, string
+        """
+        attribute_name = "rank_predicted"
+        ranked_sentence, resultvector = self.get_ranked_sentence(parallelsentence, new_rank_name=attribute_name, reconstruct=reconstruct)
+        result = [(t.get_attribute(attribute_name), t) for t in ranked_sentence.get_translations()]
+        description = self._get_description(resultvector)
+        return result, description
+
+    def _get_description(self, vector):
+        return ""
+
     def dump(self, dumpfilename):
         if not self.fit:
             raise AttributeError("Classifier has not been fit yet")
