@@ -196,8 +196,11 @@ class SimpleTriangleTranslator(Worker):
         self.lcm_worker = MtMonkeyWorker(lcm_url)
     
     def translate(self, string):
+        sys.stderr.write("Sending to Moses\n")
         moses_translation, _ = self.moses_worker.translate(string)
+        sys.stderr.write("Sending to Lucy\n")
         lucy_translation, _ = self.lucy_worker.translate(string)
+        sys.stderr.write("Sending to LcM\n")
         lcm_translation, _ = self.lcm_worker.translate(lucy_translation)
         outputs_ordered = [moses_translation, lucy_translation, lcm_translation]
         rank, description = self.selector.rank(string, outputs_ordered, reconstruct="soft")
