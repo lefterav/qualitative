@@ -13,7 +13,7 @@ if len(sys.argv) < 5:
     sys.exit("Usage: python xmlrpcserver.py <host> <port> <classifier_file> <annotation.config.1> [annotation.config.2 ...]")
 
 host = sys.argv[1]
-port = sys.argv[2]
+port = int(sys.argv[2])
 param_moses_url = sys.argv[3]
 param_lucy_url = sys.argv[4] 
 param_lcm_url = sys.argv[5]
@@ -43,35 +43,34 @@ server.register_introspection_functions()
 
 
 def process_task(params):
-    action = params['action']
     text = params['text']
-    try:
-        translated_text, description = hybridsystem.translate(text)
-        result = """{
+#    try:
+    sys.stderr.write("Received task\n")
+    translated_text, description = hybridsystem.translate(text)
+    transaction_id = 0
+    result = {
             "errorCode": 0, 
-            "errorMessage": "OK"
+            "errorMessage": "OK",
             "translation": [
                 {
                     "translated": [
                         {
-                            "text": "{translated_text}", 
+                            "text": translated_text, 
                             "score": 0,
                         }
                     ], 
                 }
             ], 
-            "translationId": "{transaction_id}"
-        }""".format(transaction_id=0,
-                    translated_text=translated_text,
-                    )
-        return result
-    except:
-        result = """{
-            "errorCode": 1, 
-            "errorMessage": "ERROR"
-            }"""
-        return result
+            "translationId": transaction_id
+        }
+    return result
+#    except:
+#        result = """{
+#            "errorCode": 1, 
+#            "errorMessage": "ERROR"
+#            }"""
+#        return result
 
-server.register_function(process_task, 'process_tasks')
+server.register_function(process_task, 'process_task')
 print "server ready"
 server.serve_forever()
