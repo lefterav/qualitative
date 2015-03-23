@@ -66,7 +66,7 @@ class Autoranking:
         self.target_language =  cfg.get("general", "target_language")
         
         
-    def rank(self, source, translations):
+    def rank(self, source, translations, reconstruct='hard'):
         """
         Rank translations according to estimated quality
         @param source: The source sentence whose translations are raned

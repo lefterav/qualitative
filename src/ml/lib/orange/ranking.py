@@ -449,14 +449,6 @@ class OrangeRanker(Ranker):
             ranked_sentence = sentenceset.get_multiranked_sentence_with_soft_ranks(attribute1, attribute2, critical_attribute, new_rank_name)
         return ranked_sentence, resultvector
 
-    def rank_sentence(self, parallelsentence):
-        ranked_sentence, resultvector = self.get_ranked_sentence(parallelsentence)
-        result = [(t.get_attribute("rank"), t) for t in ranked_sentence.get_translations()]
-#        return ranked_sentence.get_target_attribute_values("rank")
-        description = self._get_description(resultvector)
-        return result, description
-
-
 class OrangeClassifier(Classifier):
     '''
     Wrapper around an orange classifier object
