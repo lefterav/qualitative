@@ -200,10 +200,12 @@ class SimpleTriangleTranslator(Worker):
         lucy_translation, _ = self.lucy_worker.translate(string)
         lcm_translation, _ = self.lcm_worker.translate(lucy_translation)
         outputs_ordered = [moses_translation, lucy_translation, lcm_translation]
-        rank = self.selector.rank(string, outputs_ordered)
+        rank, description = self.selector.rank(string, outputs_ordered, reconstruct="soft")
+        #print "Rank: ", rank
+        
         for rank_item, output in zip(rank, outputs_ordered):
-            if rank_item==1:
-                return output, None
+            if float(rank_item)==1:
+                return output, description
             
 
 class SystemSelector(Autoranking):
@@ -295,7 +297,7 @@ if __name__ == '__main__':
 
     
     #hybridsystem.translate(sys.argv[1])
-    hybridsystem.translate("This is a test")
+    print hybridsystem.translate("This is a test")
     
     
     #text = system1.translate("This is a test, my dear.")
