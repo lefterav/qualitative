@@ -297,16 +297,16 @@ bitpar_functions = []
 
 bitpar_section = "parser:bitpar:{}".format(source_language)
 @active_if(cfg.has_section("parser:bitpar:{}".format(source_language)))
-@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % source_language, source_language, cfg.get(bitpar_section,"path"),  
-        cfg.get(bitpar_section,"lexicon"),
-        cfg.get(bitpar_section,"grammar"),
-        cfg.get(bitpar_section,"unknownwords"),
-        cfg.get(bitpar_section,"openclassdfsa"),
-        path
-        )
+@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % source_language, source_language, path) 
 
-def features_bitpar_source(input_file, output_file, language, path, lexicon, grammar, unk, openclass, tmpdir):
+def features_bitpar_source(input_file, output_file, language, cfg, tmpdir):
     bitpar_section = "parser:bitpar:{}".format(language)
+    path = cfg.get(bitpar_section,"path")
+    lexicon = cfg.get(bitpar_section,"lexicon")
+    grammar = cfg.get(bitpar_section,"grammar")
+    unk = cfg.get(bitpar_section,"unknownwords")
+    openclass = cfg.get(bitpar_section,"openclassdfsa")
+
     bitpar = BitParserBatchProcessor(path,
                                      lexicon,
                                      grammar,
@@ -318,17 +318,16 @@ def features_bitpar_source(input_file, output_file, language, path, lexicon, gra
     
 bitpar_section = "parser:bitpar:{}".format(target_language)
 @active_if(cfg.has_section("parser:bitpar:{}".format(target_language)))
-@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % target_language, target_language, 
-        cfg.get(bitpar_section,"path"),
-        cfg.get(bitpar_section,"lexicon"),
-        cfg.get(bitpar_section,"grammar"),
-        cfg.get(bitpar_section,"unknownwords"),
-        cfg.get(bitpar_section,"openclassdfsa"),
-        path
-        )
+@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % target_language, target_language, path)
 
-def features_bitpar_target(input_file, output_file, language, path, lexicon, grammar, unk, openclass, tmpdir):
+def features_bitpar_target(input_file, output_file, language, cfg, tmpdir):
     bitpar_section = "parser:bitpar:{}".format(language)
+    path = cfg.get(bitpar_section,"path")
+    lexicon = cfg.get(bitpar_section,"lexicon")
+    grammar = cfg.get(bitpar_section,"grammar")
+    unk = cfg.get(bitpar_section,"unknownwords")
+    openclass = cfg.get(bitpar_section,"openclassdfsa")
+
     bitpar = BitParserBatchProcessor(path,
                                      lexicon,
                                      grammar,
