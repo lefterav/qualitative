@@ -235,6 +235,7 @@ class OrangeRanker(Ranker):
         self.learner = self.learner(**kwargs)
         self.classifier = self.learner(datatable)
         self.fit = True
+        return {}
         
 
     
@@ -541,6 +542,7 @@ class OrangeClassifier(Classifier):
         self.model = self.learner(self.training_table)
         objectfile = self.training_data_filename.replace(".tab", ".clsf")
         pickle.dump(self.model, objectfile)
+        return {}
         
 
     #The following are algorithm-specific functions to write down details
