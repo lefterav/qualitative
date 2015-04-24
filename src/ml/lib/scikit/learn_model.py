@@ -167,7 +167,7 @@ def optimize_model(estimator, X_train, y_train, params, scorers, folds, verbose,
         
         clf = GridSearchCV(estimator, params, scoring=score_func, 
                            cv=folds, verbose=verbose, n_jobs=n_jobs)
-        
+        log.info("Preparing for optimization. folds={}, samples={}".format(folds, len(y_train)))
         clf.fit(X_train, y_train)
         
         log.info("Best parameters set found on development set:")
