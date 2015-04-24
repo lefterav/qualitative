@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import xmlrpclib
 import logging as logger
 from app.autoranking.application import Autoranking
@@ -77,7 +79,7 @@ class MtMonkeyWorker(Worker):
                     string_result.append(translated['text'])
             text = " ".join(string_result)
         except:
-            text = str(result)
+            text = ""
         #    logger.info('Worker alive check -- result: %s' % result)
         return text, result
         #except Exception, e:
@@ -124,10 +126,11 @@ class LucyWorker(Worker):
         auth = HTTPBasicAuth(self.username, self.password)
         print data
         response = requests.post(url=self.url, data=data, headers=headers, auth=auth)
+	response.encoding = 'utf-8'
         # Interpret the XML response 
         try:        
             # get the xml node with the response
-            xml = et.fromstring(response.text.decode('utf-8'))
+            xml = et.fromstring(response.text)
             output = xml.findall("outputParams/param[@name='OUTPUT']")
             params = xml.findall("outputParams/param")
         except:
@@ -135,6 +138,12 @@ class LucyWorker(Worker):
             return
         text = " ".join(t.attrib["value"] for t in output)
         params = dict([(param.attrib["name"], param.attrib["value"]) for param in params])
+
+	#for the moment draftly remove multiple translations and unknown words
+	params["full_translation"] = text
+	text = re.sub("\<A\[(?P<alt>\w*)\|\w*\]\>", "\g<alt>", text)
+	text = re.sub("\<U\[(?P<unk>[^]]*)\]\>", "\g<unk>", text)
+	text = re.sub("\<M\[(?P<m>[^]]*)\]\>", "\g<m>", text)
         return text, params
     
     def _handle_notation(self, string):
@@ -197,7 +206,9 @@ class SimpleTriangleTranslator(Worker):
     
     def translate(self, string):
         sys.stderr.write("Sending to Moses\n")
+        #handle errors
         moses_translation, _ = self.moses_worker.translate(string)
+        #moses_translation = "Moses translation"
         sys.stderr.write("Sending to Lucy\n")
         lucy_translation, _ = self.lucy_worker.translate(string)
         sys.stderr.write("Sending to LcM\n")
@@ -281,9 +292,9 @@ import sys
 if __name__ == '__main__':
     hybridsystem = SimpleTriangleTranslator(moses_url="http://134.96.187.247:7200", 
                                      lucy_url="http://msv-3251.sb.dfki.de:8080/AutoTranslateRS/V1.2/mtrans/exec",
-                                     lcm_url="http://lns-87009.dfki.uni-sb.de:9200",
-                                     source_language="en",
-                                     target_language="de",
+                                     lcm_url="http://lns-87009.dfki.uni-sb.de:9300",
+                                     source_language="de",
+                                     target_language="en",
                                      configfilenames=sys.argv[2:],
                                      classifiername=sys.argv[1]
                                      )
@@ -300,7 +311,7 @@ if __name__ == '__main__':
 
     
     #hybridsystem.translate(sys.argv[1])
-    print hybridsystem.translate("This is a test")
+    print hybridsystem.translate("Ich habe ein iPad. Wie kann ich in Safari einen neuen Tab öffnen?")
     
     
     #text = system1.translate("This is a test, my dear.")

@@ -86,6 +86,7 @@ def dataset_to_instances(filename,
     
     #iterate over all parallel sentences provided by the data reader
     i = 0
+    v = 0
 
     for parallelsentence in dataset.get_parallelsentences():
         i += 1
@@ -107,6 +108,7 @@ def dataset_to_instances(filename,
             #log.debug("Featurevector {} after converting to numpy {}".format(featurevector.shape, featurevector))
             featurevectors.append(featurevector)
             class_values.append(class_value)
+            v+=1
         
         log.debug("Featurevectors {} before converting to numpy {}".format(len(featurevectors), featurevectors))
 
@@ -125,7 +127,8 @@ def dataset_to_instances(filename,
             #log.debug("Initializing featurevectors")
             features = newfeatures
             labels = newlabels
-        
+    if len(labels)==0:
+        log.warning("Finished scikit conversion: {} parallelsentences and {} vectors, gave {} instances".format(i,v,len(labels)))
     #print features 
     #print labels 
     if not imputer: #run imputer only if enabled (default)
@@ -144,8 +147,8 @@ def dataset_to_instances(filename,
         if impfeatures.shape == features.shape:
             features = impfeatures
         else:
-            log.warning("Using numpy NaN substitution")
-            features = np.nan_to_num(features)
+            log.warning("Imputer failed")
+            #features = np.nan_to_num(features)
     return features, labels
 
 def parallelsentence_to_instance(parallelsentence, attribute_set):
@@ -346,6 +349,7 @@ class SkRanker(Ranker, SkLearner):
             log.debug("Data shape before scaling: {}".format(data.shape))
             self.scaler = StandardScaler()
             data = self.scaler.fit_transform(data)
+            log.debug("Data shape after scaling: {}".format(data.shape))
         
         #avoid any NaNs and Infs that may have occurred due to the scaling
         data = np.nan_to_num(data)
@@ -358,7 +362,7 @@ class SkRanker(Ranker, SkLearner):
         #initialize learning method and scoring functions and optimize
         self.classifier, self.scorers = self.initialize_learning_method(learner, data, labels, learning_params, optimize, optimization_params, scorers)
 
-        log.debug("Data shape before fitting: {}".format(data.shape))
+        log.info("Data shape before fitting: {}".format(data.shape))
 
         self.classifier.fit(data, labels)
         self.fit = True
@@ -374,7 +378,7 @@ class SkRanker(Ranker, SkLearner):
                 params["C"] = self.classifier.C
                 for i, n_support in enumerate(self.classifier.n_support_):
                     params["n_{}".format(i)] = n_support
-                log.info(len(self.classifier.dual_coef_))
+                log.debug(len(self.classifier.dual_coef_))
                 return params
             elif self.classifier.kernel == "linear":
                 coefficients = self.classifier.coef_

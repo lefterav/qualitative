@@ -150,7 +150,10 @@ class RankingExperiment(PyExperimentSuite):
         logging.info("Started training")
         params.update(self.learner_params)
         params["attribute_set"] = self.attribute_set
-        params["scorers"] = params.setdefault("scorers", "").split(",")
+        try:
+            params["scorers"] = params.setdefault("scorers", "").split(",")
+        except:
+            pass
         
         logging.info("train: Attribute_set before training: {}".format(params["attribute_set"]))
         
@@ -318,8 +321,8 @@ def _dictprefix(dictionary, prefix):
  
  
 if __name__ == '__main__':
-    loglevel = logging.INFO
-    #loglevel = logging.DEBUG
+    #loglevel = logging.INFO
+    loglevel = logging.DEBUG
     logging.basicConfig(level=loglevel,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M')
