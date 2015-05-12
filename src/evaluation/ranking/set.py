@@ -53,9 +53,11 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
     pairs_overall = 0
     sentences_with_ties = 0
     
+    length = dict.setdefault(0)
+    
     for predicted_rank_vector, original_rank_vector in zip(predicted_rank_vectors, original_rank_vectors):
         
-        
+        length[predicted_rank_vector] += 1        
         segtau, segprob, concordant_count, discordant_count, all_pairs_count, original_ties, predicted_ties, pairs = segment.kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs)
         
         if segtau and segprob:
@@ -100,6 +102,9 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
              'tau_sentence_ties_per' : sentence_ties_avg
              
              })
+
+    for n, counts in length.iteritems():
+        stats["tau_rank_length_{}".format(n)] = counts
 
     return stats
 
