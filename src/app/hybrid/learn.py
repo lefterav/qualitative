@@ -146,7 +146,8 @@ class RankingExperiment(PyExperimentSuite):
     def train(self, params, rep):
         """
         Load training data and train new ranking model
-        """         
+        """        
+        metadata = OrderedDict() 
         logging.info("Started training")
         params.update(self.learner_params)
         params["attribute_set"] = self.attribute_set
@@ -162,7 +163,7 @@ class RankingExperiment(PyExperimentSuite):
         learner = params["learner"]
         ranker = forname(learner=learner)
 
-        ranker.train(dataset_filename = self.trainingset_filename, 
+        metadata = ranker.train(dataset_filename = self.trainingset_filename, 
                      output_filename = output_filename,
                      **params)
         
@@ -172,9 +173,9 @@ class RankingExperiment(PyExperimentSuite):
             pickle.dump(ranker, f)
         
         logging.info("Extracting fitted coefficients")
-        model_description = ranker.get_model_description()
+        metadata.update(ranker.get_model_description())
         
-        return model_description
+        return metadata
         
 
     def test(self, params, rep):
