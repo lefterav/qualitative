@@ -14,10 +14,12 @@ from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentence
 from dataprocessor.ce.cejcml import CEJcmlReader
 from sklearn_utils import scale_datasets_crossvalidation
 
+
 #generic
 import numpy as np
 import logging as log
 from collections import OrderedDict
+import matplotlib.pyplot as plt
 
 #scikit classifiers
 from sklearn.svm import SVC, LinearSVC
@@ -39,6 +41,8 @@ from sklearn.preprocessing.imputation import Imputer
 from sklearn import preprocessing
 from sklearn.preprocessing.data import StandardScaler
 from sklearn.metrics.metrics import mean_squared_error, f1_score, precision_score, recall_score
+from sklearn.feature_selection.rfe import RFECV
+from sklearn.cross_validation import StratifiedKFold
 
 def dataset_to_instances(filename, 
                          attribute_set=None,
@@ -140,7 +144,7 @@ def dataset_to_instances(filename,
         #show size for debugging purposes
         #log.debug("Featurevectors {} after imputation: {}".format(impfeatures.shape, features))i
 
-        #we don't want shape to change, so if this happens, then just replace nans with zero and infinites
+        #we don't want shgrid_scores_ape to change, so if this happens, then just replace nans with zero and infinites
         if impfeatures.shape == features.shape:
             features = impfeatures
         else:
@@ -167,9 +171,16 @@ class SkLearner:
         self.learner = self.name
         self.scaler = None
    
-    def initialize_feature_selector(self, feature_selector=None, feature_selection_params={}, feature_selection_threshold=.25):
+    
+    
+    def run_feature_selection(self, data, labels, feature_selector=None, 
+                              feature_selection_params={}, 
+                              feature_selection_threshold=.25,
+                              plot_filename="./featureselection.pdf"
+                              ):
         p = feature_selection_params
         transformer = None
+        attributes = {}
         if feature_selector == "RandomizedLasso":
             transformer = RandomizedLasso(alpha=p.setdefault("alpha", "aic"), 
                                     scaling=p.setdefault("scaling", .5), 
@@ -198,19 +209,45 @@ class SkLearner:
         elif feature_selector == "GP":
             #TODO: add here Gaussian Processes
             transformer = None
-        return transformer
-    
-    
-    def run_feature_selection(self, feature_selector, data, labels):
-        if feature_selector:
+            
+        elif feature_selector == "RFECV_SVC":
+            svc = SVC(kernel="linear")
+            transformer = RFECV(estimator=svc, step=1, cv=StratifiedKFold(labels, 2),
+              scoring='accuracy')
             log.info("scikit: Running feature selection {}".format(feature_selector))
             
             log.info("scikit: data dimensions before fit_transform(): {}".format(data.shape))
             log.info("scikit: labels dimensions before fit_transform(): {}".format(labels.shape))
-            feature_selector.fit_transform(data, labels)
-            
+            data = transformer.fit_transform(data, labels)
             log.info("scikit: Dimensions after fit_transform(): %s,%s" % data.shape)
-        return data
+            
+            #produce a plot if requested and supported (for RFE)
+            if transformer.grid_scores_ and plot_filename:
+                plt.figure()
+                plt.xlabel("Number of features selected")
+                plt.ylabel("Cross validation score (nb of correct classifications)")
+                plt.plot(range(1, len(transformer.grid_scores_) + 1), transformer.grid_scores_)
+                plt.savefig(plot_filename, bbox_inches='tight')
+                
+                #put ranks in an array, so that we can get them in the log file
+                for i, rank in enumerate(transformer.ranking_):
+                    attributes["RFE_rank_f{}".format(i)] = rank
+                
+                for i, rank in enumerate(transformer.support_):
+                    attributes["RFE_mask_f{}".format(i)] = rank
+        
+            return data, attributes
+            
+        
+        if transformer:
+            log.info("scikit: Running feature selection {}".format(feature_selector))
+            
+            log.info("scikit: data dimensions before fit_transform(): {}".format(data.shape))
+            log.info("scikit: labels dimensions before fit_transform(): {}".format(labels.shape))
+            data = transformer.fit_transform(data, labels)
+            log.info("scikit: Dimensions after fit_transform(): %s,%s" % data.shape)
+                 
+        return data, attributes
     
     
     
@@ -330,6 +367,7 @@ class SkRanker(Ranker, SkLearner):
               scorers=['f1_score'],
               attribute_set=None,
               class_name=None,
+              plot_filename="./featureselection.pdf",
               **kwargs):
         
         data, labels = dataset_to_instances(dataset_filename, attribute_set, class_name,  **kwargs)
@@ -352,8 +390,7 @@ class SkRanker(Ranker, SkLearner):
         log.debug("Mean: {} , Std: {}".format(self.scaler.mean_, self.scaler.std_))
         
         #feature selection
-        feature_selector = self.initialize_feature_selector(feature_selector, feature_selection_params, feature_selection_threshold)
-        data = self.run_feature_selection(feature_selector, data, labels) 
+        data, metadata = self.run_feature_selection(data, labels, feature_selector, feature_selection_params, feature_selection_threshold, plot_filename) 
         
         #initialize learning method and scoring functions and optimize
         self.classifier, self.scorers = self.initialize_learning_method(learner, data, labels, learning_params, optimize, optimization_params, scorers)
@@ -362,6 +399,7 @@ class SkRanker(Ranker, SkLearner):
 
         self.classifier.fit(data, labels)
         self.fit = True
+        return metadata
     
     def get_model_description(self):
         params = {}
