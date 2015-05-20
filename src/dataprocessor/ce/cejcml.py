@@ -68,9 +68,10 @@ class CEJcmlReader(DataReader):
 
         self.desired_general = kwargs.setdefault('desired_general', ["rank","langsrc","langtgt","id","judgement_id"])
         self.desired_source = kwargs.setdefault("desired_source", [])
-        self.desired_target = kwargs.setdefault('desired_target', ["system","rank"])
+        self.desired_target = kwargs.setdefault('desired_target', ["system","rank_soft"])
         self.all_general = kwargs.setdefault('all_general', False)
         self.all_target = kwargs.setdefault('all_target', False)        
+        log.debug("kwargs = {} ; self.all_target = {}".format(kwargs, self.all_target))
         self.input_filename = input_xml_filename
     
     def length(self):
@@ -163,7 +164,9 @@ class CEJcmlReader(DataReader):
             #new target sentence
             elif event == "start" and elem.tag == self.TAG_TGT:
                 target_id += 1
+                log.debug("self.all_target = {}".format(self.all_target))
                 target_attributes = dict([(key, value) for key, value in elem.attrib.iteritems() if key in self.desired_target or self.all_target])
+                log.debug("CEJcmlReader :: target_attributes = {}".format(target_attributes))
             elif not compact and event == "end" and elem.tag == self.TAG_SRC and elem.text:
                 src_text = elem.text
 
