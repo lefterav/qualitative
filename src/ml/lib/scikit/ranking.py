@@ -19,7 +19,9 @@ from sklearn_utils import scale_datasets_crossvalidation
 import numpy as np
 import logging as log
 from collections import OrderedDict
-import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib import pyplot as plt
 
 #scikit classifiers
 from sklearn.svm import SVC, LinearSVC
@@ -119,14 +121,17 @@ def dataset_to_instances(filename,
         #convert to numpy
         newfeatures = np.array(featurevectors)
         newlabels = np.array(class_values)
-        #log.debug("Featurevectors {} after converting to numpy {}".format(newfeatures.shape, newfeatures))
+        log.debug("Featurevectors {} after converting to numpy {}".format(newfeatures.shape, newfeatures))
         
         #append them to existing vectors if there are
-        try:
-            features = np.concatenate((features, newfeatures), axis=0)
-            labels = np.concatenate((labels, newlabels), axis=0)
-            #log.debug("Featurevectors {} after concatenating: {}".format(features.shape, features))
-        except ValueError:
+        if features != None and labels != None:
+            try:
+                features = np.concatenate((features, newfeatures), axis=0)
+                labels = np.concatenate((labels, newlabels), axis=0)
+            except ValueError:
+                log.warning("Featurevector probably wrong dimension: {} vs {}".format(features.shape,newfeatures.shape))
+            #log.info("Featurevectors {} after concatenating: {}".format(features.shape, features))
+        else:
             #or initialize the total vectors 
             #log.debug("Initializing featurevectors")
             features = newfeatures
@@ -151,8 +156,8 @@ def dataset_to_instances(filename,
         if impfeatures.shape == features.shape:
             features = impfeatures
         else:
-            log.warning("Imputer failed")
-            #features = np.nan_to_num(features)
+            log.warning("Imputer failed, filtering NaN based on numpy converter")
+            features = np.nan_to_num(features)
     return features, labels
 
 def parallelsentence_to_instance(parallelsentence, attribute_set):
@@ -173,6 +178,7 @@ class SkLearner:
         ranker = eval(self.name)
         self.learner = self.name
         self.scaler = None
+        self.featureselector = None
    
     
     
@@ -225,7 +231,11 @@ class SkLearner:
             log.info("scikit: Dimensions after fit_transform(): %s,%s" % data.shape)
             
             #produce a plot if requested and supported (for RFE)
-            if transformer.grid_scores_ and plot_filename:
+            if plot_filename:
+                try:
+                    grid_scores = transformer.grid_scores_
+                except:
+                    return transformer, data, attributes
                 plt.figure()
                 plt.xlabel("Number of features selected")
                 plt.ylabel("Cross validation score (nb of correct classifications)")
@@ -239,7 +249,7 @@ class SkLearner:
                 for i, rank in enumerate(transformer.support_):
                     attributes["RFE_mask_f{}".format(i)] = rank
         
-            return data, attributes
+            return transformer, data, attributes
             
         
         if transformer:
@@ -250,7 +260,7 @@ class SkLearner:
             data = transformer.fit_transform(data, labels)
             log.info("scikit: Dimensions after fit_transform(): %s,%s" % data.shape)
                  
-        return data, attributes
+        return transformer, data, attributes
     
     
     
@@ -370,9 +380,10 @@ class SkRanker(Ranker, SkLearner):
               scorers=['f1_score'],
               attribute_set=None,
               class_name=None,
-              plot_filename="./featureselection.pdf",
+              metaresults_prefix="./0-",
               **kwargs):
         
+        plot_filename = "{}{}".format(metaresults_prefix, "featureselection.pdf")
         data, labels = dataset_to_instances(dataset_filename, attribute_set, class_name,  **kwargs)
         learner = self.learner
         
@@ -394,7 +405,7 @@ class SkRanker(Ranker, SkLearner):
         log.debug("Mean: {} , Std: {}".format(self.scaler.mean_, self.scaler.std_))
         
         #feature selection
-        data, metadata = self.run_feature_selection(data, labels, feature_selector, feature_selection_params, feature_selection_threshold, plot_filename) 
+        self.featureselector, data, metadata = self.run_feature_selection(data, labels, feature_selector, feature_selection_params, feature_selection_threshold, plot_filename) 
         
         #initialize learning method and scoring functions and optimize
         self.classifier, self.scorers = self.initialize_learning_method(learner, data, labels, learning_params, optimize, optimization_params, scorers)
@@ -475,6 +486,12 @@ class SkRanker(Ranker, SkLearner):
                 except ValueError as e:
                     log.error("Could not transform instance: {}".format(instance))
                     raise ValueError(e)
+            try:
+                if self.featureselector:
+                    instance = np.nan_to_num(instance)
+                    instance = self.featureselector.transform(instance)
+            except AttributeError:
+                pass
             log.debug('Instance = {}'.format(instance)) 
             #make sure no NaN or inf appears in the instance
             instance = np.nan_to_num(instance)

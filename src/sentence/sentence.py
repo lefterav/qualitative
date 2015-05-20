@@ -80,7 +80,7 @@ class SimpleSentence(object):
             if sub:
                 return sub
             else:
-                raise KeyError("Could not find attribute '{}' in sentence '{} ...'".format(key, unicodedata.normalize('NFKD', unicode(self.string[:100])).encode('ascii','ignore')))              
+                raise KeyError("Could not find attribute '{}' in sentence '{} ...', atts={}".format(key, unicodedata.normalize('NFKD', unicode(self.string[:100])).encode('ascii','ignore'), self.attributes))              
     
     def add_attributes(self, attributes):
         self.attributes.update(attributes)

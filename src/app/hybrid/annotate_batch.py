@@ -297,7 +297,7 @@ bitpar_functions = []
 
 bitpar_section = "parser:bitpar:{}".format(source_language)
 @active_if(cfg.has_section("parser:bitpar:{}".format(source_language)))
-@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % source_language, source_language, path) 
+@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % source_language, source_language, cfg, path) 
 
 def features_bitpar_source(input_file, output_file, language, cfg, tmpdir):
     bitpar_section = "parser:bitpar:{}".format(language)
@@ -318,7 +318,7 @@ def features_bitpar_source(input_file, output_file, language, cfg, tmpdir):
     
 bitpar_section = "parser:bitpar:{}".format(target_language)
 @active_if(cfg.has_section("parser:bitpar:{}".format(target_language)))
-@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % target_language, target_language, path)
+@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % target_language, target_language, cfg, path)
 
 def features_bitpar_target(input_file, output_file, language, cfg, tmpdir):
     bitpar_section = "parser:bitpar:{}".format(language)
