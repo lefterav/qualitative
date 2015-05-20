@@ -42,7 +42,7 @@ class RankingExperiment(PyExperimentSuite):
         self.gateway = gateway
         
         logging.info("Running in {}".format(os.getcwd()))
-        logging.debug("params = {}".format(params))        
+        #logging.debug("params = {}".format(params))        
         #=======================================================================
         # get method-specific parameters
         #=======================================================================
@@ -168,6 +168,7 @@ class RankingExperiment(PyExperimentSuite):
 
         metadata = ranker.train(dataset_filename = self.trainingset_filename, 
                      output_filename = output_filename,
+                     metaresults_prefix = "{}.meta.".format(rep),
                      **params)
         
         logging.info("Ranker fitted sucessfully")                             
@@ -322,8 +323,8 @@ def _dictprefix(dictionary, prefix):
  
  
 if __name__ == '__main__':
-    #loglevel = logging.INFO
-    loglevel = logging.DEBUG
+    loglevel = logging.INFO
+    #loglevel = logging.DEBUG
     logging.basicConfig(level=loglevel,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M')

@@ -47,18 +47,23 @@ def evaluate_selection(parallelsentences,
         reference = parallelsentence.get_reference()
         if not reference:
             log.warning("Sentence {} did not have a reference".format(parallelsentence.get_attribute("judgement_id")))
-            continue
+            pass
+            #continue
         #for statistic reasons we collect statistics for all sentences that have the best rank
         counter = 0
         for translation in parallelsentence.get_translations():
 
             system_name = translation.get_attribute("system")
-            original_sentences[system_name].append((translation.get_string(), [reference.get_string()]))
+            try:
+                    reference_string = reference.get_string()
+            except:
+                    reference_string = ". ."
+            original_sentences[system_name].append((translation.get_string(), [reference_string]))
             if int(translation.get_attribute(rank_name)) == int(best_rank):
                 selected_systems[system_name] += 1
                 #if there is a tie, collect the first sentence that appears TODO:improve
                 if counter == 0:
-                    selected_sentences.append((translation.get_string(), [reference.get_string()]))
+                    selected_sentences.append((translation.get_string(), [reference_string]))
                     counter+=1
                 
     

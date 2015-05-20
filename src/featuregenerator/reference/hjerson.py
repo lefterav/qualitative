@@ -103,7 +103,11 @@ class Hjerson(FeatureGenerator):
         @rtype: {str: object, ... } 
         """
         target_string = simplesentence.get_string()
-        ref_string = parallelsentence.ref.get_string()
+        try:
+            ref_string = parallelsentence.ref.get_string()
+        except AttributeError:
+            logging.error("Skipping Hjerson run because there is no reference")
+        return {}
          
         atts = self.get_features_strings(target_string, [ref_string])
         atts = dict([("ref-hj_{}".format(key), value) for key, value in atts.iteritems()])
@@ -123,7 +127,10 @@ class Hjerson(FeatureGenerator):
             for errortype in ['aMissErr', 'aExtErr', 'arLexErr', 'arRer']:
                 res[errortype] += results[errortype]
                 reflength += results["refLength"]
-        res['TER'] = sum(res.values())/reflength
+        try:
+            res['TER'] = sum(res.values())/reflength
+        except:
+            pass
         return res
                     
     
