@@ -16,6 +16,21 @@ from util.jvm import JVM
 from py4j.java_gateway import GatewayClient, JavaGateway
 
 
+def _get_ranking(parallelsentence, rank_name):
+    ranking = []
+    failed = 0
+    for tgt in parallelsentence.get_translations():
+        try:
+            ranking.append(int(tgt.get_attribute(rank_name)))
+        except KeyError:
+            failed += 1
+            pass
+
+    if failed>0:
+        log.warning("{} sentences did not have the required score value '{}'".format(failed, rank_name))
+    return ranking
+
+
 def evaluate_selection(parallelsentences, 
                         metrics=[], 
                         function=max,
@@ -33,20 +48,14 @@ def evaluate_selection(parallelsentences,
     
     if not gateway:
         gateway = JVM(None)
-    
- 
+     
     
     
     #iterate over all parallelsentences, get the selected ones in a list along with references
     for j, parallelsentence in enumerate(parallelsentences):
 
-        ranking = []
-        for tgt in parallelsentence.get_translations():
-            try:
-                ranking.append(int(tgt.get_attribute(rank_name)))
-            except KeyError:
-                pass
 
+        ranking = _get_ranking(parallelsentence, rank_name)
         #get the best sentence according to ranking
         best_rank = function(ranking)
 
