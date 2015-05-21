@@ -40,7 +40,13 @@ def evaluate_selection(parallelsentences,
     #iterate over all parallelsentences, get the selected ones in a list along with references
     for j, parallelsentence in enumerate(parallelsentences):
 
-        ranking = [int(tgt.get_attribute(rank_name)) for tgt in parallelsentence.get_translations()]
+        ranking = []
+        for tgt in parallelsentence.get_translations():
+            try:
+                ranking.append(int(tgt.get_attribute(rank_name)))
+            except KeyError:
+                pass
+
         #get the best sentence according to ranking
         best_rank = function(ranking)
 
