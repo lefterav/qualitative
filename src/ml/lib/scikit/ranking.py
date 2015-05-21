@@ -97,7 +97,12 @@ def dataset_to_instances(filename,
     for parallelsentence in dataset.get_parallelsentences():
         i += 1
         log.debug("Sentence {}".format(i))
-        vectors = parallelsentence.get_vectors(attribute_set, 
+        try:
+            jid = parallelsentence.get_attribute("judgement_id")
+            log.debug("jid = {}".format(jid))
+        except:
+            pass
+        vector_tuples = parallelsentence.get_vectors(attribute_set, 
                                                class_name=class_name, 
                                                default_value=default_value,
                                                replace_infinite=replace_infinite,
@@ -108,11 +113,11 @@ def dataset_to_instances(filename,
         class_values = []
         
         #create a temporary python array for the new vectors
-        for featurevector, class_value in vectors:
-            #log.debug("Featurevector {} before converting to numpy {}".format(len(featurevector), featurevector))
-            featurevector = np.array(featurevector)
-            #log.debug("Featurevector {} after converting to numpy {}".format(featurevector.shape, featurevector))
-            featurevectors.append(featurevector)
+        for featurevector, class_value in vector_tuples:
+            log.debug("Featurevector {} before converting to numpy {}".format(len(featurevector), featurevector))
+            newfeaturevector = np.array(featurevector)
+            log.debug("Featurevector {} after converting to numpy {}".format(newfeaturevector.shape, newfeaturevector))
+            featurevectors.append(newfeaturevector)
             class_values.append(class_value)
             v+=1
         

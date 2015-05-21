@@ -254,7 +254,7 @@ class RankingExperiment(PyExperimentSuite):
                                                 )
             refscores.update(_dictprefix(refscores_soft, '{}.soft'.format(i)))
             
-            testset = CEJcmlReader(self.testset_output_hard[i], all_general=True, all_target=True)        
+            TEStset = CEJcmlReader(self.testset_output_hard[i], all_general=True, all_target=True)        
             refscores_hard = evaluate_selection(testset.get_parallelsentences(),
                                                 rank_name="rank_hard",
                                                 out_filename="testset.{}.hard.sel.txt".format(i),
