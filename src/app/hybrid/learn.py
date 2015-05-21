@@ -243,8 +243,8 @@ class RankingExperiment(PyExperimentSuite):
             function=max
         
         for i, _ in enumerate(self.testset_filenames):
-            testset = CEJcmlReader(self.testset_output_soft[i], all_general=True, all_target=True)
-            refscores_soft = evaluate_selection(testset.get_parallelsentences(), 
+            soft_testset = CEJcmlReader(self.testset_output_soft[i], all_general=True, all_target=True)
+            refscores_soft = evaluate_selection(soft_testset.get_parallelsentences(), 
                                                 rank_name="rank_soft",
                                                 out_filename="testset.{}.soft.sel.txt".format(i),
                                                 ref_filename="testset.{}.ref.txt".format(i),
@@ -254,8 +254,8 @@ class RankingExperiment(PyExperimentSuite):
                                                 )
             refscores.update(_dictprefix(refscores_soft, '{}.soft'.format(i)))
             
-            TEStset = CEJcmlReader(self.testset_output_hard[i], all_general=True, all_target=True)        
-            refscores_hard = evaluate_selection(testset.get_parallelsentences(),
+            hard_testset = CEJcmlReader(self.testset_output_hard[i], all_general=True, all_target=True)        
+            refscores_hard = evaluate_selection(hard_testset.get_parallelsentences(),
                                                 rank_name="rank_hard",
                                                 out_filename="testset.{}.hard.sel.txt".format(i),
                                                 language=target_language,
