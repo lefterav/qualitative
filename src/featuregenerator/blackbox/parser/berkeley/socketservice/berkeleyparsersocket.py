@@ -5,7 +5,7 @@ Created on Sep 21, 2011
 @author: Lukas Poustka
 @author: Eleftherios Avramidis
 '''
-
+import logging as log
 from py4j.java_gateway import JavaGateway
 from py4j.java_gateway import GatewayClient
 from py4j.java_gateway import java_import
@@ -57,7 +57,7 @@ class BerkeleyParserSocket():
 #        dir_src = os.path.dirname(dir_featuregenerator)
         dir_lib = os.path.join(dir_src, "support", "berkeleyserver", "lib")
         
-        print "Berkeley directory:" ,dir_lib
+        log.info("Berkeley directory: {}".format(dir_lib))
         
         #self.classpath = []
         #self.classpath.append(dir_lib)
@@ -131,7 +131,7 @@ class BerkeleyParserSocket():
          
         # call the python function parse() on BParser object
 #        try:
-        sys.stderr.write("<p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
+        log.debug("<p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
         
 #        signal.signal(signal.SIGALRM, handler)
 #        signal.alarm(20)
@@ -151,8 +151,8 @@ class BerkeleyParserSocket():
             except:
                 self._connect(self.gateway, self.grammarfile)
                 parseresult = self.bp_obj.parse(sentence_string)
-                sys.stderr.write("{0} crashed, restarting object".format(self.parsername))
-        sys.stderr.write("<\p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
+                log.warning("{0} crashed, restarting object".format(self.parsername))
+        log.debug("<\p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
 
         return parseresult
     
