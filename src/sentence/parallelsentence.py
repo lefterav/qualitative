@@ -577,11 +577,13 @@ class ParallelSentence(object):
         @return: one vector for each pairwise comparison of target sentences
         @rtype: C{iterator} of C{lists}
         """
-        
+       
+        yielded = 0
         parallel_attribute_values = self.get_vector(attribute_set.parallel_attribute_names, default_value, replace_infinite, replace_nan)
-        
-        
         source_attribute_values = self.src.get_vector(attribute_set.source_attribute_names, default_value, replace_infinite, replace_nan)
+
+        if len(self.tgt)==0:
+            log.warning("Parallelsentence has got only one target sentence, so cannot produce pairs")
 
         if bidirectional_pairs:
             iterator = itertools.permutations(self.tgt, 2)
@@ -595,7 +597,6 @@ class ParallelSentence(object):
             log.debug("Parallelsentence received vector 1: {} ".format(target1_attribute_values))
             log.debug("Parallelsentence received vector 2: {} ".format(target2_attribute_values))
 
-
             vector = []
             vector.extend(parallel_attribute_values)
             vector.extend(source_attribute_values)
@@ -604,14 +605,18 @@ class ParallelSentence(object):
             
             log.debug("Combined vector: {}".format(vector))
 
+            yielded+=1
+
             if class_name:
                 class_value = self._get_class_pairwise(target1, target2, class_name, ties)
                 if class_value!=None:
                     yield vector, class_value
-                    
-                
+                else:
+                    log.warning("Target sentence pair did not provide class value")
             else:  
                 yield vector, None
+        if yielded==0:
+            log.warning("Parallelsentence did not produce any pairs")
 
     def get_vector(self, attribute_names, default_value='', replace_infinite=False, replace_nan=False):
         vector = []
