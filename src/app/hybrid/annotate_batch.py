@@ -256,14 +256,20 @@ def truecase_parse_output(input_file, output_file, source_model, target_model):
     fgs = [truecaser_src, truecaser_tgt]
     saxjcml.run_features_generator(input_file, output_file, fgs, True)
     
-@transform(truecase_parse_output, suffix(".tc.parsed.f.jcml"), ".ibm1.f.jcml", cfg.get("ibm1", "source_lexicon"), cfg.get("ibm1", "target_lexicon"))    
+    
+@active_if(cfg.has_section("ibm1:{}-{}".format(source_language, target_language)) and cfg.has_section("ibm1:{}-{}".format(target_language, source_language)))    
+@transform(truecase_parse_output, suffix(".tc.parsed.f.jcml"), ".ibm1.f.jcml",  cfg.get("ibm1:{}-{}".format(source_language, target_language), "lexicon"), cfg.get("ibm1:{}-{}".format(target_language, source_language), "lexicon"))    
 def features_ibm1(input_file, output_file, sourcelexicon, targetlexicon):
     analyzers = [
              AlignmentFeatureGenerator(sourcelexicon, targetlexicon),
              CfgAlignmentFeatureGenerator(),
              ]
     saxjcml.run_features_generator(input_file, output_file, analyzers)
-parallel_feature_functions.append(features_ibm1)
+    
+if (cfg.has_section("ibm1:{}-{}".format(source_language, target_language)) and cfg.has_section("ibm1:{}-{}".format(target_language, source_language))):
+    parallel_feature_functions.append(features_ibm1)
+    
+
 
 
 @transform(preprocess_data, suffix(".tok.jcml"), ".tc.%s.jcml" % source_language, source_language, cfg.get_truecaser_model(source_language))
@@ -410,7 +416,7 @@ def features_lm_batch(input_file, output_file, language, lm_name):
 
 #unimplemented
 def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, lm_lowercase):
-    passbleugenerator
+    pass
 
 
 #language_checker_source = cfg.get_checker(source_language)
