@@ -160,9 +160,13 @@ if cfg.exists_checker(target_language):
 @active_if(cfg.has_section("languagetool"))
 @transform(data_fetch, suffix(".orig.jcml"), ".lt.f.jcml" , source_language, target_language)
 def features_langtool(input_file, output_file, source_language, target_language):
-    fg_source = LanguageToolSocketFeatureGenerator(source_language, cfg.gateway)
-    fg_target = LanguageToolSocketFeatureGenerator(target_language, cfg.gateway)
-    saxjcml.run_features_generator(input_file, output_file, [fg_source, fg_target])
+    try:
+        fg_source = LanguageToolSocketFeatureGenerator(source_language, cfg.gateway)
+        fg_target = LanguageToolSocketFeatureGenerator(target_language, cfg.gateway)
+        saxjcml.run_features_generator(input_file, output_file, [fg_source, fg_target])
+    except:
+        fg_target = LanguageToolSocketFeatureGenerator(target_language, cfg.gateway)
+        saxjcml.run_features_generator(input_file, output_file, [fg_target])
 
 
 if cfg.has_section("languagetool"):
@@ -258,8 +262,11 @@ def truecase_parse_output(input_file, output_file, source_model, target_model):
     
     
 @active_if(cfg.has_section("ibm1:{}-{}".format(source_language, target_language)) and cfg.has_section("ibm1:{}-{}".format(target_language, source_language)))    
-@transform(truecase_parse_output, suffix(".tc.parsed.f.jcml"), ".ibm1.f.jcml",  cfg.get("ibm1:{}-{}".format(source_language, target_language), "lexicon"), cfg.get("ibm1:{}-{}".format(target_language, source_language), "lexicon"))    
-def features_ibm1(input_file, output_file, sourcelexicon, targetlexicon):
+@transform(truecase_parse_output, suffix(".tc.parsed.f.jcml"), ".ibm1.f.jcml" , cfg, source_language, target_language)        
+def features_ibm1(input_file, output_file, cfg, source_language, target_language):
+    sourcelexicon = cfg.get("ibm1:{}-{}".format(source_language, target_language), "lexicon")
+    targetlexicon = cfg.get("ibm1:{}-{}".format(target_language, source_language), "lexicon")    
+
     analyzers = [
              AlignmentFeatureGenerator(sourcelexicon, targetlexicon),
              CfgAlignmentFeatureGenerator(),
