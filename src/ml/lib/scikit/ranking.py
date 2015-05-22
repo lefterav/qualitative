@@ -280,37 +280,7 @@ class SkLearner:
             transformer = None
             
         elif feature_selector == "RFECV_SVC":
-            svc = SVC(kernel="linear")
-            transformer = RFECV(estimator=svc, step=1, cv=StratifiedKFold(labels, 2),
-              scoring='accuracy')
-            log.info("scikit: Running feature selection {}".format(feature_selector))
-            
-            log.info("scikit: data dimensions before fit_transform(): {}".format(data.shape))
-            log.info("scikit: labels dimensions before fit_transform(): {}".format(labels.shape))
-            data = transformer.fit_transform(data, labels)
-            log.info("scikit: Dimensions after fit_transform(): %s,%s" % data.shape)
-            
-            #produce a plot if requested and supported (for RFE)
-            if plot_filename:
-                try:
-                    grid_scores = transformer.grid_scores_
-                except:
-                    return transformer, data, attributes
-                plt.figure()
-                plt.xlabel("Number of features selected")
-                plt.ylabel("Cross validation score (nb of correct classifications)")
-                plt.plot(range(1, len(transformer.grid_scores_) + 1), transformer.grid_scores_)
-                plt.savefig(plot_filename, bbox_inches='tight')
-                
-                #put ranks in an array, so that we can get them in the log file
-                for i, rank in enumerate(transformer.ranking_):
-                    attributes["RFE_rank_f{}".format(i)] = rank
-                
-                for i, rank in enumerate(transformer.support_):
-                    attributes["RFE_mask_f{}".format(i)] = rank
-        
-            return transformer, data, attributes
-            
+            return self._fs_rfecv(data, labels, plot_filename)
         
         if transformer:
             log.info("scikit: Running feature selection {}".format(feature_selector))
@@ -322,6 +292,51 @@ class SkLearner:
                  
         return transformer, data, attributes
     
+    
+    def _fs_rfecv(self, data, labels, plot_filename):
+        """
+        Helper function to perform feature selection with Recursive Feature Elimination based
+        on a cross-validation over the entire data set. 
+        @param data: the values of the features
+        @type data: numpy.array
+        @param labels: the values of the training labels
+        @type labels: numpy.array
+        @param plot_filename: a string where the graph will be stored
+        @type plot_filename: string
+        @return: a trained transformer, the modified data and the co-efficients assigned to each feature
+        @rtype: tuple of (scikit.transformer, numpy.array, OrderedDict)
+        """
+        attributes = OrderedDict()
+        svc = SVC(kernel="linear")
+        transformer = RFECV(estimator=svc, step=1, cv=StratifiedKFold(labels, 2),
+          scoring='accuracy')
+        log.info("scikit: Running feature selection RFECV_SVC")
+        
+        log.info("scikit: data dimensions before fit_transform(): {}".format(data.shape))
+        log.info("scikit: labels dimensions before fit_transform(): {}".format(labels.shape))
+        data = transformer.fit_transform(data, labels)
+        log.info("scikit: Dimensions after fit_transform(): %s,%s" % data.shape)
+        
+        #produce a plot if requested and supported (for RFE)
+        if plot_filename:
+            try:
+                grid_scores = transformer.grid_scores_
+            except:
+                return transformer, data, attributes
+            plt.figure()
+            plt.xlabel("Number of features selected")
+            plt.ylabel("Cross validation score (nb of correct classifications)")
+            plt.plot(range(1, len(grid_scores) + 1), transformer.grid_scores)
+            plt.savefig(plot_filename, bbox_inches='tight')
+            
+        #put ranks in an array, so that we can get them in the log file
+        for i, rank in enumerate(transformer.ranking_):
+            attributes["RFE_rank_f{}".format(i)] = rank
+        
+        for i, rank in enumerate(transformer.support_):
+            attributes["RFE_mask_f{}".format(i)] = rank
+                
+        return transformer, data, attributes
     
     
     def initialize_learning_method(self, learner, data, labels, 
