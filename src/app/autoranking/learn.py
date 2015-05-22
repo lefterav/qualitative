@@ -114,6 +114,17 @@ class RankingExperiment(PyExperimentSuite):
                 testset_filename,
                 params['repetitions'],
                 rep)
+        
+        #use only the last fold of a 10-fold cross-validation
+        elif params["test"] == "last_tenth":
+            self.trainingset_filename = "{}.trainingset.jcml".format(rep)
+            testset_filename = "{}.testset.jcml".format(rep)
+            self.testset_filenames = [testset_filename]
+            fold_jcml(dataset_filename,
+                self.trainingset_filename,
+                testset_filename,
+                10,
+                0)
             
         #if a list of test-sets is given for testing upon
         elif params["test"] == "list":
