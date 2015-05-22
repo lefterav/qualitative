@@ -13,7 +13,7 @@ from evaluation_measures import mean_absolute_error, root_mean_squared_error
 from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentenceSet
 from dataprocessor.ce.cejcml import CEJcmlReader
 from sklearn_utils import scale_datasets_crossvalidation
-
+from sklearn.cross_validation import train_test_split
 
 #generic
 import numpy as np
@@ -43,7 +43,7 @@ from sklearn.preprocessing.imputation import Imputer
 from sklearn import preprocessing
 from sklearn.preprocessing.data import StandardScaler
 from sklearn.metrics.metrics import mean_squared_error, f1_score, precision_score, recall_score
-from sklearn.feature_selection.rfe import RFECV
+from sklearn.feature_selection.rfe import RFECV, RFE
 from sklearn.cross_validation import StratifiedKFold
 
 
@@ -282,6 +282,9 @@ class SkLearner:
         elif feature_selector == "RFECV_SVC":
             return self._fs_rfecv(data, labels, plot_filename)
         
+        elif feature_selector == "RFE_SVC":
+            return self._fs_rfe(data, labels, plot_filename)
+        
         if transformer:
             log.info("scikit: Running feature selection {}".format(feature_selector))
             
@@ -293,10 +296,38 @@ class SkLearner:
         return transformer, data, attributes
     
     
-    def _fs_rfecv(self, data, labels, plot_filename):
+    def _fs_rfe(self, data, labels, plot_filename):
+        svc = SVC(kernel="linear", C=1)
+        transformer = RFE(estimator=svc, n_features_to_select=10, step=1)
+        data = transformer.fit_transform(data, labels)
+        
+        attributes = OrderedDict()
+        #produce a plot if requested and supported (for RFE)
+        if plot_filename:
+            try:
+                grid_scores = transformer.grid_scores_
+            except:
+                return transformer, data, attributes
+            plt.figure()
+            plt.xlabel("Number of features selected")
+            plt.ylabel("Cross validation score (nb of correct classifications)")
+            plt.plot(range(1, len(grid_scores) + 1), transformer.grid_scores)
+            plt.savefig(plot_filename, bbox_inches='tight')
+            
+        #put ranks in an array, so that we can get them in the log file
+        for i, rank in enumerate(transformer.ranking_):
+            attributes["RFE_rank_f{}".format(i)] = rank
+        
+        for i, rank in enumerate(transformer.support_):
+            attributes["RFE_mask_f{}".format(i)] = rank
+                
+        return transformer, data, attributes
+
+    
+    def _fs_rfecv(self, data, labels, plot_filename, sample = 0.1):
         """
         Helper function to perform feature selection with Recursive Feature Elimination based
-        on a cross-validation over the entire data set. 
+        on a cross-validation over the entire or part of the data set. 
         @param data: the values of the features
         @type data: numpy.array
         @param labels: the values of the training labels
@@ -308,13 +339,26 @@ class SkLearner:
         """
         attributes = OrderedDict()
         svc = SVC(kernel="linear")
-        transformer = RFECV(estimator=svc, step=1, cv=StratifiedKFold(labels, 2),
+        
+        if sample: 
+            skf = StratifiedKFold(labels, n_folds=1.00/sample, shuffle=False, random_state=None)
+            last_fold = list(skf)[-1]
+            sampledata = np.array([data[index] for index in last_fold[1]])
+            samplelabels = np.array([labels[index] for index in last_fold[1]])
+        else:
+            sampledata = data
+            samplelabels = labels
+        
+        transformer = RFECV(estimator=svc, step=1, cv=StratifiedKFold(samplelabels, 5),
           scoring='accuracy')
         log.info("scikit: Running feature selection RFECV_SVC")
         
         log.info("scikit: data dimensions before fit_transform(): {}".format(data.shape))
         log.info("scikit: labels dimensions before fit_transform(): {}".format(labels.shape))
-        data = transformer.fit_transform(data, labels)
+        
+        
+        transformer.fit(sampledata, samplelabels)
+        data = transformer.fit(data)
         log.info("scikit: Dimensions after fit_transform(): %s,%s" % data.shape)
         
         #produce a plot if requested and supported (for RFE)
