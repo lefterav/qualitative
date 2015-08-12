@@ -612,7 +612,7 @@ class ParallelSentence(object):
                 if class_value!=None:
                     yield vector, class_value
                 else:
-                    log.warning("Target sentence pair did not provide class value")
+                    log.debug("Target sentence pair did not provide class value")
             else:  
                 yield vector, None
         if yielded==0:

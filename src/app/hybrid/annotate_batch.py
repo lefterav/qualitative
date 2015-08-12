@@ -240,11 +240,13 @@ def merge_parts(inputs, output):
 @collate(parse_functions, regex(r"(.*)\.parsed.([^.]+).f.jcml"),  r"\1.parsed.f.jcml")
 def merge_parse_source_target(tobermerged, gathered_singledataset_annotations):
     
-    print "gathering berkeley parsing source and target ", parallel_feature_functions
     original_dataset = JcmlReader(tobermerged[0]).get_dataset()
-    appended_dataset = JcmlReader(tobermerged[1]).get_dataset()
-    original_dataset.merge_dataset_symmetrical(appended_dataset, {}, "id")
+    if len(tobermerged)>1:
+        print "gathering berkeley parsing source and target ", parallel_feature_functions
+        appended_dataset = JcmlReader(tobermerged[1]).get_dataset()
+        original_dataset.merge_dataset_symmetrical(appended_dataset, {}, "id")
     Parallelsentence2Jcml(original_dataset.get_parallelsentences()).write_to_file(gathered_singledataset_annotations)
+
 
 '''
 IBM1 features over Berkeley parser output
@@ -259,14 +261,17 @@ def truecase_parse_output(input_file, output_file, source_model, target_model):
     
     fgs = [truecaser_src, truecaser_tgt]
     saxjcml.run_features_generator(input_file, output_file, fgs, True)
-    
-    
-@active_if(cfg.has_section("ibm1:{}-{}".format(source_language, target_language)) and cfg.has_section("ibm1:{}-{}".format(target_language, source_language)))    
-@transform(truecase_parse_output, suffix(".tc.parsed.f.jcml"), ".ibm1.f.jcml" , cfg, source_language, target_language)        
-def features_ibm1(input_file, output_file, cfg, source_language, target_language):
+
+try:
     sourcelexicon = cfg.get("ibm1:{}-{}".format(source_language, target_language), "lexicon")
     targetlexicon = cfg.get("ibm1:{}-{}".format(target_language, source_language), "lexicon")    
-
+except:
+    sourcelexicon = None
+    targetlexicon = None
+    
+@active_if(cfg.has_section("ibm1:{}-{}".format(source_language, target_language)) and cfg.has_section("ibm1:{}-{}".format(target_language, source_language)))    
+@transform(truecase_parse_output, suffix(".tc.parsed.f.jcml"), ".ibm1.f.jcml" , sourcelexicon, targetlexicon, source_language, target_language)        
+def features_ibm1(input_file, output_file, sourcelexicon, targetlexicon, source_language, target_language):
     analyzers = [
              AlignmentFeatureGenerator(sourcelexicon, targetlexicon),
              CfgAlignmentFeatureGenerator(),
