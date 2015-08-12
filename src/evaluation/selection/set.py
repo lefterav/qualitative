@@ -56,6 +56,10 @@ def evaluate_selection(parallelsentences,
 
 
         ranking = _get_ranking(parallelsentence, rank_name)
+        if not ranking:
+            log.warning("Cannot evaluate sentence as it provided zero ranks")
+            continue 
+
         #get the best sentence according to ranking
         best_rank = function(ranking)
 
