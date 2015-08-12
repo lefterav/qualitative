@@ -324,7 +324,7 @@ class SkLearner:
         return transformer, data, attributes
 
     
-    def _fs_rfecv(self, data, labels, plot_filename, sample = 0.1):
+    def _fs_rfecv(self, data, labels, plot_filename, sample = 0.05):
         """
         Helper function to perform feature selection with Recursive Feature Elimination based
         on a cross-validation over the entire or part of the data set. 
@@ -341,10 +341,11 @@ class SkLearner:
         svc = SVC(kernel="linear")
         
         if sample: 
-            skf = StratifiedKFold(labels, n_folds=1.00/sample, shuffle=False, random_state=None)
+            skf = StratifiedKFold(labels, n_folds=1.00/sample)
             last_fold = list(skf)[-1]
             sampledata = np.array([data[index] for index in last_fold[1]])
             samplelabels = np.array([labels[index] for index in last_fold[1]])
+            log.info("RFECV will be performed on data: {}".format(sampledata.shape))
         else:
             sampledata = data
             samplelabels = labels
@@ -358,7 +359,8 @@ class SkLearner:
         
         
         transformer.fit(sampledata, samplelabels)
-        data = transformer.fit(data)
+        log.info("scikit: Data fit. Proceeding with transforming...")
+        data = transformer.transform(data)
         log.info("scikit: Dimensions after fit_transform(): %s,%s" % data.shape)
         
         #produce a plot if requested and supported (for RFE)
@@ -370,7 +372,7 @@ class SkLearner:
             plt.figure()
             plt.xlabel("Number of features selected")
             plt.ylabel("Cross validation score (nb of correct classifications)")
-            plt.plot(range(1, len(grid_scores) + 1), transformer.grid_scores)
+            plt.plot(range(1, len(grid_scores) + 1), grid_scores)
             plt.savefig(plot_filename, bbox_inches='tight')
             
         #put ranks in an array, so that we can get them in the log file
