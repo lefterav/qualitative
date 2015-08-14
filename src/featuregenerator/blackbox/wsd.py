@@ -150,12 +150,14 @@ class WSDclient:
         params = urlencode([("document", string), ("id", 1)])
         text = self.tokenizer.process_string(string)
         response = urllib2.urlopen("{}/disambiguate?{}".format(self.url, params)).read()
-        
+        sys.stderr.write(response)
         responsefile = StringIO.StringIO()
         responsefile.write('{"documents": [ {} ]}'.format(response))
         items = ijson.items(self.wsdfile, "documents.item")
-        yield " ".join([read_wsd_output(item, text) for item in items])
+        sys.stderr.write("items: {}\n".format(items))
+        output = read_wsd_output(items[0], text)
         responsefile.close()
+        return output
 
 
 
