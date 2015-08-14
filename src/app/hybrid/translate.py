@@ -243,8 +243,9 @@ class SimpleWsdTriangleTranslator(Worker):
         self.lcm_worker = MtMonkeyWorker(lcm_url)
     
     def translate(self, string):
-        sys.stderr.write("Sending to WSD Moses\n")
+        sys.stderr.write("Sending to WSD Analyzer\n")
         wsd_source = self.wsd_worker.annotate(string)
+        sys.stderr.write("Sending to WSD Moses\n")
         moses_translation, _ = self.moses_worker.translate(wsd_source)
         sys.stderr.write("Sending to Lucy\n")
         lucy_translation, _ = self.lucy_worker.translate(string)
