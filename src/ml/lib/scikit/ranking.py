@@ -13,13 +13,15 @@ from evaluation_measures import mean_absolute_error, root_mean_squared_error
 from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentenceSet
 from dataprocessor.ce.cejcml import CEJcmlReader
 from sklearn_utils import scale_datasets_crossvalidation
-
+from sklearn.cross_validation import train_test_split
 
 #generic
 import numpy as np
 import logging as log
 from collections import OrderedDict
-import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib import pyplot as plt
 
 #scikit classifiers
 from sklearn.svm import SVC, LinearSVC
@@ -41,8 +43,102 @@ from sklearn.preprocessing.imputation import Imputer
 from sklearn import preprocessing
 from sklearn.preprocessing.data import StandardScaler
 from sklearn.metrics.metrics import mean_squared_error, f1_score, precision_score, recall_score
-from sklearn.feature_selection.rfe import RFECV
+from sklearn.feature_selection.rfe import RFECV, RFE
 from sklearn.cross_validation import StratifiedKFold
+
+
+def _get_numpy_arrays(vector_tuples):
+    """
+    Helper function to receive an iterator or list of (featurevector, value) tuples for each training instance
+    and provide the equivalent numpy array
+    @param vector_tuples: a iterator or a list of tuples. Each tuple refers to one training instance
+    and contains one feature vector and the respective label
+    @type vector_tuples: iterator or list
+    @return a tuple of two numpy arrays, one for the feature values and one for the labels
+    @rtype tuple of (numpy.array, numpy.array)
+    """
+    
+    #every parallelsentence has many instances
+    featurevectors = []
+    class_values = []
+        
+    #create a temporary python array for the new vectors
+    for featurevector, class_value in vector_tuples:
+        log.debug("Featurevector {} before converting to numpy {}".format(len(featurevector), featurevector))
+        newfeaturevector = np.array(featurevector)
+        log.debug("Featurevector {} after converting to numpy {}".format(newfeaturevector.shape, newfeaturevector))
+        featurevectors.append(newfeaturevector)
+        class_values.append(class_value)
+    
+    log.debug("Featurevectors {} before converting to numpy {}".format(len(featurevectors), featurevectors))
+
+    #convert to numpy
+    newfeatures = np.array(featurevectors)
+    newlabels = np.array(class_values)
+    log.debug("Featurevectors {} after converting to numpy {}".format(newfeatures.shape, newfeatures))
+    return newfeatures, newlabels
+
+
+def _impute(features, imputer=True):
+    """
+    Helper function that uses the safest imputing method to remove null values, in terms of compatibility with the data size
+    @param features: the feature values that need to be imputed
+    @type features: numpy.array
+    @param imputer: whether or not the scikit imputing method should be used
+    @type imputer: boolean
+    @return: the modified feature values
+    @rtype: numpy.array
+    """
+    if not imputer: #run imputer only if enabled (default)
+        return np.nan_to_num(features)
+    else:
+        imp = Imputer(missing_values='NaN', strategy='mean', axis=0, verbose=2)
+        try:
+            impfeatures = imp.fit_transform(features)
+        except ValueError as exc:
+            #catch errors with illegal values (e.g. strings)
+            log.warning("Exception trying to run scikit imputation: {}".format(exc))
+        #show size for debugging purposes
+        #log.debug("Featurevectors {} after imputation: {}".format(impfeatures.shape, features))i
+
+        #we don't want shgrid_scores_ape to change, so if this happens, then just replace nans with zero and infinites
+        if impfeatures.shape == features.shape:
+            features = impfeatures
+        else:
+            log.warning("Imputer failed, filtering NaN based on numpy converter")
+            features = np.nan_to_num(features)
+    return features
+
+def _append_arrays(features, labels, newfeatures, newlabels):
+    """
+    Helper function that appends an two incoming numpy arrays to two existing numpy arrays respectively
+    also dealing with their initialization if they are empty, and also warning about dimension mismatches
+    @param features: existing feature array
+    @type features: numpy.array
+    @param labels: existing labels vector
+    @type labels: numpy.array
+    @param newfeatures: incoming feature array
+    @type newfeatures: numpy.array
+    @param newlabels: incoming labels vector
+    @type newlabels: numpy.array
+    @return: the arrays resulting from the concatenation of the two pairs of arrays
+    @rtype: tuple(numpy.array, numpy.array)
+    """
+    if features != None and labels != None:
+        try:
+            features = np.concatenate((features, newfeatures), axis=0)
+            labels = np.concatenate((labels, newlabels), axis=0)
+        except ValueError:
+            log.warning("Featurevector probably wrong dimension: {} vs {}".format(features.shape,newfeatures.shape))
+        #log.info("Featurevectors {} after concatenating: {}".format(features.shape, features))
+    else:
+        #or initialize the total vectors 
+        #log.debug("Initializing featurevectors")
+        features = newfeatures
+        labels = newlabels
+        
+    return features, labels
+
 
 def dataset_to_instances(filename, 
                          attribute_set=None,
@@ -78,8 +174,6 @@ def dataset_to_instances(filename,
     @rtype: C{Table}
     """
     
-    
-    
     #initialize the class that will take over the reading from the file
     dataset = reader(filename, compact=True, 
                      all_general=True,
@@ -90,67 +184,41 @@ def dataset_to_instances(filename,
     
     #iterate over all parallel sentences provided by the data reader
     i = 0
+    v = 0
 
+    #process one parallel sentence at a time to avoid memory overload
+    #(internal numpy structure is more memory effeective than the original object)
     for parallelsentence in dataset.get_parallelsentences():
         i += 1
         log.debug("Sentence {}".format(i))
-        vectors = parallelsentence.get_vectors(attribute_set, 
+        try:
+            jid = parallelsentence.get_attribute("judgement_id")
+            log.debug("jid = {}".format(jid))
+        except:
+            pass
+        
+        #get the vectors originating for the pairwise comparisons of this sentence
+        vector_tuples = parallelsentence.get_vectors(attribute_set, 
                                                class_name=class_name, 
                                                default_value=default_value,
                                                replace_infinite=replace_infinite,
                                                )
         
-        #every parallelsentence has many instances
-        featurevectors = []
-        class_values = []
-        
-        #create a temporary python array for the new vectors
-        for featurevector, class_value in vectors:
-            #log.debug("Featurevector {} before converting to numpy {}".format(len(featurevector), featurevector))
-            featurevector = np.array(featurevector)
-            #log.debug("Featurevector {} after converting to numpy {}".format(featurevector.shape, featurevector))
-            featurevectors.append(featurevector)
-            class_values.append(class_value)
-        
-        log.debug("Featurevectors {} before converting to numpy {}".format(len(featurevectors), featurevectors))
-
-        #convert to numpy
-        newfeatures = np.array(featurevectors)
-        newlabels = np.array(class_values)
-        #log.debug("Featurevectors {} after converting to numpy {}".format(newfeatures.shape, newfeatures))
+        #convert those vectors into numpy format
+        newfeatures, newlabels = _get_numpy_arrays(vector_tuples)
+        v += (len(newlabels))
         
         #append them to existing vectors if there are
-        try:
-            features = np.concatenate((features, newfeatures), axis=0)
-            labels = np.concatenate((labels, newlabels), axis=0)
-            #log.debug("Featurevectors {} after concatenating: {}".format(features.shape, features))
-        except ValueError:
-            #or initialize the total vectors 
-            #log.debug("Initializing featurevectors")
-            features = newfeatures
-            labels = newlabels
-        
-    #print features 
-    #print labels 
-    if not imputer: #run imputer only if enabled (default)
-        return np.nan_to_num(features)
-    else:
-        imp = Imputer(missing_values='NaN', strategy='mean', axis=0, verbose=2)
-        try:
-            impfeatures = imp.fit_transform(features)
-        except ValueError as exc:
-            #catch errors with illegal values (e.g. strings)
-            log.warning("Exception trying to run scikit imputation: {}".format(exc))
-        #show size for debugging purposes
-        #log.debug("Featurevectors {} after imputation: {}".format(impfeatures.shape, features))i
+        features, labels = _append_arrays(features, labels, newfeatures, newlabels)
 
-        #we don't want shgrid_scores_ape to change, so if this happens, then just replace nans with zero and infinites
-        if impfeatures.shape == features.shape:
-            features = impfeatures
-        else:
-            log.warning("Using numpy NaN substitution")
-            features = np.nan_to_num(features)
+    if len(labels)==0:
+        log.warning("Finished scikit conversion: {} parallelsentences and {} vectors, gave {} instances".format(i,v,len(labels)))
+    
+    #deal with none and other values
+    features = _impute(features, imputer)
+    
     return features, labels
+
 
 def parallelsentence_to_instance(parallelsentence, attribute_set):
     vectors = parallelsentence.get_vectors(attribute_set, bidirectional_pairs=False, default_value=-500, replace_infinite=True, replace_nan=False)
@@ -170,6 +238,7 @@ class SkLearner:
         ranker = eval(self.name)
         self.learner = self.name
         self.scaler = None
+        self.featureselector = None
    
     
     
@@ -211,33 +280,10 @@ class SkLearner:
             transformer = None
             
         elif feature_selector == "RFECV_SVC":
-            svc = SVC(kernel="linear")
-            transformer = RFECV(estimator=svc, step=1, cv=StratifiedKFold(labels, 2),
-              scoring='accuracy')
-            log.info("scikit: Running feature selection {}".format(feature_selector))
-            
-            log.info("scikit: data dimensions before fit_transform(): {}".format(data.shape))
-            log.info("scikit: labels dimensions before fit_transform(): {}".format(labels.shape))
-            data = transformer.fit_transform(data, labels)
-            log.info("scikit: Dimensions after fit_transform(): %s,%s" % data.shape)
-            
-            #produce a plot if requested and supported (for RFE)
-            if transformer.grid_scores_ and plot_filename:
-                plt.figure()
-                plt.xlabel("Number of features selected")
-                plt.ylabel("Cross validation score (nb of correct classifications)")
-                plt.plot(range(1, len(transformer.grid_scores_) + 1), transformer.grid_scores_)
-                plt.savefig(plot_filename, bbox_inches='tight')
-                
-                #put ranks in an array, so that we can get them in the log file
-                for i, rank in enumerate(transformer.ranking_):
-                    attributes["RFE_rank_f{}".format(i)] = rank
-                
-                for i, rank in enumerate(transformer.support_):
-                    attributes["RFE_mask_f{}".format(i)] = rank
+            return self._fs_rfecv(data, labels, plot_filename)
         
-            return data, attributes
-            
+        elif feature_selector == "RFE_SVC":
+            return self._fs_rfe(data, labels, plot_filename)
         
         if transformer:
             log.info("scikit: Running feature selection {}".format(feature_selector))
@@ -247,8 +293,96 @@ class SkLearner:
             data = transformer.fit_transform(data, labels)
             log.info("scikit: Dimensions after fit_transform(): %s,%s" % data.shape)
                  
-        return data, attributes
+        return transformer, data, attributes
     
+    
+    def _fs_rfe(self, data, labels, plot_filename):
+        svc = SVC(kernel="linear", C=1)
+        transformer = RFE(estimator=svc, n_features_to_select=10, step=1)
+        data = transformer.fit_transform(data, labels)
+        
+        attributes = OrderedDict()
+        #produce a plot if requested and supported (for RFE)
+        if plot_filename:
+            try:
+                grid_scores = transformer.grid_scores_
+            except:
+                return transformer, data, attributes
+            plt.figure()
+            plt.xlabel("Number of features selected")
+            plt.ylabel("Cross validation score (nb of correct classifications)")
+            plt.plot(range(1, len(grid_scores) + 1), transformer.grid_scores)
+            plt.savefig(plot_filename, bbox_inches='tight')
+            
+        #put ranks in an array, so that we can get them in the log file
+        for i, rank in enumerate(transformer.ranking_):
+            attributes["RFE_rank_f{}".format(i)] = rank
+        
+        for i, rank in enumerate(transformer.support_):
+            attributes["RFE_mask_f{}".format(i)] = rank
+                
+        return transformer, data, attributes
+
+    
+    def _fs_rfecv(self, data, labels, plot_filename, sample = 0.05):
+        """
+        Helper function to perform feature selection with Recursive Feature Elimination based
+        on a cross-validation over the entire or part of the data set. 
+        @param data: the values of the features
+        @type data: numpy.array
+        @param labels: the values of the training labels
+        @type labels: numpy.array
+        @param plot_filename: a string where the graph will be stored
+        @type plot_filename: string
+        @return: a trained transformer, the modified data and the co-efficients assigned to each feature
+        @rtype: tuple of (scikit.transformer, numpy.array, OrderedDict)
+        """
+        attributes = OrderedDict()
+        svc = SVC(kernel="linear")
+        
+        if sample: 
+            skf = StratifiedKFold(labels, n_folds=1.00/sample)
+            last_fold = list(skf)[-1]
+            sampledata = np.array([data[index] for index in last_fold[1]])
+            samplelabels = np.array([labels[index] for index in last_fold[1]])
+            log.info("RFECV will be performed on data: {}".format(sampledata.shape))
+        else:
+            sampledata = data
+            samplelabels = labels
+        
+        transformer = RFECV(estimator=svc, step=1, cv=StratifiedKFold(samplelabels, 5),
+          scoring='accuracy')
+        log.info("scikit: Running feature selection RFECV_SVC")
+        
+        log.info("scikit: data dimensions before fit_transform(): {}".format(data.shape))
+        log.info("scikit: labels dimensions before fit_transform(): {}".format(labels.shape))
+        
+        
+        transformer.fit(sampledata, samplelabels)
+        log.info("scikit: Data fit. Proceeding with transforming...")
+        data = transformer.transform(data)
+        log.info("scikit: Dimensions after fit_transform(): %s,%s" % data.shape)
+        
+        #produce a plot if requested and supported (for RFE)
+        if plot_filename:
+            try:
+                grid_scores = transformer.grid_scores_
+            except:
+                return transformer, data, attributes
+            plt.figure()
+            plt.xlabel("Number of features selected")
+            plt.ylabel("Cross validation score (nb of correct classifications)")
+            plt.plot(range(1, len(grid_scores) + 1), grid_scores)
+            plt.savefig(plot_filename, bbox_inches='tight')
+            
+        #put ranks in an array, so that we can get them in the log file
+        for i, rank in enumerate(transformer.ranking_):
+            attributes["RFE_rank_f{}".format(i)] = rank
+        
+        for i, rank in enumerate(transformer.support_):
+            attributes["RFE_mask_f{}".format(i)] = rank
+                
+        return transformer, data, attributes
     
     
     def initialize_learning_method(self, learner, data, labels, 
@@ -367,9 +501,10 @@ class SkRanker(Ranker, SkLearner):
               scorers=['f1_score'],
               attribute_set=None,
               class_name=None,
-              plot_filename="./featureselection.pdf",
+              metaresults_prefix="./0-",
               **kwargs):
         
+        plot_filename = "{}{}".format(metaresults_prefix, "featureselection.pdf")
         data, labels = dataset_to_instances(dataset_filename, attribute_set, class_name,  **kwargs)
         learner = self.learner
         
@@ -384,18 +519,19 @@ class SkRanker(Ranker, SkLearner):
             log.debug("Data shape before scaling: {}".format(data.shape))
             self.scaler = StandardScaler()
             data = self.scaler.fit_transform(data)
+            log.debug("Data shape after scaling: {}".format(data.shape))
         
         #avoid any NaNs and Infs that may have occurred due to the scaling
         data = np.nan_to_num(data)
         log.debug("Mean: {} , Std: {}".format(self.scaler.mean_, self.scaler.std_))
         
         #feature selection
-        data, metadata = self.run_feature_selection(data, labels, feature_selector, feature_selection_params, feature_selection_threshold, plot_filename) 
+        self.featureselector, data, metadata = self.run_feature_selection(data, labels, feature_selector, feature_selection_params, feature_selection_threshold, plot_filename) 
         
         #initialize learning method and scoring functions and optimize
         self.classifier, self.scorers = self.initialize_learning_method(learner, data, labels, learning_params, optimize, optimization_params, scorers)
 
-        log.debug("Data shape before fitting: {}".format(data.shape))
+        log.info("Data shape before fitting: {}".format(data.shape))
 
         self.classifier.fit(data, labels)
         self.fit = True
@@ -412,7 +548,7 @@ class SkRanker(Ranker, SkLearner):
                 params["C"] = self.classifier.C
                 for i, n_support in enumerate(self.classifier.n_support_):
                     params["n_{}".format(i)] = n_support
-                log.info(len(self.classifier.dual_coef_))
+                log.debug(len(self.classifier.dual_coef_))
                 return params
             elif self.classifier.kernel == "linear":
                 coefficients = self.classifier.coef_
@@ -471,6 +607,12 @@ class SkRanker(Ranker, SkLearner):
                 except ValueError as e:
                     log.error("Could not transform instance: {}".format(instance))
                     raise ValueError(e)
+            try:
+                if self.featureselector:
+                    instance = np.nan_to_num(instance)
+                    instance = self.featureselector.transform(instance)
+            except AttributeError:
+                pass
             log.debug('Instance = {}'.format(instance)) 
             #make sure no NaN or inf appears in the instance
             instance = np.nan_to_num(instance)
