@@ -237,7 +237,8 @@ class SimpleWsdTriangleTranslator(Worker):
                  lucy_username="traductor", lucy_password="traductor",        
                  source_language="en", target_language="de",
                  configfilenames=[],
-                 classifiername=None):
+                 classifiername=None,
+                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-model.3.en"):
         self.selector =  SystemSelector(configfilenames, classifiername)
         self.wsd_worker = WSDclient(wsd_url)
         self.moses_worker = MtMonkeyWorker(moses_url)
@@ -245,12 +246,17 @@ class SimpleWsdTriangleTranslator(Worker):
                                       username=lucy_username, password=lucy_password,
                                       source_language=source_language,
                                       target_language=target_language) 
+        self.tokenizer = Tokenizer(source_language)
+        self.truecaser = Truecaser(source_language, truecaser_model)
         self.lcm_worker = MtMonkeyWorker(lcm_url)
     
     def translate(self, string):
         sys.stderr.write("Sending to WSD Analyzer\n")
+        string = self.tokenizer.process_string(string)
+        string = self.truecaser.process_string(string)
         wsd_source = self.wsd_worker.annotate(string)
         sys.stderr.write("Sending to WSD Moses\n")
+        
         moses_translation, _ = self.moses_worker.translate(wsd_source)
         sys.stderr.write("Sending to Lucy\n")
         lucy_translation, _ = self.lucy_worker.translate(string)
@@ -349,7 +355,7 @@ if __name__ == '__main__':
                  #classifiername=None
     #2. start MtMonkey worker for LCM
     #3. Make sure LM servers are running in percival
-    #4. Make sure all Featuregenerators work sentence-level
+    #4. Make sure all Featuregenerasrc/featuregenerator/blackbox/wsd.pytors work sentence-level
     #5. Define pipelines and find a way to load FeatureGenerators
     #6. Check that it works on the commandline
     #7. Wrap in XML-rpc service
