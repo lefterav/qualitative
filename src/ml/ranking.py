@@ -28,7 +28,8 @@ def forname(learner, **kwargs):
         try:
             ranker_instance.initialize()
             return ranker_instance 
-        except:
+        except Exception as e:
+            logging.debug("{} replied {} ".format(ranker_class, str(e)))
             pass
     
     sys.exit("Requested ranker {} not found".format(learner))

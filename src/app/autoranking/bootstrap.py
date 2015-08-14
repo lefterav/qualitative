@@ -302,6 +302,7 @@ def get_cfg():
     parser.add_argument('--selectpath', help="""If source and target language are set, 
                                                 then use all files in the indicated directory 
                                                 that have these language codes in their filename""")
+    parser.add_argument('--targetpath')    
     parser.add_argument('--cont', help="""If you want to resume an existing app, 
                                           specify its folder name heres. This must be 
                                           an existing dir name""")
@@ -327,6 +328,8 @@ def get_cfg():
         cfg.set("general", "source_language", args.sourcelang)
         cfg.set("general", "target_language", args.targetlang)
         cfg.set("training", "filenames", ",".join(chosen_files))
+        if args.targetpath:
+            cfg.set("general", "path", args.targetpath)
     
     if args.cores:
         cfg.set("general", "cores", args.cores)
