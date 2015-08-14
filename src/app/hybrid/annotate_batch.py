@@ -160,9 +160,13 @@ if cfg.exists_checker(target_language):
 @active_if(cfg.has_section("languagetool"))
 @transform(data_fetch, suffix(".orig.jcml"), ".lt.f.jcml" , source_language, target_language)
 def features_langtool(input_file, output_file, source_language, target_language):
-    fg_source = LanguageToolSocketFeatureGenerator(source_language, cfg.gateway)
-    fg_target = LanguageToolSocketFeatureGenerator(target_language, cfg.gateway)
-    saxjcml.run_features_generator(input_file, output_file, [fg_source, fg_target])
+    try:
+        fg_source = LanguageToolSocketFeatureGenerator(source_language, cfg.gateway)
+        fg_target = LanguageToolSocketFeatureGenerator(target_language, cfg.gateway)
+        saxjcml.run_features_generator(input_file, output_file, [fg_source, fg_target])
+    except:
+        fg_target = LanguageToolSocketFeatureGenerator(target_language, cfg.gateway)
+        saxjcml.run_features_generator(input_file, output_file, [fg_target])
 
 
 if cfg.has_section("languagetool"):
@@ -236,11 +240,13 @@ def merge_parts(inputs, output):
 @collate(parse_functions, regex(r"(.*)\.parsed.([^.]+).f.jcml"),  r"\1.parsed.f.jcml")
 def merge_parse_source_target(tobermerged, gathered_singledataset_annotations):
     
-    print "gathering berkeley parsing source and target ", parallel_feature_functions
     original_dataset = JcmlReader(tobermerged[0]).get_dataset()
-    appended_dataset = JcmlReader(tobermerged[1]).get_dataset()
-    original_dataset.merge_dataset_symmetrical(appended_dataset, {}, "id")
+    if len(tobermerged)>1:
+        print "gathering berkeley parsing source and target ", parallel_feature_functions
+        appended_dataset = JcmlReader(tobermerged[1]).get_dataset()
+        original_dataset.merge_dataset_symmetrical(appended_dataset, {}, "id")
     Parallelsentence2Jcml(original_dataset.get_parallelsentences()).write_to_file(gathered_singledataset_annotations)
+
 
 '''
 IBM1 features over Berkeley parser output
@@ -255,15 +261,27 @@ def truecase_parse_output(input_file, output_file, source_model, target_model):
     
     fgs = [truecaser_src, truecaser_tgt]
     saxjcml.run_features_generator(input_file, output_file, fgs, True)
+
+try:
+    sourcelexicon = cfg.get("ibm1:{}-{}".format(source_language, target_language), "lexicon")
+    targetlexicon = cfg.get("ibm1:{}-{}".format(target_language, source_language), "lexicon")    
+except:
+    sourcelexicon = None
+    targetlexicon = None
     
-@transform(truecase_parse_output, suffix(".tc.parsed.f.jcml"), ".ibm1.f.jcml", cfg.get("ibm1", "source_lexicon"), cfg.get("ibm1", "target_lexicon"))    
-def features_ibm1(input_file, output_file, sourcelexicon, targetlexicon):
+@active_if(cfg.has_section("ibm1:{}-{}".format(source_language, target_language)) and cfg.has_section("ibm1:{}-{}".format(target_language, source_language)))    
+@transform(truecase_parse_output, suffix(".tc.parsed.f.jcml"), ".ibm1.f.jcml" , sourcelexicon, targetlexicon, source_language, target_language)        
+def features_ibm1(input_file, output_file, sourcelexicon, targetlexicon, source_language, target_language):
     analyzers = [
              AlignmentFeatureGenerator(sourcelexicon, targetlexicon),
              CfgAlignmentFeatureGenerator(),
              ]
     saxjcml.run_features_generator(input_file, output_file, analyzers)
-parallel_feature_functions.append(features_ibm1)
+    
+if (cfg.has_section("ibm1:{}-{}".format(source_language, target_language)) and cfg.has_section("ibm1:{}-{}".format(target_language, source_language))):
+    parallel_feature_functions.append(features_ibm1)
+    
+
 
 
 @transform(preprocess_data, suffix(".tok.jcml"), ".tc.%s.jcml" % source_language, source_language, cfg.get_truecaser_model(source_language))
@@ -297,16 +315,16 @@ bitpar_functions = []
 
 bitpar_section = "parser:bitpar:{}".format(source_language)
 @active_if(cfg.has_section("parser:bitpar:{}".format(source_language)))
-@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % source_language, source_language, cfg.get(bitpar_section,"path"),  
-        cfg.get(bitpar_section,"lexicon"),
-        cfg.get(bitpar_section,"grammar"),
-        cfg.get(bitpar_section,"unknownwords"),
-        cfg.get(bitpar_section,"openclassdfsa"),
-        path
-        )
+@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % source_language, source_language, cfg, path) 
 
-def features_bitpar_source(input_file, output_file, language, path, lexicon, grammar, unk, openclass, tmpdir):
+def features_bitpar_source(input_file, output_file, language, cfg, tmpdir):
     bitpar_section = "parser:bitpar:{}".format(language)
+    path = cfg.get(bitpar_section,"path")
+    lexicon = cfg.get(bitpar_section,"lexicon")
+    grammar = cfg.get(bitpar_section,"grammar")
+    unk = cfg.get(bitpar_section,"unknownwords")
+    openclass = cfg.get(bitpar_section,"openclassdfsa")
+
     bitpar = BitParserBatchProcessor(path,
                                      lexicon,
                                      grammar,
@@ -318,17 +336,16 @@ def features_bitpar_source(input_file, output_file, language, path, lexicon, gra
     
 bitpar_section = "parser:bitpar:{}".format(target_language)
 @active_if(cfg.has_section("parser:bitpar:{}".format(target_language)))
-@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % target_language, target_language, 
-        cfg.get(bitpar_section,"path"),
-        cfg.get(bitpar_section,"lexicon"),
-        cfg.get(bitpar_section,"grammar"),
-        cfg.get(bitpar_section,"unknownwords"),
-        cfg.get(bitpar_section,"openclassdfsa"),
-        path
-        )
+@transform(original_data_split, suffix("part.jcml"), "part.bit.%s.f.jcml" % target_language, target_language, cfg, path)
 
-def features_bitpar_target(input_file, output_file, language, path, lexicon, grammar, unk, openclass, tmpdir):
+def features_bitpar_target(input_file, output_file, language, cfg, tmpdir):
     bitpar_section = "parser:bitpar:{}".format(language)
+    path = cfg.get(bitpar_section,"path")
+    lexicon = cfg.get(bitpar_section,"lexicon")
+    grammar = cfg.get(bitpar_section,"grammar")
+    unk = cfg.get(bitpar_section,"unknownwords")
+    openclass = cfg.get(bitpar_section,"openclassdfsa")
+
     bitpar = BitParserBatchProcessor(path,
                                      lexicon,
                                      grammar,
@@ -411,7 +428,7 @@ def features_lm_batch(input_file, output_file, language, lm_name):
 
 #unimplemented
 def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, lm_lowercase):
-    passbleugenerator
+    pass
 
 
 #language_checker_source = cfg.get_checker(source_language)
