@@ -42,7 +42,7 @@ class RankingExperiment(PyExperimentSuite):
         self.gateway = gateway
         
         logging.info("Running in {}".format(os.getcwd()))
-        logging.debug("params = {}".format(params))        
+        #logging.debug("params = {}".format(params))        
         #=======================================================================
         # get method-specific parameters
         #=======================================================================
@@ -130,6 +130,17 @@ class RankingExperiment(PyExperimentSuite):
                 testset_filename,
                 params['repetitions'],
                 rep)
+ 
+        #use only the last fold of a 10-fold cross-validation
+        elif params["test"] == "last_tenth":
+            self.trainingset_filename = "{}.trainingset.jcml".format(rep)
+            testset_filename = "{}.testset.jcml".format(rep)
+            self.testset_filenames = [testset_filename]
+            fold_jcml(dataset_filename,
+                self.trainingset_filename,
+                testset_filename,
+                10,
+                0)
             
         #if a list of test-sets is given for testing upon
         elif params["test"] == "list":
@@ -151,7 +162,10 @@ class RankingExperiment(PyExperimentSuite):
         logging.info("Started training")
         params.update(self.learner_params)
         params["attribute_set"] = self.attribute_set
-        params["scorers"] = params.setdefault("scorers", "").split(",")
+        try:
+            params["scorers"] = params.setdefault("scorers", "").split(",")
+        except:
+            pass
         
         logging.info("train: Attribute_set before training: {}".format(params["attribute_set"]))
         
@@ -165,6 +179,7 @@ class RankingExperiment(PyExperimentSuite):
 
         metadata = ranker.train(dataset_filename = self.trainingset_filename, 
                      output_filename = output_filename,
+                     metaresults_prefix = "{}.meta.".format(rep),
                      **params)
         
         logging.info("Ranker fitted sucessfully")                             
@@ -239,8 +254,8 @@ class RankingExperiment(PyExperimentSuite):
             function=max
         
         for i, _ in enumerate(self.testset_filenames):
-            testset = CEJcmlReader(self.testset_output_soft[i], all_general=True, all_target=True)
-            refscores_soft = evaluate_selection(testset.get_parallelsentences(), 
+            soft_testset = CEJcmlReader(self.testset_output_soft[i], all_general=True, all_target=True)
+            refscores_soft = evaluate_selection(soft_testset.get_parallelsentences(), 
                                                 rank_name="rank_soft",
                                                 out_filename="testset.{}.soft.sel.txt".format(i),
                                                 ref_filename="testset.{}.ref.txt".format(i),
@@ -250,8 +265,8 @@ class RankingExperiment(PyExperimentSuite):
                                                 )
             refscores.update(_dictprefix(refscores_soft, '{}.soft'.format(i)))
             
-            testset = CEJcmlReader(self.testset_output_hard[i], all_general=True, all_target=True)        
-            refscores_hard = evaluate_selection(testset.get_parallelsentences(),
+            hard_testset = CEJcmlReader(self.testset_output_hard[i], all_general=True, all_target=True)        
+            refscores_hard = evaluate_selection(hard_testset.get_parallelsentences(),
                                                 rank_name="rank_hard",
                                                 out_filename="testset.{}.hard.sel.txt".format(i),
                                                 language=target_language,

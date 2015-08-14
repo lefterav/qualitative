@@ -46,7 +46,10 @@ class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
         
         ltool_view = gateway.new_jvm_view()
         java_import(ltool_view, 'org.languagetool.*')
-        
+
+        if lang=='ru':
+            lang = 'ru-RU' 
+
         tool_language = ltool_view.Language.getLanguageForShortName(lang)
         self.ltool = ltool_view.JLanguageTool(tool_language)
         #self.ltool.activateDefaultPatternRules();
