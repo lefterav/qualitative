@@ -144,8 +144,8 @@ class WSDclient:
         self.url = url
         
     def annotate(self, text):
-        text = urlencode(text)
-        return urllib2.urlopen("{}/disambiguate?document={}&".format(self.url, text)).read()
+        params = urlencode([("document", text), ("id", 1)])
+        return urllib2.urlopen("{}/disambiguate?{}".format(self.url, params)).read()
 
 
 
