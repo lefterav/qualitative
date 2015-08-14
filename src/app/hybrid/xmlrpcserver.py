@@ -56,6 +56,7 @@ def process_task(params):
                     "translated": [
                         {
                             "text": translated_text, 
+                            "description": description,
                             "score": 0,
                         }
                     ], 
