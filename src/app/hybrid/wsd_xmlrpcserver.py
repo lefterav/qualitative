@@ -37,6 +37,7 @@ hybridsystem = SimpleWsdTriangleTranslator(moses_url=param_moses_url,
                                  target_language=param_target_language,
                                  configfilenames=configfilenames,
                                  classifiername=classifier_filename
+                            
                                  )
 
 server = SimpleXMLRPCServer((host, port),
