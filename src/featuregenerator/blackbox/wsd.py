@@ -155,7 +155,7 @@ class WSDclient:
         responsefile.write('{"documents": [' + response + ' ]}')
         items = ijson.items(responsefile, "documents.item")
         sys.stderr.write("items: {}\n".format(items))
-        output = read_wsd_output(items[0], text)
+        output = " ".join([read_wsd_output(item, text) for item in items])
         responsefile.close()
         return output
 
