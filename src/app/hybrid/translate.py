@@ -235,8 +235,6 @@ class SimpleWsdTriangleTranslator(Worker):
                  lcm_url,  
                  wsd_url,
                  lucy_username="traductor", lucy_password="traductor",        
-                 lucy_lexicon="dfkilex/DE_EN-PILOT2",
-                 lucy_subject_areas="(DP DP-USER)",
                  source_language="en", target_language="de",
                  configfilenames=[],
                  classifiername=None):
@@ -246,9 +244,7 @@ class SimpleWsdTriangleTranslator(Worker):
         self.lucy_worker = LucyWorker(url=lucy_url,
                                       username=lucy_username, password=lucy_password,
                                       source_language=source_language,
-                                      target_language=target_language,
-                                      lexicon=lucy_lexicon,
-                                      subject_areas=lucy_subject_areas) 
+                                      target_language=target_language) 
         self.lcm_worker = MtMonkeyWorker(lcm_url)
     
     def translate(self, string):
