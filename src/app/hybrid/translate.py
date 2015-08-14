@@ -9,6 +9,7 @@ from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
 from featuregenerator.blackbox.parser.berkeley.cfgrules import CfgAlignmentFeatureGenerator
 from featuregenerator.blackbox.languagechecker.languagetool_socket import LanguageToolSocketFeatureGenerator
 from app.autoranking.bootstrap import ExperimentConfigParser
+from featuregenerator.blackbox.wsd import WSDclient
 import pickle
 
 class Worker:
@@ -198,6 +199,42 @@ class SimpleTriangleTranslator(Worker):
     def translate(self, string):
         sys.stderr.write("Sending to Moses\n")
         moses_translation, _ = self.moses_worker.translate(string)
+        sys.stderr.write("Sending to Lucy\n")
+        lucy_translation, _ = self.lucy_worker.translate(string)
+        sys.stderr.write("Sending to LcM\n")
+        lcm_translation, _ = self.lcm_worker.translate(lucy_translation)
+        outputs_ordered = [moses_translation, lucy_translation, lcm_translation]
+        rank, description = self.selector.rank(string, outputs_ordered, reconstruct="soft")
+        #print "Rank: ", rank
+        
+        for rank_item, output in zip(rank, outputs_ordered):
+            if float(rank_item)==1:
+                return output, description
+            
+
+class SimpleWsdTriangleTranslator(Worker):
+    def __init__(self,
+                 moses_url,
+                 lucy_url, 
+                 lcm_url,  
+                 wsd_url,
+                 lucy_username="traductor", lucy_password="traductor",                
+                 source_language="en", target_language="de",
+                 configfilenames=[],
+                 classifiername=None):
+        self.selector =  SystemSelector(configfilenames, classifiername)
+        self.wsd_worker = WSDclient(wsd_url)
+        self.moses_worker = MtMonkeyWorker(moses_url)
+        self.lucy_worker = LucyWorker(url=lucy_url,
+                                      username=lucy_username, password=lucy_password,
+                                      source_language=source_language,
+                                      target_language=target_language) 
+        self.lcm_worker = MtMonkeyWorker(lcm_url)
+    
+    def translate(self, string):
+        sys.stderr.write("Sending to WSD Moses\n")
+        wsd_source = self.wsd_worker.annotate(string)
+        moses_translation, _ = self.moses_worker.translate(wsd_source)
         sys.stderr.write("Sending to Lucy\n")
         lucy_translation, _ = self.lucy_worker.translate(string)
         sys.stderr.write("Sending to LcM\n")
