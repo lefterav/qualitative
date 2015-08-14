@@ -152,7 +152,7 @@ class WSDclient:
         response = urllib2.urlopen("{}/disambiguate?{}".format(self.url, params)).read()
         sys.stderr.write(response)
         responsefile = StringIO.StringIO()
-        responsefile.write('{"documents": [ {} ]}'.format(response))
+        responsefile.write('{"documents": [' + response + ' ]}')
         items = ijson.items(responsefile, "documents.item")
         sys.stderr.write("items: {}\n".format(items))
         output = read_wsd_output(items[0], text)
