@@ -116,23 +116,18 @@ class LucyWorker(Worker):
         self.lexicon = lexicon
 
     def translate(self, string):
-        if self.lexicon:
-            lexicon_param = "<param name='LEXICON' value='{}’/>".format(self.lexicon)
-        else:
-            lexicon_param = ""
         data = """<task>
         <inputParams>
             <param name='TRANSLATION_DIRECTION' value='{langpair}'/>
             <param name='INPUT' value='{input}'/>
             <param name='SUBJECT_AREAS' value='{subject_areas}'/>
-            {lexicon_param}
             <param name='CHARSET' value='UTF'/>
         </inputParams>
         
         </task>""".format(langpair=self.langpair, 
                           input=escape(string), 
                           subject_areas=self.subject_areas,
-                          lexicon_param=lexicon_param)
+                          )
         headers = {'Content-type': 'application/xml'}
         auth = HTTPBasicAuth(self.username, self.password)
         print data
