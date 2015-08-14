@@ -143,7 +143,7 @@ class WSDclient:
     def __init__(self, url):
         self.url = url
         
-    def disambiguate(self, text):
+    def annotate(self, text):
         text = urlencode(text)
         return urllib2.urlopen("{}/disambiguate?document={}&".format(self.url, text)).read()
 
