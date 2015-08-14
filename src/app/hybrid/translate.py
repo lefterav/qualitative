@@ -255,7 +255,7 @@ class SimpleWsdTriangleTranslator(Worker):
         string = self.tokenizer.process_string(string)
         string = self.truecaser.process_string(string)
         wsd_source = self.wsd_worker.annotate(string)
-        sys.stderr.write("Sending to WSD Moses\n")
+        sys.stderr.write("Sending to WSD Moses:\n {}".format(string))
         
         moses_translation, _ = self.moses_worker.translate(wsd_source)
         sys.stderr.write("Sending to Lucy\n")

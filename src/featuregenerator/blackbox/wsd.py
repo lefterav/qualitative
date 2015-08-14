@@ -144,36 +144,37 @@ import StringIO
 class WSDclient:
     def __init__(self, url):
         self.url = url
-        self.tokenizer = Tokenizer("en")
         
     def annotate(self, string):
         params = urlencode([("document", string), ("id", 1)])
-        text = self.tokenizer.process_string(string)
         response = urllib2.urlopen("{}/disambiguate?{}".format(self.url, params)).read()
         sys.stderr.write(response)
         responsefile = StringIO.StringIO()
         responsefile.write('{"documents": [' + response + ' ]}')
-        items = ijson.items(responsefile, "documents.item")
+        responsefile.seek(0)
+        items = list(ijson.items(responsefile, "documents.item"))
         sys.stderr.write("items: {}\n".format(items))
-        output = " ".join([read_wsd_output(item, text) for item in items])
+        factored_output, replaced_output  = read_wsd_output(items[0], string)
         responsefile.close()
-        return output
+        return factored_output
 
 
 
 import sys
 if __name__ == "__main__":
    
-    reader = WSDreader(sys.argv[1], sys.argv[2])
-    writer1 = open(sys.argv[3], 'w')
-    writer2 = open(sys.argv[4], 'w')
+    #reader = WSDreader(sys.argv[1], sys.argv[2])
+    #writer1 = open(sys.argv[3], 'w')
+    #writer2 = open(sys.argv[4], 'w')
     
-    for line1, line2 in reader.readlines():
-        print >> writer1, line1
-        print >> writer2, line2
+    #for line1, line2 in reader.readlines():
+    #    print >> writer1, line1
+    #    print >> writer2, line2
 
-    writer1.close()
-    writer2.close()
+    #writer1.close()
+    #writer2.close()
+    client = WSDclient("http://blade-1.dfki.uni-sb.de:32008")
+    print client.annotate("This is a test with the mouse on the window")
 
             
             

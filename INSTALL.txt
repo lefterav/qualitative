@@ -33,7 +33,8 @@ or for user-specific installation (no root or
 not wanting to risk your python environment) 
  pip install --user <package-name> 
 
-sudo pip install orange py4j nltk==2.0.1rc4 numpy scipy suds ruffus scikit-learn requests
+easy_install -U distribute
+sudo pip install orange py4j nltk==2.0.1rc4 numpy scipy suds ruffus scikit-learn requests matplotlib
 
 Additionally
 * expsuite [only for training] (Manually from https://github.com/lefterav/expsuite)
