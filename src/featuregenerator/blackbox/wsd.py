@@ -138,14 +138,24 @@ class WSDreader:
             yield read_wsd_output(sentence, sentence_string)
 
 from urllib import urlencode
+from featuregenerator.preprocessor import Tokenizer
+import StringIO
 
 class WSDclient:
     def __init__(self, url):
         self.url = url
+        self.tokenizer = Tokenizer("en")
         
-    def annotate(self, text):
-        params = urlencode([("document", text), ("id", 1)])
-        return urllib2.urlopen("{}/disambiguate?{}".format(self.url, params)).read()
+    def annotate(self, string):
+        params = urlencode([("document", string), ("id", 1)])
+        text = self.tokenizer.process_string(string)
+        response = urllib2.urlopen("{}/disambiguate?{}".format(self.url, params)).read()
+        
+        responsefile = StringIO.StringIO()
+        responsefile.write('{"documents": [ {} ]}'.format(response))
+        items = ijson.items(self.wsdfile, "documents.item")
+        yield " ".join([read_wsd_output(item, text) for item in items])
+        responsefile.close()
 
 
 
