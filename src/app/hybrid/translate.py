@@ -328,11 +328,12 @@ class SystemSelector(Autoranking):
 import sys
 
 if __name__ == '__main__':
-    hybridsystem = SimpleTriangleTranslator(moses_url="http://134.96.187.247:7200", 
+    hybridsystem = SimpleWsdTriangleTranslator(moses_url="http://134.96.187.247:9300", 
                                      lucy_url="http://msv-3251.sb.dfki.de:8080/AutoTranslateRS/V1.2/mtrans/exec",
                                      lcm_url="http://lns-87009.dfki.uni-sb.de:9300",
-                                     source_language="de",
-                                     target_language="en",
+                                     wsd_url="http://blade-1.dfki.uni-sb.de:32008",
+                                     source_language="en",
+                                     target_language="de",
                                      configfilenames=sys.argv[2:],
                                      classifiername=sys.argv[1]
                                      )
