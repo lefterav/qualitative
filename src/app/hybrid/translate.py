@@ -100,6 +100,7 @@ class LucyWorker(Worker):
                  username="traductor", password="traductor", 
                  source_language="en", target_language="de",
                  subject_areas="(DP TECH CTV ECON)",
+                 lexicon=None
                  ):
         
         langmap = {"en": "ENGLISH", 
@@ -112,17 +113,26 @@ class LucyWorker(Worker):
         self.username = username
         self.password = password
         self.subject_areas = subject_areas
+        self.lexicon = lexicon
 
     def translate(self, string):
+        if self.lexicon:
+            lexicon_param = "<param name='LEXICON' value='{}’/>".format(self.lexicon)
+        else:
+            lexicon_param = ""
         data = """<task>
         <inputParams>
             <param name='TRANSLATION_DIRECTION' value='{langpair}'/>
             <param name='INPUT' value='{input}'/>
             <param name='SUBJECT_AREAS' value='{subject_areas}'/>
+            {lexicon_param}
             <param name='CHARSET' value='UTF'/>
         </inputParams>
         
-        </task>""".format(langpair=self.langpair, input=escape(string), subject_areas=self.subject_areas)
+        </task>""".format(langpair=self.langpair, 
+                          input=escape(string), 
+                          subject_areas=self.subject_areas,
+                          lexicon_param=lexicon_param)
         headers = {'Content-type': 'application/xml'}
         auth = HTTPBasicAuth(self.username, self.password)
         print data
@@ -229,7 +239,9 @@ class SimpleWsdTriangleTranslator(Worker):
                  lucy_url, 
                  lcm_url,  
                  wsd_url,
-                 lucy_username="traductor", lucy_password="traductor",                
+                 lucy_username="traductor", lucy_password="traductor",        
+                 lucy_lexicon="dfkilex/DE_EN-PILOT2",
+                 lucy_subject_areas="(DP DP-USER)",
                  source_language="en", target_language="de",
                  configfilenames=[],
                  classifiername=None):
@@ -239,7 +251,9 @@ class SimpleWsdTriangleTranslator(Worker):
         self.lucy_worker = LucyWorker(url=lucy_url,
                                       username=lucy_username, password=lucy_password,
                                       source_language=source_language,
-                                      target_language=target_language) 
+                                      target_language=target_language,
+                                      lexicon=lucy_lexicon,
+                                      subject_areas=lucy_subject_areas) 
         self.lcm_worker = MtMonkeyWorker(lcm_url)
     
     def translate(self, string):
