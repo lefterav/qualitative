@@ -153,7 +153,7 @@ class WSDclient:
         sys.stderr.write(response)
         responsefile = StringIO.StringIO()
         responsefile.write('{"documents": [ {} ]}'.format(response))
-        items = ijson.items(self.wsdfile, "documents.item")
+        items = ijson.items(responsefile, "documents.item")
         sys.stderr.write("items: {}\n".format(items))
         output = read_wsd_output(items[0], text)
         responsefile.close()
