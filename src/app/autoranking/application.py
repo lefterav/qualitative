@@ -45,7 +45,7 @@ class Autoranking:
     @ivar target_language: Language code for target language
     @type target_language: str
     """
-    def __init__(self, configfilenames, classifiername):
+    def __init__(self, configfilenames, classifiername, reverse=False):
         """
         Initialize the class.
         @param configfilenames: a list of annotation configuration files that contain
@@ -59,6 +59,7 @@ class Autoranking:
             cfg.read(config_filename)
         
         self.gateway = cfg.java_init()
+        self.reverse = reverse
         
         self.featuregenerators = self.initialize_featuregenerators(cfg)
         self.ranker = OrangeRanker(classifiername)
@@ -89,6 +90,9 @@ class Autoranking:
         #because the ranker scrambles the order
         ranking.sort(key=lambda x: x[1].get_attribute("system"))
         
+        if self.reverse:
+            ranking.reverse()
+            
         #return only ranks without system ids
         description += "\n Final ranking: {}".format([(r[0], r[1].get_string()) for r in ranking])
         ranking = [r[0] for r in ranking]
