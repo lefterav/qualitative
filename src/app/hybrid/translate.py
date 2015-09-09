@@ -238,8 +238,9 @@ class SimpleWsdTriangleTranslator(Worker):
                  source_language="en", target_language="de",
                  configfilenames=[],
                  classifiername=None,
-                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-model.3.en"):
-        self.selector =  SystemSelector(configfilenames, classifiername)
+                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-model.3.en",
+                 reverse=False):
+        self.selector = SystemSelector(configfilenames, classifiername, reverse)
         self.wsd_worker = WSDclient(wsd_url)
         self.moses_worker = MtMonkeyWorker(moses_url)
         self.lucy_worker = LucyWorker(url=lucy_url,
@@ -272,7 +273,7 @@ class SimpleWsdTriangleTranslator(Worker):
             
 
 class SystemSelector(Autoranking):
-    def __init__(self, configfilenames, classifiername):
+    def __init__(self, configfilenames, classifiername, reverse=False):
         """Autoranking
         Initialize the class.
         @param configfilenames: a list of annotation configuration files that contain
@@ -286,6 +287,7 @@ class SystemSelector(Autoranking):
             cfg.read(config_filename)
         
         self.gateway = cfg.java_init()
+        self.reverse = reverse
         
         self.featuregenerators = self.initialize_featuregenerators(cfg)
         self.ranker = pickle.load(open(classifiername))
