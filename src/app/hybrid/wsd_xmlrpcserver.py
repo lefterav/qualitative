@@ -20,8 +20,10 @@ param_lcm_url = sys.argv[5]
 param_wsd_url = sys.argv[6]
 param_source_language = sys.argv[7]
 param_target_language = sys.argv[8]
-classifier_filename = sys.argv[9] # "/share/taraxu/selection-mechanism/wmt13/sentenceranking/autoranking_wmt13_newfeatures1_de_en/class_nameranklangpairde-eninclude_references0.0ties0.0trainset_modeannotatedattattset_24classifierLogReg/classifier.clsf"
-configfilenames = sys.argv[10:]
+classifier_filename = sys.argv[9] 
+param_reverse = (sys.argv[10] == "--reverse") #otherwise set to noreverse
+# "/share/taraxu/selection-mechanism/wmt13/sentenceranking/autoranking_wmt13_newfeatures1_de_en/class_nameranklangpairde-eninclude_references0.0ties0.0trainset_modeannotatedattattset_24classifierLogReg/classifier.clsf"
+configfilenames = sys.argv[11:]
 
 #[
 #                       '/home/elav01/workspace/qualitative/src/app/autoranking/config/pipeline.cfg',
@@ -36,8 +38,8 @@ hybridsystem = SimpleWsdTriangleTranslator(moses_url=param_moses_url,
                                  source_language=param_source_language,
                                  target_language=param_target_language,
                                  configfilenames=configfilenames,
-                                 classifiername=classifier_filename
-                            
+                                 classifiername=classifier_filename,
+                                 reverse=param_reverse                            
                                  )
 
 server = SimpleXMLRPCServer((host, port),
