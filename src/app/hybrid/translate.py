@@ -344,33 +344,43 @@ class SystemSelector(Autoranking):
  
   
 import sys
-
 if __name__ == '__main__':
-    hybridsystem = SimpleWsdTriangleTranslator(moses_url="http://134.96.187.247:9300", 
-                                     lucy_url="http://msv-3251.sb.dfki.de:8080/AutoTranslateRS/V1.2/mtrans/exec",
-                                     lcm_url="http://lns-87009.dfki.uni-sb.de:9300",
-                                     wsd_url="http://blade-1.dfki.uni-sb.de:32008",
-                                     source_language="en",
-                                     target_language="de",
-                                     configfilenames=sys.argv[2:],
-                                     classifiername=sys.argv[1]
+    import argparse
+    import fileinput
+
+    parser = argparse.ArgumentParser(description="Run translate engine on a file")
+    parser.add_argument('--moses')
+    parser.add_argument('--lucy')
+    parser.add_argument('--lcm')
+    parser.add_argument('--wsd')
+    parser.add_argument('--model')
+    parser.add_argument('--srclang')
+    parser.add_argument('--tgtlang')
+    parser.add_argument('--config', nargs='+', action='append')
+    parser.add_argument('--reverse', dest='reverse', action='store_true')
+    args = parser.parse_args()
+
+    if args.wsd:
+        hybridsystem = SimpleWsdTriangleTranslator(moses_url=args.moses,
+                                     lucy_url=args.lucy,
+                                     lcm_url=args.lcm,
+                                     wsd_url=args.wsd,
+                                     source_language=args.srclang,
+                                     target_language=args.tgtlang,
+                                     classifiername=args.model,
+                                     configfilenames=args.config,
+                                     reverse=args.reverse
                                      )
-    
-    #TODO:
-    #1. binarize LCM model.configfilenames=[],
-                 #classifiername=None
-    #2. start MtMonkey worker for LCM
-    #3. Make sure LM servers are running in percival
-    #4. Make sure all Featuregenerasrc/featuregenerator/blackbox/wsd.pytors work sentence-level
-    #5. Define pipelines and find a way to load FeatureGenerators
-    #6. Check that it works on the commandline
-    #7. Wrap in XML-rpc service
+    else:
+        hybridsystem = SimpleTriangleTranslator(moses_url=args.moses,
+                                     lucy_url=args.lucy,
+                                     lcm_url=args.lcm,
+                                     source_language=args.srclang,
+                                     target_language=args.tgtlang,
+                                     classifiername=args.model,
+                                     configfilenames=args.config,
+                                     reverse=args.reverse
+                                     )
 
-    
-    #hybridsystem.translate(sys.argv[1])
-    print hybridsystem.translate("Ich habe ein iPad. Wie kann ich in Safari einen neuen Tab öffnen?")
-    
-    
-    #text = system1.translate("This is a test, my dear.")
-    #print system2.translate("The solution to our problem has to go through several consultations and we also have to ask our friends, our family and our partners, before we reach a conclusion on this topic.")[0]
-
+    for line in fileinput.input():
+        print hybridsystem.translate(line)
