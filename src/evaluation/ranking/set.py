@@ -11,7 +11,7 @@ import segment
 from numpy import average
 import numpy as np
 import logging
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 
 def kendall_tau_set_no_ties(predicted_rank_vectors, original_rank_vectors, **kwargs):
     kwargs["penalize_predicted_ties"] = False
@@ -20,7 +20,7 @@ def kendall_tau_set_no_ties(predicted_rank_vectors, original_rank_vectors, **kwa
     for key, value in result.iteritems():
         newkey = key.replace("tau", "tau-nt")
         newresult[newkey] = value
-    return newresult
+    return newresult    
 
 def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
     """
@@ -53,16 +53,23 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
     pairs_overall = 0
     sentences_with_ties = 0
     
-    length = dict.setdefault(0)
+    
+    #count how many ranking lists exist for each length (e.g 100 lists with length 5 etc.)
+    ranking_counts_per_length = defaultdict(int)   
+    sum_tau_per_length = defaultdict(float)
     
     for predicted_rank_vector, original_rank_vector in zip(predicted_rank_vectors, original_rank_vectors):
         
-        length[predicted_rank_vector] += 1        
         segtau, segprob, concordant_count, discordant_count, all_pairs_count, original_ties, predicted_ties, pairs = segment.kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs)
+        ranking_length = len(predicted_rank_vector)
         
-        if segtau and segprob:
+        if segtau and segprob:                    
             segtaus.append(segtau)
             segprobs.append(segprob)
+            
+            #gather statistics per length
+            ranking_counts_per_length[ranking_length] += 1
+            sum_tau_per_length[ranking_length] += segtau
             
         concordant += concordant_count
         discordant += discordant_count
@@ -81,8 +88,12 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
     tau = 1.00 * (concordant - discordant) / (concordant + discordant)
     prob = segment.kendall_tau_prob(tau, valid_pairs)
     
+    #average tau statistics
     avg_seg_tau = np.average(segtaus)               
     avg_seg_prob = np.product(segprobs)
+    
+
+    
     
     predicted_ties_avg = 100.00*predicted_ties / pairs_overall
     sentence_ties_avg = 100.00*sentences_with_ties / len(predicted_rank_vector)
@@ -103,10 +114,35 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
              
              })
 
-    for n, counts in length.iteritems():
+    for n, counts in ranking_counts_per_length.iteritems():
         stats["tau_rank_length_{}".format(n)] = counts
 
     return stats
+
+def _kendall_prob_segments(ranking_counts_per_length, sum_tau_per_length):
+    """
+    Calculate the overall tau probability given the tau correlations
+    from individual segments. For this, only counts and tau sums per
+    ranking length are required
+    """
+    
+    sum_nominator = 0
+    sum_denominator = 0
+    #iterate for all lengths, i.e. ranking with three, four, etc
+    for length in sum_tau_per_length.keys():
+        if length < 2:
+            #definition only holds for m >= 2
+            continue
+        m = 1.00 * length
+        n = 1.00 * ranking_counts_per_length[length]
+        avg_tau = sum_tau_per_length[length] / n 
+        inv_variance = n * (9 * m * (m - 1)) / (2 * (2 * m + 5))
+        sum_nominator += inv_variance * avg_tau
+        sum_denominator += inv_variance
+    estimate_tau = sum_nominator / sum_denominator
+         
+        
+    
 
 
 def mrr(predicted_rank_vectors, original_rank_vectors, **kwargs):
