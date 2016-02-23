@@ -14,7 +14,7 @@ def forname(name, library='orange', **kwargs):
     Wrap the specified external classifier into the generic
     classifier class and return the object
     @param name: the name of the classifier
-    @param library: the name of the library whose classifeir should be used
+    @param library: the name of the library whose classifier should be used
     """  
     pass
     
