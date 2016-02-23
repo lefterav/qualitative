@@ -34,7 +34,8 @@ not wanting to risk your python environment)
  pip install --user <package-name> 
 
 easy_install -U distribute
-sudo pip install orange py4j nltk==2.0.1rc4 numpy scipy suds ruffus scikit-learn requests matplotlib
+sudo pip install orange py4j numpy scipy suds ruffus scikit-learn requests 
+#  nltk==2.0.1rc4 and matplotlib need to be checked
 
 Additionally
 * expsuite [only for training] (Manually from https://github.com/lefterav/expsuite)
