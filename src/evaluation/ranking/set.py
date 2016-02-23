@@ -12,6 +12,7 @@ from numpy import average
 import numpy as np
 import logging
 from collections import OrderedDict, defaultdict
+from scipy.special import erfc
 
 def kendall_tau_set_no_ties(predicted_rank_vectors, original_rank_vectors, **kwargs):
     kwargs["penalize_predicted_ties"] = False
@@ -92,8 +93,7 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
     avg_seg_tau = np.average(segtaus)               
     avg_seg_prob = np.product(segprobs)
     
-
-    
+    weighed_tau, weighed_prob, variance_per_length = _inverse_weighted_tau(ranking_counts_per_length, sum_tau_per_length)
     
     predicted_ties_avg = 100.00*predicted_ties / pairs_overall
     sentence_ties_avg = 100.00*sentences_with_ties / len(predicted_rank_vector)
@@ -102,6 +102,8 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
              'tau_prob': prob,
              'tau_avg_seg': avg_seg_tau,
              'tau_avg_seg_prob': avg_seg_prob,
+             'tau_weighed': weighed_tau,
+             'tau_weighed_prob': weighed_prob,
              'tau_concordant': concordant,
              'tau_discordant': discordant,
              'tau_valid_pairs': valid_pairs,
@@ -111,23 +113,24 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
              'tau_predicted_ties_per': predicted_ties_avg,
              'tau_sentence_ties': sentences_with_ties,
              'tau_sentence_ties_per' : sentence_ties_avg
-             
              })
 
     for n, counts in ranking_counts_per_length.iteritems():
         stats["tau_rank_length_{}".format(n)] = counts
+        stats["tau_weighed_var_{}".format(n)] = variance_per_length[n]
 
     return stats
 
-def _kendall_prob_segments(ranking_counts_per_length, sum_tau_per_length):
+def _inverse_weighted_tau(ranking_counts_per_length, sum_tau_per_length):
     """
     Calculate the overall tau probability given the tau correlations
     from individual segments. For this, only counts and tau sums per
     ranking length are required
     """
-    
     sum_nominator = 0
     sum_denominator = 0
+    inv_variance_sum = 0
+    variance_per_length = {}
     #iterate for all lengths, i.e. ranking with three, four, etc
     for length in sum_tau_per_length.keys():
         if length < 2:
@@ -139,11 +142,13 @@ def _kendall_prob_segments(ranking_counts_per_length, sum_tau_per_length):
         inv_variance = n * (9 * m * (m - 1)) / (2 * (2 * m + 5))
         sum_nominator += inv_variance * avg_tau
         sum_denominator += inv_variance
-    estimate_tau = sum_nominator / sum_denominator
-         
-        
-    
-
+        inv_variance_sum += inv_variance 
+        variance_per_length[length] = 1.00 / inv_variance
+    weighed_tau = sum_nominator / sum_denominator
+    weighed_variance = 1.00 / inv_variance_sum
+    z = weighed_tau / np.sqrt(weighed_variance)
+    prob = erfc(np.abs(z) / 1.4142136)
+    return weighed_tau, prob, variance_per_length
 
 def mrr(predicted_rank_vectors, original_rank_vectors, **kwargs):
     """

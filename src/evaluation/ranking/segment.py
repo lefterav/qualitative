@@ -11,6 +11,8 @@ from math import log
 import logging
 from collections import namedtuple
 from sentence.ranking import Ranking
+from scipy.special import erfc
+
 
 """""""""
 Kendall tau
@@ -18,7 +20,7 @@ Kendall tau
 
 def kendall_tau_prob(tau, pairs):
     """
-    Calculation of Kendall tau hypothesis testing based on scipy calculation
+    Calculation of Kendall tau two-tailed hypothesis testing based on scipy calculation
     @param tau: already calculated tau coefficient
     @type tau: float
     @param pairs: count of pairs
@@ -27,16 +29,15 @@ def kendall_tau_prob(tau, pairs):
     @rtype: float
     """
     import numpy as np
-    from scipy import special
     try:
         svar = (4.0 * pairs + 10.0) / (9.0 * pairs * (pairs - 1))
     except:
-        svar = 1
+        return 1.0
     try: 
         z = tau / np.sqrt(svar)
     except:
-        z = 1
-    return special.erfc(np.abs(z) / 1.4142136)
+        return 1.0
+    return erfc(np.abs(z) / 1.4142136)
 
 
 def kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
