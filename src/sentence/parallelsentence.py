@@ -186,14 +186,27 @@ class ParallelSentence(object):
     def add_attributes(self, attributes):
         self.attributes.update( attributes )
     
-    def set_langsrc (self, langsrc):
+    def set_langsrc(self, langsrc):
         self.attributes["langsrc"] = langsrc
 
-    def set_langtgt (self, langtgt):
+    def set_langtgt(self, langtgt):
         self.attributes["langtgt"] = langtgt
+        
+    def get_langsrc(self):
+        return self.attributes["langsrc"]
+
+    def get_langtgt(self):
+        return self.attributes["langtgt"]
+    
+    def get_langpair(self):
+        return "{}-{}".format(self.attributes["langsrc"],
+                              self.attributes["langtgt"])
         
     def set_id (self, id):
         self.attributes["id"] = str(id)
+        
+    def get_id (self):
+        return self.attributes["id"]
 
     def get_compact_id(self):
         try:
