@@ -84,7 +84,7 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
             #maximum variance
             max_var = (1.00 - segtau*segtau) / (ranking_length / 2.00)
             #sum of item variance weighed by ranking length, used for the nominator of the pooled variance
-            sum_weighed_variance = (ranking_length - 1) * max_var
+            sum_weighed_variance += (ranking_length - 1) * max_var
             #sum of inverted maximum variance used for the denominator weighed standard error (4.9)
             try:
                 sum_inverted_single_max_variance += 1.00 / max_var
@@ -122,10 +122,10 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
     weighed_tau, weighed_prob, variance_per_length = _inverse_weighted_tau(ranking_counts_per_length, sum_tau_per_length)
     
     #maximum standard deviation from the pooled variance
-    pooled_std = np.sqrt(sum_weighed_variance / sum_ranking_lengths)
+    pooled_std = 1.96 * np.sqrt(sum_weighed_variance / sum_ranking_lengths)
     
     #maximum standard deviation from the mean based on inverse weighed variance
-    inverse_weighed_std = np.sqrt(1.00 / sum_inverted_single_max_variance) 
+    inverse_weighed_std = 1.96 * np.sqrt(1.00 / sum_inverted_single_max_variance) 
     
     #averages for the ties
     predicted_ties_avg = 100.00*predicted_ties / pairs_overall
