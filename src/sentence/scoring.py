@@ -12,6 +12,7 @@ from ranking import Ranking
 from evaluation.ranking.segment import kendall_tau, kendall_tau_prob
 from evaluation.ranking.set import *
 from evaluation.wmt.segment import SegmentLevelData
+from operator import methodcaller
 
 SET_METRIC_FUNCTIONS = [kendall_tau_set,
                         kendall_tau_set_no_ties,
@@ -42,8 +43,9 @@ def get_metrics_scores(data, predicted_rank_name, original_rank_name,
     @rtype: tuple(float, float)
     """
     stats = OrderedDict()
-    stats.update(get_ranking_scores(data, predicted_rank_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
-    stats.update(get_wmt_scores(data, predicted_rank_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
+    #stats.update(get_ranking_scores(data, predicted_rank_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
+    #stats.update(get_wmt_scores(data, predicted_rank_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
+    stats.update(get_fixed_scores(data, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
     return stats
 
 def get_ranking_scores(data, predicted_rank_name, original_rank_name,
@@ -86,6 +88,9 @@ def get_ranking_scores(data, predicted_rank_name, original_rank_name,
     #add the requested preffix and suffix to every value    
     stats = OrderedDict([("{}-{}{}".format(prefix, key, suffix),value) for key,value in stats.iteritems()])
     return stats
+    
+import random
+import time
 
 def get_wmt_scores(data, predicted_rank_name, original_rank_name,
                        invert_ranks = False,
@@ -98,6 +103,7 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
     
     wmtdata = SegmentLevelData()
     metric = "autoranking"
+        
     for parallesentence in data.get_parallelsentences():
         lang_pair = parallesentence.get_langpair()
         segment = int(parallesentence.get_id())
@@ -123,6 +129,7 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
             predicted_rank_value = translation.get_attribute(predicted_rank_name)
             predicted_rank = -1.00 * int(predicted_rank_value)
             wmtdata.metrics_data[metric, lang_pair][system_id][segment] = predicted_rank
+            wmtdata.metrics_data[metric, lang_pair][system_id][segment] = predicted_rank
     
     scores = OrderedDict()
     for variant in variants:
@@ -130,7 +137,65 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
         scores["tau_{}".format(variant)] = tau
         scores["tau_{}_conf".format(variant)] = confidence
     return scores
+
+
+
+def get_fixed_scores(data, original_rank_name,
+                       invert_ranks = False,
+                       filter_ref = True,
+                       suffix = "",
+                       prefix = "",
+                       variants = ["wmt14"],
+                       direction = "de-en",
+                       **kwargs):
+    
+    wmtdata = SegmentLevelData()
+    random.seed(int(time.time()))
         
+    for parallesentence in data.get_parallelsentences():
+        lang_pair = parallesentence.get_langpair()
+        segment = int(parallesentence.get_id())
+
+        pairwise_parallelsentences = parallesentence.get_pairwise_parallelsentences(class_name=original_rank_name)
+        for pairwise_parallelsentence in pairwise_parallelsentences:
+            translation1 = pairwise_parallelsentence.get_translations()[0]
+            system_id1 = translation1.get_system_name()
+            human_rank1 = int(translation1.get_attribute(original_rank_name))            
+            
+            translation2 = pairwise_parallelsentence.get_translations()[1]
+            system_id2 = translation2.get_system_name()
+            human_rank2 = int(translation2.get_attribute(original_rank_name))
+            
+            compare = lambda x, y: '<' if x < y else '>' if x > y else '='
+            extracted_comparisons = [
+                (segment, system_id1, system_id2, compare(human_rank1, human_rank2))
+            ]
+            wmtdata.human_comparisons[lang_pair] += extracted_comparisons
+        
+        translations = parallesentence.get_translations()
+        translations_count = len(translations)
+        i = 0
+        
+        for translation in sorted(translations, key=methodcaller("get_system_name")):
+            system_id = translation.get_system_name()
+            
+            random_rank = random.randint(1, translations_count)
+            wmtdata.metrics_data["random", lang_pair][system_id][segment] = random_rank
+            wmtdata.metrics_data["random_inv", lang_pair][system_id][segment] = -1.0 * random_rank
+            
+            wmtdata.metrics_data["fixed", lang_pair][system_id][segment] = 1
+            
+            i += 1
+            wmtdata.metrics_data["alphabetical", lang_pair][system_id][segment] = -1.0 * i
+            wmtdata.metrics_data["alphabetical_inv", lang_pair][system_id][segment] = i            
+            
+    scores = OrderedDict()
+    for metric in ["random", "random_inv", "alphabetical", "alphabetical_inv"]:
+        for variant in variants:
+            tau, confidence = wmtdata.compute_tau_confidence(metric, direction, variant, samples=100)
+            scores["tau_{}_{}".format(metric, variant)] = tau
+            scores["tau_{}_{}_conf".format(metric, variant)] = confidence
+    return scores
 
 class Scoring(MultiRankedDataset):
     """
