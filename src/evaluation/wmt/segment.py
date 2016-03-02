@@ -106,17 +106,6 @@ def parse_args():
     return parser.parse_args()
 #config = parse_args()
 
-def main():
-    # Load data
-    data = SegmentLevelData()
-    data.add_human_data(config.judgments)
-    for file in config.metrics:
-        data.add_metrics_data(file)
-
-    # Compute results
-    result_table = ResultTable(data, config.directions)
-    
-    print(result_table.tabulate())
 
 class MetricLanguagePairData(defaultdict):
     """ Stores metric scores for given metric and for given language direction.
@@ -167,12 +156,11 @@ class MetricLanguagePairData(defaultdict):
                 numerator += coeff
                 denominator += 1
             
-        #print "Concordant {}".format(concordant_count)
-        #print "Discordant {}".format(discordant_count)
-        #print "Returning fraction {}/{} = {}".format(numerator, denominator, 1.00 * numerator / denominator)
-        
         # Return the Kendall's tau
-        return 1.00 * numerator / denominator
+        try:
+            return 1.00 * numerator / denominator
+        except ZeroDivisionError:
+            return 1.00 * numerator / denominator
 
 class SegmentLevelData(object):
     """ Stores scores for all metrics, language directions and systems. Also stores human scores
@@ -196,43 +184,6 @@ class SegmentLevelData(object):
                     else:
 #                        print("Warning: ", metric, lang_pair, system, segment, "Segment score already exists." ,file=sys.stderr)
                         pass
-
-    # def add_human_data(self, file_like):
-    #     for file in glob.glob(file_like):
-    #         with gzip.open(file, mode="rt") as f:
-    #             last_line_system_ranks = []
-    #             for line in csv.DictReader(f):
-    #
-    #                 direction = line['system1Id'].rsplit('.', 2)[1]
-    #                 segment = int(line['srcIndex'])
-    #
-    #                 extract_system = lambda x: '.'.join(x.split('.')[1:-2])
-    #
-    #                 SystemsTuple = namedtuple("SystemTuple", ["id","rank"])
-    #                 systems_ranks = [
-    #                     SystemsTuple(id = extract_system(line['system1Id']), rank = int(line['system1rank'])),
-    #                     SystemsTuple(id = extract_system(line['system2Id']), rank = int(line['system2rank'])),
-    #                     ]
-    #
-    #                 systems_ranks2 = systems_ranks
-    #                 if "PLACEHOLDER" in line.values():
-    #                     systems_ranks2 = systems_ranks2 + last_line_system_ranks
-    #
-    #                 last_line_system_ranks = systems_ranks
-    #
-    #                 # Extract all comparisons (Making sure that two systems are extracted only once)
-    #                 # Also the extracted relation '<' means "is better than"
-    #                 compare = lambda x, y: '<' if x < y else '>' if x > y else '='
-    #                 extracted_comparisons = [
-    #                         (segment, sys1.id, sys2.id, compare(sys1.rank, sys2.rank))
-    #                         for idx1, sys1 in enumerate(systems_ranks)
-    #                         for idx2, sys2 in enumerate(systems_ranks2)
-    #                         if idx1 < idx2
-    #                         and sys1.rank != -1
-    #                         and sys2.rank != -1
-    #                     ]
-    #
-    #                 self.human_comparisons[direction] += extracted_comparisons
 
     def add_human_data(self, file_like):
         for file in glob.glob(file_like):
@@ -261,7 +212,7 @@ class SegmentLevelData(object):
     def extracted_pairs(self, direction):
         return len(self.human_comparisons[direction])
 
-    def compute_tau_confidence(self, metric, direction, variant):
+    def compute_tau_confidence(self, metric, direction, variant, samples=1000):
         if (metric,direction) not in self.metrics_data:
             return None, None
 
@@ -269,19 +220,19 @@ class SegmentLevelData(object):
         comparisons = self.human_comparisons[direction]
 
         tau = metric_data.kendall_tau(comparisons, variant)
-        confidence = self.compute_confidence(metric_data, comparisons, variant)
+        confidence = self.compute_confidence(metric_data, comparisons, variant, samples)
 
         return tau, confidence
 
-    def compute_confidence(self, metric_data, comparisons, variant):
-        #if config.bootstrap == 0:
-        #    return None
+    def compute_confidence(self, metric_data, comparisons, variant, samples=1000):
+        if samples == 0:
+            return None
 
         # Setting random seed here, to generate same samples for all metrics and directions
-        #random.seed(config.rseed)
+        random.seed(int(time.time()))
 
         taus = []
-        for _ in range(100):
+        for _ in range(samples):
             sample = (random.choice(comparisons) for _ in comparisons) 
             tau = metric_data.kendall_tau(sample, variant)
             if tau is None:
@@ -292,120 +243,13 @@ class SegmentLevelData(object):
         
         avg_tau = sum(taus) / len(taus)
         
-        l_tau = taus[int(100 * alpha/2)]
-        r_tau = taus[int(100 * (1 - alpha/2))]
+        l_tau = taus[int(samples * alpha/2)]
+        r_tau = taus[int(samples * (1 - alpha/2))]
         return abs(l_tau - r_tau) / 2
 
     def metrics(self):
         return list(set(pair[0] for pair in self.metrics_data.keys()))
 
-class ResultTable(object):
-    def __init__(self, data, directions):
-        self.directions = directions
-        self.variant = config.variant
-        self.other_variants = sorted(set(variants_definitions.keys()) - set([config.variant]))
-        self.rows = sorted(filter(None, (ResultRow(data, metric, self.directions, self.variant, self.other_variants) for metric in data.metrics())))
-        self.find_col_max()
-
-    def find_col_max(self):
-        max_results = [safe_max(col) for col in zip(*[row.results for row in self.rows])]
-        for row in self.rows:
-            row.max_results = max_results
-
-    def header(self):
-        header_list = ["Metric"] + self.directions + ["Average"] + self.other_variants
-        if config.tablefmt == "latex":
-            return ["\\textbf{%s}" % header for header in header_list]
-        else:
-            return header_list
-
-    def __iter__(self):
-        yield self.header()
-        for row in self.rows:
-            yield row
-
-    def tabulate(self):
-        return tabulate(
-            self.rows,
-            headers=self.header(),
-            tablefmt=config.tablefmt,
-            floatfmt='.3f',
-            missingval='n/a',
-            numalign='left',
-        )
-
-class ResultRow(object):
-    def __init__(self, data, metric, directions, variant, other_variants):
-        self.metric = metric
-
-        self.results = []
-        self.confidences = []
-        
-        # Compute the main kendall's tau for each direction
-        for direction in directions:
-            tau, confidence = data.compute_tau_confidence(metric, direction, variant)
-            self.results.append(tau)
-            self.confidences.append(confidence)
-
-        # Compute the average across directions
-        self.avg = safe_avg(self.results)
-        self.results.append(self.avg)
-        self.confidences.append(safe_avg(self.confidences))
-
-        # Compute other variants
-        for variant in other_variants:
-
-            variant_results = []
-            variant_confidences = []
-            for direction in directions:
-                tau, confidence = data.compute_tau_confidence(metric, direction, variant)
-                variant_results.append(tau)
-                variant_confidences.append(confidence)
-
-            self.results.append(safe_avg(variant_results))
-            self.confidences.append(safe_avg(variant_confidences))
-
-    def any_none(self):
-        return any([result is None for result in self.results])
-    
-    def sort_key(self):
-        return (self.any_none(), -self.avg)
-
-    def __lt__(self, other):
-        return self.sort_key() < other.sort_key()
-
-    def __iter__(self):
-        if config.tablefmt == "latex":
-            yield "\\metric{%s}" % self.metric
-        else:
-            yield self.metric
-
-        for result, confidence, maximum in zip(self.results, self.confidences, self.max_results):
-            if result is not None:
-                if confidence is not None:
-                    if result == maximum:
-                        if config.tablefmt == "latex":
-                            yield "$\\best{%.3f} \pm %.3f$" % (result,confidence)
-                        else:
-                            yield "%.3f±%.3f*" % (result,confidence)
-                    else:
-                        if config.tablefmt == "latex":
-                            yield "$%.3f \pm %.3f$" % (result,confidence)
-                        else:
-                            yield "%.3f±%.3f" % (result,confidence)
-                else:
-                    if result == maximum:
-                        if config.tablefmt == "latex":
-                            yield "\\best{%.3f}" % result
-                        else:
-                            yield "%.3f*" % result
-                    else:
-                        yield "%.3f" % result
-            else:
-                yield None
-
-    def __bool__(self):
-        return not all([result is None for result in self.results])
 
 def safe_avg(iterable):
     filtered = list(filter(None, iterable))
@@ -423,5 +267,3 @@ def safe_max(iterable):
             maximum = max(maximum, item)
     return maximum
 
-if __name__ == "__main__":
-    main()
