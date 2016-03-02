@@ -53,8 +53,7 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
     predicted_ties_overall = 0
     pairs_overall = 0
     sentences_with_ties = 0
-    
-    
+
     #count how many ranking lists exist for each length (e.g 100 lists with length 5 etc.)
     ranking_counts_per_length = defaultdict(int)   
     sum_tau_per_length = defaultdict(float)
@@ -63,6 +62,8 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
     sum_weighed_variance = 0
     sum_ranking_lengths = 0
     skipped = 0
+    count = 0
+    non_significant_count = 0
     
     for predicted_rank_vector, original_rank_vector in zip(predicted_rank_vectors, original_rank_vectors):
         
@@ -73,10 +74,14 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
             logging.debug("Segment tau was found to be {}".format(segtau))
             # and segprob):
             skipped += 1
-        else:                    
+        else:
+            count += 1                    
             segtaus.append(segtau)
             segprobs.append(segprob)
             
+            if segprob >= 0.05:
+                non_significant_count += 1
+                
             #gather statistics per length to calculate significance for null hypothesis
             ranking_counts_per_length[ranking_length] += 1
             sum_tau_per_length[ranking_length] += segtau
@@ -84,7 +89,7 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
             #maximum variance
             max_var = (1.00 - segtau*segtau) / (ranking_length / 2.00)
             #sum of item variance weighed by ranking length, used for the nominator of the pooled variance
-            sum_weighed_variance = (ranking_length - 1) * max_var
+            sum_weighed_variance += (ranking_length - 1) * max_var
             #sum of inverted maximum variance used for the denominator weighed standard error (4.9)
             try:
                 sum_inverted_single_max_variance += 1.00 / max_var
@@ -108,24 +113,26 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
         logging.warn("{} items were skipped from tau calculation".format(skipped))
     
     #this is probably when the test has only has ties
-    if valid_pairs == 0:
+    if (concordant + discordant) == 0:
         logging.warn("I had to skip item in tau evaluation because of zero pairs")
         return {}
-    tau = 1.00 * (concordant - discordant) / valid_pairs
+    tau = 1.00 * (concordant - discordant) / (concordant + discordant)
     prob = segment.kendall_tau_prob(tau, valid_pairs)
     
     #average tau statistics
     avg_seg_tau = np.average(segtaus)               
     avg_seg_prob = np.product(segprobs)
     
+    non_significant_ratio = (1.00 * non_significant_count) / count
+    
     #weighed tau and significance for null hypothesis
     weighed_tau, weighed_prob, variance_per_length = _inverse_weighted_tau(ranking_counts_per_length, sum_tau_per_length)
     
     #maximum standard deviation from the pooled variance
-    pooled_std = np.sqrt(sum_weighed_variance / sum_ranking_lengths)
+    pooled_std = 1.96 * np.sqrt(sum_weighed_variance / sum_ranking_lengths)
     
     #maximum standard deviation from the mean based on inverse weighed variance
-    inverse_weighed_std = np.sqrt(1.00 / sum_inverted_single_max_variance) 
+    inverse_weighed_std = 1.96 * np.sqrt(1.00 / sum_inverted_single_max_variance) 
     
     #averages for the ties
     predicted_ties_avg = 100.00*predicted_ties / pairs_overall
@@ -139,6 +146,7 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
              'tau_weighed_prob': weighed_prob,
              'tau_invw_std': inverse_weighed_std,
              'tau_pooled_std': pooled_std,
+             'tau_nonsig_ratio': non_significant_ratio,
              'tau_concordant': concordant,
              'tau_discordant': discordant,
              'tau_valid_pairs': valid_pairs,
@@ -313,15 +321,5 @@ def allmetrics(predicted_rank_vectors, original_rank_vectors,  **kwargs):
         stats.update(function(predicted_rank_vectors, original_rank_vectors, **kwargs))
     
     return stats
-
-#if __name__ == '__main__':
-#    from sentence.ranking import Ranking
-#    a = Ranking([1,2,3,4])
-#    b = Ranking([2,3,1,4])
-#    
-#    c = [a,b,a,b,a,a]
-#    d = [b,a,a,b,a,]
-#    
-#    print avg_ndgc_err(c,d)
     
     
