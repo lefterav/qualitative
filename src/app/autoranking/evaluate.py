@@ -13,7 +13,7 @@ def evaluate(filename, metric="rank_hard", prefix="hard", class_name = "rank"):
         Load predictions (test) and analyze performance
         """        
         testset = CEJcmlReader(filename, all_general=True, all_target=True)        
-        scores = scoring.get_metrics_scores(testset, metric, class_name , prefix=prefix, invert_ranks=False)
+        scores = scoring.get_metrics_scores(testset, metric, class_name , prefix=prefix, invert_ranks=False)        
         return scores
 
 if __name__ == '__main__':
