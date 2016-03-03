@@ -153,7 +153,8 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
         scores["tau_{}".format(variant)] = tau
         scores["tau_{}_weighed".format(variant)] = weighed_tau
         scores["tau_{}_p-value".format(variant)] = pvalue
-        
+
+    scores = OrderedDict([("{}-{}{}".format(prefix, key, suffix),value) for key,value in scores.iteritems()])        
     return scores
 
 
