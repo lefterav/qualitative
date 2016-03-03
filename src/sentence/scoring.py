@@ -43,9 +43,9 @@ def get_metrics_scores(data, predicted_rank_name, original_rank_name,
     @rtype: tuple(float, float)
     """
     stats = OrderedDict()
-    #stats.update(get_ranking_scores(data, predicted_rank_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
-    #stats.update(get_wmt_scores(data, predicted_rank_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
-    stats.update(get_fixed_scores(data, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
+    stats.update(get_ranking_scores(data, predicted_rank_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
+    stats.update(get_wmt_scores(data, predicted_rank_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
+    #stats.update(get_fixed_scores(data, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
     return stats
 
 def get_ranking_scores(data, predicted_rank_name, original_rank_name,
@@ -97,18 +97,27 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
                        filter_ref = True,
                        suffix = "",
                        prefix = "",
-                       variants = ["wmt12", "wmt13", "wmt14"],
+                       variants_with_confidence = ["wmt14"],
+                       variants_no_confidence = ["wmt12", "wmt13"],
                        direction = "de-en",
                        **kwargs):
     
     wmtdata = SegmentLevelData()
     metric = "autoranking"
+    
+    count_length = defaultdict(int)
         
     for parallesentence in data.get_parallelsentences():
         lang_pair = parallesentence.get_langpair()
         segment = int(parallesentence.get_id())
 
         pairwise_parallelsentences = parallesentence.get_pairwise_parallelsentences(class_name=original_rank_name)
+        
+        translations = parallesentence.get_translations()
+        ranking_length = len(translations)
+        count_length[ranking_length] += 1
+        
+        # First populate the structure for the human ratings  
         for pairwise_parallelsentence in pairwise_parallelsentences:
             translation1 = pairwise_parallelsentence.get_translations()[0]
             system_id1 = translation1.get_system_name()
@@ -120,22 +129,31 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
             
             compare = lambda x, y: '<' if x < y else '>' if x > y else '='
             extracted_comparisons = [
-                (segment, system_id1, system_id2, compare(human_rank1, human_rank2))
+                (segment, system_id1, system_id2, compare(human_rank1, human_rank2), ranking_length)
             ]
             wmtdata.human_comparisons[lang_pair] += extracted_comparisons
         
-        for translation in parallesentence.get_translations():
+        for translation in translations:
             system_id = translation.get_system_name()
             predicted_rank_value = translation.get_attribute(predicted_rank_name)
             predicted_rank = -1.00 * int(predicted_rank_value)
-            wmtdata.metrics_data[metric, lang_pair][system_id][segment] = predicted_rank
-            wmtdata.metrics_data[metric, lang_pair][system_id][segment] = predicted_rank
+            wmtdata.metrics_data[metric,lang_pair][system_id][segment] = predicted_rank
+            wmtdata.metrics_data[metric,lang_pair][system_id][segment] = predicted_rank
     
     scores = OrderedDict()
-    for variant in variants:
-        tau, confidence = wmtdata.compute_tau_confidence(metric, direction, variant)
+    for variant in variants_with_confidence:
+        tau, confidence, weighed_tau, pvalue = wmtdata.compute_tau_confidence(metric, direction, variant, count_length, samples=1000)
         scores["tau_{}".format(variant)] = tau
         scores["tau_{}_conf".format(variant)] = confidence
+        scores["tau_{}_weighed".format(variant)] = weighed_tau
+        scores["tau_{}_p-value".format(variant)] = pvalue
+        
+    for variant in variants_no_confidence:
+        tau, confidence, weighed_tau, pvalue = wmtdata.compute_tau_confidence(metric, direction, variant, count_length, samples=0)
+        scores["tau_{}".format(variant)] = tau
+        scores["tau_{}_weighed".format(variant)] = weighed_tau
+        scores["tau_{}_p-value".format(variant)] = pvalue
+        
     return scores
 
 
