@@ -193,9 +193,9 @@ class CEJcmlReader(DataReader):
                     ref = SimpleSentence(ref_text, ref_attributes)
                 else:
                     try:
-                        log.warning("Reference is none in {} id:{}".format(self.input_filename, attributes["judgement_id"]))
+                        log.debug("Reference is none in {} id:{}".format(self.input_filename, attributes["judgement_id"]))
                     except KeyError:
-                        log.warning("Reference is none in {}:{}".format(self.input_filename, counter))
+                        log.debug("Reference is none in {}:{}".format(self.input_filename, counter))
                 parallelsentence = ParallelSentence(source, targets, ref, attributes)
                 yield parallelsentence
             root.clear() 

@@ -43,7 +43,7 @@ def get_metrics_scores(data, predicted_rank_name, original_rank_name,
     @rtype: tuple(float, float)
     """
     stats = OrderedDict()
-    stats.update(get_ranking_scores(data, predicted_rank_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
+    #stats.update(get_ranking_scores(data, predicted_rank_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
     stats.update(get_wmt_scores(data, predicted_rank_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
     #stats.update(get_fixed_scores(data, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
     return stats
@@ -97,8 +97,8 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
                        filter_ref = True,
                        suffix = "",
                        prefix = "",
-                       variants_with_confidence = ["wmt14"],
-                       variants_no_confidence = ["wmt12", "wmt13"],
+                       variants_with_confidence = [],
+                       variants_no_confidence = ["wmt12", "wmt13", "wmt14"],
                        direction = "de-en",
                        **kwargs):
     
