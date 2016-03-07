@@ -1,18 +1,14 @@
 #!/usr/bin/env python3.4
 # -*- coding: utf-8 -*-
 from collections import defaultdict
-from collections import namedtuple
 import gzip
 import glob
 import csv
-import argparse
-import sys
 import math
 import random
 import time
-from tabulate import tabulate
 from scipy.special import erfc
-
+import logging as log
 
 alpha = 0.05
 
@@ -57,6 +53,9 @@ class MetricLanguagePairData(defaultdict):
         defaultdict.__init__(self, dict)
 
     def kendall_tau(self, human_comparisons, count_length, variant='wmt14'):
+        
+        thislogger = log.getLogger(__name__)
+        thislogger.setLevel(log.DEBUG)
 
         try:
             coeff_table = variants_definitions[variant]
@@ -101,12 +100,14 @@ class MetricLanguagePairData(defaultdict):
         for n, numerator_n in numerator_length.iteritems():
             denominator_n = denominator_length[n]
             tau_n = 1.00 * numerator_n / denominator_n
-            #solving the binomial formula to find number of comparisons
             counts_n = count_length[n]
             #print "Counts {} solved as :".format(n), counts_n
             #inverted variance:
-            inv_variance_n = counts_n * 9 * n * (n - 1) / (2.00 * (2 * n  + 5))
+            inv_variance_n = counts_n * 9.00 * n * (n - 1) / (4.00 * n + 10)
+            thislogger.debug("inv_variance_n = {counts_n} * 9 * {n} * ({n} - 1) / (4.00 * {n} + 10) ".format(n=n, counts_n=counts_n))
+            thislogger.debug("inv_variance_n = {}".format(inv_variance_n))
             sum_inv_variance += inv_variance_n
+            thislogger.debug("sum_inv_variance += {}".format(inv_variance_n))
             sum_inv_variance_tau += inv_variance_n * tau_n
         weighed_variance = 1.00 / sum_inv_variance
         weighed_tau = sum_inv_variance_tau / sum_inv_variance
@@ -209,7 +210,7 @@ class SegmentLevelData(object):
 def safe_avg(iterable):
     filtered = list(filter(None, iterable))
     try:
-        return sum(filtered) / len(filtered)
+        return 1.00* sum(filtered) / len(filtered)
     except ZeroDivisionError:
         return None
 
