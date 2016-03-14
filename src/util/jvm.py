@@ -33,8 +33,8 @@ class LocalJavaGateway(JavaGateway):
     @var jvm: The local JVM process
     @var gatewayclient: The gateway client connected to the local socket of the JVM  
     '''
-    def __init__(self):
-        self.jvm = JVM()
+    def __init__(self, java="java"):
+        self.jvm = JVM(java="java")
         socket_no = self.jvm.socket_no
         self.gatewayclient = GatewayClient('localhost', socket_no)        
         super(LocalJavaGateway, self).__init__(self.gatewayclient, auto_convert=True, auto_field=True)
