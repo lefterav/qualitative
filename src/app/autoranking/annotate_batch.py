@@ -34,12 +34,6 @@ from featuregenerator.blackbox.languagechecker.languagetool_socket import Langua
 from featuregenerator.preprocessor import Normalizer
 from featuregenerator.preprocessor import Tokenizer
 
-
-
-
-
-
-
 gateway = cfg.java_init()
 
 cores = int(cfg.get("general", "cores"))

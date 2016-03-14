@@ -35,8 +35,7 @@ class ExperimentConfigParser(ConfigParser):
     checker = 0
     
     def java_init(self):
-        
-        self.gateway = LocalJavaGateway()
+        self.gateway = LocalJavaGateway(java=self.get("general","java"))
         self.jvm = self.gateway.jvm
         return self.gateway
         
