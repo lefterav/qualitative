@@ -183,10 +183,10 @@ class BerkeleyParserSocket():
         
 
         
-#    def __del__(self):
-#        """
-#        Destroy object when object unloaded or program exited
-#        """
+    def __del__(self):
+        """
+        Destroy object when object unloaded or program exited
+        """
 #        self.gateway.shutdown()
 #        #sys.stderr.write( "trying to close process %d\n" % self.process.pid)
 #        self.process.terminate()

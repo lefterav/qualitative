@@ -6,6 +6,7 @@ Created on 22 Jun 2012
 import subprocess
 import time
 import os
+from py4j.java_gateway import GatewayClient, JavaGateway
 
 def get_libs():
     """
@@ -23,6 +24,29 @@ def get_libs():
     dirs.extend([libpath, libpath_all])
     return dirs
 
+
+class LocalJavaGateway(JavaGateway):
+    '''
+    A single class that encapsulates a local Java Virtual Machine (JVM), and gets initialized
+    as a local java gateway, connected to the socket of the JVM. The class extends
+    the JavaGateway class of Py4j
+    @var jvm: The local JVM process
+    @var gatewayclient: The gateway client connected to the local socket of the JVM  
+    '''
+    def __init__(self):
+        self.jvm = JVM()
+        socket_no = self.jvm.socket_no
+        self.gatewayclient = GatewayClient('localhost', socket_no)        
+        super(LocalJavaGateway, self).__init__(self.gatewayclient, auto_convert=True, auto_field=True)
+    
+    def shutdown(self):
+        super(LocalJavaGateway, self).shutdown()
+        self.jvm.terminate()
+        
+    def __del__(self):
+        self.shutdown()
+        
+
 class JVM(object):
     '''
     A wrapper for the Py4J server of Java Virtual Machine, so that java libraries can be accessed via Py4J. 
@@ -31,9 +55,9 @@ class JVM(object):
     @ivar pid: The system process id of the Java Server 
     '''
 
-    def __init__(self, java_classpath, java="java"):
+    def __init__(self, java_classpath='', java="java"):
         '''
-        Star running java
+        Start running java
         '''
            
         #java_classpath.extend(get_libs())
@@ -69,7 +93,6 @@ class JVM(object):
         Stop the Java Server
         """
         self.jvm.terminate()
-    
     
     def __del__(self):
         """
