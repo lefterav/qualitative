@@ -6,6 +6,7 @@ Created on 26 Jun 2012
 
 from numpy import average, std, min, max, asarray
 import logging as log
+from dataprocessor.datareader import DataReader
 
 import sys
 from collections import defaultdict, OrderedDict
@@ -26,18 +27,7 @@ def get_attribute_names(filename):
         attribute_names.update((parallelsentence.get_source().get_attributes().keys()))
     return attribute_names
 
-class DataReader:
-    """
-    Abstract base class for classes reading data. To be moved to a more suitable module, when possible. 
-    """
-    def get_attribute_names(self):
-        raise NotImplementedError()
-    
-    def get_dataset(self):
-        raise NotImplementedError()
-    
-    def get_parallelsentences(self, **kwargs):
-        raise NotImplementedError()
+
 
 class CEJcmlReader(DataReader):
     """

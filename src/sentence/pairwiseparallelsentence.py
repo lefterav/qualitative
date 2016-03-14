@@ -39,7 +39,7 @@ class PairwiseParallelSentence(ParallelSentence):
         @param the attributes: that describe the parallel sentence
         @type attributes: dict { String name : String value }
         @param systems: names of target systems
-        @type systems: tuple of strings
+        @type systems: tucall for papersple of strings
         @param cast: set True if you want to initialize a pairwise parallel sentence out of a simple parallel sentence
         """
         

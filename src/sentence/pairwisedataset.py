@@ -228,7 +228,7 @@ class AnalyticPairwiseDataset(PairwiseDataset):
             #get a universal sentence_id (@todo: this could be parametrized)
             sentence_id = parallelsentence.get_compact_id()
             pairwise_parallelsentences_per_sid.setdefault(sentence_id, []).extend(
-                                                                                  parallelsentence.get_pairwise_parallelsentences(
+                                                                                  parallelsentence.get_pairwise_parallelsentences_old(
                                                                                                                                   replacement=self.replacement, 
                                                                                                                                   include_references=self.include_references,
                                                                                                                                   filter_unassigned = self.filter_unassigned,
