@@ -16,7 +16,7 @@ import random
 import argparse
 import fnmatch
 import socket
-from util.jvm import JVM
+from util.jvm import LocalJavaGateway
 from py4j.java_gateway import GatewayClient, JavaGateway
 import logging as log
 
@@ -36,23 +36,29 @@ class ExperimentConfigParser(ConfigParser):
     
     def java_init(self):
         
-        #collect java classpath entries from all sections        
-        java_classpath, dir_path = self.get_classpath()
+        self.gateway = LocalJavaGateway()
+        self.jvm = self.gateway.jvm
+        return self.gateway
         
-        if java_classpath:
-            try:
-                java = self.get("general","java")
-                self.jvm = JVM(java_classpath, java)
-            except:
-                self.jvm = JVM(java_classpath)
-            socket_no = self.jvm.socket_no
-            #socket_no = 25336
-            self.gatewayclient = GatewayClient('localhost', socket_no)
-            self.gateway = JavaGateway(self.gatewayclient, auto_convert=True, auto_field=True)
-            sys.stderr.write("Initialized global Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
-            return self.gateway
-            # wait so that server starts
-#            time.sleep(2)
+#===============================================================================
+#         #collect java classpath entries from all sections        
+#         java_classpath, dir_path = self.get_classpath()
+#         
+#         if java_classpath:
+#             try:
+#                 java = self.get("general","java")
+#                 self.jvm = JVM(java_classpath, java)
+#             except:
+#                 self.jvm = JVM(java_classpath)
+#             socket_no = self.jvm.socket_no
+#             #socket_no = 25336
+#             self.gatewayclient = GatewayClient('localhost', socket_no)
+#             self.gateway = JavaGateway(self.gatewayclient, auto_convert=True, auto_field=True)
+#             sys.stderr.write("Initialized global Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
+#             return self.gateway
+#             # wait so that server starts
+# #            time.sleep(2)
+#===============================================================================
 
     def get_classpath(self):
         java_classpath = set()

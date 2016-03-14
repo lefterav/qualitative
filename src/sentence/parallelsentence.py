@@ -101,13 +101,23 @@ class ParallelSentence(object):
         self.rank_name = rank_name
         if kwargs.setdefault("sort_translations", False):
             self.tgt = sorted(translations, key=lambda t: t.get_attribute("system"))
-                
-    
         try:
-            self.attributes["langsrc"] = kwargs.setdefault("langsrc", self.attributes["langsrc"])
-            self.attributes["langtgt"] = kwargs.setdefault("langtgt", self.attributes["langtgt"])
+            self.attributes["langsrc"] = kwargs["langsrc"]
         except KeyError:
-            sys.exit('Source or target language not specified in parallelsentence: [{}]'.format(self.__str__()))
+            if "langsrc" not in self.attributes:
+                sys.exit('Source language not specified in parallelsentence: [{}]'.format(self.__str__()))
+
+        try:
+            self.attributes["langtgt"] = kwargs["langtgt"]
+        except KeyError:
+            if "langtgt" not in self.attributes:
+                sys.exit('Source language not specified in parallelsentence: [{}]'.format(self.__str__()))
+            
+        try: 
+            self.attributes["id"] = kwargs["segment_id"]
+        except KeyError:
+            pass
+                   
     
     def __str__(self):
         return ", ".join([s.__str__() for s in self.serialize()])

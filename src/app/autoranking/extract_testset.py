@@ -42,10 +42,15 @@ if __name__ == '__main__':
     parser.add_argument("--setid", nargs='*', default=sets, help="set names")
     parser.add_argument("--input", help="input file pattern, e.g. /home/Eleftherios Avramidis/taraxu_data/jcml-latest/raw/{setid}.{langpair}.jcml.rank.jcml")
     parser.add_argument("--output", help="output file pattern, e.g. /home/Eleftherios Avramidis/taraxu_data/jcml-latest/clean/{setid}.{langpair}.jcml.rank.jcml")
+    parser.add_argument("--inputfile", help="Single input filename")
+    parser.add_argument("--outputfile", help="Single output filename")
     args = parser.parse_args()
     
-    for setid in args.setid:
-        for langpair in args.langpair:
-            input_xml_filename = args.input.format(setid=setid, langpair=langpair)
-            output_filename = args.output.format(setid=setid, langpair=langpair)
-            get_clean_testset(input_xml_filename, output_filename)
+    if args.inputfile and args.outputfile:
+        get_clean_testset(args.inputfile, args.outputfile)
+    else:
+        for setid in args.setid:
+            for langpair in args.langpair:
+                input_xml_filename = args.input.format(setid=setid, langpair=langpair)
+                output_filename = args.output.format(setid=setid, langpair=langpair)
+                get_clean_testset(input_xml_filename, output_filename)

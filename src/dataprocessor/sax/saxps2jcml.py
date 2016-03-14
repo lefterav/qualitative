@@ -107,6 +107,9 @@ class IncrementalJcml(object):
         self.file.close()
         shutil.move(self.tempfilename, self.filename)
         
+    def __del__(self):
+        self.close()
+        
 
 class Parallelsentence2Jcml(object):
     '''
