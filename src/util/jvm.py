@@ -34,14 +34,20 @@ class LocalJavaGateway(JavaGateway):
     @var gatewayclient: The gateway client connected to the local socket of the JVM  
     '''
     def __init__(self, java="java"):
-        self.jvm = JVM(java="java")
+        self.jvm_object = JVM(java=java)
         socket_no = self.jvm.socket_no
         self.gatewayclient = GatewayClient('localhost', socket_no)        
         super(LocalJavaGateway, self).__init__(self.gatewayclient, auto_convert=True, auto_field=True)
     
     def shutdown(self):
-        super(LocalJavaGateway, self).shutdown()
-        self.jvm.terminate()
+        try:
+            super(LocalJavaGateway, self).shutdown()
+        except:
+            pass
+        try:
+            self.jvm_object.terminate()
+        except:
+            pass
         
     def __del__(self):
         self.shutdown()
