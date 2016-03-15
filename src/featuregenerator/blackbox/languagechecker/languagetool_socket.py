@@ -9,7 +9,7 @@ from py4j.java_gateway import GatewayClient
 from py4j.java_gateway import java_import
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 import os, subprocess, sys
-
+import inspect
 
 class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
     '''
@@ -45,12 +45,19 @@ class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
 #        gateway = JavaGateway(gatewayclient)
         
         ltool_view = gateway.new_jvm_view()
+        #java_import(ltool_view, 'org.languagetool.language')
         java_import(ltool_view, 'org.languagetool.*')
 
         if lang=='ru':
             lang = 'ru-RU' 
-
-        tool_language = ltool_view.Language.getLanguageForShortName(lang)
+        
+        
+        #all_functions = inspect.getmembers(ltool_view)
+        #print all_functions
+        
+        #languages = ltool_view.Languages
+        #tool_language = languages.getLanguageForShortName(lang)
+        tool_language = ltool_view.language.AmericanEnglish()
         self.ltool = ltool_view.JLanguageTool(tool_language)
         #self.ltool.activateDefaultPatternRules();
         
