@@ -39,7 +39,7 @@ not wanting to risk your python environment)
  pip install --user <package-name> 
 
 easy_install -U distribute
-sudo pip install orange py4j numpy scipy suds ruffus scikit-learn requests 
+sudo pip install orange py4j numpy scipy suds ruffus scikit-learn requests https://github.com/kpu/kenlm/archive/master.zip 
 #  nltk==2.0.1rc4 and matplotlib need to be checked
 
 Additionally
