@@ -7,25 +7,28 @@ import unittest
 from util.jvm import LocalJavaGateway
 from languagetool_socket import LanguageToolSocketFeatureGenerator
 import logging as log
+from numpy.ma.testutils import assert_equal
 
-JAVA = "java"
+JAVA = "/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java"
 
-class TestLanguageTOol(unittest.TestCase):
+class TestLanguageTool(unittest.TestCase):
     
     def setUp(self):
-        log.info("Loading Java Gateway")
+        log.debug("Loading Java Gateway")
         
         self.gateway = LocalJavaGateway(java=JAVA)
         
-        log.info("Loading language tool")
+        log.debug("Loading language tool")
         self.ltool = LanguageToolSocketFeatureGenerator(lang="en", 
                                                         gateway=self.gateway)        
 
     def tearDown(self):
         pass
 
-    def testName(self):
-        pass
+    def testCheckSentence(self):
+        string = "These are a very rong Sentence ."
+        features = self.ltool.get_features_string(string)
+        assert_equal(features, {'lt_issue_whitespace': 1, 'lt_err_COMMA_PARENTHESIS_WHITESPACE_replacements_avgchars': 1.0, 'lt_err_COMMA_PARENTHESIS_WHITESPACE_chars': 2, 'lt_err_COMMA_PARENTHESIS_WHITESPACE_replacements': 1, 'lt_replacements': 2, 'lt_cat_Miscellaneous': 1, 'lt_errors_chars': 2, 'lt_errors': 1, 'lt_err_COMMA_PARENTHESIS_WHITESPACE': 1, 'lt_categories': 1, 'lt_issuetypes': 1})
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
