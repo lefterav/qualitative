@@ -35,27 +35,32 @@ class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
         errors = 0
         total_error_chars = 0
         total_replacements = 0
+        seen_categories = set()
+        seen_issue_types = set()
         replacements = defaultdict(list)
         for match in matches:
-            error_id = match.getRule().getId()
+            error_id = "err_{}".format(match.getRule().getId())
             atts[error_id] = atts.setdefault(error_id, 0) + 1
 
             errors += 1
             
-            category_id = match.getRule().getCategory().getName()
+            category_id = "cat_{}".format(match.getRule().getCategory().getName())
             atts[category_id] = atts.setdefault(category_id, 0) + 1
+            seen_categories.add(category_id)
             
-            issue_type = match.getRule().getLocQualityIssueType().toString()
+            issue_type = "issue_{}".format(match.getRule().getLocQualityIssueType().toString())
             atts[issue_type] = atts.setdefault(issue_type, 0) + 1
+            seen_issue_types.add(issue_type)
             
             error_chars = match.getEndColumn() - match.getColumn()
             error_chars_key = "{}_chars".format(error_id)
-            atts[error_chars_key] = atts.defaultdict(error_chars_key, 0) + error_chars
+            atts[error_chars_key] = atts.setdefault(error_chars_key, 0) + error_chars
             
             total_error_chars += error_chars
             
             error_replacements_key = "{}_replacements".format(error_id)
             this_replacements = match.getSuggestedReplacements()
+            total_replacements += len(this_replacements)
             replacements[error_id].extend(this_replacements)
             
             atts[error_replacements_key] = atts.setdefault(error_replacements_key, 0) + len(replacements[error_id])
@@ -63,13 +68,17 @@ class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
             avgchars = np.average([len(replacement) for replacement in replacements[error_id]])
             atts["{}_replacements_avgchars".format(error_id)] = avgchars
             
-        atts["errors"] = str(errors)
-        atts["errors_chars"] = str(total_error_chars)
+        atts["errors"] = errors
+        atts["errors_chars"] = total_error_chars
+        atts["replacements"] = total_replacements
+        atts["categories"] = len(seen_categories)
+        atts["issuetypes"] = len(seen_issue_types)
         
+        prefixed_atts = {}
         for k,v in atts.iteritems():
-            atts["lt_{}".format(k)] = v
+            prefixed_atts["lt_{}".format(k)] = v
         
-        return atts
+        return prefixed_atts
             
     
 #    def __del__(self):

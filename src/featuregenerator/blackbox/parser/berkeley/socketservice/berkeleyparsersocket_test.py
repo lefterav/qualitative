@@ -25,7 +25,6 @@ class TestBerkeleyParserSocket(unittest.TestCase):
     def testParse(self):
         sentence = self.parser.parse("This is a test")
         assert(len(sentence["nbest"]) > 0, "Parser should return at list one result")
-        print sentence
         assert_equal(sentence["nbest"][0]["tree"], '(S (NP (DT This)) (VP (VBZ is) (NP (DT a) (NN test)))) )')
         assert_equal(sentence["nbest"][0]["confidence"], u'-26.320426032971984')
         

@@ -16,13 +16,18 @@ Requirements
 This is a list of the requirements for running the suite. Please scroll
 for more hints on their installation
 
-python-libraries 
-----------------
-
-Use pip-install:
-
 For Debian/ubuntu:
+
+#install java
+sudo apt-add-repository ppa:openjdk-r/ppa
+sudo apt-get update
+sudo apt-get install openjdk-8-jdk
+
+
+#install python libraries
+
 sudo apt-get install python-dev g++ build-essential python-pip libblas-dev liblapack-dev gfortran
+
 sudo pip install --upgrade pip  
 sudo easy_install -U setuptools
 sudo pip install --upgrade setuptools
