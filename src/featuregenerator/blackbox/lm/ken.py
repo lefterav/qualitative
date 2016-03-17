@@ -31,11 +31,12 @@ class KenLMFeatureGenerator(LanguageFeatureGenerator):
         unk_count = 0
         unk_pos = []
         unk_tokens = []
-        tokens = iter(string.split())
+        tokens = string.split()
+        tokens_iter = iter(tokens)
         pos = 0
         for pos, (prob, ngram_length, wid) in enumerate(partial_scores):
             try:
-                token = next(tokens)
+                token = next(tokens_iter)
             #End of sentence score has no token
             except StopIteration:             
                 token = ""
