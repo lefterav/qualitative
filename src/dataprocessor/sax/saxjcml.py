@@ -13,9 +13,10 @@ from sentence.parallelsentence import ParallelSentence
 import shutil
 import logging as log
 import subprocess
+from dataprocessor.sax.saxps2jcml import k, c
 
 def dict_string(dic):
-    return dict([(str(key), str(value)) for key, value in dic.iteritems()])
+    return dict([(k(key), str(value)) for key, value in dic.iteritems()])
 
 def run_features_generator(input_file, output_file, generators, encode=False):
     """
@@ -156,7 +157,7 @@ class SaxJCMLProcessor(XMLGenerator):
         @type ch: str 
         """
         if self.is_simplesentence :
-            self.ss_text.append(ch)
+            self.ss_text.append(c(ch))
 #            self.ss_text = u"%s%s" % (self.ss_text, ch)
             
     
