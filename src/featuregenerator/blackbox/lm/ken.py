@@ -15,7 +15,7 @@ class KenLMFeatureGenerator(LanguageFeatureGenerator):
     Provide ngram features by querying language model via KenLM python wrapper
     '''
 
-    def __init__(self, lang, order, filename):
+    def __init__(self, lang, filename):
         '''
         Load the model
         '''
