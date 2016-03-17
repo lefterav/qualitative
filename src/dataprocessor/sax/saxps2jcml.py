@@ -20,7 +20,7 @@ from sentence.dataset import DataSet
 
 #compile the much needed regular expression
 illegal_xml_chars_RE = re.compile(u'[\x00-\x08\x0b\x0c\x0e-\x1F\uD800-\uDFFF\uFFFE\uFFFF]') 
-
+ALLOWED_PUNCTUATION = "".join(list(set(stringlib.punctuation) - set('_')))
 
 def c(string):
     """
@@ -36,10 +36,9 @@ def k(string):
     """
     Makes string suitable for XML attribute name
     """
-    string = str(string)
     string = unidecode(string)
     string = string.replace(' ', '_')
-    string = stringlib.translate(stringlib.maketrans("",""), stringlib.punctuation)
+    string = string.translate(stringlib.maketrans(u"",u""), ALLOWED_PUNCTUATION)
     return string
 
 
