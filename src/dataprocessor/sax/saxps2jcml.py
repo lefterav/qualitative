@@ -4,18 +4,19 @@ Created on 14 Dec 2011
 @author: Eleftherios Avramidis
 '''
 
+import re
 import shutil
 import sys
-import logging
-import re
 import tempfile
 from random import shuffle
+import string as stringlib 
+from unidecode import unidecode
 from xml.sax.saxutils import XMLGenerator
 from xml.sax.xmlreader import AttributesImpl
+
 from dataprocessor.dataformat.jcmlformat import JcmlFormat
 from sentence.sentence import SimpleSentence
 from sentence.dataset import DataSet
-
 
 #compile the much needed regular expression
 illegal_xml_chars_RE = re.compile(u'[\x00-\x08\x0b\x0c\x0e-\x1F\uD800-\uDFFF\uFFFE\uFFFF]') 
@@ -30,6 +31,15 @@ def c(string):
         sys.stderr.write("I had to kill {0} unicode characters because they were not XML-compliant\n".format(rep))
     
     return clean_string.strip()
+
+def k(string):
+    """
+    Makes string suitable for XML attribute name
+    """
+    string = unidecode(string)
+    string = string.replace(' ', '_')
+    string = stringlib.translate(stringlib.maketrans("",""), stringlib.punctuation)
+    return string
 
 
 
@@ -51,7 +61,7 @@ class IncrementalJcml(object):
     def add_parallelsentence(self, parallelsentence):
         self.generator.characters("\n\t")
         #convert all attribute values to string, otherwise it breaks
-        attributes = dict([(key,str(val)) for key,val in parallelsentence.get_attributes().iteritems()])
+        attributes = dict([(k(key),str(val)) for key,val in parallelsentence.get_attributes().iteritems()])
         self.generator.startElement(self.TAG["sent"], attributes)
         
         src = parallelsentence.get_source()
@@ -67,21 +77,21 @@ class IncrementalJcml(object):
 #                 except Exception as e:
 #                     logging.error("Crashed")
 #                     raise Exception(e)
-            src_attributes = dict([(key,unicode(val)) for key,val in src.get_attributes().iteritems()])
+            src_attributes = dict([(k(key),unicode(val)) for key,val in src.get_attributes().iteritems()])
             self.generator.startElement(self.TAG["src"], src_attributes)
             self.generator.characters(c(src.get_string()))
             self.generator.endElement(self.TAG["src"])
         elif isinstance(src, tuple):
             for src in parallelsentence.get_source():
                 self.generator.characters("\n\t\t")
-                src_attributes = dict([(key,unicode(val)) for key,val in src.get_attributes().iteritems()])
+                src_attributes = dict([(k(key),unicode(val)) for key,val in src.get_attributes().iteritems()])
                 self.generator.startElement(self.TAG["src"], src_attributes)
                 self.generator.characters(c(src.get_string()))
                 self.generator.endElement(self.TAG["src"])
         
         for tgt in parallelsentence.get_translations():
             self.generator.characters("\n\t\t")
-            tgt_attributes = dict([(key,unicode(val)) for key,val in tgt.get_attributes().iteritems()])
+            tgt_attributes = dict([(k(key),unicode(val)) for key,val in tgt.get_attributes().iteritems()])
             self.generator.startElement(self.TAG["tgt"], tgt_attributes)
             self.generator.characters(c(tgt.get_string()))
             self.generator.endElement(self.TAG["tgt"])
@@ -90,7 +100,7 @@ class IncrementalJcml(object):
         ref = parallelsentence.get_reference()
         if ref and ref.get_string() != "":
             self.generator.characters("\n\t\t")
-            ref_attributes = dict([(key,unicode(val)) for key,val in ref.get_attributes().iteritems()])
+            ref_attributes = dict([(k(key),unicode(val)) for key,val in ref.get_attributes().iteritems()])
             self.generator.startElement(self.TAG["ref"], ref_attributes)
             self.generator.characters(c(ref.get_string()))
             self.generator.endElement(self.TAG["ref"])
