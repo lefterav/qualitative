@@ -287,8 +287,8 @@ def features_lm(input_file, output_file, language, lm_name):
     features_lm_batch(input_file, output_file, language, lm_name)
 
 def features_lm_batch(input_file, output_file, language, lm_name):
-    srilmgenerator = cfg.get_lm(language) 
-    processed_parallelsentences = srilmgenerator.add_features_batch(JcmlReader(input_file).get_parallelsentences())
+    lmgenerator = cfg.get_lm(language) 
+    processed_parallelsentences = lmgenerator.add_features_batch(JcmlReader(input_file).get_parallelsentences())
     Parallelsentence2Jcml(processed_parallelsentences).write_to_file(output_file)
 
 #unimplemented
