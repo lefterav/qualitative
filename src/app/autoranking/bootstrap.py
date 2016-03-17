@@ -206,16 +206,17 @@ class ExperimentConfigParser(ConfigParser):
         for lm_name in [section for section in self.sections() if section.startswith("lm:")]:
             if self.get(lm_name, "language") == language:
                 #TODO: if KenLM gets wrapped up, add a type: setting
-                lm_url = self.get(lm_name, "url")
-                lm_tokenize = self.getboolean(lm_name, "tokenize")
-                lm_lowercase = self.getboolean(lm_name, "lowercase")
                 try:
                     lm_type = self.get(lm_name, "type")
                 except:
                     lm_type = None
                 if lm_type == "kenlm":
-                    lm_generator = KenLMFeatureGenerator
+                    filename = self.get(lm_name, "filename")
+                    lm_generator = KenLMFeatureGenerator(language, filename)
                 else:    
+                    lm_tokenize = self.getboolean(lm_name, "tokenize")
+                    lm_lowercase = self.getboolean(lm_name, "lowercase")
+                    lm_url = self.get(lm_name, "url")
                     lm_generator = ServerNgramFeatureGenerator(lm_url, language, lm_lowercase, lm_tokenize)
                 return lm_generator
         return None
