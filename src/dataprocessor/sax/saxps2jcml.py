@@ -36,11 +36,11 @@ def k(string):
     """
     Makes string suitable for XML attribute name
     """
+    string = str(string)
     string = unidecode(string)
     string = string.replace(' ', '_')
     string = stringlib.translate(stringlib.maketrans("",""), stringlib.punctuation)
     return string
-
 
 
 class IncrementalJcml(object):
