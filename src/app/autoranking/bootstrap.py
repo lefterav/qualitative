@@ -19,6 +19,7 @@ import socket
 from util.jvm import LocalJavaGateway
 from py4j.java_gateway import GatewayClient, JavaGateway
 import logging as log
+from featuregenerator.blackbox.lm.ken import KenLMFeatureGenerator
 
 # --- config and options---
 CONFIG_FILENAME = os.path.abspath(os.path.join(os.path.dirname(__name__), 'config/pipeline.cfg'))
@@ -208,8 +209,15 @@ class ExperimentConfigParser(ConfigParser):
                 lm_url = self.get(lm_name, "url")
                 lm_tokenize = self.getboolean(lm_name, "tokenize")
                 lm_lowercase = self.getboolean(lm_name, "lowercase")
-                srilm_generator = ServerNgramFeatureGenerator(lm_url, language, lm_lowercase, lm_tokenize)
-                return srilm_generator
+                try:
+                    lm_type = self.get(lm_name, "type")
+                except:
+                    lm_type = None
+                if lm_type == "kenlm":
+                    lm_generator = KenLMFeatureGenerator
+                else:    
+                    lm_generator = ServerNgramFeatureGenerator(lm_url, language, lm_lowercase, lm_tokenize)
+                return lm_generator
         return None
     
     
