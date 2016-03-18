@@ -11,6 +11,8 @@ from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 from featuregenerator.blackbox.parser.berkeley import socketservice
 from nltk import PunktWordTokenizer, PunktSentenceTokenizer
 from featuregenerator.blackbox.parser.berkeley.socketservice.berkeleyparsersocket import BerkeleyParserSocket
+from numpy import std, average
+
 
 from py4j.java_gateway import JavaGateway
 from py4j.java_gateway import GatewayClient
@@ -46,27 +48,40 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         best_parse = ""
         sum_confidence = 0
         
+        confidences = []
         #print "analyzing tree statistics",
         for entry in nbestList:
             confidence = entry["confidence"]
-            parse = entry["tree"]
+            confidences.append(confidence)
+            #parse = entry["tree"]
             if float(confidence) > best_confidence:
                 best_confidence = float(confidence)
-                best_parse = parse
+                #best_parse = parse
             sum_confidence += float(confidence)
         
         #print
-        if n !=0:
-            avg_confidence = sum_confidence / n
-        else:
-            avg_confidence = -float('inf')
+        if confidences == []:
+            confidence.append(loglikelihood)
+                
+        avg_confidence = average(confidences)
+        std_confidence = std(confidences)        
         
         attributes = {}
-        attributes ["berkeley-n"] = str(n)
-        attributes ["berkley-loglikelihood"] = str(loglikelihood)
-        attributes ["berkeley-best-parse-confidence"] = str(best_confidence)
-        attributes ["berkeley-avg-confidence"] = str(avg_confidence)
+        attributes ["berkeley-n"] = n
+        attributes ["berkley-loglikelihood"] = loglikelihood
+        attributes ["berkeley-best-parse-confidence"] = best_confidence
+        attributes ["berkeley-avg-confidence"] =  avg_confidence
         attributes ["berkeley-tree"] = best_parse
+        attributes ["berkeley-min-confidence"] = min(confidences)
+        attributes ["berkeley-std-confidence"] = std_confidence
+        if loglikelihood > (avg_confidence + std_confidence): 
+            attributes ["berkeley-confidence_high"] = 1
+        else:
+            attributes ["berkeley-confidence_high"] = 0
+        if loglikelihood < (avg_confidence - std_confidence): 
+            attributes ["berkeley-loglikelihood_low"] = 1
+        else:
+            attributes ["berkeley-loglikelihood_low"] = 0
         return attributes
     
     def prepare_sentence(self, simplesentence):
