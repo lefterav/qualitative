@@ -287,9 +287,10 @@ def features_lm(input_file, output_file, language, lm_name):
     features_lm_batch(input_file, output_file, language, lm_name)
 
 def features_lm_batch(input_file, output_file, language, lm_name):
-    lmgenerator = cfg.get_lm(language) 
-    processed_parallelsentences = lmgenerator.add_features_batch(JcmlReader(input_file).get_parallelsentences())
-    Parallelsentence2Jcml(processed_parallelsentences).write_to_file(output_file)
+    lmgenerators = cfg.get_lm(language) 
+    for lmgenerator in lmgenerators:
+        processed_parallelsentences = lmgenerator.add_features_batch(JcmlReader(input_file).get_parallelsentences())
+        Parallelsentence2Jcml(processed_parallelsentences).write_to_file(output_file)
 
 #unimplemented
 def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, lm_lowercase):
