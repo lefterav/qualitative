@@ -219,7 +219,7 @@ class ExperimentConfigParser(ConfigParser):
                     lm_url = self.get(lm_name, "url")
                     lm_generator = ServerNgramFeatureGenerator(lm_url, language, lm_lowercase, lm_tokenize)
                 yield lm_generator
-        return None
+        yield None
     
     
     def get_lm_name(self, language):

@@ -7,7 +7,7 @@ Created on 19 Jan 2015
 import logging as log
 import codecs
 from collections import OrderedDict
-from marisa_trie import RecordTrie
+#from marisa_trie import RecordTrie
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator 
 
 class NgramManager(object):
