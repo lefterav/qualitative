@@ -422,9 +422,10 @@ def features_lm(input_file, output_file, language, lm_name):
     features_lm_batch(input_file, output_file, language, lm_name)
 
 def features_lm_batch(input_file, output_file, language, lm_name):
-    srilmgenerator = cfg.get_lm(language) 
-    processed_parallelsentences = srilmgenerator.add_features_batch(JcmlReader(input_file).get_parallelsentences())
-    Parallelsentence2Jcml(processed_parallelsentences).write_to_file(output_file)
+    lmgenerators = cfg.get_lm(language) 
+    for lmgenerator in lmgenerators:
+        processed_parallelsentences = lmgenerator.add_features_batch(JcmlReader(input_file).get_parallelsentences())
+        Parallelsentence2Jcml(processed_parallelsentences).write_to_file(output_file)
 
 #unimplemented
 def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, lm_lowercase):
@@ -514,7 +515,19 @@ def features_gather(singledataset_annotations, gathered_singledataset_annotation
 
 
     
-@transform(features_gather, suffix(".all.f.jcml"), ".all.analyzed.f.jcml", cfg.get("general", "source_language"), cfg.get("general", "target_language"))    
+@transform(features_gather, suffix@active_if(cfg.has_section("ibm1:{}-{}".format(source_language, target_language)) and cfg.has_section("ibm1:{}-{}".format(target_language, source_language)))    
+@transform(features_gather, suffix(".all.f.jcml"), ".all.ibm1.f.jcml", cfg.get("ibm1:{}-{}".format(source_language, target_language), "lexicon"), cfg.get("ibm1:{}-{}".format(target_language, source_language), "lexicon"))    
+def features_ibm1(input_file, output_file, sourcelexicon, targetlexicon):
+    analyzers = [
+             AlignmentFeatureGenerator(sourcelexicon, targetlexicon),
+             CfgAlignmentFeatureGenerator(),
+             ]
+    saxjcml.run_features_generator(input_file, output_file, analyzers)
+
+if not (cfg.has_section("ibm1:{}-{}".format(source_language, target_language)) and cfg.has_section("ibm1:{}-{}".format(target_language, source_language))):
+    features_ibm1 = features_gather
+
+@transform(features_ibm1, suffix(".all.ibm1.f.jcml"), ".all.analyzed.f.jcml", cfg.get("general", "source_language"), cfg.get("general", "target_language"))    
 def analyze_external_features(input_file, output_file, source_language, target_language):
     langpair = (source_language, target_language)
 
