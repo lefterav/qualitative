@@ -20,7 +20,7 @@ from sentence.dataset import DataSet
 
 #compile the much needed regular expression
 illegal_xml_chars_RE = re.compile(u'[\x00-\x08\x0b\x0c\x0e-\x1F\uD800-\uDFFF\uFFFE\uFFFF]') 
-ALLOWED_PUNCTUATION = "".join(list(set(stringlib.punctuation) - set('_')))
+ALLOWED_PUNCTUATION = "".join(list(set(stringlib.punctuation) - set('_') - set('-')))
 
 def c(string):
     """
