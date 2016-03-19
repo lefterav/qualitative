@@ -13,12 +13,10 @@ from nltk import PunktWordTokenizer, PunktSentenceTokenizer
 from featuregenerator.blackbox.parser.berkeley.socketservice.berkeleyparsersocket import BerkeleyParserSocket
 from numpy import std, average
 
-
 from py4j.java_gateway import JavaGateway
 from py4j.java_gateway import GatewayClient
 from py4j.java_gateway import java_import
 from py4j.protocol import Py4JError
-
 
 class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
 
@@ -52,7 +50,7 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         #print "analyzing tree statistics",
         for entry in nbestList:
             confidence = entry["confidence"]
-            confidences.append(confidence)
+            confidences.append(float(confidence))
             #parse = entry["tree"]
             if float(confidence) > best_confidence:
                 best_confidence = float(confidence)
