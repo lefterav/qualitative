@@ -133,6 +133,8 @@ class CEJcmlReader(DataReader):
         
         src_text = ""
         tgt_text = ""
+        source_attributes = {}
+        target_attributes = {}
         ref_attributes = {}    
 
         counter = 0
