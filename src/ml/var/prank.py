@@ -14,13 +14,14 @@ class PRank:
     '''
 
 
-    def __init__(self, k):
+    def __init__(self, features_count):
         '''
         Constructor
         '''
-        self.k = k 
+        self.k = features_count
         
     def train(self, X, Y, iterations=5):
+        #TODO: the algorithm should score many ranks altogether
         k = self.k
         #get the size of the featureset
         n = np.size(X, 1);
@@ -34,7 +35,7 @@ class PRank:
         #size of training set
         T = np.size(X,0)
         assert (T==np.size(Y,0))
-        assert (np.size(Y,1)==1)
+        #assert (np.size(Y,1)==1)
         
         log.debug("Initializing zero vectors\n w={}\tB={}".format(w, B))
        
@@ -49,9 +50,9 @@ class PRank:
                 wx = np.inner(w, x)
                 yp = self._predict_y(wx, B)
                 #get a new label
-                y = Y[t,0]
+                y = Y[t]
                 log.debug("yp = {}, y = {}".format(yp, y))
-                if y != yp:
+                if y.all(yp):
                     w, B = self._update_w(k, y, B, wx, w, x)
                 log.debug("after correction")
                 wx = np.inner(w, x)
