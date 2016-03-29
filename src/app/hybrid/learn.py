@@ -13,7 +13,7 @@ from collections import OrderedDict
 from ml.ranking import forname
 from expsuite import PyExperimentSuite 
 from sentence.parallelsentence import AttributeSet
-from dataprocessor.ce.utils import join_jcml, fold_jcml
+from dataprocessor.ce.utils import join_jcml, fold_jcml_respect_ids
 from dataprocessor.ce.cejcml import CEJcmlReader
 from sentence import scoring
 import cPickle as pickle
@@ -26,25 +26,19 @@ class RankingExperiment(PyExperimentSuite):
     
     restore_supported = True
     def __init__(self):
-        self.jvm = JVM(None)
-        import time
-        time.sleep(10)
-        
+        # We need a java gateway for METEOR
+        self.gateway = LocalJavaGateway(java=self.get("general","java"))
+        # Allow restoring pipeline
         self.restore_supported = True
+        # Initialize superclass from Experiment Suite
         super(RankingExperiment, self).__init__()
     
     def reset(self, params, rep):
-        #self.restore_supp evaluation.selection.set import evaluate_selectionsorted = True
-        socket_no = self.jvm.socket_no
-        gatewayclient = GatewayClient('localhost', socket_no)
-        gateway = JavaGateway(gatewayclient, auto_convert=True, auto_field=True)
-        logging.info("Initialized global Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
-        self.gateway = gateway
         
         logging.info("Running in {}".format(os.getcwd()))
-        #logging.debug("params = {}".format(params))        
+
         #=======================================================================
-        # get method-specific parameters
+        # get ML method-specific parameters
         #=======================================================================
         try:
             self.learner_params = eval(params["params_{}".format(params["learner"]).lower()])
@@ -100,14 +94,10 @@ class RankingExperiment(PyExperimentSuite):
         attset = params["att"]
         attribute_key = "{}_{}".format(attset, key)
         attribute_names = params.setdefault(attribute_key, [])
-        #print attribute_key
-        #print attribute_names
-        #print type(attribute_names)
         if attribute_names:
             attribute_names = attribute_names.split(',')
         else:
             attribute_names = []
-        #print attribute_names
         return attribute_names
     
     def prepare_data(self, params, rep):
@@ -125,7 +115,7 @@ class RankingExperiment(PyExperimentSuite):
             self.trainingset_filename = "{}.trainingset.jcml".format(rep)
             testset_filename = "{}.testset.jcml".format(rep)
             self.testset_filenames = [testset_filename]
-            fold_jcml(dataset_filename,
+            fold_jcml_respect_ids(dataset_filename,
                 self.trainingset_filename,
                 testset_filename,
                 params['repetitions'],
@@ -136,7 +126,7 @@ class RankingExperiment(PyExperimentSuite):
             self.trainingset_filename = "{}.trainingset.jcml".format(rep)
             testset_filename = "{}.testset.jcml".format(rep)
             self.testset_filenames = [testset_filename]
-            fold_jcml(dataset_filename,
+            fold_jcml_respect_ids(dataset_filename,
                 self.trainingset_filename,
                 testset_filename,
                 10,
@@ -295,8 +285,6 @@ class RankingExperiment(PyExperimentSuite):
         return ret
     
     def restore_state(self, params, rep, n):
-        training_sets = params["training_sets"].format(**params).split(',')
-        training_path = params["training_path"].format(**params)
         dataset_filename = "{}.dataset.jcml".format(rep)
         #if cross validation is enabled
         if params["test"] == "crossvalidation":
@@ -335,7 +323,8 @@ def _dictprefix(dictionary, prefix):
  
 if __name__ == '__main__':
     loglevel = logging.INFO
-    #loglevel = logging.DEBUG
+    if "--debug" in sys.argv:
+        loglevel = logging.DEBUG
     logging.basicConfig(level=loglevel,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M')

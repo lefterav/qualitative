@@ -17,7 +17,6 @@ import argparse
 import fnmatch
 import socket
 from util.jvm import LocalJavaGateway
-from py4j.java_gateway import GatewayClient, JavaGateway
 import logging as log
 from featuregenerator.blackbox.lm.ken import KenLMFeatureGenerator
 
