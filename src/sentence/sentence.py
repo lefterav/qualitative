@@ -69,6 +69,10 @@ class SimpleSentence(object):
         @rtype: str
         """
         return self.attributes["rank"]
+    
+
+    def get_system_name(self):
+        return self.attributes["system"]
 
     def add_attribute(self, key, value):
         self.attributes[key] = value
