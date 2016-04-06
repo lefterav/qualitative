@@ -16,9 +16,9 @@ import random
 import argparse
 import fnmatch
 import socket
-from util.jvm import JVM
-from py4j.java_gateway import GatewayClient, JavaGateway
+from util.jvm import LocalJavaGateway
 import logging as log
+from featuregenerator.blackbox.lm.ken import KenLMFeatureGenerator
 
 # --- config and options---
 CONFIG_FILENAME = os.path.abspath(os.path.join(os.path.dirname(__name__), 'config/pipeline.cfg'))
@@ -35,24 +35,29 @@ class ExperimentConfigParser(ConfigParser):
     checker = 0
     
     def java_init(self):
+        self.gateway = LocalJavaGateway(java=self.get("general","java"))
+        self.jvm = self.gateway.jvm
+        return self.gateway
         
-        #collect java classpath entries from all sections        
-        java_classpath, dir_path = self.get_classpath()
-        
-        if java_classpath:
-            try:
-                java = self.get("general","java")
-                self.jvm = JVM(java_classpath, java)
-            except:
-                self.jvm = JVM(java_classpath)
-            socket_no = self.jvm.socket_no
-            #socket_no = 25336
-            self.gatewayclient = GatewayClient('localhost', socket_no)
-            self.gateway = JavaGateway(self.gatewayclient, auto_convert=True, auto_field=True)
-            sys.stderr.write("Initialized global Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
-            return self.gateway
-            # wait so that server starts
-#            time.sleep(2)
+#===============================================================================
+#         #collect java classpath entries from all sections        
+#         java_classpath, dir_path = self.get_classpath()
+#         
+#         if java_classpath:
+#             try:
+#                 java = self.get("general","java")
+#                 self.jvm = JVM(java_classpath, java)
+#             except:
+#                 self.jvm = JVM(java_classpath)
+#             socket_no = self.jvm.socket_no
+#             #socket_no = 25336
+#             self.gatewayclient = GatewayClient('localhost', socket_no)
+#             self.gateway = JavaGateway(self.gatewayclient, auto_convert=True, auto_field=True)
+#             sys.stderr.write("Initialized global Java gateway with pid {} in socket {}\n".format(self.jvm.pid, socket_no))
+#             return self.gateway
+#             # wait so that server starts
+# #            time.sleep(2)
+#===============================================================================
 
     def get_classpath(self):
         java_classpath = set()
@@ -200,12 +205,20 @@ class ExperimentConfigParser(ConfigParser):
         for lm_name in [section for section in self.sections() if section.startswith("lm:")]:
             if self.get(lm_name, "language") == language:
                 #TODO: if KenLM gets wrapped up, add a type: setting
-                lm_url = self.get(lm_name, "url")
-                lm_tokenize = self.getboolean(lm_name, "tokenize")
-                lm_lowercase = self.getboolean(lm_name, "lowercase")
-                srilm_generator = ServerNgramFeatureGenerator(lm_url, language, lm_lowercase, lm_tokenize)
-                return srilm_generator
-        return None
+                try:
+                    lm_type = self.get(lm_name, "type")
+                except:
+                    lm_type = None
+                if lm_type == "kenlm":
+                    filename = self.get(lm_name, "filename")
+                    lm_generator = KenLMFeatureGenerator(language, filename)
+                else:    
+                    lm_tokenize = self.getboolean(lm_name, "tokenize")
+                    lm_lowercase = self.getboolean(lm_name, "lowercase")
+                    lm_url = self.get(lm_name, "url")
+                    lm_generator = ServerNgramFeatureGenerator(lm_url, language, lm_lowercase, lm_tokenize)
+                yield lm_generator
+        yield None
     
     
     def get_lm_name(self, language):

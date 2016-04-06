@@ -101,13 +101,23 @@ class ParallelSentence(object):
         self.rank_name = rank_name
         if kwargs.setdefault("sort_translations", False):
             self.tgt = sorted(translations, key=lambda t: t.get_attribute("system"))
-                
-    
         try:
-            self.attributes["langsrc"] = kwargs.setdefault("langsrc", self.attributes["langsrc"])
-            self.attributes["langtgt"] = kwargs.setdefault("langtgt", self.attributes["langtgt"])
+            self.attributes["langsrc"] = kwargs["langsrc"]
         except KeyError:
-            sys.exit('Source or target language not specified in parallelsentence: [{}]'.format(self.__str__()))
+            if "langsrc" not in self.attributes:
+                sys.exit('Source language not specified in parallelsentence: [{}]'.format(self.__str__()))
+
+        try:
+            self.attributes["langtgt"] = kwargs["langtgt"]
+        except KeyError:
+            if "langtgt" not in self.attributes:
+                sys.exit('Source language not specified in parallelsentence: [{}]'.format(self.__str__()))
+            
+        try: 
+            self.attributes["id"] = kwargs["segment_id"]
+        except KeyError:
+            pass
+                   
     
     def __str__(self):
         return ", ".join([s.__str__() for s in self.serialize()])
@@ -186,18 +196,31 @@ class ParallelSentence(object):
     def add_attributes(self, attributes):
         self.attributes.update( attributes )
     
-    def set_langsrc (self, langsrc):
+    def set_langsrc(self, langsrc):
         self.attributes["langsrc"] = langsrc
 
-    def set_langtgt (self, langtgt):
+    def set_langtgt(self, langtgt):
         self.attributes["langtgt"] = langtgt
+        
+    def get_langsrc(self):
+        return self.attributes["langsrc"]
+
+    def get_langtgt(self):
+        return self.attributes["langtgt"]
+    
+    def get_langpair(self):
+        return "{}-{}".format(self.attributes["langsrc"],
+                              self.attributes["langtgt"])
         
     def set_id (self, id):
         self.attributes["id"] = str(id)
+        
+    def get_id (self):
+        return self.attributes["id"]
 
     def get_compact_id(self):
         try:
-            return "%s:%s" % (self.attributes["testset"], self.attributes["id"])
+            return "{}:{}".format(self.attributes["testset"], self.attributes["id"])
         except:
 #            sys.stderr.write("Warning: Could not add set id into compact sentence id %s\n" %  self.attributes["id"])
             return self.attributes["id"]

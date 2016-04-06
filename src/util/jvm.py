@@ -6,6 +6,10 @@ Created on 22 Jun 2012
 import subprocess
 import time
 import os
+from py4j.java_gateway import JavaGateway, GatewayClient, CallbackServerParameters, GatewayParameters
+import logging as log
+from py4j.tests.java_callback_test import IHelloImpl
+
 
 def get_libs():
     """
@@ -19,9 +23,56 @@ def get_libs():
     libpath = os.path.join(rootpath, "lib")
     libpath_all = os.path.join(libpath, "*")   
     #get all subdirs
-    dirs = [os.path.join(libpath, name, "*") for name in os.listdir(libpath) if os.path.isdir(os.path.join(libpath, name)) ]
+    dirs = [os.path.join(libpath, name) for name in os.listdir(libpath) if os.path.isdir(os.path.join(libpath, name)) ]
+    dirs.extend([os.path.join(libpath, name, "*") for name in os.listdir(libpath) if os.path.isdir(os.path.join(libpath, name)) ])
     dirs.extend([libpath, libpath_all])
     return dirs
+
+
+class LocalJavaGateway(JavaGateway):
+    '''
+    A single class that encapsulates a local Java Virtual Machine (JVM), and gets initialized
+    as a local java gateway, connected to the socket of the JVM. The class extends
+    the JavaGateway class of Py4j
+    @var jvm: The local JVM process
+    @var gatewayclient: The gateway client connected to the local socket of the JVM  
+    '''
+    def __init__(self, java="java"):
+        self.jvm_process = JVM(java=java)
+        log.info("Loaded JVM")
+        socket_no = self.jvm_process.socket_no
+        
+        log.info("Loading Gateway Client on socket {}".format(socket_no))                
+        self.gatewayclient = GatewayClient('localhost', socket_no)
+        log.info("Launched Gateway on socket {}".format(socket_no))
+                
+        super(LocalJavaGateway, self).__init__(self.gatewayclient,
+                                               callback_server_parameters=CallbackServerParameters(port=0), 
+                                               auto_convert=True, 
+                                               auto_field=True)
+        
+        # retrieve the port on which the python callback server was bound to.
+
+        # tell the Java side to connect to the python callback server with the new
+        # python port. Note that we use the java_gateway_server attribute that
+        # retrieves the GatewayServer instance.
+        log.info("Loaded Gateway")
+    
+    def shutdown(self):
+        #try:
+        #    super(LocalJavaGateway, self).shutdown()
+        #except:
+        #    pass
+        #try:
+        #    self.jvm_object.terminate()
+        #except:
+        #    pass
+        pass
+        
+    def __del__(self):
+        pass
+        #self.shutdown()
+        
 
 class JVM(object):
     '''
@@ -31,9 +82,9 @@ class JVM(object):
     @ivar pid: The system process id of the Java Server 
     '''
 
-    def __init__(self, java_classpath, java="java"):
+    def __init__(self, java_classpath='', java="java"):
         '''
-        Star running java
+        Start running java
         '''
            
         #java_classpath.extend(get_libs())
@@ -43,7 +94,7 @@ class JVM(object):
         
         classpath = ":".join(default_java_classpath)
         #classpath = ":".join([classpath, java_classpath])
-        print "classpath = ", classpath
+        log.info("classpath = {}".format(classpath))
 
         #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
         #commenting out as it is better handled by bash script in /lib
@@ -55,27 +106,35 @@ class JVM(object):
         # prepare and run Java server
         #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
         cmd = [java, "-cp", classpath, "JavaServer" ]
-        print cmd
         cmd = " ".join(cmd)
+        log.info("Command: {}".format(cmd))
         
         self.jvm = subprocess.Popen(cmd, shell=True, bufsize=0, stdout=subprocess.PIPE) #shell=True,
         time.sleep(3)
         self.jvm.stdout.flush()
-        self.socket_no = int(self.jvm.stdout.readline().strip())
+        response = self.jvm.stdout.readline().strip()
+        log.info("response = {}".format(response))
+        self.socket_no = int(response)
         self.pid = self.jvm.pid
+        log.info("pid = {}".format(self.pid))
         
     def terminate(self):
         """
         Stop the Java Server
         """
-        self.jvm.terminate()
-    
+        #try:
+        #    self.jvm.terminate()
+        #except:
+        #    pass
+        pass
+
     
     def __del__(self):
         """
         Stop the Java Server if the object stops existing
         """
-        try:
-            self.jvm.terminate()
-        except:
-            pass
+        #try:
+        #    self.jvm.terminate()
+        #except:
+        #    pass
+        pass

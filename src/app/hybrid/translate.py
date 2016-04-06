@@ -205,8 +205,9 @@ class SimpleTriangleTranslator(Worker):
                  lucy_username="traductor", lucy_password="traductor",                
                  source_language="en", target_language="de",
                  configfilenames=[],
-                 classifiername=None):
-        self.selector =  SystemSelector(configfilenames, classifiername)
+                 classifiername=None,
+                 reverse=False):
+        self.selector =  SystemSelector(configfilenames, classifiername, reverse)
         self.moses_worker = MtMonkeyWorker(moses_url)
         self.lucy_worker = LucyWorker(url=lucy_url,
                                       username=lucy_username, password=lucy_password,
