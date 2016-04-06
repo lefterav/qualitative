@@ -238,7 +238,7 @@ class CfgRulesExtractor(FeatureGenerator):
                 atts["cfg_{}_height_max".format(rule)] = fulldepth
                 atts["cfg_{}_height_avg".format(rule)] = fulldepth
                             
-            atts["cfg_fulldepth"] = fulldepth
+        atts["cfg_fulldepth"] = fulldepth
             
         return atts    
         

@@ -16,13 +16,18 @@ Requirements
 This is a list of the requirements for running the suite. Please scroll
 for more hints on their installation
 
-python-libraries 
-----------------
-
-Use pip-install:
-
 For Debian/ubuntu:
+
+#install java
+sudo apt-add-repository ppa:openjdk-r/ppa
+sudo apt-get update
+sudo apt-get install openjdk-8-jdk
+
+
+#install python libraries
+
 sudo apt-get install python-dev g++ build-essential python-pip libblas-dev liblapack-dev gfortran
+
 sudo pip install --upgrade pip  
 sudo easy_install -U setuptools
 sudo pip install --upgrade setuptools
@@ -34,7 +39,8 @@ not wanting to risk your python environment)
  pip install --user <package-name> 
 
 easy_install -U distribute
-sudo pip install orange py4j nltk==2.0.1rc4 numpy scipy suds ruffus scikit-learn requests matplotlib
+sudo pip install orange py4j numpy scipy suds ruffus scikit-learn unidecode requests https://github.com/kpu/kenlm/archive/master.zip 
+#  nltk==2.0.1rc4 and matplotlib need to be checked
 
 Additionally
 * expsuite [only for training] (Manually from https://github.com/lefterav/expsuite)

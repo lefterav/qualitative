@@ -4,86 +4,81 @@ Created on 30 Mar 2012
 
 @author: Eleftherios Avramidis
 '''
-from py4j.java_gateway import JavaGateway
-from py4j.java_gateway import GatewayClient
 from py4j.java_gateway import java_import
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
-import os, subprocess, sys
-
+import numpy as np
+from collections import defaultdict
 
 class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
     '''
-    classdocs
+    Feature generator for the Language Tool, providing rule-based language suggestion
     '''
 
-
-#    def __init__(self, lang, classpath):
     def __init__(self, lang, gateway):
         '''
         Constructor
         '''
         self.lang = lang
-        
-#        classpath, dir_path = classpath
-#
-#        #since code ships without compiled java, we run this command to make sure that the necessary java .class file is ready
-#        subprocess.check_call(["javac", "-classpath", classpath, "%s/JavaServer.java" % dir_path])
-#        
-#        # prepare and run Java server
-#        #cmd = "java -cp %s:%s:%s JavaServer" % (berkeley_parser_jar, py4j_jar, dir_path)        
-#        cmd = ["java", "-cp", classpath, "JavaServer" ]
-#        cmd = " ".join(cmd)
-#        
-#        self.jvm = subprocess.Popen(cmd, shell=True, bufsize=0, stdout=subprocess.PIPE) #shell=True,
-#        self.jvm.stdout.flush()
-#        socket_no = int(self.jvm.stdout.readline().strip()) 
-#        self.socket = GatewayClient('localhost', socket_no)
-#        sys.stderr.write("Started java process with pid {} in socket {}".format(self.jvm.pid, socket_no))
-#        
-#        
-#        gatewayclient = self.socket
-#        gateway = JavaGateway(gatewayclient)
-        
         ltool_view = gateway.new_jvm_view()
-        java_import(ltool_view, 'org.languagetool.*')
+        java_import(ltool_view, 'org.languagetool.Languages')
+        java_import(ltool_view, 'org.languagetool.JLanguageTool')
 
         if lang=='ru':
             lang = 'ru-RU' 
-
-        tool_language = ltool_view.Language.getLanguageForShortName(lang)
-        self.ltool = ltool_view.JLanguageTool(tool_language)
-        #self.ltool.activateDefaultPatternRules();
         
+        tool_language = ltool_view.Languages.getLanguageForShortName(lang)
+        self.ltool = ltool_view.JLanguageTool(tool_language)        
         
     def get_features_string(self, string):
         atts = {}
         matches = self.ltool.check(string)
         errors = 0
         total_error_chars = 0
+        total_replacements = 0
+        seen_categories = set()
+        seen_issue_types = set()
+        replacements = defaultdict(list)
         for match in matches:
-            error_id = "lt_{}".format(match.getRule().getId())
-            try:
-                atts[error_id] += 1
-            except KeyError:
-                atts[error_id] = 1
+            error_id = "err_{}".format(match.getRule().getId())
+            atts[error_id] = atts.setdefault(error_id, 0) + 1
+
             errors += 1
             
+            category_id = "cat_{}".format(match.getRule().getCategory().getName())
+            atts[category_id] = atts.setdefault(category_id, 0) + 1
+            seen_categories.add(category_id)
+            
+            issue_type = "issue_{}".format(match.getRule().getLocQualityIssueType().toString())
+            atts[issue_type] = atts.setdefault(issue_type, 0) + 1
+            seen_issue_types.add(issue_type)
+            
             error_chars = match.getEndColumn() - match.getColumn()
-            error_chars_id = "lt_{}_chars".format(error_id)
-            try:
-                atts[error_chars_id] += error_chars
-            except KeyError:
-                atts[error_chars_id] = error_chars
+            error_chars_key = "{}_chars".format(error_id)
+            atts[error_chars_key] = atts.setdefault(error_chars_key, 0) + error_chars
+            
             total_error_chars += error_chars
             
-            #make every value a string    
+            error_replacements_key = "{}_replacements".format(error_id)
+            this_replacements = match.getSuggestedReplacements()
+            total_replacements += len(this_replacements)
+            replacements[error_id].extend(this_replacements)
+            
+            atts[error_replacements_key] = atts.setdefault(error_replacements_key, 0) + len(replacements[error_id])
+            total_replacements += len(this_replacements)
+            avgchars = np.average([len(replacement) for replacement in replacements[error_id]])
+            atts["{}_replacements_avgchars".format(error_id)] = avgchars
+            
+        atts["errors"] = errors
+        atts["errors_chars"] = total_error_chars
+        atts["replacements"] = total_replacements
+        atts["categories"] = len(seen_categories)
+        atts["issuetypes"] = len(seen_issue_types)
+        
+        prefixed_atts = {}
         for k,v in atts.iteritems():
-            atts[k] = str(v)
+            prefixed_atts["lt_{}".format(k)] = v
         
-        atts["lt_errors"] = str(errors)
-        atts["lt_errors_chars"] = str(total_error_chars)
-        
-        return atts
+        return prefixed_atts
             
     
 #    def __del__(self):
