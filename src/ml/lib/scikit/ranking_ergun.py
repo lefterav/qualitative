@@ -20,13 +20,16 @@ import numpy as np
 import logging as log
 from collections import OrderedDict
 
+#import matplotlib
+#matplotlib.use('Agg')
+#from matplotlib import pyplot as plt
 # Ergun
 import sys
+import imp
+sys.path.append('/usr/lib/pymodules/python2.7/matplotlib/')
 if '/usr/share/pyshared' in sys.path:
     sys.path.remove('/usr/share/pyshared')
-import matplotlib
-matplotlib.use('Agg')
-from matplotlib import pyplot as plt
+plt = imp.load_source('plt', '/usr/lib/pymodules/python2.7/matplotlib/pyplot.py')
 
 
 #scikit classifiers
@@ -251,7 +254,6 @@ class SkLearner:
     def run_feature_selection(self, data, labels, feature_selector=None, 
                               feature_selection_params={}, 
                               feature_selection_threshold=.25,
-                              plot_filename="./featureselection.pdf"
                               ):
         p = feature_selection_params
         transformer = None
@@ -286,10 +288,10 @@ class SkLearner:
             transformer = None
             
         elif feature_selector == "RFECV_SVC":
-            return self._fs_rfecv(data, labels, plot_filename)
+            return self._fs_rfecv(data, labels)
         
         elif feature_selector == "RFE_SVC":
-            return self._fs_rfe(data, labels, plot_filename)
+            return self._fs_rfe(data, labels)
         
         if transformer:
             log.info("scikit: Running feature selection {}".format(feature_selector))
@@ -302,24 +304,13 @@ class SkLearner:
         return transformer, data, attributes
     
     
-    def _fs_rfe(self, data, labels, plot_filename):
+    def _fs_rfe(self, data, labels):
         svc = SVC(kernel="linear", C=1)
         transformer = RFE(estimator=svc, n_features_to_select=10, step=1)
         data = transformer.fit_transform(data, labels)
         
         attributes = OrderedDict()
-        #produce a plot if requested and supported (for RFE)
-        if plot_filename:
-            try:
-                grid_scores = transformer.grid_scores_
-            except:
-                return transformer, data, attributes
-            plt.figure()
-            plt.xlabel("Number of features selected")
-            plt.ylabel("Cross validation score (nb of correct classifications)")
-            plt.plot(range(1, len(grid_scores) + 1), transformer.grid_scores)
-            plt.savefig(plot_filename, bbox_inches='tight')
-            
+        
         #put ranks in an array, so that we can get them in the log file
         for i, rank in enumerate(transformer.ranking_):
             attributes["RFE_rank_f{}".format(i)] = rank
@@ -330,7 +321,7 @@ class SkLearner:
         return transformer, data, attributes
 
     
-    def _fs_rfecv(self, data, labels, plot_filename, sample = 0.05):
+    def _fs_rfecv(self, data, labels, sample = 0.05):
         """
         Helper function to perform feature selection with Recursive Feature Elimination based
         on a cross-validation over the entire or part of the data set. 
@@ -338,8 +329,6 @@ class SkLearner:
         @type data: numpy.array
         @param labels: the values of the training labels
         @type labels: numpy.array
-        @param plot_filename: a string where the graph will be stored
-        @type plot_filename: string
         @return: a trained transformer, the modified data and the co-efficients assigned to each feature
         @rtype: tuple of (scikit.transformer, numpy.array, OrderedDict)
         """
@@ -369,18 +358,6 @@ class SkLearner:
         data = transformer.transform(data)
         log.info("scikit: Dimensions after fit_transform(): %s,%s" % data.shape)
         
-        #produce a plot if requested and supported (for RFE)
-        if plot_filename:
-            try:
-                grid_scores = transformer.grid_scores_
-            except:
-                return transformer, data, attributes
-            plt.figure()
-            plt.xlabel("Number of features selected")
-            plt.ylabel("Cross validation score (nb of correct classifications)")
-            plt.plot(range(1, len(grid_scores) + 1), grid_scores)
-            plt.savefig(plot_filename, bbox_inches='tight')
-            
         #put ranks in an array, so that we can get them in the log file
         for i, rank in enumerate(transformer.ranking_):
             attributes["RFE_rank_f{}".format(i)] = rank
@@ -510,7 +487,6 @@ class SkRanker(Ranker, SkLearner):
               metaresults_prefix="./0-",
               **kwargs):
         
-        plot_filename = "{}{}".format(metaresults_prefix, "featureselection.pdf")
         data, labels = dataset_to_instances(dataset_filename, attribute_set, class_name,  **kwargs)
         learner = self.learner
         
@@ -532,7 +508,7 @@ class SkRanker(Ranker, SkLearner):
         log.debug("Mean: {} , Std: {}".format(self.scaler.mean_, self.scaler.std_))
         
         #feature selection
-        self.featureselector, data, metadata = self.run_feature_selection(data, labels, feature_selector, feature_selection_params, feature_selection_threshold, plot_filename) 
+        self.featureselector, data, metadata = self.run_feature_selection(data, labels, feature_selector, feature_selection_params, feature_selection_threshold) 
         
         #initialize learning method and scoring functions and optimize
         self.classifier, self.scorers = self.initialize_learning_method(learner, data, labels, learning_params, optimize, optimization_params, scorers)

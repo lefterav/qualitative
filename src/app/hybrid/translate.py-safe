@@ -2,18 +2,17 @@
 
 import xmlrpclib
 import logging as logger
-from app.autoranking.application_ergun import Autoranking
+from app.autoranking.application import Autoranking
 from featuregenerator.preprocessor import Normalizer, Tokenizer, Truecaser
 from featuregenerator.blackbox.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.blackbox.counts import LengthFeatureGenerator
 from featuregenerator.reference.meteor.meteor import CrossMeteorGenerator
 from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
-from featuregenerator.blackbox.parser.berkeley.cfgrules_ergun import CfgAlignmentFeatureGenerator
+from featuregenerator.blackbox.parser.berkeley.cfgrules import CfgAlignmentFeatureGenerator
 from featuregenerator.blackbox.languagechecker.languagetool_socket import LanguageToolSocketFeatureGenerator
 from app.autoranking.bootstrap import ExperimentConfigParser
 from featuregenerator.blackbox.wsd import WSDclient
 import pickle
-
 
 class Worker:
     """
@@ -123,10 +122,6 @@ class LucyWorker(Worker):
             <param name='INPUT' value='{input}'/>
             <param name='SUBJECT_AREAS' value='{subject_areas}'/>
             <param name='CHARSET' value='UTF'/>
- 	<param name='MARK_ALTERNATIVES' value='0'/>
- 	<param name='MARK_UNKNOWNS' value='0'/>
- 	<param name='MARK_COMPOUNDS' value='0'/>
-        <param name='CHARSET' value='UTF'/>
         </inputParams>
         
         </task>""".format(langpair=self.langpair, 
@@ -243,9 +238,8 @@ class SimpleWsdTriangleTranslator(Worker):
                  source_language="en", target_language="de",
                  configfilenames=[],
                  classifiername=None,
-                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-model.3.en",
-                 reverse=False):
-        self.selector = SystemSelector(configfilenames, classifiername, reverse)
+                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-model.3.en"):
+        self.selector =  SystemSelector(configfilenames, classifiername)
         self.wsd_worker = WSDclient(wsd_url)
         self.moses_worker = MtMonkeyWorker(moses_url)
         self.lucy_worker = LucyWorker(url=lucy_url,
@@ -278,7 +272,7 @@ class SimpleWsdTriangleTranslator(Worker):
             
 
 class SystemSelector(Autoranking):
-    def __init__(self, configfilenames, classifiername, reverse=False):
+    def __init__(self, configfilenames, classifiername):
         """Autoranking
         Initialize the class.
         @param configfilenames: a list of annotation configuration files that contain
@@ -292,7 +286,6 @@ class SystemSelector(Autoranking):
             cfg.read(config_filename)
         
         self.gateway = cfg.java_init()
-        self.reverse = reverse
         
         self.featuregenerators = self.initialize_featuregenerators(cfg)
         self.ranker = pickle.load(open(classifiername))
@@ -306,8 +299,10 @@ class SystemSelector(Autoranking):
         """
         source_language =  cfg.get("general", "source_language")
         target_language =  cfg.get("general", "target_language")
+        
         src_parser = cfg.get_parser(source_language)
         tgt_parser = cfg.get_parser(target_language)
+
         langpair = (source_language, target_language)
         
         #attset_242_source = "lm_unk,l_tokens,berkeley-n,parse-VP,berkley-loglikelihood"
@@ -343,50 +338,33 @@ class SystemSelector(Autoranking):
  
   
 import sys
+
 if __name__ == '__main__':
-    import argparse
-
-    parser = argparse.ArgumentParser(description="Run translate engine on a file")
-    parser.add_argument('--moses')
-    parser.add_argument('--lucy')
-    parser.add_argument('--lcm')
-    parser.add_argument('--wsd')
-    parser.add_argument('--model')
-    parser.add_argument('--srclang')
-    parser.add_argument('--tgtlang')
-    parser.add_argument('--input')
-    parser.add_argument('--output')
-    parser.add_argument('--config', nargs='+', action='append')
-    parser.add_argument('--reverse', dest='reverse', action='store_true')
-    args = parser.parse_args()
+    hybridsystem = SimpleWsdTriangleTranslator(moses_url="http://134.96.187.247:9300", 
+                                     lucy_url="http://msv-3251.sb.dfki.de:8080/AutoTranslateRS/V1.2/mtrans/exec",
+                                     lcm_url="http://lns-87009.dfki.uni-sb.de:9300",
+                                     wsd_url="http://blade-1.dfki.uni-sb.de:32008",
+                                     source_language="en",
+                                     target_language="de",
+                                     configfilenames=sys.argv[2:],
+                                     classifiername=sys.argv[1]
+                                     )
     
-    inputfile = open(args.input)
-    outputfile = open(args.output, 'w')
+    #TODO:
+    #1. binarize LCM model.configfilenames=[],
+                 #classifiername=None
+    #2. start MtMonkey worker for LCM
+    #3. Make sure LM servers are running in percival
+    #4. Make sure all Featuregenerasrc/featuregenerator/blackbox/wsd.pytors work sentence-level
+    #5. Define pipelines and find a way to load FeatureGenerators
+    #6. Check that it works on the commandline
+    #7. Wrap in XML-rpc service
 
-    if args.wsd:
-        hybridsystem = SimpleWsdTriangleTranslator(moses_url=args.moses,
-                                     lucy_url=args.lucy,
-                                     lcm_url=args.lcm,
-                                     wsd_url=args.wsd,
-                                     source_language=args.srclang,
-                                     target_language=args.tgtlang,
-                                     classifiername=args.model,
-                                     configfilenames=args.config,
-                                     reverse=args.reverse
-                                     )
-    else:
-        hybridsystem = SimpleTriangleTranslator(moses_url=args.moses,
-                                     lucy_url=args.lucy,
-                                     lcm_url=args.lcm,
-                                     source_language=args.srclang,
-                                     target_language=args.tgtlang,
-                                     classifiername=args.model,
-                                     configfilenames=args.config,
-                                     #reverse=args.reverse
-                                     )
+    
+    #hybridsystem.translate(sys.argv[1])
+    print hybridsystem.translate("Ich habe ein iPad. Wie kann ich in Safari einen neuen Tab öffnen?")
+    
+    
+    #text = system1.translate("This is a test, my dear.")
+    #print system2.translate("The solution to our problem has to go through several consultations and we also have to ask our friends, our family and our partners, before we reach a conclusion on this topic.")[0]
 
-    for line in inputfile:
-        print >>outputfile, hybridsystem.translate(line)[0]
-        #print hybridsystem.translate(line)
-    inputfile.close()
-    outputfile.close()
