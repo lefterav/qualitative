@@ -16,4 +16,4 @@ class TreeLearner( OrangeClassifier ):
         """
         Constructor
         """
-        self.classifier = orngTree.TreeLearner ( data.get_data(), sameMajorityPruning=1, mForPruning=2 )
+        self.learner = orngTree.TreeLearner ( data.get_data(), sameMajorityPruning=1, mForPruning=2 )
