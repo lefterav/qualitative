@@ -118,10 +118,14 @@ class ExperimentConfigParser(ConfigParser):
         for parser_name in [section for section in self.sections() if section.startswith("parser:")]:
             if self.get(parser_name, "language") == language:
                 tokenize = self.getboolean(parser_name, "tokenize")
-                if self.get(parser_name, "type") == "xmlrpc":
+                try:
+                    parser_type = self.get(parser_name, "type")
+                except:
+                    continue
+                if parser_type == "xmlrpc":
                     url = self.get(parser_name, "url")
                     return BerkeleyXMLRPCFeatureGenerator(url, language, tokenize)
-                elif self.get(parser_name, "type") == "socket":
+                elif parser_type == "socket":
                     grammarfile = self.get(parser_name, "grammarfile")
                     sys.stderr.write("initializing socket parser with grammar file {}\n".format(grammarfile))
                     
