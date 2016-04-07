@@ -9,7 +9,7 @@ import sys
 import logging as log
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 from featuregenerator.blackbox.parser.berkeley import socketservice
-from nltk import PunktWordTokenizer, PunktSentenceTokenizer
+#/from nltk import PunktWordTokenizer, PunktSentenceTokenizer
 from featuregenerator.blackbox.parser.berkeley.socketservice.berkeleyparsersocket import BerkeleyParserSocket
 from numpy import std, average
 
@@ -85,15 +85,15 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
     def prepare_sentence(self, simplesentence):
         
         string =  simplesentence.get_string()
-        if self.tokenize:   
-            string = string.replace(u'“', u'"')
-            strings = PunktSentenceTokenizer().tokenize(string)
-            fixed_string = []
-            for string in strings:
-                tokens = PunktWordTokenizer().tokenize(string)
-                tokens[-1] = tokens[-1].replace(".", " .")
-                fixed_string.extend(tokens)
-            string = " ".join(fixed_string) 
+        #if self.tokenize:   
+        #    string = string.replace(u'“', u'"')
+        #    strings = PunktSentenceTokenizer().tokenize(string)
+        #    fixed_string = []
+        #    for string in strings:
+        #        tokens = PunktWordTokenizer().tokenize(string)
+        #        tokens[-1] = tokens[-1].replace(".", " .")
+        #        fixed_string.extend(tokens)
+        #    string = " ".join(fixed_string) 
         return string
     
 
