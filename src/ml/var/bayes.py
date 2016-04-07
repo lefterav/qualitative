@@ -14,7 +14,7 @@ class Bayes( OrangeClassifier ):
     """
 
     def __init__(self, data):
-        self.classifier = BayesLearner ( data.get_data() )
+        self.learner = BayesLearner ( data.get_data() )
     
 
 

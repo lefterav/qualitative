@@ -14,7 +14,7 @@ class KnnLearner(OrangeClassifier):
     """
 
     def __init__(self, data):
-        self.classifier = kNNLearner (data.get_data())
+        self.learner = kNNLearner (data.get_data())
     
 
 
