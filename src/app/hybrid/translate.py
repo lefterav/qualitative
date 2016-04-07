@@ -122,6 +122,10 @@ class LucyWorker(Worker):
             <param name='INPUT' value='{input}'/>
             <param name='SUBJECT_AREAS' value='{subject_areas}'/>
             <param name='CHARSET' value='UTF'/>
+ 	<param name='MARK_ALTERNATIVES' value='0'/>
+ 	<param name='MARK_UNKNOWNS' value='0'/>
+ 	<param name='MARK_COMPOUNDS' value='0'/>
+        <param name='CHARSET' value='UTF'/>
         </inputParams>
         
         </task>""".format(langpair=self.langpair, 
