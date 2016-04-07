@@ -20,30 +20,30 @@ import logging
 
 class OrangeClassifier(Classifier):
     """
-    Basic wrapper to encapsulate common functions for all classifier subclasses
-    @ivar classifier: the wrapped classifier
-    @type classifier: L{Orange.classification.Classifier} 
+    Basic wrapper to encapsulate common functions for all learner subclasses
+    @ivar learner: the wrapped learner
+    @type learner: L{Orange.classification.Classifier} 
     """
     def __new__(cls, wrapped):
         return Classifier.__new__(cls, name=wrapped.name)
 
     def __init__(self, wrapped):
-        self.classifier = wrapped
+        self.learner = wrapped
         for name, val in wrapped.__dict__.items():
             self.__dict__[name] = val
         
-        if self.classifier.__class__.__name__ in ["NaiveClassifier", "CN2UnorderedClassifier"]:    
-            self.discrete_features = [feature.Descriptor.make(feat.name,feat.var_type,[],feat.values,0) for feat in self.classifier.domain.features if isinstance(feat, feature.Discrete)]
+        if self.learner.__class__.__name__ in ["NaiveClassifier", "CN2UnorderedClassifier"]:    
+            self.discrete_features = [feature.Descriptor.make(feat.name,feat.var_type,[],feat.values,0) for feat in self.learner.domain.features if isinstance(feat, feature.Discrete)]
 
     def __call__(self, example, what=Orange.core.GetBoth):
-        example = Instance(self.classifier.domain, example)
-        return self.classifier(example, what)
+        example = Instance(self.learner.domain, example)
+        return self.learner(example, what)
     
         
     def classify_orange_table(self, orange_table, return_type=Classifier.GetBoth):
     
         """
-        Use the current classifier to classify the given orange table and return a vector (list) of the given values
+        Use the current learner to classify the given orange table and return a vector (list) of the given values
         @param orange_table: An orange table with unclassified instances, which we need to classify
         @type orange_table: L{Orange.data.Table}
         @param return_type: Specifies whether the classification of each intance should return only the predicted value, only the predicted distribution or both (default),
@@ -53,12 +53,12 @@ class OrangeClassifier(Classifier):
         """
         #orange_table = Table()
         
-        if self.classifier.__class__.__name__ in ["NaiveClassifier", "CN2UnorderedClassifier"]:
+        if self.learner.__class__.__name__ in ["NaiveClassifier", "CN2UnorderedClassifier"]:
             orange_table = self.clean_discrete_features(orange_table)
         
         resultvector = []
         for instance in orange_table:
-            value, distribution = self.classifier.__call__(instance, return_type)
+            value, distribution = self.learner.__call__(instance, return_type)
             resultvector.append((value.value, distribution))
         return resultvector 
     
@@ -93,22 +93,22 @@ class OrangeClassifier(Classifier):
     def classify_parallelsentence(self, parallelsentence, return_type=Classifier.GetBoth):
         pass
 #    def __call__(self, data):
-#        return self.classifier.__call__(data)
+#        return self.learner.__call__(data)
 #        
 #    def getFilteredLearner(self, n=5):
 #        return orngFSS.FilteredLearner(self, filter=orngFSS.FilterBestNAtts(n), name='%s_filtered' % self.name)
 
 
-    def print_content(self, basename="classifier"):
+    def print_content(self, basename="learner"):
         """
-        Depending on the type of the classifier, output its contents to an external file
-        @param basename: the filename without extension of the classifier
+        Depending on the type of the learner, output its contents to an external file
+        @param basename: the filename without extension of the learner
         @type basename: string         
         """
                 
-        classifier_type = self.classifier.__class__.__name__
+        classifier_type = self.learner.__class__.__name__
         
-        logging.debug("====\nProceeding with printing information for classifier [%s]", classifier_type)
+        logging.debug("====\nProceeding with printing information for learner [%s]", classifier_type)
         
         if classifier_type in ["NaiveClassifier", ]:
 #            textfilename = "{}.txt".format(basename)
@@ -134,10 +134,10 @@ class OrangeClassifier(Classifier):
         
         #if we are talking about a rule learner, just print its rules out in the file
         try:         
-            weights = get_linear_svm_weights(self.classifier)
+            weights = get_linear_svm_weights(self.learner)
             textfilename = "{}.weights.txt".format(basename)
             f = open(textfilename, "w")
-            f.write("Fitted parameters: \nnu = {0}\ngamma = {1}\n\nWeights: \n".format(self.classifier.fitted_parameters[0], self.classifier.fitted_parameters[1]))
+            f.write("Fitted parameters: \nnu = {0}\ngamma = {1}\n\nWeights: \n".format(self.learner.fitted_parameters[0], self.learner.fitted_parameters[1]))
             for weight_name, weight_value in weights.iteritems():
                 f.write("{0}\t{1}\n".format(weight_name, weight_value))           
             f.close()
@@ -145,7 +145,7 @@ class OrangeClassifier(Classifier):
             pass 
         
         try:
-            rules = self.classifier.rules
+            rules = self.learner.rules
             textfilename = "{}.rules.txt".format(basename)
             f = open(textfilename, "w")
             for r in rules:
@@ -159,18 +159,18 @@ class OrangeClassifier(Classifier):
         try:
             textfilename = "{}.tree.txt".format(basename)
             f = open(textfilename, "w")
-            f.write(self.classifier.to_string("leaf", "node"))
+            f.write(self.learner.to_string("leaf", "node"))
             f.close()
             
             graphics_filename = "{}.tree.dot".format(basename)
-            self.classifier.dot(graphics_filename, "leaf", "node")
+            self.learner.dot(graphics_filename, "leaf", "node")
         except:
             pass
             
         try:
             textfilename = "{}.dump.txt".format(basename)
             f = open(textfilename, "w")
-            f.write(logreg.dump(self.classifier))
+            f.write(logreg.dump(self.learner))
             f.close()
         except:
             pass    

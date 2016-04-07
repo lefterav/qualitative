@@ -529,11 +529,11 @@ class SkRanker(Ranker, SkLearner):
         self.featureselector, data, metadata = self.run_feature_selection(data, labels, feature_selector, feature_selection_params, feature_selection_threshold, plot_filename) 
         
         #initialize learning method and scoring functions and optimize
-        self.classifier, self.scorers = self.initialize_learning_method(learner, data, labels, learning_params, optimize, optimization_params, scorers)
+        self.learner, self.scorers = self.initialize_learning_method(learner, data, labels, learning_params, optimize, optimization_params, scorers)
 
         log.info("Data shape before fitting: {}".format(data.shape))
 
-        self.classifier.fit(data, labels)
+        self.learner.fit(data, labels)
         self.fit = True
         return metadata
     
@@ -543,15 +543,15 @@ class SkRanker(Ranker, SkLearner):
         if self.scaler:
             params = self.scaler.get_params(deep=True)
         try: #these are for SVC
-            if self.classifier.kernel == "rbf":
-                params["gamma"] = self.classifier.gamma
-                params["C"] = self.classifier.C
-                for i, n_support in enumerate(self.classifier.n_support_):
+            if self.learner.kernel == "rbf":
+                params["gamma"] = self.learner.gamma
+                params["C"] = self.learner.C
+                for i, n_support in enumerate(self.learner.n_support_):
                     params["n_{}".format(i)] = n_support
-                log.debug(len(self.classifier.dual_coef_))
+                log.debug(len(self.learner.dual_coef_))
                 return params
-            elif self.classifier.kernel == "linear":
-                coefficients = self.classifier.coef_
+            elif self.learner.kernel == "linear":
+                coefficients = self.learner.coef_
                 att_coefficients = {}
                 for attname, coeff in zip(self.attribute_set.get_names_pairwise(), coefficients[0]):
                     att_coefficients[attname] = coeff
@@ -559,7 +559,7 @@ class SkRanker(Ranker, SkLearner):
         except AttributeError:
             pass
         try: #adaboost etc
-            params = self.classifier.get_params()
+            params = self.learner.get_params()
             numeric_params = OrderedDict()
             for key, value in params.iteritems():
                 try:
@@ -592,7 +592,7 @@ class SkRanker(Ranker, SkLearner):
             return parallelsentence, {}
         elif len(parallelsentence.get_translations()) == 0:
             return parallelsentence, {}
-        #list that will hold the pairwise parallel sentences including the classifier's decision
+        #list that will hold the pairwise parallel sentences including the learner's decision
         classified_pairwise_parallelsentences = []
         resultvector = []
         
@@ -616,16 +616,16 @@ class SkRanker(Ranker, SkLearner):
             log.debug('Instance = {}'.format(instance)) 
             #make sure no NaN or inf appears in the instance
             instance = np.nan_to_num(instance)
-            #run classifier for this instance
-            predicted_value = self.classifier.predict(instance)
+            #run learner for this instance
+            predicted_value = self.learner.predict(instance)
             try:
-                distribution = dict(zip(self.classifier.classes_, self.classifier.predict_proba(instance)[0]))
+                distribution = dict(zip(self.learner.classes_, self.learner.predict_proba(instance)[0]))
             except AttributeError: 
-                #if classifier does not support per-class probability (e.g. LinearSVC) assign 0.5
-                distribution = dict([(cl, 0.5) for cl in self.classifier.classes_])
+                #if learner does not support per-class probability (e.g. LinearSVC) assign 0.5
+                distribution = dict([(cl, 0.5) for cl in self.learner.classes_])
             log.debug("Distribution: {}".format(distribution))
             log.debug("Predicted value: {}".format(predicted_value))
-            #even if we have a binary classifier, it may be that it cannot decide between two classes
+            #even if we have a binary learner, it may be that it cannot decide between two classes
             #for us, this means a tie
             if not bidirectional_pairs and distribution and len(distribution)==2 and float(distribution[1])==0.5:
                 predicted_value = 0
