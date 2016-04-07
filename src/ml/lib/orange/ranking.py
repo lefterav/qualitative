@@ -12,7 +12,7 @@ import tempfile
 import logging
 import codecs
 
-from ml.ranking import Ranker
+from ml.ranking import PairwiseRanker
 from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange
 from dataprocessor.ce.cejcml import CEJcmlReader
 from dataprocessor.sax.saxps2jcml import IncrementalJcml
@@ -54,8 +54,8 @@ from Orange.feature import Continuous
 def forname(name, **kwargs):
     """
     Return particular ranker class given a string
-    @return: ranker object wrapping an Orange classifier
-    @rtype: L{Ranker}
+    @return: ranker object wrapping an Orange learner
+    @rtype: L{PairwiseRanker}
     """
     orangeclass = eval(name)
     return OrangeRanker(orangeclass(**kwargs))
@@ -214,17 +214,17 @@ def _get_pairwise_header(attribute_names, class_name):
     return header
     
 
-class OrangeRanker(Ranker):
+class OrangeRanker(PairwiseRanker):
     """
     This class represents a ranker implemented over pairwise orange classifiers. 
     This ranker is loaded into the memory from a dump file which contains an already trained
     model and provides functions to rank one source sentence + translations at a time
-    @ivar fit: whether the classifier has been fit/trained or not
+    @ivar fit: whether the learner has been fit/trained or not
     @type fit: C{bool}
-    @ivar learner: the un-trained classifier class to be used for training
+    @ivar learner: the un-trained learner class to be used for training
     @type learner: C{Learner} from C{Orange.classification}
-    @ivar classifier: the trained classifier object
-    @type classifier: C{Classifier} from C{Orange.classification}
+    @ivar learner: the trained learner object
+    @type learner: C{Classifier} from C{Orange.classification}
     """    
 
     def initialize(self):
@@ -233,7 +233,7 @@ class OrangeRanker(Ranker):
     def train(self, dataset_filename, **kwargs):
         datatable = dataset_to_instances(filename=dataset_filename, **kwargs)
         self.learner = self.learner(**kwargs)
-        self.classifier = self.learner(datatable)
+        self.learner = self.learner(datatable)
         self.fit = True
         return {}
         
@@ -250,7 +250,7 @@ class OrangeRanker(Ranker):
         
     def get_model_description(self, basename="model"):
         if not self.fit:
-            raise AttributeError("Ranker has not been fit yet")
+            raise AttributeError("PairwiseRanker has not been fit yet")
                 #if we are talking about a rule learner, just print its rules out in the file
         basename = "model"
         
@@ -280,15 +280,15 @@ class OrangeRanker(Ranker):
     def _write_tree(self, basename):
         textfilename = "{}.tree.txt".format(basename)
         f = open(textfilename, "w")
-        f.write(self.classifier.to_string("leaf", "node"))
+        f.write(self.learner.to_string("leaf", "node"))
         f.close()
         
         graphics_filename = "{}.tree.dot".format(basename)
-        self.classifier.dot(graphics_filename, "leaf", "node")
+        self.learner.dot(graphics_filename, "leaf", "node")
         return OrderedDict()
     
     def _write_rules(self, basename):
-        rules = self.classifier.rules
+        rules = self.learner.rules
         textfilename = "{}.rules.txt".format(basename)
         f = open(textfilename, "w")
         for r in rules:
@@ -297,7 +297,7 @@ class OrangeRanker(Ranker):
         return OrderedDict()
 
     def _get_coefficients_svm(self):
-        weights = get_linear_svm_weights(self.classifier)
+        weights = get_linear_svm_weights(self.learner)
         attributes = OrderedDict()
         
         for attribute_descriptor, value in weights.iteritems():
@@ -306,12 +306,12 @@ class OrangeRanker(Ranker):
                 name = name[2:]
             attributes[name] = float(value)           
         
-        attributes["nu"] = self.classifier.fitted_parameters[0]
-        attributes["gamma"] = self.classifier.fitted_parameters[1]
+        attributes["nu"] = self.learner.fitted_parameters[0]
+        attributes["gamma"] = self.learner.fitted_parameters[1]
         return attributes
 
     def _get_coefficients_logreg(self):
-        output = logreg.dump(self.classifier)
+        output = logreg.dump(self.learner)
    
         active = False
         attributes = OrderedDict()
@@ -340,11 +340,11 @@ class OrangeRanker(Ranker):
     def _get_description(self, resultvector):
         output = []
         output.append("Used linear regression with Stepwise Feature Selection with the following weights")
-        coefficients = logreg.dump(self.classifier)
+        coefficients = logreg.dump(self.learner)
         output.append(coefficients)
         
         output.append("\n\n")        
-        output.append("domain: {}\n\n".format(self.classifier.domain))
+        output.append("domain: {}\n\n".format(self.learner.domain))
         
         for resultentry in resultvector:
             system_names = resultentry['systems']
@@ -376,15 +376,15 @@ class OrangeRanker(Ranker):
         #this will instruct orange to provide both binary decision and probability
         return_type = Classifier.GetBoth
         
-        #follow the feature description as needed by the loaded classifier
-        domain = self.classifier.domain
+        #follow the feature description as needed by the loaded learner
+        domain = self.learner.domain
         class_name = domain.class_var.name
-        logging.debug("Given classifier's class name: {}".format(class_name))
+        logging.debug("Given learner's class name: {}".format(class_name))
         if class_name.startswith("N_"):
             class_name.replace("N_", "")
         
         #this is a clean-up fixing orange's bug, needed only for some classifiers
-        #if self.classifier.__class__.__name__ in ["NaiveClassifier", "CN2UnorderedClassifier"]:
+        #if self.learner.__class__.__name__ in ["NaiveClassifier", "CN2UnorderedClassifier"]:
         #     orange_table = self.clean_discrete_features(orange_table)
         
         resultvector = []
@@ -404,18 +404,18 @@ class OrangeRanker(Ranker):
         pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(bidirectional_pairs=bidirectional_pairs,
                                                                                      class_name=class_name,
                                                                                      ties=ties)        
-        #list that will hold the pairwise parallel sentences including the classifier's decision
+        #list that will hold the pairwise parallel sentences including the learner's decision
         classified_pairwise_parallelsentences = []
         
         for pairwise_parallelsentence in pairwise_parallelsentences:
             #convert pairwise parallel sentence into an orange instance
             instance = parallelsentence_to_instance(pairwise_parallelsentence, domain=domain)
             
-            #run classifier for this instance
-            value, distribution = self.classifier(instance, return_type)
+            #run learner for this instance
+            value, distribution = self.learner(instance, return_type)
             predicted_value = float(value.value)
             
-            #even if we have a binary classifier, it may be that it cannot decide between two classes
+            #even if we have a binary learner, it may be that it cannot decide between two classes
             #for us, this means a tie
             if not bidirectional_pairs and distribution and len(distribution)==2 and float(distribution[0])==0.5:
                 predicted_value = 0
@@ -452,27 +452,27 @@ class OrangeRanker(Ranker):
 
 class OrangeClassifier(Classifier):
     '''
-    Wrapper around an orange classifier object
+    Wrapper around an orange learner object
     @ivar learner: the wrapped orange class
     @ivar training_data_filename: the jcml training file
     @type training_data_filename: str
     @ivar training_table: an Orange "table" of examples containing training instances
     @type \L{Orange.data.Table}
-    @ivar model: the trained classifier
+    @ivar model: the trained learner
     @type model: Orange.classification.Classifier 
     @ivar test_data_filename: the jcml test file
     @type test_data_filename: str
     @ivar test_table: the Orange "table" of test examples
     @type L{Orange.data.Table}
     '''
-    def __init__(self, learner, **kwargs):
+    def __init__(self, learner_name, **kwargs):
         '''
         Constructor.
-        @param learner: an orange classifier whose functionality is to be wrapped 
-        @type learner:  
+        @param learner_name: an orange learner whose functionality is to be wrapped 
+        @type learner_name:  
         
         '''
-        self.learner = learner(**kwargs)
+        self.learner = learner_name(**kwargs)
         self.datafile = None
         self.training_data_filename = None
         self.training_table = None

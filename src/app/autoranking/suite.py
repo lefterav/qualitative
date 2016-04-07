@@ -56,14 +56,14 @@ class AutorankingSuite(PyExperimentSuite):
     def reset(self, params, rep):
         self.restore_supported = True
         
-        classifier_name = params["classifier"] + "Learner"
+        classifier_name = params["learner"] + "Learner"
         self.learner = eval(classifier_name)
         try:
-            self.classifier_params = eval(params["params_{}".format(params["classifier"]).lower()])
+            self.classifier_params = eval(params["params_{}".format(params["learner"]).lower()])
         except:
             self.classifier_params = {}
         
-        sys.stderr.write("Accepted classifier parameters: {}\n".format(self.classifier_params))
+        sys.stderr.write("Accepted learner parameters: {}\n".format(self.classifier_params))
         self.remove_infinite = False
         self.delay_accuracy =  False
         if classifier_name == "SVMEasyLearner":
@@ -246,21 +246,21 @@ class AutorankingSuite(PyExperimentSuite):
                 ).convert()
             
         if n == 80:
-            print "train classifier"
+            print "train learner"
             input_file = self.trainset_orange_filename 
-            self.output_file = "classifier.clsf"
+            self.output_file = "learner.clsf"
             
             trainset = Table(input_file)
             
             mylearner = self.learner(**self.classifier_params)
             trained_classifier = mylearner(trainset)
-            self.classifier = OrangeClassifier(trained_classifier)
-            self.classifier.print_content()
+            self.learner = OrangeClassifier(trained_classifier)
+            self.learner.print_content()
             
         
         #give the possibility to calculate classification accuracy in the end
         if (n == 85 and not self.delay_accuracy) or (n == 185 and self.delay_accuracy):
-            print "evaluate classifier with cross-fold validation"
+            print "evaluate learner with cross-fold validation"
             orangeData = Table(self.trainset_orange_filename)
             learner = self.learner(**self.classifier_params)
             cv = evaluation.testing.cross_validation([learner], orangeData, 10)
@@ -279,7 +279,7 @@ class AutorankingSuite(PyExperimentSuite):
             
            
                     
-            classified_set_vector = self.classifier.classify_orange_table(orangedata)
+            classified_set_vector = self.learner.classify_orange_table(orangedata)
             self.classified_values_vector = [str(v[0]) for v in classified_set_vector]
             self.classified_probs_vector = [(v[1]["-1"], v[1]["1"]) for v in classified_set_vector]
             
@@ -350,7 +350,7 @@ class AutorankingSuite(PyExperimentSuite):
         
         if n == 80:
             objectfile = open(self.output_file, 'w')
-            pickle.dump(self.classifier.classifier, objectfile)
+            pickle.dump(self.learner.learner, objectfile)
             objectfile.close()
         if n == 90:
             classified_vector_file = open("classified.hard.txt", 'w')
@@ -392,8 +392,8 @@ class AutorankingSuite(PyExperimentSuite):
             self.testset_orange_filename = "testset.tab"
         
         if n > 80 and n <= 90:
-            objectfile = open("classifier.clsf", 'r')
-            self.classifier = OrangeClassifier(pickle.load(objectfile))
+            objectfile = open("learner.clsf", 'r')
+            self.learner = OrangeClassifier(pickle.load(objectfile))
             objectfile.close()
         if n > 90:
             
