@@ -40,7 +40,7 @@ def get_instance_from_parallelsentence(parallelsentence, attribute_names):
     return instance
 
 
-def get_attribute_names(input_xml_filename):
+def get_attribute_sets(input_xml_filename):
     '''
     Parse once the given XML file and return a set with the attribute names
     @param input_xml_filename: The XML file to be parsed
@@ -86,7 +86,7 @@ def read_file_incremental(input_xml_filename, **kwargs):
     impute = kwargs.setdefault("impute", True)
     remove_inf = kwargs.setdefault("remove_inf", True)
     
-    existing_attribute_names = get_attribute_names(input_xml_filename)
+    existing_attribute_names = get_attribute_sets(input_xml_filename)
     
     if desired_attributes:
         attribute_names = set(desired_attributes)

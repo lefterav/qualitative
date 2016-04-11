@@ -114,14 +114,14 @@ class DataSet(object):
     def get_annotations(self):
         return self.annotations
     
-    def get_attribute_names(self):
+    def get_attribute_sets(self):
         if not self.attribute_names_found: 
             self.attribute_names = self._retrieve_attribute_names()
             self.attribute_names_found = True
         return self.attribute_names
     
     def get_all_attribute_names(self):
-        all_attribute_names =  self.get_attribute_names()
+        all_attribute_names =  self.get_attribute_sets()
         all_attribute_names.extend( self.get_nested_attribute_names() )
         return list(set(all_attribute_names))
     
@@ -134,7 +134,7 @@ class DataSet(object):
     def _retrieve_attribute_names(self):
         attribute_names = set()
         for parallelsentence in self.parallelsentences:
-            attribute_names.update( parallelsentence.get_attribute_names() )
+            attribute_names.update( parallelsentence.get_attribute_sets() )
         return list(attribute_names)
 
     def get_discrete_attribute_values(self, discrete_attribute_names):
@@ -176,8 +176,8 @@ class DataSet(object):
         @rtype add_dataset: L{DataSet}
         """
         self.parallelsentences.extend(add_dataset.get_parallelsentences())
-        existing_attribute_names = set(self.get_attribute_names())
-        new_attribute_names = set(add_dataset.get_attribute_names())
+        existing_attribute_names = set(self.get_attribute_sets())
+        new_attribute_names = set(add_dataset.get_attribute_sets())
         merged_attribute_names = existing_attribute_names.union(new_attribute_names)
         self.attribute_names = list(merged_attribute_names)
     
