@@ -35,15 +35,31 @@ def _noprefix(prefixes, names):
     return notprefixed
 
 class AttributeSet:
+    """
+    Structure that describes the attributes provided by a set of parallel sentences.
+    It is very useful to carry the information for the contents of an entire set, 
+    that might otherwise be needed to be parsed incrementally, so this information
+    would not be available.
+    @ivar parallel_attribute_names: the names of the attributes on the 
+    level of the parallel sentence
+    @type parallel_attribute_names: string
+    @ivar source_attribute_names: the names of the attributes of the source sentence
+    @type source_attribute_names: string
+    @ivar target_attribute_names: the names of the attributes of the target 
+    sentences (translations
+    @type target_attribute_names: string
+    @ivar ref_attribute_names: the names of the attributes of the reference
+    @type: ref_attribute_names: string
+    """
     def __init__(self, 
                  parallel_attribute_names=[], 
                  source_attribute_names=[],
                  target_attribute_names=[],
                  ref_attribute_names=[]):
-        self.parallel_attribute_names = parallel_attribute_names
-        self.source_attribute_names = source_attribute_names
-        self.target_attribute_names = target_attribute_names
-        self.ref_attribute_names = ref_attribute_names
+        self.parallel_attribute_names = sorted(list(parallel_attribute_names))
+        self.source_attribute_names = sorted(list(source_attribute_names))
+        self.target_attribute_names = sorted(list(target_attribute_names))
+        self.ref_attribute_names = sorted(list(ref_attribute_names))
 
     def get_names_pairwise(self):
         all_attribute_names = []
@@ -62,7 +78,44 @@ class AttributeSet:
 
     def __str__(self):
         return str([self.parallel_attribute_names, self.source_attribute_names, self.target_attribute_names])
+    
+    
+class DefaultAttributeSet(AttributeSet):
+    """
+    Create an attribute set by removing common meta-attributes that should
+    not be used for training. 
+    TODO: Ideally we would also like to filter out features which contain 
+    string values, but this is left to future implementation
+    """
+    def __init__(self, 
+                 parallel_attribute_names=[], 
+                 source_attribute_names=[],
+                 target_attribute_names=[],
+                 ref_attribute_names=[]):
         
+        self.parallel_attribute_names = list(set(parallel_attribute_names) - \
+            set(["langsrc", "langtgt", "id", "judgement_id", "judgment_id",
+            "testset", "rank", 'rank_predicted', "prob_-1", "prob_1"]))
+        self.parallel_attribute_names.sort()
+        
+        self.source_attribute_names = list(set(source_attribute_names) - \
+            set(['system', 'berkeley-tree', 'imb1-alignment-joined', 
+                 'ibm1-alignment-inv', 'ibm1-alignment']))
+        self.source_attribute_names.sort()
+            
+        todelete = ['system']
+        for attname in target_attribute_names:
+            if (attname.startswith("rank")  
+              or attname.endswith("tree") 
+              or attname.startswith("ref-")):
+                todelete.append(attname)
+        
+        self.target_attribute_names = list(set(target_attribute_names) 
+                                           - set(todelete))
+        self.target_attribute_names.sort()
+        
+        self.ref_attribute_names = list(ref_attribute_names)
+        self.ref_attribute_names.sort()
             
 
 class ParallelSentence(object):
@@ -168,7 +221,7 @@ class ParallelSentence(object):
         """
         return self.attributes
     
-    def get_attribute_names (self):
+    def get_attribute_sets (self):
         """
         provide all attribute names
         @return: a set with the names of the attributes
