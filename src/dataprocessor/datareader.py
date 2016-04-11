@@ -4,7 +4,7 @@ class DataReader:
     """
 
     
-    def get_attribute_names(self):
+    def get_attribute_sets(self):
         raise NotImplementedError()
     
     def get_dataset(self):
