@@ -146,7 +146,7 @@ def dataset_to_instances(filename,
     if not attribute_set:
         attribute_set, _ = reader(filename, compact=True, 
                      all_general=True,
-                     all_target=True).get_attribute_names()
+                     all_target=True).get_attribute_sets()
                      
     #get the text for the header of the orange file
     header = _get_pairwise_header(attribute_set, class_name)
