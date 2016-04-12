@@ -15,7 +15,7 @@ class LogLinear(OrangeClassifier):
     """
 
     def __init__(self, data):
-        self.classifier = orngLR.LogRegLearner(data.get_data())
+        self.learner = orngLR.LogRegLearner(data.get_data())
     
 
 

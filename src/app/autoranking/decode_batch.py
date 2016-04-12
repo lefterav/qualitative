@@ -105,7 +105,7 @@ class AutorankingSuite(PyExperimentSuite):
         self.ties = params["ties"]
         
         objectfile = open(params["trained_classifier"], 'r')
-        self.classifier = OrangeClassifier(pickle.load(objectfile))
+        self.learner = OrangeClassifier(pickle.load(objectfile))
         objectfile.close()
     
     def iterate(self, params, rep, n):
@@ -167,7 +167,7 @@ class AutorankingSuite(PyExperimentSuite):
             
            
                     
-            classified_set_vector = self.classifier.classify_orange_table(orangedata)
+            classified_set_vector = self.learner.classify_orange_table(orangedata)
             
             self.classified_values_vector = [str(v[0]) for v in classified_set_vector]
             self.classified_probs_vector = [(v[1]["-1"], v[1]["1"]) for v in classified_set_vector]
