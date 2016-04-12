@@ -12,7 +12,7 @@ import sys
 from collections import defaultdict, OrderedDict
 from xml.etree.ElementTree import iterparse
 from sentence.sentence import SimpleSentence
-from sentence.parallelsentence import ParallelSentence, AttributeSet
+from sentence.parallelsentence import ParallelSentence, DefaultAttributeSet
 from sentence.dataset import DataSet
 
 def prefix_source_atts(source_attribute_names):
@@ -21,7 +21,7 @@ def prefix_source_atts(source_attribute_names):
 def prefix_target_atts(target_attritube_names, target_index):
     return [["tgt-{}_{}".format(target_index, att) for att in target_attritube_names]]
 
-def get_attribute_names(filename):
+def get_attribute_sets(filename):
     attribute_names = set()
     for parallelsentence in CEJcmlReader(filename).get_parallelsentences(compact=True, all_general=True, all_target=True):
         attribute_names.update((parallelsentence.get_source().get_attributes().keys()))
@@ -46,7 +46,6 @@ class CEJcmlReader(DataReader):
         @type desired_attributes: list of strings
         @param meta_attributes: meta attributes
         @type meta_attributes: list of strings
-         
         """
 
         self.TAG_SENT = 'judgedsentence'
@@ -54,7 +53,6 @@ class CEJcmlReader(DataReader):
         self.TAG_TGT = 'tgt'
         self.TAG_REF = 'ref'
         self.TAG_DOC = 'jcml'
-
 
         self.desired_general = kwargs.setdefault('desired_general', ["rank","langsrc","langtgt","id","judgement_id"])
         self.desired_source = kwargs.setdefault("desired_source", [])
@@ -69,7 +67,6 @@ class CEJcmlReader(DataReader):
         for _ in self.get_parallelsentences(compact=True):
             i+=1
         return i
-    
     
     def _separate_continuous_attributes(self, attributevectors):
         """
@@ -87,9 +84,9 @@ class CEJcmlReader(DataReader):
                 discrete_attribute_names.append(key)
         return continuous_attribute_names, discrete_attribute_names
     
-    
-    def get_attribute_names(self):
+    def get_attribute_sets(self):
         """
+        TODO: does not work!!!
         Attributes of parallel sentence files can be sparse, i.e. not all attributes appear in all sentences. Therefore
         in order to have a full descriptions of which attributes appear in a dataset, one has to parse the entire XML
         file, read the parallelsentences without the sentence strings, and gather the names (keys) of the seen attributes
@@ -104,10 +101,55 @@ class CEJcmlReader(DataReader):
         target_continuous_attnames, target_discrete_attnames = self._separate_continuous_attributes(target_attributes)
         ref_continuous_attnames, ref_discrete_attnames = self._separate_continuous_attributes(ref_attributes)
         
-        return AttributeSet(general_continuous_attnames, source_continuous_attnames, target_continuous_attnames, ref_continuous_attnames), \
-            AttributeSet(general_discrete_attnames, source_discrete_attnames, target_discrete_attnames, ref_discrete_attnames),
+        return DefaultAttributeSet(general_continuous_attnames, source_continuous_attnames, target_continuous_attnames, ref_continuous_attnames), \
+            DefaultAttributeSet(general_discrete_attnames, source_discrete_attnames, target_discrete_attnames, ref_discrete_attnames)
+       
+    def get_attribute_names(self):
+        """
+        Get default ranking attribute set
+        """
+        parallel_attribute_names = set()
+        source_attribute_names = set()
+        target_attribute_names = set()
+        ref_attribute_names = set()
+        
+        input_filename = self.input_filename
     
-    
+        xml_file = open(input_filename, "r")
+        # get an iterable
+        context = iterparse(xml_file, events=("start", "end"))
+        # turn it into an iterator
+        context = iter(context)
+        # get the root element
+        event, root = context.next()
+        
+        for event, elem in context:
+            #new sentence: get attribute names
+            attribute_names = elem.attrib.keys()
+            if event == "start" and elem.tag == self.TAG_SENT:
+                parallel_attribute_names.update(attribute_names)
+            elif event == "start" and elem.tag == self.TAG_SRC:
+                source_attribute_names.update(attribute_names)
+            elif event == "start" and elem.tag == self.TAG_TGT:
+                target_attribute_names.update(attribute_names)
+            elif event == "start" and elem.tag == self.TAG_REF:
+                ref_attribute_names.update(attribute_names)
+            root.clear()            
+        xml_file.close()
+        return (parallel_attribute_names, source_attribute_names, 
+                target_attribute_names, ref_attribute_names)
+        
+    def get_attribute_set(self):
+        (parallel_attribute_names, 
+         source_attribute_names, 
+         target_attribute_names, 
+         ref_attribute_names) = self.get_attribute_names()
+        
+        return DefaultAttributeSet(parallel_attribute_names, 
+                            source_attribute_names, 
+                            target_attribute_names, 
+                            ref_attribute_names)
+      
     def get_dataset(self, **kwargs):
         return DataSet(list(self.get_parallelsentences(**kwargs)))       
 
@@ -133,6 +175,8 @@ class CEJcmlReader(DataReader):
         
         src_text = ""
         tgt_text = ""
+        source_attributes = {}
+        target_attributes = {}
         ref_attributes = {}    
 
         counter = 0
@@ -255,10 +299,7 @@ class CEJcmlReader(DataReader):
                 
         for key, value in target_attributes.iteritems():
             self._print_statistics(key, value, fileobject)            
-            
-        
-    
-    
+                
     def get_attribute_vectors(self):
         """
         Extract a list of values for each attribute

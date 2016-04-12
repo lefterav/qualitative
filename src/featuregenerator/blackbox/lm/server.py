@@ -5,9 +5,9 @@ Feature generator for LM features from external LM server
 import xmlrpclib 
 #import base64
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
-from nltk.tokenize.punkt import PunktWordTokenizer
+#from nltk.tokenize.punkt import PunktWordTokenizer
 import sys
-from util.freqcaser import FreqCaser
+#from util.freqcaser import FreqCaser
 from numpy import average, std
 
 
@@ -26,8 +26,8 @@ class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
         self.lowercase = lowercase
         self.tokenize = tokenize
         self.freqcaser = None
-        if freqcase_file:
-            self.freqcaser = FreqCaser(freqcase_file)
+#        if freqcase_file:
+#            self.freqcaser = FreqCaser(freqcase_file)
     
     def get_features_src(self, simplesentence, parallelsentence):
         atts = {}
@@ -52,10 +52,10 @@ class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
         else:
             if self.lowercase:
                 sent_string = sent_string.lower()
-            if self.tokenize:
-                sent_string = sent_string.replace('%',' %') #TODO: this is an issue
-                tokenized_string = PunktWordTokenizer().tokenize(sent_string)
-                sent_string = ' '.join(tokenized_string)
+#            if self.tokenize:
+#                sent_string = sent_string.replace('%',' %') #TODO: this is an issue
+#                tokenized_string = PunktWordTokenizer().tokenize(sent_string)
+#                sent_string = ' '.join(tokenized_string)
             else:
                 #split and remove empty tokens (due to multiple spaces)
                 tokenized_string = [tok.strip() for tok in sent_string.split(' ') if tok.strip()]
@@ -71,10 +71,10 @@ class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
         else:
             if self.lowercase:
                 sent_string = sent_string.lower()
-            if self.tokenize:
-                sent_string = sent_string.replace('%',' %') #TODO: this is an issue
-                tokenized_string = PunktWordTokenizer().tokenize(sent_string)
-                sent_string = ' '.join(tokenized_string)
+#            if self.tokenize:
+#                sent_string = sent_string.replace('%',' %') #TODO: this is an issue
+#                tokenized_string = PunktWordTokenizer().tokenize(sent_string)
+#                sent_string = ' '.join(tokenized_string)
             else:
                 tokenized_string = sent_string.split(' ')
         

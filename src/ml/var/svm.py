@@ -21,5 +21,5 @@ class SVM( OrangeClassifier ):
         l.svm_type = SVMLearner.Nu_SVC 
         l.nu = 0.3 
         l.probability = True
-        self.classifier = l( data.get_data() )
+        self.learner = l( data.get_data() )
         
