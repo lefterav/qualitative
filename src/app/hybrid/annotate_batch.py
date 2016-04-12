@@ -370,8 +370,11 @@ if cfg.has_section("parser:bitpar:{}".format(target_language)):
 @collate(bitpar_functions, regex(r"(.*)\.bit.([^.]+).f.jcml"),  r"\1.bit.f.jcml")
 def merge_bitpar_source_target(tobermerged, gathered_singledataset_annotations):
     original_dataset = JcmlReader(tobermerged[0]).get_dataset()
-    appended_dataset = JcmlReader(tobermerged[1]).get_dataset()
-    original_dataset.merge_dataset_symmetrical(appended_dataset, {}, "id")
+    try:
+        appended_dataset = JcmlReader(tobermerged[1]).get_dataset()
+        original_dataset.merge_dataset_symmetrical(appended_dataset, {}, "id")
+    except IndexError:
+        pass
     Parallelsentence2Jcml(original_dataset.get_parallelsentences()).write_to_file(gathered_singledataset_annotations)
 
 parallel_feature_functions.append(merge_bitpar_source_target)
@@ -423,8 +426,9 @@ def features_lm(input_file, output_file, language, lm_name):
 
 def features_lm_batch(input_file, output_file, language, lm_name):
     lmgenerators = cfg.get_lm(language) 
+    processed_parallelsentences = JcmlReader(input_file).get_parallelsentences()
     for lmgenerator in lmgenerators:
-        processed_parallelsentences = lmgenerator.add_features_batch(JcmlReader(input_file).get_parallelsentences())
+        processed_parallelsentences = lmgenerator.add_features_batch(processed_parallelsentences)
         Parallelsentence2Jcml(processed_parallelsentences).write_to_file(output_file)
 
 #unimplemented
@@ -515,19 +519,7 @@ def features_gather(singledataset_annotations, gathered_singledataset_annotation
 
 
     
-@transform(features_gather, suffix@active_if(cfg.has_section("ibm1:{}-{}".format(source_language, target_language)) and cfg.has_section("ibm1:{}-{}".format(target_language, source_language)))    
-@transform(features_gather, suffix(".all.f.jcml"), ".all.ibm1.f.jcml", cfg.get("ibm1:{}-{}".format(source_language, target_language), "lexicon"), cfg.get("ibm1:{}-{}".format(target_language, source_language), "lexicon"))    
-def features_ibm1(input_file, output_file, sourcelexicon, targetlexicon):
-    analyzers = [
-             AlignmentFeatureGenerator(sourcelexicon, targetlexicon),
-             CfgAlignmentFeatureGenerator(),
-             ]
-    saxjcml.run_features_generator(input_file, output_file, analyzers)
-
-if not (cfg.has_section("ibm1:{}-{}".format(source_language, target_language)) and cfg.has_section("ibm1:{}-{}".format(target_language, source_language))):
-    features_ibm1 = features_gather
-
-@transform(features_ibm1, suffix(".all.ibm1.f.jcml"), ".all.analyzed.f.jcml", cfg.get("general", "source_language"), cfg.get("general", "target_language"))    
+@transform(features_gather, suffix(".all.f.jcml"), ".all.analyzed.f.jcml", cfg.get("general", "source_language"), cfg.get("general", "target_language"))    
 def analyze_external_features(input_file, output_file, source_language, target_language):
     langpair = (source_language, target_language)
 

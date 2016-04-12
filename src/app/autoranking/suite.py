@@ -8,7 +8,7 @@ from collections import OrderedDict
 from Orange.regression.linear import LinearRegressionLearner 
 from Orange.regression.pls import PLSRegressionLearner
 from Orange.regression.lasso import LassoRegressionLearner
-from Orange.regression.earth import EarthLearner
+#from Orange.regression.earth import EarthLearner
 from Orange.regression.tree import TreeLearner
 from Orange.classification.rules import CN2Learner,  CN2UnorderedLearner, CN2SDUnorderedLearner, CN2EVCUnorderedLearner
 from Orange import feature
