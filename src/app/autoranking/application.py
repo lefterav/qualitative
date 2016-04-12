@@ -51,7 +51,7 @@ class Autoranking:
         @param configfilenames: a list of annotation configuration files that contain
         the settings for all feature generators etc.
         @type configfilenames: list(str)
-        @param classifiername: the filename of a picked classifier object
+        @param classifiername: the filename of a picked learner object
         @type classifiername: str
         """
         cfg = ExperimentConfigParser()

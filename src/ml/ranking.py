@@ -13,14 +13,15 @@ from dataprocessor.sax.saxps2jcml import IncrementalJcml
 
 def forname(learner, **kwargs):
     """
-    Look up in all available libraries and load ranker whose classifier has a particular name
+    Look up in all available libraries and load ranker whose learner has a particular name
     Add here all libraries that contain a Ranker instance
-    @param learner: the name of the classifier that the ranker wraps around
+    @param learner: the name of the learner that the ranker wraps around
     @type learner: str
      
     """
     from lib.scikit.ranking import SkRanker
     from lib.orange.ranking import OrangeRanker
+    from ml.lib.mlp import ListRanker
     
     rankers = [OrangeRanker, SkRanker]   
     for ranker_class in rankers:
@@ -33,35 +34,35 @@ def forname(learner, **kwargs):
             pass
     
     sys.exit("Requested ranker {} not found".format(learner))
-           
+            
 
 class Ranker:
     '''
     Abstract base class for a machine learning algorithms that learn and apply ranking
-    @ivar fit: whether the classifier has been fit/trained or not
+    @ivar fit: whether the learner has been fit/trained or not
     @type fit: C{bool}
-    @ivar learner: the un-trained classifier class to be used for training
+    @ivar learner: the un-trained learner class to be used for training
     @type learner: toolkit-specific C{object}  
-    @ivar classifier: the trained classifier object
-    @type classifier: toolkit-specific C{object} 
+    @ivar learner: the trained learner object
+    @type learner: toolkit-specific C{object} 
     '''
-    def __init__(self, classifier=None, filename=None, learner=None, **kwargs):
+
+    def __init__(self, learner=None, filename=None, name=None, **kwargs):
         self.fit = True
-        if classifier:
-            self.classifier = classifier
+        if learner:
+            self.learner = learner
         elif filename:
-            classifier_file = open(filename)
-            self.classifier = pickle.load(open(filename,'r'))
-            logging.info("Loaded {} classifier for file {}".format(self.classifier, filename))
-            classifier_file.close()
+            model_file = open(filename)
+            self.learner = pickle.load(open(filename,'r'))
+            logging.info("Loaded {} learner for file {}".format(self.learner, filename))
+            model_file.close()
         else:
-            self.name = learner
+            self.name = name
             self.fit = False
-    
+            
     def train(self, dataset_filename, **kwargs):
-        raise NotImplementedError()
-    
-    
+        raise NotImplementedError()   
+
     def test(self, input_filename, output_filename, reader=CEJcmlReader, writer=IncrementalJcml, 
              bidirectional_pairs=False,
              reconstruct='hard', 
@@ -95,12 +96,7 @@ class Ranker:
             
         output.close()        
         return {}
-    #------------------------------ def train(self, dataset_filename, **kwargs):
-        # pairwise_dataset_filename = dataset_filename.replace(".jcml", ".pair.jcml")
-        # pairwise_ondisk(dataset_filename, pairwise_dataset_filename, **kwargs)
-        #---------- super(Ranker, self).train(pairwise_dataset_filename)
-        #----- #self.classifier = Ranker(classifier=pairwise_classifier)
-#------------------------------------------------------------------------------ 
+       
     def get_model_description(self, basename="model"):
         raise NotImplementedError()
 
@@ -127,4 +123,4 @@ class Ranker:
     def dump(self, dumpfilename):
         if not self.fit:
             raise AttributeError("Classifier has not been fit yet")
-        pickle.dump(self.classifier, open(dumpfilename, 'w'))
+        pickle.dump(self.learner, open(dumpfilename, 'w'))

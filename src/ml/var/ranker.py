@@ -8,17 +8,17 @@ from featuregenerator.diff_generator import DiffGenerator
 from sentence.dataset import DataSet
 from dataprocessor.input.orangereader import OrangeData
  
-class Ranker(FeatureGenerator):
+class PairwiseRanker(FeatureGenerator):
     '''
     classdocs
     '''
 
 
-    def __init__(self, classifier, desired_attributes, meta_attributes):
+    def __init__(self, learner, desired_attributes, meta_attributes):
         '''
         Constructor
         '''
-        self.classifier = classifier
+        self.learner = learner
         self.desired_attributes = desired_attributes
         self.meta_attributes = meta_attributes
         
@@ -44,7 +44,7 @@ class Ranker(FeatureGenerator):
         class_name = "rank"
         test_data = OrangeData(dataset, class_name, self.desired_attributes, self.meta_attributes)
         
-        classified_data = test_data.classify_with(self.classifier)
+        classified_data = test_data.classify_with(self.learner)
         parallelsentences = classified_data.get_dataset().get_parallelsentences()
         parallelsentences = rankhandler.get_multiclass_from_pairwise_set(parallelsentences, allow_ties)
 
