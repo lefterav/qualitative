@@ -122,6 +122,10 @@ class LucyWorker(Worker):
             <param name='INPUT' value='{input}'/>
             <param name='SUBJECT_AREAS' value='{subject_areas}'/>
             <param name='CHARSET' value='UTF'/>
+ 	<param name='MARK_ALTERNATIVES' value='0'/>
+ 	<param name='MARK_UNKNOWNS' value='0'/>
+ 	<param name='MARK_COMPOUNDS' value='0'/>
+        <param name='CHARSET' value='UTF'/>
         </inputParams>
         
         </task>""".format(langpair=self.langpair, 
@@ -280,7 +284,7 @@ class SystemSelector(Autoranking):
         @param configfilenames: a list of annotation configuration files that contain
         the settings for all feature generators etc.
         @type configfilenames: list(str)
-        @param classifiername: the filename of a picked classifier object
+        @param classifiername: the filename of a picked learner object
         @type classifiername: str
         """
         cfg = ExperimentConfigParser()

@@ -4,7 +4,7 @@
 @author: Eleftherios Avramidis
 """
 from featuregenerator.featuregenerator import FeatureGenerator
-from nltk.tokenize.punkt import PunktWordTokenizer
+#from nltk.tokenize.punkt import PunktWordTokenizer
 
 
 class PunctuationFeatureGenerator(FeatureGenerator):

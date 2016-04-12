@@ -13,17 +13,17 @@ from collections import OrderedDict
 from ml.ranking import forname
 from expsuite import PyExperimentSuite 
 from sentence.parallelsentence import AttributeSet
-from dataprocessor.ce.utils import join_jcml, fold_jcml
+from dataprocessor.ce.utils import join_jcml, fold_jcml_respect_ids
 from dataprocessor.ce.cejcml import CEJcmlReader
 from sentence import scoring
 import cPickle as pickle
 
 class RankingExperiment(PyExperimentSuite):
     
-    #restore_supported = True
+    restore_supported = True
     
     def reset(self, params, rep):
-        #self.restore_supported = True
+        self.restore_supported = True
         logging.info("Running in {}".format(os.getcwd()))
         logging.debug("params = {}".format(params))        
         #=======================================================================
@@ -109,7 +109,7 @@ class RankingExperiment(PyExperimentSuite):
             self.trainingset_filename = "{}.trainingset.jcml".format(rep)
             testset_filename = "{}.testset.jcml".format(rep)
             self.testset_filenames = [testset_filename]
-            fold_jcml(dataset_filename,
+            fold_jcml_respect_ids(dataset_filename,
                 self.trainingset_filename,
                 testset_filename,
                 params['repetitions'],
@@ -120,7 +120,7 @@ class RankingExperiment(PyExperimentSuite):
             self.trainingset_filename = "{}.trainingset.jcml".format(rep)
             testset_filename = "{}.testset.jcml".format(rep)
             self.testset_filenames = [testset_filename]
-            fold_jcml(dataset_filename,
+            fold_jcml_respect_ids(dataset_filename,
                 self.trainingset_filename,
                 testset_filename,
                 10,
