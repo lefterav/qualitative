@@ -18,8 +18,7 @@ from dataprocessor.ce.cejcml import CEJcmlReader
 from sentence import scoring
 import cPickle as pickle
 from evaluation.selection.set import evaluate_selection
-from util.jvm import JVM
-from py4j.java_gateway import GatewayClient, JavaGateway
+from util.jvm import LocalJavaGateway
 
 
 class RankingExperiment(PyExperimentSuite):
