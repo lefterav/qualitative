@@ -29,8 +29,6 @@ sudo apt-get install openjdk-8-jdk
 sudo apt-get install python-dev g++ build-essential python-pip libblas-dev liblapack-dev gfortran
 
 sudo pip install --upgrade pip  
-sudo easy_install -U setuptools
-sudo pip install --upgrade setuptools
 
 sudo pip install <package-name>
 
@@ -38,8 +36,12 @@ or for user-specific installation (no root or
 not wanting to risk your python environment) 
  pip install --user <package-name> 
 
+pip install setuptools
+pip install nltk==2.0.5
 easy_install -U distribute
-sudo pip install orange py4j numpy scipy suds ruffus scikit-learn unidecode requests https://github.com/kpu/kenlm/archive/master.zip 
+pip install -r requirements.txt
+pip install https://github.com/kpu/kenlm/archive/master.zip 
+ 
 #  nltk==2.0.1rc4 and matplotlib need to be checked
 
 Additionally

@@ -8,7 +8,7 @@ import sys
 import xmlrpclib
 import datetime
 import sys
-from app.hybrid.translate import MosesWorker, LucyWorker, MtMonkeyWorker, WSDclient
+from app.hybrid.translate import MtMonkeyWorker, LucyWorker, WsdMosesWorker, LcMWorker
 
 url = "http://blade-3.dfki.uni-sb.de:8100/translate"
 proxy = xmlrpclib.ServerProxy(url)
@@ -34,9 +34,9 @@ def translate_sentences(source_sentences):
             print source
             
             request = {"action": "translate",
-                    "sourceLang": "de",
-                    "targetLang": "en",
-                    "text": source}
+                        "sourceLang": "de",
+                        "targetLang": "en",
+                        "text": source}
             result = proxy.server.process_task(request)
             print result
            
