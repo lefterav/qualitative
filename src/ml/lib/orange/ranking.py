@@ -12,7 +12,7 @@ import tempfile
 import logging
 import codecs
 
-from ml.ranking import PairwiseRanker
+from ml.ranking import Ranker
 from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange
 from dataprocessor.ce.cejcml import CEJcmlReader
 from dataprocessor.sax.saxps2jcml import IncrementalJcml
@@ -214,7 +214,7 @@ def _get_pairwise_header(attribute_names, class_name):
     return header
     
 
-class OrangeRanker(PairwiseRanker):
+class OrangeRanker(Ranker):
     """
     This class represents a ranker implemented over pairwise orange classifiers. 
     This ranker is loaded into the memory from a dump file which contains an already trained
