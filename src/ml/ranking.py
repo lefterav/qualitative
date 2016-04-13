@@ -21,9 +21,9 @@ def forname(learner, **kwargs):
     """
     from lib.scikit.ranking import SkRanker
     from lib.orange.ranking import OrangeRanker
-    from ml.lib.mlp import ListRanker
+    from ml.lib.mlp import ListNetRanker
     
-    rankers = [OrangeRanker, SkRanker]   
+    rankers = [OrangeRanker, SkRanker, ListNetRanker]   
     for ranker_class in rankers:
         ranker_instance = ranker_class(learner=learner)
         try:
