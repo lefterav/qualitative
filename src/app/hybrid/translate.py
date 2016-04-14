@@ -3,7 +3,7 @@
 import xmlrpclib
 import logging as logger
 from app.autoranking.application import Autoranking
-from featuregenerator.preprocessor import Normalizer, Tokenizer, Truecaser
+from featuregenerator.preprocessor import Normalizer, Tokenizer, Truecaser, Detokenizer
 from featuregenerator.blackbox.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.blackbox.counts import LengthFeatureGenerator
 from featuregenerator.reference.meteor.meteor import CrossMeteorGenerator
@@ -13,6 +13,7 @@ from featuregenerator.blackbox.languagechecker.languagetool_socket import Langua
 from app.autoranking.bootstrap import ExperimentConfigParser
 from featuregenerator.blackbox.wsd import WSDclient
 import pickle
+from xml.sax.saxutils import quoteattr, escape
 
 class Worker:
     """
@@ -46,7 +47,9 @@ class MosesWorker(Worker):
 
     def translate(self, string):
         #send request to moses client
-        response = self.server.translate({ 'text': 'test' })
+        string = escape(string)
+        print string
+        response = self.server.translate({'text': string})
         return response['text'], response
 
 
@@ -71,7 +74,7 @@ class MtMonkeyWorker(Worker):
         request = {"action": "translate",
         "sourceLang": "en",
         "targetLang": "de",
-        "text": string}
+        "text": escape(string)}
         result = self.server.process_task(request)
         string_result = []
         try:
@@ -89,7 +92,6 @@ class MtMonkeyWorker(Worker):
 
 import requests
 from requests.auth import HTTPBasicAuth
-from xml.sax.saxutils import escape
 import xml.etree.ElementTree as et
 import re
 
@@ -119,32 +121,35 @@ class LucyWorker(Worker):
         data = """<task>
         <inputParams>
             <param name='TRANSLATION_DIRECTION' value='{langpair}'/>
-            <param name='INPUT' value='{input}'/>
+            <param name='INPUT' value={input}/>
             <param name='SUBJECT_AREAS' value='{subject_areas}'/>
             <param name='CHARSET' value='UTF'/>
- 	<param name='MARK_ALTERNATIVES' value='0'/>
- 	<param name='MARK_UNKNOWNS' value='0'/>
- 	<param name='MARK_COMPOUNDS' value='0'/>
-        <param name='CHARSET' value='UTF'/>
+      	    <param name='MARK_ALTERNATIVES' value='0'/>
+ 	    <param name='MARK_UNKNOWNS' value='0'/>
+ 	    <param name='MARK_COMPOUNDS' value='0'/>
+            <param name='CHARSET' value='UTF'/>
         </inputParams>
         
         </task>""".format(langpair=self.langpair, 
-                          input=escape(string), 
+                          input=quoteattr(string), 
                           subject_areas=self.subject_areas,
                           )
         headers = {'Content-type': 'application/xml'}
         auth = HTTPBasicAuth(self.username, self.password)
-        print data
+        logger.debug("Lucy request: {}".format(data))
         response = requests.post(url=self.url, data=data, headers=headers, auth=auth)
 	response.encoding = 'utf-8'
         # Interpret the XML response 
         try:        
             # get the xml node with the response
-            xml = et.fromstring(response.text)
+            try:
+                xml = et.fromstring(response.text)
+            except:
+                xml = et.fromstring(response.text.encode('utf-8'))
             output = xml.findall("outputParams/param[@name='OUTPUT']")
             params = xml.findall("outputParams/param")
-        except:
-            logger.error("Lucy did not respond: {}".format(response.text))
+        except Exception as e:
+            logger.error("Got exception '{}' while parsing Lucy's response: {}".format(e, response.text.encode('utf-8')))
             return
         text = " ".join(t.attrib["value"] for t in output)
         params = dict([(param.attrib["name"], param.attrib["value"]) for param in params])
@@ -241,7 +246,7 @@ class WsdMosesWorker(Worker):
                  truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-model.3.en",
                  reverse=False):
         self.wsd_worker = WSDclient(wsd_url)
-        self.moses_worker = MtMonkeyWorker(moses_url)
+        self.moses_worker = MosesWorker(moses_url)
         self.tokenizer = Tokenizer(source_language)
         self.truecaser = Truecaser(source_language, truecaser_model)
     
@@ -250,10 +255,12 @@ class WsdMosesWorker(Worker):
         string = self.tokenizer.process_string(string)
         string = self.truecaser.process_string(string)
         wsd_source = self.wsd_worker.annotate(string)
-        sys.stderr.write("Sending to WSD Moses:\n {}".format(string))
+        #kill invalid characters TODO: move to WSDclient
+        wsd_source = wsd_source.decode('utf-8', errors='ignore').encode('utf-8')
         
+        sys.stderr.write("Sending to WSD Moses:\n {}".format(wsd_source))
         moses_translation, _ = self.moses_worker.translate(wsd_source)
-        return moses_translation
+        return moses_translation, None
     
     
 class LcMWorker(Worker):
@@ -270,6 +277,7 @@ class LcMWorker(Worker):
                                       username=lucy_username, password=lucy_password,
                                       source_language=source_language,
                                       target_language=target_language) 
+        self.lcm_worker = MtMonkeyWorker(lcm_url)
         self.tokenizer = Tokenizer(source_language)
         self.truecaser = Truecaser(source_language, truecaser_model)
     
@@ -281,7 +289,7 @@ class LcMWorker(Worker):
         lucy_translation, _ = self.lucy_worker.translate(string)
         sys.stderr.write("Sending to LcM\n")
         lcm_translation, _ = self.lcm_worker.translate(lucy_translation)
-        return lcm_translation
+        return lcm_translation, None
     
 
 class SimpleWsdTriangleTranslator(Worker):
