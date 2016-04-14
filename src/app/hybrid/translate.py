@@ -3,7 +3,7 @@
 import xmlrpclib
 import logging as logger
 from app.autoranking.application import Autoranking
-from featuregenerator.preprocessor import Normalizer, Tokenizer, Truecaser, Detokenizer
+from featuregenerator.preprocessor import Normalizer, Tokenizer, Truecaser, Detokenizer, Detruecaser
 from featuregenerator.blackbox.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.blackbox.counts import LengthFeatureGenerator
 from featuregenerator.reference.meteor.meteor import CrossMeteorGenerator
@@ -14,6 +14,7 @@ from app.autoranking.bootstrap import ExperimentConfigParser
 from featuregenerator.blackbox.wsd import WSDclient
 import pickle
 from xml.sax.saxutils import quoteattr, escape
+import sys
 
 class Worker:
     """
@@ -48,9 +49,29 @@ class MosesWorker(Worker):
     def translate(self, string):
         #send request to moses client
         string = escape(string)
-        print string
-        response = self.server.translate({'text': string})
-        return response['text'], response
+        response = False
+        efforts = 0
+        while response == False and efforts < 250:
+            try:
+                response = self.server.translate({'text': string})
+                response = response
+                efforts += 1
+            except Exception as e:
+                if "[Errno 111]" in str(e):
+                    sys.stderr.write("Connection to MosesServer was refused, trying again in 20 secs...")
+                    sleep(20)
+                else:
+                    raise e
+
+        if response == False:
+            sys.exit("Connection to MosesServer was refused for more than 5 minutes.")
+        text = response['text']
+
+        # it has been observed that some times the xmlrpc returns unicode, some others string
+        # make it uniform
+        if isinstance(text, unicode):
+            text = text.encode('utf-8')
+        return text, response
 
 
 class MtMonkeyWorker(Worker):
@@ -84,11 +105,7 @@ class MtMonkeyWorker(Worker):
             text = " ".join(string_result)
         except:
             text = ""
-        #    logger.info('Worker alive check -- result: %s' % result)
         return text, result
-        #except Exception, e:
-        #    logger.info('Failed: Worker is busy (%s).' % e)
-        #return False
 
 import requests
 from requests.auth import HTTPBasicAuth
@@ -249,6 +266,8 @@ class WsdMosesWorker(Worker):
         self.moses_worker = MosesWorker(moses_url)
         self.tokenizer = Tokenizer(source_language)
         self.truecaser = Truecaser(source_language, truecaser_model)
+        self.detokenizer = Detokenizer(target_language)
+        self.detruecaser = Detruecaser(target_language)
     
     def translate(self, string):
         sys.stderr.write("Sending to WSD Analyzer\n")
@@ -260,6 +279,8 @@ class WsdMosesWorker(Worker):
         
         sys.stderr.write("Sending to WSD Moses:\n {}".format(wsd_source))
         moses_translation, _ = self.moses_worker.translate(wsd_source)
+        moses_translation = self.detruecaser.process_string(moses_translation)
+        moses_translation = self.detokenizer.process_string(moses_translation)
         return moses_translation, None
     
     
