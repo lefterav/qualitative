@@ -36,13 +36,21 @@ def translate_sentences(translator, source_sentences, writer):
             translation, _ = translator.translate(source)
         else:
             translation = ""
-        writer.writerow([id_test_point, id_version, translation])
+        writer.writerow([id_test_point, id_version, translation.encode('utf-8')])
 
 def select_translator(args):
     translator_name = "{}Worker".format(args.engine)
     translator_class = eval(translator_name)
     if args.wsd:
         translator = translator_class(args.url, args.wsd)
+    elif args.engine=="Lucy":
+        translator = translator_class(args.url, source_language=args.srclang,
+                                      target_language=args.tgtlang,
+                                      subject_areas=args.subject)
+    elif args.engine=="LcM":
+        translator = translator_class(args.url, args.lcmurl, source_language=args.srclang,
+                                      target_language=args.tgtlang,
+                                      )
     else:
         translator = translator_class(args.url)
     return translator
@@ -55,11 +63,21 @@ if __name__ == '__main__':
     parser.add_argument("--engine")
     parser.add_argument("--url")
     parser.add_argument("--wsd")
+    parser.add_argument("--lcmurl")
+    parser.add_argument("--output")
+    parser.add_argument("--srclang")
+    parser.add_argument("--tgtlang")
+    parser.add_argument("--subject", default="(DP TECH CTV ECON)")
 
     args = parser.parse_args()
     
     source_sentences = get_source_sentences(input)
     translator = select_translator(args)
-    writer = csv.writer(sys.stdout, dialect='excel')
-    translate_sentences(translator, source_sentences, writer)
+    if args.output:
+        with open(args.output, 'w') as outfile:
+            writer = csv.writer(outfile, dialect='excel')
+            translate_sentences(translator, source_sentences, writer)
+    else:
+        writer = csv.writer(sys.stdout, dialect='excel')
+        translate_sentences(translator, source_sentences, writer)
     
