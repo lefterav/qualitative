@@ -25,8 +25,6 @@ class RankingExperiment(PyExperimentSuite):
     
     restore_supported = True
     def __init__(self):
-        # We need a java gateway for METEOR
-        self.gateway = LocalJavaGateway(java=self.get("general","java"))
         # Allow restoring pipeline
         self.restore_supported = True
         # Initialize superclass from Experiment Suite
@@ -34,6 +32,9 @@ class RankingExperiment(PyExperimentSuite):
     
     def reset(self, params, rep):
         
+        # We need a java gateway for METEOR
+        self.gateway = LocalJavaGateway(java=params["java"])
+
         logging.info("Running in {}".format(os.getcwd()))
 
         #=======================================================================
@@ -166,10 +167,10 @@ class RankingExperiment(PyExperimentSuite):
         learner = params["learner"]
         ranker = forname(learner=learner)
 
-        metadata = ranker.train(dataset_filename = self.trainingset_filename, 
-                     output_filename = output_filename,
-                     metaresults_prefix = "{}.meta.".format(rep),
-                     **params)
+        metadata.update(ranker.train(dataset_filename = self.trainingset_filename, 
+                        output_filename = output_filename,
+                        metaresults_prefix = "{}.meta.".format(rep),
+                        **params))
         
         logging.info("Ranker fitted sucessfully")                             
                          

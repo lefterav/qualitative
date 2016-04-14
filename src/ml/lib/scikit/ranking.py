@@ -239,6 +239,7 @@ class SkLearner:
         self.learner = self.name
         self.scaler = None
         self.featureselector = None
+        log.info("Initialized {} from scikit".format(self.name))
    
     
     
