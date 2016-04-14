@@ -170,7 +170,7 @@ class SegmentLevelData(object):
 
     def compute_tau_confidence(self, metric, direction, variant, count_length, samples=1000):
         if (metric,direction) not in self.metrics_data:
-            return None, None
+            return None, None, None, None
 
         metric_data = self.metrics_data[metric,direction]
         comparisons = self.human_comparisons[direction]
