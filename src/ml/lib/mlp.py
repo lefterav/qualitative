@@ -29,11 +29,17 @@ def dataset_to_instances(filename,
     i = 0
     data = []
     ranks = set()
+    skipped = []
     
     #iterate for each parallel sentence in the data
     for parallelsentence in dataset.get_parallelsentences():
         i += 1
+        #try:
         ranking = Ranking(parallelsentence.get_target_attribute_values(class_name))
+        #except KeyError:
+            #if rank is missing, skip this parallelsentence I guess
+        #    skipped.append(parallelsentence.get_id())
+        #    continue
         # needs to be reversed, cause normally RankList works with scores 
         ranking = ranking.normalize().inverse().integers()
         lengths = []
@@ -71,6 +77,8 @@ def dataset_to_instances(filename,
             #gather the possible rank values
             ranks.add(rank)
             
+    if len(skipped) > 0:
+        log.warning("Conversion from rankings to MLPython structures failed to convert {} rankings: {}".format(len(skipped), skipped))
     max_len = max(lengths)
     data = np.array(data)
     metadata = {'input_size' : max_len, #size of feature vector
@@ -130,7 +138,11 @@ def parallelsentence_to_instance(parallelsentence, attribute_set,
     return RankingProblem(data, metadata)
 
 class ListNetRanker(Ranker):
-    
+   
+    def initialize(self):
+        assert ("ListNet" in self.name)
+        log.info("Initialized ListNet")
+
     def train(self, dataset_filename, 
               #scale=True, 
               #feature_selector=None, 
@@ -145,6 +157,7 @@ class ListNetRanker(Ranker):
               #metaresults_prefix="./0-",
               reader=CEJcmlReader,
               n_stages=200,
+              hidden_size=50, learning_rate=0.01, weight_per_query=False, alpha=1.0,
               **kwargs):
         
         #attribute set cannot be None, cause we have to conform the test set
@@ -156,7 +169,7 @@ class ListNetRanker(Ranker):
         self.class_name = class_name
         
         #initialize the learner class
-        self.learner = ListNet(n_stages=n_stages, **kwargs)
+        self.learner = ListNet(n_stages, hidden_size, learning_rate, weight_per_query, alpha)
         #convert all the dataset to the batch format that ListNet expects
         trainset = dataset_to_instances(dataset_filename, self.attribute_set, 
                                         class_name, reader=reader, **kwargs)
@@ -172,6 +185,7 @@ class ListNetRanker(Ranker):
         sample_data, sample_metadata = trainset.raw_source()
         sample_data = SubsetProblem(sample_data, subset=set([0]))
         self.data_structure = RankingProblem(sample_data, sample_metadata)
+        return {}
     
     def _get_first_instance(self, sample_data):
         """
@@ -194,12 +208,12 @@ class ListNetRanker(Ranker):
                        "param_alpha" : l.alpha,
                        "param_merge_document_and_query" : l.merge_document_and_query,
                        "param_seed" : l.seed,
-                       "rng": l.rng,
+#                       "rng": l.rng,
                        "max_score": l.max_score,
-                       "V": l.V,
-                       "c": l.c,
-                       "W": l.W,
-                       "b": l.b
+#                       "V": l.V,
+#                       "c": l.c,
+#                       "W": l.W,
+#                       "b": l.b
                        }
         return description
             
