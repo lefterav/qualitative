@@ -10,6 +10,7 @@ from featuregenerator import FeatureGenerator
 import subprocess
 import util
 import os
+import codecs
 
 class Preprocessor(FeatureGenerator):
     """
@@ -109,15 +110,18 @@ class CommandlinePreprocessor(Preprocessor):
         
         
 
-        
+        #block input        
         #self.process.stdin = codecs.getwriter('utf-8')(self.process.stdin)
         #self.process.stdout = codecs.getreader('utf-8')(self.process.stdout)
     
     def process_string(self, string):
-        #string = string.decode('utf-8')
-        
-        #string = string.encode('utf-8')
-        self.process.stdin.write('{0}{1}\n'.format(string, ' '*10240))
+        print type(string)
+        if isinstance(string, unicode):
+            string = u'{0}{1}\n'.format(string, u' '*10240)
+            string = string.encode('utf-8')
+        else:
+            string = '{0}{1}\n'.format(string, ' '*10240)
+        self.process.stdin.write(string)
         self.process.stdin.flush()   
         self.process.stdout.flush()
         
@@ -198,7 +202,7 @@ class Detokenizer(CommandlinePreprocessor):
     def __init__(self, lang):
         path = util.__path__[0]
         path = os.path.join(path, "detokenizer.perl")
-        command_template = "perl {path} -l {lang}"
+        command_template = "perl {path} -b -l {lang}"
         super(Detokenizer, self).__init__(path, lang, {}, command_template)
     
 
@@ -209,7 +213,14 @@ class Truecaser(CommandlinePreprocessor):
         command_template = "perl {path} -model {model}"
         super(Truecaser, self).__init__(path, lang, {"model": model}, command_template)
 
-    
+class Detruecaser(CommandlinePreprocessor):
+    def __init__(self, lang):
+        path = util.__path__[0]
+        path = os.path.join(path, "detruecase.perl")
+        command_template = "perl {path} -b"
+        super(Detruecaser, self).__init__(path, lang, {}, command_template)
+
+   
     
 if __name__ == '__main__':
     from dataprocessor.input.jcmlreader import JcmlReader
