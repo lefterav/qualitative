@@ -36,7 +36,11 @@ def translate_sentences(translator, source_sentences, writer):
             translation, _ = translator.translate(source)
         else:
             translation = ""
-        writer.writerow([id_test_point, id_version, translation.encode('utf-8')])
+        try:
+            writer.writerow([id_test_point, id_version, translation.encode('utf-8')])
+        except UnicodeDecodeError: #translation type varies between unicode and string
+            writer.writerow([id_test_point, id_version, translation])
+
 
 def select_translator(args):
     translator_name = "{}Worker".format(args.engine)
