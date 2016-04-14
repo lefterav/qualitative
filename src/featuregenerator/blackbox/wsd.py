@@ -1,7 +1,8 @@
 import ijson
 import re
 import urllib2
-
+import sys
+from time import sleep
 
 def get_token_senses(sentence):
     token_senses = {}
@@ -145,10 +146,30 @@ class WSDclient:
     def __init__(self, url):
         self.url = url
         
-    def annotate(self, string):
-        params = urlencode([("document", string), ("id", 1)])
-        response = urllib2.urlopen("{}/disambiguate?{}".format(self.url, params)).read()
-        sys.stderr.write(response)
+    def annotate(self, string, bypass_exceptions=True):
+        params = urlencode([("document", string.lower()), ("id", 1)])
+        url_string = "{}/disambiguate?{}".format(self.url, params)
+        sys.stderr.write(url_string + "\n")
+
+        efforts = 0
+        response = None
+        while response == None and efforts < 30:
+            efforts += 1
+            try:
+                response = urllib2.urlopen(url_string).read()
+            except Exception as e:
+                if "[Errno 104]" in str(e):
+                    sys.stderr.write("Connection with WSD analyzer reset by peer. Trying again in a minute\n")
+                    sleep(60)
+                elif "HTTP Error 500" in str(e):
+                    sys.stderr.write("WSD analyzer could not analyze this sentence and returned Error 500\n")
+                    return " ".join(["{}|-".format(t) for t in string.split()])
+                else:
+                    sys.exit("Error while talking with WSD: {}".format(e))
+
+        if response == None :
+            sys.exit("WSD analyzer did not respond for more than 30 minutes")
+        sys.stderr.write(response + "\n")
         responsefile = StringIO.StringIO()
         responsefile.write('{"documents": [' + response + ' ]}')
         responsefile.seek(0)
