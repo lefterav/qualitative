@@ -32,8 +32,8 @@ from sklearn.ensemble.forest import ExtraTreesClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.lda import LDA
-from sklearn.qda import QDA
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis as QDA
 
 #scikit others
 from sklearn.svm.classes import SVR
