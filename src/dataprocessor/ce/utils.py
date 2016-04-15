@@ -84,13 +84,15 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
     #them in the suitable set
     parallelsentences_per_id = []
     previous_sentence_id = None
+    totalsentences = 0
+
     for parallelsentence in reader.get_parallelsentences():
-        sentence_id =  "{}:{}".format(parallelsentence.attributes["testset"], parallelsentence.attributes["id"])
+        sentence_id =  parallelsentence.get_compact_id()
 
         #sentence_id = parallelsentence.get_compact_id()
         if previous_sentence_id != None and sentence_id != previous_sentence_id:
-            logging.info("Fold {} will have an actual number of sentences {} instead of {}".format(fold, len(parallelsentences_per_id), batch_size))
             _flush_per_id(parallelsentences_per_id, training_writer, test_writer, counter, test_start, test_end)
+            totalsentences += len(parallelsentences_per_id)
             parallelsentences_per_id = []
         
         parallelsentences_per_id.append(parallelsentence)
@@ -98,7 +100,9 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
         counter+=1
         
     _flush_per_id(parallelsentences_per_id, training_writer, test_writer, counter, test_start, test_end)
+    totalsentences += len(parallelsentences_per_id)
 
+    logging.info("Fold {} will have an actual number of sentences {} instead of {}".format(fold, totalsentences, batch_size))
     training_writer.close()
     test_writer.close()
         
