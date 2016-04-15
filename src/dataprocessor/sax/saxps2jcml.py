@@ -36,7 +36,7 @@ def k(string):
     """
     Makes string suitable for XML attribute name
     """
-    string = unidecode(string)
+    string = unidecode(string.decode('utf-8'))
     string = string.replace(' ', '_')
     string = string.translate(stringlib.maketrans(u"",u""), ALLOWED_PUNCTUATION)
     return string

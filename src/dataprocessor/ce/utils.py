@@ -76,7 +76,7 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
     if fold == repetitions-1:
         test_start = 0 
     
-    logging.info("Test set for fold {} will be between sentences {} and {}".format(fold, test_start, test_end))
+    logging.info("Test set for fold {} will be between sentences {} and {}".format(fold, test_start, test_end-1))
     
     counter = 0
     
@@ -87,7 +87,7 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
     totalsentences = 0
 
     for parallelsentence in reader.get_parallelsentences():
-        sentence_id =  parallelsentence.get_compact_id()
+        sentence_id = (parallelsentence.attributes.setdefault("testset", None), parallelsentence.get_id())
 
         #sentence_id = parallelsentence.get_compact_id()
         if previous_sentence_id != None and sentence_id != previous_sentence_id:
@@ -101,8 +101,8 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
         
     _flush_per_id(parallelsentences_per_id, training_writer, test_writer, counter, test_start, test_end)
     totalsentences += len(parallelsentences_per_id)
-
-    logging.info("Fold {} will have an actual number of sentences {} instead of {}".format(fold, totalsentences, batch_size))
+    if totalsentences != batch_size:
+        logging.info("Fold {} will have an actual number of sentences {} instead of {}".format(fold, totalsentences, batch_size))
     training_writer.close()
     test_writer.close()
         

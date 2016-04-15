@@ -115,7 +115,6 @@ class CommandlinePreprocessor(Preprocessor):
         #self.process.stdout = codecs.getreader('utf-8')(self.process.stdout)
     
     def process_string(self, string):
-        print type(string)
         if isinstance(string, unicode):
             string = u'{0}{1}\n'.format(string, u' '*10240)
             string = string.encode('utf-8')
