@@ -31,7 +31,13 @@ class RankingExperiment(PyExperimentSuite):
         super(RankingExperiment, self).__init__()
     
     def reset(self, params, rep):
-        
+    
+        if "rank" in params["class_name"] or \
+            params["class_name"] in ["ref-lev", "ref-wer", "ref-hj_TER"]:
+            self.invert_ranks = params.setdefault("invert_ranks", False)
+        else:
+            self.invert_ranks = params.setdefault("invert_ranks", False)
+
         # We need a java gateway for METEOR
         self.gateway = LocalJavaGateway(java=params["java"])
 
@@ -166,6 +172,7 @@ class RankingExperiment(PyExperimentSuite):
         logging.info("Fitting ranker based on {}".format(params["learner"]))                                                
         learner = params["learner"]
         ranker = forname(learner=learner)
+        params["invert_ranks"] = self.invert_ranks
 
         metadata.update(ranker.train(dataset_filename = self.trainingset_filename, 
                         output_filename = output_filename,
@@ -207,27 +214,18 @@ class RankingExperiment(PyExperimentSuite):
         """
         class_name = params["class_name"]
         
-        #set default values for inverting rank, if not provided as param
-        if "rank" not in class_name:
-            invert_ranks = True
-        else:
-            invert_ranks = False
-        
-        #otherwise load param setting
-        invert_ranks = params.setdefault("invert_ranks", invert_ranks)
-
         #empty ordered dict to load scores
         scores = OrderedDict()
         
         for i, _ in enumerate(self.testset_filenames):
             #measure ranking scores for soft recomposition
             testset = CEJcmlReader(self.testset_output_soft[i], all_general=True, all_target=True) 
-            scores_soft = scoring.get_metrics_scores(testset, "rank_soft", class_name , prefix="{}.soft".format(i), invert_ranks=invert_ranks)
+            scores_soft = scoring.get_metrics_scores(testset, "rank_soft", class_name , prefix="{}.soft".format(i), invert_ranks=self.invert_ranks)
             scores.update(scores_soft)
             
             #ranking scores for hard recomposition
             testset = CEJcmlReader(self.testset_output_hard[i], all_general=True, all_target=True)        
-            scores_hard = scoring.get_metrics_scores(testset, "rank_hard", class_name , prefix="{}.hard".format(i), invert_ranks=invert_ranks)
+            scores_hard = scoring.get_metrics_scores(testset, "rank_hard", class_name , prefix="{}.hard".format(i), invert_ranks=self.invert_ranks)
             
             scores.update(scores_hard)
             logging.debug("Scores: {}".format(scores))
@@ -238,7 +236,7 @@ class RankingExperiment(PyExperimentSuite):
     def evaluate_selection(self, params, rep):
         refscores = OrderedDict()
         target_language = params["langpair"].split("-")[1]
-        if "rank" in params["class_name"]:
+        if not self.invert_ranks:
             function=min
         else:
             function=max
@@ -297,6 +295,10 @@ class RankingExperiment(PyExperimentSuite):
             testset_filenames = params["test_sets"].format(**params).split(',')
             self.testset_filenames = [os.path.join(params["test_path"], f) for f in testset_filenames]
         #if no testing is required
+        elif params["test"] == "last_tenth":
+            self.trainingset_filename = "{}.trainingset.jcml".format(rep)
+            testset_filename = "{}.testset.jcml".format(rep)
+            self.testset_filenames = [testset_filename]
         elif params["test"] == "None":
             self.trainingset_filename = dataset_filename
             self.testset_filenames = []
