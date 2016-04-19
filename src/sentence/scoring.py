@@ -121,11 +121,11 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
         for pairwise_parallelsentence in pairwise_parallelsentences:
             translation1 = pairwise_parallelsentence.get_translations()[0]
             system_id1 = translation1.get_system_name()
-            human_rank1 = int(translation1.get_attribute(original_rank_name))            
+            human_rank1 = float(translation1.get_attribute(original_rank_name))            
             
             translation2 = pairwise_parallelsentence.get_translations()[1]
             system_id2 = translation2.get_system_name()
-            human_rank2 = int(translation2.get_attribute(original_rank_name))
+            human_rank2 = float(translation2.get_attribute(original_rank_name))
             
             compare = lambda x, y: '<' if x < y else '>' if x > y else '='
             extracted_comparisons = [
@@ -136,9 +136,9 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
         for translation in translations:
             system_id = translation.get_system_name()
             predicted_rank_value = translation.get_attribute(predicted_rank_name)
-            predicted_rank = -1.00 * int(predicted_rank_value)
+            predicted_rank = -1.00 * float(predicted_rank_value)
             wmtdata.metrics_data[metric,lang_pair][system_id][segment] = predicted_rank
-            wmtdata.metrics_data[metric,lang_pair][system_id][segment] = predicted_rank
+            #wmtdata.metrics_data[metric,lang_pair][system_id][segment] = predicted_rank
     
     scores = OrderedDict()
     for variant in variants_with_confidence:
