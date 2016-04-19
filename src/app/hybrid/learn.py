@@ -31,6 +31,7 @@ class RankingExperiment(PyExperimentSuite):
         super(RankingExperiment, self).__init__()
     
     def reset(self, params, rep):
+        #TODO: find efficient way to avoid temporary data replication
     
         if "rank" in params["class_name"] or \
             params["class_name"] in ["ref-lev", "ref-wer", "ref-hj_TER"]:
@@ -61,9 +62,7 @@ class RankingExperiment(PyExperimentSuite):
         self.discrete_attributes = params["discrete_attributes"].split(",")
         self.attribute_set = self._read_attributeset(params)
        
-        
-            
-        
+
     def _join_or_link(self, source_path, source_datasets, ready_dataset):
         """
         Create a joined file from the given datasets if needed,
@@ -94,6 +93,7 @@ class RankingExperiment(PyExperimentSuite):
         source_attributes = self._read_attributes(params, "source")
         target_attributes = self._read_attributes(params, "target")    
         attribute_set = AttributeSet(general_attributes, source_attributes, target_attributes)
+        #TODO: Attset for 292 is empty!!!
         return attribute_set
     
     def _read_attributes(self, params, key):
@@ -217,6 +217,7 @@ class RankingExperiment(PyExperimentSuite):
         #empty ordered dict to load scores
         scores = OrderedDict()
         
+        #@TODO: wmt ranks are none
         for i, _ in enumerate(self.testset_filenames):
             #measure ranking scores for soft recomposition
             testset = CEJcmlReader(self.testset_output_soft[i], all_general=True, all_target=True) 
