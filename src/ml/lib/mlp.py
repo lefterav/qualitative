@@ -16,6 +16,7 @@ def dataset_to_instances(filename,
                          default_value = 0,
                          replace_infinite=False,
                          imputer=True,
+                         invert_ranks=False,
                          **kwargs):
 
     dataset = reader(filename, all_target=True)    
@@ -40,8 +41,12 @@ def dataset_to_instances(filename,
             #if rank is missing, skip this parallelsentence I guess
         #    skipped.append(parallelsentence.get_id())
         #    continue
-        # needs to be reversed, cause normally RankList works with scores 
-        ranking = ranking.normalize().inverse().integers()
+        # for rank, levenstein distance etc needs to be reversed, cause normally RankList works with scores 
+        if not invert_ranks:
+            ranking = ranking.normalize().inverse().integers()
+        # for BLEU, METEOR and other metrics needs not be reversed
+        else:
+            ranking = ranking.normalize().integers()
         lengths = []
         
         #get all attributes from parallel sentence
@@ -88,13 +93,18 @@ def dataset_to_instances(filename,
     return problemdata    
 
 def parallelsentence_to_instance(parallelsentence, attribute_set,
+                                 invert_ranks=False,
                                  class_name="rank"):
     par_attnames = attribute_set.parallel_attribute_names
     src_attnames = attribute_set.source_attribute_names
     tgt_attnames = attribute_set.target_attribute_names
     ranking = Ranking(parallelsentence.get_target_attribute_values(class_name))
     # needs to be reversed, cause normally RankList works with scores 
-    ranking = ranking.normalize().inverse().integers()
+    if not invert_ranks:
+        ranking = ranking.normalize().inverse().integers()
+        # for BLEU, METEOR and other metrics needs not be reversed
+    else:
+        ranking = ranking.normalize().integers()
     lengths = []
     
     #get all attributes from parallel sentence
@@ -158,7 +168,11 @@ class ListNetRanker(Ranker):
               reader=CEJcmlReader,
               n_stages=200,
               hidden_size=50, learning_rate=0.01, weight_per_query=False, alpha=1.0,
+              invert_ranks=False,
               **kwargs):
+
+        #remember whether ranks have been inverted during training, cause they have to be inverted on testing too
+        self.invert_ranks = invert_ranks
         
         #attribute set cannot be None, cause we have to conform the test set
         #to the same structure
@@ -172,7 +186,8 @@ class ListNetRanker(Ranker):
         self.learner = ListNet(n_stages, hidden_size, learning_rate, weight_per_query, alpha)
         #convert all the dataset to the batch format that ListNet expects
         trainset = dataset_to_instances(dataset_filename, self.attribute_set, 
-                                        class_name, reader=reader, **kwargs)
+                                        class_name, reader=reader, invert_ranks=invert_ranks, 
+                                        **kwargs)
         self.attribute_set = attribute_set
         self.class_name = class_name
         log.info("Starting training ListNetRanker")     
@@ -228,7 +243,14 @@ class ListNetRanker(Ranker):
         instance = self.data_structure.apply_on(instance.data, 
                                                 instance.metadata)
         ranking = self.learner.use(instance)[0]
-        ranking = Ranking(ranking).normalize().integers()
+        # if we reversed ranks on training (rank, levenshtein) order stays the same
+        if not invert_ranks:
+            ranking = ranking.normalize().integers()
+        # otherwise for BLEU, METEOR and other metrics needs to be reversed
+        # cause we will evaluate against BLEU or METEOR
+        else:
+            ranking = ranking.normalize().inverse().integers()
+ 
         ranked_parallelesentence = deepcopy(parallelsentence)
         for simplesentence, new_rank in zip(ranked_parallelesentence.tgt, ranking):
             simplesentence.attributes[new_rank_name] = new_rank
