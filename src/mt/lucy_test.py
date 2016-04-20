@@ -15,13 +15,17 @@ if __name__ == '__main__':
                     datefmt='%m-%d %H:%M')
     
     lucy = AdvancedLucyWorker(url='http://msv-3251.sb.dfki.de:8080/AutoTranslateRS/V1.2/mtrans/exec',
-                      source_language="en",
-                      target_language="de",
-                      unknowns=True,
-                      moses_uri = "http://lns-87247.dfki.uni-sb.de:9200"
-                      )
-    translation, params = lucy.translate('You can view this information by going to View> Summary ...')
-    print translation
+                    source_language="en",
+                    target_language="de",
+                    menu_translator="Lucy",
+                    menu_quotes=True, 
+                    moses_uri = "http://lns-87247.dfki.uni-sb.de:9200"
+                    )
+    text = """In the upper right corner of the Panda panel there is an icon in the form of three horizontal lines. Click on "License > Data License"; then click on "Refresh Data". In a few seconds a window appears telling you whether the product has been activated."""
+    translation, params = lucy.translate(text)
     for key, value in params.iteritems():
         print key, value
-        
+    print translation
+
+    #print lucy._preprocess_menu_items(text)
+    
