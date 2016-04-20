@@ -78,7 +78,7 @@ class MtMonkeyWorker(Worker):
         request = {"action": "translate",
         "sourceLang": "en",
         "targetLang": "de",
-        "text": escape(string)}
+        "text": string}
         result = self.server.process_task(request)
         string_result = []
         try:
