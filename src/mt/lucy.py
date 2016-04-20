@@ -1,18 +1,22 @@
+# -*- coding: utf-8 -*-
 '''
 Created on 26 Nov 2014
 
 @author: Eleftherios Avramidis
 '''
 
-import logging as log
 from requests.auth import HTTPBasicAuth
+from urllib import quote, unquote
 from xml.sax.saxutils import quoteattr
+import HTMLParser
+import logging as log
 import re
 import requests
 import xml.etree.ElementTree as et
 
 from mt.worker import Worker
 from mt.moses import MtMonkeyWorker
+from featuregenerator.preprocessor import Normalizer, Tokenizer
 
 #Template used for every Lucy request
 TEMPLATE = """<task>
@@ -104,66 +108,193 @@ class LucyWorker(Worker):
         #text = re.sub("\<M\[(?P<m>[^]]*)\]\>", "\g<m>", text)
         return text, params
  
- 
+def encode_chunk_simple(tokens):
+    text = " ".join(tokens)
+    return "$menu::{}$".format(quote(text))
+
+def encode_chunk_quoted(tokens):
+    text = " ".join(tokens)
+    # remove existing quotes, since we are going to add them anyway
+    text = text.replace('"', '')
+    items = text.split(" > ")
+    # put quotes before and after every > separator
+    quoted_text = '" > "'.join(["{}".format(item) for item in items])
+    # put quotes before and after every menu chunk
+    return '$menu::"{}"$'.format(quote(quoted_text))
+
+
 class AdvancedLucyWorker(LucyWorker):   
     
-    def __init__(self, moses_uri, **kwargs):
+    def __init__(self, moses_uri, 
+                 unknowns=True,
+                 menu_items=True,
+                 menu_quotes=False, # or 'quoted'
+                 menu_translator="Moses", 
+                 normalize=True, **kwargs):
+        
         self.moses = MtMonkeyWorker(moses_uri)
-        kwargs["unknowns"] = True
+        
+        # normalizer fixes punctuation like weird quotes
+        if normalize:
+            self.normalizer = Normalizer(kwargs["source_language"])
+        else:
+            self.normalizer = None
+        self.tokenizer = Tokenizer(kwargs["source_language"])
+            
+        # should Lucy annotate unknown words?
+        kwargs["unknowns"] = unknowns
+        self.unknowns = unknowns
+        
+        # specify whether the menu items should be handled
+        self.menu_items = menu_items
+        self.menu_translator = menu_translator
+        self.menu_quotes = menu_quotes
+        
         super(AdvancedLucyWorker, self).__init__(**kwargs)
     
     def translate(self, text):
-        text, description = super(AdvancedLucyWorker, self).translate(text)
-        text, unk_description = self._process_unknowns(text)
-        description.update(unk_description)
+        
+        description = {}
+        
+        if self.normalizer:
+            text = self.normalizer.process_string(text)
+        
+        if self.menu_items:
+            text, menu_description = self._preprocess_menu_items(text, self.menu_quotes)
+            description.update(menu_description)
+        
+        text, lucy_description = super(AdvancedLucyWorker, self).translate(text)
+        description.update(lucy_description)
+        
+        if self.menu_items:
+            text = self._postprocess_menu_items(text, self.menu_translator)
+        
+        # if Lucy has annotated unknown words, we should pass them to moses
+        if self.unknowns:
+            text, unk_description = self._process_unknowns(text)
+            description.update(unk_description)
         return text, description
     
-    def _preprocess_menu_items(self, text):
-        #tokenize the > sign
+    def _preprocess_menu_items(self, text, menu_quotes=False):
+        
+        # select the corresponding function, depending on we want
+        # items between the > signs to be in quotes
+        if menu_quotes:
+            process_chunk = encode_chunk_quoted
+        else:
+            process_chunk = encode_chunk_simple
+        
+        # tokenize the > sign
         text = re.sub("(?P<word>\w)>", "\g<word> >", text)
         
+        # collect metadata from the translation and processing steps
+        description = {}
+        
+        # typical menu words that are not capitalized
+        supplements = ["as", "...", "…" , "for", "by", "status"]
+        
+        # identifiy the positions of the > separators
         tokens = text.split()
         separator_indices = [i for i in range(len(tokens)) if tokens[i]==">"]
-        collected_chunk_indices = set()
-        
-        supplements = ["as", "..." , "for", "by", "to", "status"]
-        
+
+        # gather capitalized chunks before every > separator
+        backwards_chunk_indices = set()
         for index in separator_indices:
             backwards_index = index - 1
-            
             new_chunk = []
-            while str.istitle(tokens[backwards_index]) \
-            or tokens[backwards_index] in supplements:
+            while backwards_index >= 0 \
+            and (str.istitle(tokens[backwards_index][:2]) \
+            or tokens[backwards_index] in supplements):
                 new_chunk.append(backwards_index)
                 backwards_index-=1
             
             if new_chunk:
-                collected_chunk_indices.add(new_chunk)
-            
+                backwards_chunk_indices.add((new_chunk[-1], new_chunk[0]))
+                
+        # gather capitalized chunks after every > separator
+        forward_chunk_indices = set()
+        forward_chunk_dict = {}        
+        for index in separator_indices:
             forwards_index = index + 1
             new_chunk = []
-            while str.istitle(tokens[forwards_index]) \
-            or tokens[forwards_index] in supplements:
+            while forwards_index < len(tokens) \
+            and (str.istitle(tokens[forwards_index][:2]) \
+            or tokens[forwards_index] in supplements):
                 new_chunk.append(forwards_index)
                 forwards_index+=1
                 
             if new_chunk:
-                collected_chunk_indices.add(new_chunk)
+                forward_chunk_indices.add((new_chunk[0], new_chunk[-1]))
+                forward_chunk_dict[new_chunk[0]] = (new_chunk[0], new_chunk[-1])
         
-        chunk_indices_list = sorted(list(collected_chunk_indices))
+        description["menu_items"] = len(backwards_chunk_indices.union(forward_chunk_indices))
         
-        i = 0
-        new_tokens = []
-        for token in tokens:
-            tokens_chunk = [] 
-            for chunk_indices in chunk_indices_list:
-                start_index = chunk_indices[0]
-                end_index = chunk_indices[1]
-                if i > start_index and i < end_index+1:
-                    tokens_chunk.append(token)
-            
-            i += 1
+        # join adjacent chunks
+        joined_chunks = []
+        new_joined_chunk = []
+        for chunk_start, chunk_end in sorted(list(backwards_chunk_indices)):
+            forward_chunk_start = chunk_end + 2
+            try:
+                forward_chunk_start, forward_chunk_end = forward_chunk_dict[forward_chunk_start]
+            except:
+                continue
+            if not (chunk_start, chunk_end) in forward_chunk_indices:
+                new_joined_chunk.append(chunk_start)
+            if not (forward_chunk_start, forward_chunk_end) in backwards_chunk_indices:
+                new_joined_chunk.append(forward_chunk_end)
+                joined_chunks.append(new_joined_chunk)
+                new_joined_chunk = []
                 
+        index = 0
+        
+        description["menus"] = len(joined_chunks)
+        
+        # finally go through the original string token by token
+        # and assemble a new string where item menus are replaced by
+        # encoded placeholders 
+        final_tokens = []
+        for index, token in enumerate(tokens):
+            found_in_chunk = False
+            start_of_chunk = False
+            for chunk_start, chunk_end in joined_chunks:
+                if index == chunk_start:
+                    start_of_chunk = True
+                    break
+                elif (index > chunk_start and index <= chunk_end):
+                    found_in_chunk = True
+                    break
+            if start_of_chunk:
+                final_tokens.append(process_chunk(tokens[chunk_start:chunk_end+1]))
+            elif not found_in_chunk:
+                final_tokens.append(token)
+                
+        return " ".join(final_tokens), description
+    
+    
+    def _postprocess_menu_items(self, text, translator="Moses"):
+        menu_chunks = re.findall("\$menu::([^$]*)\$", text)
+        log.debug("Post-processing {} menu chunks".format(len(menu_chunks)))
+        for chunk in menu_chunks:
+            # break the placeholder into normal characters 
+            clean_chunk = unquote(chunk)
+             
+            #clean_chunk = self.tokenizer.process_string(clean_chunk)
+            # get the translation from Moses (or lucy?)
+            if translator == "Moses":
+                log.debug("Sending clean menu chunk to Moses: '{}'".format(clean_chunk))
+                chunk_translation, _ = self.moses.translate(clean_chunk)
+                log.debug("Moses returned menu chunk: '{}'".format(chunk_translation))
+            else:
+                chunk_translation = []
+                for item in clean_chunk.split(" > "):
+                    item_translation, _ = super(AdvancedLucyWorker, self).translate(item)
+                    chunk_translation.append(item_translation)
+                chunk_translation = " > ".join(chunk_translation)
+            
+            # unescape things like &gt;
+            #chunk_translation = HTMLParser.HTMLParser().unescape(chunk_translation)
+            # put the translation back in the position of the placeholder
+            text = text.replace("$menu::{}$".format(chunk), chunk_translation)
         return text
         
     
