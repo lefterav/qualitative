@@ -86,6 +86,8 @@ class MtMonkeyWorker(Worker):
                 for translated in translation['translated']:
                     string_result.append(translated['text'])
             text = " ".join(string_result)
+            if isinstance(text, unicode):
+                text = text.encode('utf-8')
         except:
             text = ""
         return text, result

@@ -17,6 +17,7 @@ import xml.etree.ElementTree as et
 from mt.worker import Worker
 from mt.moses import MtMonkeyWorker
 from featuregenerator.preprocessor import Normalizer, Tokenizer
+from argparse import SUPPRESS
 
 #Template used for every Lucy request
 TEMPLATE = """<task>
@@ -130,6 +131,7 @@ class AdvancedLucyWorker(LucyWorker):
                  menu_items=True,
                  menu_quotes=False, # or 'quoted'
                  menu_translator="Moses", 
+                 suppress_where_it_says=False,
                  normalize=True, **kwargs):
         
         self.moses = MtMonkeyWorker(moses_uri)
@@ -139,12 +141,16 @@ class AdvancedLucyWorker(LucyWorker):
             self.normalizer = Normalizer(kwargs["source_language"])
         else:
             self.normalizer = None
+            
+        
+            
+            
         self.tokenizer = Tokenizer(kwargs["source_language"])
             
         # should Lucy annotate unknown words?
         kwargs["unknowns"] = unknowns
         self.unknowns = unknowns
-        
+        self.suppres_where_it_says = suppress_where_it_says
         # specify whether the menu items should be handled
         self.menu_items = menu_items
         self.menu_translator = menu_translator
@@ -158,6 +164,9 @@ class AdvancedLucyWorker(LucyWorker):
         
         if self.normalizer:
             text = self.normalizer.process_string(text)
+        
+        if self.suppres_where_it_says:
+            text = text.replace("where it says", "on")
         
         if self.menu_items:
             text, menu_description = self._preprocess_menu_items(text, self.menu_quotes)
@@ -256,7 +265,11 @@ class AdvancedLucyWorker(LucyWorker):
         for index, token in enumerate(tokens):
             found_in_chunk = False
             start_of_chunk = False
-            for chunk_start, chunk_end in joined_chunks:
+            for chunk_indices in joined_chunks:
+                try:
+                    chunk_start, chunk_end = chunk_indices
+                except ValueError:
+                    continue
                 if index == chunk_start:
                     start_of_chunk = True
                     break
@@ -281,9 +294,9 @@ class AdvancedLucyWorker(LucyWorker):
             #clean_chunk = self.tokenizer.process_string(clean_chunk)
             # get the translation from Moses (or lucy?)
             if translator == "Moses":
-                log.debug("Sending clean menu chunk to Moses: '{}'".format(clean_chunk))
+                #log.debug("Sending clean menu chunk to Moses: '{}'".format(clean_chunk))
                 chunk_translation, _ = self.moses.translate(clean_chunk)
-                log.debug("Moses returned menu chunk: '{}'".format(chunk_translation))
+                #log.debug("Moses returned menu chunk: '{}'".format(chunk_translation))
             else:
                 chunk_translation = []
                 for item in clean_chunk.split(" > "):
