@@ -3,18 +3,18 @@ Created on Apr 12, 2016
 
 @author: lefterav
 '''
+import argparse
 from csv import DictReader
 import csv
 import sys
 import xmlrpclib
-import datetime
-import sys
-from app.hybrid.translate import MtMonkeyWorker, LucyWorker, WsdMosesWorker, LcMWorker
-import argparse
+
+from mt.moses import MtMonkeyWorker, WsdMosesWorker
+from mt.lucy import LucyWorker, AdvancedLucyWorker
+from mt.hybrid import LcMWorker
 
 url = "http://blade-3.dfki.uni-sb.de:8100/translate"
 proxy = xmlrpclib.ServerProxy(url)
-
 
 
 def get_source_sentences(csvfile):
@@ -47,7 +47,7 @@ def select_translator(args):
     translator_class = eval(translator_name)
     if args.wsd:
         translator = translator_class(args.url, args.wsd)
-    elif args.engine=="Lucy":
+    elif args.engine=="Lucy" or args.engine=="AdvancedLucy":
         translator = translator_class(args.url, source_language=args.srclang,
                                       target_language=args.tgtlang,
                                       subject_areas=args.subject)
