@@ -85,7 +85,7 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
     #create one reader and two writers (for training and test set respectively)    
     reader = CEJcmlReader(filename, all_general=True, all_target=True)
     training_writer = IncrementalJcml(training_filename)
-    test_writer = IncrementalJcml(test_filename)
+    test_writer = IncrementalJcml(intermediate_test_filename)
     
     #define where is the beginning and the end of the test set
     test_start = length - (batch_size * (fold+1))
@@ -95,7 +95,7 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
     if fold == repetitions-1:
         test_start = 0 
     
-    logging.info("Test set for fold {} will be between sentences {} and {}".format(fold, test_start, test_end-1))
+    logging.info("Test set for fold {} will be between HITs {} and {} (size: {})".format(fold, test_start, test_end-1, test_end-test_start))
     
     counter = 0
     
