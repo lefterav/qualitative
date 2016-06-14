@@ -1,7 +1,11 @@
-from dataprocessor.sax.saxps2jcml import IncrementalJcml
+from dataprocessor.sax.saxps2jcml import IncrementalJcml, Parallelsentence2Jcml
 from dataprocessor.ce.cejcml import CEJcmlReader
+from dataprocessor.input.jcmlreader import JcmlReader
+
 import logging
 import subprocess
+from sentence.pairwisedataset import FilteredPairwiseDataset,\
+    AnalyticPairwiseDataset
 
 def fold_jcml(filename, training_filename, test_filename, repetitions, fold, length=None):
     
@@ -46,9 +50,18 @@ def fold_jcml(filename, training_filename, test_filename, repetitions, fold, len
         
     training_writer.close()
     test_writer.close()
+
+def get_clean_testset(input_file, output_file):
+    plain_dataset = JcmlReader(input_file).get_dataset()
+#    plain_dataset.remove_ties()
+    analytic_dataset = AnalyticPairwiseDataset(plain_dataset) 
+    filtered_dataset = FilteredPairwiseDataset(analytic_dataset, 1.00)
+    filtered_dataset.remove_ties()
+    reconstructed_dataset = filtered_dataset.get_multiclass_set()
+    reconstructed_dataset.remove_ties()
+    Parallelsentence2Jcml(reconstructed_dataset.get_parallelsentences(), shuffle_translations=True).write_to_file(output_file)
     
-    
-def fold_jcml_respect_ids(filename, training_filename, test_filename, repetitions, fold, length=None):
+def fold_jcml_respect_ids(filename, training_filename, test_filename, repetitions, fold, length=None, clean_testset=True):
     
     if repetitions < 2:
         raise SystemExit('%i-fold cross validation does not make sense. Use at least 2 repetitions.'%repetitions)
@@ -56,6 +69,12 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
     if not length:
         length = int(subprocess.check_output(["grep", "-c", "<judgedsentence", filename]).strip())
         logging.info("Dataset has {} entries".format(length))
+    
+    if clean_testset:
+        intermediate_test_filename = test_filename.replace(".jcml", ".unc.jcml")
+        assert(intermediate_test_filename != test_filename)
+    else:
+        intermediate_test_filename = test_filename
     
     #get how big each batch should be
     batch_size = length // repetitions
@@ -105,6 +124,9 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
         logging.info("Fold {} will have an actual number of sentences {} instead of {}".format(fold, totalsentences, batch_size))
     training_writer.close()
     test_writer.close()
+    
+    if clean_testset:
+        get_clean_testset(intermediate_test_filename, test_filename)
         
 def _flush_per_id(parallelsentences_per_id, training_writer, test_writer, counter, test_start, test_end):
     if counter < test_start or counter >= test_end:
