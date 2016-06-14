@@ -106,7 +106,11 @@ class IncrementalJcml(object):
         
         self.generator.characters("\n\t")
         self.generator.endElement(self.TAG["sent"])
-        
+    
+    
+    def add_parallelsentences(self, parallelsentences):
+        for parallelsentence in parallelsentences:
+            self.add_parallelsentence(parallelsentence)
     
     def close(self):
         self.generator.characters("\n")
