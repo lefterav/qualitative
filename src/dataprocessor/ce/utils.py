@@ -59,7 +59,7 @@ def get_clean_testset(input_file, output_file):
     filtered_dataset.remove_ties()
     reconstructed_dataset = filtered_dataset.get_multiclass_set()
     reconstructed_dataset.remove_ties()
-    Parallelsentence2Jcml(reconstructed_dataset.get_parallelsentences(), shuffle_translations=True).write_to_file(output_file)
+    IncrementalJcml(output_file).add_parallelsentences(reconstructed_dataset.get_parallelsentences())
     
 def fold_jcml_respect_ids(filename, training_filename, test_filename, repetitions, fold, length=None, clean_testset=True):
     
