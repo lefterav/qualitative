@@ -221,7 +221,8 @@ class ExperimentConfigParser(ConfigParser):
                     lm_lowercase = self.getboolean(lm_name, "lowercase")
                     lm_url = self.get(lm_name, "url")
                     lm_generator = ServerNgramFeatureGenerator(lm_url, language, lm_lowercase, lm_tokenize)
-                yield lm_generator
+                return lm_generator
+            #TODO: some apps wait a list, some others wait one single item
         
     
     

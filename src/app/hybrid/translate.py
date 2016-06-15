@@ -16,6 +16,7 @@ if __name__ == '__main__':
     parser.add_argument('--tgtlang')
     parser.add_argument('--config', nargs='+', action='append')
     parser.add_argument('--reverse', dest='reverse', action='store_true')
+    parser.add_argument('--input')
     args = parser.parse_args()
 
     if args.wsd:
@@ -40,5 +41,5 @@ if __name__ == '__main__':
                                      reverse=args.reverse
                                      )
 
-    for line in fileinput.input():
+    for line in open(args.input):
         print hybridsystem.translate(line)
