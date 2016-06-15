@@ -242,14 +242,19 @@ class ListNetRanker(Ranker):
         #conform the instance structure to the one of the training set
         instance = self.data_structure.apply_on(instance.data, 
                                                 instance.metadata)
-        ranking = self.learner.use(instance)[0]
+        ranking = Ranking(self.learner.use(instance)[0])
         # if we reversed ranks on training (rank, levenshtein) order stays the same
-        if not invert_ranks:
+        try:
+            if not self.invert_ranks:
+                ranking = ranking.normalize().integers()
+            # otherwise for BLEU, METEOR and other metrics needs to be reversed
+            # cause we will evaluate against BLEU or METEOR
+            else:
+                ranking = ranking.normalize().inverse().integers()
+        except:
             ranking = ranking.normalize().integers()
-        # otherwise for BLEU, METEOR and other metrics needs to be reversed
-        # cause we will evaluate against BLEU or METEOR
-        else:
-            ranking = ranking.normalize().inverse().integers()
+
+
  
         ranked_parallelesentence = deepcopy(parallelsentence)
         for simplesentence, new_rank in zip(ranked_parallelesentence.tgt, ranking):

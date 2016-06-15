@@ -607,7 +607,8 @@ class SkRanker(Ranker, SkLearner):
                     instance = self.scaler.transform(instance)
                 except ValueError as e:
                     log.error("Could not transform instance: {}".format(instance))
-                    raise ValueError(e)
+                    #raise ValueError(e)
+                    pass
             try:
                 if self.featureselector:
                     instance = np.nan_to_num(instance)
@@ -618,12 +619,12 @@ class SkRanker(Ranker, SkLearner):
             #make sure no NaN or inf appears in the instance
             instance = np.nan_to_num(instance)
             #run learner for this instance
-            predicted_value = self.learner.predict(instance)
-            try:
-                distribution = dict(zip(self.learner.classes_, self.learner.predict_proba(instance)[0]))
-            except AttributeError: 
-                #if learner does not support per-class probability (e.g. LinearSVC) assign 0.5
-                distribution = dict([(cl, 0.5) for cl in self.learner.classes_])
+            predicted_value = self.classifier.predict(instance)
+            #try:
+            #    distribution = dict(zip(self.classifier.classes_, self.classifier.predict_proba(instance)[0]))
+            #except AttributeError: 
+            #    #if learner does not support per-class probability (e.g. LinearSVC) assign 0.5
+            #    distribution = dict([(cl, 0.5) for cl in self.learner.classes_])
             log.debug("Distribution: {}".format(distribution))
             log.debug("Predicted value: {}".format(predicted_value))
             #even if we have a binary learner, it may be that it cannot decide between two classes

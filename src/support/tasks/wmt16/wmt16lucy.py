@@ -16,13 +16,13 @@ from featuregenerator.reference.bleu import BleuGenerator
 from featuregenerator.reference.meteor.meteor import MeteorGenerator
 from _collections import defaultdict
 
-MOSES_URI = "http://lns-87247.dfki.uni-sb.de:9200"
+MOSES_URI = "http://localhost:9200"
 LUCY_URI = "http://msv-3251.sb.dfki.de:8080/AutoTranslateRS/V1.2/mtrans/exec"
 
 
 def create_worker(**kwargs):
     worker = AdvancedLucyWorker(**kwargs)
-    filename = "unknowns_{unknowns}.menu_items_{menu_items}.menu_quotes_{menu_quotes}.menu_translator_{menu_translator}.normalize_{normalize}.txt".format(**kwargs)
+    filename = "unknowns_{unknowns}.menu_items_{menu_items}.menu_quotes_{menu_quotes}.menu_translator_{menu_translator}.normalize_{normalize}.wc_{suppress_where_it_says}.txt".format(**kwargs)
     return worker, filename
 
 if __name__ == '__main__':
@@ -33,12 +33,16 @@ if __name__ == '__main__':
     source_language = "en"
     target_language = "de"
     
-    param_normalize = [False, True]
-    param_unknowns = [False, True]
-    param_menu_items = [False, True]
-    param_menu_quotes = [False, True]
-    param_menu_translator = ["Lucy", "Moses"]
-    param_suppress_where_it_says = [False, True]
+    #param_normalize = [False, True]
+    param_normalize = [True]
+    #param_unknowns = [False, True]
+    param_unknowns = [True]
+    #param_menu_items = [False, True]
+    param_menu_items = [True]
+    param_menu_quotes = [False]
+    #param_menu_translator = ["Lucy", "Moses"]
+    param_menu_translator = ["Moses"]
+    param_suppress_where_it_says = [True]
     
     workers = []
     
@@ -90,5 +94,9 @@ if __name__ == '__main__':
             print >> outfile, translation
             for param in description_params:
                 d[param] += translation_description.setdefault(param, 0)
+        
+        print >> outfile_stats, "\t".join([k for k, _ in d.iteritems()])
+        print >> outfile_stats, "\t".join([str(v) for _, v in d.iteritems()])
+        outfile_stats.close()
         outfile.close()
         infile.close()
