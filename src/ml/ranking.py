@@ -25,7 +25,7 @@ def forname(learner, **kwargs):
     
     rankers = [OrangeRanker, SkRanker, ListNetRanker]   
     for ranker_class in rankers:
-        ranker_instance = ranker_class(name=learner)
+        ranker_instance = ranker_class(learner=learner)
         try:
             ranker_instance.initialize()
             return ranker_instance 

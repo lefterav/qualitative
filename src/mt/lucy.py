@@ -321,9 +321,12 @@ class AdvancedLucyWorker(LucyWorker):
         for unknown_token in unknown_tokens:
             translated_token, moses_description = self.moses.translate(unknown_token)
             #print moses_description
-            score = moses_description['translation'][0]['translated'][0]['score']
+            try:
+                score = moses_description['translation'][0]['translated'][0]['score']
+                description["unk_replaced_list"].append((unknown_token, translated_token, score))
+            except:
+                description["unk_replaced_list"].append((unknown_token, translated_token, -1))
             description["unk_list"].append(unknown_token)
-            description["unk_replaced_list"].append((unknown_token, translated_token, score))
             text = text.replace("<U[{}]>".format(unknown_token), translated_token)
             if translated_token != unknown_token:
                 replaced += 1
