@@ -8,6 +8,7 @@ from time import sleep
 from xml.sax.saxutils import escape
 import sys
 import xmlrpclib
+import logging as log
 
 from featuregenerator.blackbox.wsd import WSDclient
 from featuregenerator.preprocessor import Tokenizer, Truecaser, Detokenizer,\
@@ -34,17 +35,15 @@ class MosesWorker(Worker):
         string = escape(string)
         response = False
         efforts = 0
-        while response == False and efforts < 250:
+        while response == False and efforts < 1250:
             try:
                 response = self.server.translate({'text': string})
                 response = response
                 efforts += 1
             except Exception as e:
-                if "[Errno 111]" in str(e):
-                    sys.stderr.write("Connection to MosesServer was refused, trying again in 20 secs...")
-                    sleep(20)
-                else:
-                    raise e
+                log.error("Connection to MosesServer was refused, trying again in 20 secs...")
+                sleep(20)
+                log.error(e)
 
         if response == False:
             sys.exit("Connection to MosesServer was refused for more than 5 minutes.")
@@ -79,18 +78,38 @@ class MtMonkeyWorker(Worker):
         "sourceLang": "en",
         "targetLang": "de",
         "text": string}
-        result = self.server.process_task(request)
+
+        response = {}
+        efforts = 0
+
+        while not 'translation' in response and efforts < 250:
+            try: 
+                response = self.server.process_task(request)
+                efforts += 1
+                if 'error' in response: 
+                    if "[Errno 111]" in response['error'] or "xml.parsers.expat.ExpatError" in response["error"]:
+                        log.error("Connection to MosesServer was refused, trying again in 20 secs...")
+                        sleep(20)
+                    else:
+                        raise Exception(response['error'])
+                else:
+                    if efforts > 1:
+                        log.error("Server replied")
+            except Exception as e:
+                 log.error(e)
+                 sleep(20)
+                 pass
+
+        if not 'translation' in response:
+            sys.exit("Connection to MosesServer was refused for more than 5 minutes.")
         string_result = []
-        try:
-            for translation in result['translation']:
-                for translated in translation['translated']:
-                    string_result.append(translated['text'])
-            text = " ".join(string_result)
-            if isinstance(text, unicode):
-                text = text.encode('utf-8')
-        except:
-            text = ""
-        return text, result
+        for translation in response['translation']:
+            for translated in translation['translated']:
+                string_result.append(translated['text'])
+        text = " ".join(string_result)
+        if isinstance(text, unicode):
+            text = text.encode('utf-8')
+        return text, response
 
 
 class WsdMosesWorker(Worker):

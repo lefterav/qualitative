@@ -181,7 +181,9 @@ def dataset_to_instances(filename,
     if output_filename:
         #output file should be created only if the writing is finished
         shutil.copy(temporary_filename, output_filename)
-    os.unlink(temporary_filename)
+    logging.debug("Orange tmp file: {}".format(temporary_filename))
+    #if not logging.getEffectiveLevel() == logging.DEBUG: 
+    #    os.unlink(temporary_filename)
     return datatable
     
 def _get_pairwise_header(attribute_names, class_name):
@@ -228,7 +230,8 @@ class OrangeRanker(Ranker):
     """    
 
     def initialize(self):
-        self.learner = eval(self.name)
+        if type(self.learner) == str:
+            self.learner = eval(self.learner)
 
     def train(self, dataset_filename, **kwargs):
         datatable = dataset_to_instances(filename=dataset_filename, **kwargs)

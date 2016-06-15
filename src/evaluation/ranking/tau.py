@@ -55,7 +55,7 @@ class MetricLanguagePairData(defaultdict):
     def kendall_tau(self, human_comparisons, count_length, variant='wmt14'):
         
         thislogger = log.getLogger(__name__)
-        thislogger.setLevel(log.DEBUG)
+        #thislogger.setLevel(log.DEBUG)
 
         try:
             coeff_table = variants_definitions[variant]
