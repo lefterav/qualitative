@@ -521,10 +521,10 @@ class SkRanker(Ranker, SkLearner):
             self.scaler = StandardScaler()
             data = self.scaler.fit_transform(data)
             log.debug("Data shape after scaling: {}".format(data.shape))
-        
+            log.debug("Mean: {} , Std: {}".format(self.scaler.mean_, self.scaler.std_))
+
         #avoid any NaNs and Infs that may have occurred due to the scaling
         data = np.nan_to_num(data)
-        log.debug("Mean: {} , Std: {}".format(self.scaler.mean_, self.scaler.std_))
         
         #feature selection
         self.featureselector, data, metadata = self.run_feature_selection(data, labels, feature_selector, feature_selection_params, feature_selection_threshold, plot_filename) 
@@ -582,7 +582,12 @@ class SkRanker(Ranker, SkLearner):
                             reconstruct='hard'):
         """
         """
-        
+        if type(self.learner) == str:
+            if self.classifier:
+                self.learner = self.classifier
+                self.learner._dual_coef_ = self.learner.dual_coef_
+                self.learner._intercept_ = self.learner.intercept_
+
         #de-compose multiranked sentence into pairwise comparisons
         pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(bidirectional_pairs=bidirectional_pairs,
                                                                                      class_name=self.class_name,
@@ -606,7 +611,7 @@ class SkRanker(Ranker, SkLearner):
                     instance = np.nan_to_num(instance)
                     instance = self.scaler.transform(instance)
                 except ValueError as e:
-                    log.error("Could not transform instance: {}".format(instance))
+                    log.error("Could not transform instance: {}, scikit replied: {}".format(instance, e))
                     #raise ValueError(e)
                     pass
             try:
@@ -619,12 +624,12 @@ class SkRanker(Ranker, SkLearner):
             #make sure no NaN or inf appears in the instance
             instance = np.nan_to_num(instance)
             #run learner for this instance
-            predicted_value = self.classifier.predict(instance)
-            #try:
-            #    distribution = dict(zip(self.classifier.classes_, self.classifier.predict_proba(instance)[0]))
-            #except AttributeError: 
-            #    #if learner does not support per-class probability (e.g. LinearSVC) assign 0.5
-            #    distribution = dict([(cl, 0.5) for cl in self.learner.classes_])
+            predicted_value = self.learner.predict(instance)
+            try:
+                distribution = dict(zip(self.learner.classes_, self.learner.predict_proba(instance)[0]))
+            except AttributeError: 
+                #if learner does not support per-class probability (e.g. LinearSVC) assign 0.5
+                distribution = dict([(cl, 0.5) for cl in self.learner.classes_])
             log.debug("Distribution: {}".format(distribution))
             log.debug("Predicted value: {}".format(predicted_value))
             #even if we have a binary learner, it may be that it cannot decide between two classes
