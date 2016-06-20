@@ -17,6 +17,8 @@ if __name__ == '__main__':
     parser.add_argument('--config', nargs='+', action='append')
     parser.add_argument('--reverse', dest='reverse', action='store_true')
     parser.add_argument('--input')
+    parser.add_argument('--output')
+    parser.add_argument('--output_verbose')
     args = parser.parse_args()
 
     if args.wsd:
@@ -41,5 +43,11 @@ if __name__ == '__main__':
                                      reverse=args.reverse
                                      )
 
+    output_file = open(args.output, 'w')
+    verbose_file = open(args.output_verbose, 'w')
     for line in open(args.input):
-        print hybridsystem.translate(line)
+        translated_line, description = hybridsystem.translate(line)
+        print >>output_file, translated_line
+        print >>verbose_file, description
+    output_file.close()
+    verbose_file.close()
