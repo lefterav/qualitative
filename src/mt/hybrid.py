@@ -158,5 +158,5 @@ class SimpleWsdTriangleTranslator(Worker):
         #print "Rank: ", rank
         
         for rank_item, output in zip(rank, outputs_ordered):
-            if float(rank_item)==1:
+            if int(rank_item)==1:
                 return output, description

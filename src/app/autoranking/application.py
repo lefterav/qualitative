@@ -12,6 +12,7 @@ Created on 2 Aug 2013
 
 import time
 import sys
+import logging as log
 
 from featuregenerator.blackbox.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator
 from sentence.sentence import SimpleSentence
@@ -45,14 +46,14 @@ class Autoranking:
     @ivar target_language: Language code for target language
     @type target_language: str
     """
-    def __init__(self, configfilenames, classifiername, reverse=False):
+    def __init__(self, configfilenames, ranker_filename, reverse=False):
         """
         Initialize the class.
         @param configfilenames: a list of annotation configuration files that contain
         the settings for all feature generators etc.
         @type configfilenames: list(str)
-        @param classifiername: the filename of a picked learner object
-        @type classifiername: str
+        @param ranker_filename: the filename of a picked learner object
+        @type ranker_filename: str
         """
         cfg = ExperimentConfigParser()
         for config_filename in configfilenames:
@@ -62,7 +63,8 @@ class Autoranking:
         self.reverse = reverse
         
         self.featuregenerators = self.initialize_featuregenerators(cfg)
-        self.ranker = OrangeRanker(classifiername)
+        self.ranker = OrangeRanker(filename=ranker_filename)
+        log.debug("Ranker loaded")
         self.source_language =  cfg.get("general", "source_language")
         self.target_language =  cfg.get("general", "target_language")
         
@@ -94,7 +96,7 @@ class Autoranking:
             ranking.reverse()
             
         #return only ranks without system ids
-        description += "\n Final ranking: {}".format([(r[0], r[1].get_string()) for r in ranking])
+        description += "Final ranking: {}".format([(r[0], r[1].get_system_name(), r[1].get_string()) for r in ranking])
         ranking = [r[0] for r in ranking]
         return ranking, description
     
@@ -113,9 +115,12 @@ class Autoranking:
         #before parallelizing take care of diverse dependencies on preprocessing
         for featuregenerator in self.featuregenerators:
             sys.stderr.write("Running {} \n".format(str(featuregenerator)))
-            parallelsentence = featuregenerator.add_features_parallelsentence(parallelsentence)
-            time.sleep(1)
-            print "got sentence"
+            if not featuregenerator is False:
+                parallelsentence = featuregenerator.add_features_parallelsentence(parallelsentence)
+                time.sleep(1)
+                log.info("got sentence")
+            else: 
+                log.warn("Received inactive feature generator")
         return parallelsentence
         
         
@@ -178,6 +183,13 @@ class Autoranking:
     
 
 if __name__ == "__main__":
+
+
+    loglevel = log.DEBUG
+    log.basicConfig(level=loglevel,
+                        format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                        datefmt='%m-%d %H:%M')
+
     try:
         classifier_filename = sys.argv[1] # "/share/taraxu/selection-mechanism/wmt13/sentenceranking/autoranking_wmt13_newfeatures1_de_en/class_nameranklangpairde-eninclude_references0.0ties0.0trainset_modeannotatedattattset_24classifierLogReg/classifier.clsf"
         configfilenames = sys.argv[2:]
