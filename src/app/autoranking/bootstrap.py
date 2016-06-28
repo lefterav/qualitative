@@ -116,22 +116,26 @@ class ExperimentConfigParser(ConfigParser):
     def get_parser(self, language):
         #this is reading the configuration, maybe move elsewher
         for parser_name in [section for section in self.sections() if section.startswith("parser:berkeley")]:
+            log.debug("Checking parser {}".format(parser_name))
             if self.get(parser_name, "language") == language:
+                log.debug("Language matched")
                 tokenize = self.getboolean(parser_name, "tokenize")
                 try:
                     parser_type = self.get(parser_name, "type")
+                    log.debug("Parser type found: {}".format(parser_type))
                 except:
-                    continue
+                    raise Exception("Parser type for {} not declared".format(parser_name))
                 if parser_type == "xmlrpc":
                     url = self.get(parser_name, "url")
                     return BerkeleyXMLRPCFeatureGenerator(url, language, tokenize)
                 elif parser_type == "socket":
+                    log.debug("Type socket")
                     grammarfile = self.get(parser_name, "grammarfile")
                     sys.stderr.write("initializing socket parser with grammar file {}\n".format(grammarfile))
                     
 #                    return BerkeleySocketFeatureGenerator(language, grammarfile, self.get_classpath())
                     return BerkeleySocketFeatureGenerator(language, grammarfile, self.gateway)
-        return False
+        raise Exception("Parser for {} requested but not found".format(language))
     
     
     def get_parser_name(self, language):
@@ -320,7 +324,7 @@ def get_cfg():
     parser.add_argument('--selectpath', help="""If source and target language are set, 
                                                 then use all files in the indicated directory 
                                                 that have these language codes in their filename""")
-    parser.add_argument('--targetpath')    
+    parser.add_argument('--targetpath', help="Path were the annotated files will be stored" )    
     parser.add_argument('--cont', help="""If you want to resume an existing app, 
                                           specify its folder name heres. This must be 
                                           an existing dir name""")
@@ -345,6 +349,7 @@ def get_cfg():
         chosen_files = [os.path.join(args.selectpath, f) for f in chosen_files] 
         cfg.set("general", "source_language", args.sourcelang)
         cfg.set("general", "target_language", args.targetlang)
+        cfg.add_section("training")
         cfg.set("training", "filenames", ",".join(chosen_files))
         if args.targetpath:
             cfg.set("general", "path", args.targetpath)
