@@ -41,6 +41,16 @@ def k(string):
     string = string.translate(stringlib.maketrans(u"",u""), ALLOWED_PUNCTUATION)
     return string
 
+def att(sentence):
+    """
+    Returns a dict for the attribute names and values including the necessary string transformation
+    to avoid unicode errors
+    """
+    try:
+        attributes = dict([(k(key),unicode(val)) for key,val in sentence.get_attributes().iteritems()])
+    except UnicodeEncodeError:
+        attributes = dict([(k(key),str(val)) for key,val in sentence.get_attributes().iteritems()])
+    return attributes
 
 class IncrementalJcml(object):
     """
@@ -162,11 +172,11 @@ class Parallelsentence2Jcml(object):
 
         for parallelsentence in self.parallelsentences:
             generator.characters("\n\t")
-            attributes = dict([(k,str(v)) for k,v in parallelsentence.get_attributes().iteritems()])
+            attributes = dict([(k,unicode(v)) for k,v in parallelsentence.get_attributes().iteritems()])
             generator.startElement(self.TAG["sent"], attributes)
             
             src = parallelsentence.get_source()
-            attributes = dict([(k,str(v)) for k,v in src.get_attributes().iteritems()])
+            attributes = dict([(k,unicode(v)) for k,v in src.get_attributes().iteritems()])
             
             if isinstance(src, SimpleSentence):            
                                     
@@ -194,7 +204,7 @@ class Parallelsentence2Jcml(object):
             
             for tgt in translations:
                 generator.characters("\n\t\t")
-                attributes = dict([(k,str(v)) for k,v in tgt.get_attributes().iteritems()])
+                attributes = dict([(k,unicode(v)) for k,v in tgt.get_attributes().iteritems()])
                 generator.startElement(self.TAG["tgt"], attributes)
                 generator.characters(c(tgt.get_string()))
                 generator.endElement(self.TAG["tgt"])
@@ -203,7 +213,7 @@ class Parallelsentence2Jcml(object):
             ref = parallelsentence.get_reference()
             if ref and ref.get_string() != "":
                 generator.characters("\n\t\t")
-                attributes = dict([(k,str(v)) for k,v in ref.get_attributes().iteritems()])
+                attributes = dict([(k,unicode(v)) for k,v in ref.get_attributes().iteritems()])
                 generator.startElement(self.TAG["ref"], attributes)
                 generator.characters(c(ref.get_string()))
                 generator.endElement(self.TAG["ref"])
