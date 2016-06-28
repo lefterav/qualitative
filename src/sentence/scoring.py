@@ -99,7 +99,7 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
                        prefix = "",
                        variants_with_confidence = ["wmt14"],
                        variants_no_confidence = ["wmt12", "wmt13"],
-                       direction = "de-en",
+                       direction = "dummy",
                        **kwargs):
     
     wmtdata = SegmentLevelData()

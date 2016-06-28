@@ -51,15 +51,15 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         for entry in nbestList:
             confidence = entry["confidence"]
             confidences.append(float(confidence))
-            #parse = entry["tree"]
+            parse = entry["tree"]
             if float(confidence) > best_confidence:
                 best_confidence = float(confidence)
-                #best_parse = parse
+                best_parse = parse
             sum_confidence += float(confidence)
         
         #print
         if confidences == []:
-            confidence.append(loglikelihood)
+            confidences.append(loglikelihood)
                 
         avg_confidence = average(confidences)
         std_confidence = std(confidences)        
@@ -205,7 +205,7 @@ class BerkeleySocketFeatureGenerator(BerkeleyFeatureGenerator):
         log.info("berkeleyclient: got BParser object")
        
     def parse(self, string):
-        log.info("berkeleyclient: parsing sentence")
+        log.debug("berkeleyclient: parsing sentence")
         parse = self.berkeleyparser.parse(string)
         return parse
     

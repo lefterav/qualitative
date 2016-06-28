@@ -24,7 +24,6 @@ class KenLMFeatureGenerator(LanguageFeatureGenerator):
         
     def get_features_string(self, string):
         total_score = self.model.score(string, bos = True, eos = True)
-        print total_score
         partial_scores = self.model.full_scores(string, bos = True, eos = True)
         ngram_lengths = []
         probs = []

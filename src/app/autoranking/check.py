@@ -109,8 +109,8 @@ def get_tabfile(results, preferred_params=[], preferred_scores=[], display_heade
     if not preferred_params:
         preferred_params = param_keys
 
-    if not preferred_scores:
-        preferred_scores = list(score_keys)
+    if not preferred_scores or preferred_scores == ['all']:
+        preferred_scores = sorted(list(score_keys))
     else:    
 
         new_preferred_scores = []
@@ -125,7 +125,7 @@ def get_tabfile(results, preferred_params=[], preferred_scores=[], display_heade
         print delimiter.join(preferred_params) + delimiter + delimiter.join(preferred_scores)
     
     results = sorted(results, key=lambda result: result[0])
-    THREEPLACES = Decimal('0.001')
+    #THREEPLACES = Decimal('0.001')
     
     for params, values in results:
 
@@ -146,10 +146,10 @@ def get_tabfile(results, preferred_params=[], preferred_scores=[], display_heade
                 except KeyError:
                     val = ''
 
-            try:
-                val = Decimal(val).quantize(THREEPLACES)
-            except:
-                pass
+            #try:
+            #    val = Decimal(val).quantize(THREEPLACES)
+            #except:
+            #    pass
             onlyvalues.append(str(val))
                     
         print delimiter.join(params) + delimiter + delimiter.join(onlyvalues)
