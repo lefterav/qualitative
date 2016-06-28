@@ -8,6 +8,7 @@ from py4j.java_gateway import java_import
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 import numpy as np
 from collections import defaultdict
+import string
 
 class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
     '''
@@ -43,8 +44,8 @@ class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
             atts[error_id] = atts.setdefault(error_id, 0) + 1
 
             errors += 1
-            
-            category_id = "cat_{}".format(match.getRule().getCategory().getName())
+            category_name = unicode(match.getRule().getCategory())
+            category_id = "cat_{}".format(category_name.encode('ascii', 'ignore'))
             atts[category_id] = atts.setdefault(category_id, 0) + 1
             seen_categories.add(category_id)
             

@@ -10,6 +10,8 @@ import re
 import sys
 import logging as log
 
+import subprocess, os, shutil
+
 #pipeline essentials
 from ruffus import *
 #from multiprocessing import Process, Manager 
@@ -48,11 +50,12 @@ parallel_feature_functions = []
 sys.stderr.write("running with {} cores\n".format(cores)) 
 
 path = cfg.get_path()
+PATH = path
 os.chdir(path)
 source_language =  cfg.get("general", "source_language")
 target_language =  cfg.get("general", "target_language")
 training_sets = cfg.get("training", "filenames").split(",")
-testing_set = cfg.get("testing", "filename")
+#testing_set = cfg.get("testing", "filename")
 all_sets = training_sets
 #all_sets.append(testing_set)
 
@@ -425,11 +428,10 @@ def features_lm(input_file, output_file, language, lm_name):
     features_lm_batch(input_file, output_file, language, lm_name)
 
 def features_lm_batch(input_file, output_file, language, lm_name):
-    lmgenerators = cfg.get_lm(language) 
+    lmgenerator = cfg.get_lm(language) 
     processed_parallelsentences = JcmlReader(input_file).get_parallelsentences()
-    for lmgenerator in lmgenerators:
-        processed_parallelsentences = lmgenerator.add_features_batch(processed_parallelsentences)
-        Parallelsentence2Jcml(processed_parallelsentences).write_to_file(output_file)
+    processed_parallelsentences = lmgenerator.add_features_batch(processed_parallelsentences)
+    Parallelsentence2Jcml(processed_parallelsentences).write_to_file(output_file)
 
 #unimplemented
 def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, lm_lowercase):
@@ -459,13 +461,16 @@ def truecase_target_append(input_file, output_file, language, model):
 @active_if(cfg.has_section('quest'))
 @transform(truecase_target_append, suffix(".tc.%s-%s.jcml" % (source_language, target_language)), ".quest.f.jcml", source_language, target_language, cfg.get('quest', 'commandline'))
 def features_quest(input_file, output_file, source_language, target_language, commandline):
-    import subprocess, os, shutil
+    os.chdir(PATH)
     input_file = os.path.abspath(input_file)
     output_file = os.path.abspath(output_file)
     output_file_tmp = "{}.tmp".format(output_file)
     previous_path = os.path.abspath(os.curdir)
+    log.info("Previous path {}".format(previous_path))
     os.chdir(cfg.get('quest', 'path'))
-    subprocess.check_call(commandline.format(sourcelang=source_language, targetlang=target_language, inputfile=input_file, outputfile=output_file_tmp).split())
+    full_commandline = commandline.format(sourcelang=source_language, targetlang=target_language, inputfile=input_file, outputfile=output_file_tmp)
+    log.info("Quest commandline {}".format(full_commandline))
+    subprocess.check_call(full_commandline.split())
     os.chdir(previous_path)    
     shutil.move(output_file_tmp, output_file)
 
@@ -475,8 +480,8 @@ if cfg.has_section('quest'):
 
 
 @active_if(cfg.getboolean("annotation", "reference_features"))
-@transform(truecase_target_append, suffix(".tc.%s-%s.jcml" % (source_language, target_language)), ".ref.f.jcml", cfg.get("annotation", "moreisbetter").split(","), cfg.get("annotation", "lessisbetter").split(","), cfg.get_classpath()[0], cfg.get_classpath()[1]) 
-def reference_features(input_file, output_file, moreisbetter_atts, lessisbetter_atts, classpath, dir_path):
+@transform(truecase_target_append, suffix(".tc.%s-%s.jcml" % (source_language, target_language)), ".ref.f.jcml") 
+def reference_features(input_file, output_file):
     analyzers = [LevenshteinGenerator(),
                  BleuGenerator(),
                  RgbfGenerator(),

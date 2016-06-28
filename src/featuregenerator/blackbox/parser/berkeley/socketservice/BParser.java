@@ -42,7 +42,7 @@ public class BParser {
 		    parser = new CoarseToFineNBestParser(grammar, lexicon, kbest ,threshold,-1, false , false , false , false, false, false, true);
 		    parser.binarization = pData.getBinarization();
 		    tokenizer = new PTBLineLexer();
-		    System.err.print("Server initialized\n");
+		    System.err.print("BParser server initialized\n");
 		}
 		
 		public void initialiaze( String inFileName ){
@@ -69,7 +69,7 @@ public class BParser {
 		
 		
 		public Map<String, Object> parse (String line, Boolean tokenize){
-			System.err.println("Parsing... " +line);
+			//System.err.println("Parsing... " +line);
 			try {
 				
 				
@@ -87,7 +87,7 @@ public class BParser {
 				Map<String, Object> output = new HashMap<String, Object>();
 				output.put("nbest", this.outputTrees(parsedTrees, parser));
 				output.put("loglikelihood", this.getLogLikelihood() );
-				System.err.println ("Parsed" + line);
+				//System.err.println ("Parsed" + line);
 				return output;
 				
 			} catch (IOException e) {
@@ -102,7 +102,7 @@ public class BParser {
 		}
 		
 		public Map<String, String> getParseFeatures(String line, Boolean tokenize){
-			System.out.println("Parsing... " +line);
+			//System.out.println("Parsing... " +line);
 			try {
 				//System.out.println ("parsing first string");
 				List<String> sentence;

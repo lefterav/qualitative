@@ -145,8 +145,9 @@ class SegmentLevelData(object):
         for file in glob.glob(file_like):
             with gzip.open(file, mode="rt") as f:
                 for line in csv.DictReader(f):
+                    direction = "dummy"
 
-                    direction = line['system1Id'].rsplit('.', 2)[1]
+                    #direction = line['system1Id'].rsplit('.', 2)[1]
                     segment = int(line['segmentId'])
 
                     extract_system = lambda x: '.'.join(x.split('.')[1:-2])

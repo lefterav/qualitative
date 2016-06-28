@@ -31,7 +31,7 @@ from Orange.classification.knn import kNNLearner
 from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
 from Orange.classification.tree import TreeLearner
 from Orange.classification.tree import C45Learner
-from Orange.classification.logreg import LogRegLearner #,LibLinearLogRegLearner
+from Orange.classification.logreg import LogRegLearner, LibLinearLogRegLearner
 from Orange.classification import Classifier 
 from Orange.feature import Continuous
 #from checkbox.attribute import Attribute
@@ -85,11 +85,14 @@ def parallelsentence_to_instance(parallelsentence, domain=None):
     keyerrors = []
     
     for feature in domain.features:
+        feature_name = feature.name
+        if feature_name.startswith("N_"):
+            feature_name = feature_name.replace("N_", "")
         try:
-            value = attributes[feature.name]
+            value = attributes[feature_name]
         except KeyError:
             value = 0
-            keyerrors.append(feature.name)
+            keyerrors.append(feature_name)
         #this casts the feature value we produced, in an orange value object
         orange_value = feature(value)
         values.append(orange_value)
@@ -384,7 +387,7 @@ class OrangeRanker(Ranker):
         class_name = domain.class_var.name
         logging.debug("Given learner's class name: {}".format(class_name))
         if class_name.startswith("N_"):
-            class_name.replace("N_", "")
+            class_name = class_name.replace("N_", "")
         
         #this is a clean-up fixing orange's bug, needed only for some classifiers
         #if self.learner.__class__.__name__ in ["NaiveClassifier", "CN2UnorderedClassifier"]:
