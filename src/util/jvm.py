@@ -59,19 +59,21 @@ class LocalJavaGateway(JavaGateway):
         log.info("Loaded Gateway")
     
     def shutdown(self):
-        #try:
-        #    super(LocalJavaGateway, self).shutdown()
-        #except:
-        #    pass
-        #try:
-        #    self.jvm_object.terminate()
-        #except:
-        #    pass
+        try:
+            super(LocalJavaGateway, self).shutdown()
+            log.info("Gateway was shut down properly")
+        except:
+            log.info("Gateway need not be shut down")
+        try:
+            self.jvm_object.terminate()
+            log.info("JVM object terminated properly")
+        except:
+            log.info("JVM object need bot be terminated")
         pass
         
     def __del__(self):
-        pass
-        #self.shutdown()
+        self.shutdown()
+        super(LocalJavaGateway, self).__del__()
         
 
 class JVM(object):
@@ -122,10 +124,11 @@ class JVM(object):
         """
         Stop the Java Server
         """
-        #try:
-        #    self.jvm.terminate()
-        #except:
-        #    pass
+        try:
+            self.jvm.terminate()
+            log.info("JVM process terminated properly")
+        except:
+            log.info("JVM process need not be terminated")
         pass
 
     
@@ -133,8 +136,9 @@ class JVM(object):
         """
         Stop the Java Server if the object stops existing
         """
-        #try:
-        #    self.jvm.terminate()
-        #except:
-        #    pass
+        try:
+            self.terminate()
+            log.info("JVM process terminated properly")
+        except:
+            log.info("JVM process need not be terminated")
         pass

@@ -29,7 +29,7 @@ class RankingExperiment(PyExperimentSuite):
         self.restore_supported = True
         # Initialize superclass from Experiment Suite
         super(RankingExperiment, self).__init__()
-    
+
     def reset(self, params, rep):
         #TODO: find efficient way to avoid temporary data replication
     
@@ -40,7 +40,6 @@ class RankingExperiment(PyExperimentSuite):
             self.invert_ranks = params.setdefault("invert_ranks", False)
 
         # We need a java gateway for METEOR
-        self.gateway = LocalJavaGateway(java=params["java"])
 
         logging.info("Running in {}".format(os.getcwd()))
 
@@ -236,6 +235,7 @@ class RankingExperiment(PyExperimentSuite):
     
     def evaluate_selection(self, params, rep):
         refscores = OrderedDict()
+        self.gateway = LocalJavaGateway(java=params["java"])
         target_language = params["langpair"].split("-")[1]
         if not self.invert_ranks:
             function=min
@@ -262,7 +262,7 @@ class RankingExperiment(PyExperimentSuite):
                                                 gateway=self.gateway
                                                 )
             refscores.update(_dictprefix(refscores_hard, '{}.hard'.format(i)))
-            
+        self.gateway.shutdown()   
         return refscores
     
     

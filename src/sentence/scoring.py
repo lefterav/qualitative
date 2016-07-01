@@ -97,18 +97,20 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
                        filter_ref = True,
                        suffix = "",
                        prefix = "",
-                       variants_with_confidence = ["wmt14"],
-                       variants_no_confidence = ["wmt12", "wmt13"],
+                       variants_with_confidence = ["wmt14","wmt12", "wmt13"],
+                       variants_no_confidence = [],
                        direction = "dummy",
                        **kwargs):
     
     wmtdata = SegmentLevelData()
     metric = "autoranking"
+    direction = "dummy"
     
     count_length = defaultdict(int)
         
     for parallesentence in data.get_parallelsentences():
         lang_pair = parallesentence.get_langpair()
+        lang_pair = "dummy"
         segment = int(parallesentence.get_id())
 
         pairwise_parallelsentences = parallesentence.get_pairwise_parallelsentences(class_name=original_rank_name)
@@ -164,18 +166,24 @@ def get_fixed_scores(data, original_rank_name,
                        filter_ref = True,
                        suffix = "",
                        prefix = "",
-                       variants = ["wmt14"],
+                       variants = ["wmt12"],
                        direction = "de-en",
                        **kwargs):
     
     wmtdata = SegmentLevelData()
     random.seed(int(time.time()))
-        
+    
+    count_length = defaultdict(int)        
     for parallesentence in data.get_parallelsentences():
         lang_pair = parallesentence.get_langpair()
         segment = int(parallesentence.get_id())
+    
+        translations = parallesentence.get_translations()
+        ranking_length = len(translations)
+        count_length[ranking_length] += 1
 
         pairwise_parallelsentences = parallesentence.get_pairwise_parallelsentences(class_name=original_rank_name)
+        
         for pairwise_parallelsentence in pairwise_parallelsentences:
             translation1 = pairwise_parallelsentence.get_translations()[0]
             system_id1 = translation1.get_system_name()
@@ -191,14 +199,12 @@ def get_fixed_scores(data, original_rank_name,
             ]
             wmtdata.human_comparisons[lang_pair] += extracted_comparisons
         
-        translations = parallesentence.get_translations()
-        translations_count = len(translations)
         i = 0
         
         for translation in sorted(translations, key=methodcaller("get_system_name")):
             system_id = translation.get_system_name()
             
-            random_rank = random.randint(1, translations_count)
+            random_rank = random.randint(1, ranking_length)
             wmtdata.metrics_data["random", lang_pair][system_id][segment] = random_rank
             wmtdata.metrics_data["random_inv", lang_pair][system_id][segment] = -1.0 * random_rank
             
@@ -211,7 +217,7 @@ def get_fixed_scores(data, original_rank_name,
     scores = OrderedDict()
     for metric in ["random", "random_inv", "alphabetical", "alphabetical_inv"]:
         for variant in variants:
-            tau, confidence = wmtdata.compute_tau_confidence(metric, direction, variant, samples=100)
+            tau, confidence = wmtdata.compute_tau_confidence(metric, direction, variant, count_length, samples=100)
             scores["tau_{}_{}".format(metric, variant)] = tau
             scores["tau_{}_{}_conf".format(metric, variant)] = confidence
     return scores

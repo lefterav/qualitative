@@ -20,6 +20,7 @@ from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentence
 
 from Orange.data import Table
 from Orange.data import Instance, Value, Domain
+from Orange.data.continuization import DomainContinuizer
 from Orange.evaluation.scoring import CA, Precision, Recall, F1 
 from Orange.evaluation.testing import cross_validation
 from Orange.classification.rules import rule_to_string
@@ -189,7 +190,7 @@ def dataset_to_instances(filename,
         shutil.copy(temporary_filename, output_filename)
     logging.debug("Orange tmp file: {}".format(temporary_filename))
     #if not logging.getEffectiveLevel() == logging.DEBUG: 
-    #    os.unlink(temporary_filename)
+    os.unlink(temporary_filename)
     return datatable
     
 def _get_pairwise_header(attribute_names, class_name):
@@ -220,7 +221,31 @@ def _get_pairwise_header(attribute_names, class_name):
     #join three lines into one string
     header = "{}\n{}\n{}\n".format(line_names, line_types, line_class)
     return header
-    
+
+from Orange.feature import Continuous
+from Orange.statistics.basic import Domain as StatsDomain
+from Orange.classification import ClassifierFromVar 
+from Orange.data.utils import NormalizeContinuous
+
+def normalize_continuous(data):
+    newattrs = []
+    domstat = StatsDomain(data)
+
+    for attr in data.domain.features:
+        if not isinstance(attr, Continuous):
+            newattrs.append(attr)
+            continue
+        attr_c = Continuous("N_{}".format(attr.name))
+        attr_c.getValueFrom = ClassifierFromVar(whichVar=attr)
+        transformer = NormalizeContinuous()
+        attr_c.getValueFrom.transformer = transformer
+        transformer.average = domstat[attr].avg
+        transformer.span = domstat[attr].dev
+        newattrs.append(attr_c)
+
+    new_domain = Domain(newattrs, data.domain.classVar)
+    new_data = Table(new_domain, data)
+    return new_data    
 
 class OrangeRanker(Ranker):
     """
@@ -239,10 +264,23 @@ class OrangeRanker(Ranker):
         if type(self.learner) == str:
             self.learner = eval(self.learner)
 
-    def train(self, dataset_filename, **kwargs):
+    def train(self, dataset_filename, normalize=False, **kwargs):
         datatable = dataset_to_instances(filename=dataset_filename, **kwargs)
+
+        if normalize:
+            datatable = normalize_continuous(datatable)
+
         self.learner = self.learner(**kwargs)
-        self.learner = self.learner(datatable)
+
+        try:
+            self.learner = self.learner(datatable)
+        except Exception as e:
+            if "not enough examples with so many attributes" in str(e):
+                logging.warning("Need to normalize features to get that trained")
+                datatable = normalize_continuous(datatable)
+                self.learner = self.learner(datatable)
+            else:
+                raise Exception(e)
         self.fit = True
         return {}
         
@@ -344,8 +382,19 @@ class OrangeRanker(Ranker):
                 attributes["att_Intercept_waldZ"] = float(row[3])
                 attributes["att_Intercept_P"] = float(row[4])
         return attributes
-                   
-    
+
+
+    def _get_coefficients_liblinear(self):
+        attributes = OrderedDict()
+        weights = list(self.learner.weights[0])
+        attnames = [att.name for att in self.learner.domain]
+
+        for attname, weight in zip(attnames, weights):
+            if attname.startswith("N_"):
+                attname = attname[2:]
+            attributes["att_{}_weight".format(attname)] = weight  
+        return attributes
+
     def _get_description(self, resultvector):
         output = []
         output.append("Used linear regression with Stepwise Feature Selection with the following weights")
@@ -387,6 +436,7 @@ class OrangeRanker(Ranker):
         
         #follow the feature description as needed by the loaded learner
         domain = self.learner.domain
+                
         class_name = domain.class_var.name
         logging.debug("Given learner's class name: {}".format(class_name))
         if class_name.startswith("N_"):
@@ -419,6 +469,12 @@ class OrangeRanker(Ranker):
         for pairwise_parallelsentence in pairwise_parallelsentences:
             #convert pairwise parallel sentence into an orange instance
             instance = parallelsentence_to_instance(pairwise_parallelsentence, domain=domain)
+            
+            #apply normalization if the model was trained with
+            try:
+                instance = instance.translate(self.continuizer_domain)
+            except:
+                pass
             
             #run learner for this instance
             value, distribution = self.learner(instance, return_type)

@@ -15,9 +15,9 @@ class PunctuationFeatureGenerator(FeatureGenerator):
         punctuation_marks = {'commas': ',',
                 'dots': '.',
                 'questionmarks': '?',
-                'questionmark_start': '',
+                'questionmark_start': u'¿',
                 'exclamations': '!',
-                'exclamation_start': '',
+                'exclamation_start': u'¡',
                 'colons': ':',
                 'semicolons': ';',
                 'hyphens': '-',
@@ -25,21 +25,24 @@ class PunctuationFeatureGenerator(FeatureGenerator):
                 'quotes': '"',
                 'openbrackets': "(",
                 'closebrackets': ")",
-                'special1': "؟",
-                'special2': "،",
-                'special3': "؛"}
+                'special1': u"؟",
+                'special2': u"،",
+                'special3': u"؛"}
     
     
-        tokenlist = sent_string.split(' ')
     
         attributes = {}
         punc_totalcount = 0
         punc_legacycount = 0 #as counted by quest
         for name, character in punctuation_marks.iteritems():
-            attributes["l_{}".format(name)] = tokenlist.count(character)
-            punc_totalcount += attributes[name]
+            thiscount = sent_string.count(character) 
+            attributes["p_{}".format(name)] = thiscount
+            punc_totalcount += thiscount
             if name in ["commas", "dots", "questionmarks", "questionmark_start", "exclamations", "exclamation_start", "colon", "semicolon"]:
-                punc_legacycount += attributes[name]
+                punc_legacycount += thiscount
+        attributes["p_all"] = punc_totalcount
+        attributes["p_lgc"] = punc_legacycount
+        return attributes
         
 
 class LengthFeatureGenerator(FeatureGenerator):
