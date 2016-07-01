@@ -239,7 +239,7 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
                 ties += 1
         self.pps_dict = reformed_dict       
         
-        print "filtered %d ties" % ties
+        logging.debug("filtered %d ties" % ties)
         return ties
     
     def get_multiranked_sentence(self, critical_attribute = None, new_rank_name = None, del_orig_class_att = True):
