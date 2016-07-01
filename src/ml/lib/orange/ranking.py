@@ -181,6 +181,9 @@ def dataset_to_instances(filename,
 
     datatable = Table(temporary_filename)
     
+    logging.debug("Loaded orange table with {} instances from {}".format(len(datatable), 
+                                                                        os.path.abspath(temporary_filename)))
+    
     if output_filename:
         #output file should be created only if the writing is finished
         shutil.copy(temporary_filename, output_filename)
