@@ -141,10 +141,9 @@ def get_tabfile(results, preferred_params=[], preferred_scores=[], display_heade
             try:
                 val = values[key][0]
             except IndexError:
-                try:
-                    val = values[key]
-                except KeyError:
-                    val = ''
+                val = values[key]
+            except KeyError:
+                val = ''
 
             #try:
             #    val = Decimal(val).quantize(THREEPLACES)
