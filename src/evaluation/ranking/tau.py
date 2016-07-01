@@ -167,11 +167,14 @@ class SegmentLevelData(object):
                     self.human_comparisons[direction] += extracted_comparisons
 
     def extracted_pairs(self, direction):
+        direction = "dummy"
         return len(self.human_comparisons[direction])
 
     def compute_tau_confidence(self, metric, direction, variant, count_length, samples=1000):
         if (metric,direction) not in self.metrics_data:
             return None, None, None, None
+
+        direction = "dummy"
 
         metric_data = self.metrics_data[metric,direction]
         comparisons = self.human_comparisons[direction]
