@@ -3,6 +3,10 @@ from collections import OrderedDict
 import time
 import os
 
+"""
+Draft script to retrieve LibLinear from the stored model,  and add them into the proper position in the repetitions logs, when they were not retrieved during the pipeline execution
+"""
+
 def get_weights_liblinear(model):
     attributes = OrderedDict()
     weights = list(model.learner.weights[0])
