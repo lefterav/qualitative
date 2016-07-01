@@ -42,7 +42,7 @@ from sklearn.linear_model.least_angle import LassoLars, LassoLarsCV
 from sklearn.preprocessing.imputation import Imputer
 from sklearn import preprocessing
 from sklearn.preprocessing.data import StandardScaler
-from sklearn.metrics.metrics import mean_squared_error, f1_score, precision_score, recall_score
+from sklearn.metrics import mean_squared_error, f1_score, precision_score, recall_score
 from sklearn.feature_selection.rfe import RFECV, RFE
 from sklearn.cross_validation import StratifiedKFold
 
