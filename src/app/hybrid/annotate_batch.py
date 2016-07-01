@@ -27,7 +27,7 @@ from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
 from dataprocessor.sax import saxjcml
 from featuregenerator.blackbox.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.blackbox.parser.berkeley.cfgrules import CfgRulesExtractor, CfgAlignmentFeatureGenerator
-from featuregenerator.blackbox.counts import LengthFeatureGenerator
+from featuregenerator.blackbox.counts import LengthFeatureGenerator, PunctuationFeatureGenerator
 from featuregenerator.ratio_generator import RatioGenerator
 from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
 from featuregenerator.reference.levenshtein.levenshtein_generator import LevenshteinGenerator
@@ -442,7 +442,7 @@ def features_lm_single(input_file, output_file, language, lm_url, lm_tokenize, l
 
 @transform(preprocess_data, suffix(".tok.jcml"), ".l.f.jcml")
 def features_length(input_file, output_file):
-    saxjcml.run_features_generator(input_file, output_file, [LengthFeatureGenerator()])
+    saxjcml.run_features_generator(input_file, output_file, [LengthFeatureGenerator(), PunctuationFeatureGenerator()])
 parallel_feature_functions.append(features_length)
      
 
