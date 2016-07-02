@@ -22,39 +22,41 @@ SET_METRIC_FUNCTIONS = [kendall_tau_set,
                         avg_predicted_ranked 
                         ]
 
-REFERENCE_METRIC_ATTRIBUTES  = {"ref-bleu" : True,
-                                "ref-meteor_fragPenalty" : True,
-                                "ref-meteor_precision" : True,
-                                "ref-meteor_recall" : True,
+REFERENCE_METRIC_ATTRIBUTES  = {
+                                "ref-bleu" : True,
+#                                "ref-meteor_fragPenalty" : True,
+#                                "ref-meteor_precision" : True,
+#                                "ref-meteor_recall" : True,
                                 "ref-meteor_score" : True,
                                 "ref-rgbF" : True,
-                                "ref-rgbPrec" : True,
-                                "ref-rgbRec" : True,
+#                                "ref-rgbPrec" : True,
+#                                "ref-rgbRec" : True,
                                 "ref-wer" : False,
-                                "ref-hj_aExtErr" : False,
-                                "ref-hj_aMissErr" : False,
-                                "ref-hj_arLexErr" : False,
-                                "ref-hj_arRer" : False,
-                                "ref-hj_bextErr" : False,
-                                "ref-hj_biHper" : False,
-                                "ref-hj_biRper" : False,
-                                "ref-hj_bmissErr" : False,
-                                "ref-hj_extErr" : False,
-                                "ref-hj_hbLexErr" : False,
-                                "ref-hj_hbRer" : False,
-                                "ref-hj_hLexErr" : False,
-                                "ref-hj_hper" : False,
-                                "ref-hj_iHper" : False,
-                                "ref-hj_iRper" : False,
-                                "ref-hj_missErr" : False,
-                                "ref-hj_rbLexErr" : False,
-                                "ref-hj_rbRer": False,
-                                "ref-hj_rLexErr" : False,
-                                "ref-hj_rper" : False,
-                                "ref-hj_rRer" : False,
+#                                "ref-hj_aExtErr" : False,
+#                                "ref-hj_aMissErr" : False,
+#                                "ref-hj_arLexErr" : False,
+#                                "ref-hj_arRer" : False,
+#                                "ref-hj_bextErr" : False,
+#                                "ref-hj_biHper" : False,
+#                                "ref-hj_biRper" : False,
+#                                "ref-hj_bmissErr" : False,
+#                                "ref-hj_extErr" : False,
+#                                "ref-hj_hbLexErr" : False,
+#                                "ref-hj_hbRer" : False,
+#                                "ref-hj_hLexErr" : False,
+#                                "ref-hj_hper" : False,
+#                                "ref-hj_iHper" : False,
+#                                "ref-hj_iRper" : False,
+#                                "ref-hj_missErr" : False,
+#                                "ref-hj_rbLexErr" : False,
+#                                "ref-hj_rbRer": False,
+#                                "ref-hj_rLexErr" : False,
+#                                "ref-hj_rper" : False,
+#                                "ref-hj_rRer" : False,
                                 "ref-hj_TER" : False,
-                                "ref-hj_wer" : False,
-                                "ref-hj_hRer" : False}
+#                                "ref-hj_wer" : False,
+#                                "ref-hj_hRer" : False
+}
                                 
 
 def get_metrics_scores(data, predicted_rank_name, original_rank_name,
@@ -77,10 +79,12 @@ def get_metrics_scores(data, predicted_rank_name, original_rank_name,
     @rtype: tuple(float, float)
     """
     stats = OrderedDict()
-    stats.update(get_ranking_scores(data, predicted_rank_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
-    stats.update(get_wmt_scores(data, predicted_rank_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
-    stats.update(get_baseline_scores(data, predicted_rank_name, original_rank_name, filter_ref, suffix, prefix))
-    get_reference_metric_scores(data, predicted_rank_name, original_rank_name, filter_ref = True, suffix, prefix)
+    #stats.update(get_ranking_scores(data, predicted_rank_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
+    #stats.update(get_wmt_scores(data, predicted_rank_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix))
+    #logging.info("Calculating baseline scores")
+    #stats.update(get_baseline_scores(data, predicted_rank_name, original_rank_name, filter_ref, suffix, prefix))
+    logging.info("Calculating reference scores")
+    stats.update(get_reference_metric_scores(data, predicted_rank_name, original_rank_name, filter_ref, suffix, prefix))
     return stats
 
 
@@ -89,23 +93,42 @@ def get_baseline_scores(data, predicted_rank_name, original_rank_name,
                            suffix = "",
                            prefix = "", 
                            **kwargs):
+
+    stats = OrderedDict()
+    for metric_name in ["fixed", "random", "alphabetical", "alphabetical_inv"]:
+        invert_ranks = False
+        prefix = "_".join([prefix, metric_name])
+        stats.update(get_ranking_scores(data, predicted_rank_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix=prefix, replace_predicted=metric_name))
+    logging.info("Calculating wmt baseline scores")
+    stats.update(get_baseline_wmt_scores(data, original_rank_name, invert_ranks, filter_ref, suffix, prefix=prefix))
+    return stats
+
+
+def get_baseline_scores_didntwork(data, predicted_rank_name, original_rank_name,
+                           filter_ref = True,
+                           suffix = "",
+                           prefix = "", 
+                           **kwargs):
     """
     Simply call all scores again, but modify the data and provide dummy ranks
     """
-    for parallesentence in data.get_parallelsentences(): 
+    
+    for parallelsentence in data.get_parallelsentences(): 
+
         i = 0
-        ranking_length = len(parallesentence.get_translations())
+        ranking_length = len(parallelsentence.get_translations())
         #sort alphabetically
-        for translation in sorted(parallesentence.get_translations(), key=methodcaller("get_system_name")):
+        for translation in sorted(parallelsentence.get_translations(), key=methodcaller("get_system_name")):
                         
             random_rank = random.randint(1, ranking_length)
-            translation.atts["rank_random"] = random_rank
-            translation.atts["rank_random_inv"] = -1.0 * random_rank
-            translation.atts["rank_fixed"] = 1
+            translation.attributes["rank_random"] = random_rank
+            translation.attributes["rank_random_inv"] = -1.0 * random_rank
+            translation.attributes["rank_fixed"] = 1
             
             i += 1 
-            translation.atts["rank_alphabetical"] = -1.0 * i
-            translation.atts["rank_alphabetical_inv"] = i
+            translation.attributes["rank_alphabetical"] = -1.0 * i
+            translation.attributes["rank_alphabetical_inv"] = i
+        modified_parallelsentence.append
         
     stats = OrderedDict()
     invert_ranks = False
@@ -125,6 +148,7 @@ def get_reference_metric_scores(data, predicted_rank_name, original_rank_name,
     for metric_name, invert_ranks in REFERENCE_METRIC_ATTRIBUTES.iteritems():
         prefix = "_".join([prefix, metric_name])
         stats.update(get_ranking_scores(data, metric_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix=prefix))
+        logging.info("WMT scores for reference metrics")
         stats.update(get_wmt_scores(data, metric_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix=prefix))
     return stats
 
@@ -133,35 +157,71 @@ def get_ranking_scores(data, predicted_rank_name, original_rank_name,
                        invert_ranks = False,
                        filter_ref = True,
                        suffix = "",
-                       prefix = "", 
+                       prefix = "",
+                       replace_predicted = None,
                        **kwargs):
     predicted_rank_vectors = []
     original_rank_vectors = []
-    
-    for parallesentence in data.get_parallelsentences():
+    missing_predicted_values = 0
+
+    for parallelsentence in data.get_parallelsentences():
+
         if filter_ref:
             #get a vector with all the rank labels from all systems apart from the references
-            predicted_rank_vector = parallesentence.get_filtered_target_attribute_values(predicted_rank_name, 
+            try:
+                predicted_rank_vector = parallelsentence.get_filtered_target_attribute_values(predicted_rank_name, 
                                                                                          filter_attribute_name="system", 
                                                                                          filter_attribute_value="_ref")
-            original_rank_vector = parallesentence.get_filtered_target_attribute_values(original_rank_name, 
+            except Exception as e:
+                logging.error("Could not get desired rank_name '{}' from parallelsentence with attributes: \n{}".format(predicted_rank_name, parallelsentence.get_attributes()))
+                missing_predicted_values += 1
+                raise Exception(e)
+
+            original_rank_vector = parallelsentence.get_filtered_target_attribute_values(original_rank_name, 
                                                                                         filter_attribute_name="system", 
                                                                                         filter_attribute_value="_ref")
         else:
             #get a vector with all the rank labels
-            predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
-            original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
+            predicted_rank_vector = parallelsentence.get_target_attribute_values(predicted_rank_name)
+            original_rank_vector = parallelsentence.get_target_attribute_values(original_rank_name)
         #construct ranking objects
-        predicted_ranking = Ranking(predicted_rank_vector)
-        original_ranking = Ranking(original_rank_vector)
-        #invert rankings if requested
-        if invert_ranks:
-            predicted_ranking = predicted_ranking.reverse()
-            original_ranking = original_ranking.reverse()
+
+        ranking_length = len(predicted_rank_vector)
+        if replace_predicted == "fixed":
+            predicted_rank_vector = [1] * ranking_length
+        elif replace_predicted == "random_ties":
+            random.seed()
+            predicted_rank_vector = [random.randint(1, ranking_length) for i in range(ranking_length)]
+        elif replace_predicted == "random_no_ties": 
+            random.seed()
+            predicted_rank_vector = range(1, ranking_length+1)
+            random.shuffle(predicted_rank_vector)
+        elif replace_predicted == "alphabetical":
+            system_names = parallelsentence.get_filtered_target_attribute_values("system", filter_attribute_name="system", filter_attribute_value="_ref")
+            sorted_system_names = sorted(system_names)
+            predicted_rank_vector = [sorted_system_names.index(name)+1 for name in system_names]
+        elif replace_predicted == "alphabetical_inv":
+            system_names = parallelsentence.get_filtered_target_attribute_values("system", filter_attribute_name="system", filter_attribute_value="_ref")
+            sorted_system_names = sorted(system_names, reverse=True)
+            predicted_rank_vector = [sorted_system_names.index(name)+1 for name in system_names]
+        try:
+            predicted_ranking = Ranking(predicted_rank_vector)
+            original_ranking = Ranking(original_rank_vector)
+            #invert rankings if requested
+            if invert_ranks:
+                predicted_ranking = predicted_ranking.reverse()
+                #original_ranking = original_ranking.reverse()
+        except Exception as e:
+            logging.error("Error while processing Parallelsentence with attributes {}".format(parallelsentence.get_attributes()))
+            logging.error("ranking that caused the error: predicted: {}, original: {}".format(predicted_ranking, original_ranking))
+            raise Exception(e)
+
         #add the ranking in the big vector with all previous parallel sentences
         predicted_rank_vectors.append(predicted_ranking)
         original_rank_vectors.append(original_ranking)
-    
+
+    if missing_predicted_values:
+        logging.warning("{} sentences where missing the {}".format(missing_predicted_values, predicted_rank_name))
     stats = OrderedDict()
     
     #process the list of rankings with all metric functions and collect the
@@ -182,7 +242,7 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
                        filter_ref = True,
                        suffix = "",
                        prefix = "",
-                       variants_with_confidence = ["wmt14","wmt12", "wmt13"],
+                       variants_with_confidence = ["wmt12", "wmt13", "wmt14"],
                        variants_no_confidence = [],
                        direction = "dummy",
                        **kwargs):
@@ -193,14 +253,14 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
     
     count_length = defaultdict(int)
         
-    for parallesentence in data.get_parallelsentences():
-        lang_pair = parallesentence.get_langpair()
+    for parallelsentence in data.get_parallelsentences():
+        lang_pair = parallelsentence.get_langpair()
         lang_pair = "dummy"
-        segment = int(parallesentence.get_id())
+        segment = int(parallelsentence.get_id())
 
-        pairwise_parallelsentences = parallesentence.get_pairwise_parallelsentences(class_name=original_rank_name)
+        pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(class_name=original_rank_name)
         
-        translations = parallesentence.get_translations()
+        translations = parallelsentence.get_translations()
         ranking_length = len(translations)
         count_length[ranking_length] += 1
         
@@ -214,7 +274,7 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
             system_id2 = translation2.get_system_name()
             human_rank2 = float(translation2.get_attribute(original_rank_name))
             
-            compare = lambda x, y: '<' if x < y else '>' if x > y else '='
+            compare = lambda x, y: '<' if x < y else '>' if x >  y else '='
             extracted_comparisons = [
                 (segment, system_id1, system_id2, compare(human_rank1, human_rank2), ranking_length)
             ]
@@ -223,7 +283,10 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
         for translation in translations:
             system_id = translation.get_system_name()
             predicted_rank_value = translation.get_attribute(predicted_rank_name)
-            predicted_rank = -1.00 * float(predicted_rank_value)
+            if invert_ranks:
+                predicted_rank = float(predicted_rank_value)
+            else:
+                predicted_rank = -1.00 * float(predicted_rank_value)
             wmtdata.metrics_data[metric,lang_pair][system_id][segment] = predicted_rank
             #wmtdata.metrics_data[metric,lang_pair][system_id][segment] = predicted_rank
     
@@ -248,28 +311,28 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
 
             
 
-def get_baseline_scores_old(data, original_rank_name,
+def get_baseline_wmt_scores(data, original_rank_name,
                        invert_ranks = False,
                        filter_ref = True,
                        suffix = "",
                        prefix = "",
-                       variants = ["wmt12"],
-                       direction = "de-en",
+                       variants = ["wmt12", "wmt13", "wmt14"],
+                       direction = "dummy",
                        **kwargs):
     
     wmtdata = SegmentLevelData()
     random.seed(int(time.time()))
     
     count_length = defaultdict(int)        
-    for parallesentence in data.get_parallelsentences():
-        lang_pair = parallesentence.get_langpair()
-        segment = int(parallesentence.get_id())
+    for parallelsentence in data.get_parallelsentences():
+        lang_pair = parallelsentence.get_langpair()
+        segment = int(parallelsentence.get_id())
     
-        translations = parallesentence.get_translations()
+        translations = parallelsentence.get_translations()
         ranking_length = len(translations)
         count_length[ranking_length] += 1
 
-        pairwise_parallelsentences = parallesentence.get_pairwise_parallelsentences(class_name=original_rank_name)
+        pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(class_name=original_rank_name)
         
         for pairwise_parallelsentence in pairwise_parallelsentences:
             translation1 = pairwise_parallelsentence.get_translations()[0]
@@ -293,20 +356,21 @@ def get_baseline_scores_old(data, original_rank_name,
             
             random_rank = random.randint(1, ranking_length)
             wmtdata.metrics_data["random", lang_pair][system_id][segment] = random_rank
-            wmtdata.metrics_data["random_inv", lang_pair][system_id][segment] = -1.0 * random_rank
             
             wmtdata.metrics_data["fixed", lang_pair][system_id][segment] = 1
-            
+            0
             i += 1
-            wmtdata.metrics_data["alphabetical", lang_pair][system_id][segment] = -1.0 * i
-            wmtdata.metrics_data["alphabetical_inv", lang_pair][system_id][segment] = i            
-            
+            wmtdata.metrics_data["alphabetical", lang_pair][system_id][segment] = i
+            wmtdata.metrics_data["alphabetical_inv", lang_pair][system_id][segment] = -1.0 * i
+ 
     scores = OrderedDict()
-    for metric in ["random", "random_inv", "alphabetical", "alphabetical_inv"]:
+    for metric in ["fixed", "random", "alphabetical", "alphabetical_inv"]:
         for variant in variants:
-            tau, confidence = wmtdata.compute_tau_confidence(metric, direction, variant, count_length, samples=100)
+            tau, confidence, weighed_tau, pvalue = wmtdata.compute_tau_confidence(metric, direction, variant, count_length, samples=1000)
             scores["{}_tau_{}".format(metric, variant)] = tau
             scores["{}_tau_{}_conf".format(metric, variant)] = confidence
+            scores["{}_tau_{}_weighed".format(metric, variant)] = weighed_tau
+            scores["{}_tau_{}_p-value".format(metric, variant)] = pvalue
     return scores
 
 class Scoring(MultiRankedDataset):
@@ -390,9 +454,9 @@ class Scoring(MultiRankedDataset):
 
         taus = []
         pis = []
-        for parallesentence in self.parallelsentences:
-            rank_vector_1 = parallesentence.get_target_attribute_values(rank_name_1)
-            rank_vector_2 = parallesentence.get_target_attribute_values(rank_name_2)
+        for parallelsentence in self.parallelsentences:
+            rank_vector_1 = parallelsentence.get_target_attribute_values(rank_name_1)
+            rank_vector_2 = parallelsentence.get_target_attribute_values(rank_name_2)
             
             fullscore = kendalltau(rank_vector_1, rank_vector_2)
             tau = fullscore[0]
@@ -421,9 +485,9 @@ class Scoring(MultiRankedDataset):
         truepositive_withfirsteffort = 0.00
         truepositive_withanyeffort = 0.00
         pairwise_comparisons = 0.00
-        for parallesentence in self.parallelsentences:
-            estimated_rank_vector = parallesentence.get_target_attribute_values(estimated_rank_name)
-            original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
+        for parallelsentence in self.parallelsentences:
+            estimated_rank_vector = parallelsentence.get_target_attribute_values(estimated_rank_name)
+            original_rank_vector = parallelsentence.get_target_attribute_values(original_rank_name)
             
             true_positive = 0.00
             false_positive = 0.00
@@ -464,9 +528,9 @@ class Scoring(MultiRankedDataset):
         else:
             inv = 1.00
         
-        for parallesentence in self.parallelsentences:
-            predicted_rank_vector = parallesentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
-            original_rank_vector = parallesentence.get_filtered_target_attribute_values(original_rank_name, "system", "_ref")
+        for parallelsentence in self.parallelsentences:
+            predicted_rank_vector = parallelsentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
+            original_rank_vector = parallelsentence.get_filtered_target_attribute_values(original_rank_name, "system", "_ref")
             
             #make sure we are dealing with numbers      
             predicted_rank_vector = [float(v) for v in predicted_rank_vector]
@@ -508,9 +572,9 @@ class Scoring(MultiRankedDataset):
         
         reciprocal_ranks = []
         
-        for parallesentence in self.parallelsentences:
-            predicted_rank_vector = parallesentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
-            original_rank_vector = parallesentence.get_filtered_target_attribute_values(original_rank_name, "system", "_ref")
+        for parallelsentence in self.parallelsentences:
+            predicted_rank_vector = parallelsentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
+            original_rank_vector = parallelsentence.get_filtered_target_attribute_values(original_rank_name, "system", "_ref")
             
             #make sure we are dealing with numbers      
             predicted_rank_vector = [float(v) for v in predicted_rank_vector]
@@ -555,9 +619,9 @@ class Scoring(MultiRankedDataset):
         else:
             inv = 1.00
         
-        for parallesentence in self.parallelsentences:
-            predicted_rank_vector = parallesentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
-            original_rank_vector = parallesentence.get_filtered_target_attribute_values(original_rank_name, "system", "_ref")
+        for parallelsentence in self.parallelsentences:
+            predicted_rank_vector = parallelsentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
+            original_rank_vector = parallelsentence.get_filtered_target_attribute_values(original_rank_name, "system", "_ref")
             
             #make sure we are dealing with numbers      
             predicted_rank_vector = [float(v) for v in predicted_rank_vector]
@@ -623,13 +687,13 @@ class Scoring(MultiRankedDataset):
         pairs_overall = 0
         sentences_with_ties = 0
         
-        for parallesentence in self.parallelsentences:
+        for parallelsentence in self.parallelsentences:
             if filter_ref:
-                predicted_rank_vector = parallesentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
-                original_rank_vector = parallesentence.get_filtered_target_attribute_values(original_rank_name, "system", "_ref")
+                predicted_rank_vector = parallelsentence.get_filtered_target_attribute_values(predicted_rank_name, "system", "_ref")
+                original_rank_vector = parallelsentence.get_filtered_target_attribute_values(original_rank_name, "system", "_ref")
             else:
-                predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
-                original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
+                predicted_rank_vector = parallelsentence.get_target_attribute_values(predicted_rank_name)
+                original_rank_vector = parallelsentence.get_target_attribute_values(original_rank_name)
             segtau, segprob, concordant_count, discordant_count, all_pairs_count, original_ties, predicted_ties, pairs = kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs)
             if segtau and segprob:
                 segtaus.append(segtau)
@@ -695,9 +759,9 @@ class Scoring(MultiRankedDataset):
 
         segment_tau = 0.00
         segment_pi = 1.00
-        for parallesentence in self.parallelsentences:
-            predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
-            original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)
+        for parallelsentence in self.parallelsentences:
+            predicted_rank_vector = parallelsentence.get_target_attribute_values(predicted_rank_name)
+            original_rank_vector = parallelsentence.get_target_attribute_values(original_rank_name)
             
             logging.debug("[{0}]".format(" , ".join(predicted_rank_vector)))
             logging.debug("[{0}]".format(" , ".join(original_rank_vector)))
@@ -745,4 +809,4 @@ if __name__ == '__main__':
         
     
         
-        
+
