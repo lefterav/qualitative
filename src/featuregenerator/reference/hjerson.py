@@ -107,8 +107,9 @@ class Hjerson(FeatureGenerator):
             ref_string = parallelsentence.ref.get_string()
         except AttributeError:
             logging.error("Skipping Hjerson run because there is no reference")
-        return {}
+            return {}
          
+        logging.debug("Hjerson sending to get_features_strings")
         atts = self.get_features_strings(target_string, [ref_string])
         atts = dict([("ref-hj_{}".format(key), value) for key, value in atts.iteritems()])
         return atts
@@ -169,19 +170,25 @@ class Hjerson(FeatureGenerator):
         @param references: a list of strings, containing the correct translations
         @type references: list(str)
         """
+        logging.basicConfig(level=logging.DEBUG)
                 
         if self.tokenize:
             target_string = self.tokenizer.process_string(target_string)
             references = [self.tokenizer.process_string(reference) for reference in references]
+        logging.debug("Hjerson sending to TreeTagger")
         
         #replace target string with the one from the tagger, and also get tags and base forms
         target_string, target_tag, target_base = self._tag(target_string)
-        
+        logging.debug("Hjerson received output from TreeTagger")
+        logging.debug(", ".join([target_string, target_tag, target_base]))
+
         #separate references list into two lists, one for tags and one for base forms
         reference_tuples = [self._tag(reference) for reference in references]
         reference_strings = [r[0] for r in reference_tuples]
         reference_tags = [r[1] for r in reference_tuples]
         reference_bases = [r[2] for r in reference_tuples]
+
+        #logging.info(", ".join([target_string, target_base, target_tag, reference_strings, reference_bases, reference_tags]))
         
         return self.analyze(target_string, target_base, target_tag, reference_strings, reference_bases, reference_tags)
     
