@@ -558,4 +558,5 @@ if __name__ == '__main__':
     #pipeline_run([original_data_split], multiprocess = 2)
 
     log.info("Done!")
-cfg.java_terminate()
+    
+gateway.shutdown()
