@@ -92,10 +92,10 @@ def get_baseline_scores(data, original_rank_name,
                            **kwargs):
 
     stats = OrderedDict()
-    for metric_name in ["fixed", "random", "alphabetical", "alphabetical_inv"]:
+    for baseline_name in ["fixed", "random", "random_noties", "alphabetical", "alphabetical_inv"]:
         invert_ranks = invert_ranks
-        prefix = "_".join([prefix, metric_name])
-        stats.update(get_baseline_ranking_scores(data, original_rank_name, invert_ranks, filter_ref, suffix, prefix=prefix, replace_predicted=metric_name))
+        prefix = "_".join([prefix, baseline_name])
+        stats.update(get_baseline_ranking_scores(data, baseline_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix=prefix))
     logging.info("Calculating wmt baseline scores")
     stats.update(get_baseline_wmt_scores(data, original_rank_name, invert_ranks, filter_ref, suffix, prefix=prefix))
 
@@ -106,7 +106,7 @@ def get_baseline_scores(data, original_rank_name,
 
         logging.info("Calculating scores for ref-based {}".format(metric_name))
         stats.update(get_ranking_scores(data, metric_name, original_rank_name, invert_these_ranks, filter_ref, suffix, prefix=prefix))
-        logging.info("Calculating WMT scores ref-based {}".format())
+        logging.info("Calculating WMT scores ref-based {}".format(metric_name))
         stats.update(get_wmt_scores(data, metric_name, original_rank_name, invert_these_ranks, filter_ref, suffix, prefix=prefix))
     return stats
 
@@ -134,10 +134,10 @@ def get_baseline_ranking_scores(data, baseline_name, original_rank_name,
         ranking_length = len(original_rank_vector)
         if baseline_name == "fixed":
             predicted_rank_vector = [1] * ranking_length
-        elif baseline_name == "random_ties":
+        elif baseline_name == "random":
             random.seed()
             predicted_rank_vector = [random.randint(1, ranking_length) for i in range(ranking_length)]
-        elif baseline_name == "random_no_ties": 
+        elif baseline_name == "random_noties": 
             random.seed()
             predicted_rank_vector = range(1, ranking_length+1)
             random.shuffle(predicted_rank_vector)
@@ -149,6 +149,8 @@ def get_baseline_ranking_scores(data, baseline_name, original_rank_name,
             system_names = parallelsentence.get_filtered_target_attribute_values("system", filter_attribute_name="system", filter_attribute_value="_ref")
             sorted_system_names = sorted(system_names, reverse=True)
             predicted_rank_vector = [sorted_system_names.index(name)+1 for name in system_names]   
+        else:
+            raise Exception("You provided a baseline name that is not supported {}".format(baseline_name))
         try:
             predicted_ranking = Ranking(predicted_rank_vector)
             original_ranking = Ranking(original_rank_vector)
