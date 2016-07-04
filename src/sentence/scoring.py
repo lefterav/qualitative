@@ -191,6 +191,7 @@ def get_ranking_scores(data, predicted_rank_name, original_rank_name,
 =======
                        prefix = "",
 <<<<<<< ssst14
+<<<<<<< ssst14
 <<<<<<< HEAD
 =======
 =======
@@ -198,6 +199,10 @@ def get_ranking_scores(data, predicted_rank_name, original_rank_name,
 >>>>>>> e35537c Separate a function to make it more functional
                        replace_predicted = None,
 >>>>>>> e35537ccbe283736307842b113e075ba6fa22d29
+=======
+>>>>>>> refs/remotes/origin/ssst14
+                       replace_predicted = None,
+>>>>>>> 2257519 local modifications
                        **kwargs):
     predicted_rank_vectors = []
     original_rank_vectors = []
