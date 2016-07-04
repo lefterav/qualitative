@@ -485,15 +485,27 @@ def reference_features(input_file, output_file):
     analyzers = [LevenshteinGenerator(),
                  BleuGenerator(),
                  RgbfGenerator(),
-                 WERFeatureGenerator(),
-                 Hjerson()]
-    if cfg.has_section("meteor"):
-        analyzers.append(MeteorGenerator(target_language, gateway))
+                 WERFeatureGenerator()]
     saxjcml.run_features_generator(input_file, output_file, analyzers)
     
-        
+@active_if(cfg.getboolean("annotation", "reference_features"))
+@transform(truecase_target_append, suffix(".tc.%s-%s.jcml" % (source_language, target_language)), ".hj.f.jcml") 
+def reference_hjerson_features(input_file, output_file):
+    analyzers = [Hjerson(lang=target_language)]
+    saxjcml.run_features_generator(input_file, output_file, analyzers)
+
+@active_if(cfg.getboolean("annotation", "reference_features") and cfg.has_section("meteor"))
+@transform(truecase_target_append, suffix(".tc.%s-%s.jcml" % (source_language, target_language)), ".mtr.f.jcml") 
+def reference_meteor_features(input_file, output_file):
+    analyzers = [MeteorGenerator(target_language, gateway)]
+    saxjcml.run_features_generator(input_file, output_file, analyzers)
+ 
+
 if cfg.getboolean("annotation", "reference_features"):
     parallel_feature_functions.append(reference_features)
+    parallel_feature_functions.append(reference_hjerson_features)
+if cfg.getboolean("annotation", "reference_features") and cfg.has_section("meteor"):
+    parallel_feature_functions.append(reference_meteor_features)
 
 #    analyzers.append(RatioGenerator())
     
@@ -553,4 +565,5 @@ if __name__ == '__main__':
     #pipeline_run([original_data_split], multiprocess = 2)
 
     log.info("Done!")
-cfg.java_terminate()
+    
+gateway.shutdown()
