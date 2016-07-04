@@ -187,6 +187,10 @@ def get_ranking_scores(data, predicted_rank_name, original_rank_name,
                        filter_ref = True,
                        suffix = "",
                        prefix = "",
+<<<<<<< HEAD
+=======
+                       replace_predicted = None,
+>>>>>>> e35537ccbe283736307842b113e075ba6fa22d29
                        **kwargs):
     predicted_rank_vectors = []
     original_rank_vectors = []
@@ -248,6 +252,32 @@ def get_ranking_scores(data, predicted_rank_name, original_rank_name,
 import random
 import time
 
+
+def _populate_wmtdata(wmtdata, parallelsentence, original_rank_name):
+    pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(class_name=original_rank_name)
+    lang_pair = "dummy"
+    
+    translations = parallelsentence.get_translations()
+    ranking_length = len(translations)
+    
+    # First populate the structure for the human ratings  
+    for pairwise_parallelsentence in pairwise_parallelsentences:
+        translation1 = pairwise_parallelsentence.get_translations()[0]
+        system_id1 = translation1.get_system_name()
+        human_rank1 = float(translation1.get_attribute(original_rank_name))            
+        
+        translation2 = pairwise_parallelsentence.get_translations()[1]
+        system_id2 = translation2.get_system_name()
+        human_rank2 = float(translation2.get_attribute(original_rank_name))
+        
+        compare = lambda x, y: '<' if x < y else '>' if x >  y else '='
+        extracted_comparisons = [
+            (segment, system_id1, system_id2, compare(human_rank1, human_rank2), ranking_length)
+        ]
+        wmtdata.human_comparisons[lang_pair] += extracted_comparisons
+    return wmtdata
+
+
 def get_wmt_scores(data, predicted_rank_name, original_rank_name,
                        invert_ranks = False,
                        filter_ref = True,
@@ -268,28 +298,12 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
         #lang_pair = parallelsentence.get_langpair()
         lang_pair = "dummy"
         segment = int(parallelsentence.get_id())
-
-        pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(class_name=original_rank_name)
         
         translations = parallelsentence.get_translations()
         ranking_length = len(translations)
         count_length[ranking_length] += 1
         
-        # First populate the structure for the human ratings  
-        for pairwise_parallelsentence in pairwise_parallelsentences:
-            translation1 = pairwise_parallelsentence.get_translations()[0]
-            system_id1 = translation1.get_system_name()
-            human_rank1 = float(translation1.get_attribute(original_rank_name))            
-            
-            translation2 = pairwise_parallelsentence.get_translations()[1]
-            system_id2 = translation2.get_system_name()
-            human_rank2 = float(translation2.get_attribute(original_rank_name))
-            
-            compare = lambda x, y: '<' if x < y else '>' if x >  y else '='
-            extracted_comparisons = [
-                (segment, system_id1, system_id2, compare(human_rank1, human_rank2), ranking_length)
-            ]
-            wmtdata.human_comparisons[lang_pair] += extracted_comparisons
+        wmtdata = _populate_wmtdata(wmtdata, parallelsentence, original_rank_name)
         
         for translation in translations:
             system_id = translation.get_system_name()
@@ -319,9 +333,6 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
     return scores
 
 
-
-            
-
 def get_baseline_wmt_scores(data, original_rank_name,
                        invert_ranks = False,
                        filter_ref = True,
@@ -345,22 +356,7 @@ def get_baseline_wmt_scores(data, original_rank_name,
         ranking_length = len(translations)
         count_length[ranking_length] += 1
 
-        pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(class_name=original_rank_name)
-        
-        for pairwise_parallelsentence in pairwise_parallelsentences:
-            translation1 = pairwise_parallelsentence.get_translations()[0]
-            system_id1 = translation1.get_system_name()
-            human_rank1 = int(translation1.get_attribute(original_rank_name))            
-            
-            translation2 = pairwise_parallelsentence.get_translations()[1]
-            system_id2 = translation2.get_system_name()
-            human_rank2 = int(translation2.get_attribute(original_rank_name))
-            
-            compare = lambda x, y: '<' if x < y else '>' if x > y else '='
-            extracted_comparisons = [
-                (segment, system_id1, system_id2, compare(human_rank1, human_rank2))
-            ]
-            wmtdata.human_comparisons[lang_pair] += extracted_comparisons
+        wmtdata = _populate_wmtdata(wmtdata, parallelsentence, original_rank_name)
         
         i = 0
         
