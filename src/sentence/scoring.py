@@ -57,6 +57,8 @@ REFERENCE_METRIC_ATTRIBUTES  = {
 #                                "ref-hj_wer" : False,
 #                                "ref-hj_hRer" : False
 }
+
+FULL_BOOTSTRAP_SAMPLES = 10
                                 
 
 def get_metrics_scores(data, predicted_rank_name, original_rank_name,
@@ -94,20 +96,20 @@ def get_baseline_scores(data, original_rank_name,
     stats = OrderedDict()
     for baseline_name in ["fixed", "random", "random_noties", "alphabetical", "alphabetical_inv"]:
         invert_ranks = invert_ranks
-        prefix = "_".join([prefix, baseline_name])
-        stats.update(get_baseline_ranking_scores(data, baseline_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix=prefix))
+        baseline_prefix = "_".join([prefix, baseline_name])
+        stats.update(get_baseline_ranking_scores(data, baseline_name, original_rank_name, invert_ranks, filter_ref, suffix, prefix=baseline_prefix))
     logging.info("Calculating wmt baseline scores")
     stats.update(get_baseline_wmt_scores(data, original_rank_name, invert_ranks, filter_ref, suffix, prefix=prefix))
 
     for metric_name, metric_inverted in REFERENCE_METRIC_ATTRIBUTES.iteritems():
-        prefix = "_".join([prefix, metric_name])
+        metric_prefix = "_".join([prefix, metric_name])
         invert_these_ranks = (bool(invert_ranks)!=bool(metric_inverted)) 
         #TODO: clarify what happens when class is an error metric; maybe reverse either predicted or original rank, depending on which one is an error metric
 
         logging.info("Calculating scores for ref-based {}".format(metric_name))
-        stats.update(get_ranking_scores(data, metric_name, original_rank_name, invert_these_ranks, filter_ref, suffix, prefix=prefix))
+        stats.update(get_ranking_scores(data, metric_name, original_rank_name, invert_these_ranks, filter_ref, suffix, prefix=metric_prefix))
         logging.info("Calculating WMT scores ref-based {}".format(metric_name))
-        stats.update(get_wmt_scores(data, metric_name, original_rank_name, invert_these_ranks, filter_ref, suffix, prefix=prefix))
+        stats.update(get_wmt_scores(data, metric_name, original_rank_name, invert_these_ranks, filter_ref, suffix, prefix=metric_prefix))
     return stats
 
 
@@ -262,8 +264,8 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
                        filter_ref = True,
                        suffix = "",
                        prefix = "",
-                       variants_with_confidence = ["wmt12", "wmt13", "wmt14"],
-                       variants_no_confidence = [],
+                       variants_with_confidence = ["wmt12", "wmt14"],
+                       variants_no_confidence = ["wmt13"],
                        direction = "dummy",
                        **kwargs):
     
@@ -274,7 +276,7 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
     count_length = defaultdict(int)
         
     for parallelsentence in data.get_parallelsentences():
-        lang_pair = parallelsentence.get_langpair()
+        #lang_pair = parallelsentence.get_langpair()
         lang_pair = "dummy"
         segment = int(parallelsentence.get_id())
 
@@ -312,7 +314,7 @@ def get_wmt_scores(data, predicted_rank_name, original_rank_name,
     
     scores = OrderedDict()
     for variant in variants_with_confidence:
-        tau, confidence, weighed_tau, pvalue = wmtdata.compute_tau_confidence(metric, direction, variant, count_length, samples=1000)
+        tau, confidence, weighed_tau, pvalue = wmtdata.compute_tau_confidence(metric, direction, variant, count_length, samples=FULL_BOOTSTRAP_SAMPLES)
         scores["tau_{}".format(variant)] = tau
         scores["tau_{}_conf".format(variant)] = confidence
         scores["tau_{}_weighed".format(variant)] = weighed_tau
@@ -342,10 +344,12 @@ def get_baseline_wmt_scores(data, original_rank_name,
     
     wmtdata = SegmentLevelData()
     random.seed(int(time.time()))
+    direction = "dummy"
     
     count_length = defaultdict(int)        
     for parallelsentence in data.get_parallelsentences():
-        lang_pair = parallelsentence.get_langpair()
+        #lang_pair = parallelsentence.get_langpair()
+        lang_pair = "dummy"
         segment = int(parallelsentence.get_id())
     
         translations = parallelsentence.get_translations()
@@ -386,11 +390,14 @@ def get_baseline_wmt_scores(data, original_rank_name,
     scores = OrderedDict()
     for metric in ["fixed", "random", "alphabetical", "alphabetical_inv"]:
         for variant in variants:
-            tau, confidence, weighed_tau, pvalue = wmtdata.compute_tau_confidence(metric, direction, variant, count_length, samples=1000)
-            scores["{}_tau_{}".format(metric, variant)] = tau
-            scores["{}_tau_{}_conf".format(metric, variant)] = confidence
-            scores["{}_tau_{}_weighed".format(metric, variant)] = weighed_tau
-            scores["{}_tau_{}_p-value".format(metric, variant)] = pvalue
+            tau, confidence, weighed_tau, pvalue = wmtdata.compute_tau_confidence(metric, direction, variant, count_length, samples=FULL_BOOTSTRAP_SAMPLES)
+            if tau is None:
+                raise Exception("tau is None")
+            this_prefix = "_".join([prefix, metric])
+            scores["base_{}_tau_{}".format(this_prefix, variant)] = tau
+            scores["base_{}_tau_{}_conf".format(this_prefix, variant)] = confidence
+            scores["base_{}_tau_{}_weighed".format(this_prefix, variant)] = weighed_tau
+            scores["base_{}_tau_{}_p-value".format(this_prefix, variant)] = pvalue
     return scores
 
 class Scoring(MultiRankedDataset):
