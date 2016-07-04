@@ -186,12 +186,7 @@ def get_ranking_scores(data, predicted_rank_name, original_rank_name,
                        invert_ranks = False,
                        filter_ref = True,
                        suffix = "",
-<<<<<<< HEAD
-                       prefix = "", 
-=======
                        prefix = "",
->>>>>>> refs/remotes/origin/ssst14
-                       replace_predicted = None,
                        **kwargs):
     predicted_rank_vectors = []
     original_rank_vectors = []
@@ -215,14 +210,8 @@ def get_ranking_scores(data, predicted_rank_name, original_rank_name,
                                                                                         filter_attribute_value="_ref")
         else:
             #get a vector with all the rank labels
-<<<<<<< HEAD
-            predicted_rank_vector = parallesentence.get_target_attribute_values(predicted_rank_name)
-            original_rank_vector = parallesentence.get_target_attribute_values(original_rank_name)            
-            
-=======
             predicted_rank_vector = parallelsentence.get_target_attribute_values(predicted_rank_name)
             original_rank_vector = parallelsentence.get_target_attribute_values(original_rank_name)
->>>>>>> refs/remotes/origin/ssst14
         #construct ranking objects
 
         
