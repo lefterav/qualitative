@@ -104,24 +104,31 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
     parallelsentences_per_id = []
     previous_sentence_id = None
     totalsentences = 0
+    test_size = 0
+    train_size = 0
 
     for parallelsentence in reader.get_parallelsentences():
         sentence_id = (parallelsentence.attributes.setdefault("testset", None), parallelsentence.get_id())
 
         #sentence_id = parallelsentence.get_compact_id()
         if previous_sentence_id != None and sentence_id != previous_sentence_id:
-            _flush_per_id(parallelsentences_per_id, training_writer, test_writer, counter, test_start, test_end)
+            train_count, test_count = _flush_per_id(parallelsentences_per_id, training_writer, test_writer, counter, test_start, test_end)
             totalsentences += len(parallelsentences_per_id)
+            train_size += train_count
+            test_size += test_count
             parallelsentences_per_id = []
         
         parallelsentences_per_id.append(parallelsentence)
         previous_sentence_id = sentence_id
         counter+=1
         
-    _flush_per_id(parallelsentences_per_id, training_writer, test_writer, counter, test_start, test_end)
+    train_count, test_count = _flush_per_id(parallelsentences_per_id, training_writer, test_writer, counter, test_start, test_end)
     totalsentences += len(parallelsentences_per_id)
-    if totalsentences != batch_size:
-        logging.info("Fold {} will have an actual number of sentences {} instead of {}".format(fold, totalsentences, batch_size))
+    train_size += train_count
+    test_size += test_count
+    
+    if test_size != batch_size:
+        logging.info("Fold {} will have an actual number of sentences {} instead of {}".format(fold, test_size, batch_size))
     training_writer.close()
     test_writer.close()
     
@@ -132,10 +139,11 @@ def _flush_per_id(parallelsentences_per_id, training_writer, test_writer, counte
     if counter < test_start or counter >= test_end:
         for parallelsentence in parallelsentences_per_id:
             training_writer.add_parallelsentence(parallelsentence)
+        return len(parallelsentences_per_id), 0
     else:
         for parallelsentence in parallelsentences_per_id:
             test_writer.add_parallelsentence(parallelsentence)
-
+        return 0, len(parallelsentences_per_id)
 
 def join_jcml(filenames, output_filename, compact=False):
     writer = IncrementalJcml(output_filename)
