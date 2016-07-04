@@ -30,7 +30,7 @@ class BaseLineSimulation(RankingExperiment):
         if n==0:
             self.prepare_data(params, rep)
         elif n==5:
-            self.evaluate_baseline(params, rep)
+            ret.update(self.evaluate_baseline(params, rep))
         return ret
     
     def evaluate_baseline(self, params, rep):
@@ -47,7 +47,7 @@ class BaseLineSimulation(RankingExperiment):
             #measure ranking scores for soft recomposition
             testset = CEJcmlReader(testset_filename, all_general=True, all_target=True) 
             logging.debug("The testset file to be opened is: {}".format(testset_filename))
-            baseline_scores = scoring.get_baseline_scores(testset, class_name , prefix="base_", invert_ranks=self.invert_ranks)
+            baseline_scores = scoring.get_baseline_scores(testset, class_name , prefix="base", invert_ranks=self.invert_ranks)
             scores.update(baseline_scores)
         return scores
 
