@@ -43,7 +43,7 @@ def dataset_to_instances(filename,
         #    continue
         # for rank, levenstein distance etc needs to be reversed, cause normally RankList works with scores 
         if not invert_ranks:
-            ranking = ranking.normalize().inverse().integers()
+            ranking = ranking.normalize().reverse().integers()
         # for BLEU, METEOR and other metrics needs not be reversed
         else:
             ranking = ranking.normalize().integers()
@@ -101,7 +101,7 @@ def parallelsentence_to_instance(parallelsentence, attribute_set,
     ranking = Ranking(parallelsentence.get_target_attribute_values(class_name))
     # needs to be reversed, cause normally RankList works with scores 
     if not invert_ranks:
-        ranking = ranking.normalize().inverse().integers()
+        ranking = ranking.normalize().reverse().integers()
         # for BLEU, METEOR and other metrics needs not be reversed
     else:
         ranking = ranking.normalize().integers()
@@ -250,7 +250,7 @@ class ListNetRanker(Ranker):
             # otherwise for BLEU, METEOR and other metrics needs to be reversed
             # cause we will evaluate against BLEU or METEOR
             else:
-                ranking = ranking.normalize().inverse().integers()
+                ranking = ranking.normalize().reverse().integers()
         except:
             ranking = ranking.normalize().integers()
 
