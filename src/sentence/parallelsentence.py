@@ -683,6 +683,9 @@ class ParallelSentence(object):
 
             yielded+=1
 
+            if len(vector) == 0:
+                log.warning("Vector from parallel sentence is empty")
+
             if class_name:
                 class_value = self._get_class_pairwise(target1, target2, class_name, ties)
                 if class_value!=None:

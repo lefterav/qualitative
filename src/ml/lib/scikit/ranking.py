@@ -14,6 +14,7 @@ from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentence
 from dataprocessor.ce.cejcml import CEJcmlReader
 from sklearn_utils import scale_datasets_crossvalidation
 from sklearn.cross_validation import train_test_split
+from sklearn.neural_network import BernoulliRBM
 
 #generic
 import numpy as np
@@ -34,6 +35,11 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis as QDA
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import RandomTreesEmbedding
+from sklearn.linear_model import PassiveAggressiveClassifier
+from sklearn.ensemble import BaggingClassifier
+from sklearn.linear_model import RidgeClassifier, RidgeClassifierCV
 
 #scikit others
 from sklearn.svm.classes import SVR
@@ -129,7 +135,7 @@ def _append_arrays(features, labels, newfeatures, newlabels):
             features = np.concatenate((features, newfeatures), axis=0)
             labels = np.concatenate((labels, newlabels), axis=0)
         except ValueError:
-            log.warning("Featurevector probably wrong dimension: {} vs {}".format(features.shape,newfeatures.shape))
+            log.debug("Featurevector probably wrong dimension: {} vs {}".format(features.shape,newfeatures.shape))
         #log.info("Featurevectors {} after concatenating: {}".format(features.shape, features))
     else:
         #or initialize the total vectors 
@@ -185,6 +191,7 @@ def dataset_to_instances(filename,
     #iterate over all parallel sentences provided by the data reader
     i = 0
     v = 0
+    empty_vectors = 0
 
     #process one parallel sentence at a time to avoid memory overload
     #(internal numpy structure is more memory effeective than the original object)
@@ -207,12 +214,18 @@ def dataset_to_instances(filename,
         #convert those vectors into numpy format
         newfeatures, newlabels = _get_numpy_arrays(vector_tuples)
         v += (len(newlabels))
-        
+       
+        if len(newfeatures) == 0:
+            empty_vectors += 1
+
         #append them to existing vectors if there are
         features, labels = _append_arrays(features, labels, newfeatures, newlabels)
 
     if len(labels)==0:
         log.warning("Finished scikit conversion: {} parallelsentences and {} vectors, gave {} instances".format(i,v,len(labels)))
+
+    if empty_vectors > 0:
+        log.warning("{} parallelsentences provided empty feature vectors".format(empty_vectors))
     
     #deal with none and other values
     features = _impute(features, imputer)
@@ -281,10 +294,10 @@ class SkLearner:
             transformer = None
             
         elif feature_selector == "RFECV_SVC":
-            return self._fs_rfecv(data, labels, plot_filename)
+            return self._fs_rfecv(data, labels, plot_filename, sample=p.get("sample", 0.05))
         
         elif feature_selector == "RFE_SVC":
-            return self._fs_rfe(data, labels, plot_filename)
+            return self._fs_rfe(data, labels, plot_filename, n_features=p.get("n_features", 10))
         
         if transformer:
             log.info("scikit: Running feature selection {}".format(feature_selector))
@@ -297,9 +310,9 @@ class SkLearner:
         return transformer, data, attributes
     
     
-    def _fs_rfe(self, data, labels, plot_filename):
+    def _fs_rfe(self, data, labels, plot_filename, n_features=10):
         svc = SVC(kernel="linear", C=1)
-        transformer = RFE(estimator=svc, n_features_to_select=10, step=1)
+        transformer = RFE(estimator=svc, n_features_to_select=n_features, step=1)
         data = transformer.fit_transform(data, labels)
         
         attributes = OrderedDict()
@@ -342,7 +355,7 @@ class SkLearner:
         svc = SVC(kernel="linear")
         
         if sample: 
-            skf = StratifiedKFold(labels, n_folds=1.00/sample)
+            skf = StratifiedKFold(labels, n_folds=int(round(1.00/sample)))
             last_fold = list(skf)[-1]
             sampledata = np.array([data[index] for index in last_fold[1]])
             samplelabels = np.array([labels[index] for index in last_fold[1]])
@@ -527,6 +540,8 @@ class SkRanker(Ranker, SkLearner):
         data = np.nan_to_num(data)
         
         #feature selection
+        if isinstance(feature_selection_params, basestring):
+            feature_selection_params = eval(feature_selection_params)
         self.featureselector, data, metadata = self.run_feature_selection(data, labels, feature_selector, feature_selection_params, feature_selection_threshold, plot_filename) 
         
         #initialize learning method and scoring functions and optimize
