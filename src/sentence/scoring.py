@@ -24,6 +24,7 @@ SET_METRIC_FUNCTIONS = [kendall_tau_set,
 
 REFERENCE_METRIC_ATTRIBUTES  = {
                                 "ref-bleu" : True,
+#                                "ref-lev" : False,
 #                                "ref-meteor_fragPenalty" : True,
 #                                "ref-meteor_precision" : True,
 #                                "ref-meteor_recall" : True,
@@ -58,7 +59,7 @@ REFERENCE_METRIC_ATTRIBUTES  = {
 #                                "ref-hj_hRer" : False
 }
 
-FULL_BOOTSTRAP_SAMPLES = 10
+FULL_BOOTSTRAP_SAMPLES = 1000
                                 
 
 def get_metrics_scores(data, predicted_rank_name, original_rank_name,
@@ -253,6 +254,7 @@ import time
 def _populate_wmtdata(wmtdata, parallelsentence, original_rank_name):
     pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(class_name=original_rank_name)
     lang_pair = "dummy"
+    segment = int(parallelsentence.get_id())
     
     translations = parallelsentence.get_translations()
     ranking_length = len(translations)
@@ -335,7 +337,7 @@ def get_baseline_wmt_scores(data, original_rank_name,
                        filter_ref = True,
                        suffix = "",
                        prefix = "",
-                       variants = ["wmt12", "wmt13", "wmt14"],
+                       variants = ["wmt12", "wmt13",  "wmt14"],
                        direction = "dummy",
                        **kwargs):
     
@@ -344,9 +346,13 @@ def get_baseline_wmt_scores(data, original_rank_name,
     direction = "dummy"
     
     count_length = defaultdict(int)        
+
+    p = 0
+    lang_pair = "dummy"
+
     for parallelsentence in data.get_parallelsentences():
+        p += 1
         #lang_pair = parallelsentence.get_langpair()
-        lang_pair = "dummy"
         segment = int(parallelsentence.get_id())
     
         translations = parallelsentence.get_translations()
@@ -364,17 +370,23 @@ def get_baseline_wmt_scores(data, original_rank_name,
             wmtdata.metrics_data["random", lang_pair][system_id][segment] = random_rank
             
             wmtdata.metrics_data["fixed", lang_pair][system_id][segment] = 1
-            0
+            
             i += 1
             wmtdata.metrics_data["alphabetical", lang_pair][system_id][segment] = i
             wmtdata.metrics_data["alphabetical_inv", lang_pair][system_id][segment] = -1.0 * i
- 
+
     scores = OrderedDict()
     for metric in ["fixed", "random", "alphabetical", "alphabetical_inv"]:
         for variant in variants:
-            tau, confidence, weighed_tau, pvalue = wmtdata.compute_tau_confidence(metric, direction, variant, count_length, samples=FULL_BOOTSTRAP_SAMPLES)
-            if tau is None:
-                raise Exception("tau is None")
+            logging.info("Metric: {}, tau variant: {}".format(metric, variant))
+            if variant == "wmt13" and metric == "fixed":
+                logging.warn("WMT13 found a fixed ranking, I will set a fake bad tau to avoid an exception")
+                tau = -1.0
+                confidence = 0
+                weighed_tau = -1.0
+                pvalue = 1.0
+            else:
+                tau, confidence, weighed_tau, pvalue = wmtdata.compute_tau_confidence(metric, direction, variant, count_length, samples=FULL_BOOTSTRAP_SAMPLES)
             this_prefix = "_".join([prefix, metric])
             scores["base_{}_tau_{}".format(this_prefix, variant)] = tau
             scores["base_{}_tau_{}_conf".format(this_prefix, variant)] = confidence
