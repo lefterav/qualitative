@@ -59,7 +59,7 @@ REFERENCE_METRIC_ATTRIBUTES  = {
 #                                "ref-hj_hRer" : False
 }
 
-FULL_BOOTSTRAP_SAMPLES = 10
+FULL_BOOTSTRAP_SAMPLES = 1000
                                 
 
 def get_metrics_scores(data, predicted_rank_name, original_rank_name,
@@ -337,7 +337,7 @@ def get_baseline_wmt_scores(data, original_rank_name,
                        filter_ref = True,
                        suffix = "",
                        prefix = "",
-                       variants = ["wmt12",  "wmt14"],
+                       variants = ["wmt12", "wmt13",  "wmt14"],
                        direction = "dummy",
                        **kwargs):
     
@@ -378,12 +378,15 @@ def get_baseline_wmt_scores(data, original_rank_name,
     scores = OrderedDict()
     for metric in ["fixed", "random", "alphabetical", "alphabetical_inv"]:
         for variant in variants:
-            logging.info("Metric: {}".format(metric))
-            try:
+            logging.info("Metric: {}, tau variant: {}".format(metric, variant))
+            if variant == "wmt13" and metric == "fixed":
+                logging.warn("WMT13 found a fixed ranking, I will set a fake bad tau to avoid an exception")
+                tau = -1.0
+                confidence = 0
+                weighed_tau = -1.0
+                pvalue = 1.0
+            else:
                 tau, confidence, weighed_tau, pvalue = wmtdata.compute_tau_confidence(metric, direction, variant, count_length, samples=FULL_BOOTSTRAP_SAMPLES)
-            except ZeroDivisionError as e:
-                logging.error(" ".join([str(v) for v in [metric, direction, variant, count_length]]))
-                raise Exception(e)
             this_prefix = "_".join([prefix, metric])
             scores["base_{}_tau_{}".format(this_prefix, variant)] = tau
             scores["base_{}_tau_{}_conf".format(this_prefix, variant)] = confidence
