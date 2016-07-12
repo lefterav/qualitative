@@ -30,10 +30,10 @@ def forname(learner, **kwargs):
             ranker_instance.initialize()
             return ranker_instance 
         except Exception as e:
-            logging.debug("{} replied {} ".format(ranker_class, str(e)))
+            logging.info("{} replied {} ".format(ranker_class, str(e)))
             pass
     
-    sys.exit("Requested ranker {} not found".format(learner))
+    raise Exception("Requested ranker {} not found".format(learner))
             
 
 class Ranker:
@@ -51,6 +51,9 @@ class Ranker:
         self.fit = True
         if learner:
             self.learner = learner
+            self.name = str(learner)
+            if isinstance(learner, basestring):
+                self.fit = False
         elif filename:
             model_file = open(filename)
             self.learner = pickle.load(open(filename,'r'))

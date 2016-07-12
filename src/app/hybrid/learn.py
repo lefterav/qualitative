@@ -141,7 +141,8 @@ class RankingExperiment(PyExperimentSuite):
         elif params["test"] == "list":
             self.trainingset_filename = dataset_filename
             testset_filenames = params["test_sets"].format(**params).split(',')
-            self.testset_filenames = [os.path.join(params["test_path"], f) for f in testset_filenames]
+            test_path = params["test_path"].format(**params)
+            self.testset_filenames = [os.path.join(test_path, f) for f in testset_filenames]
         
         #if no testing is required
         elif params["test"] == "None":
@@ -294,8 +295,9 @@ class RankingExperiment(PyExperimentSuite):
         elif params["test"] == "list":
             self.trainingset_filename = dataset_filename
             testset_filenames = params["test_sets"].format(**params).split(',')
-            self.testset_filenames = [os.path.join(params["test_path"], f) for f in testset_filenames]
-        #if no testing is required
+            test_path = params["test_path"].format(**params)
+            self.testset_filenames = [os.path.join(test_path, f) for f in testset_filenames]
+     #if no testing is required
         elif params["test"] == "last_tenth":
             self.trainingset_filename = "{}.trainingset.jcml".format(rep)
             testset_filename = "{}.testset.jcml".format(rep)
