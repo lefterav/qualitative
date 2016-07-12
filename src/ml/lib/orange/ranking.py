@@ -32,6 +32,7 @@ from Orange.classification.knn import kNNLearner
 from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
 from Orange.classification.tree import TreeLearner
 from Orange.classification.tree import C45Learner
+from Orange.classification.neural import NeuralNetworkLearner
 from Orange.classification.logreg import LogRegLearner, LibLinearLogRegLearner
 from Orange.classification import Classifier 
 from Orange.feature import Continuous
@@ -260,18 +261,34 @@ class OrangeRanker(Ranker):
     @type learner: C{Classifier} from C{Orange.classification}
     """    
 
+    def _clean_training_params(self, learner, kwargs):
+        """
+        Some algorithms raise exceptions if they are given parameters
+        others that they understand. 
+        """
+        if isinstance(learner, NeuralNetworkLearner):
+            params = ['name', 'n_mid', 'reg_fact', 'max_iter', 'normalize']
+            kwargs = dict([(k, v) for k, v in kwargs if k in params])
+        return kwargs
+    
     def initialize(self):
         if type(self.learner) == str:
             self.learner = eval(self.learner)
 
     def train(self, dataset_filename, normalize=False, **kwargs):
+        logging.info("Converting data for learner {}".format(self.learner))
         datatable = dataset_to_instances(filename=dataset_filename, **kwargs)
+        logging.info("Data for learner {} loaded".format(self.learner))
 
         if normalize:
+            logging.info("Normalizing data for learner {}".format(self.learner))
             datatable = normalize_continuous(datatable)
 
+        #training_params = self._clean_training_params(self.learner, kwargs)
+        #self.learner = self.learner(training_params)
         self.learner = self.learner(**kwargs)
 
+        logging.info("Training with {} ".format(self.learner))
         try:
             self.learner = self.learner(datatable)
         except Exception as e:
