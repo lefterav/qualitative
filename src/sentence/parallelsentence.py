@@ -280,13 +280,13 @@ class ParallelSentence(object):
         
     def get_safe_id_tuple(self):
         try:
-            return (self.attributes["testset"], self.attributes["id"])
+            return (self.attributes["testset"], self.attributes["id"], self.attributes["judgement_id"])
         except:
             try:
-                return (self.attributes["document_id="], self.attributes["id"])
+                return (self.attributes["document_id"], self.attributes["id"], self.attributes["judgement_id"])
             except:
 #            sys.stderr.write("Warning: Could not add set id into compact sentence id %s\n" %  self.attributes["id"])
-                return (None, self.attributes["id"])
+                return (None, self.attributes["id"], self.attributes["judgement_id"])
     
         
     def get_tuple_id(self):
