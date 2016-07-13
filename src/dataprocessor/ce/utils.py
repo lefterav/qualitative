@@ -62,11 +62,16 @@ def get_clean_testset(input_file, output_file):
     IncrementalJcml(output_file).add_parallelsentences(reconstructed_dataset.get_parallelsentences())
     
 def fold_jcml_respect_ids(filename, training_filename, test_filename, repetitions, fold, length=None, clean_testset=True):
-    
+    """
+    An incremental function for cross validation. The function is designed to be executed once for every fold. 
+    The current fold is passed as a parameter, so the given xml file is read in a memory efficient way (entry by entry)
+    and then every entry is entered in the training or the testing part accordingly 
+    """
     if repetitions < 2:
-        raise SystemExit('%i-fold cross validation does not make sense. Use at least 2 repetitions.'%repetitions)
+        raise SystemExit("{}-fold cross validation does not make sense. Use at least 2 repetitions.".format(repetitions))
     
     if not length:
+        #quickest way of getting the length of the file, without parsing its xml
         length = int(subprocess.check_output(["grep", "-c", "<judgedsentence", filename]).strip())
         logging.info("Dataset has {} entries".format(length))
     
@@ -110,9 +115,13 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
     for parallelsentence in reader.get_parallelsentences():
         sentence_id = (parallelsentence.attributes.setdefault("testset", None), parallelsentence.get_id())
 
-        #sentence_id = parallelsentence.get_compact_id()
+        # collect judgments of the same sentence until a new sentence appears
+        # (we suppose that the original corpus has been ordered by sentence id)
+        
+        # if a new sentence appears, flush
         if previous_sentence_id != None and sentence_id != previous_sentence_id:
-            train_count, test_count = _flush_per_id(parallelsentences_per_id, training_writer, test_writer, counter, test_start, test_end)
+            train_count, test_count = _flush_per_id(parallelsentences_per_id, training_writer, test_writer, 
+                                                    counter, test_start, test_end)
             totalsentences += len(parallelsentences_per_id)
             train_size += train_count
             test_size += test_count
@@ -122,7 +131,8 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
         previous_sentence_id = sentence_id
         counter+=1
         
-    train_count, test_count = _flush_per_id(parallelsentences_per_id, training_writer, test_writer, counter, test_start, test_end)
+    train_count, test_count = _flush_per_id(parallelsentences_per_id, training_writer, test_writer, 
+                                            counter, test_start, test_end)
     totalsentences += len(parallelsentences_per_id)
     train_size += train_count
     test_size += test_count
@@ -137,19 +147,33 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
         
 def _flush_per_id(parallelsentences_per_id, training_writer, test_writer, counter, test_start, test_end):
     if counter < test_start or counter >= test_end:
-        for parallelsentence in parallelsentences_per_id:
-            training_writer.add_parallelsentence(parallelsentence)
+        training_writer.add_parallelsentences(parallelsentences_per_id)
         return len(parallelsentences_per_id), 0
     else:
-        for parallelsentence in parallelsentences_per_id:
-            test_writer.add_parallelsentence(parallelsentence)
+        test_writer.add_parallelsentences(parallelsentences_per_id)
         return 0, len(parallelsentences_per_id)
 
 def join_jcml(filenames, output_filename, compact=False):
+    '''
+    Join two XML files, by processing them line-by-line to not overload memory
+    A file id is added in every sentence, to aid with specifying unique ids
+    @param filenames: a list of filenames that need to be joined
+    @type filenames: list of strings
+    @param output_filename: one filename which will be the result of the joining
+    @type output_filename: str
+    @param compact: whether the XML should be stripped of the strings
+    @type compact: boolean
+    '''
+    #initialize the incremental writer
     writer = IncrementalJcml(output_filename)
+    #iterate over all files
     for filename in filenames:
+        #remove commond file ending for WMT files from the file id
+        file_id = filename.replace("-jcml-rank.all.analyzed.f.jcml", "")
         reader = CEJcmlReader(filename, all_general=True, all_target=True)
+        #iterate over all incoming sentences
         for parallelsentence in reader.get_parallelsentences():
+            parallelsentence.add_attribute("file_id", file_id)
             writer.add_parallelsentence(parallelsentence)
 
     writer.close()
