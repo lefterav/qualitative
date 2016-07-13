@@ -35,9 +35,9 @@ class Test(unittest.TestCase):
         for fold in range(5):
             fold_jcml_respect_ids(self.filename, train_filename, 
                                   test_filename, repetitions, fold)
-            all_ids = [p.get_compact_id() for p in CEJcmlReader(self.filename, all_general=True, all_target=True)]
-            train_ids = [p.get_compact_id() for p in CEJcmlReader(train_filename, all_general=True, all_target=True)]
-            test_ids = [p.get_compact_id() for p in CEJcmlReader(test_filename, all_general=True, all_target=True)]
+            all_ids = [p.get_fileid_tuple() for p in CEJcmlReader(self.filename, all_general=True, all_target=True)]
+            train_ids = [p.get_fileid_tuple() for p in CEJcmlReader(train_filename, all_general=True, all_target=True)]
+            test_ids = [p.get_fileid_tuple() for p in CEJcmlReader(test_filename, all_general=True, all_target=True)]
             # Make sure ids of training and test set do not overlap
             
             count_all = len(all_ids)
