@@ -173,7 +173,7 @@ def join_jcml(filenames, output_filename, compact=False):
         reader = CEJcmlReader(filename, all_general=True, all_target=True)
         #iterate over all incoming sentences
         for parallelsentence in reader.get_parallelsentences():
-            parallelsentence.add_attribute("file_id", file_id)
+            parallelsentence.attributes["file_id"] = file_id
             writer.add_parallelsentence(parallelsentence)
 
     writer.close()
