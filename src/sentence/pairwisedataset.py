@@ -226,7 +226,7 @@ class AnalyticPairwiseDataset(PairwiseDataset):
         #first group by sentence ID or judgment ID
         for parallelsentence in plain_dataset.get_parallelsentences():
             #get a universal sentence_id (@todo: this could be parametrized)
-            sentence_id = parallelsentence.get_compact_id()
+            sentence_id = parallelsentence.get_fileid_tuple()
             pairwise_parallelsentences_per_sid.setdefault(sentence_id, []).extend(
                                                                                   parallelsentence.get_pairwise_parallelsentences_old(
                                                                                                                                   replacement=self.replacement, 
