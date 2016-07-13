@@ -14,7 +14,7 @@ def check_overlap(bigfilename, smallfilename):
     small_ids = [p.get_safe_id_tuple() for p in smallfile]
     len_small_ids = len(small_ids)
     small_ids = set(small_ids)
-    assert(len_small_ids == len(small_ids))
+    print "Sizes before and after summing ids", len_small_ids, len(small_ids)
     
     i = 0
     overlap = 0
