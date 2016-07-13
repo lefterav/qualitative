@@ -62,7 +62,6 @@ class IncrementalJcml(object):
         self.filename = filename
         self.file = tempfile.NamedTemporaryFile(mode='w',delete=False,suffix='.jcml', prefix='tmp_', dir='.') #"/tmp/%s.tmp" % os.path.basename(filename)
         self.tempfilename = self.file.name
-#        self.file = open(self.tempfilename, 'w')
         self.generator = XMLGenerator(self.file, "utf-8")
         self.generator.startDocument()
         self.generator.startElement(self.TAG["doc"], {})
@@ -76,20 +75,13 @@ class IncrementalJcml(object):
         src = parallelsentence.get_source()
         
         if isinstance(src, SimpleSentence):            
-                                
-            self.generator.characters("\n\t\t")
-            
+            self.generator.characters("\n\t\t")           
             src_attributes = {}
-#             for key,val in src.get_attributes().iteritems():
-#                 try:
-#                     src_attributes[key] = unicode(val)
-#                 except Exception as e:
-#                     logging.error("Crashed")
-#                     raise Exception(e)
             src_attributes = dict([(k(key),unicode(val)) for key,val in src.get_attributes().iteritems()])
             self.generator.startElement(self.TAG["src"], src_attributes)
             self.generator.characters(c(src.get_string()))
             self.generator.endElement(self.TAG["src"])
+            
         elif isinstance(src, tuple):
             for src in parallelsentence.get_source():
                 self.generator.characters("\n\t\t")
@@ -105,7 +97,6 @@ class IncrementalJcml(object):
             self.generator.characters(c(tgt.get_string()))
             self.generator.endElement(self.TAG["tgt"])
         
-        
         ref = parallelsentence.get_reference()
         if ref and ref.get_string() != "":
             self.generator.characters("\n\t\t")
@@ -116,7 +107,6 @@ class IncrementalJcml(object):
         
         self.generator.characters("\n\t")
         self.generator.endElement(self.TAG["sent"])
-    
     
     def add_parallelsentences(self, parallelsentences):
         for parallelsentence in parallelsentences:
