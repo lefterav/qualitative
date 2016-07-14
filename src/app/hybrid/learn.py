@@ -112,11 +112,8 @@ class RankingExperiment(PyExperimentSuite):
         """
         training_sets = params["training_sets"].format(**params).split(',')
         training_path = params["training_path"].format(**params)
-        dataset_filename = "{}.dataset.jcml".format(rep)
-    
-        self._join_or_link(training_path, training_sets, dataset_filename)
-        
         #if cross validation is enabled
+
         if params["test"] == "crossvalidation":
             self.trainingset_filename = "{}.trainingset.jcml".format(rep)
             testset_filename = "{}.testset.jcml".format(rep)
@@ -124,35 +121,41 @@ class RankingExperiment(PyExperimentSuite):
             cache_path = os.path.join(params["path"], "cache")
             fold_jcml_cache(cache_path, 
                             params["langpair"],
-                            dataset_filename,
+                            training_path, training_sets,
                             self.trainingset_filename,
                             testset_filename,
                             params['repetitions'],
                             rep)
- 
-        #use only the last fold of a 10-fold cross-validation
-        elif params["test"] == "last_tenth":
-            self.trainingset_filename = "{}.trainingset.jcml".format(rep)
-            testset_filename = "{}.testset.jcml".format(rep)
-            self.testset_filenames = [testset_filename]
-            fold_jcml_respect_ids(dataset_filename,
-                self.trainingset_filename,
-                testset_filename,
-                10,
-                0)
-            
-        #if a list of test-sets is given for testing upon
-        elif params["test"] == "list":
-            self.trainingset_filename = dataset_filename
-            testset_filenames = params["test_sets"].format(**params).split(',')
-            test_path = params["test_path"].format(**params)
-            self.testset_filenames = [os.path.join(test_path, f) for f in testset_filenames]
+
+        else:
+            dataset_filename = "{}.dataset.jcml".format(rep)
         
-        #if no testing is required
-        elif params["test"] == "None":
-            self.trainingset_filename = dataset_filename
-            self.testset_filenames = []
+            self._join_or_link(training_path, training_sets, dataset_filename)
+            
+
+            #use only the last fold of a 10-fold cross-validation
+            if params["test"] == "last_tenth":
+                self.trainingset_filename = "{}.trainingset.jcml".format(rep)
+                testset_filename = "{}.testset.jcml".format(rep)
+                self.testset_filenames = [testset_filename]
+                fold_jcml_respect_ids(dataset_filename,
+                    self.trainingset_filename,
+                    testset_filename,
+                    10,
+                    0)
                 
+            #if a list of test-sets is given for testing upon
+            elif params["test"] == "list":
+                self.trainingset_filename = dataset_filename
+                testset_filenames = params["test_sets"].format(**params).split(',')
+                test_path = params["test_path"].format(**params)
+                self.testset_filenames = [os.path.join(test_path, f) for f in testset_filenames]
+            
+            #if no testing is required
+            elif params["test"] == "None":
+                self.trainingset_filename = dataset_filename
+                self.testset_filenames = []
+                    
                 
     def train(self, params, rep):
         """

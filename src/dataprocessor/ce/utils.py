@@ -10,40 +10,95 @@ from sentence.pairwisedataset import FilteredPairwiseDataset,\
 from sentence.dataset import DataSet
 import os
 from time import sleep
+from random import randint
+
+
+def get_length_jcml(filename):
+    try:
+        return int(subprocess.check_output(["grep", "-c", "<judgedsentence", filename]).strip())
+    except:
+        return -1 
+
+def join_or_link_jcml(source_path, source_datasets, ready_dataset):
+    """
+    Create a joined file from the given datasets if needed,
+    or link them if they have already been given as one file
+    """
+
+    #get full path for all files
+    source_datasets = [os.path.join(source_path, f) for f in source_datasets]
+    logging.info("Source datasets: {}".format(source_datasets))
+    if len(source_datasets)==1:
+        logging.debug("Linking {} to {}".format(source_datasets[0], ready_dataset))
+        logging.debug(os.listdir(os.curdir))
+        try:
+            os.symlink(source_datasets[0], ready_dataset)
+        except OSError as e:
+            if '[Errno 17]' in str(e):
+                logging.warn("Could not create symlink for data. [Errno 17] File exists")
+            else:
+                raise Exception(e)
+        
+        
+    else:
+        logging.info("Joining training files")
+        join_jcml(source_datasets, ready_dataset)
+
 
         
-def fold_jcml_cache(cache_path, langpair, filename, training_filename, test_filename, repetitions, fold, length=None, clean_testset=True):
-    
+def fold_jcml_cache(cache_path, langpair, filepath, filenames, training_filename, 
+        test_filename, repetitions, fold, length=None, clean_testset=True):
+
     # this is the pattern that the file should follow
-    data_relativepath = "base_{}.lang_{}.rep_{}.clean_{}".format(os.path.basename(filename), langpair, repetitions, clean_testset)
+    data_relativepath = "base_{}_{}.lang_{}.rep_{}.clean_{}".format(os.path.basename(filepath),
+            "_".join(filenames), langpair, repetitions, clean_testset)
     data_fullpath = os.path.join(cache_path, data_relativepath)
-    
+
+    joined_filename = os.path.join(data_fullpath, "{}.dataset.jcml".format(fold))
+
+    sleep(randint(0,60))
+    if fold > 0:
+        sleep(2)
+
     # create dir if it does not exist
     if not os.path.exists(data_fullpath):
         os.makedirs(data_fullpath)
-    
+ 
+    if not os.path.exists(joined_filename):
+        logging.debug("join_or_link_jcml {},{},{}".format(filepath, filenames, joined_filename))
+        join_or_link_jcml(filepath, filenames, joined_filename)
+   
     cached_training_filename = os.path.join(data_fullpath, "{}.trainset.jcml".format(fold))
     cached_test_filename = os.path.join(data_fullpath, "{}.testset.jcml".format(fold))
     
     workingfilename = os.path.join(data_fullpath, "{}.WORKING".format(fold))
     wasworking = False
     
+   
+    # if the files are not there, prepare them
+    #if wasworking and \
+    #    not (os.path.isfile(cached_training_filename) and os.path.isfile(cached_test_filename)):            
+    #    raise Exception("The other process failed to create cross validation")
+ 
+    training_file_exists = get_length_jcml(cached_training_filename) > 0
+    test_file_exists = get_length_jcml(cached_test_filename) > 0
+   
     # check whether another process is preparing the files
     while os.path.isfile(workingfilename):
         wasworking = True
         logging.info("Another process is processing the requested cross-validation. Waiting for two minutes")
         sleep(120)
     
-    # if the files are not there, prepare them
-    if not os.path.isfile(cached_training_filename) and os.path.isfile(cached_test_filename) and wasworking:
-        raise Exception("The other process failed to create cross validation")
-    
-    if not os.path.isfile(cached_training_filename) and os.path.isfile(cached_test_filename):
-        logging.info("Cached cross-validation not found. Proceeding with creating it.")
+    if not training_file_exists or not test_file_exists:
         open(workingfilename, 'a').close()
-        fold_jcml_respect_ids(filename, cached_training_filename, cached_test_filename, repetitions, fold, length, clean_testset)
-        os.uname(workingfilename)    
+        logging.info("Cached cross-validation for fold {} not found. Proceeding with creating it.".format(fold))
+        fold_jcml_respect_ids(joined_filename, cached_training_filename, cached_test_filename, 
+            repetitions, fold, length, clean_testset)
+        os.unlink(workingfilename)    
         logging.info("Cross-validation created.")
+
+    if not (os.path.isfile(cached_training_filename) and os.path.isfile(cached_test_filename)):            
+        raise Exception("Our process failed to create cross validation")
         
     try:
         os.link(cached_training_filename, training_filename)
@@ -179,11 +234,12 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
         previous_sentence_id = sentence_id
         counter+=1
         
-    train_count, test_count = _flush_per_id(parallelsentences_per_id, training_writer, test_writer, 
+    train_count, test_count, merged_test_count = _flush_per_id(parallelsentences_per_id, training_writer, test_writer, 
                                             counter, test_start, test_end, clean_testset)
     totalsentences += len(parallelsentences_per_id)
     train_size += train_count
     test_size += test_count
+    merged_test_size += merged_test_count
     
     if test_size != batch_size:
         logging.info("Fold {} will have an actual number of {} test sentences  instead of {}".format(fold, test_size, batch_size))
