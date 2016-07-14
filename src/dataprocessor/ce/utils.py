@@ -12,7 +12,7 @@ import os
 from time import sleep
 
         
-def fold_jcml_cache(self, cache_path, langpair, filename, training_filename, test_filename, repetitions, fold, length=None, clean_testset=True):
+def fold_jcml_cache(cache_path, langpair, filename, training_filename, test_filename, repetitions, fold, length=None, clean_testset=True):
     
     # this is the pattern that the file should follow
     data_relativepath = "base_{}.lang_{}.rep_{}.clean_{}".format(os.path.basename(filename), langpair, repetitions, clean_testset)
