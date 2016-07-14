@@ -1,4 +1,4 @@
-from dataprocessor.sax.saxps2jcml import IncrementalJcml, Parallelsentence2Jcml
+from dataprocessor.sax.saxps2jcml import IncrementalJcml
 from dataprocessor.ce.cejcml import CEJcmlReader
 from dataprocessor.input.jcmlreader import JcmlReader
 
@@ -7,6 +7,54 @@ import subprocess
 import os
 from sentence.pairwisedataset import FilteredPairwiseDataset,\
     AnalyticPairwiseDataset
+from sentence.dataset import DataSet
+import os
+from time import sleep
+
+        
+def fold_jcml_cache(self, cache_path, langpair, filename, training_filename, test_filename, repetitions, fold, length=None, clean_testset=True):
+    
+    # this is the pattern that the file should follow
+    data_relativepath = "base_{}.lang_{}.rep_{}.clean_{}".format(os.path.basename(filename), langpair, repetitions, clean_testset)
+    data_fullpath = os.path.join(cache_path, data_relativepath)
+    
+    # create dir if it does not exist
+    if not os.path.exists(data_fullpath):
+        os.makedirs(data_fullpath)
+    
+    cached_training_filename = os.path.join(data_fullpath, "{}.trainset.jcml".format(fold))
+    cached_test_filename = os.path.join(data_fullpath, "{}.testset.jcml".format(fold))
+    
+    workingfilename = os.path.join(data_fullpath, "_WORKING")
+    wasworking = False
+    
+    # check whether another process is preparing the files
+    while os.path.isfile(workingfilename):
+        wasworking = True
+        logging.info("Another process is processing the requested cross-validation. Waiting for two minutes")
+        sleep(120)
+    
+    # if the files are not there, prepare them
+    if not os.path.isfile(cached_training_filename) and os.path.isfile(cached_test_filename) and wasworking:
+        raise Exception("The other process failed to create cross validation")
+    
+    if not os.path.isfile(cached_training_filename) and os.path.isfile(cached_test_filename):
+        logging.info("Cached cross-validation not found. Proceeding with creating it.")
+        open(workingfilename, 'a').close()
+        fold_jcml_respect_ids(filename, cached_training_filename, cached_test_filename, repetitions, fold, length, clean_testset)
+        os.uname(workingfilename)    
+        logging.info("Cross-validation created.")
+        
+    try:
+        os.link(cached_training_filename, training_filename)
+    except:
+        logging.warn("Training file cannot be linked from cache: {}".format(cached_training_filename))
+    
+    try:
+        os.link(cached_test_filename, test_filename)
+    except:
+        logging.warn("Test file cannot be linked from cache: {}".format(cached_test_filename))
+        
 
 def fold_jcml(filename, training_filename, test_filename, repetitions, fold, length=None):
     
@@ -75,12 +123,7 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
         #quickest way of getting the length of the file, without parsing its xml
         length = int(subprocess.check_output(["grep", "-c", "<judgedsentence", filename]).strip())
         logging.info("Dataset has {} entries".format(length))
-    
-    if clean_testset:
-        intermediate_test_filename = test_filename.replace(".jcml", ".unc.jcml")
-        assert(intermediate_test_filename != test_filename)
-    else:
-        intermediate_test_filename = test_filename
+        
     
     #get how big each batch should be
     batch_size = length // repetitions
@@ -91,7 +134,7 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
     #create one reader and two writers (for training and test set respectively)    
     reader = CEJcmlReader(filename, all_general=True, all_target=True)
     training_writer = IncrementalJcml(training_filename)
-    test_writer = IncrementalJcml(intermediate_test_filename)
+    test_writer = IncrementalJcml(test_filename)
     
     #define where is the beginning and the end of the test set
     test_start = length - (batch_size * (fold+1))
@@ -111,21 +154,25 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
     previous_sentence_id = None
     totalsentences = 0
     test_size = 0
+    merged_test_size = 0 
     train_size = 0
 
     for parallelsentence in reader.get_parallelsentences():
-        sentence_id = (parallelsentence.attributes.setdefault("testset", None), parallelsentence.get_id())
+        sentence_id = parallelsentence.get_fileid_tuple()
+        
+        (parallelsentence.attributes.setdefault("testset", None), parallelsentence.get_id())
 
         # collect judgments of the same sentence until a new sentence appears
         # (we suppose that the original corpus has been ordered by sentence id)
         
         # if a new sentence appears, flush
         if previous_sentence_id != None and sentence_id != previous_sentence_id:
-            train_count, test_count = _flush_per_id(parallelsentences_per_id, training_writer, test_writer, 
-                                                    counter, test_start, test_end)
+            train_count, test_count, merged_test_count = _flush_per_id(parallelsentences_per_id, training_writer, test_writer, 
+                                                    counter, test_start, test_end, clean_testset)
             totalsentences += len(parallelsentences_per_id)
             train_size += train_count
             test_size += test_count
+            merged_test_size += merged_test_count
             parallelsentences_per_id = []
         
         parallelsentences_per_id.append(parallelsentence)
@@ -133,26 +180,38 @@ def fold_jcml_respect_ids(filename, training_filename, test_filename, repetition
         counter+=1
         
     train_count, test_count = _flush_per_id(parallelsentences_per_id, training_writer, test_writer, 
-                                            counter, test_start, test_end)
+                                            counter, test_start, test_end, clean_testset)
     totalsentences += len(parallelsentences_per_id)
     train_size += train_count
     test_size += test_count
     
     if test_size != batch_size:
-        logging.info("Fold {} will have an actual number of sentences {} instead of {}".format(fold, test_size, batch_size))
+        logging.info("Fold {} will have an actual number of {} test sentences  instead of {}".format(fold, test_size, batch_size))
+    if merged_test_count != test_size:
+        logging.info("Fold {} aggregated {} test sentences to {}".format(fold, test_size, merged_test_count))
     training_writer.close()
     test_writer.close()
     
-    if clean_testset:
-        get_clean_testset(intermediate_test_filename, test_filename)
         
-def _flush_per_id(parallelsentences_per_id, training_writer, test_writer, counter, test_start, test_end):
+def _flush_per_id(parallelsentences_per_id, training_writer, test_writer, counter, test_start, test_end, clean_testset):
     if counter < test_start or counter >= test_end:
         training_writer.add_parallelsentences(parallelsentences_per_id)
-        return len(parallelsentences_per_id), 0
+        return len(parallelsentences_per_id), 0, 0
     else:
-        test_writer.add_parallelsentences(parallelsentences_per_id)
-        return 0, len(parallelsentences_per_id)
+        if not clean_testset:
+            test_writer.add_parallelsentences(parallelsentences_per_id)
+            count = len(parallelsentences_per_id)
+            return 0, count, count
+        else:
+            dataset = DataSet(parallelsentences_per_id)
+            analytic_dataset = AnalyticPairwiseDataset(dataset) 
+            filtered_dataset = FilteredPairwiseDataset(analytic_dataset, 1.00)
+            filtered_dataset.remove_ties()
+            reconstructed_dataset = filtered_dataset.get_multiclass_set()
+            reconstructed_dataset.remove_ties()
+            reconstructed_sentences = reconstructed_dataset.get_parallelsentences()
+            test_writer.add_parallelsentences(reconstructed_sentences)
+            return 0, len(parallelsentences_per_id), len(reconstructed_sentences)
 
 def join_jcml(filenames, output_filename, compact=False):
     '''

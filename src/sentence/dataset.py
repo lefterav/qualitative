@@ -80,7 +80,7 @@ class DataSet(object):
         ps_sid = {}
         for parallelsentence in self.parallelsentences:
             #get the id of the particular multiple ranking (judgment) or create a new one
-            sentence_id = parallelsentence.get_compact_id()
+            sentence_id = parallelsentence.get_fileid_tuple()
             if not ps_sid.has_key(sentence_id):
                 ps_sid[sentence_id] = [parallelsentence]
             else:
