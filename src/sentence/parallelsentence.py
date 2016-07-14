@@ -176,10 +176,10 @@ class ParallelSentence(object):
         return ", ".join([s.__str__() for s in self.serialize()])
         
     def __lt__(self, other):
-        return self.get_compact_id() < other.get_compact_id()
+        return self.get_fileid_tuple() < other.get_fileid_tuple()
         
     def __gt__(self, other):
-        return self.get_compact_id() > other.get_compact_id()
+        return self.get_fileid_tuple() > other.get_fileid_tuple()
     
     def __eq__(self, other):
         
@@ -277,6 +277,10 @@ class ParallelSentence(object):
         except:
 #            sys.stderr.write("Warning: Could not add set id into compact sentence id %s\n" %  self.attributes["id"])
             return self.attributes["id"]
+        
+        
+    def get_fileid_tuple(self):
+        return (self.attributes["file_id"], self.attributes["id"])
         
     def get_safe_id_tuple(self):
         try:
