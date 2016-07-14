@@ -25,7 +25,7 @@ def fold_jcml_cache(self, cache_path, langpair, filename, training_filename, tes
     cached_training_filename = os.path.join(data_fullpath, "{}.trainset.jcml".format(fold))
     cached_test_filename = os.path.join(data_fullpath, "{}.testset.jcml".format(fold))
     
-    workingfilename = os.path.join(data_fullpath, "_WORKING")
+    workingfilename = os.path.join(data_fullpath, "{}.WORKING".format(fold))
     wasworking = False
     
     # check whether another process is preparing the files
