@@ -1,4 +1,4 @@
-from dataprocessor.sax.saxps2jcml import IncrementalJcml, Parallelsentence2Jcml
+from dataprocessor.sax.saxps2jcml import IncrementalJcml
 from dataprocessor.ce.cejcml import CEJcmlReader
 from dataprocessor.input.jcmlreader import JcmlReader
 
@@ -7,6 +7,46 @@ import subprocess
 from sentence.pairwisedataset import FilteredPairwiseDataset,\
     AnalyticPairwiseDataset
 from sentence.dataset import DataSet
+import os
+from time import sleep
+
+        
+def fold_jcml_cache(self, cache_path, filename, training_filename, test_filename, repetitions, fold, length=None, clean_testset=True):
+    data_relativepath = "{}_{}_{}".format(os.path.basename(filename), repetitions, clean_testset)
+    data_fullpath = os.path.join(cache_path, data_relativepath)
+    cached_training_filename = os.path.join(data_fullpath, "{}.trainset.jcml".format(fold))
+    cached_test_filename = os.path.join(data_fullpath, "{}.testset.jcml".format(fold))
+    
+    workingfilename = os.path.join(data_fullpath, "_WORKING")
+    wasworking = False
+    
+    #check whether another process is preparing the files
+    while os.path.isfile(workingfilename):
+        wasworking = True
+        logging.info("Another process is processing the requested cross-validation. Waiting for two minutes")
+        sleep(120)
+    
+    #if the files are not there, prepare them
+    if not os.path.isfile(cached_training_filename) and os.path.isfile(cached_test_filename) and wasworking:
+        raise Exception("The other process failed to create cross validation")
+    
+    if not os.path.isfile(cached_training_filename) and os.path.isfile(cached_test_filename):
+        logging.info("Cached cross-validation not found. Proceeding with creating it.")
+        open(workingfilename, 'a').close()
+        fold_jcml_respect_ids(filename, cached_training_filename, cached_test_filename, repetitions, fold, length, clean_testset)
+        os.uname(workingfilename)    
+        logging.info("Cross-validation created.")
+        
+    try:
+        os.link(cached_training_filename, training_filename)
+    except:
+        logging.warn("Training file cannot be linked from cache: {}".format(cached_training_filename))
+    
+    try:
+        os.link(cached_test_filename, test_filename)
+    except:
+        logging.warn("Test file cannot be linked from cache: {}".format(cached_test_filename))
+        
 
 def fold_jcml(filename, training_filename, test_filename, repetitions, fold, length=None):
     
