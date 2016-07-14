@@ -11,22 +11,29 @@ import os
 from time import sleep
 
         
-def fold_jcml_cache(self, cache_path, filename, training_filename, test_filename, repetitions, fold, length=None, clean_testset=True):
-    data_relativepath = "{}_{}_{}".format(os.path.basename(filename), repetitions, clean_testset)
+def fold_jcml_cache(self, cache_path, langpair, filename, training_filename, test_filename, repetitions, fold, length=None, clean_testset=True):
+    
+    # this is the pattern that the file should follow
+    data_relativepath = "base_{}.lang_{}.rep_{}.clean_{}".format(os.path.basename(filename), langpair, repetitions, clean_testset)
     data_fullpath = os.path.join(cache_path, data_relativepath)
+    
+    # create dir if it does not exist
+    if not os.path.exists(data_fullpath):
+        os.makedirs(data_fullpath)
+    
     cached_training_filename = os.path.join(data_fullpath, "{}.trainset.jcml".format(fold))
     cached_test_filename = os.path.join(data_fullpath, "{}.testset.jcml".format(fold))
     
     workingfilename = os.path.join(data_fullpath, "_WORKING")
     wasworking = False
     
-    #check whether another process is preparing the files
+    # check whether another process is preparing the files
     while os.path.isfile(workingfilename):
         wasworking = True
         logging.info("Another process is processing the requested cross-validation. Waiting for two minutes")
         sleep(120)
     
-    #if the files are not there, prepare them
+    # if the files are not there, prepare them
     if not os.path.isfile(cached_training_filename) and os.path.isfile(cached_test_filename) and wasworking:
         raise Exception("The other process failed to create cross validation")
     
