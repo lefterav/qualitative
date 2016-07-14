@@ -433,16 +433,16 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
                 
         #iterate through the system outputs, sorted by their rank
         #and increment their rank only if there is no tie
-        systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
-        logging.debug("Systems sorted: {}".format(systems))
-        for system in systems:
+        #systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
+        #logging.debug("Systems sorted: {}".format(systems))
+        for system, this_rank in rank_per_system.iteritems():
             #if there is no tie                
-            if rank_per_system[system] != prev_rank: 
+            if this_rank != prev_rank: 
                 i += 1
                     
             #print "system: %s\t%d -> %d" % (system, rank_per_system[system] , i)
 #                print i, system,
-            prev_rank = rank_per_system[system]
+            prev_rank = this_rank
             translation = deepcopy(translations_per_system[system])
             translation.add_attribute(new_rank_name, str(i))
             translations_new_rank.append(translation)
