@@ -641,23 +641,30 @@ class ParallelSentence(object):
         self.ref = None
         
 
+#     def remove_ties(self):
+#         """
+#         Function that modifies the current parallel sentence by removing the target translations that create ties. 
+#         Only first translation for each rank is kept
+#         """
+#         translation_per_rank = [(tgt.get_rank(), tgt) for tgt in self.tgt]
+#         prev_rank = None
+#         remaining_translations = []
+#         for system, translation in sorted(translation_per_rank):
+#             rank = int(translation.get_rank())
+#             if prev_rank != rank:
+#                 remaining_translations.append(translation)
+#                 prev_rank = rank 
+#             else:
+#                 logging.debug("Filtered translation from {} because it tied".format(system))   
+#         self.tgt = remaining_translations
+
     def remove_ties(self):
         """
         Function that modifies the current parallel sentence by removing the target translations that create ties. 
-        Only first translation for each rank is kept
+        Only last translation for each rank is kept
         """
-        translation_per_rank = [(tgt.get_rank(), tgt) for tgt in self.tgt]
-        prev_rank = None
-        remaining_translations = []
-        for system, translation in sorted(translation_per_rank):
-            rank = int(translation.get_rank())
-            if prev_rank != rank:
-                remaining_translations.append(translation)
-                prev_rank = rank 
-            else:
-                logging.debug("Filtered translation from {} because it tied".format(system))   
-        self.tgt = remaining_translations
-
+        translations_per_rank = OrderedDict([(tgt.get_rank(), tgt) for tgt in self.tgt])
+        self.tgt = translations_per_rank.values()
 
 
     def get_vectors(self, attribute_set, bidirectional_pairs=True, ties=False, class_name=None, default_value='', replace_infinite=False, replace_nan=False):
