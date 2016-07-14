@@ -4,6 +4,7 @@ from dataprocessor.input.jcmlreader import JcmlReader
 
 import logging
 import subprocess
+import os
 from sentence.pairwisedataset import FilteredPairwiseDataset,\
     AnalyticPairwiseDataset
 
@@ -169,7 +170,7 @@ def join_jcml(filenames, output_filename, compact=False):
     #iterate over all files
     for filename in filenames:
         #remove commond file ending for WMT files from the file id
-        file_id = filename.replace("-jcml-rank.all.analyzed.f.jcml", "")
+        file_id = os.path.basename(filename).replace("-jcml-rank.all.analyzed.f.jcml", "")
         reader = CEJcmlReader(filename, all_general=True, all_target=True)
         #iterate over all incoming sentences
         for parallelsentence in reader.get_parallelsentences():
