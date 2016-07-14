@@ -13,7 +13,8 @@ from collections import OrderedDict
 from ml.ranking import forname
 from expsuite import PyExperimentSuite 
 from sentence.parallelsentence import AttributeSet
-from dataprocessor.ce.utils import join_jcml, fold_jcml_respect_ids
+from dataprocessor.ce.utils import join_jcml, fold_jcml_respect_ids,\
+    fold_jcml_cache
 from dataprocessor.ce.cejcml import CEJcmlReader
 from sentence import scoring
 import cPickle as pickle
@@ -120,11 +121,14 @@ class RankingExperiment(PyExperimentSuite):
             self.trainingset_filename = "{}.trainingset.jcml".format(rep)
             testset_filename = "{}.testset.jcml".format(rep)
             self.testset_filenames = [testset_filename]
-            fold_jcml_respect_ids(dataset_filename,
-                self.trainingset_filename,
-                testset_filename,
-                params['repetitions'],
-                rep)
+            cache_path = os.path.join(params["path"], "cache")
+            fold_jcml_cache(cache_path, 
+                            params["langpair"],
+                            dataset_filename,
+                            self.trainingset_filename,
+                            testset_filename,
+                            params['repetitions'],
+                            rep)
  
         #use only the last fold of a 10-fold cross-validation
         elif params["test"] == "last_tenth":
