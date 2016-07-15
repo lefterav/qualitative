@@ -10,6 +10,7 @@ from copy import deepcopy
 from parallelsentence import ParallelSentence
 import logging
 from os import sys
+from collections import OrderedDict
     
 
 class PairwiseParallelSentenceSet():
@@ -48,7 +49,7 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         @param pairwise_parallelsentences: a list of pairwise parallel sentences
         @type pairwise_parallelsentences: [L{sentence.pairwiseparallelsentence.PairwiseParallelSentence}, ...]
         """
-        self.pps_dict = {}
+        self.pps_dict = OrderedDict()
         self.rank_name = kwargs.setdefault("rank_name", rank_name)
         
         for ps in pairwise_parallelsentences:
@@ -73,7 +74,7 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         @rtype: int
         @todo: test
         """
-        reformed_dict = {}
+        reformed_dict = OrderedDict()
         removed_ties = 0  
         for system_names in self.pps_dict:
             reformed_dict[system_names] = [ps for ps in self.pps_dict[system_names] if int(ps.get_attribute(self.rank_name)) != 0]
@@ -229,7 +230,7 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         @return: the number of ties filtered
         @rtype: int
         """
-        reformed_dict = {}
+        reformed_dict = OrderedDict()
         ties = 0
         for system_names in self.pps_dict:
             ps = self.pps_dict[system_names]
@@ -249,8 +250,8 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         @return: a parallel sentence
         @rtype: L{ParallelSentence} 
         """
-        rank_per_system = {}
-        translations_per_system = {}
+        rank_per_system = OrderedDict()
+        translations_per_system = OrderedDict()
         
         if not new_rank_name:
             new_rank_name = self.rank_name
@@ -317,8 +318,8 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         @return: a parallel sentence
         @rtype: L{ParallelSentence} 
         """
-        rank_per_system = {}
-        translations_per_system = {}
+        rank_per_system = OrderedDict()
+        translations_per_system = OrderedDict()
         
         if not new_rank_name:
             new_rank_name = self.rank_name
@@ -396,8 +397,8 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         @return: a parallel sentence
         @rtype: L{ParallelSentence} 
         """
-        rank_per_system = {}
-        translations_per_system = {}
+        rank_per_system = OrderedDict()
+        translations_per_system = OrderedDict()
         
         if not new_rank_name:
             new_rank_name = self.rank_name
