@@ -14,6 +14,7 @@ from xml.etree.ElementTree import iterparse
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence, DefaultAttributeSet
 from sentence.dataset import DataSet
+import subprocess
 
 def prefix_source_atts(source_attribute_names):
     return ["src_{}".format(att) for att in source_attribute_names]
@@ -63,10 +64,18 @@ class CEJcmlReader(DataReader):
         self.input_filename = input_xml_filename
     
     def length(self):
-        i = 0
-        for _ in self.get_parallelsentences(compact=True):
-            i+=1
-        return i
+        return self.__len__()
+    
+    def __len__(self):
+        """
+        This is a generator that reads the XML file incrementally and returns a parallel sentence object each time a new entry is read.
+        @param compact: do not read the strings of the encapsulate sentences (i.e. to save time and memory)
+        @type compact: C{boolean}
+        @return: an iterator of the read parallel sentences
+        @rtype: an C{iterator} of P{ParallelSentence}
+        """
+        return int(subprocess.check_output(["grep", "-c", "<judgedsentence", self.input_filename]).strip())
+
     
     def _separate_continuous_attributes(self, attributevectors):
         """
@@ -162,7 +171,12 @@ class CEJcmlReader(DataReader):
         @rtype: an C{iterator} of P{ParallelSentence}
         """
         
-        source_file = open(self.input_filename, "r")
+        if hasattr(self.input_filename, "read"):
+            source_file = self.input_filename
+            given_file = True
+        else:
+            source_file = open(self.input_filename, "r")
+            given_file = False
         # get an iterable
         context = iterparse(source_file, events=("start", "end"))
         # turn it into an iterator
@@ -233,7 +247,9 @@ class CEJcmlReader(DataReader):
                 parallelsentence = ParallelSentence(source, targets, ref, attributes)
                 yield parallelsentence
             root.clear() 
-        source_file.close()
+            
+        if not given_file:
+            source_file.close()
         
 
     def fix(self, value):
@@ -241,6 +257,7 @@ class CEJcmlReader(DataReader):
             value = value.replace("inf", "9999999")
             value = value.replace("nan", "0")
         return value
+
            
 
    

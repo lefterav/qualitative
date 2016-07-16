@@ -51,6 +51,12 @@ class DataSet(object):
                 self.attribute_names_found = False
                 self.attribute_names = []
             self.ensure_judgment_ids()
+            
+    def add_parallelsentence(self, parallelsentence):
+        self.parallelsentences.append(parallelsentence)
+        
+    def add_parallelsentences(self, parallelsentences):
+        self.parallelsentences.extend(parallelsentences)    
                 
     def ensure_judgment_ids(self):
         """
@@ -401,7 +407,8 @@ class DataSet(object):
                     print ps1.get_translations()[1].get_string() , "\n",  ps2.get_translations()[1].get_string()
                     print ps1.get_translations()[1].get_attributes() , "\n",  ps2.get_translations()[1].get_attributes()
             
-
+    def __len__(self):
+        return len(self.parallelsentences)
 
     def __iter__(self):
         """
