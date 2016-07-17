@@ -212,11 +212,11 @@ def fold_respect_ids(reader, training_writer, test_writer, repetitions, fold, le
     merged_test_size = 0 
     train_size = 0
     
-    logging.debug("Data length before loop of fold {}: {}".format(fold, len(reader)))
+    #logging.debug("Data length before loop of fold {}: {}".format(fold, len(reader)))
 
     for parallelsentence in reader.get_parallelsentences():
         sentence_id = parallelsentence.get_fileid_tuple()
-        logging.debug("Data length before loop of sentence_id : {}, {}".format(sentence_id, len(reader)))
+        #logging.debug("Data length before loop of sentence_id : {}, {}".format(sentence_id, len(reader)))
 
         # collect judgments of the same sentence until a new sentence appears
         # (we suppose that the original corpus has been ordered by sentence id)
@@ -224,12 +224,12 @@ def fold_respect_ids(reader, training_writer, test_writer, repetitions, fold, le
         # if a new sentence appears, flush
         logging.debug("{}, {}".format(counter, sentence_id))
         if previous_sentence_id != None and sentence_id != previous_sentence_id:
-            logging.debug("Data length before flushing of sentence_id : {}, {}".format(sentence_id, len(reader)))
+            #logging.debug("Data length before flushing of sentence_id : {}, {}".format(sentence_id, len(reader)))
 
             train_count, test_count, merged_test_count = _flush_per_id(parallelsentences_per_id, 
                                                          training_writer, test_writer, counter, 
                                                          test_start, test_end, clean_testset)
-            logging.debug("Data length after flushing of sentence_id : {}, {}".format(sentence_id, len(reader)))
+            #logging.debug("Data length after flushing of sentence_id : {}, {}".format(sentence_id, len(reader)))
 
             totalsentences += len(parallelsentences_per_id)
             train_size += train_count
