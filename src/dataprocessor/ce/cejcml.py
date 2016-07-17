@@ -73,6 +73,7 @@ class CEJcmlReader(DataReader):
         @return: an iterator of the read parallel sentences
         @rtype: an C{iterator} of P{ParallelSentence}
         """
+
         log.info("Started counting")
         if hasattr(self.input_filename, "read"):
             source_file = self.input_filename
