@@ -14,7 +14,6 @@ from xml.etree.ElementTree import iterparse
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence, DefaultAttributeSet
 from sentence.dataset import DataSet
-import subprocess
 
 def prefix_source_atts(source_attribute_names):
     return ["src_{}".format(att) for att in source_attribute_names]
@@ -74,8 +73,27 @@ class CEJcmlReader(DataReader):
         @return: an iterator of the read parallel sentences
         @rtype: an C{iterator} of P{ParallelSentence}
         """
-        return int(subprocess.check_output(["grep", "-c", "<judgedsentence", self.input_filename]).strip())
+        log.info("Started counting")
+        if hasattr(self.input_filename, "read"):
+            source_file = self.input_filename
+        else:
+            source_file = open(self.input_filename, "r")
+        # get an iterable
+        context = iterparse(source_file, events=("start", "end"))
+        # turn it into an iterator
+        context = iter(context)
 
+        counter = 0
+
+        for event, elem in context:
+            if event == "end" and elem.tag in self.TAG_SENT:
+                counter += 1
+        log.info("Finished counting")
+        
+        if not hasattr(self.input_filename, "read"):
+            source_file.close()
+        
+        return counter
     
     def _separate_continuous_attributes(self, attributevectors):
         """
@@ -257,7 +275,6 @@ class CEJcmlReader(DataReader):
             value = value.replace("inf", "9999999")
             value = value.replace("nan", "0")
         return value
-
            
 
    
