@@ -39,12 +39,9 @@ def join_or_link_jcml(source_path, source_datasets, ready_dataset):
                 logging.warn("Could not create symlink for data. [Errno 17] File exists")
             else:
                 raise Exception(e)
-        
-        
     else:
         logging.info("Joining training files")
         join_jcml(source_datasets, ready_dataset)
-
 
         
 def fold_jcml_cache(cache_path, langpair, filepath, filenames, training_filename, 
