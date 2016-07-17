@@ -14,6 +14,7 @@ from xml.etree.ElementTree import iterparse
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence, DefaultAttributeSet
 from sentence.dataset import DataSet
+import subprocess
 
 def prefix_source_atts(source_attribute_names):
     return ["src_{}".format(att) for att in source_attribute_names]
@@ -26,7 +27,6 @@ def get_attribute_sets(filename):
     for parallelsentence in CEJcmlReader(filename).get_parallelsentences(compact=True, all_general=True, all_target=True):
         attribute_names.update((parallelsentence.get_source().get_attributes().keys()))
     return attribute_names
-
 
 
 class CEJcmlReader(DataReader):
@@ -66,35 +66,41 @@ class CEJcmlReader(DataReader):
         return self.__len__()
     
     def __len__(self):
-        """
-        This is a generator that reads the XML file incrementally and returns a parallel sentence object each time a new entry is read.
-        @param compact: do not read the strings of the encapsulate sentences (i.e. to save time and memory)
-        @type compact: C{boolean}
-        @return: an iterator of the read parallel sentences
-        @rtype: an C{iterator} of P{ParallelSentence}
-        """
-
-        log.info("Started counting")
-        if hasattr(self.input_filename, "read"):
-            source_file = self.input_filename
-        else:
-            source_file = open(self.input_filename, "r")
-        # get an iterable
-        context = iterparse(source_file, events=("start", "end"))
-        # turn it into an iterator
-        context = iter(context)
-
-        counter = 0
-
-        for event, elem in context:
-            if event == "end" and elem.tag in self.TAG_SENT:
-                counter += 1
-        log.info("Finished counting")
-        
-        if not hasattr(self.input_filename, "read"):
-            source_file.close()
-        
-        return counter
+        try:
+            return int(subprocess.check_output(["grep", "-c", "<judgedsentence", self.input_filename]).strip())
+        except:
+            return 0 
+    
+#     def __len__(self):
+#         """
+#         This is a generator that reads the XML file incrementally and returns a parallel sentence object each time a new entry is read.
+#         @param compact: do not read the strings of the encapsulate sentences (i.e. to save time and memory)
+#         @type compact: C{boolean}
+#         @return: an iterator of the read parallel sentences
+#         @rtype: an C{iterator} of P{ParallelSentence}
+#         """
+# 
+#         log.info("Started counting")
+#         if hasattr(self.input_filename, "read"):
+#             source_file = self.input_filename
+#         else:
+#             source_file = open(self.input_filename, "r")
+#         # get an iterable
+#         context = iterparse(source_file, events=("start", "end"))
+#         # turn it into an iterator
+#         context = iter(context)
+# 
+#         counter = 0
+# 
+#         for event, elem in context:
+#             if event == "end" and elem.tag in self.TAG_SENT:
+#                 counter += 1
+#         log.info("Finished counting")
+#         
+#         if not hasattr(self.input_filename, "read"):
+#             source_file.close()
+#         
+#         return counter
     
     def _separate_continuous_attributes(self, attributevectors):
         """
