@@ -65,14 +65,9 @@ class RevertablePairwiseDataset(PairwiseDataset):
     
     def get_multiclass_set(self):
         multirank_parallelsentences = []
-        for sentence_id in self.pairwise_parallelsentence_sets:
-            pairwise_parallelsentence_set = self.pairwise_parallelsentence_sets[sentence_id]
+        for pairwise_parallelsentence_set in self.pairwise_parallelsentence_sets.itervalues():
             multirank_parallelsentence = pairwise_parallelsentence_set.get_multiranked_sentence()
             multirank_parallelsentences.append(multirank_parallelsentence)
-#        try:
-#            multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute("id")))
-#        except:
-#            pass
         return DataSet(multirank_parallelsentences)
         
     def get_single_set_with_hard_ranks(self, critical_attribute=None, new_rank_name=None, **kwargs):
@@ -85,11 +80,6 @@ class RevertablePairwiseDataset(PairwiseDataset):
             multirank_parallelsentences.append(multirank_parallelsentence)
         if sort_attribute:
             multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute(sort_attribute)))
-        else:
-#            try:
-#                multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute("judgement_id")))
-#            except:
-            pass
         return DataSet(multirank_parallelsentences)
     
     def get_single_set_with_soft_ranks(self, attribute1="", attribute2="", critical_attribute="rank_soft_predicted", new_rank_name = None, **kwargs):
@@ -106,14 +96,8 @@ class RevertablePairwiseDataset(PairwiseDataset):
             multirank_parallelsentences.append(multirank_parallelsentence)
         if sort_attribute:
             multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute(sort_attribute)))
-        else:
-#            try:
-#                multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute("judgement_id")))
-#            except:
-            pass
         return DataSet(multirank_parallelsentences)
-
-
+    
 
 class RawPairwiseDataset(RevertablePairwiseDataset):
     """
