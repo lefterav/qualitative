@@ -74,7 +74,8 @@ class CEJcmlReader(DataReader):
         @return: an iterator of the read parallel sentences
         @rtype: an C{iterator} of P{ParallelSentence}
         """
-        return int(subprocess.check_output(["grep", "-c", "<judgedsentence", self.input_filename]).strip())
+        #return int(subprocess.check_output(["grep", "-c", '"<judgedsentence"', self.input_filename]).strip())
+        return int(subprocess.check_output('grep -c "<judgedsentence" {}'.format(self.input_filename), shell=True, stderr=subprocess.STDOUT).strip())
 
     
     def _separate_continuous_attributes(self, attributevectors):
