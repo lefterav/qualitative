@@ -78,8 +78,8 @@ def fold_jcml_cache(cache_path, langpair, filepath, filenames, training_filename
     #    not (os.path.isfile(cached_training_filename) and os.path.isfile(cached_test_filename)):            
     #    raise Exception("The other process failed to create cross validation")
  
-    training_file_exists = get_length_jcml(cached_training_filename) > 0
-    test_file_exists = get_length_jcml(cached_test_filename) > 0
+    training_file_exists = os.path.isfile(cached_training_filename)
+    test_file_exists = os.path.isfile(cached_test_filename)
    
     # check whether another process is preparing the files
     while os.path.isfile(workingfilename):
