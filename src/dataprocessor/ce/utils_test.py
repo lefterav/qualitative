@@ -127,14 +127,24 @@ class Test(unittest.TestCase):
             
             fold_jcml_respect_ids(filename, train_filename, test_filename, repetitions, fold, clean_testset=True)
             test_length = len(CEJcmlReader(test_filename, all_general=True, all_target=True))
+            
             self.assertEqual(test_length, sentences_per_id, "Testset cleanup did not happen properly: {}".format(test_length))
+            
+            counter = 0
+            reorder = 0
+            for p in CEJcmlReader(test_filename, all_general=True, all_target=True):
+                counter+=1
+                ranking = p.get_ranking()
+                if (ranking.normalize() == range(1, len(ranking)+1)):
+                    reorder += 1
+            self.assertNotEqual(reorder, counter, "Ranking has been systematically reordered")
             
         os.unlink(test_filename)
         os.unlink(train_filename)
         os.unlink(filename)
 
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
+#    import sys;sys.argv = ['', 'Test.testName']
     #loglevel = log.DEBUG
 #     log.basicConfig(level=loglevel,
 #                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
