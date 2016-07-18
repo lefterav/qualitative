@@ -417,31 +417,23 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
                 rank_per_system[system_a] = -1 * prob_pos
 #            
             #also gather in a dict the translations per system name, in order to have easy access later
-            translations_per_system[system_b] = parallelsentence.get_translations()[1]
-            translations_per_system[system_a] = parallelsentence.get_translations()[0]
+            translations_per_system[system_b] = deepcopy(parallelsentence.get_translations()[1])
+            translations_per_system[system_a] = deepcopy(parallelsentence.get_translations()[0])
 
         
         #normalize ranks
         i = 0
-        prev_rank = None
-        translations_new_rank = [] #list that gathers all the translations
-                
+        prev_rank = None                
         #iterate through the system outputs, sorted by their rank
         #and increment their rank only if there is no tie
-        #systems = sorted(rank_per_system, key=lambda system: rank_per_system[system])
-        #logging.debug("Systems sorted: {}".format(systems))
-        for system, this_rank in rank_per_system.iteritems():
+        systems = sorted(rank_per_system, key=itemgetter(2))
+        for system, this_rank in systems:
             #if there is no tie                
             if this_rank != prev_rank: 
                 i += 1
-                    
-            #print "system: %s\t%d -> %d" % (system, rank_per_system[system] , i)
-#                print i, system,
             prev_rank = this_rank
-            translation = deepcopy(translations_per_system[system])
-            translation.add_attribute(new_rank_name, str(i))
-            translations_new_rank.append(translation)
-        
+            translations_per_system[system].add_attribute(new_rank_name, str(i))
+            
         #get the values of the first sentence as template
         source = deepcopy(self.pps_dict.values()[0].get_source())
         reference = deepcopy(self.pps_dict.values()[0].get_reference())
@@ -451,7 +443,7 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         except:
             pass
         
-        return ParallelSentence(source, translations_new_rank, reference, attributes)         
+        return ParallelSentence(source, translations_per_system.values(), reference, attributes)         
 
 
     
