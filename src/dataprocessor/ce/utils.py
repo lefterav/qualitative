@@ -99,12 +99,12 @@ def fold_jcml_cache(cache_path, langpair, filepath, filenames, training_filename
         raise Exception("Our process failed to create cross validation")
         
     try:
-        os.link(cached_training_filename, training_filename)
+        os.symlink(cached_training_filename, training_filename)
     except:
         logging.warn("Training file cannot be linked from cache: {}".format(cached_training_filename))
     
     try:
-        os.link(cached_test_filename, test_filename)
+        os.symlink(cached_test_filename, test_filename)
     except:
         logging.warn("Test file cannot be linked from cache: {}".format(cached_test_filename))
         
