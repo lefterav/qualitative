@@ -211,7 +211,10 @@ class AdvancedLucyWorker(LucyWorker):
         for index in separator_indices:
             backwards_index = index - 1
             new_chunk = []
-            while backwards_index >= 0 \
+            # skip first word of sentence (always capitalized)
+            # expand backwards as long as uppercase words appear
+            # or words which act as connectors and appear lowercase in menus
+            while backwards_index > 0 \
             and (str.istitle(tokens[backwards_index][:2]) \
             or tokens[backwards_index] in supplements):
                 new_chunk.append(backwards_index)
