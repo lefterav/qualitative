@@ -11,14 +11,16 @@ import os
 import argparse
 from ConfigParser import ConfigParser
 
-def get_clean_testset(input_file, output_file):
+def get_clean_testset(input_file, output_file, remove_reconstructed_ties=True):
     plain_dataset = JcmlReader(input_file).get_dataset()
 #    plain_dataset.remove_ties()
     analytic_dataset = AnalyticPairwiseDataset(plain_dataset) 
     filtered_dataset = FilteredPairwiseDataset(analytic_dataset, 1.00)
     filtered_dataset.remove_ties()
     reconstructed_dataset = filtered_dataset.get_multiclass_set()
-    reconstructed_dataset.remove_ties()
+    if remove_reconstructed_ties:
+        print "Removing reconstructed ties"
+        reconstructed_dataset.remove_ties()
     Parallelsentence2Jcml(reconstructed_dataset.get_parallelsentences(), shuffle_translations=True).write_to_file(output_file)
 
 
@@ -44,13 +46,15 @@ if __name__ == '__main__':
     parser.add_argument("--output", help="output file pattern, e.g. /home/Eleftherios Avramidis/taraxu_data/jcml-latest/clean/{setid}.{langpair}.jcml.rank.jcml")
     parser.add_argument("--inputfile", help="Single input filename")
     parser.add_argument("--outputfile", help="Single output filename")
-    args = parser.parse_args()
-    
+    parser.add_argument("--pairties", default=True, action='store_false', help="Remove only pairwise ties and not equal reconstructed ranks")
+    args = parser.parse_args()    
+
+    print args.pairties
     if args.inputfile and args.outputfile:
-        get_clean_testset(args.inputfile, args.outputfile)
+        get_clean_testset(args.inputfile, args.outputfile, args.pairties)
     else:
         for setid in args.setid:
             for langpair in args.langpair:
                 input_xml_filename = args.input.format(setid=setid, langpair=langpair)
                 output_filename = args.output.format(setid=setid, langpair=langpair)
-                get_clean_testset(input_xml_filename, output_filename)
+                get_clean_testset(input_xml_filename, output_filename, args.pairties)
