@@ -281,9 +281,9 @@ class ParallelSentence(object):
         
     def get_fileid_tuple(self):
         try:
-            return (self.attributes["file_id"], self.attributes["id"])
-        except:
             return (self.attributes["testset"], self.attributes["id"])
+        except:
+            return (self.attributes["file_id"], self.attributes["id"])
         
     def get_safe_id_tuple(self):
         try:

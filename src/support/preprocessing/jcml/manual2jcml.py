@@ -15,6 +15,7 @@ from dataprocessor.sax.saxps2jcml import IncrementalJcml
 
 SRCLANG = "en"
 TGTLANG = "de"
+TESTSET = "batch2a"
 FIRST_COLUMN = 4
 
 def get_parallelsentences(filename, errortype="generic_errors"):
@@ -50,13 +51,13 @@ def get_parallelsentences(filename, errortype="generic_errors"):
             if count=="":
                 continue
             
+            system_name = header[i*2 + FIRST_COLUMN + offset]
             try:
                 count = int(count)
             except:
                 count = int(next(a))
                 offset+=1
             
-            system_name = header[i*2 + FIRST_COLUMN + offset]
             translation = SimpleSentence(translation_string, 
                                          {'rank' : phenomenon_count - count + 1, 
                                           'system' : system_name})
@@ -66,7 +67,9 @@ def get_parallelsentences(filename, errortype="generic_errors"):
         yield ParallelSentence(source, this_translations, reference, 
                                {'id' : sentence_id,
                                 'langsrc' : SRCLANG,
-                                'langtgt' : TGTLANG})
+                                'langtgt' : TGTLANG,
+                                'testset' : TESTSET,
+                                'annotated_error' : filename.replace('.csv', '')})
 
 
 def convert_manual2jcml(source_filename, target_filename, writer=IncrementalJcml):
