@@ -426,7 +426,7 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         prev_rank = None                
         #iterate through the system outputs, sorted by their rank
         #and increment their rank only if there is no tie
-        systems = sorted(rank_per_system, key=itemgetter(2))
+        systems = sorted(rank_per_system.items(), key=itemgetter(1))
         for system, this_rank in systems:
             #if there is no tie                
             if this_rank != prev_rank: 
