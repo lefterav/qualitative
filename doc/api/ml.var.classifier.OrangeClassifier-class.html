@@ -27,12 +27,7 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -73,11 +68,11 @@ Orange.classification.Classifier --+
 <dl><dt>Known Subclasses:</dt>
 <dd>
       <ul class="subclass-list">
-<li><a href="ml.var.tree.TreeLearner-class.html">tree.TreeLearner</a></li>  </ul>
+<li><a href="ml.var.knn.KnnLearner-class.html">knn.KnnLearner</a></li><li>, <a href="ml.var.svm.SVM-class.html">svm.SVM</a></li><li>, <a href="ml.var.tree.TreeLearner-class.html">tree.TreeLearner</a></li><li>, <a href="ml.var.loglinear.LogLinear-class.html">loglinear.LogLinear</a></li><li>, <a href="ml.var.bayes.Bayes-class.html">bayes.Bayes</a></li>  </ul>
 </dd></dl>
 
 <hr />
-<p>Basic wrapper to encapsulate common functions for all classifier 
+<p>Basic wrapper to encapsulate common functions for all learner 
   subclasses</p>
 
 <!-- ==================== INSTANCE METHODS ==================== -->
@@ -103,24 +98,6 @@ Orange.classification.Classifier --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="ml.var.classifier.OrangeClassifier-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">wrapped</span>)</span><br />
-      x.__init__(...) initializes x; see help(type(x)) for signature</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="ml.var.classifier-pysrc.html#OrangeClassifier.__init__">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a href="ml.var.classifier.OrangeClassifier-class.html#__call__" class="summary-sig-name">__call__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">example</span>,
         <span class="summary-sig-arg">what</span>=<span class="summary-sig-default">2</span>)</span><br />
@@ -140,29 +117,11 @@ Orange.classification.Classifier --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="ml.var.classifier.OrangeClassifier-class.html#classify_orange_table" class="summary-sig-name">classify_orange_table</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">orange_table</span>,
-        <span class="summary-sig-arg">return_type</span>=<span class="summary-sig-default">2</span>)</span><br />
-      Use the current classifier to classify the given orange table and return a vector (list) of the given values...</td>
+          <td><span class="summary-sig"><a href="ml.var.classifier.OrangeClassifier-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">wrapped</span>)</span><br />
+      x.__init__(...) initializes x; see help(type(x)) for signature</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="ml.var.classifier-pysrc.html#OrangeClassifier.classify_orange_table">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="clean_discrete_features"></a><span class="summary-sig-name">clean_discrete_features</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">orange_table</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="ml.var.classifier-pysrc.html#OrangeClassifier.clean_discrete_features">source&nbsp;code</a></span>
+            <span class="codelink"><a href="ml.var.classifier-pysrc.html#OrangeClassifier.__init__">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -194,6 +153,25 @@ Orange.classification.Classifier --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a href="ml.var.classifier.OrangeClassifier-class.html#classify_orange_table" class="summary-sig-name">classify_orange_table</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">orange_table</span>,
+        <span class="summary-sig-arg">return_type</span>=<span class="summary-sig-default">2</span>)</span><br />
+      Use the current learner to classify the given orange table and return a vector (list) of the given values...</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="ml.var.classifier-pysrc.html#OrangeClassifier.classify_orange_table">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a name="classify_parallelsentence"></a><span class="summary-sig-name">classify_parallelsentence</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">parallelsentence</span>,
         <span class="summary-sig-arg">return_type</span>=<span class="summary-sig-default">2</span>)</span></td>
@@ -212,9 +190,26 @@ Orange.classification.Classifier --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a name="clean_discrete_features"></a><span class="summary-sig-name">clean_discrete_features</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">orange_table</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="ml.var.classifier-pysrc.html#OrangeClassifier.clean_discrete_features">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a href="ml.var.classifier.OrangeClassifier-class.html#print_content" class="summary-sig-name">print_content</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">basename</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">classifier</code><code class="variable-quote">'</code></span>)</span><br />
-      Depending on the type of the classifier, output its contents to an 
+        <span class="summary-sig-arg">basename</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">learner</code><code class="variable-quote">'</code></span>)</span><br />
+      Depending on the type of the learner, output its contents to an 
       external file</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="ml.var.classifier-pysrc.html#OrangeClassifier.print_content">source&nbsp;code</a></span>
@@ -338,8 +333,8 @@ Orange.classification.Classifier --+
       <span class="summary-type"><a href="ml.learner.Classifier-class.html" 
       class="link">Orange.classification.Classifier</a></span>
     </td><td class="summary">
-        <a name="classifier"></a><span class="summary-name">classifier</span><br />
-      the wrapped classifier
+        <a name="learner"></a><span class="summary-name">learner</span><br />
+      the wrapped learner
     </td>
   </tr>
 </table>
@@ -389,27 +384,27 @@ Orange.classification.Classifier --+
   </td>
 </tr>
 </table>
-<a name="__new__"></a>
+<a name="__call__"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">__new__</span>(<span class="sig-arg">cls</span>,
-        <span class="sig-arg">wrapped</span>)</span>
-    <br /><em class="fname">Static Method</em>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__call__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">example</span>,
+        <span class="sig-arg">what</span>=<span class="sig-default">2</span>)</span>
+    <br /><em class="fname">(Call operator)</em>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="ml.var.classifier-pysrc.html#OrangeClassifier.__new__">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="ml.var.classifier-pysrc.html#OrangeClassifier.__call__">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  
+  <p>x(...)</p>
   <dl class="fields">
-    <dt>Returns: a new object with type S, a subtype of T</dt>
     <dt>Overrides:
-        object.__new__
+        Orange.classification.Classifier.__call__
         <dd><em class="note">(inherited documentation)</em></dd>
     </dt>
   </dl>
@@ -440,27 +435,27 @@ Orange.classification.Classifier --+
   </dl>
 </td></tr></table>
 </div>
-<a name="__call__"></a>
+<a name="__new__"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">__call__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">example</span>,
-        <span class="sig-arg">what</span>=<span class="sig-default">2</span>)</span>
-    <br /><em class="fname">(Call operator)</em>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__new__</span>(<span class="sig-arg">cls</span>,
+        <span class="sig-arg">wrapped</span>)</span>
+    <br /><em class="fname">Static Method</em>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="ml.var.classifier-pysrc.html#OrangeClassifier.__call__">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="ml.var.classifier-pysrc.html#OrangeClassifier.__new__">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  <p>x(...)</p>
+  
   <dl class="fields">
+    <dt>Returns: a new object with type S, a subtype of T</dt>
     <dt>Overrides:
-        Orange.classification.Classifier.__call__
+        object.__new__
         <dd><em class="note">(inherited documentation)</em></dd>
     </dt>
   </dl>
@@ -484,7 +479,7 @@ Orange.classification.Classifier --+
   
   <pre class="literalblock">
 
-Use the current classifier to classify the given orange table and return a vector (list) of the given values
+Use the current learner to classify the given orange table and return a vector (list) of the given values
 @param orange_table: An orange table with unclassified instances, which we need to classify
 @type orange_table: L{Orange.data.Table}
 @param return_type: Specifies whether the classification of each intance should return only the predicted value, only the predicted distribution or both (default),
@@ -505,19 +500,19 @@ Use the current classifier to classify the given orange table and return a vecto
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">print_content</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">basename</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">classifier</code><code class="variable-quote">'</code></span>)</span>
+        <span class="sig-arg">basename</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">learner</code><code class="variable-quote">'</code></span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="ml.var.classifier-pysrc.html#OrangeClassifier.print_content">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  <p>Depending on the type of the classifier, output its contents to an 
+  <p>Depending on the type of the learner, output its contents to an 
   external file</p>
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>basename</code></strong> (string) - the filename without extension of the classifier</li>
+        <li><strong class="pname"><code>basename</code></strong> (string) - the filename without extension of the learner</li>
     </ul></dd>
   </dl>
 </td></tr></table>
@@ -540,18 +535,13 @@ Use the current classifier to classify the given orange table and return a vecto
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:13 2014
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:05 2016
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

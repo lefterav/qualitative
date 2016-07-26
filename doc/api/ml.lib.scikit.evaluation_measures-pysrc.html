@@ -27,12 +27,7 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -74,8 +69,8 @@
 <a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt class="py-docstring">@contact:    jose.camargo.souza@gmail.com</tt> </tt>
 <a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt class="py-docstring">@deffield    updated: Updated</tt> </tt>
 <a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
-<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">sklearn</tt><tt class="py-op">.</tt><tt class="py-name">metrics</tt><tt class="py-op">.</tt><tt class="py-name">metrics</tt> <tt class="py-keyword">import</tt> <tt class="py-name">mean_squared_error</tt> </tt>
-<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">sklearn</tt><tt class="py-op">.</tt><tt class="py-name">metrics</tt><tt class="py-op">.</tt><tt class="py-name">pairwise</tt> <tt class="py-keyword">import</tt> <tt class="py-name">manhattan_distances</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">sklearn</tt><tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Method evaluation.ranking.tau.SegmentLevelData.metrics()=evaluation.ranking.tau.SegmentLevelData-class.html#metrics"><a title="evaluation.ranking.tau.SegmentLevelData.metrics" class="py-name" href="#" onclick="return doclink('link-0', 'metrics', 'link-0');">metrics</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">mean_squared_error</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">sklearn</tt><tt class="py-op">.</tt><tt id="link-1" class="py-name"><a title="evaluation.ranking.tau.SegmentLevelData.metrics" class="py-name" href="#" onclick="return doclink('link-1', 'metrics', 'link-0');">metrics</a></tt><tt class="py-op">.</tt><tt class="py-name">pairwise</tt> <tt class="py-keyword">import</tt> <tt class="py-name">manhattan_distances</tt> </tt>
 <a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">numpy</tt> <tt class="py-keyword">as</tt> <tt class="py-name">np</tt> </tt>
 <a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"> </tt>
 <a name="mean_absolute_error"></a><div id="mean_absolute_error-def"><a name="L19"></a><tt class="py-lineno">19</tt> <a class="py-toggle" href="#" id="mean_absolute_error-toggle" onclick="return toggle('mean_absolute_error');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="ml.lib.scikit.evaluation_measures-module.html#mean_absolute_error">mean_absolute_error</a><tt class="py-op">(</tt><tt class="py-param">x</tt><tt class="py-op">,</tt> <tt class="py-param">y</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
@@ -88,12 +83,12 @@
 </div><a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line"> </tt>
 <a name="root_mean_squared_error"></a><div id="root_mean_squared_error-def"><a name="L27"></a><tt class="py-lineno">27</tt> <a class="py-toggle" href="#" id="root_mean_squared_error-toggle" onclick="return toggle('root_mean_squared_error');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="ml.lib.scikit.evaluation_measures-module.html#root_mean_squared_error">root_mean_squared_error</a><tt class="py-op">(</tt><tt class="py-param">x</tt><tt class="py-op">,</tt> <tt class="py-param">y</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
 </div><div id="root_mean_squared_error-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="root_mean_squared_error-expanded"><a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">    <tt class="py-name">mse</tt> <tt class="py-op">=</tt> <tt class="py-name">mean_squared_error</tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">,</tt> <tt class="py-name">y</tt><tt class="py-op">)</tt> </tt>
-<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">    <tt class="py-name">rmse</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Variable dataprocessor.sax.jcml2array.sqrt=dataprocessor.sax.jcml2array-module.html#sqrt"><a title="dataprocessor.sax.jcml2array.sqrt" class="py-name" href="#" onclick="return doclink('link-0', 'sqrt', 'link-0');">sqrt</a></tt><tt class="py-op">(</tt><tt class="py-name">mse</tt><tt class="py-op">)</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">    <tt class="py-name">rmse</tt> <tt class="py-op">=</tt> <tt class="py-name">np</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Variable dataprocessor.sax.jcml2array.sqrt=dataprocessor.sax.jcml2array-module.html#sqrt"><a title="dataprocessor.sax.jcml2array.sqrt" class="py-name" href="#" onclick="return doclink('link-2', 'sqrt', 'link-2');">sqrt</a></tt><tt class="py-op">(</tt><tt class="py-name">mse</tt><tt class="py-op">)</tt> </tt>
 <a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">rmse</tt> </tt>
 </div><a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line"> </tt>
 <a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line"> </tt>
 <a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line"> </tt>
-<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-1" class="py-name" targets="Variable featuregenerator.meteor.meteor.MeteorGenerator.__name__=featuregenerator.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-1', '__name__', 'link-1');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-3" class="py-name" targets="Variable featuregenerator.reference.meteor.meteor.MeteorGenerator.__name__=featuregenerator.reference.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.reference.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-3', '__name__', 'link-3');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
 <a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
 <a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line"> </tt><script type="text/javascript">
 <!--
@@ -119,18 +114,13 @@ expandto(location.href);
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:14 2014
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:06 2016
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
