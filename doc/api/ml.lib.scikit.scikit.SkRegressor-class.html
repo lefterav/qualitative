@@ -27,12 +27,7 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -68,6 +63,12 @@
                     |
                    <strong class="uidshort">SkRegressor</strong>
 </pre>
+
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="ml.lib.scikit.scikit.TerRegressor-class.html">TerRegressor</a></li>  </ul>
+</dd></dl>
 
 <hr />
 <!-- ==================== INSTANCE METHODS ==================== -->
@@ -114,10 +115,10 @@
           <td><span class="summary-sig"><a href="ml.lib.scikit.scikit.SkRegressor-class.html#load_training_dataset" class="summary-sig-name">load_training_dataset</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">dataset</span>,
         <span class="summary-sig-arg">class_name</span>,
-        <span class="summary-sig-arg">desired_parallel_attributes</span>=<span class="summary-sig-default">[]</span>,
-        <span class="summary-sig-arg">desired_source_attributes</span>=<span class="summary-sig-default">[]</span>,
-        <span class="summary-sig-arg">desired_target_attributes</span>=<span class="summary-sig-default">[]</span>,
-        <span class="summary-sig-arg">meta_attributes</span>=<span class="summary-sig-default">[]</span>,
+        <span class="summary-sig-arg">desired_parallel_attributes</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="summary-sig-arg">desired_source_attributes</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="summary-sig-arg">desired_target_attributes</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="summary-sig-arg">meta_attributes</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
         <span class="summary-sig-arg">scale</span>=<span class="summary-sig-default">True</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="ml.lib.scikit.scikit-pysrc.html#SkRegressor.load_training_dataset">source&nbsp;code</a></span>
@@ -135,7 +136,7 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="ml.lib.scikit.scikit.SkRegressor-class.html#feature_selection" class="summary-sig-name">feature_selection</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">threshold</span>=<span class="summary-sig-default">.25</span>)</span></td>
+        <span class="summary-sig-arg">threshold</span>=<span class="summary-sig-default">0.25</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="ml.lib.scikit.scikit-pysrc.html#SkRegressor.feature_selection">source&nbsp;code</a></span>
             
@@ -304,10 +305,10 @@
   <h3 class="epydoc"><span class="sig"><span class="sig-name">load_training_dataset</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">dataset</span>,
         <span class="sig-arg">class_name</span>,
-        <span class="sig-arg">desired_parallel_attributes</span>=<span class="sig-default">[]</span>,
-        <span class="sig-arg">desired_source_attributes</span>=<span class="sig-default">[]</span>,
-        <span class="sig-arg">desired_target_attributes</span>=<span class="sig-default">[]</span>,
-        <span class="sig-arg">meta_attributes</span>=<span class="sig-default">[]</span>,
+        <span class="sig-arg">desired_parallel_attributes</span>=<span class="sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="sig-arg">desired_source_attributes</span>=<span class="sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="sig-arg">desired_target_attributes</span>=<span class="sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="sig-arg">meta_attributes</span>=<span class="sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
         <span class="sig-arg">scale</span>=<span class="sig-default">True</span>)</span>
   </h3>
   </td><td align="right" valign="top"
@@ -331,7 +332,7 @@
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">feature_selection</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">threshold</span>=<span class="sig-default">.25</span>)</span>
+        <span class="sig-arg">threshold</span>=<span class="sig-default">0.25</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="ml.lib.scikit.scikit-pysrc.html#SkRegressor.feature_selection">source&nbsp;code</a></span>&nbsp;
@@ -386,18 +387,13 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:13 2014
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:05 2016
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

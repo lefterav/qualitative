@@ -27,12 +27,7 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -94,7 +89,7 @@ object --+
         <tr>
           <td><span class="summary-sig"><a href="sentence.sentence.SimpleSentence-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">string</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
-        <span class="summary-sig-arg">attributes</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span><br />
+        <span class="summary-sig-arg">attributes</span>=<span class="summary-sig-default">OrderedDict()</span>)</span><br />
       Initializes a simple (shallow) sentence object, which wraps both a 
       sentence and its attributes</td>
           <td align="right" valign="top">
@@ -159,13 +154,30 @@ object --+
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">str</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.sentence.SimpleSentence-class.html#get_rank" class="summary-sig-name">get_rank</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Get the rank attribute of the sentence</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.sentence-pysrc.html#SimpleSentence.get_rank">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_rank"></a><span class="summary-sig-name">get_rank</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a name="get_system_name"></a><span class="summary-sig-name">get_system_name</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.sentence-pysrc.html#SimpleSentence.get_rank">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sentence.sentence-pysrc.html#SimpleSentence.get_system_name">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -267,8 +279,10 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="keep_only_attributes"></a><span class="summary-sig-name">keep_only_attributes</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">attribute_names</span>)</span></td>
+          <td><span class="summary-sig"><a href="sentence.sentence.SimpleSentence-class.html#keep_only_attributes" class="summary-sig-name">keep_only_attributes</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">attribute_names</span>)</span><br />
+      Modiify current sentence object by removing sentence attributes whose
+      name is not in the given list</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="sentence.sentence-pysrc.html#SimpleSentence.keep_only_attributes">source&nbsp;code</a></span>
             
@@ -314,6 +328,95 @@ object --+
       
     </td>
   </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_vector"></a><span class="summary-sig-name">get_vector</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">attribute_names</span>,
+        <span class="summary-sig-arg">default_value</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">replace_infinite</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">replace_nan</span>=<span class="summary-sig-default">False</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.sentence-pysrc.html#SimpleSentence.get_vector">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getitem__"></a><span class="summary-sig-name">__getitem__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">obj</span>,
+        <span class="summary-sig-arg">cls</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.sentence-pysrc.html#SimpleSentence.__getitem__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__setitem__"></a><span class="summary-sig-name">__setitem__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">obj</span>,
+        <span class="summary-sig-arg">val</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.sentence-pysrc.html#SimpleSentence.__setitem__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__delete__"></a><span class="summary-sig-name">__delete__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">obj</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.sentence-pysrc.html#SimpleSentence.__delete__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__iter__"></a><span class="summary-sig-name">__iter__</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.sentence-pysrc.html#SimpleSentence.__iter__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
   <tr>
     <td colspan="2" class="summary">
     <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
@@ -329,6 +432,41 @@ object --+
       <code>__sizeof__</code>,
       <code>__subclasshook__</code>
       </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">{str, Object}</span>
+    </td><td class="summary">
+        <a name="attributes"></a><span class="summary-name">attributes</span><br />
+      a dictionary of arguments that describe properties of the simple 
+      sentence
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="string"></a><span class="summary-name">string</span><br />
+      the string that the simple sentence will consist of
     </td>
   </tr>
 </table>
@@ -384,7 +522,7 @@ object --+
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">string</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
-        <span class="sig-arg">attributes</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span>
+        <span class="sig-arg">attributes</span>=<span class="sig-default">OrderedDict()</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
@@ -398,7 +536,7 @@ object --+
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
         <li><strong class="pname"><code>string</code></strong> (string) - the string that the simple sentence will consist of</li>
-        <li><strong class="pname"><code>attributes</code></strong> ({String key, String value}) - a dictionary of arguments that describe properties of the simple 
+        <li><strong class="pname"><code>attributes</code></strong> ({str, Object}) - a dictionary of arguments that describe properties of the simple 
           sentence</li>
     </ul></dd>
     <dt>Overrides:
@@ -447,6 +585,52 @@ object --+
     <dt>Returns: dict</dt>
         <dd>a dictionary of attributes that describe properties of the 
           sentence</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_rank"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_rank</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sentence.sentence-pysrc.html#SimpleSentence.get_rank">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get the rank attribute of the sentence</p>
+  <dl class="fields">
+    <dt>Returns: str</dt>
+        <dd>the rank attribute of the sentence</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="keep_only_attributes"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">keep_only_attributes</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">attribute_names</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sentence.sentence-pysrc.html#SimpleSentence.keep_only_attributes">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Modiify current sentence object by removing sentence attributes whose 
+  name is not in the given list</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>attribute_names</code></strong> ([str, ...]) - a list of attribute names that we want to keep</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -517,18 +701,13 @@ object --+
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:13 2014
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:05 2016
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

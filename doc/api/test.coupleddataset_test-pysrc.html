@@ -27,12 +27,7 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -75,7 +70,8 @@ sentence.sentence" class="py-name" href="#" onclick="return doclink('link-4', 's
 <a name="CoupledDataSetTest.setUp"></a><div id="CoupledDataSetTest.setUp-def"><a name="L14"></a><tt class="py-lineno">14</tt> <a class="py-toggle" href="#" id="CoupledDataSetTest.setUp-toggle" onclick="return toggle('CoupledDataSetTest.setUp');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="test.coupleddataset_test.CoupledDataSetTest-class.html#setUp">setUp</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
 </div><div id="CoupledDataSetTest.setUp-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="CoupledDataSetTest.setUp-expanded"><a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">input_file</tt> <tt class="py-op">=</tt> <tt class="py-string">"/home/Eleftherios Avramidis/taraxu_data/wmt12/qe/training_set/training-sample.jcml"</tt> </tt>
 <a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">output_file</tt> <tt class="py-op">=</tt> <tt class="py-string">"/home/Eleftherios Avramidis/taraxu_data/wmt12/qe/training_set/training-sample.coupled.jcml"</tt> </tt>
-<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">simple_dataset</tt> <tt class="py-op">=</tt> <tt id="link-13" class="py-name"><a title="dataprocessor.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-13', 'JcmlReader', 'link-3');">JcmlReader</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">input_file</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method dataprocessor.ce.cejcml.CEJcmlReader.get_dataset()=dataprocessor.ce.cejcml.CEJcmlReader-class.html#get_dataset,Method dataprocessor.input.genericreader.GenericReader.get_dataset()=dataprocessor.input.genericreader.GenericReader-class.html#get_dataset,Method dataprocessor.input.orangeprocessor.OrangeProcessor.get_dataset()=dataprocessor.input.orangeprocessor.OrangeProcessor-class.html#get_dataset,Method dataprocessor.input.orangereader.OrangeData.get_dataset()=dataprocessor.input.orangereader.OrangeData-class.html#get_dataset,Method dataprocessor.input.xliffreader.XliffReader.get_dataset()=dataprocessor.input.xliffreader.XliffReader-class.html#get_dataset"><a title="dataprocessor.ce.cejcml.CEJcmlReader.get_dataset
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">simple_dataset</tt> <tt class="py-op">=</tt> <tt id="link-13" class="py-name"><a title="dataprocessor.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-13', 'JcmlReader', 'link-3');">JcmlReader</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">input_file</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method dataprocessor.ce.cejcml.CEJcmlReader.get_dataset()=dataprocessor.ce.cejcml.CEJcmlReader-class.html#get_dataset,Method dataprocessor.datareader.DataReader.get_dataset()=dataprocessor.datareader.DataReader-class.html#get_dataset,Method dataprocessor.input.genericreader.GenericReader.get_dataset()=dataprocessor.input.genericreader.GenericReader-class.html#get_dataset,Method dataprocessor.input.orangeprocessor.OrangeProcessor.get_dataset()=dataprocessor.input.orangeprocessor.OrangeProcessor-class.html#get_dataset,Method dataprocessor.input.orangereader.OrangeData.get_dataset()=dataprocessor.input.orangereader.OrangeData-class.html#get_dataset,Method dataprocessor.input.xliffreader.XliffReader.get_dataset()=dataprocessor.input.xliffreader.XliffReader-class.html#get_dataset"><a title="dataprocessor.ce.cejcml.CEJcmlReader.get_dataset
+dataprocessor.datareader.DataReader.get_dataset
 dataprocessor.input.genericreader.GenericReader.get_dataset
 dataprocessor.input.orangeprocessor.OrangeProcessor.get_dataset
 dataprocessor.input.orangereader.OrangeData.get_dataset
@@ -84,7 +80,8 @@ dataprocessor.input.xliffreader.XliffReader.get_dataset" class="py-name" href="#
 </div><a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">         </tt>
 <a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"> </tt>
 <a name="CoupledDataSetTest.test_coupling"></a><div id="CoupledDataSetTest.test_coupling-def"><a name="L21"></a><tt class="py-lineno">21</tt> <a class="py-toggle" href="#" id="CoupledDataSetTest.test_coupling-toggle" onclick="return toggle('CoupledDataSetTest.test_coupling');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="test.coupleddataset_test.CoupledDataSetTest-class.html#test_coupling">test_coupling</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="CoupledDataSetTest.test_coupling-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="CoupledDataSetTest.test_coupling-expanded"><a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">        <tt class="py-name">coupled_parallelsentences</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">coupled_dataset</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name" targets="Method dataprocessor.ce.cejcml.CEJcmlReader.get_parallelsentences()=dataprocessor.ce.cejcml.CEJcmlReader-class.html#get_parallelsentences,Method dataprocessor.input.genericreader.GenericReader.get_parallelsentences()=dataprocessor.input.genericreader.GenericReader-class.html#get_parallelsentences,Method dataprocessor.input.genericxmlreader.GenericXmlReader.get_parallelsentences()=dataprocessor.input.genericxmlreader.GenericXmlReader-class.html#get_parallelsentences,Method dataprocessor.input.linereader.AttributeLineReader.get_parallelsentences()=dataprocessor.input.linereader.AttributeLineReader-class.html#get_parallelsentences,Method dataprocessor.input.linereader.LineReader.get_parallelsentences()=dataprocessor.input.linereader.LineReader-class.html#get_parallelsentences,Method dataprocessor.input.posteditingreader.PosteditingReader.get_parallelsentences()=dataprocessor.input.posteditingreader.PosteditingReader-class.html#get_parallelsentences,Method dataprocessor.input.rankreader.R2RankReader.get_parallelsentences()=dataprocessor.input.rankreader.R2RankReader-class.html#get_parallelsentences,Method dataprocessor.input.rankreader.RankReader.get_parallelsentences()=dataprocessor.input.rankreader.RankReader-class.html#get_parallelsentences,Method dataprocessor.input.taraxureader.TaraXUReader.get_parallelsentences()=dataprocessor.input.taraxureader.TaraXUReader-class.html#get_parallelsentences,Method dataprocessor.input.xliffreader.XliffReader.get_parallelsentences()=dataprocessor.input.xliffreader.XliffReader-class.html#get_parallelsentences,Method sentence.dataset.DataSet.get_parallelsentences()=sentence.dataset.DataSet-class.html#get_parallelsentences,Method sentence.pairwisedataset.PairwiseDataset.get_parallelsentences()=sentence.pairwisedataset.PairwiseDataset-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html#get_parallelsentences"><a title="dataprocessor.ce.cejcml.CEJcmlReader.get_parallelsentences
+</div><div id="CoupledDataSetTest.test_coupling-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="CoupledDataSetTest.test_coupling-expanded"><a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">        <tt class="py-name">coupled_parallelsentences</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">coupled_dataset</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name" targets="Method dataprocessor.ce.cejcml.CEJcmlReader.get_parallelsentences()=dataprocessor.ce.cejcml.CEJcmlReader-class.html#get_parallelsentences,Method dataprocessor.datareader.DataReader.get_parallelsentences()=dataprocessor.datareader.DataReader-class.html#get_parallelsentences,Method dataprocessor.input.genericreader.GenericReader.get_parallelsentences()=dataprocessor.input.genericreader.GenericReader-class.html#get_parallelsentences,Method dataprocessor.input.genericxmlreader.GenericXmlReader.get_parallelsentences()=dataprocessor.input.genericxmlreader.GenericXmlReader-class.html#get_parallelsentences,Method dataprocessor.input.linereader.AttributeLineReader.get_parallelsentences()=dataprocessor.input.linereader.AttributeLineReader-class.html#get_parallelsentences,Method dataprocessor.input.linereader.LineReader.get_parallelsentences()=dataprocessor.input.linereader.LineReader-class.html#get_parallelsentences,Method dataprocessor.input.posteditingreader.PosteditingReader.get_parallelsentences()=dataprocessor.input.posteditingreader.PosteditingReader-class.html#get_parallelsentences,Method dataprocessor.input.rankreader.R2RankReader.get_parallelsentences()=dataprocessor.input.rankreader.R2RankReader-class.html#get_parallelsentences,Method dataprocessor.input.rankreader.RankReader.get_parallelsentences()=dataprocessor.input.rankreader.RankReader-class.html#get_parallelsentences,Method dataprocessor.input.taraxureader.TaraXUReader.get_parallelsentences()=dataprocessor.input.taraxureader.TaraXUReader-class.html#get_parallelsentences,Method dataprocessor.input.xliffreader.XliffReader.get_parallelsentences()=dataprocessor.input.xliffreader.XliffReader-class.html#get_parallelsentences,Method dataprocessor.qtleapcsv.QtleapCSVReader.get_parallelsentences()=dataprocessor.qtleapcsv.QtleapCSVReader-class.html#get_parallelsentences,Method sentence.dataset.DataSet.get_parallelsentences()=sentence.dataset.DataSet-class.html#get_parallelsentences,Method sentence.pairwisedataset.PairwiseDataset.get_parallelsentences()=sentence.pairwisedataset.PairwiseDataset-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html#get_parallelsentences,Function support.preprocessing.jcml.manual2jcml.get_parallelsentences()=support.preprocessing.jcml.manual2jcml-module.html#get_parallelsentences"><a title="dataprocessor.ce.cejcml.CEJcmlReader.get_parallelsentences
+dataprocessor.datareader.DataReader.get_parallelsentences
 dataprocessor.input.genericreader.GenericReader.get_parallelsentences
 dataprocessor.input.genericxmlreader.GenericXmlReader.get_parallelsentences
 dataprocessor.input.linereader.AttributeLineReader.get_parallelsentences
@@ -94,11 +91,14 @@ dataprocessor.input.rankreader.R2RankReader.get_parallelsentences
 dataprocessor.input.rankreader.RankReader.get_parallelsentences
 dataprocessor.input.taraxureader.TaraXUReader.get_parallelsentences
 dataprocessor.input.xliffreader.XliffReader.get_parallelsentences
+dataprocessor.qtleapcsv.QtleapCSVReader.get_parallelsentences
 sentence.dataset.DataSet.get_parallelsentences
 sentence.pairwisedataset.PairwiseDataset.get_parallelsentences
 sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences
-sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences" class="py-name" href="#" onclick="return doclink('link-16', 'get_parallelsentences', 'link-16');">get_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences
+support.preprocessing.jcml.manual2jcml.get_parallelsentences" class="py-name" href="#" onclick="return doclink('link-16', 'get_parallelsentences', 'link-16');">get_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
 <a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">        <tt class="py-name">n</tt> <tt class="py-op">=</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">simple_dataset</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="dataprocessor.ce.cejcml.CEJcmlReader.get_parallelsentences
+dataprocessor.datareader.DataReader.get_parallelsentences
 dataprocessor.input.genericreader.GenericReader.get_parallelsentences
 dataprocessor.input.genericxmlreader.GenericXmlReader.get_parallelsentences
 dataprocessor.input.linereader.AttributeLineReader.get_parallelsentences
@@ -108,10 +108,12 @@ dataprocessor.input.rankreader.R2RankReader.get_parallelsentences
 dataprocessor.input.rankreader.RankReader.get_parallelsentences
 dataprocessor.input.taraxureader.TaraXUReader.get_parallelsentences
 dataprocessor.input.xliffreader.XliffReader.get_parallelsentences
+dataprocessor.qtleapcsv.QtleapCSVReader.get_parallelsentences
 sentence.dataset.DataSet.get_parallelsentences
 sentence.pairwisedataset.PairwiseDataset.get_parallelsentences
 sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences
-sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences" class="py-name" href="#" onclick="return doclink('link-17', 'get_parallelsentences', 'link-16');">get_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences
+support.preprocessing.jcml.manual2jcml.get_parallelsentences" class="py-name" href="#" onclick="return doclink('link-17', 'get_parallelsentences', 'link-16');">get_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
 <a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">        <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">coupled_parallelsentences</tt><tt class="py-op">)</tt> </tt>
 <a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-name">m</tt><tt class="py-op">,</tt> <tt class="py-name">n</tt><tt class="py-op">*</tt><tt class="py-op">(</tt><tt class="py-name">n</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">/</tt><tt class="py-number">2</tt><tt class="py-op">,</tt> <tt class="py-string">"The number of the couples generated is not the proper one"</tt><tt class="py-op">)</tt> </tt>
 <a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">        <tt id="link-18" class="py-name"><a title="dataprocessor.sax.saxps2jcml.Parallelsentence2Jcml" class="py-name" href="#" onclick="return doclink('link-18', 'Parallelsentence2Jcml', 'link-12');">Parallelsentence2Jcml</a></tt><tt class="py-op">(</tt><tt class="py-name">coupled_parallelsentences</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Method dataprocessor.output.posteditingwriter.PosteditingWriter.write_to_file()=dataprocessor.output.posteditingwriter.PosteditingWriter-class.html#write_to_file,Method dataprocessor.output.taraxuwriter.TaraXUWriter.write_to_file()=dataprocessor.output.taraxuwriter.TaraXUWriter-class.html#write_to_file,Method dataprocessor.output.wmt11tabwriter.Wmt11TabWriter.write_to_file()=dataprocessor.output.wmt11tabwriter.Wmt11TabWriter-class.html#write_to_file,Method dataprocessor.output.xmlwriter.GenericWriter.write_to_file()=dataprocessor.output.xmlwriter.GenericWriter-class.html#write_to_file,Method dataprocessor.output.xmlwriter.GenericXMLWriter.write_to_file()=dataprocessor.output.xmlwriter.GenericXMLWriter-class.html#write_to_file,Method dataprocessor.sax.saxps2jcml.Parallelsentence2Jcml.write_to_file()=dataprocessor.sax.saxps2jcml.Parallelsentence2Jcml-class.html#write_to_file"><a title="dataprocessor.output.posteditingwriter.PosteditingWriter.write_to_file
@@ -124,6 +126,7 @@ dataprocessor.sax.saxps2jcml.Parallelsentence2Jcml.write_to_file" class="py-name
 <a name="CoupledDataSetTest.test_decoupling"></a><div id="CoupledDataSetTest.test_decoupling-def"><a name="L28"></a><tt class="py-lineno">28</tt> <a class="py-toggle" href="#" id="CoupledDataSetTest.test_decoupling-toggle" onclick="return toggle('CoupledDataSetTest.test_decoupling');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="test.coupleddataset_test.CoupledDataSetTest-class.html#test_decoupling">test_decoupling</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
 </div><div id="CoupledDataSetTest.test_decoupling-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="CoupledDataSetTest.test_decoupling-expanded"><a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">        <tt class="py-name">decoupled_dataset</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">coupled_dataset</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name" targets="Method sentence.coupleddataset.CoupledDataSet.get_single_set()=sentence.coupleddataset.CoupledDataSet-class.html#get_single_set"><a title="sentence.coupleddataset.CoupledDataSet.get_single_set" class="py-name" href="#" onclick="return doclink('link-20', 'get_single_set', 'link-20');">get_single_set</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
 <a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">        <tt class="py-name">n</tt> <tt class="py-op">=</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">simple_dataset</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="dataprocessor.ce.cejcml.CEJcmlReader.get_parallelsentences
+dataprocessor.datareader.DataReader.get_parallelsentences
 dataprocessor.input.genericreader.GenericReader.get_parallelsentences
 dataprocessor.input.genericxmlreader.GenericXmlReader.get_parallelsentences
 dataprocessor.input.linereader.AttributeLineReader.get_parallelsentences
@@ -133,11 +136,14 @@ dataprocessor.input.rankreader.R2RankReader.get_parallelsentences
 dataprocessor.input.rankreader.RankReader.get_parallelsentences
 dataprocessor.input.taraxureader.TaraXUReader.get_parallelsentences
 dataprocessor.input.xliffreader.XliffReader.get_parallelsentences
+dataprocessor.qtleapcsv.QtleapCSVReader.get_parallelsentences
 sentence.dataset.DataSet.get_parallelsentences
 sentence.pairwisedataset.PairwiseDataset.get_parallelsentences
 sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences
-sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences" class="py-name" href="#" onclick="return doclink('link-21', 'get_parallelsentences', 'link-16');">get_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences
+support.preprocessing.jcml.manual2jcml.get_parallelsentences" class="py-name" href="#" onclick="return doclink('link-21', 'get_parallelsentences', 'link-16');">get_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
 <a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">        <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">decoupled_dataset</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name"><a title="dataprocessor.ce.cejcml.CEJcmlReader.get_parallelsentences
+dataprocessor.datareader.DataReader.get_parallelsentences
 dataprocessor.input.genericreader.GenericReader.get_parallelsentences
 dataprocessor.input.genericxmlreader.GenericXmlReader.get_parallelsentences
 dataprocessor.input.linereader.AttributeLineReader.get_parallelsentences
@@ -147,12 +153,15 @@ dataprocessor.input.rankreader.R2RankReader.get_parallelsentences
 dataprocessor.input.rankreader.RankReader.get_parallelsentences
 dataprocessor.input.taraxureader.TaraXUReader.get_parallelsentences
 dataprocessor.input.xliffreader.XliffReader.get_parallelsentences
+dataprocessor.qtleapcsv.QtleapCSVReader.get_parallelsentences
 sentence.dataset.DataSet.get_parallelsentences
 sentence.pairwisedataset.PairwiseDataset.get_parallelsentences
 sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences
-sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences" class="py-name" href="#" onclick="return doclink('link-22', 'get_parallelsentences', 'link-16');">get_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences
+support.preprocessing.jcml.manual2jcml.get_parallelsentences" class="py-name" href="#" onclick="return doclink('link-22', 'get_parallelsentences', 'link-16');">get_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
 <a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-name">m</tt><tt class="py-op">,</tt> <tt class="py-name">n</tt><tt class="py-op">,</tt> <tt class="py-string">"Coupling and decoupling doesn't regenerate same number of sentences as in input"</tt><tt class="py-op">)</tt> </tt>
 <a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">        <tt id="link-23" class="py-name"><a title="dataprocessor.sax.saxps2jcml.Parallelsentence2Jcml" class="py-name" href="#" onclick="return doclink('link-23', 'Parallelsentence2Jcml', 'link-12');">Parallelsentence2Jcml</a></tt><tt class="py-op">(</tt><tt class="py-name">decoupled_dataset</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="dataprocessor.ce.cejcml.CEJcmlReader.get_parallelsentences
+dataprocessor.datareader.DataReader.get_parallelsentences
 dataprocessor.input.genericreader.GenericReader.get_parallelsentences
 dataprocessor.input.genericxmlreader.GenericXmlReader.get_parallelsentences
 dataprocessor.input.linereader.AttributeLineReader.get_parallelsentences
@@ -162,15 +171,17 @@ dataprocessor.input.rankreader.R2RankReader.get_parallelsentences
 dataprocessor.input.rankreader.RankReader.get_parallelsentences
 dataprocessor.input.taraxureader.TaraXUReader.get_parallelsentences
 dataprocessor.input.xliffreader.XliffReader.get_parallelsentences
+dataprocessor.qtleapcsv.QtleapCSVReader.get_parallelsentences
 sentence.dataset.DataSet.get_parallelsentences
 sentence.pairwisedataset.PairwiseDataset.get_parallelsentences
 sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences
-sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences" class="py-name" href="#" onclick="return doclink('link-24', 'get_parallelsentences', 'link-16');">get_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="dataprocessor.output.posteditingwriter.PosteditingWriter.write_to_file
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences
+support.preprocessing.jcml.manual2jcml.get_parallelsentences" class="py-name" href="#" onclick="return doclink('link-24', 'get_parallelsentences', 'link-16');">get_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="dataprocessor.output.posteditingwriter.PosteditingWriter.write_to_file
 dataprocessor.output.taraxuwriter.TaraXUWriter.write_to_file
 dataprocessor.output.wmt11tabwriter.Wmt11TabWriter.write_to_file
 dataprocessor.output.xmlwriter.GenericWriter.write_to_file
 dataprocessor.output.xmlwriter.GenericXMLWriter.write_to_file
-dataprocessor.sax.saxps2jcml.Parallelsentence2Jcml.write_to_file" class="py-name" href="#" onclick="return doclink('link-25', 'write_to_file', 'link-19');">write_to_file</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">output_file</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name" targets="Variable featuregenerator.bleu.bleu.replace=featuregenerator.bleu.bleu-module.html#replace"><a title="featuregenerator.bleu.bleu.replace" class="py-name" href="#" onclick="return doclink('link-26', 'replace', 'link-26');">replace</a></tt><tt class="py-op">(</tt><tt class="py-string">"jcml"</tt><tt class="py-op">,</tt> <tt class="py-string">"decoupled.jcml"</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+dataprocessor.sax.saxps2jcml.Parallelsentence2Jcml.write_to_file" class="py-name" href="#" onclick="return doclink('link-25', 'write_to_file', 'link-19');">write_to_file</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">output_file</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name" targets="Variable featuregenerator.reference.bleu.replace=featuregenerator.reference.bleu-module.html#replace"><a title="featuregenerator.reference.bleu.replace" class="py-name" href="#" onclick="return doclink('link-26', 'replace', 'link-26');">replace</a></tt><tt class="py-op">(</tt><tt class="py-string">"jcml"</tt><tt class="py-op">,</tt> <tt class="py-string">"decoupled.jcml"</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
 </div><a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">     </tt>
 <a name="CoupledDataSetTest.test_ondisk_vs_onmemory"></a><div id="CoupledDataSetTest.test_ondisk_vs_onmemory-def"><a name="L35"></a><tt class="py-lineno">35</tt> <a class="py-toggle" href="#" id="CoupledDataSetTest.test_ondisk_vs_onmemory-toggle" onclick="return toggle('CoupledDataSetTest.test_ondisk_vs_onmemory');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="test.coupleddataset_test.CoupledDataSetTest-class.html#test_ondisk_vs_onmemory">test_ondisk_vs_onmemory</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
 </div><div id="CoupledDataSetTest.test_ondisk_vs_onmemory-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="CoupledDataSetTest.test_ondisk_vs_onmemory-expanded"><a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
@@ -187,9 +198,10 @@ dataprocessor.sax.saxps2jcml.Parallelsentence2Jcml.write_to_file" class="py-name
 <a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">         </tt>
 <a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">         </tt>
 <a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line"> </tt>
-<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-27" class="py-name" targets="Variable featuregenerator.meteor.meteor.MeteorGenerator.__name__=featuregenerator.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-27', '__name__', 'link-27');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">"__main__"</tt><tt class="py-op">:</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-27" class="py-name" targets="Variable featuregenerator.reference.meteor.meteor.MeteorGenerator.__name__=featuregenerator.reference.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.reference.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-27', '__name__', 'link-27');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">"__main__"</tt><tt class="py-op">:</tt> </tt>
 <a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">    <tt class="py-comment">#import sys;sys.argv = ['', 'Test.testName']</tt> </tt>
-<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">    <tt class="py-name">unittest</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name" targets="Function ml.lib.scikit.learn_model.main()=ml.lib.scikit.learn_model-module.html#main"><a title="ml.lib.scikit.learn_model.main" class="py-name" href="#" onclick="return doclink('link-28', 'main', 'link-28');">main</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">    <tt class="py-name">unittest</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name" targets="Function ml.lib.scikit.learn_model.main()=ml.lib.scikit.learn_model-module.html#main,Function util.treetaggerwrapper.main()=util.treetaggerwrapper-module.html#main"><a title="ml.lib.scikit.learn_model.main
+util.treetaggerwrapper.main" class="py-name" href="#" onclick="return doclink('link-28', 'main', 'link-28');">main</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
 <a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line"> </tt><script type="text/javascript">
 <!--
 expandto(location.href);
@@ -214,18 +226,13 @@ expandto(location.href);
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:15 2014
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:08 2016
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

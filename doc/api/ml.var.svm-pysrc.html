@@ -27,12 +27,7 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -64,14 +59,12 @@
 <a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-docstring">@author: Eleftherios Avramidis</tt> </tt>
 <a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
 <a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"> </tt>
-<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Module ml.lib.orange=ml.lib.orange-module.html,Module ml.var.orange=ml.var.orange-module.html"><a title="ml.lib.orange
-ml.var.orange" class="py-name" href="#" onclick="return doclink('link-0', 'orange', 'link-0');">orange</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">SVMLearner</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package ml.lib.orange=ml.lib.orange-module.html"><a title="ml.lib.orange" class="py-name" href="#" onclick="return doclink('link-0', 'orange', 'link-0');">orange</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">SVMLearner</tt> </tt>
 <a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-1" class="py-name" targets="Module ml.var.classifier=ml.var.classifier-module.html,Variable ml.var.extract_liblinear_weights.classifier=ml.var.extract_liblinear_weights-module.html#classifier,Variable ml.var.extract_linear_regression_coefficients.classifier=ml.var.extract_linear_regression_coefficients-module.html#classifier,Variable ml.var.extract_logreg_weight.classifier=ml.var.extract_logreg_weight-module.html#classifier"><a title="ml.var.classifier
 ml.var.extract_liblinear_weights.classifier
 ml.var.extract_linear_regression_coefficients.classifier
-ml.var.extract_logreg_weight.classifier" class="py-name" href="#" onclick="return doclink('link-1', 'classifier', 'link-1');">classifier</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class ml.lib.orange.OrangeClassifier=ml.lib.orange.OrangeClassifier-class.html,Class ml.var.classifier.OrangeClassifier=ml.var.classifier.OrangeClassifier-class.html,Class ml.var.orange.OrangeClassifier=ml.var.orange.OrangeClassifier-class.html"><a title="ml.lib.orange.OrangeClassifier
-ml.var.classifier.OrangeClassifier
-ml.var.orange.OrangeClassifier" class="py-name" href="#" onclick="return doclink('link-2', 'OrangeClassifier', 'link-2');">OrangeClassifier</a></tt> </tt>
+ml.var.extract_logreg_weight.classifier" class="py-name" href="#" onclick="return doclink('link-1', 'classifier', 'link-1');">classifier</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class ml.lib.orange.ranking.OrangeClassifier=ml.lib.orange.ranking.OrangeClassifier-class.html,Class ml.var.classifier.OrangeClassifier=ml.var.classifier.OrangeClassifier-class.html"><a title="ml.lib.orange.ranking.OrangeClassifier
+ml.var.classifier.OrangeClassifier" class="py-name" href="#" onclick="return doclink('link-2', 'OrangeClassifier', 'link-2');">OrangeClassifier</a></tt> </tt>
 <a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"> </tt>
 <a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"> </tt>
 <a name="SVM"></a><div id="SVM-def"><a name="L10"></a><tt class="py-lineno">10</tt> <a class="py-toggle" href="#" id="SVM-toggle" onclick="return toggle('SVM');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="ml.var.svm.SVM-class.html">SVM</a><tt class="py-op">(</tt> <tt class="py-base-class">OrangeClassifier</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
@@ -88,10 +81,7 @@ ml.var.orange.OrangeClassifier" class="py-name" href="#" onclick="return doclink
 <a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">        <tt class="py-name">l</tt><tt class="py-op">.</tt><tt class="py-name">svm_type</tt> <tt class="py-op">=</tt> <tt class="py-name">SVMLearner</tt><tt class="py-op">.</tt><tt class="py-name">Nu_SVC</tt>  </tt>
 <a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">        <tt class="py-name">l</tt><tt class="py-op">.</tt><tt class="py-name">nu</tt> <tt class="py-op">=</tt> <tt class="py-number">0.3</tt>  </tt>
 <a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">        <tt class="py-name">l</tt><tt class="py-op">.</tt><tt class="py-name">probability</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
-<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name"><a title="ml.var.classifier
-ml.var.extract_liblinear_weights.classifier
-ml.var.extract_linear_regression_coefficients.classifier
-ml.var.extract_logreg_weight.classifier" class="py-name" href="#" onclick="return doclink('link-3', 'classifier', 'link-1');">classifier</a></tt> <tt class="py-op">=</tt> <tt class="py-name">l</tt><tt class="py-op">(</tt> <tt class="py-name">data</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Method dataprocessor.input.orangeprocessor.OrangeProcessor.get_data()=dataprocessor.input.orangeprocessor.OrangeProcessor-class.html#get_data,Method dataprocessor.input.orangereader.OrangeData.get_data()=dataprocessor.input.orangereader.OrangeData-class.html#get_data"><a title="dataprocessor.input.orangeprocessor.OrangeProcessor.get_data
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Module ml.learner=ml.learner-module.html"><a title="ml.learner" class="py-name" href="#" onclick="return doclink('link-3', 'learner', 'link-3');">learner</a></tt> <tt class="py-op">=</tt> <tt class="py-name">l</tt><tt class="py-op">(</tt> <tt class="py-name">data</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Method dataprocessor.input.orangeprocessor.OrangeProcessor.get_data()=dataprocessor.input.orangeprocessor.OrangeProcessor-class.html#get_data,Method dataprocessor.input.orangereader.OrangeData.get_data()=dataprocessor.input.orangereader.OrangeData-class.html#get_data"><a title="dataprocessor.input.orangeprocessor.OrangeProcessor.get_data
 dataprocessor.input.orangereader.OrangeData.get_data" class="py-name" href="#" onclick="return doclink('link-4', 'get_data', 'link-4');">get_data</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
 </div></div><a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"> </tt><script type="text/javascript">
 <!--
@@ -117,18 +107,13 @@ expandto(location.href);
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:14 2014
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:07 2016
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

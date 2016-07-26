@@ -27,12 +27,7 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -101,6 +96,7 @@
         <span class="summary-sig-arg">reference</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">attributes</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
         <span class="summary-sig-arg">rank_name</span>=<span class="summary-sig-default"><code class="variable-quote">u'</code><code class="variable-string">rank</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">normalize_ranks</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">**kwargs</span>)</span><br />
       Constructor</td>
           <td align="right" valign="top">
@@ -228,20 +224,29 @@
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#add_attributes">add_attributes</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#add_judgment_id">add_judgment_id</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_attribute">get_attribute</a></code>,
-      <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_attribute_names">get_attribute_names</a></code>,
+      <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_attribute_sets">get_attribute_sets</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_attributes">get_attributes</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_compact_id">get_compact_id</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_compact_judgment_id">get_compact_judgment_id</a></code>,
+      <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_fileid_tuple">get_fileid_tuple</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_filtered_target_attribute_values">get_filtered_target_attribute_values</a></code>,
+      <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_id">get_id</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_judgment_id">get_judgment_id</a></code>,
+      <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_langpair">get_langpair</a></code>,
+      <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_langsrc">get_langsrc</a></code>,
+      <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_langtgt">get_langtgt</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_nested_attribute_names">get_nested_attribute_names</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_nested_attributes">get_nested_attributes</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_pairwise_parallelsentences">get_pairwise_parallelsentences</a></code>,
+      <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_pairwise_parallelsentences_old">get_pairwise_parallelsentences_old</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_ranking">get_ranking</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_reference">get_reference</a></code>,
+      <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_safe_id_tuple">get_safe_id_tuple</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_source">get_source</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_target_attribute_values">get_target_attribute_values</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_tuple_id">get_tuple_id</a></code>,
+      <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_vector">get_vector</a></code>,
+      <code><a href="sentence.parallelsentence.ParallelSentence-class.html#get_vectors">get_vectors</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#has_judgment_id">has_judgment_id</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#import_indexed_parallelsentence">import_indexed_parallelsentence</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#import_missing_parallelsentence">import_missing_parallelsentence</a></code>,
@@ -257,6 +262,7 @@
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#set_translations">set_translations</a></code>
       </p>
     <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="sentence.parallelsentence.ParallelSentence-class.html">parallelsentence.ParallelSentence</a></code></b> (private):
+      <code><a href="sentence.parallelsentence.ParallelSentence-class.html#_get_class_pairwise" onclick="show_private();">_get_class_pairwise</a></code>,
       <code><a href="sentence.parallelsentence.ParallelSentence-class.html#_prefix" onclick="show_private();">_prefix</a></code>
       </p></div>
     <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
@@ -382,6 +388,7 @@
         <span class="sig-arg">reference</span>=<span class="sig-default">None</span>,
         <span class="sig-arg">attributes</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
         <span class="sig-arg">rank_name</span>=<span class="sig-default"><code class="variable-quote">u'</code><code class="variable-string">rank</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">normalize_ranks</span>=<span class="sig-default">True</span>,
         <span class="sig-arg">**kwargs</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
@@ -398,7 +405,7 @@
         <li><strong class="pname"><code>translations</code></strong> (tuple of translations (SimpleSentence, SimpleSentence)) - a pair of translations</li>
         <li><strong class="pname"><code>reference</code></strong> (SimpleSentence) - The desired translation provided by the system</li>
         <li><strong class="pname"><code>the</code></strong>, <strong class="pname"><code>attributes</code></strong> (dict { String name : String value }) - that describe the parallel sentence</li>
-        <li><strong class="pname"><code>systems</code></strong> (tuple of strings) - names of target systems</li>
+        <li><strong class="pname"><code>systems</code></strong> (tucall for papersple of strings) - names of target systems</li>
         <li><strong class="pname"><code>cast</code></strong> - set True if you want to initialize a pairwise parallel sentence 
           out of a simple parallel sentence</li>
     </ul></dd>
@@ -528,18 +535,13 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:13 2014
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:05 2016
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
