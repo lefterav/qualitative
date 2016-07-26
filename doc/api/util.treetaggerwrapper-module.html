@@ -1,0 +1,1605 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>util.treetaggerwrapper</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="util-module.html">Package&nbsp;util</a> ::
+        Module&nbsp;treetaggerwrapper
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="util.treetaggerwrapper-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module treetaggerwrapper</h1><p class="nomargin-top"><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html">source&nbsp;code</a></span></p>
+<pre class="literalblock">
+
+:mod:`treetaggerwrapper` -- Python wrapper for TreeTagger
+=========================================================
+
+:author: Laurent Pointal &lt;laurent.pointal@limsi.fr&gt; &lt;laurent.pointal@laposte.net&gt;
+:organization: CNRS - LIMSI
+:copyright: CNRS - 2004-2009
+:license: GNU-GPL Version 3 or greater
+:version: $Id$
+
+For TreeTagger, see `Helmut Schmid TreeTagger site`_.
+
+.. _Helmut Schmid TreeTagger site: http://www.ims.uni-stuttgart.de/projekte/corplex/TreeTagger/DecisionTreeTagger.html
+
+For this module, see:
+
+* `Project page`_
+* `Source documentation`_
+* `Source repository`_
+* `Recent source`_
+
+  You can also retrieve the latest version of this module with the svn command::
+
+      svn export https://subversion.cru.fr/ttpw/trunk/treetaggerwrapper/treetaggerwrapper.py
+
+.. _Project page: http://laurent.pointal.org/python/projets/treetaggerwrapper
+.. _Source documentation: http://www.limsi.fr/Individu/pointal/python/treetaggerwrapper-doc/
+.. _Source repository: https://sourcesup.cru.fr/scm/?group_id=647
+.. _Recent source: http://www.limsi.fr/Individu/pointal/python/treetaggerwrapper.py
+
+This wrapper tool is intended to be used in larger projects, where multiple
+chunk of texts must be processed via TreeTagger (else you may simply use the
+base TreeTagger installation as an external command).
+
+Installation
+------------
+
+Simply put the module in a directory listed in the Python path.
+
+
+You should set up an environment variable :envvar:`TAGDIR` to reference the
+TreeTagger software installation directory (the one with :file:`bin`, :file:`lib`
+and :file:`cmd` subdirectories).
+If you dont set up such a variable, you can give a `TAGDIR` named argument
+when building a :class:`TreeTagger` object to provide this information.
+
+..
+    To build the documentation with epydoc:
+
+    epydoc --html -o treetaggerwrapper-doc --docformat epytext --name treetaggerwrapper treetaggerwrapper.py
+
+    (but currently epydoc doesnt understand all Sphinx extensions to reStructuredText)
+
+Usage
+-----
+
+Example::
+
+    &gt;&gt;&gt; import treetaggerwrapper
+    &gt;&gt;&gt; #1) build a TreeTagger wrapper:
+    &gt;&gt;&gt; tagger = treetaggerwrapper.TreeTagger(TAGLANG='en',TAGDIR='~/TreeTagger')
+    &gt;&gt;&gt; #2) tag your text.
+    &gt;&gt;&gt; tags = tagger.TagText(&quot;This is a very short text to tag.&quot;)
+    &gt;&gt;&gt; #3) use the tags list... (list of string output from TreeTagger).
+    &gt;&gt;&gt; print tags
+    ['This      DT      this',
+     'is        VBZ     be',
+     'a DT      a',
+     'very      RB      very',
+     'short     JJ      short',
+     'text      NN      text',
+     'to        TO      to',
+     'tag       VB      tag',
+     '. SENT    .']
+    &gt;&gt;&gt; # Note: in output strings, fields are separated with tab chars.
+
+The module can be used as a command line tool too, for more information
+ask for module help::
+
+    python treetaggerwrapper.py --help
+
+
+Processing
+----------
+
+Encoding
+~~~~~~~~
+
+By default files and `str` strings are considered to be using latin1 encoding.
+
+- You can specify the encoding when using the script as a command-line tool,
+   with the :option:`-e` param (see online help).
+
+- When using the script as an embedded tool into a larger project, you can use
+  different parameter types as :meth:`TreeTagger.TagText` `text` parameter.
+
+  - You can use unicode strings, and :meth:`TagText` will return list of unicode
+    strings. If you fill'in TagText with a list of strings and dont provide
+    and `encoding` parameter, TagText will also return unicode strings
+    (same if you set `encoding` to `unicode` or `&quot;unicode&quot;`.
+  - You can use `str` strings and specify an alternate `encoding` (and an alternate
+    `errors` detection), and TagText() will automatically convert input from this
+    encoding and output to this encoding.
+
+
+This module does two main things
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Manage preprocessing of text in place of external Perl scripts as in
+  base TreeTagger installation, thus avoid starting Perl each time a chunk
+  of text must be tagged.
+- Keep alive a pipe connected to TreeTagger process, and use that pipe
+  to send data and retrieve tags, thus avoid starting TreeTagger each
+  time.
+
+Use of pipes avoid writing/reading temporary files on disk too.
+
+Other things done by this module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Can number lines into XML tags (to identify lines after TreeTagger
+  processing).
+- Can mark whitespaces with XML tags.
+- By default replace non-talk parts like URLs, emails, IP addresses,
+  DNS names (can be turned off). Replaced by a 'replaced-xxx' string
+  followed by an XML tag containing the replaced text as attribute.
+- Acronyms like U.S.A. are systematically written with a final dot,
+  even if it is missing in original file.
+
+
+In normal mode, all journal outputs are done via Python standard logging system,
+standard output is only used if a) you run the module in pipe mode (ie.
+results goes to stdout), or b) you set DEBUG or DEBUG_PREPROCESS global
+variables and you use the module directly on command line (which make journal
+and other traces to be sent to stdout).
+
+For an example of logging use, see :func:`enable_debugging_log` function.
+
+.. note::
+
+    Some non-exported functions and globals can be nice to use in other
+    contexts:
+    :data:`SGML_tag`, :func:`IsSGMLTag`, :func:`SplitSGML`,
+    :data:`Ip_expression`, :data:`DnsHost_expression`,
+    :data:`UrlMatch_expression`, :data:`EmailMatch_expression`,
+    :func:`PipeWriter`.
+
+Module globals and constants
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. data:: DEBUG(boolean)
+
+    Set to enable debugging code (mainly logs).
+
+.. data:: DEBUG_PREPROCESS(boolean)
+
+    Set to enable preprocessing specific debugging code.
+
+.. data:: RESEXT(string)
+
+    Extension added to result files when using command-line ('ttr').
+
+.. data:: logger(logging.Logger)
+
+    Logger object for this module.
+
+.. data:: STARTOFTEXT(string)
+
+    Tag to identify begin of a text in the data flow.
+
+.. data:: ENDOFTEXT(string)
+
+    Tag to identify end of a text in the data flow.
+
+.. data:: NUMBEROFLINE(string)
+
+    Tag to identify line numbers from source text.
+
+.. data:: TAGSPACE(string)
+
+    Tag to identify spaces in output.
+
+.. data:: TAGTAB(string)
+
+    Tag to identify horizontal tabulations in output.
+
+.. data:: TAGLF(string)
+
+    Tag to identify line feeds in output.
+
+.. data:: TAGCR(string)
+
+    Tag to identify carriage returns in output.
+
+.. data:: TAGVT(string)
+
+    Tag to identify vertical tabulations in output.
+
+.. data:: TAGFF(string)
+
+    Tag to identify form feeds in output.
+
+.. data:: TREETAGGER_ENCODING(string)
+
+    In/out encoding for TreeTagger (latin1).
+
+.. data:: TREETAGGER_INENCERR(str)
+
+    Management of encoding errors fot TT input (replace).
+
+.. data:: TREETAGGER_OUTENCERR(str)
+
+    Management of decoding errors of TT output (replace).
+
+.. data:: USER_ENCODING(str)
+
+    Default input and output for files and strings with no
+    encoding specified (latin1).
+
+.. data:: DEFAULT_ENCERRORS(str)
+
+    Error processing for user data encoding/decoding (strict).
+
+.. data:: alonemarks(string)
+
+    String containing chars which must be kept alone (this string
+    is used in regular expressions inside square brackets parts).
+
+.. data:: g_langsupport(dict)
+
+    Dictionnary with data for each usable langage.
+
+    g_langsupport[langage] ==&gt; dict of data
+
+.. data:: SGML_name(string)
+
+    Regular expression string for XML names.
+
+.. data:: SGML_tag(string)
+
+    Regular expression string to match XML tags.
+
+.. data:: SGML_tag_re(re.SRE_Pattern)
+
+    Regular expression object to match XML tags.
+
+.. data:: Ip_expression(string)
+
+    Regular expression string to match IP addresses.
+
+.. data:: IpMatch_re(re.SRE_Pattern)
+
+    Regular expression object to match IP addresses.
+
+.. data:: DnsHost_expression(string)
+
+    Regular expression string to match DNS names.
+
+.. data:: DnsHostMatch_re(re.SRE_Pattern)
+
+    Regular expression object to match DNS names.
+
+.. data:: UrlMatch_expression(string)
+
+    Regular expression string to match URLs.
+
+.. data:: UrlMatch_re(re.SRE_Pattern)
+
+    Regular expression object to match URLs.
+
+.. data:: EmailMatch_expression(string)
+
+    Regular expression string to match email addresses.
+
+.. data:: EmailMatch_re(re.SRE_Pattern)
+
+    Regular expression object to match email addresses.
+
+Module exceptions, class and functions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+</pre>
+
+<!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Classes"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper.TreeTagger-class.html" class="summary-name">TreeTagger</a><br />
+      Wrap TreeTagger binary to optimize its usage on multiple texts.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper.TreeTaggerError-class.html" class="summary-name">TreeTaggerError</a><br />
+      For exceptions generated directly by TreeTagger class code.
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Functions</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Functions"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">[ string ]</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="util.treetaggerwrapper-module.html#BlankToSpace" class="summary-sig-name" onclick="show_private();">BlankToSpace</a>(<span class="summary-sig-arg">text</span>)</span><br />
+      Replace blanks characters by real spaces.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#BlankToSpace">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string.</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="util.treetaggerwrapper-module.html#BlankToTag" class="summary-sig-name" onclick="show_private();">BlankToTag</a>(<span class="summary-sig-arg">text</span>)</span><br />
+      Replace blanks characters by corresponding SGML tags.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#BlankToTag">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">boolean</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="util.treetaggerwrapper-module.html#IsSGMLTag" class="summary-sig-name" onclick="show_private();">IsSGMLTag</a>(<span class="summary-sig-arg">text</span>)</span><br />
+      Test if a text is - completly - a SGML tag.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#IsSGMLTag">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="util.treetaggerwrapper-module.html#PipeWriter" class="summary-sig-name" onclick="show_private();">PipeWriter</a>(<span class="summary-sig-arg">pipe</span>,
+        <span class="summary-sig-arg">text</span>,
+        <span class="summary-sig-arg">flushsequence</span>,
+        <span class="summary-sig-arg">encoding</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">latin1</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">errors</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">replace</code><code class="variable-quote">'</code></span>)</span><br />
+      Write a text to a pipe and manage pre-post data to ensure flushing.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#PipeWriter">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">list of string.</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="util.treetaggerwrapper-module.html#SplitSGML" class="summary-sig-name" onclick="show_private();">SplitSGML</a>(<span class="summary-sig-arg">text</span>)</span><br />
+      Split a text between SGML-tags and non-SGML-tags parts.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#SplitSGML">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="util.treetaggerwrapper-module.html#enable_debugging_log" class="summary-sig-name" onclick="show_private();">enable_debugging_log</a>()</span><br />
+      Setup logging module output.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#enable_debugging_log">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="main"></a><span class="summary-sig-name">main</span>(<span class="summary-sig-arg">*args</span>)</span><br />
+      Test/command line usage code.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#main">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">dict</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="util.treetaggerwrapper-module.html#maketransU" class="summary-sig-name" onclick="show_private();">maketransU</a>(<span class="summary-sig-arg">s1</span>,
+        <span class="summary-sig-arg">s2</span>,
+        <span class="summary-sig-arg">todel</span>=<span class="summary-sig-default"><code class="variable-quote">u'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>)</span><br />
+      Build translation table for use with unicode.translate().</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#maketransU">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Variables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="BlankToSpace_table"></a><span class="summary-name">BlankToSpace_table</span> = <code title="{9: 32, 10: 32, 11: 32, 12: 32, 13: 32}"><code class="variable-group">{</code>9<code class="variable-op">: </code>32<code class="variable-op">, </code>10<code class="variable-op">: </code>32<code class="variable-op">, </code>11<code class="variable-op">: </code>32<code class="variable-op">, </code>12<code class="variable-op">: </code>32<code class="variable-op">, </code>13<code class="variable-op">: </code>32<code class="variable-group">}</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper-module.html#BlankToTag_tags" class="summary-name" onclick="show_private();">BlankToTag_tags</a> = <code title="[(u' ', '&lt;This-is-a-space /&gt;'),
+ (u'	', '&lt;This-is-a-tab /&gt;'),
+ (u'''
+''',
+  '&lt;This-is-a-lf /&gt;'),
+ (u'', '&lt;This-is-a-cr /&gt;'),
+ (u'', '&lt;This-is-a-vt /&gt;'),
+ (u'', '&lt;This-is-a-ff /&gt;')]"><code class="variable-group">[</code><code class="variable-group">(</code><code class="variable-quote">u'</code><code class="variable-string"> </code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">&lt;This-is-a-space /&gt;</code><code class="variable-quote">'</code><code class="variable-group">)</code><code class="variable-op">, </code><code class="variable-group">(</code><code class="variable-quote">u'</code><code class="variable-string">	</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">&lt;Thi</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="DEBUG"></a><span class="summary-name">DEBUG</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="DEBUG_PREPROCESS"></a><span class="summary-name">DEBUG_PREPROCESS</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="DEFAULT_ENCERRORS"></a><span class="summary-name">DEFAULT_ENCERRORS</span> = <code title="'strict'"><code class="variable-quote">'</code><code class="variable-string">strict</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper-module.html#DnsHostMatch_re" class="summary-name" onclick="show_private();">DnsHostMatch_re</a> = <code title="re.compile(r'(?ix)((?:[-a-z0-9]+\.(?:[-a-z0-9]+\.)*(?:com|edu|gov|int|\
+mil|net|org|biz|info|name|pro|aero|coop|museum|arts|firm|info|nom|rec|\
+shop|web|asia|cat|jobs|mail|mobi|post|tel|travel|xxx|glue|indy|geek|nu\
+ll|oss|parody|bbs|localdomain|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|a\
+t|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz\
+|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|de|dj|dk|dm|\
+do|dz|ec|ee|eg|eh|er|es|et|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|g\
+l|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq\
+...">re.compile(r'<code class="re-flags">(?ix)</code><code class="re-group">(</code><code class="re-group">(?:</code><code class="re-group">[</code>-a<code class="re-op">-</code>z0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">+</code>\.<code class="re-group">(?:</code><code class="re-group">[</code>-a<code class="re-op">-</code>z0<code class="re-op">-</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper-module.html#DnsHost_expression" class="summary-name" onclick="show_private();">DnsHost_expression</a> = <code title="u'''
+        (?:
+            [-a-z0-9]+\.                # Host name
+            (?:[-a-z0-9]+\.)*           # Intermediate domains
+                                        # And top level domain below
+
+            (?:
+            com|edu|gov|int|mil|net|org|            # Common historica\
+..."><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ENDOFTEXT"></a><span class="summary-name">ENDOFTEXT</span> = <code title="'&lt;This-is-the-end-of-the-text /&gt;'"><code class="variable-quote">'</code><code class="variable-string">&lt;This-is-the-end-of-the-text /&gt;</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper-module.html#EmailMatch_expression" class="summary-name" onclick="show_private();">EmailMatch_expression</a> = <code title="u'''(
+            [-a-z0-9._']+@
+            
+        (?:
+            [-a-z0-9]+\.                # Host name
+            (?:[-a-z0-9]+\.)*           # Intermediate domains
+                                        # And top level domain below
+
+..."><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper-module.html#EmailMatch_re" class="summary-name" onclick="show_private();">EmailMatch_re</a> = <code title="re.compile(r'(?ix)([-a-z0-9\._\']+@(?:[-a-z0-9]+\.(?:[-a-z0-9]+\.)*(?:\
+com|edu|gov|int|mil|net|org|biz|info|name|pro|aero|coop|museum|arts|fi\
+rm|info|nom|rec|shop|web|asia|cat|jobs|mail|mobi|post|tel|travel|xxx|g\
+lue|indy|geek|null|oss|parody|bbs|localdomain|ac|ad|ae|af|ag|ai|al|am|\
+an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|b\
+s|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy\
+|cz|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|fi|fj|fk|fm|fo|fr|ga|gb|gd|\
+ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|i\
+...">re.compile(r'<code class="re-flags">(?ix)</code><code class="re-group">(</code><code class="re-group">[</code>-a<code class="re-op">-</code>z0<code class="re-op">-</code>9\._\'<code class="re-group">]</code><code class="re-op">+</code>@<code class="re-group">(?:</code><code class="re-group">[</code>-a<code class="re-op">-</code>z0<code class="re-op">-</code>9<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper-module.html#IpMatch_re" class="summary-name" onclick="show_private();">IpMatch_re</a> = <code title="re.compile(r'(?ix)((?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))')">re.compile(r'<code class="re-flags">(?ix)</code><code class="re-group">(</code><code class="re-group">(?:</code><code class="re-group">(?:</code><code class="re-group">[</code>0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">{1,3}</code>\.<code class="re-group">)</code><code class="re-op">{3}</code><code class="re-group">[</code>0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">{1,</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper-module.html#Ip_expression" class="summary-name" onclick="show_private();">Ip_expression</a> = <code title="'''
+    (?:                         # ----- Classic dotted IP V4 address -\
+----
+        (?:[0-9]{1,3}\\.){3}[0-9]{1,3}
+    )
+    '''"><code class="variable-quote">'</code><code class="variable-string">\n    (?:                         # ----- Cla</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NUMBEROFLINE"></a><span class="summary-name">NUMBEROFLINE</span> = <code title="'&lt;This-is-line-number num=&quot;%d&quot; /&gt;'"><code class="variable-quote">'</code><code class="variable-string">&lt;This-is-line-number num=&quot;%d&quot; /&gt;</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="RESEXT"></a><span class="summary-name">RESEXT</span> = <code title="'ttr'"><code class="variable-quote">'</code><code class="variable-string">ttr</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="SGML_name"></a><span class="summary-name">SGML_name</span> = <code title="u'[_A-Za-z&#192;-&#255;][-_\.:A-Za-z&#192;-&#255;0-9]*'"><code class="variable-quote">u'</code><code class="variable-string">[_A-Za-z&#192;-&#255;][-_\.:A-Za-z&#192;-&#255;0-9]*</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper-module.html#SGML_tag" class="summary-name" onclick="show_private();">SGML_tag</a> = <code title="u'''
+        (
+        &lt;!-- .*? --&gt;                # XML/SGML comment
+            |                           # -- OR --
+        &lt;[!?/]?[_A-Za-z&#192;-&#255;][-_\.:A-Za-z&#192;-&#255;0-9]*    # Start of tag/dire\
+ctive
+            [^&gt;]*                   # +Process all up to the first &gt;
+            &gt;                       # +End of tag/directive
+..."><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper-module.html#SGML_tag_re" class="summary-name" onclick="show_private();">SGML_tag_re</a> = <code title="re.compile(r'(?isx)(&lt;!--.*?--&gt;|[!\?/]?[_A-Za-z\xc0-\xff][-_\.:A-Za-z\x\
+c0-\xff0-9]*[^&gt;]*&gt;)')">re.compile(r'<code class="re-flags">(?isx)</code><code class="re-group">(</code>&lt;!--.<code class="re-op">*?</code>--&gt;<code class="re-op">|</code><code class="re-group">[</code>!\?/<code class="re-group">]</code><code class="re-op">?</code><code class="re-group">[</code>_A<code class="re-op">-</code>Za<code class="re-op">-</code>z\x<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="STARTOFTEXT"></a><span class="summary-name">STARTOFTEXT</span> = <code title="'&lt;This-is-the-start-of-the-text /&gt;'"><code class="variable-quote">'</code><code class="variable-string">&lt;This-is-the-start-of-the-text /&gt;</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="TAGCR"></a><span class="summary-name">TAGCR</span> = <code title="'&lt;This-is-a-cr /&gt;'"><code class="variable-quote">'</code><code class="variable-string">&lt;This-is-a-cr /&gt;</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="TAGFF"></a><span class="summary-name">TAGFF</span> = <code title="'&lt;This-is-a-ff /&gt;'"><code class="variable-quote">'</code><code class="variable-string">&lt;This-is-a-ff /&gt;</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="TAGLF"></a><span class="summary-name">TAGLF</span> = <code title="'&lt;This-is-a-lf /&gt;'"><code class="variable-quote">'</code><code class="variable-string">&lt;This-is-a-lf /&gt;</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="TAGSPACE"></a><span class="summary-name">TAGSPACE</span> = <code title="'&lt;This-is-a-space /&gt;'"><code class="variable-quote">'</code><code class="variable-string">&lt;This-is-a-space /&gt;</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="TAGTAB"></a><span class="summary-name">TAGTAB</span> = <code title="'&lt;This-is-a-tab /&gt;'"><code class="variable-quote">'</code><code class="variable-string">&lt;This-is-a-tab /&gt;</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="TAGVT"></a><span class="summary-name">TAGVT</span> = <code title="'&lt;This-is-a-vt /&gt;'"><code class="variable-quote">'</code><code class="variable-string">&lt;This-is-a-vt /&gt;</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="TREETAGGER_ENCODING"></a><span class="summary-name">TREETAGGER_ENCODING</span> = <code title="'latin1'"><code class="variable-quote">'</code><code class="variable-string">latin1</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="TREETAGGER_INENCERR"></a><span class="summary-name">TREETAGGER_INENCERR</span> = <code title="'replace'"><code class="variable-quote">'</code><code class="variable-string">replace</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="TREETAGGER_OUTENCERR"></a><span class="summary-name">TREETAGGER_OUTENCERR</span> = <code title="'replace'"><code class="variable-quote">'</code><code class="variable-string">replace</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="USER_ENCODING"></a><span class="summary-name">USER_ENCODING</span> = <code title="'latin1'"><code class="variable-quote">'</code><code class="variable-string">latin1</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper-module.html#UrlMatch_expression" class="summary-name" onclick="show_private();">UrlMatch_expression</a> = <code title="u'''(
+                # Scheme part
+        (?:ftp|https?|gopher|mailto|news|nntp|telnet|wais|file|prosper\
+o):
+                # IP Host specification (optionnal)
+        (?:// (?:[-a-z0-9_;?&amp;=](?::[-a-z0-9_;?&amp;=]*)?@)?   # User authe\
+ntication.
+             (?:(?:
+..."><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper-module.html#UrlMatch_re" class="summary-name" onclick="show_private();">UrlMatch_re</a> = <code title="re.compile(r'(?ix)((?:ftp|https?|gopher|mailto|news|nntp|telnet|wais|f\
+ile|prospero):(?://(?:[-a-z0-9_;\?&amp;=](?::[-a-z0-9_;\?&amp;=]*)?@)?(?:(?:(?\
+:[-a-z0-9]+\.(?:[-a-z0-9]+\.)*(?:com|edu|gov|int|mil|net|org|biz|info|\
+name|pro|aero|coop|museum|arts|firm|info|nom|rec|shop|web|asia|cat|job\
+s|mail|mobi|post|tel|travel|xxx|glue|indy|geek|null|oss|parody|bbs|loc\
+aldomain|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|b\
+d|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci\
+|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|\
+...">re.compile(r'<code class="re-flags">(?ix)</code><code class="re-group">(</code><code class="re-group">(?:</code>ftp<code class="re-op">|</code>https<code class="re-op">?</code><code class="re-op">|</code>gopher<code class="re-op">|</code>mailto<code class="re-op">|</code>n<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="'util'"><code class="variable-quote">'</code><code class="variable-string">util</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper-module.html#acronymexpr_re" class="summary-name" onclick="show_private();">acronymexpr_re</a> = <code title="re.compile(r'(?ix)^[a-z\xc0-\xff]+(\.[a-z\xc0-\xff])+\.?$')">re.compile(r'<code class="re-flags">(?ix)</code>^<code class="re-group">[</code>a<code class="re-op">-</code>z\xc0<code class="re-op">-</code>\xff<code class="re-group">]</code><code class="re-op">+</code><code class="re-group">(</code>\.<code class="re-group">[</code>a<code class="re-op">-</code>z\xc0<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper-module.html#alonemarks" class="summary-name" onclick="show_private();">alonemarks</a> = <code title="u'!?&#191;;&#133;,&#130;*&#149;&#164;@&#176;:%&#137;|&#166;/()[\]{}&lt;&gt;&#171;&#187;&#139;&#155;&#147;&#148;&#180;`&#145;&#146;&#136;&#168;&#132;&amp;~=#&#177;&#134;&#135;&#150;&#151;&#128;&#163;&#165;$&#169;&#174;&#153;&quot;'"><code class="variable-quote">u'</code><code class="variable-string">!?&#191;;&#133;,&#130;*&#149;&#164;@&#176;:%&#137;|&#166;/()[\]{}&lt;&gt;&#171;&#187;&#139;&#155;&#147;&#148;&#180;`&#145;&#146;&#136;&#168;&#132;&amp;~=#&#177;&#134;&#135;</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="debugging_log_enabled"></a><span class="summary-name">debugging_log_enabled</span> = <code title="False">False</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ellipfind_re"></a><span class="summary-name">ellipfind_re</span> = <code title="re.compile(r'(?ix)(\.\.\.)')">re.compile(r'<code class="re-flags">(?ix)</code><code class="re-group">(</code>\.\.\.<code class="re-group">)</code>')</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ellipfind_subst"></a><span class="summary-name">ellipfind_subst</span> = <code title="u' ... '"><code class="variable-quote">u'</code><code class="variable-string"> ... </code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper-module.html#g_langsupport" class="summary-name" onclick="show_private();">g_langsupport</a> = <code title="{'de': {'abbrevfile': 'german-abbreviations',
+        'binfile-darwin': 'tree-tagger',
+        'binfile-lin': 'tree-tagger',
+        'binfile-win': 'tree-tagger.exe',
+        'dummysentence': u'Das ist ein Testsatz um das Stossen der Dat\
+en sicherzustellen .',
+        'fchar': u'!?&#191;;&#133;,&#130;*&#149;&#164;@&#176;:%&#137;|&#166;/()[\]{}&lt;&gt;&#171;&#187;&#139;&#155;&#147;&#148;&#180;`&#145;&#146;&#136;&#168;&#132;&amp;~=#&#177;&#134;&#135;&#150;&#151;&#128;&#163;\
+&#165;$&#169;&#174;&#153;&quot;'',
+..."><code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">de</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">abbrevfile</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">german-abbreviations</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper-module.html#help_string" class="summary-name" onclick="show_private();">help_string</a> = <code title="'''treetaggerwrapper.py
+
+Usage:
+    python treetaggerwrapper.py [options] input_file
+
+Read data from specified files, process them one by one, sending data \
+to
+TreeTagger, and write TreeTagger output to files with .ttr extension.
+..."><code class="variable-quote">'</code><code class="variable-string">treetaggerwrapper.py\n\nUsage:\n    python tree</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="logger"></a><span class="summary-name">logger</span> = <code title="&lt;logging.Logger object at 0xb79c6ac&gt;">&lt;logging.Logger object at 0xb79c6ac&gt;</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper-module.html#punct1find_re" class="summary-name" onclick="show_private();">punct1find_re</a> = <code title="re.compile(r'(?ix)([!\?\xbf;\x85,\x82\*\x95\xa4@\xb0:%\x89\|\xa6/\(\)\\
+[\]\{\}&lt;&gt;\xab\xbb\x8b\x9b\x93\x94\xb4`\x91\x92\x88\xa8\x84&amp;~=#\xb1\x86\
+\x87\x96\x97\x80\xa3\xa5\$\xa9\xae\x99&quot;])([^ ])')">re.compile(r'<code class="re-flags">(?ix)</code><code class="re-group">(</code><code class="re-group">[</code>!\?\xbf;\x85,\x82\*\x95\xa<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="punct1find_subst"></a><span class="summary-name">punct1find_subst</span> = <code title="u'\1 \2'"><code class="variable-quote">u'</code><code class="variable-string">\1 \2</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="util.treetaggerwrapper-module.html#punct2find_re" class="summary-name" onclick="show_private();">punct2find_re</a> = <code title="re.compile(r'(?ix)([^ ])([\[!\?\xbf;\x85,\x82\*\x95\xa4@\xb0:%\x89\|\x\
+a6/\(\)\[\]\{\}&lt;&gt;\xab\xbb\x8b\x9b\x93\x94\xb4`\x91\x92\x88\xa8\x84&amp;~=#\
+\xb1\x86\x87\x96\x97\x80\xa3\xa5\$\xa9\xae\x99&quot;])')">re.compile(r'<code class="re-flags">(?ix)</code><code class="re-group">(</code><code class="re-group">[^</code> <code class="re-group">]</code><code class="re-group">)</code><code class="re-group">(</code><code class="re-group">[</code>\[!\?\xbf;\x85,\x82\<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="punct2find_subst"></a><span class="summary-name">punct2find_subst</span> = <code title="u'\1 \2'"><code class="variable-quote">u'</code><code class="variable-string">\1 \2</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Function Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-FunctionDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="BlankToSpace"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">BlankToSpace</span>(<span class="sig-arg">text</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#BlankToSpace">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Replace blanks characters by real spaces.</p>
+<p>May be good to prepare for regular expressions &amp; Co based on whitespaces.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>text</code></strong> (string) - the text to clean from blanks.</li>
+    </ul></dd>
+    <dt>Returns: [ string ]</dt>
+        <dd>List of parts in their apparition order.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="BlankToTag"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">BlankToTag</span>(<span class="sig-arg">text</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#BlankToTag">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Replace blanks characters by corresponding SGML tags.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>text</code></strong> (string) - the text to transform from blanks.</li>
+    </ul></dd>
+    <dt>Returns: string.</dt>
+        <dd>Text with replacement done.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="IsSGMLTag"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">IsSGMLTag</span>(<span class="sig-arg">text</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#IsSGMLTag">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Test if a text is - completly - a SGML tag.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>text</code></strong> (string) - the text to test.</li>
+    </ul></dd>
+    <dt>Returns: boolean</dt>
+        <dd>True if its an SGML tag.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="PipeWriter"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">PipeWriter</span>(<span class="sig-arg">pipe</span>,
+        <span class="sig-arg">text</span>,
+        <span class="sig-arg">flushsequence</span>,
+        <span class="sig-arg">encoding</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">latin1</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">errors</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">replace</code><code class="variable-quote">'</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#PipeWriter">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Write a text to a pipe and manage pre-post data to ensure flushing.</p>
+<p>For internal use.</p>
+<p>If text is composed of str strings, they are written as-is (ie. assume
+ad-hoc encoding is providen by caller). If it is composed of unicode
+strings, then they are converted to the specified encoding.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pipe</code></strong> (Popen object (file-like with write and flush methods)) - the Popen pipe on what to write the text.</li>
+        <li><strong class="pname"><code>text</code></strong> (string or list of strings) - the text to write.</li>
+        <li><strong class="pname"><code>flushsequence</code></strong> (string (with n between tokens)) - lines of tokens to ensure flush by TreeTagger.</li>
+        <li><strong class="pname"><code>encoding</code></strong> (str) - encoding of texts written on the pipe.</li>
+        <li><strong class="pname"><code>errors</code></strong> (str) - how to manage encoding errors: strict/ignore/replace,
+default to strict as Python standard.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="SplitSGML"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">SplitSGML</span>(<span class="sig-arg">text</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#SplitSGML">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Split a text between SGML-tags and non-SGML-tags parts.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>text</code></strong> (string) - the text to split.</li>
+    </ul></dd>
+    <dt>Returns: list of string.</dt>
+        <dd>List of parts in their apparition order.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="enable_debugging_log"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">enable_debugging_log</span>()</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#enable_debugging_log">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Setup logging module output.</p>
+<p>This setup a log file which register logs, and also dump logs to stdout.
+You can just copy/paste and adapt it to make logging write to your own log
+files.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="maketransU"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">maketransU</span>(<span class="sig-arg">s1</span>,
+        <span class="sig-arg">s2</span>,
+        <span class="sig-arg">todel</span>=<span class="sig-default"><code class="variable-quote">u'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#maketransU">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Build translation table for use with unicode.translate().
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>s1</code></strong> (unicode) - string of characters to replace.</li>
+        <li><strong class="pname"><code>s2</code></strong> (unicode) - string of replacement characters (same order as in s1).</li>
+        <li><strong class="pname"><code>todel</code></strong> (unicode) - string of characters to remove.</li>
+    </ul></dd>
+    <dt>Returns: dict</dt>
+        <dd>translation table with character code -&gt; character code.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== VARIABLES DETAILS ==================== -->
+<a name="section-VariablesDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-VariablesDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="BlankToTag_tags"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">BlankToTag_tags</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-group">[</code><code class="variable-group">(</code><code class="variable-quote">u'</code><code class="variable-string"> </code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">&lt;This-is-a-space /&gt;</code><code class="variable-quote">'</code><code class="variable-group">)</code><code class="variable-op">,</code>
+ <code class="variable-group">(</code><code class="variable-quote">u'</code><code class="variable-string">	</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">&lt;This-is-a-tab /&gt;</code><code class="variable-quote">'</code><code class="variable-group">)</code><code class="variable-op">,</code>
+ <code class="variable-group">(</code><code class="variable-quote">u'''</code><code class="variable-string"></code>
+<code class="variable-string"></code><code class="variable-quote">'''</code><code class="variable-op">,</code>
+  <code class="variable-quote">'</code><code class="variable-string">&lt;This-is-a-lf /&gt;</code><code class="variable-quote">'</code><code class="variable-group">)</code><code class="variable-op">,</code>
+ <code class="variable-group">(</code><code class="variable-quote">u'</code><code class="variable-string"></code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">&lt;This-is-a-cr /&gt;</code><code class="variable-quote">'</code><code class="variable-group">)</code><code class="variable-op">,</code>
+ <code class="variable-group">(</code><code class="variable-quote">u'</code><code class="variable-string"></code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">&lt;This-is-a-vt /&gt;</code><code class="variable-quote">'</code><code class="variable-group">)</code><code class="variable-op">,</code>
+ <code class="variable-group">(</code><code class="variable-quote">u'</code><code class="variable-string"></code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">&lt;This-is-a-ff /&gt;</code><code class="variable-quote">'</code><code class="variable-group">)</code><code class="variable-group">]</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="DnsHostMatch_re"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">DnsHostMatch_re</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+re.compile(r'<code class="re-flags">(?ix)</code><code class="re-group">(</code><code class="re-group">(?:</code><code class="re-group">[</code>-a<code class="re-op">-</code>z0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">+</code>\.<code class="re-group">(?:</code><code class="re-group">[</code>-a<code class="re-op">-</code>z0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">+</code>\.<code class="re-group">)</code><code class="re-op">*</code><code class="re-group">(?:</code>com<code class="re-op">|</code>edu<code class="re-op">|</code>gov<code class="re-op">|</code>int<code class="re-op">|</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+mil<code class="re-op">|</code>net<code class="re-op">|</code>org<code class="re-op">|</code>biz<code class="re-op">|</code>info<code class="re-op">|</code>name<code class="re-op">|</code>pro<code class="re-op">|</code>aero<code class="re-op">|</code>coop<code class="re-op">|</code>museum<code class="re-op">|</code>arts<code class="re-op">|</code>firm<code class="re-op">|</code>info<code class="re-op">|</code>nom<code class="re-op">|</code>rec<code class="re-op">|</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+shop<code class="re-op">|</code>web<code class="re-op">|</code>asia<code class="re-op">|</code>cat<code class="re-op">|</code>jobs<code class="re-op">|</code>mail<code class="re-op">|</code>mobi<code class="re-op">|</code>post<code class="re-op">|</code>tel<code class="re-op">|</code>travel<code class="re-op">|</code>xxx<code class="re-op">|</code>glue<code class="re-op">|</code>indy<code class="re-op">|</code>geek<code class="re-op">|</code>nu<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ll<code class="re-op">|</code>oss<code class="re-op">|</code>parody<code class="re-op">|</code>bbs<code class="re-op">|</code>localdomain<code class="re-op">|</code>ac<code class="re-op">|</code>ad<code class="re-op">|</code>ae<code class="re-op">|</code>af<code class="re-op">|</code>ag<code class="re-op">|</code>ai<code class="re-op">|</code>al<code class="re-op">|</code>am<code class="re-op">|</code>an<code class="re-op">|</code>ao<code class="re-op">|</code>aq<code class="re-op">|</code>ar<code class="re-op">|</code>as<code class="re-op">|</code>a<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+t<code class="re-op">|</code>au<code class="re-op">|</code>aw<code class="re-op">|</code>ax<code class="re-op">|</code>az<code class="re-op">|</code>ba<code class="re-op">|</code>bb<code class="re-op">|</code>bd<code class="re-op">|</code>be<code class="re-op">|</code>bf<code class="re-op">|</code>bg<code class="re-op">|</code>bh<code class="re-op">|</code>bi<code class="re-op">|</code>bj<code class="re-op">|</code>bm<code class="re-op">|</code>bn<code class="re-op">|</code>bo<code class="re-op">|</code>br<code class="re-op">|</code>bs<code class="re-op">|</code>bt<code class="re-op">|</code>bv<code class="re-op">|</code>bw<code class="re-op">|</code>by<code class="re-op">|</code>bz<code class="re-op"></code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="re-op">|</code>ca<code class="re-op">|</code>cc<code class="re-op">|</code>cd<code class="re-op">|</code>cf<code class="re-op">|</code>cg<code class="re-op">|</code>ch<code class="re-op">|</code>ci<code class="re-op">|</code>ck<code class="re-op">|</code>cl<code class="re-op">|</code>cm<code class="re-op">|</code>cn<code class="re-op">|</code>co<code class="re-op">|</code>cr<code class="re-op">|</code>cs<code class="re-op">|</code>cu<code class="re-op">|</code>cv<code class="re-op">|</code>cx<code class="re-op">|</code>cy<code class="re-op">|</code>cz<code class="re-op">|</code>de<code class="re-op">|</code>dj<code class="re-op">|</code>dk<code class="re-op">|</code>dm<code class="re-op">|</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+do<code class="re-op">|</code>dz<code class="re-op">|</code>ec<code class="re-op">|</code>ee<code class="re-op">|</code>eg<code class="re-op">|</code>eh<code class="re-op">|</code>er<code class="re-op">|</code>es<code class="re-op">|</code>et<code class="re-op">|</code>fi<code class="re-op">|</code>fj<code class="re-op">|</code>fk<code class="re-op">|</code>fm<code class="re-op">|</code>fo<code class="re-op">|</code>fr<code class="re-op">|</code>ga<code class="re-op">|</code>gb<code class="re-op">|</code>gd<code class="re-op">|</code>ge<code class="re-op">|</code>gf<code class="re-op">|</code>gg<code class="re-op">|</code>gh<code class="re-op">|</code>gi<code class="re-op">|</code>g<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+l<code class="re-op">|</code>gm<code class="re-op">|</code>gn<code class="re-op">|</code>gp<code class="re-op">|</code>gq<code class="re-op">|</code>gr<code class="re-op">|</code>gs<code class="re-op">|</code>gt<code class="re-op">|</code>gu<code class="re-op">|</code>gw<code class="re-op">|</code>gy<code class="re-op">|</code>hk<code class="re-op">|</code>hm<code class="re-op">|</code>hn<code class="re-op">|</code>hr<code class="re-op">|</code>ht<code class="re-op">|</code>hu<code class="re-op">|</code>id<code class="re-op">|</code>ie<code class="re-op">|</code>il<code class="re-op">|</code>im<code class="re-op">|</code>in<code class="re-op">|</code>io<code class="re-op">|</code>iq<code class="re-op"></code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="DnsHost_expression"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">DnsHost_expression</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">u'''</code><code class="variable-string"></code>
+<code class="variable-string">        (?:</code>
+<code class="variable-string">            [-a-z0-9]+\.                # Host name</code>
+<code class="variable-string">            (?:[-a-z0-9]+\.)*           # Intermediate domains</code>
+<code class="variable-string">                                        # And top level domain below</code>
+<code class="variable-string"></code>
+<code class="variable-string">            (?:</code>
+<code class="variable-string">            com|edu|gov|int|mil|net|org|            # Common historica</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="EmailMatch_expression"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">EmailMatch_expression</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">u'''</code><code class="variable-string">(</code>
+<code class="variable-string">            [-a-z0-9._']+@</code>
+<code class="variable-string">            </code>
+<code class="variable-string">        (?:</code>
+<code class="variable-string">            [-a-z0-9]+\.                # Host name</code>
+<code class="variable-string">            (?:[-a-z0-9]+\.)*           # Intermediate domains</code>
+<code class="variable-string">                                        # And top level domain below</code>
+<code class="variable-string"></code>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="EmailMatch_re"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">EmailMatch_re</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+re.compile(r'<code class="re-flags">(?ix)</code><code class="re-group">(</code><code class="re-group">[</code>-a<code class="re-op">-</code>z0<code class="re-op">-</code>9\._\'<code class="re-group">]</code><code class="re-op">+</code>@<code class="re-group">(?:</code><code class="re-group">[</code>-a<code class="re-op">-</code>z0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">+</code>\.<code class="re-group">(?:</code><code class="re-group">[</code>-a<code class="re-op">-</code>z0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">+</code>\.<code class="re-group">)</code><code class="re-op">*</code><code class="re-group">(?:</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+com<code class="re-op">|</code>edu<code class="re-op">|</code>gov<code class="re-op">|</code>int<code class="re-op">|</code>mil<code class="re-op">|</code>net<code class="re-op">|</code>org<code class="re-op">|</code>biz<code class="re-op">|</code>info<code class="re-op">|</code>name<code class="re-op">|</code>pro<code class="re-op">|</code>aero<code class="re-op">|</code>coop<code class="re-op">|</code>museum<code class="re-op">|</code>arts<code class="re-op">|</code>fi<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+rm<code class="re-op">|</code>info<code class="re-op">|</code>nom<code class="re-op">|</code>rec<code class="re-op">|</code>shop<code class="re-op">|</code>web<code class="re-op">|</code>asia<code class="re-op">|</code>cat<code class="re-op">|</code>jobs<code class="re-op">|</code>mail<code class="re-op">|</code>mobi<code class="re-op">|</code>post<code class="re-op">|</code>tel<code class="re-op">|</code>travel<code class="re-op">|</code>xxx<code class="re-op">|</code>g<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+lue<code class="re-op">|</code>indy<code class="re-op">|</code>geek<code class="re-op">|</code>null<code class="re-op">|</code>oss<code class="re-op">|</code>parody<code class="re-op">|</code>bbs<code class="re-op">|</code>localdomain<code class="re-op">|</code>ac<code class="re-op">|</code>ad<code class="re-op">|</code>ae<code class="re-op">|</code>af<code class="re-op">|</code>ag<code class="re-op">|</code>ai<code class="re-op">|</code>al<code class="re-op">|</code>am<code class="re-op">|</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+an<code class="re-op">|</code>ao<code class="re-op">|</code>aq<code class="re-op">|</code>ar<code class="re-op">|</code>as<code class="re-op">|</code>at<code class="re-op">|</code>au<code class="re-op">|</code>aw<code class="re-op">|</code>ax<code class="re-op">|</code>az<code class="re-op">|</code>ba<code class="re-op">|</code>bb<code class="re-op">|</code>bd<code class="re-op">|</code>be<code class="re-op">|</code>bf<code class="re-op">|</code>bg<code class="re-op">|</code>bh<code class="re-op">|</code>bi<code class="re-op">|</code>bj<code class="re-op">|</code>bm<code class="re-op">|</code>bn<code class="re-op">|</code>bo<code class="re-op">|</code>br<code class="re-op">|</code>b<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+s<code class="re-op">|</code>bt<code class="re-op">|</code>bv<code class="re-op">|</code>bw<code class="re-op">|</code>by<code class="re-op">|</code>bz<code class="re-op">|</code>ca<code class="re-op">|</code>cc<code class="re-op">|</code>cd<code class="re-op">|</code>cf<code class="re-op">|</code>cg<code class="re-op">|</code>ch<code class="re-op">|</code>ci<code class="re-op">|</code>ck<code class="re-op">|</code>cl<code class="re-op">|</code>cm<code class="re-op">|</code>cn<code class="re-op">|</code>co<code class="re-op">|</code>cr<code class="re-op">|</code>cs<code class="re-op">|</code>cu<code class="re-op">|</code>cv<code class="re-op">|</code>cx<code class="re-op">|</code>cy<code class="re-op"></code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="re-op">|</code>cz<code class="re-op">|</code>de<code class="re-op">|</code>dj<code class="re-op">|</code>dk<code class="re-op">|</code>dm<code class="re-op">|</code>do<code class="re-op">|</code>dz<code class="re-op">|</code>ec<code class="re-op">|</code>ee<code class="re-op">|</code>eg<code class="re-op">|</code>eh<code class="re-op">|</code>er<code class="re-op">|</code>es<code class="re-op">|</code>et<code class="re-op">|</code>fi<code class="re-op">|</code>fj<code class="re-op">|</code>fk<code class="re-op">|</code>fm<code class="re-op">|</code>fo<code class="re-op">|</code>fr<code class="re-op">|</code>ga<code class="re-op">|</code>gb<code class="re-op">|</code>gd<code class="re-op">|</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ge<code class="re-op">|</code>gf<code class="re-op">|</code>gg<code class="re-op">|</code>gh<code class="re-op">|</code>gi<code class="re-op">|</code>gl<code class="re-op">|</code>gm<code class="re-op">|</code>gn<code class="re-op">|</code>gp<code class="re-op">|</code>gq<code class="re-op">|</code>gr<code class="re-op">|</code>gs<code class="re-op">|</code>gt<code class="re-op">|</code>gu<code class="re-op">|</code>gw<code class="re-op">|</code>gy<code class="re-op">|</code>hk<code class="re-op">|</code>hm<code class="re-op">|</code>hn<code class="re-op">|</code>hr<code class="re-op">|</code>ht<code class="re-op">|</code>hu<code class="re-op">|</code>id<code class="re-op">|</code>i<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="IpMatch_re"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">IpMatch_re</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+re.compile(r'<code class="re-flags">(?ix)</code><code class="re-group">(</code><code class="re-group">(?:</code><code class="re-group">(?:</code><code class="re-group">[</code>0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">{1,3}</code>\.<code class="re-group">)</code><code class="re-op">{3}</code><code class="re-group">[</code>0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">{1,3}</code><code class="re-group">)</code><code class="re-group">)</code>')
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="Ip_expression"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">Ip_expression</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'''</code><code class="variable-string"></code>
+<code class="variable-string">    (?:                         # ----- Classic dotted IP V4 address -</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">----</code>
+<code class="variable-string">        (?:[0-9]{1,3}\\.){3}[0-9]{1,3}</code>
+<code class="variable-string">    )</code>
+<code class="variable-string">    </code><code class="variable-quote">'''</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="SGML_tag"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">SGML_tag</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">u'''</code><code class="variable-string"></code>
+<code class="variable-string">        (</code>
+<code class="variable-string">        &lt;!-- .*? --&gt;                # XML/SGML comment</code>
+<code class="variable-string">            |                           # -- OR --</code>
+<code class="variable-string">        &lt;[!?/]?[_A-Za-z&#192;-&#255;][-_\.:A-Za-z&#192;-&#255;0-9]*    # Start of tag/dire</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">ctive</code>
+<code class="variable-string">            [^&gt;]*                   # +Process all up to the first &gt;</code>
+<code class="variable-string">            &gt;                       # +End of tag/directive</code>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="SGML_tag_re"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">SGML_tag_re</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+re.compile(r'<code class="re-flags">(?isx)</code><code class="re-group">(</code>&lt;!--.<code class="re-op">*?</code>--&gt;<code class="re-op">|</code><code class="re-group">[</code>!\?/<code class="re-group">]</code><code class="re-op">?</code><code class="re-group">[</code>_A<code class="re-op">-</code>Za<code class="re-op">-</code>z\xc0<code class="re-op">-</code>\xff<code class="re-group">]</code><code class="re-group">[</code>-_\.:A<code class="re-op">-</code>Za<code class="re-op">-</code>z\x<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+c0<code class="re-op">-</code>\xff0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">*</code><code class="re-group">[^</code>&gt;<code class="re-group">]</code><code class="re-op">*</code>&gt;<code class="re-group">)</code>')
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="UrlMatch_expression"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">UrlMatch_expression</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">u'''</code><code class="variable-string">(</code>
+<code class="variable-string">                # Scheme part</code>
+<code class="variable-string">        (?:ftp|https?|gopher|mailto|news|nntp|telnet|wais|file|prosper</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">o):</code>
+<code class="variable-string">                # IP Host specification (optionnal)</code>
+<code class="variable-string">        (?:// (?:[-a-z0-9_;?&amp;=](?::[-a-z0-9_;?&amp;=]*)?@)?   # User authe</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">ntication.</code>
+<code class="variable-string">             (?:(?:</code>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="UrlMatch_re"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">UrlMatch_re</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+re.compile(r'<code class="re-flags">(?ix)</code><code class="re-group">(</code><code class="re-group">(?:</code>ftp<code class="re-op">|</code>https<code class="re-op">?</code><code class="re-op">|</code>gopher<code class="re-op">|</code>mailto<code class="re-op">|</code>news<code class="re-op">|</code>nntp<code class="re-op">|</code>telnet<code class="re-op">|</code>wais<code class="re-op">|</code>f<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ile<code class="re-op">|</code>prospero<code class="re-group">)</code>:<code class="re-group">(?:</code>//<code class="re-group">(?:</code><code class="re-group">[</code>-a<code class="re-op">-</code>z0<code class="re-op">-</code>9_;\?&amp;=<code class="re-group">]</code><code class="re-group">(?:</code>:<code class="re-group">[</code>-a<code class="re-op">-</code>z0<code class="re-op">-</code>9_;\?&amp;=<code class="re-group">]</code><code class="re-op">*</code><code class="re-group">)</code><code class="re-op">?</code>@<code class="re-group">)</code><code class="re-op">?</code><code class="re-group">(?:</code><code class="re-group">(?:</code><code class="re-group">(?</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="re-group">:</code><code class="re-group">[</code>-a<code class="re-op">-</code>z0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">+</code>\.<code class="re-group">(?:</code><code class="re-group">[</code>-a<code class="re-op">-</code>z0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">+</code>\.<code class="re-group">)</code><code class="re-op">*</code><code class="re-group">(?:</code>com<code class="re-op">|</code>edu<code class="re-op">|</code>gov<code class="re-op">|</code>int<code class="re-op">|</code>mil<code class="re-op">|</code>net<code class="re-op">|</code>org<code class="re-op">|</code>biz<code class="re-op">|</code>info<code class="re-op">|</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+name<code class="re-op">|</code>pro<code class="re-op">|</code>aero<code class="re-op">|</code>coop<code class="re-op">|</code>museum<code class="re-op">|</code>arts<code class="re-op">|</code>firm<code class="re-op">|</code>info<code class="re-op">|</code>nom<code class="re-op">|</code>rec<code class="re-op">|</code>shop<code class="re-op">|</code>web<code class="re-op">|</code>asia<code class="re-op">|</code>cat<code class="re-op">|</code>job<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+s<code class="re-op">|</code>mail<code class="re-op">|</code>mobi<code class="re-op">|</code>post<code class="re-op">|</code>tel<code class="re-op">|</code>travel<code class="re-op">|</code>xxx<code class="re-op">|</code>glue<code class="re-op">|</code>indy<code class="re-op">|</code>geek<code class="re-op">|</code>null<code class="re-op">|</code>oss<code class="re-op">|</code>parody<code class="re-op">|</code>bbs<code class="re-op">|</code>loc<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+aldomain<code class="re-op">|</code>ac<code class="re-op">|</code>ad<code class="re-op">|</code>ae<code class="re-op">|</code>af<code class="re-op">|</code>ag<code class="re-op">|</code>ai<code class="re-op">|</code>al<code class="re-op">|</code>am<code class="re-op">|</code>an<code class="re-op">|</code>ao<code class="re-op">|</code>aq<code class="re-op">|</code>ar<code class="re-op">|</code>as<code class="re-op">|</code>at<code class="re-op">|</code>au<code class="re-op">|</code>aw<code class="re-op">|</code>ax<code class="re-op">|</code>az<code class="re-op">|</code>ba<code class="re-op">|</code>bb<code class="re-op">|</code>b<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+d<code class="re-op">|</code>be<code class="re-op">|</code>bf<code class="re-op">|</code>bg<code class="re-op">|</code>bh<code class="re-op">|</code>bi<code class="re-op">|</code>bj<code class="re-op">|</code>bm<code class="re-op">|</code>bn<code class="re-op">|</code>bo<code class="re-op">|</code>br<code class="re-op">|</code>bs<code class="re-op">|</code>bt<code class="re-op">|</code>bv<code class="re-op">|</code>bw<code class="re-op">|</code>by<code class="re-op">|</code>bz<code class="re-op">|</code>ca<code class="re-op">|</code>cc<code class="re-op">|</code>cd<code class="re-op">|</code>cf<code class="re-op">|</code>cg<code class="re-op">|</code>ch<code class="re-op">|</code>ci<code class="re-op"></code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="re-op">|</code>ck<code class="re-op">|</code>cl<code class="re-op">|</code>cm<code class="re-op">|</code>cn<code class="re-op">|</code>co<code class="re-op">|</code>cr<code class="re-op">|</code>cs<code class="re-op">|</code>cu<code class="re-op">|</code>cv<code class="re-op">|</code>cx<code class="re-op">|</code>cy<code class="re-op">|</code>cz<code class="re-op">|</code>de<code class="re-op">|</code>dj<code class="re-op">|</code>dk<code class="re-op">|</code>dm<code class="re-op">|</code>do<code class="re-op">|</code>dz<code class="re-op">|</code>ec<code class="re-op">|</code>ee<code class="re-op">|</code>eg<code class="re-op">|</code>eh<code class="re-op">|</code>er<code class="re-op">|</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="acronymexpr_re"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">acronymexpr_re</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+re.compile(r'<code class="re-flags">(?ix)</code>^<code class="re-group">[</code>a<code class="re-op">-</code>z\xc0<code class="re-op">-</code>\xff<code class="re-group">]</code><code class="re-op">+</code><code class="re-group">(</code>\.<code class="re-group">[</code>a<code class="re-op">-</code>z\xc0<code class="re-op">-</code>\xff<code class="re-group">]</code><code class="re-group">)</code><code class="re-op">+</code>\.<code class="re-op">?</code>$')
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="alonemarks"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">alonemarks</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">u'</code><code class="variable-string">!?&#191;;&#133;,&#130;*&#149;&#164;@&#176;:%&#137;|&#166;/()[\]{}&lt;&gt;&#171;&#187;&#139;&#155;&#147;&#148;&#180;`&#145;&#146;&#136;&#168;&#132;&amp;~=#&#177;&#134;&#135;&#150;&#151;&#128;&#163;&#165;$&#169;&#174;&#153;&quot;</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="g_langsupport"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">g_langsupport</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">de</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">abbrevfile</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">german-abbreviations</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+        <code class="variable-quote">'</code><code class="variable-string">binfile-darwin</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">tree-tagger</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+        <code class="variable-quote">'</code><code class="variable-string">binfile-lin</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">tree-tagger</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+        <code class="variable-quote">'</code><code class="variable-string">binfile-win</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">tree-tagger.exe</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+        <code class="variable-quote">'</code><code class="variable-string">dummysentence</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">u'</code><code class="variable-string">Das ist ein Testsatz um das Stossen der Dat</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">en sicherzustellen .</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+        <code class="variable-quote">'</code><code class="variable-string">fchar</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">u'</code><code class="variable-string">!?&#191;;&#133;,&#130;*&#149;&#164;@&#176;:%&#137;|&#166;/()[\]{}&lt;&gt;&#171;&#187;&#139;&#155;&#147;&#148;&#180;`&#145;&#146;&#136;&#168;&#132;&amp;~=#&#177;&#134;&#135;&#150;&#151;&#128;&#163;</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">&#165;$&#169;&#174;&#153;&quot;'</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="help_string"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">help_string</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'''</code><code class="variable-string">treetaggerwrapper.py</code>
+<code class="variable-string"></code>
+<code class="variable-string">Usage:</code>
+<code class="variable-string">    python treetaggerwrapper.py [options] input_file</code>
+<code class="variable-string"></code>
+<code class="variable-string">Read data from specified files, process them one by one, sending data </code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">to</code>
+<code class="variable-string">TreeTagger, and write TreeTagger output to files with .ttr extension.</code>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="punct1find_re"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">punct1find_re</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+re.compile(r'<code class="re-flags">(?ix)</code><code class="re-group">(</code><code class="re-group">[</code>!\?\xbf;\x85,\x82\*\x95\xa4@\xb0:%\x89\|\xa6/\(\)\<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+[\]\{\}&lt;&gt;\xab\xbb\x8b\x9b\x93\x94\xb4`\x91\x92\x88\xa8\x84&amp;~=#\xb1\x86<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+\x87\x96\x97\x80\xa3\xa5\$\xa9\xae\x99&quot;<code class="re-group">]</code><code class="re-group">)</code><code class="re-group">(</code><code class="re-group">[^</code> <code class="re-group">]</code><code class="re-group">)</code>')
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="punct2find_re"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">punct2find_re</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+re.compile(r'<code class="re-flags">(?ix)</code><code class="re-group">(</code><code class="re-group">[^</code> <code class="re-group">]</code><code class="re-group">)</code><code class="re-group">(</code><code class="re-group">[</code>\[!\?\xbf;\x85,\x82\*\x95\xa4@\xb0:%\x89\|\x<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+a6/\(\)\[\]\{\}&lt;&gt;\xab\xbb\x8b\x9b\x93\x94\xb4`\x91\x92\x88\xa8\x84&amp;~=#<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+\xb1\x86\x87\x96\x97\x80\xa3\xa5\$\xa9\xae\x99&quot;<code class="re-group">]</code><code class="re-group">)</code>')
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:19 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

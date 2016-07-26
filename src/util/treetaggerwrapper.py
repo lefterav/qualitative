@@ -517,11 +517,11 @@ def PipeWriter(pipe,text,flushsequence,encoding=TREETAGGER_ENCODING,
             # We continue to unlock the thread waiting for the ENDOFTEXT on
             # TreeTagger output.
 
-        logger.info("Writing starting part to pipe.")
+        logger.debug("Writing starting part to pipe.")
         # Note: STARTOFTEXT is a str - no encoding (basic ASCII).
         pipe.write(STARTOFTEXT+"\n")
 
-        logger.info("Writing data to pipe.")
+        logger.debug("Writing data to pipe.")
 
         if text :
             if isinstance(text,basestring) :
@@ -538,13 +538,13 @@ def PipeWriter(pipe,text,flushsequence,encoding=TREETAGGER_ENCODING,
                     pipe.write(line)
                     pipe.write("\n")
 
-        logger.info("Writing ending and flushing part to pipe.")
+        logger.debug("Writing ending and flushing part to pipe.")
         # Note: ENDOFTEXT is a str - no encoding (basic ASCII).
         if isinstance(flushsequence,unicode) :
             flushsequence = flushsequence.encode(encoding,errors)
         pipe.write(ENDOFTEXT+"\n.\n"+flushsequence+"\n")
         pipe.flush()
-        logger.info("Finished writing data to pipe. Pipe flushed.")
+        logger.debug("Finished writing data to pipe. Pipe flushed.")
     except :
         logger.error("Failure during pipe writing.",exc_info=True)
 

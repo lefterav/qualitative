@@ -32,6 +32,7 @@ public class JavaServer {
     	boolean serverCreated = false;
 		int socket = 25336;
 		
+		JavaServer app = new JavaServer();
 		//keep trying to connect with the next socket, until socket is free
 		while (!serverCreated) {
 			try{

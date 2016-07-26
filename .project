@@ -3,6 +3,7 @@
 	<name>TaraXUscripts</name>
 	<comment></comment>
 	<projects>
+		<project>expsuite</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

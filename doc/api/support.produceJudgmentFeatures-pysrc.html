@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>support.produceJudgmentFeatures</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="support-module.html">Package&nbsp;support</a> ::
+        Module&nbsp;produceJudgmentFeatures
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="support.produceJudgmentFeatures-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="support.produceJudgmentFeatures-module.html">Module support.produceJudgmentFeatures</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">    This script reads the XML-formatted data from pairwise system comparisons and</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">    adds various features based on various linguistic characteristics of each parallel sentence.  </tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">codecs</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">xml</tt><tt class="py-op">.</tt><tt class="py-name">dom</tt><tt class="py-op">.</tt><tt class="py-name">minidom</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">xml</tt><tt class="py-op">.</tt><tt class="py-name">dom</tt><tt class="py-op">.</tt><tt class="py-name">minidom</tt> <tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.parse()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator-class.html#parse,Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator.parse()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator-class.html#parse,Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.parse()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator-class.html#parse,Method featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket.parse()=featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket-class.html#parse"><a title="featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.parse
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator.parse
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.parse
+featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket.parse" class="py-name" href="#" onclick="return doclink('link-0', 'parse', 'link-0');">parse</a></tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">nltk</tt> <tt class="py-keyword">import</tt> <tt class="py-name">word_tokenize</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"> </tt>
+<a name="JudgedSentence"></a><div id="JudgedSentence-def"><a name="L15"></a><tt class="py-lineno"> 15</tt> <a class="py-toggle" href="#" id="JudgedSentence-toggle" onclick="return toggle('JudgedSentence');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="support.produceJudgmentFeatures.JudgedSentence-class.html">JudgedSentence</a><tt class="py-op">:</tt> </tt>
+</div><div id="JudgedSentence-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="JudgedSentence-expanded"><a name="JudgedSentence.__init__"></a><div id="JudgedSentence.__init__-def"><a name="L16"></a><tt class="py-lineno"> 16</tt> <a class="py-toggle" href="#" id="JudgedSentence.__init__-toggle" onclick="return toggle('JudgedSentence.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="support.produceJudgmentFeatures.JudgedSentence-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">xmlEntry</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="JudgedSentence.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="JudgedSentence.__init__-expanded"><a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xmlObject</tt> <tt class="py-op">=</tt> <tt class="py-name">xmlEntry</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">        <tt class="py-name">srcXML</tt> <tt class="py-op">=</tt> <tt class="py-name">xmlEntry</tt><tt class="py-op">.</tt><tt class="py-name">getElementsByTagName</tt><tt class="py-op">(</tt><tt class="py-string">'src'</tt><tt class="py-op">)</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">        <tt class="py-name">tgtXML</tt> <tt class="py-op">=</tt> <tt class="py-name">xmlEntry</tt><tt class="py-op">.</tt><tt class="py-name">getElementsByTagName</tt><tt class="py-op">(</tt><tt class="py-string">'tgt'</tt><tt class="py-op">)</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">src</tt> <tt class="py-op">=</tt> <tt class="py-name">srcXML</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">childNodes</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">nodeValue</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+</div><a name="JudgedSentence.getOutput"></a><div id="JudgedSentence.getOutput-def"><a name="L22"></a><tt class="py-lineno"> 22</tt> <a class="py-toggle" href="#" id="JudgedSentence.getOutput-toggle" onclick="return toggle('JudgedSentence.getOutput');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="support.produceJudgmentFeatures.JudgedSentence-class.html#getOutput">getOutput</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="JudgedSentence.getOutput-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="JudgedSentence.getOutput-expanded"><a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xmlObject</tt> </tt>
+</div><a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"> </tt>
+<a name="JudgedSentence.addSentenceLengthFeatures"></a><div id="JudgedSentence.addSentenceLengthFeatures-def"><a name="L25"></a><tt class="py-lineno"> 25</tt> <a class="py-toggle" href="#" id="JudgedSentence.addSentenceLengthFeatures-toggle" onclick="return toggle('JudgedSentence.addSentenceLengthFeatures');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="support.produceJudgmentFeatures.JudgedSentence-class.html#addSentenceLengthFeatures">addSentenceLengthFeatures</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="JudgedSentence.addSentenceLengthFeatures-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="JudgedSentence.addSentenceLengthFeatures-expanded"><a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">        <tt id="link-1" class="py-name" targets="Method io_utils.input.genericxmlreader.GenericXmlReader.length()=io_utils.input.genericxmlreader.GenericXmlReader-class.html#length,Method io_utils.input.xliffreader.XliffReader.length()=io_utils.input.xliffreader.XliffReader-class.html#length,Method sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.length()=sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html#length"><a title="io_utils.input.genericxmlreader.GenericXmlReader.length
+io_utils.input.xliffreader.XliffReader.length
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.length" class="py-name" href="#" onclick="return doclink('link-1', 'length', 'link-1');">length</a></tt> <tt class="py-op">=</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">word_tokenize</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">src</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">         </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xmlObject</tt><tt class="py-op">.</tt><tt class="py-name">setAttribute</tt><tt class="py-op">(</tt><tt class="py-string">'src-length'</tt> <tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt id="link-2" class="py-name"><a title="io_utils.input.genericxmlreader.GenericXmlReader.length
+io_utils.input.xliffreader.XliffReader.length
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.length" class="py-name" href="#" onclick="return doclink('link-2', 'length', 'link-1');">length</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">         </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">        <tt class="py-name">srcShort</tt> <tt class="py-op">=</tt> <tt class="py-string">'0'</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">        <tt class="py-name">srcLong</tt> <tt class="py-op">=</tt> <tt class="py-string">'0'</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">        <tt class="py-name">srcToolong</tt> <tt class="py-op">=</tt> <tt class="py-string">'0'</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-3" class="py-name"><a title="io_utils.input.genericxmlreader.GenericXmlReader.length
+io_utils.input.xliffreader.XliffReader.length
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.length" class="py-name" href="#" onclick="return doclink('link-3', 'length', 'link-1');">length</a></tt><tt class="py-op">&lt;</tt><tt class="py-number">10</tt><tt class="py-op">:</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">            <tt class="py-name">srcShort</tt> <tt class="py-op">=</tt> <tt class="py-string">'1'</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt id="link-4" class="py-name"><a title="io_utils.input.genericxmlreader.GenericXmlReader.length
+io_utils.input.xliffreader.XliffReader.length
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.length" class="py-name" href="#" onclick="return doclink('link-4', 'length', 'link-1');">length</a></tt><tt class="py-op">&gt;</tt><tt class="py-number">25</tt><tt class="py-op">:</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">            <tt class="py-name">srcLong</tt> <tt class="py-op">=</tt> <tt class="py-string">'1'</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-5" class="py-name"><a title="io_utils.input.genericxmlreader.GenericXmlReader.length
+io_utils.input.xliffreader.XliffReader.length
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.length" class="py-name" href="#" onclick="return doclink('link-5', 'length', 'link-1');">length</a></tt><tt class="py-op">&gt;</tt><tt class="py-number">50</tt><tt class="py-op">:</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">                <tt class="py-name">srcToolong</tt> <tt class="py-op">=</tt> <tt class="py-string">'1'</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">         </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xmlObject</tt><tt class="py-op">.</tt><tt class="py-name">setAttribute</tt><tt class="py-op">(</tt><tt class="py-string">'src-short'</tt> <tt class="py-op">,</tt> <tt class="py-name">srcShort</tt><tt class="py-op">)</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xmlObject</tt><tt class="py-op">.</tt><tt class="py-name">setAttribute</tt><tt class="py-op">(</tt><tt class="py-string">'src-long'</tt> <tt class="py-op">,</tt> <tt class="py-name">srcLong</tt><tt class="py-op">)</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xmlObject</tt><tt class="py-op">.</tt><tt class="py-name">setAttribute</tt><tt class="py-op">(</tt><tt class="py-string">'src-toolong'</tt> <tt class="py-op">,</tt> <tt class="py-name">srcToolong</tt><tt class="py-op">)</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">         </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">         </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+</div></div><a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">     </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">         </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">         </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">     </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-string">"""</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-string">    Models the behaviour of a corpus containing judged translations and features</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-string">"""</tt> </tt>
+<a name="JudgedSet"></a><div id="JudgedSet-def"><a name="L54"></a><tt class="py-lineno"> 54</tt> <a class="py-toggle" href="#" id="JudgedSet-toggle" onclick="return toggle('JudgedSet');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="support.produceJudgmentFeatures.JudgedSet-class.html">JudgedSet</a> <tt class="py-op">:</tt> </tt>
+</div><div id="JudgedSet-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="JudgedSet-expanded"><a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-docstring">        Initialiaze the set, but parsing the XML input given in the parameters</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-docstring">        @param inputFilename: The filename of a text file formatted in JCML/XML</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-docstring">        @param outputFilename: The filename of the text where the outcome will be stored </tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="JudgedSet.__init__"></a><div id="JudgedSet.__init__-def"><a name="L60"></a><tt class="py-lineno"> 60</tt> <a class="py-toggle" href="#" id="JudgedSet.__init__-toggle" onclick="return toggle('JudgedSet.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="support.produceJudgmentFeatures.JudgedSet-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">inputFilename</tt><tt class="py-op">,</tt> <tt class="py-param">outputFilename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="JudgedSet.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="JudgedSet.__init__-expanded"><a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xmlObject</tt> <tt class="py-op">=</tt> <tt id="link-6" class="py-name"><a title="featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.parse
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator.parse
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.parse
+featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket.parse" class="py-name" href="#" onclick="return doclink('link-6', 'parse', 'link-0');">parse</a></tt><tt class="py-op">(</tt><tt class="py-name">inputFilename</tt><tt class="py-op">)</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">outputFilename</tt> <tt class="py-op">=</tt> <tt class="py-name">outputFilename</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+</div><a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">     </tt>
+<a name="JudgedSet.flush"></a><div id="JudgedSet.flush-def"><a name="L65"></a><tt class="py-lineno"> 65</tt> <a class="py-toggle" href="#" id="JudgedSet.flush-toggle" onclick="return toggle('JudgedSet.flush');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="support.produceJudgmentFeatures.JudgedSet-class.html#flush">flush</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="JudgedSet.flush-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="JudgedSet.flush-expanded"><a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">        <tt class="py-name">file_object</tt> <tt class="py-op">=</tt> <tt class="py-name">codecs</tt><tt class="py-op">.</tt><tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">outputFilename</tt><tt class="py-op">,</tt> <tt class="py-string">'w'</tt><tt class="py-op">,</tt> <tt class="py-string">'utf-8'</tt><tt class="py-op">)</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt class="py-name">file_object</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method experiment.autoranking.decode.StreamToLogger.write()=experiment.autoranking.decode.StreamToLogger-class.html#write,Method experiment.autoranking.suite.StreamToLogger.write()=experiment.autoranking.suite.StreamToLogger-class.html#write,Method experiment.autorankingsearch.suite.StreamToLogger.write()=experiment.autorankingsearch.suite.StreamToLogger-class.html#write,Method experiment.autoranksvm.suite.StreamToLogger.write()=experiment.autoranksvm.suite.StreamToLogger-class.html#write,Method experiment.ml4hmt12.suite.StreamToLogger.write()=experiment.ml4hmt12.suite.StreamToLogger-class.html#write,Method experiment.ml4hmt12.test.StreamToLogger.write()=experiment.ml4hmt12.test.StreamToLogger-class.html#write,Method sentence.coupleddataset.CoupledDataSetDisk.write()=sentence.coupleddataset.CoupledDataSetDisk-class.html#write"><a title="experiment.autoranking.decode.StreamToLogger.write
+experiment.autoranking.suite.StreamToLogger.write
+experiment.autorankingsearch.suite.StreamToLogger.write
+experiment.autoranksvm.suite.StreamToLogger.write
+experiment.ml4hmt12.suite.StreamToLogger.write
+experiment.ml4hmt12.test.StreamToLogger.write
+sentence.coupleddataset.CoupledDataSetDisk.write" class="py-name" href="#" onclick="return doclink('link-7', 'write', 'link-7');">write</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xmlObject</tt><tt class="py-op">.</tt><tt class="py-name">toprettyxml</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-name">file_object</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close()=featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html#close,Method featuregenerator.preprocessor.CommandlinePreprocessor.close()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#close,Method io_utils.sax.saxps2jcml.IncrementalJcml.close()=io_utils.sax.saxps2jcml.IncrementalJcml-class.html#close,Method support.preprocessing.jcml.jcml2arff.ArffWriter.close()=support.preprocessing.jcml.jcml2arff.ArffWriter-class.html#close"><a title="featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+io_utils.sax.saxps2jcml.IncrementalJcml.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-8', 'close', 'link-8');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt>   </tt>
+</div><a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">    <tt class="py-string">"""</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"><tt class="py-string">        Adds a set of features into the XML object. Features may vary</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-string">        </tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-string">    """</tt> </tt>
+<a name="JudgedSet.addFeatures"></a><div id="JudgedSet.addFeatures-def"><a name="L73"></a><tt class="py-lineno"> 73</tt> <a class="py-toggle" href="#" id="JudgedSet.addFeatures-toggle" onclick="return toggle('JudgedSet.addFeatures');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="support.produceJudgmentFeatures.JudgedSet-class.html#addFeatures">addFeatures</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="JudgedSet.addFeatures-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="JudgedSet.addFeatures-expanded"><a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-name">judgedCorpus</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xmlObject</tt><tt class="py-op">.</tt><tt class="py-name">getElementsByTagName</tt><tt class="py-op">(</tt><tt class="py-string">'jcml'</tt><tt class="py-op">)</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">        <tt class="py-name">sentenceList</tt> <tt class="py-op">=</tt> <tt class="py-name">judgedCorpus</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">getElementsByTagName</tt><tt class="py-op">(</tt><tt class="py-string">'judgedsentence'</tt><tt class="py-op">)</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">xmlEntry</tt> <tt class="py-keyword">in</tt> <tt class="py-name">sentenceList</tt><tt class="py-op">:</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">            <tt class="py-name">curJudgedSentence</tt> <tt class="py-op">=</tt> <tt id="link-9" class="py-name" targets="Class support.produceJudgmentFeatures.JudgedSentence=support.produceJudgmentFeatures.JudgedSentence-class.html"><a title="support.produceJudgmentFeatures.JudgedSentence" class="py-name" href="#" onclick="return doclink('link-9', 'JudgedSentence', 'link-9');">JudgedSentence</a></tt><tt class="py-op">(</tt><tt class="py-name">xmlEntry</tt><tt class="py-op">)</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">            <tt class="py-name">curJudgedSentence</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method support.produceJudgmentFeatures.JudgedSentence.addSentenceLengthFeatures()=support.produceJudgmentFeatures.JudgedSentence-class.html#addSentenceLengthFeatures"><a title="support.produceJudgmentFeatures.JudgedSentence.addSentenceLengthFeatures" class="py-name" href="#" onclick="return doclink('link-10', 'addSentenceLengthFeatures', 'link-10');">addSentenceLengthFeatures</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">            <tt class="py-comment">#self.enumNominalFeatures(['testset'])</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+</div><a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">    <tt class="py-string">"""</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-string">        Returns a list of all the attributes of the judgedsentences</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-string">    """</tt> </tt>
+<a name="JudgedSet.getXMLAttributes"></a><div id="JudgedSet.getXMLAttributes-def"><a name="L86"></a><tt class="py-lineno"> 86</tt> <a class="py-toggle" href="#" id="JudgedSet.getXMLAttributes-toggle" onclick="return toggle('JudgedSet.getXMLAttributes');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="support.produceJudgmentFeatures.JudgedSet-class.html#getXMLAttributes">getXMLAttributes</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="JudgedSet.getXMLAttributes-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="JudgedSet.getXMLAttributes-expanded"><a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-name">judgedCorpus</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xmlObject</tt><tt class="py-op">.</tt><tt class="py-name">getElementsByTagName</tt><tt class="py-op">(</tt><tt class="py-string">'jcml'</tt><tt class="py-op">)</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-name">sentenceList</tt> <tt class="py-op">=</tt> <tt class="py-name">judgedCorpus</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">getElementsByTagName</tt><tt class="py-op">(</tt><tt class="py-string">'judgedsentence'</tt><tt class="py-op">)</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">        <tt class="py-name">attributesKeySet</tt> <tt class="py-op">=</tt> <tt id="link-11" class="py-name" targets="Module evaluation.ranking.set=evaluation.ranking.set-module.html"><a title="evaluation.ranking.set" class="py-name" href="#" onclick="return doclink('link-11', 'set', 'link-11');">set</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">         </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">xmlEntry</tt> <tt class="py-keyword">in</tt> <tt class="py-name">sentenceList</tt><tt class="py-op">:</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">attributeKey</tt> <tt class="py-keyword">in</tt> <tt class="py-name">xmlEntry</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Variable io_utils.input.testorange.attributes=io_utils.input.testorange-module.html#attributes"><a title="io_utils.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-12', 'attributes', 'link-12');">attributes</a></tt><tt class="py-op">.</tt><tt class="py-name">keys</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">                <tt class="py-name">attributesKeySet</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Variable io_utils.sax.jcml2array.add=io_utils.sax.jcml2array-module.html#add"><a title="io_utils.sax.jcml2array.add" class="py-name" href="#" onclick="return doclink('link-13', 'add', 'link-13');">add</a></tt><tt class="py-op">(</tt><tt class="py-name">attributeKey</tt><tt class="py-op">)</tt>             </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-14" class="py-name" targets="Variable support.extract_translations.list=support.extract_translations-module.html#list,Variable support.extract_translations2.list=support.extract_translations2-module.html#list"><a title="support.extract_translations.list
+support.extract_translations2.list" class="py-name" href="#" onclick="return doclink('link-14', 'list', 'link-14');">list</a></tt><tt class="py-op">(</tt><tt class="py-name">attributesKeySet</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">     </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">     </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">     </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">    <tt class="py-string">"""</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-string">        Gets a list of attribute names which have string values and makes sure they are converted to integers </tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-string">    """</tt> </tt>
+<a name="JudgedSet.enumNominalFeatures"></a><div id="JudgedSet.enumNominalFeatures-def"><a name="L101"></a><tt class="py-lineno">101</tt> <a class="py-toggle" href="#" id="JudgedSet.enumNominalFeatures-toggle" onclick="return toggle('JudgedSet.enumNominalFeatures');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="support.produceJudgmentFeatures.JudgedSet-class.html#enumNominalFeatures">enumNominalFeatures</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">givenNominalAttributeList</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="JudgedSet.enumNominalFeatures-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="JudgedSet.enumNominalFeatures-expanded"><a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">        <tt class="py-name">judgedCorpus</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xmlObject</tt><tt class="py-op">.</tt><tt class="py-name">getElementsByTagName</tt><tt class="py-op">(</tt><tt class="py-string">'jcml'</tt><tt class="py-op">)</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">        <tt class="py-name">sentenceList</tt> <tt class="py-op">=</tt> <tt class="py-name">judgedCorpus</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">getElementsByTagName</tt><tt class="py-op">(</tt><tt class="py-string">'judgedsentence'</tt><tt class="py-op">)</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">         </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">         </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">        <tt class="py-comment">#create an empty dic for every given attribute key</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">        <tt class="py-comment">#each entry in the dic will point to a set with the possible values of the attr key</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">        <tt class="py-name">seenAttributeValues</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">         </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">        <tt class="py-comment">#first parse to get the values domain per nominal attribute in a set</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">xmlEntry</tt> <tt class="py-keyword">in</tt> <tt class="py-name">sentenceList</tt><tt class="py-op">:</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">            <tt class="py-comment">#get the attributes of this list</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">attributeKey</tt> <tt class="py-keyword">in</tt> <tt class="py-name">givenNominalAttributeList</tt><tt class="py-op">:</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">                <tt class="py-comment">#get the value of the attribute only if it exists in this sentence</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">attributeKey</tt> <tt class="py-keyword">in</tt> <tt class="py-name">xmlEntry</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name"><a title="io_utils.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-15', 'attributes', 'link-12');">attributes</a></tt><tt class="py-op">.</tt><tt class="py-name">keys</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">                    <tt class="py-name">attributeValue</tt> <tt class="py-op">=</tt> <tt class="py-name">xmlEntry</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name"><a title="io_utils.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-16', 'attributes', 'link-12');">attributes</a></tt><tt class="py-op">[</tt><tt class="py-name">attributeKey</tt><tt class="py-op">]</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">                    <tt class="py-comment">#make sure a set exists</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">seenAttributeValues</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-name">attributeKey</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">                        <tt class="py-name">seenAttributeValues</tt><tt class="py-op">[</tt><tt class="py-name">attributeKey</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-17" class="py-name"><a title="evaluation.ranking.set" class="py-name" href="#" onclick="return doclink('link-17', 'set', 'link-11');">set</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">                    <tt class="py-name">seenAttributeValues</tt><tt class="py-op">[</tt><tt class="py-name">attributeKey</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name"><a title="io_utils.sax.jcml2array.add" class="py-name" href="#" onclick="return doclink('link-18', 'add', 'link-13');">add</a></tt><tt class="py-op">(</tt><tt class="py-name">attributeValue</tt><tt class="py-op">)</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">         </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">        <tt class="py-comment">#convert into list</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">attributeKey</tt> <tt class="py-keyword">in</tt> <tt class="py-name">givenNominalAttributeList</tt><tt class="py-op">:</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">            <tt class="py-name">seenAttributeValues</tt><tt class="py-op">[</tt><tt class="py-name">attributeKey</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt id="link-19" class="py-name"><a title="support.extract_translations.list
+support.extract_translations2.list" class="py-name" href="#" onclick="return doclink('link-19', 'list', 'link-14');">list</a></tt><tt class="py-op">(</tt><tt class="py-name">seenAttributeValues</tt><tt class="py-op">[</tt><tt class="py-name">attributeKey</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">     </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-comment">#second parse to replace values with numerical ones</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">xmlEntry</tt> <tt class="py-keyword">in</tt> <tt class="py-name">sentenceList</tt><tt class="py-op">:</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">            <tt class="py-comment">#get the attributes of this list</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">attributeKey</tt> <tt class="py-keyword">in</tt> <tt class="py-name">givenNominalAttributeList</tt><tt class="py-op">:</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">                <tt class="py-comment">#deal the value of the attribute only if it exists in this sentence</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">attributeKey</tt> <tt class="py-keyword">in</tt> <tt class="py-name">xmlEntry</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name"><a title="io_utils.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-20', 'attributes', 'link-12');">attributes</a></tt><tt class="py-op">.</tt><tt class="py-name">keys</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">                    <tt class="py-comment">#replace value with its numerical index in the values' domain set </tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">                    <tt class="py-name">attributeValue</tt> <tt class="py-op">=</tt> <tt class="py-name">xmlEntry</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="io_utils.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-21', 'attributes', 'link-12');">attributes</a></tt><tt class="py-op">[</tt><tt class="py-name">attributeKey</tt><tt class="py-op">]</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">                    <tt class="py-name">allAttributeValues</tt> <tt class="py-op">=</tt> <tt class="py-name">seenAttributeValues</tt><tt class="py-op">[</tt><tt class="py-name">attributeKey</tt><tt class="py-op">]</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">                    <tt class="py-name">xmlEntry</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name"><a title="io_utils.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-22', 'attributes', 'link-12');">attributes</a></tt><tt class="py-op">[</tt><tt class="py-name">attributeKey</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">allAttributeValues</tt><tt class="py-op">.</tt><tt class="py-name">index</tt><tt class="py-op">(</tt><tt class="py-name">attributeValue</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">         </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+</div><a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">         </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">    <tt class="py-string">"""</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"><tt class="py-string">        Returns the modified object for further process</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"><tt class="py-string">        @return: a minidom XML object containing the modified data</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-string">    """</tt>         </tt>
+<a name="JudgedSet.getOutput"></a><div id="JudgedSet.getOutput-def"><a name="L144"></a><tt class="py-lineno">144</tt> <a class="py-toggle" href="#" id="JudgedSet.getOutput-toggle" onclick="return toggle('JudgedSet.getOutput');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="support.produceJudgmentFeatures.JudgedSet-class.html#getOutput">getOutput</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="JudgedSet.getOutput-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="JudgedSet.getOutput-expanded"><a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">xmlObject</tt> </tt>
+</div></div><a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">             </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">         </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">         </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"><tt class="py-string">"""</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"><tt class="py-string">    Main routine fired upon commandline execution of the program. Processes the parameters</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"><tt class="py-string">    and calls the core functions</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line"><tt class="py-string">"""</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-23" class="py-name" targets="Variable featuregenerator.meteor.meteor.MeteorGenerator.__name__=featuregenerator.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-23', '__name__', 'link-23');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">"__main__"</tt><tt class="py-op">:</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">)</tt> <tt class="py-op">&lt;</tt> <tt class="py-number">3</tt><tt class="py-op">:</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-string">'USAGE: %s JUDGMENTS_INPUT.pcml.xml JUDGMENTS_OUTPU&#932;.pcml.xml '</tt> <tt class="py-op">%</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">         </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">        <tt class="py-name">inputXML</tt> <tt class="py-op">=</tt> <tt id="link-24" class="py-name" targets="Class support.produceJudgmentFeatures.JudgedSet=support.produceJudgmentFeatures.JudgedSet-class.html"><a title="support.produceJudgmentFeatures.JudgedSet" class="py-name" href="#" onclick="return doclink('link-24', 'JudgedSet', 'link-24');">JudgedSet</a></tt><tt class="py-op">(</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">,</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">        <tt class="py-name">inputXML</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Method support.produceJudgmentFeatures.JudgedSet.addFeatures()=support.produceJudgmentFeatures.JudgedSet-class.html#addFeatures"><a title="support.produceJudgmentFeatures.JudgedSet.addFeatures" class="py-name" href="#" onclick="return doclink('link-25', 'addFeatures', 'link-25');">addFeatures</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">        <tt class="py-name">inputXML</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name" targets="Method experiment.autoranking.decode.StreamToLogger.flush()=experiment.autoranking.decode.StreamToLogger-class.html#flush,Method experiment.autoranking.suite.StreamToLogger.flush()=experiment.autoranking.suite.StreamToLogger-class.html#flush,Method experiment.autorankingsearch.suite.StreamToLogger.flush()=experiment.autorankingsearch.suite.StreamToLogger-class.html#flush,Method experiment.autoranksvm.suite.StreamToLogger.flush()=experiment.autoranksvm.suite.StreamToLogger-class.html#flush,Method experiment.ml4hmt12.suite.StreamToLogger.flush()=experiment.ml4hmt12.suite.StreamToLogger-class.html#flush,Method experiment.ml4hmt12.test.StreamToLogger.flush()=experiment.ml4hmt12.test.StreamToLogger-class.html#flush,Method support.produceJudgmentFeatures.JudgedSet.flush()=support.produceJudgmentFeatures.JudgedSet-class.html#flush"><a title="experiment.autoranking.decode.StreamToLogger.flush
+experiment.autoranking.suite.StreamToLogger.flush
+experiment.autorankingsearch.suite.StreamToLogger.flush
+experiment.autoranksvm.suite.StreamToLogger.flush
+experiment.ml4hmt12.suite.StreamToLogger.flush
+experiment.ml4hmt12.test.StreamToLogger.flush
+support.produceJudgmentFeatures.JudgedSet.flush" class="py-name" href="#" onclick="return doclink('link-26', 'flush', 'link-26');">flush</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">        <tt class="py-comment">#path = sys.argv[2]</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">        <tt class="py-comment">#create_evaluation(input, path)</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:24 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
