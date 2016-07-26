@@ -1,0 +1,952 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>util.treetaggerwrapper.TreeTagger</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="util-module.html">Package&nbsp;util</a> ::
+        <a href="util.treetaggerwrapper-module.html">Module&nbsp;treetaggerwrapper</a> ::
+        Class&nbsp;TreeTagger
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="util.treetaggerwrapper.TreeTagger-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class TreeTagger</h1><p class="nomargin-top"><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+object --+
+         |
+        <strong class="uidshort">TreeTagger</strong>
+</pre>
+
+<hr />
+<p>Wrap TreeTagger binary to optimize its usage on multiple texts.</p>
+<p>The two main methods you may use are the L{__init__()} initializer,
+and the L{TagText()} method to process your data and get TreeTagger
+output results.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">[ unicode ]</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="util.treetaggerwrapper.TreeTagger-class.html#PreparePart" class="summary-sig-name">PreparePart</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">text</span>)</span><br />
+      Prepare a basic text.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.PreparePart">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">[ unicode ]</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="util.treetaggerwrapper.TreeTagger-class.html#PrepareText" class="summary-sig-name">PrepareText</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">text</span>,
+        <span class="summary-sig-arg">tagblanks</span>,
+        <span class="summary-sig-arg">numlines</span>,
+        <span class="summary-sig-arg">notagurl</span>,
+        <span class="summary-sig-arg">notagemail</span>,
+        <span class="summary-sig-arg">notagip</span>,
+        <span class="summary-sig-arg">notagdns</span>)</span><br />
+      Prepare a text for processing by TreeTagger.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.PrepareText">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="util.treetaggerwrapper.TreeTagger-class.html#SetLangage" class="summary-sig-name">SetLangage</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">kargs</span>)</span><br />
+      Set langage for tagger.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.SetLangage">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="util.treetaggerwrapper.TreeTagger-class.html#SetPreprocessor" class="summary-sig-name">SetPreprocessor</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">kargs</span>)</span><br />
+      Set preprocessing files, and options.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.SetPreprocessor">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="util.treetaggerwrapper.TreeTagger-class.html#SetTagger" class="summary-sig-name">SetTagger</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">kargs</span>)</span><br />
+      Set tagger paths, files, and options.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.SetTagger">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="util.treetaggerwrapper.TreeTagger-class.html#StartProcess" class="summary-sig-name">StartProcess</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Start TreeTagger processing chain.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.StartProcess">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">[ string ]</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="util.treetaggerwrapper.TreeTagger-class.html#TagText" class="summary-sig-name">TagText</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">text</span>,
+        <span class="summary-sig-arg">numlines</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">tagonly</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">prepronly</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">tagblanks</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">notagurl</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">notagemail</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">notagip</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">notagdns</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">encoding</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">errors</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">strict</code><code class="variable-quote">'</code></span>)</span><br />
+      Tag a text and return corresponding lines.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.TagText">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="util.treetaggerwrapper.TreeTagger-class.html#__del__" class="summary-sig-name">__del__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Wrapper to be deleted.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.__del__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="util.treetaggerwrapper.TreeTagger-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">**kargs</span>)</span><br />
+      Construction of a wrapper for a TreeTagger process.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="abbrevfile"></a><span class="summary-name">abbrevfile</span><br />
+      path to abbreviations file.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">dict  [ form ] ==&gt; term</span>
+    </td><td class="summary">
+        <a name="abbterms"></a><span class="summary-name">abbterms</span><br />
+      dictionnary of abbreviation terms for fast lookup.
+Filled when reading abbreviations file.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="dummysequence"></a><span class="summary-name">dummysequence</span><br />
+      just a small but complete sentence in the langage.
+Filled from g_langsupport dict.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="fchar"></a><span class="summary-name">fchar</span><br />
+      characters which have to be cut off at the end of a word.
+Filled from g_langsupport dict.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">SRE_Pattern</span>
+    </td><td class="summary">
+        <a name="fchar_re"></a><span class="summary-name">fchar_re</span><br />
+      regular expression object to cut-off such chars.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="fclictic"></a><span class="summary-name">fclictic</span><br />
+      character sequences which have to be cut off at the end
+of a word.
+Filled from g_langsupport dict.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">SRE_Pattern</span>
+    </td><td class="summary">
+        <a name="fclictic_re"></a><span class="summary-name">fclictic_re</span><br />
+      regular expression object to cut-off fclictic
+sequences.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="lang"></a><span class="summary-name">lang</span><br />
+      langage supported by this tagger ('en', 'fr', 'de', 'es).
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">dict</span>
+    </td><td class="summary">
+        <a name="langsupport"></a><span class="summary-name">langsupport</span><br />
+      dictionnary of langage specific values (ref. to
+g_langsupport[lang] dictionnary).
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="number"></a><span class="summary-name">number</span><br />
+      regular expression of number recognition for the langage.
+Filled from g_langsupport dict.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">SRE_Pattern</span>
+    </td><td class="summary">
+        <a name="number_re"></a><span class="summary-name">number_re</span><br />
+      regular expression object to identify numbers.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="pchar"></a><span class="summary-name">pchar</span><br />
+      characters which have to be cut off at the beginning of
+a word.
+Filled from g_langsupport dict.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">SRE_Pattern</span>
+    </td><td class="summary">
+        <a name="pchar_re"></a><span class="summary-name">pchar_re</span><br />
+      regular expression object to cut-off such chars.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="pclictic"></a><span class="summary-name">pclictic</span><br />
+      character sequences which have to be cut off at the
+beginning of a word.
+Filled from g_langsupport dict.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">SRE_Pattern</span>
+    </td><td class="summary">
+        <a name="pclictic_re"></a><span class="summary-name">pclictic_re</span><br />
+      regular expression object to cut-off pclictic
+sequences.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="repldnsexp"></a><span class="summary-name">repldnsexp</span><br />
+      regular expression subtitution string for DNS names.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="replemailexp"></a><span class="summary-name">replemailexp</span><br />
+      regular expression subtitution string for emails.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="replipexp"></a><span class="summary-name">replipexp</span><br />
+      regular expression subtitution string for IP addresses.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="replurlexp"></a><span class="summary-name">replurlexp</span><br />
+      regular expression subtitution string for URLs.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="tagbin"></a><span class="summary-name">tagbin</span><br />
+      path to TreeTagger binary file (used to launch process).
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="tagbindir"></a><span class="summary-name">tagbindir</span><br />
+      path to binary dir into TreeTagger dir.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="tagcmddir"></a><span class="summary-name">tagcmddir</span><br />
+      path to commands dir into TreeTagger dir.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="tagdir"></a><span class="summary-name">tagdir</span><br />
+      path to directory of installation of TreeTagger.
+Set via TAGDIR env. var or construction param.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">str</span>
+    </td><td class="summary">
+        <a name="taginencerr"></a><span class="summary-name">taginencerr</span><br />
+      management of encoding errors for TreeTagger input.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">str</span>
+    </td><td class="summary">
+        <a name="taginencoding"></a><span class="summary-name">taginencoding</span><br />
+      encoding to use for TreeTagger input encoding.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">write stream</span>
+    </td><td class="summary">
+        <a name="taginput"></a><span class="summary-name">taginput</span><br />
+      pipe to write to TreeTagger input. Set whe opening pipe.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="taglibdir"></a><span class="summary-name">taglibdir</span><br />
+      path to libraries dir into TreeTagger dir.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="tagopt"></a><span class="summary-name">tagopt</span><br />
+      command line options for TreeTagger.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">str</span>
+    </td><td class="summary">
+        <a name="tagoutencerr"></a><span class="summary-name">tagoutencerr</span><br />
+      management of encoding errors for TreeTagger output.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">str</span>
+    </td><td class="summary">
+        <a name="tagoutencoding"></a><span class="summary-name">tagoutencoding</span><br />
+      encoding to use for TreeTagger output decoding.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">read stream</span>
+    </td><td class="summary">
+        <a name="tagoutput"></a><span class="summary-name">tagoutput</span><br />
+      pipe to read from TreeTagger input. Set whe opening
+pipe.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+        <a name="tagparfile"></a><span class="summary-name">tagparfile</span><br />
+      path to TreeTagger library file.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">Popen</span>
+    </td><td class="summary">
+        <a name="tagpopen"></a><span class="summary-name">tagpopen</span><br />
+      TreeTagger process control tool.
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="PreparePart"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">PreparePart</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">text</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.PreparePart">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Prepare a basic text.</p>
+<p>Prepare non-SGML text parts.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>text</code></strong> (unicode) - unicode text of part to process.</li>
+    </ul></dd>
+    <dt>Returns: [ unicode ]</dt>
+        <dd>List of lines to process as TreeTagger input.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="PrepareText"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">PrepareText</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">text</span>,
+        <span class="sig-arg">tagblanks</span>,
+        <span class="sig-arg">numlines</span>,
+        <span class="sig-arg">notagurl</span>,
+        <span class="sig-arg">notagemail</span>,
+        <span class="sig-arg">notagip</span>,
+        <span class="sig-arg">notagdns</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.PrepareText">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Prepare a text for processing by TreeTagger.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>text</code></strong> (unicode   /   [ unicode ]) - the text to split into base elements.</li>
+        <li><strong class="pname"><code>tagblanks</code></strong> (boolean) - transform blanks chars into SGML tags.</li>
+        <li><strong class="pname"><code>numlines</code></strong> (boolean) - indicator to pur tag for line numbering.</li>
+        <li><strong class="pname"><code>notagurl</code></strong> (boolean) - indicator to not do URL replacement (default to False).</li>
+        <li><strong class="pname"><code>notagemail</code></strong> (boolean) - indicator to not do email address replacement
+(default to False).</li>
+        <li><strong class="pname"><code>notagip</code></strong> (boolean) - indicator to not do IP address replacement (default
+to False).</li>
+        <li><strong class="pname"><code>notagdns</code></strong> (boolean) - indicator to not do DNS names replacement (default
+to False).</li>
+    </ul></dd>
+    <dt>Returns: [ unicode ]</dt>
+        <dd>List of lines to process as TreeTagger input (no n at end of line).</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="SetLangage"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">SetLangage</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">kargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.SetLangage">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set langage for tagger.</p>
+<p>Internal use.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="SetPreprocessor"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">SetPreprocessor</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">kargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.SetPreprocessor">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set preprocessing files, and options.</p>
+<p>Internal use.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="SetTagger"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">SetTagger</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">kargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.SetTagger">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set tagger paths, files, and options.</p>
+<p>Internal use.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="StartProcess"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">StartProcess</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.StartProcess">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Start TreeTagger processing chain.</p>
+<p>Internal use.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="TagText"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">TagText</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">text</span>,
+        <span class="sig-arg">numlines</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">tagonly</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">prepronly</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">tagblanks</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">notagurl</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">notagemail</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">notagip</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">notagdns</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">encoding</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">errors</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">strict</code><code class="variable-quote">'</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.TagText">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Tag a text and return corresponding lines.</p>
+<p>This is normally the method you use on this class. Other methods
+are only helpers of this one.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>text</code></strong> (string   /   [ string ]) - the text to tag.</li>
+        <li><strong class="pname"><code>numlines</code></strong> (boolean) - indicator to keep line numbering information in
+data flow (done via SGML tags) (default to False).</li>
+        <li><strong class="pname"><code>tagonly</code></strong> (boolesn) - indicator to only do TreeTagger tagging processing
+on input (default to False).</li>
+        <li><strong class="pname"><code>prepronly</code></strong> (boolean) - indicator to only do preprocessing of text without
+tagging (default to False).</li>
+        <li><strong class="pname"><code>tagblanks</code></strong> (boolean) - indicator to keep blanks characters information in
+data flow (done via SGML tags) (default to False).</li>
+        <li><strong class="pname"><code>notagurl</code></strong> (boolean) - indicator to not do URL replacement (default to False).</li>
+        <li><strong class="pname"><code>notagemail</code></strong> (boolean) - indicator to not do email address replacement
+(default to False).</li>
+        <li><strong class="pname"><code>notagip</code></strong> (boolean) - indicator to not do IP address replacement (default
+to False).</li>
+        <li><strong class="pname"><code>notagdns</code></strong> (boolean) - indicator to not do DNS names replacement (default
+to False).</li>
+        <li><strong class="pname"><code>encoding</code></strong> (C{str}) - encoding of input data (default to latin1 for C{str}
+text and unicode for C{unicode} text), usable values
+are standard encodings + C{&quot;unicode&quot;} and C{unicode}
+type.
+Mandatory if text is a C{list} or C{tuple} of
+strings.</li>
+        <li><strong class="pname"><code>errors</code></strong> (C{str}) - indicator how to manage encoding/decoding errors for
+your data, can be strict / replace / ignore (default
+to strict).</li>
+    </ul></dd>
+    <dt>Returns: [ string ]</dt>
+        <dd>List of output lines from the tagger, unicode or str
+strings.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__del__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__del__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Destructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.__del__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Wrapper to be deleted.</p>
+<p>Cut links with TreeTagger process.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">**kargs</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="util.treetaggerwrapper-pysrc.html#TreeTagger.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Construction of a wrapper for a TreeTagger process.</p>
+<p>You can specify several parameters at construction time.
+These parameters can be set via environment variables too.
+Most of them have default values.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>TAGLANG</code></strong> (string) - langage code for texts ('en','fr',...)
+(default to 'en').</li>
+        <li><strong class="pname"><code>TAGDIR</code></strong> (string) - path to TreeTagger installation directory
+(optionnal but highly recommended).</li>
+        <li><strong class="pname"><code>TAGOPT</code></strong> (string) - options for TreeTagger
+(default to '-token -lemma -sgml -quiet').</li>
+        <li><strong class="pname"><code>TAGPARFILE</code></strong> (string) - parameter file for TreeTagger.
+(default available for supported langages).
+Use value None to force use of default if
+environment variable define a value you dont wants
+to use.</li>
+        <li><strong class="pname"><code>TAGABBREV</code></strong> (string) - abbreviation file for preprocessing.
+(default available for supported langages).</li>
+        <li><strong class="pname"><code>TAGINENC</code></strong> (str) - encoding to use for TreeTagger input, default
+to latin1.</li>
+        <li><strong class="pname"><code>TAGOUTENC</code></strong> (str) - encoding to use for TreeTagger output, default
+to latin1</li>
+        <li><strong class="pname"><code>TAGINENCERR</code></strong> (str) - management of encoding errors for TreeTagger
+input, strict or ignore or replace -
+default to replace.</li>
+        <li><strong class="pname"><code>TAGOUTENCERR</code></strong> (str) - management of encoding errors for TreeTagger
+output, strict or ignore or replace -
+default to replace.</li>
+    </ul></dd>
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:20 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

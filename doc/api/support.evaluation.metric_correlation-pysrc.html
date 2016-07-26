@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>support.evaluation.metric_correlation</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="support-module.html">Package&nbsp;support</a> ::
+        <a href="support.evaluation-module.html">Package&nbsp;evaluation</a> ::
+        Module&nbsp;metric_correlation
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="support.evaluation.metric_correlation-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="support.evaluation.metric_correlation-module.html">Module support.evaluation.metric_correlation</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-docstring">Created on 30 Aug 2012</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring">@author: lefterav</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package io_utils=io_utils-module.html"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-0', 'io_utils', 'link-0');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Variable experiment.experiment.Experiment.input=experiment.experiment.Experiment-class.html#input,Variable experiment.phase.Phase.input=experiment.phase.Phase-class.html#input,Package io_utils.input=io_utils.input-module.html"><a title="experiment.experiment.Experiment.input
+experiment.phase.Phase.input
+io_utils.input" class="py-name" href="#" onclick="return doclink('link-1', 'input', 'link-1');">input</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module io_utils.input.jcmlreader=io_utils.input.jcmlreader-module.html"><a title="io_utils.input.jcmlreader" class="py-name" href="#" onclick="return doclink('link-2', 'jcmlreader', 'link-2');">jcmlreader</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Class io_utils.input.jcmlreader.JcmlReader=io_utils.input.jcmlreader.JcmlReader-class.html"><a title="io_utils.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-3', 'JcmlReader', 'link-3');">JcmlReader</a></tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-4" class="py-name"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-4', 'io_utils', 'link-0');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Package io_utils.sax=io_utils.sax-module.html"><a title="io_utils.sax" class="py-name" href="#" onclick="return doclink('link-5', 'sax', 'link-5');">sax</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Module io_utils.sax.saxps2jcml=io_utils.sax.saxps2jcml-module.html"><a title="io_utils.sax.saxps2jcml" class="py-name" href="#" onclick="return doclink('link-6', 'saxps2jcml', 'link-6');">saxps2jcml</a></tt> <tt class="py-keyword">import</tt> <tt id="link-7" class="py-name" targets="Class io_utils.sax.saxps2jcml.Parallelsentence2Jcml=io_utils.sax.saxps2jcml.Parallelsentence2Jcml-class.html"><a title="io_utils.sax.saxps2jcml.Parallelsentence2Jcml" class="py-name" href="#" onclick="return doclink('link-7', 'Parallelsentence2Jcml', 'link-7');">Parallelsentence2Jcml</a></tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-8" class="py-name" targets="Package featuregenerator=featuregenerator-module.html,Module featuregenerator.featuregenerator=featuregenerator.featuregenerator-module.html"><a title="featuregenerator
+featuregenerator.featuregenerator" class="py-name" href="#" onclick="return doclink('link-8', 'featuregenerator', 'link-8');">featuregenerator</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Package featuregenerator.bleu=featuregenerator.bleu-module.html,Module featuregenerator.bleu.bleu=featuregenerator.bleu.bleu-module.html"><a title="featuregenerator.bleu
+featuregenerator.bleu.bleu" class="py-name" href="#" onclick="return doclink('link-9', 'bleu', 'link-9');">bleu</a></tt> <tt class="py-keyword">import</tt> <tt id="link-10" class="py-name"><a title="featuregenerator.bleu
+featuregenerator.bleu.bleu" class="py-name" href="#" onclick="return doclink('link-10', 'bleu', 'link-9');">bleu</a></tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-11" class="py-name"><a title="featuregenerator
+featuregenerator.featuregenerator" class="py-name" href="#" onclick="return doclink('link-11', 'featuregenerator', 'link-8');">featuregenerator</a></tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="featuregenerator.bleu
+featuregenerator.bleu.bleu" class="py-name" href="#" onclick="return doclink('link-12', 'bleu', 'link-9');">bleu</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Module featuregenerator.bleu.bleugenerator=featuregenerator.bleu.bleugenerator-module.html"><a title="featuregenerator.bleu.bleugenerator" class="py-name" href="#" onclick="return doclink('link-13', 'bleugenerator', 'link-13');">bleugenerator</a></tt> <tt class="py-keyword">import</tt> <tt id="link-14" class="py-name" targets="Class featuregenerator.bleu.bleugenerator.BleuGenerator=featuregenerator.bleu.bleugenerator.BleuGenerator-class.html"><a title="featuregenerator.bleu.bleugenerator.BleuGenerator" class="py-name" href="#" onclick="return doclink('link-14', 'BleuGenerator', 'link-14');">BleuGenerator</a></tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-15" class="py-name"><a title="featuregenerator
+featuregenerator.featuregenerator" class="py-name" href="#" onclick="return doclink('link-15', 'featuregenerator', 'link-8');">featuregenerator</a></tt><tt class="py-op">.</tt><tt id="link-16" class="py-name" targets="Package featuregenerator.meteor=featuregenerator.meteor-module.html,Module featuregenerator.meteor.meteor=featuregenerator.meteor.meteor-module.html"><a title="featuregenerator.meteor
+featuregenerator.meteor.meteor" class="py-name" href="#" onclick="return doclink('link-16', 'meteor', 'link-16');">meteor</a></tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="featuregenerator.meteor
+featuregenerator.meteor.meteor" class="py-name" href="#" onclick="return doclink('link-17', 'meteor', 'link-16');">meteor</a></tt> <tt class="py-keyword">import</tt> <tt id="link-18" class="py-name" targets="Class featuregenerator.meteor.meteor.MeteorGenerator=featuregenerator.meteor.meteor.MeteorGenerator-class.html"><a title="featuregenerator.meteor.meteor.MeteorGenerator" class="py-name" href="#" onclick="return doclink('link-18', 'MeteorGenerator', 'link-18');">MeteorGenerator</a></tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-19" class="py-name"><a title="featuregenerator
+featuregenerator.featuregenerator" class="py-name" href="#" onclick="return doclink('link-19', 'featuregenerator', 'link-8');">featuregenerator</a></tt><tt class="py-op">.</tt><tt id="link-20" class="py-name" targets="Package featuregenerator.levenshtein=featuregenerator.levenshtein-module.html,Module featuregenerator.levenshtein.levenshtein=featuregenerator.levenshtein.levenshtein-module.html,Function featuregenerator.levenshtein.levenshtein.levenshtein()=featuregenerator.levenshtein.levenshtein-module.html#levenshtein"><a title="featuregenerator.levenshtein
+featuregenerator.levenshtein.levenshtein
+featuregenerator.levenshtein.levenshtein.levenshtein" class="py-name" href="#" onclick="return doclink('link-20', 'levenshtein', 'link-20');">levenshtein</a></tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="featuregenerator.levenshtein
+featuregenerator.levenshtein.levenshtein
+featuregenerator.levenshtein.levenshtein.levenshtein" class="py-name" href="#" onclick="return doclink('link-21', 'levenshtein', 'link-20');">levenshtein</a></tt> <tt class="py-keyword">import</tt> <tt id="link-22" class="py-name"><a title="featuregenerator.levenshtein
+featuregenerator.levenshtein.levenshtein
+featuregenerator.levenshtein.levenshtein.levenshtein" class="py-name" href="#" onclick="return doclink('link-22', 'levenshtein', 'link-20');">levenshtein</a></tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-23" class="py-name" targets="Package sentence=sentence-module.html,Module sentence.sentence=sentence.sentence-module.html"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-23', 'sentence', 'link-23');">sentence</a></tt><tt class="py-op">.</tt><tt id="link-24" class="py-name" targets="Module sentence.parallelsentence=sentence.parallelsentence-module.html"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-24', 'parallelsentence', 'link-24');">parallelsentence</a></tt> <tt class="py-keyword">import</tt> <tt id="link-25" class="py-name" targets="Class sentence.parallelsentence.ParallelSentence=sentence.parallelsentence.ParallelSentence-class.html"><a title="sentence.parallelsentence.ParallelSentence" class="py-name" href="#" onclick="return doclink('link-25', 'ParallelSentence', 'link-25');">ParallelSentence</a></tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-26" class="py-name"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-26', 'sentence', 'link-23');">sentence</a></tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Module sentence.scoring=sentence.scoring-module.html"><a title="sentence.scoring" class="py-name" href="#" onclick="return doclink('link-27', 'scoring', 'link-27');">scoring</a></tt> <tt class="py-keyword">import</tt> <tt id="link-28" class="py-name" targets="Class sentence.scoring.Scoring=sentence.scoring.Scoring-class.html"><a title="sentence.scoring.Scoring" class="py-name" href="#" onclick="return doclink('link-28', 'Scoring', 'link-28');">Scoring</a></tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-29" class="py-name" targets="Variable featuregenerator.meteor.meteor.MeteorGenerator.__name__=featuregenerator.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-29', '__name__', 'link-29');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">    <tt class="py-name">datafile</tt> <tt class="py-op">=</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">    <tt class="py-name">java_classpath</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">"/home/elav01/taraxu_tools/meteor-1.3/meteor-1.3.jar"</tt><tt class="py-op">,</tt><tt class="py-string">"/home/elav01/taraxu_tools/meteor-1.3"</tt><tt class="py-op">,</tt><tt class="py-string">"/usr/share/py4j/py4j0.7.jar"</tt><tt class="py-op">,</tt><tt class="py-string">"/home/elav01/workspace/TaraXUscripts/src/experiment/autoranking"</tt><tt class="py-op">]</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">    <tt class="py-name">dir_path</tt> <tt class="py-op">=</tt> <tt class="py-string">"/home/elav01/workspace/TaraXUscripts/src/experiment/autoranking"</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">     </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">    <tt id="link-30" class="py-name" targets="Module sentence.dataset=sentence.dataset-module.html"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-30', 'dataset', 'link-30');">dataset</a></tt> <tt class="py-op">=</tt> <tt id="link-31" class="py-name"><a title="io_utils.input.jcmlreader.JcmlReader" class="py-name" href="#" onclick="return doclink('link-31', 'JcmlReader', 'link-3');">JcmlReader</a></tt><tt class="py-op">(</tt><tt class="py-name">datafile</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-32" class="py-name" targets="Method io_utils.input.genericreader.GenericReader.get_dataset()=io_utils.input.genericreader.GenericReader-class.html#get_dataset,Method io_utils.input.orangeprocessor.OrangeProcessor.get_dataset()=io_utils.input.orangeprocessor.OrangeProcessor-class.html#get_dataset,Method io_utils.input.orangereader.OrangeData.get_dataset()=io_utils.input.orangereader.OrangeData-class.html#get_dataset,Method io_utils.input.xliffreader.XliffReader.get_dataset()=io_utils.input.xliffreader.XliffReader-class.html#get_dataset,Method io_utils.sax.cejcml.CEJcmlReader.get_dataset()=io_utils.sax.cejcml.CEJcmlReader-class.html#get_dataset"><a title="io_utils.input.genericreader.GenericReader.get_dataset
+io_utils.input.orangeprocessor.OrangeProcessor.get_dataset
+io_utils.input.orangereader.OrangeData.get_dataset
+io_utils.input.xliffreader.XliffReader.get_dataset
+io_utils.sax.cejcml.CEJcmlReader.get_dataset" class="py-name" href="#" onclick="return doclink('link-32', 'get_dataset', 'link-32');">get_dataset</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">    <tt id="link-33" class="py-name"><a title="featuregenerator.meteor
+featuregenerator.meteor.meteor" class="py-name" href="#" onclick="return doclink('link-33', 'meteor', 'link-16');">meteor</a></tt> <tt class="py-op">=</tt> <tt id="link-34" class="py-name"><a title="featuregenerator.meteor.meteor.MeteorGenerator" class="py-name" href="#" onclick="return doclink('link-34', 'MeteorGenerator', 'link-18');">MeteorGenerator</a></tt><tt class="py-op">(</tt><tt class="py-string">"en"</tt><tt class="py-op">,</tt> <tt class="py-name">java_classpath</tt><tt class="py-op">,</tt> <tt class="py-name">dir_path</tt><tt class="py-op">)</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">     </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-35" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-35', 'parallelsentence', 'link-24');">parallelsentence</a></tt> <tt class="py-keyword">in</tt> <tt id="link-36" class="py-name"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-36', 'dataset', 'link-30');">dataset</a></tt><tt class="py-op">.</tt><tt class="py-name">parallelsentences</tt><tt class="py-op">:</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">        <tt class="py-name">reference</tt> <tt class="py-op">=</tt> <tt id="link-37" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-37', 'parallelsentence', 'link-24');">parallelsentence</a></tt><tt class="py-op">.</tt><tt id="link-38" class="py-name" targets="Method sentence.parallelsentence.ParallelSentence.get_reference()=sentence.parallelsentence.ParallelSentence-class.html#get_reference"><a title="sentence.parallelsentence.ParallelSentence.get_reference" class="py-name" href="#" onclick="return doclink('link-38', 'get_reference', 'link-38');">get_reference</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">translation</tt> <tt class="py-keyword">in</tt> <tt id="link-39" class="py-name"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-39', 'parallelsentence', 'link-24');">parallelsentence</a></tt><tt class="py-op">.</tt><tt id="link-40" class="py-name" targets="Method sentence.pairwiseparallelsentence.PairwiseParallelSentence.get_translations()=sentence.pairwiseparallelsentence.PairwiseParallelSentence-class.html#get_translations,Method sentence.parallelsentence.ParallelSentence.get_translations()=sentence.parallelsentence.ParallelSentence-class.html#get_translations"><a title="sentence.pairwiseparallelsentence.PairwiseParallelSentence.get_translations
+sentence.parallelsentence.ParallelSentence.get_translations" class="py-name" href="#" onclick="return doclink('link-40', 'get_translations', 'link-40');">get_translations</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">            <tt class="py-name">neg_bleuscore</tt> <tt class="py-op">=</tt> <tt class="py-op">-</tt><tt id="link-41" class="py-name"><a title="featuregenerator.bleu
+featuregenerator.bleu.bleu" class="py-name" href="#" onclick="return doclink('link-41', 'bleu', 'link-9');">bleu</a></tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Function featuregenerator.bleu.bleu.smoothed_score_sentence()=featuregenerator.bleu.bleu-module.html#smoothed_score_sentence"><a title="featuregenerator.bleu.bleu.smoothed_score_sentence" class="py-name" href="#" onclick="return doclink('link-42', 'smoothed_score_sentence', 'link-42');">smoothed_score_sentence</a></tt><tt class="py-op">(</tt><tt class="py-name">translation</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name" targets="Method sentence.sentence.SimpleSentence.get_string()=sentence.sentence.SimpleSentence-class.html#get_string"><a title="sentence.sentence.SimpleSentence.get_string" class="py-name" href="#" onclick="return doclink('link-43', 'get_string', 'link-43');">get_string</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-name">reference</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name"><a title="sentence.sentence.SimpleSentence.get_string" class="py-name" href="#" onclick="return doclink('link-44', 'get_string', 'link-43');">get_string</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">            <tt class="py-name">translation</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name" targets="Method sentence.sentence.SimpleSentence.add_attribute()=sentence.sentence.SimpleSentence-class.html#add_attribute"><a title="sentence.sentence.SimpleSentence.add_attribute" class="py-name" href="#" onclick="return doclink('link-45', 'add_attribute', 'link-45');">add_attribute</a></tt><tt class="py-op">(</tt><tt class="py-string">"bleu_ref_neg"</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">neg_bleuscore</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">             </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">            <tt class="py-name">neg_meteor</tt> <tt class="py-op">=</tt> <tt class="py-op">-</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt id="link-46" class="py-name"><a title="featuregenerator.meteor
+featuregenerator.meteor.meteor" class="py-name" href="#" onclick="return doclink('link-46', 'meteor', 'link-16');">meteor</a></tt><tt class="py-op">.</tt><tt id="link-47" class="py-name" targets="Function experiment.autoranking.decode.score()=experiment.autoranking.decode-module.html#score,Function experiment.autoranking.suite.score()=experiment.autoranking.suite-module.html#score,Method featuregenerator.meteor.meteor.MeteorGenerator.score()=featuregenerator.meteor.meteor.MeteorGenerator-class.html#score"><a title="experiment.autoranking.decode.score
+experiment.autoranking.suite.score
+featuregenerator.meteor.meteor.MeteorGenerator.score" class="py-name" href="#" onclick="return doclink('link-47', 'score', 'link-47');">score</a></tt><tt class="py-op">(</tt><tt class="py-name">translation</tt><tt class="py-op">.</tt><tt id="link-48" class="py-name"><a title="sentence.sentence.SimpleSentence.get_string" class="py-name" href="#" onclick="return doclink('link-48', 'get_string', 'link-43');">get_string</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-name">reference</tt><tt class="py-op">.</tt><tt id="link-49" class="py-name"><a title="sentence.sentence.SimpleSentence.get_string" class="py-name" href="#" onclick="return doclink('link-49', 'get_string', 'link-43');">get_string</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-string">'meteor_score'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">            <tt class="py-name">translation</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="sentence.sentence.SimpleSentence.add_attribute" class="py-name" href="#" onclick="return doclink('link-50', 'add_attribute', 'link-45');">add_attribute</a></tt><tt class="py-op">(</tt><tt class="py-string">"meteor_ref_neg"</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">neg_meteor</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">             </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">            <tt class="py-name">lev</tt> <tt class="py-op">=</tt> <tt id="link-51" class="py-name"><a title="featuregenerator.levenshtein
+featuregenerator.levenshtein.levenshtein
+featuregenerator.levenshtein.levenshtein.levenshtein" class="py-name" href="#" onclick="return doclink('link-51', 'levenshtein', 'link-20');">levenshtein</a></tt><tt class="py-op">(</tt><tt class="py-name">translation</tt><tt class="py-op">.</tt><tt id="link-52" class="py-name"><a title="sentence.sentence.SimpleSentence.get_string" class="py-name" href="#" onclick="return doclink('link-52', 'get_string', 'link-43');">get_string</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">reference</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name"><a title="sentence.sentence.SimpleSentence.get_string" class="py-name" href="#" onclick="return doclink('link-53', 'get_string', 'link-43');">get_string</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">            <tt class="py-name">translation</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name"><a title="sentence.sentence.SimpleSentence.add_attribute" class="py-name" href="#" onclick="return doclink('link-54', 'add_attribute', 'link-45');">add_attribute</a></tt><tt class="py-op">(</tt><tt class="py-string">"lev"</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">lev</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">     </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">    <tt id="link-55" class="py-name"><a title="io_utils.sax.saxps2jcml.Parallelsentence2Jcml" class="py-name" href="#" onclick="return doclink('link-55', 'Parallelsentence2Jcml', 'link-7');">Parallelsentence2Jcml</a></tt><tt class="py-op">(</tt><tt id="link-56" class="py-name"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-56', 'dataset', 'link-30');">dataset</a></tt><tt class="py-op">.</tt><tt class="py-name">parallelsentences</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name" targets="Method io_utils.output.posteditingwriter.PosteditingWriter.write_to_file()=io_utils.output.posteditingwriter.PosteditingWriter-class.html#write_to_file,Method io_utils.output.taraxuwriter.TaraXUWriter.write_to_file()=io_utils.output.taraxuwriter.TaraXUWriter-class.html#write_to_file,Method io_utils.output.wmt11tabwriter.Wmt11TabWriter.write_to_file()=io_utils.output.wmt11tabwriter.Wmt11TabWriter-class.html#write_to_file,Method io_utils.output.xmlwriter.GenericWriter.write_to_file()=io_utils.output.xmlwriter.GenericWriter-class.html#write_to_file,Method io_utils.output.xmlwriter.GenericXMLWriter.write_to_file()=io_utils.output.xmlwriter.GenericXMLWriter-class.html#write_to_file,Method io_utils.sax.saxps2jcml.Parallelsentence2Jcml.write_to_file()=io_utils.sax.saxps2jcml.Parallelsentence2Jcml-class.html#write_to_file"><a title="io_utils.output.posteditingwriter.PosteditingWriter.write_to_file
+io_utils.output.taraxuwriter.TaraXUWriter.write_to_file
+io_utils.output.wmt11tabwriter.Wmt11TabWriter.write_to_file
+io_utils.output.xmlwriter.GenericWriter.write_to_file
+io_utils.output.xmlwriter.GenericXMLWriter.write_to_file
+io_utils.sax.saxps2jcml.Parallelsentence2Jcml.write_to_file" class="py-name" href="#" onclick="return doclink('link-57', 'write_to_file', 'link-57');">write_to_file</a></tt><tt class="py-op">(</tt> <tt class="py-string">"toscore.jcml"</tt><tt class="py-op">)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">     </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">    <tt class="py-name">scoringset</tt> <tt class="py-op">=</tt> <tt id="link-58" class="py-name"><a title="sentence.scoring.Scoring" class="py-name" href="#" onclick="return doclink('link-58', 'Scoring', 'link-28');">Scoring</a></tt><tt class="py-op">(</tt><tt id="link-59" class="py-name"><a title="sentence.dataset" class="py-name" href="#" onclick="return doclink('link-59', 'dataset', 'link-30');">dataset</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line"> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line"><tt class="py-comment">#    print scoringset.avg_first_ranked("bleu_ref_neg", "rank")</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line"><tt class="py-comment">#    print scoringset.avg_predicted_ranked("bleu_ref_neg", "rank")</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">feature</tt> <tt class="py-keyword">in</tt> <tt class="py-op">[</tt><tt class="py-string">"bleu_ref_neg"</tt><tt class="py-op">,</tt> <tt class="py-string">"meteor_ref_neg"</tt><tt class="py-op">,</tt> <tt class="py-string">"lev"</tt><tt class="py-op">]</tt> <tt class="py-op">:</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">        <tt class="py-name">r</tt> <tt class="py-op">=</tt> <tt class="py-name">scoringset</tt><tt class="py-op">.</tt><tt id="link-60" class="py-name" targets="Method sentence.scoring.Scoring.get_kendall_tau()=sentence.scoring.Scoring-class.html#get_kendall_tau"><a title="sentence.scoring.Scoring.get_kendall_tau" class="py-name" href="#" onclick="return doclink('link-60', 'get_kendall_tau', 'link-60');">get_kendall_tau</a></tt><tt class="py-op">(</tt><tt class="py-name">feature</tt><tt class="py-op">,</tt> <tt class="py-string">"rank"</tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">        <tt id="link-61" class="py-name" targets="Variable net.xmlrpctest.s=net.xmlrpctest-module.html#s"><a title="net.xmlrpctest.s" class="py-name" href="#" onclick="return doclink('link-61', 's', 'link-61');">s</a></tt> <tt class="py-op">=</tt> <tt class="py-name">scoringset</tt><tt class="py-op">.</tt><tt id="link-62" class="py-name" targets="Function evaluation.ranking.set.best_predicted_vs_human()=evaluation.ranking.set-module.html#best_predicted_vs_human,Method sentence.scoring.Scoring.best_predicted_vs_human()=sentence.scoring.Scoring-class.html#best_predicted_vs_human"><a title="evaluation.ranking.set.best_predicted_vs_human
+sentence.scoring.Scoring.best_predicted_vs_human" class="py-name" href="#" onclick="return doclink('link-62', 'best_predicted_vs_human', 'link-62');">best_predicted_vs_human</a></tt><tt class="py-op">(</tt><tt class="py-name">feature</tt><tt class="py-op">,</tt> <tt class="py-string">"rank"</tt><tt class="py-op">)</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">         </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">        <tt class="py-name">l</tt> <tt class="py-op">=</tt> <tt id="link-63" class="py-name" targets="Variable support.extract_translations.list=support.extract_translations-module.html#list,Variable support.extract_translations2.list=support.extract_translations2-module.html#list"><a title="support.extract_translations.list
+support.extract_translations2.list" class="py-name" href="#" onclick="return doclink('link-63', 'list', 'link-63');">list</a></tt><tt class="py-op">(</tt><tt id="link-64" class="py-name"><a title="net.xmlrpctest.s" class="py-name" href="#" onclick="return doclink('link-64', 's', 'link-61');">s</a></tt><tt class="py-op">.</tt><tt class="py-name">values</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-name">feature</tt><tt class="py-op">,</tt> <tt class="py-name">r</tt><tt class="py-op">[</tt><tt class="py-string">"tau"</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">r</tt><tt class="py-op">[</tt><tt class="py-string">"avg_seg_tau"</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-string">"\t"</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt id="link-65" class="py-name" targets="Variable io_utils.sax.saxwrapper.SaxWrapper.i=io_utils.sax.saxwrapper.SaxWrapper-class.html#i"><a title="io_utils.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-65', 'i', 'link-65');">i</a></tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt id="link-66" class="py-name"><a title="io_utils.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-66', 'i', 'link-65');">i</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">l</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:26 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

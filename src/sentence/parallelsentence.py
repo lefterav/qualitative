@@ -1,4 +1,5 @@
 """
+Provides the class which contains the information and meta-data of a parallel sentence
 @author: Eleftherios Avramidis
 """
 
@@ -6,7 +7,116 @@ from collections import OrderedDict
 from copy import deepcopy
 import re
 import sys
+import logging
+import logging as log
 from ranking import Ranking
+import itertools
+import numpy as np
+
+def _prefix(prefix, names):
+    return [prefix.format(name) for name in names]    
+
+def _deprefix(prefix, names):
+    pattern = re.compile("{}_(.*)".format(prefix))
+    deprefixed = []
+    for attname in names:
+        try:
+            name = re.findall(pattern, attname)[0]
+            deprefixed.append(name)
+        except:
+            pass
+    return deprefixed
+
+def _noprefix(prefixes, names):
+    notprefixed = []
+    for name in names:
+        if not True in [name.startswith("{}".format(prefix)) for prefix in prefixes]:
+            notprefixed.append(name)
+    return notprefixed
+
+class AttributeSet:
+    """
+    Structure that describes the attributes provided by a set of parallel sentences.
+    It is very useful to carry the information for the contents of an entire set, 
+    that might otherwise be needed to be parsed incrementally, so this information
+    would not be available.
+    @ivar parallel_attribute_names: the names of the attributes on the 
+    level of the parallel sentence
+    @type parallel_attribute_names: string
+    @ivar source_attribute_names: the names of the attributes of the source sentence
+    @type source_attribute_names: string
+    @ivar target_attribute_names: the names of the attributes of the target 
+    sentences (translations
+    @type target_attribute_names: string
+    @ivar ref_attribute_names: the names of the attributes of the reference
+    @type: ref_attribute_names: string
+    """
+    def __init__(self, 
+                 parallel_attribute_names=[], 
+                 source_attribute_names=[],
+                 target_attribute_names=[],
+                 ref_attribute_names=[]):
+        self.parallel_attribute_names = sorted(list(parallel_attribute_names))
+        self.source_attribute_names = sorted(list(source_attribute_names))
+        self.target_attribute_names = sorted(list(target_attribute_names))
+        self.ref_attribute_names = sorted(list(ref_attribute_names))
+
+    def get_names_pairwise(self):
+        all_attribute_names = []
+        all_attribute_names.extend(self.parallel_attribute_names)
+        #attribute names for source and target pairs need to be prefixed 
+        all_attribute_names.extend(_prefix("src_{}", self.source_attribute_names))
+        all_attribute_names.extend(_prefix("tgt-1_{}", self.target_attribute_names))
+        all_attribute_names.extend(_prefix("tgt-2_{}", self.target_attribute_names))
+        return all_attribute_names
+    
+    def set_names_from_pairwise(self, pairwise_names=[]):
+        self.source_attribute_names = _deprefix("src", pairwise_names)
+        self.target_attribute_names = _deprefix("tgt-1", pairwise_names)
+        self.ref_attribute_names = _deprefix("ref", pairwise_names)
+        self.parallel_attribute_names = _noprefix(["src", "tgt", "ref"], pairwise_names)
+
+    def __str__(self):
+        return str([self.parallel_attribute_names, self.source_attribute_names, self.target_attribute_names])
+    
+    
+class DefaultAttributeSet(AttributeSet):
+    """
+    Create an attribute set by removing common meta-attributes that should
+    not be used for training. 
+    TODO: Ideally we would also like to filter out features which contain 
+    string values, but this is left to future implementation
+    """
+    def __init__(self, 
+                 parallel_attribute_names=[], 
+                 source_attribute_names=[],
+                 target_attribute_names=[],
+                 ref_attribute_names=[]):
+        
+        self.parallel_attribute_names = list(set(parallel_attribute_names) - \
+            set(["langsrc", "langtgt", "id", "judgement_id", "judgment_id",
+            "testset", "rank", 'rank_predicted', "prob_-1", "prob_1"]))
+        self.parallel_attribute_names.sort()
+        
+        self.source_attribute_names = list(set(source_attribute_names) - \
+            set(['system', 'berkeley-tree', 'imb1-alignment-joined', 
+                 'ibm1-alignment-inv', 'ibm1-alignment']))
+        self.source_attribute_names.sort()
+            
+        todelete = ['system']
+        for attname in target_attribute_names:
+            if (attname.startswith("rank")  
+              or attname.endswith("tree") 
+              or attname.startswith("ref-")):
+                todelete.append(attname)
+        
+        self.target_attribute_names = list(set(target_attribute_names) 
+                                           - set(todelete))
+        self.target_attribute_names.sort()
+        
+        self.ref_attribute_names = list(ref_attribute_names)
+        self.ref_attribute_names.sort()
+            
 
 class ParallelSentence(object):
     """
@@ -37,27 +147,39 @@ class ParallelSentence(object):
         """
         self.src = source 
         self.tgt = translations
+        if type(self.tgt) is not list:
+            raise TypeError("ParalleSentence target sentences should be a list")
         self.ref = reference
         self.attributes = deepcopy (attributes)
         self.rank_name = rank_name
         if kwargs.setdefault("sort_translations", False):
             self.tgt = sorted(translations, key=lambda t: t.get_attribute("system"))
-                
-    
         try:
-            self.attributes["langsrc"] = kwargs.setdefault("langsrc", self.attributes["langsrc"])
-            self.attributes["langtgt"] = kwargs.setdefault("langtgt", self.attributes["langtgt"])
+            self.attributes["langsrc"] = kwargs["langsrc"]
         except KeyError:
-            sys.exit('Source or target language not specified in parallelsentence: [{}]'.format(self.__str__()))
+            if "langsrc" not in self.attributes:
+                sys.exit('Source language not specified in parallelsentence: [{}]'.format(self.__str__()))
+
+        try:
+            self.attributes["langtgt"] = kwargs["langtgt"]
+        except KeyError:
+            if "langtgt" not in self.attributes:
+                sys.exit('Source language not specified in parallelsentence: [{}]'.format(self.__str__()))
+            
+        try: 
+            self.attributes["id"] = kwargs["segment_id"]
+        except KeyError:
+            pass
+                   
     
     def __str__(self):
-        return [s.__str__() for s in self.serialize()]
+        return ", ".join([s.__str__() for s in self.serialize()])
         
     def __lt__(self, other):
-        return self.get_compact_id() < other.get_compact_id()
+        return self.get_fileid_tuple() < other.get_fileid_tuple()
         
     def __gt__(self, other):
-        return self.get_compact_id() > other.get_compact_id()
+        return self.get_fileid_tuple() > other.get_fileid_tuple()
     
     def __eq__(self, other):
         
@@ -99,7 +221,7 @@ class ParallelSentence(object):
         """
         return self.attributes
     
-    def get_attribute_names (self):
+    def get_attribute_sets (self):
         """
         provide all attribute names
         @return: a set with the names of the attributes
@@ -113,11 +235,11 @@ class ParallelSentence(object):
         @return: the value of the attribute with the specified name
         @rtype: string
         """
-        return self.attributes[name]
+        return self.attributes[name]            
     
     def get_target_attribute_values(self, attribute_name, sub=None):
-#       print [t.attributes for t in self.tgt]
-        attribute_values = [target.get_attribute(attribute_name, sub) for target in self.tgt]        
+#       print [t.attributes for t in self.tgt]        
+        attribute_values = [target.get_attribute(attribute_name, sub) for target in self.tgt]
         return attribute_values
 
     def get_filtered_target_attribute_values(self, attribute_name, filter_attribute_name, filter_attribute_value):
@@ -127,21 +249,52 @@ class ParallelSentence(object):
     def add_attributes(self, attributes):
         self.attributes.update( attributes )
     
-    def set_langsrc (self, langsrc):
+    def set_langsrc(self, langsrc):
         self.attributes["langsrc"] = langsrc
 
-    def set_langtgt (self, langtgt):
+    def set_langtgt(self, langtgt):
         self.attributes["langtgt"] = langtgt
+        
+    def get_langsrc(self):
+        return self.attributes["langsrc"]
+
+    def get_langtgt(self):
+        return self.attributes["langtgt"]
+    
+    def get_langpair(self):
+        return "{}-{}".format(self.attributes["langsrc"],
+                              self.attributes["langtgt"])
         
     def set_id (self, id):
         self.attributes["id"] = str(id)
+        
+    def get_id (self):
+        return self.attributes["id"]
 
     def get_compact_id(self):
         try:
-            return "%s:%s" % (self.attributes["testset"], self.attributes["id"])
+            return "{}:{}".format(self.attributes["testset"], self.attributes["id"])
         except:
 #            sys.stderr.write("Warning: Could not add set id into compact sentence id %s\n" %  self.attributes["id"])
             return self.attributes["id"]
+        
+        
+    def get_fileid_tuple(self):
+        try:
+            return (self.attributes["testset"], self.attributes["id"])
+        except:
+            return (self.attributes["file_id"], self.attributes["id"])
+        
+    def get_safe_id_tuple(self):
+        try:
+            return (self.attributes["testset"], self.attributes["id"], self.attributes["judgement_id"])
+        except:
+            try:
+                return (self.attributes["document_id"], self.attributes["id"], self.attributes["judgement_id"])
+            except:
+#            sys.stderr.write("Warning: Could not add set id into compact sentence id %s\n" %  self.attributes["id"])
+                return (None, self.attributes["id"], self.attributes["judgement_id"])
+    
         
     def get_tuple_id(self):
         try:
@@ -311,8 +464,44 @@ class ParallelSentence(object):
                 sys.stderr.write("Warning: Target sentence was missing. Adding...\n")
                 self.tgt.append(tgtPS)
 
+    def get_pairwise_parallelsentences(self, 
+                                       bidirectional_pairs=True,
+                                       class_name=None,
+                                       ties=True):
+        
+        from pairwiseparallelsentence import PairwiseParallelSentence
+        
+        #parallel_attribute_values = [self.attributes[name] for name in attribute_set.parallel_attribute_names]
+        #source_attribute_values = [self.src.attributes[name] for name in attribute_set.source_attribute_names]
 
-    def get_pairwise_parallelsentences(self, replacement = True, **kwargs):
+        if bidirectional_pairs:
+            iterator = itertools.permutations(self.tgt, 2)
+        else:
+            iterator = itertools.combinations(self.tgt, 2)
+            #logging.info("{}".format([(s1.get_attribute("system"), s2.get_attribute("system")) for s1,s2 in iterator ]))
+        
+        for target1, target2 in iterator:
+            targets = (target1, target2)
+            systems = (target1.get_attribute("system"), target2.get_attribute("system"))
+            pairwise_parallelsentence = PairwiseParallelSentence(self.src, 
+                                                                 translations=targets, 
+                                                                 systems=systems, 
+                                                                 attributes=self.attributes,
+                                                                 reference=self.ref,
+                                                                 rank_name=class_name)
+            if class_name:
+                class_value = self._get_class_pairwise(target1, target2, class_name, ties=False)
+                if class_value == 0 and not ties:
+                    logging.info("{}, skipped tie".format(systems))                               
+                elif class_value!= None:
+                    rank_attname = pairwise_parallelsentence.rank_name
+                    pairwise_parallelsentence.attributes[rank_attname] = class_value
+                    yield pairwise_parallelsentence 
+                else: 
+                    yield pairwise_parallelsentence 
+        
+
+    def get_pairwise_parallelsentences_old(self, replacement = True, **kwargs):
         """
         Create a set of all available parallel sentence pairs (in tgt) from one ParallelSentence object.
         @param ps: Object of ParallelSetnece() with one source sentence and more target sentences
@@ -342,16 +531,18 @@ class ParallelSentence(object):
         invert_ranks = kwargs.setdefault("invert_ranks", [])
         rank_name = kwargs.setdefault("rank_name", self.rank_name)
         rankless = kwargs.setdefault("rankless", False)
+        ties = kwargs.setdefault("ties", True)
         
         systems = []
         targets = []
         systems_list = []
         targets_list = []
+        if not ties:
+            self.remove_ties()
         
         translations = self.get_translations()
         if kwargs.setdefault('filter_unassigned', False):
             translations = [t for t in self.get_translations() if t.get_attribute(self.rank_name) != "-1"]    
-
         #this is used in case we want to include references in the pairwising
         #references are added as translations by system named _ref
         #only single references supported at the moment
@@ -379,7 +570,9 @@ class ParallelSentence(object):
             systems_list.append(system_nameA)
             targets_list.append(targetA)
 
-        pps_list = [PairwiseParallelSentence(self.get_source(), 
+
+        for i in range(len(systems)):
+            pairwise_parallel_sentence = PairwiseParallelSentence(self.get_source(), 
                                              targets[i], 
                                              systems[i], 
                                              self.ref, 
@@ -387,10 +580,8 @@ class ParallelSentence(object):
                                              rank_name, 
                                              invert_ranks = invert_ranks,
                                              rankless = rankless
-                                             ) \
-                        for i in range(len(systems))
-                    ]
-        return pps_list
+                                             ) 
+            yield pairwise_parallel_sentence
     
 
     def import_indexed_parallelsentence(self, parallelsentence, target_attribute_names, keep_attributes_general=[], keep_attributes_source=[], keep_attributes_target=[]):
@@ -453,22 +644,115 @@ class ParallelSentence(object):
         self.ref = None
         
 
+#     def remove_ties(self):
+#         """
+#         Function that modifies the current parallel sentence by removing the target translations that create ties. 
+#         Only first translation for each rank is kept
+#         """
+#         translation_per_rank = [(tgt.get_rank(), tgt) for tgt in self.tgt]
+#         prev_rank = None
+#         remaining_translations = []
+#         for system, translation in sorted(translation_per_rank):
+#             rank = int(translation.get_rank())
+#             if prev_rank != rank:
+#                 remaining_translations.append(translation)
+#                 prev_rank = rank 
+#             else:
+#                 logging.debug("Filtered translation from {} because it tied".format(system))   
+#         self.tgt = remaining_translations
+
     def remove_ties(self):
         """
         Function that modifies the current parallel sentence by removing the target translations that create ties. 
-        Only first translation for each rank is kept
+        Only last translation for each rank is kept
         """
-        translation_per_rank = [(tgt.get_rank(), tgt) for tgt in self.tgt]
-        prev_rank = None
-        remaining_translations = []
-        for system, translation in sorted(translation_per_rank):
-            rank = int(translation.get_rank())
-            if prev_rank != rank:
-                remaining_translations.append(translation)
-                prev_rank = rank    
-        self.tgt = remaining_translations
+        translations_per_rank = OrderedDict([(tgt.get_rank(), tgt) for tgt in self.tgt])
+        self.tgt = translations_per_rank.values()
+
+
+    def get_vectors(self, attribute_set, bidirectional_pairs=True, ties=False, class_name=None, default_value='', replace_infinite=False, replace_nan=False):
+        """
+        Return a feature vector in an efficient way, where only specified attributes are included
+        @param attribute_set: a definition of the attribute that need to be included
+        @type attribute_set: L{AttributeSet}
+        @return: one vector for each pairwise comparison of target sentences
+        @rtype: C{iterator} of C{lists}
+        """
+       
+        yielded = 0
+        parallel_attribute_values = self.get_vector(attribute_set.parallel_attribute_names, default_value, replace_infinite, replace_nan)
+        source_attribute_values = self.src.get_vector(attribute_set.source_attribute_names, default_value, replace_infinite, replace_nan)
+
+        if len(self.tgt)==0:
+            log.warning("Parallelsentence has got only one target sentence, so cannot produce pairs")
+
+        if bidirectional_pairs:
+            iterator = itertools.permutations(self.tgt, 2)
+        else:
+            iterator = itertools.combinations(self.tgt, 2)
+        
+        for target1, target2 in iterator:
+            target1_attribute_values = target1.get_vector(attribute_set.target_attribute_names, default_value, replace_infinite, replace_nan)
+            target2_attribute_values = target2.get_vector(attribute_set.target_attribute_names, default_value, replace_infinite, replace_nan)
+           
+            log.debug("Parallelsentence received vector 1: {} ".format(target1_attribute_values))
+            log.debug("Parallelsentence received vector 2: {} ".format(target2_attribute_values))
+
+            vector = []
+            vector.extend(parallel_attribute_values)
+            vector.extend(source_attribute_values)
+            vector.extend(target1_attribute_values)
+            vector.extend(target2_attribute_values)
             
+            log.debug("Combined vector: {}".format(vector))
+
+            yielded+=1
+
+            if len(vector) == 0:
+                log.warning("Vector from parallel sentence is empty")
+
+            if class_name:
+                class_value = self._get_class_pairwise(target1, target2, class_name, ties)
+                if class_value!=None:
+                    yield vector, class_value
+                else:
+                    log.debug("Target sentence pair did not provide class value")
+            else:  
+                yield vector, None
+        if yielded==0:
+            log.warning("Parallelsentence did not produce any pairs")
+
+    def get_vector(self, attribute_names, default_value='', replace_infinite=False, replace_nan=False):
+        vector = []
+        for name in attribute_names:
+            try:
+                attvalue = float(self.attributes[name])
+                if replace_infinite:
+                    attvalue = float(str(attvalue).replace("inf", "500"))
+                if replace_nan:
+                    attvalue = float(str(attvalue).replace("nan", "0"))
+                vector.append(attvalue)
+            except KeyError:
+                vector.append(default_value)
+        return vector
+    
             
+    def _get_class_pairwise(self, target1, target2, class_name, ties):
+        try:
+            if target1[class_name] > target2[class_name]:
+                class_value = 1
+            elif target1[class_name] < target2[class_name]:
+                class_value = -1
+            elif ties:
+                class_value = 0
+            else:
+                class_value = None
+            return class_value
+        except KeyError:
+            return None
+        
+                
+        
 
 
         

@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>support.evaluation.fixpostediting</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="support-module.html">Package&nbsp;support</a> ::
+        <a href="support.evaluation-module.html">Package&nbsp;evaluation</a> ::
+        Module&nbsp;fixpostediting
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="support.evaluation.fixpostediting-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="support.evaluation.fixpostediting-module.html">Module support.evaluation.fixpostediting</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">Created on Sep 5, 2011</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">@author: Elefherios Avramidis</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">This script has been created in order to fix the wrongly assigned translator's</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">system preferences for the post-editing task of the TaraXU 1st Evaluation Round.</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-docstring">Since the system used for post-editing has been wrongly stored into the</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-docstring">database, we try to retrieve this information, by picking up the system output</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-docstring">with the lowest levenshtein distance with the post-edited entry. Just to make it</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-docstring">clear, we also include Levenshtein difference (lev-dif) with the next possible</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-docstring">system. I.e. lev-dif of 1 may have led to a slightly uncertain selection.</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-docstring">USAGE: </tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-docstring">export PYTHONPATH=:/home/elav01/tools/TaraXUscripts/src:/home/elav01/tools/TaraXUscripts/src</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring">/home/elav01/tools/TaraXUscripts/src/support/evaluation/fixpostediting.py /share/taraxu/jul11-r1-results/editing /share/taraxu/jul11-r1-results/ranking</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring">specify the directories where ranking.xml and editing.xml files reside. </tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package io_utils=io_utils-module.html"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-0', 'io_utils', 'link-0');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Variable experiment.experiment.Experiment.input=experiment.experiment.Experiment-class.html#input,Variable experiment.phase.Phase.input=experiment.phase.Phase-class.html#input,Package io_utils.input=io_utils.input-module.html"><a title="experiment.experiment.Experiment.input
+experiment.phase.Phase.input
+io_utils.input" class="py-name" href="#" onclick="return doclink('link-1', 'input', 'link-1');">input</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module io_utils.input.rankreader=io_utils.input.rankreader-module.html"><a title="io_utils.input.rankreader" class="py-name" href="#" onclick="return doclink('link-2', 'rankreader', 'link-2');">rankreader</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Class io_utils.input.rankreader.RankReader=io_utils.input.rankreader.RankReader-class.html"><a title="io_utils.input.rankreader.RankReader" class="py-name" href="#" onclick="return doclink('link-3', 'RankReader', 'link-3');">RankReader</a></tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-4" class="py-name"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-4', 'io_utils', 'link-0');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name"><a title="experiment.experiment.Experiment.input
+experiment.phase.Phase.input
+io_utils.input" class="py-name" href="#" onclick="return doclink('link-5', 'input', 'link-1');">input</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Module io_utils.input.posteditingreader=io_utils.input.posteditingreader-module.html"><a title="io_utils.input.posteditingreader" class="py-name" href="#" onclick="return doclink('link-6', 'posteditingreader', 'link-6');">posteditingreader</a></tt> <tt class="py-keyword">import</tt> <tt id="link-7" class="py-name" targets="Class io_utils.input.posteditingreader.PosteditingReader=io_utils.input.posteditingreader.PosteditingReader-class.html"><a title="io_utils.input.posteditingreader.PosteditingReader" class="py-name" href="#" onclick="return doclink('link-7', 'PosteditingReader', 'link-7');">PosteditingReader</a></tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-8" class="py-name"><a title="io_utils" class="py-name" href="#" onclick="return doclink('link-8', 'io_utils', 'link-0');">io_utils</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Variable experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.output=experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival-module.html#output,Variable experiment.experiment.Experiment.output=experiment.experiment.Experiment-class.html#output,Variable experiment.phase.Phase.output=experiment.phase.Phase-class.html#output,Package io_utils.output=io_utils.output-module.html"><a title="experiment.errorprediction.preprocessing.preprocess_glassbox_multiple_percival.output
+experiment.experiment.Experiment.output
+experiment.phase.Phase.output
+io_utils.output" class="py-name" href="#" onclick="return doclink('link-9', 'output', 'link-9');">output</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Module io_utils.output.posteditingwriter=io_utils.output.posteditingwriter-module.html"><a title="io_utils.output.posteditingwriter" class="py-name" href="#" onclick="return doclink('link-10', 'posteditingwriter', 'link-10');">posteditingwriter</a></tt> <tt class="py-keyword">import</tt> <tt id="link-11" class="py-name" targets="Class io_utils.output.posteditingwriter.PosteditingWriter=io_utils.output.posteditingwriter.PosteditingWriter-class.html"><a title="io_utils.output.posteditingwriter.PosteditingWriter" class="py-name" href="#" onclick="return doclink('link-11', 'PosteditingWriter', 'link-11');">PosteditingWriter</a></tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-12" class="py-name" targets="Package featuregenerator=featuregenerator-module.html,Module featuregenerator.featuregenerator=featuregenerator.featuregenerator-module.html"><a title="featuregenerator
+featuregenerator.featuregenerator" class="py-name" href="#" onclick="return doclink('link-12', 'featuregenerator', 'link-12');">featuregenerator</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Package featuregenerator.levenshtein=featuregenerator.levenshtein-module.html,Module featuregenerator.levenshtein.levenshtein=featuregenerator.levenshtein.levenshtein-module.html,Function featuregenerator.levenshtein.levenshtein.levenshtein()=featuregenerator.levenshtein.levenshtein-module.html#levenshtein"><a title="featuregenerator.levenshtein
+featuregenerator.levenshtein.levenshtein
+featuregenerator.levenshtein.levenshtein.levenshtein" class="py-name" href="#" onclick="return doclink('link-13', 'levenshtein', 'link-13');">levenshtein</a></tt><tt class="py-op">.</tt><tt id="link-14" class="py-name"><a title="featuregenerator.levenshtein
+featuregenerator.levenshtein.levenshtein
+featuregenerator.levenshtein.levenshtein.levenshtein" class="py-name" href="#" onclick="return doclink('link-14', 'levenshtein', 'link-13');">levenshtein</a></tt> <tt class="py-keyword">import</tt> <tt id="link-15" class="py-name" targets="Function featuregenerator.levenshtein.levenshtein.levenshtein_tok()=featuregenerator.levenshtein.levenshtein-module.html#levenshtein_tok"><a title="featuregenerator.levenshtein.levenshtein.levenshtein_tok" class="py-name" href="#" onclick="return doclink('link-15', 'levenshtein_tok', 'link-15');">levenshtein_tok</a></tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-16" class="py-name" targets="Package sentence=sentence-module.html,Module sentence.sentence=sentence.sentence-module.html"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-16', 'sentence', 'link-16');">sentence</a></tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-17', 'sentence', 'link-16');">sentence</a></tt> <tt class="py-keyword">import</tt> <tt id="link-18" class="py-name" targets="Class sentence.sentence.SimpleSentence=sentence.sentence.SimpleSentence-class.html"><a title="sentence.sentence.SimpleSentence" class="py-name" href="#" onclick="return doclink('link-18', 'SimpleSentence', 'link-18');">SimpleSentence</a></tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-19" class="py-name"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-19', 'sentence', 'link-16');">sentence</a></tt><tt class="py-op">.</tt><tt id="link-20" class="py-name" targets="Module sentence.parallelsentence=sentence.parallelsentence-module.html"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-20', 'parallelsentence', 'link-20');">parallelsentence</a></tt> <tt class="py-keyword">import</tt> <tt id="link-21" class="py-name" targets="Class sentence.parallelsentence.ParallelSentence=sentence.parallelsentence.ParallelSentence-class.html"><a title="sentence.parallelsentence.ParallelSentence" class="py-name" href="#" onclick="return doclink('link-21', 'ParallelSentence', 'link-21');">ParallelSentence</a></tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">re</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"> </tt>
+<a name="fix"></a><div id="fix-def"><a name="L31"></a><tt class="py-lineno"> 31</tt> <a class="py-toggle" href="#" id="fix-toggle" onclick="return toggle('fix');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="support.evaluation.fixpostediting-module.html#fix">fix</a><tt class="py-op">(</tt> <tt class="py-param">rankingfile</tt><tt class="py-op">,</tt> <tt class="py-param">posteditingfile</tt><tt class="py-op">,</tt> <tt class="py-param">fixedfile</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="fix-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="fix-expanded"><a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">    <tt class="py-comment">#read the files into the memory</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">    <tt class="py-name">rankingset</tt> <tt class="py-op">=</tt> <tt id="link-22" class="py-name"><a title="io_utils.input.rankreader.RankReader" class="py-name" href="#" onclick="return doclink('link-22', 'RankReader', 'link-3');">RankReader</a></tt><tt class="py-op">(</tt><tt class="py-name">rankingfile</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Method io_utils.input.genericreader.GenericReader.get_dataset()=io_utils.input.genericreader.GenericReader-class.html#get_dataset,Method io_utils.input.orangeprocessor.OrangeProcessor.get_dataset()=io_utils.input.orangeprocessor.OrangeProcessor-class.html#get_dataset,Method io_utils.input.orangereader.OrangeData.get_dataset()=io_utils.input.orangereader.OrangeData-class.html#get_dataset,Method io_utils.input.xliffreader.XliffReader.get_dataset()=io_utils.input.xliffreader.XliffReader-class.html#get_dataset,Method io_utils.sax.cejcml.CEJcmlReader.get_dataset()=io_utils.sax.cejcml.CEJcmlReader-class.html#get_dataset"><a title="io_utils.input.genericreader.GenericReader.get_dataset
+io_utils.input.orangeprocessor.OrangeProcessor.get_dataset
+io_utils.input.orangereader.OrangeData.get_dataset
+io_utils.input.xliffreader.XliffReader.get_dataset
+io_utils.sax.cejcml.CEJcmlReader.get_dataset" class="py-name" href="#" onclick="return doclink('link-23', 'get_dataset', 'link-23');">get_dataset</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">    <tt class="py-name">editedset</tt> <tt class="py-op">=</tt> <tt id="link-24" class="py-name"><a title="io_utils.input.posteditingreader.PosteditingReader" class="py-name" href="#" onclick="return doclink('link-24', 'PosteditingReader', 'link-7');">PosteditingReader</a></tt><tt class="py-op">(</tt><tt class="py-name">posteditingfile</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="io_utils.input.genericreader.GenericReader.get_dataset
+io_utils.input.orangeprocessor.OrangeProcessor.get_dataset
+io_utils.input.orangereader.OrangeData.get_dataset
+io_utils.input.xliffreader.XliffReader.get_dataset
+io_utils.sax.cejcml.CEJcmlReader.get_dataset" class="py-name" href="#" onclick="return doclink('link-25', 'get_dataset', 'link-23');">get_dataset</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">     </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">    <tt class="py-comment">#editing set contains only text from one erroneously stored system</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">    <tt class="py-comment">#so by merging based on the sentence id, we get the rest of the sentences:</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">    <tt class="py-name">editedset</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name" targets="Method sentence.dataset.DataSet.merge_dataset()=sentence.dataset.DataSet-class.html#merge_dataset"><a title="sentence.dataset.DataSet.merge_dataset" class="py-name" href="#" onclick="return doclink('link-26', 'merge_dataset', 'link-26');">merge_dataset</a></tt><tt class="py-op">(</tt><tt class="py-name">rankingset</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-string">"sentence_id"</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">    <tt class="py-name">rankingset</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">     </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">    <tt class="py-name">fixed_parallelsentences</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">    <tt class="py-name">uncertain_decisions</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">     </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">ps</tt> <tt class="py-keyword">in</tt> <tt class="py-name">editedset</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Method io_utils.input.genericreader.GenericReader.get_parallelsentences()=io_utils.input.genericreader.GenericReader-class.html#get_parallelsentences,Method io_utils.input.genericxmlreader.GenericXmlReader.get_parallelsentences()=io_utils.input.genericxmlreader.GenericXmlReader-class.html#get_parallelsentences,Method io_utils.input.linereader.AttributeLineReader.get_parallelsentences()=io_utils.input.linereader.AttributeLineReader-class.html#get_parallelsentences,Method io_utils.input.linereader.LineReader.get_parallelsentences()=io_utils.input.linereader.LineReader-class.html#get_parallelsentences,Method io_utils.input.posteditingreader.PosteditingReader.get_parallelsentences()=io_utils.input.posteditingreader.PosteditingReader-class.html#get_parallelsentences,Method io_utils.input.rankreader.R2RankReader.get_parallelsentences()=io_utils.input.rankreader.R2RankReader-class.html#get_parallelsentences,Method io_utils.input.rankreader.RankReader.get_parallelsentences()=io_utils.input.rankreader.RankReader-class.html#get_parallelsentences,Method io_utils.input.taraxureader.TaraXUReader.get_parallelsentences()=io_utils.input.taraxureader.TaraXUReader-class.html#get_parallelsentences,Method io_utils.input.xliffreader.XliffReader.get_parallelsentences()=io_utils.input.xliffreader.XliffReader-class.html#get_parallelsentences,Method sentence.dataset.DataSet.get_parallelsentences()=sentence.dataset.DataSet-class.html#get_parallelsentences,Method sentence.pairwisedataset.PairwiseDataset.get_parallelsentences()=sentence.pairwisedataset.PairwiseDataset-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html#get_parallelsentences"><a title="io_utils.input.genericreader.GenericReader.get_parallelsentences
+io_utils.input.genericxmlreader.GenericXmlReader.get_parallelsentences
+io_utils.input.linereader.AttributeLineReader.get_parallelsentences
+io_utils.input.linereader.LineReader.get_parallelsentences
+io_utils.input.posteditingreader.PosteditingReader.get_parallelsentences
+io_utils.input.rankreader.R2RankReader.get_parallelsentences
+io_utils.input.rankreader.RankReader.get_parallelsentences
+io_utils.input.taraxureader.TaraXUReader.get_parallelsentences
+io_utils.input.xliffreader.XliffReader.get_parallelsentences
+sentence.dataset.DataSet.get_parallelsentences
+sentence.pairwisedataset.PairwiseDataset.get_parallelsentences
+sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences" class="py-name" href="#" onclick="return doclink('link-27', 'get_parallelsentences', 'link-27');">get_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">        <tt class="py-name">system_outputs</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt class="py-name">postedited_string</tt> <tt class="py-op">=</tt> <tt class="py-string">""</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">         </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt id="link-28" class="py-name" targets="Variable net.xmlrpctest.s=net.xmlrpctest-module.html#s"><a title="net.xmlrpctest.s" class="py-name" href="#" onclick="return doclink('link-28', 's', 'link-28');">s</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">ps</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Method sentence.pairwiseparallelsentence.PairwiseParallelSentence.get_translations()=sentence.pairwiseparallelsentence.PairwiseParallelSentence-class.html#get_translations,Method sentence.parallelsentence.ParallelSentence.get_translations()=sentence.parallelsentence.ParallelSentence-class.html#get_translations"><a title="sentence.pairwiseparallelsentence.PairwiseParallelSentence.get_translations
+sentence.parallelsentence.ParallelSentence.get_translations" class="py-name" href="#" onclick="return doclink('link-29', 'get_translations', 'link-29');">get_translations</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-30" class="py-name"><a title="net.xmlrpctest.s" class="py-name" href="#" onclick="return doclink('link-30', 's', 'link-28');">s</a></tt><tt class="py-op">.</tt><tt id="link-31" class="py-name" targets="Method sentence.parallelsentence.ParallelSentence.get_attribute()=sentence.parallelsentence.ParallelSentence-class.html#get_attribute,Method sentence.sentence.SimpleSentence.get_attribute()=sentence.sentence.SimpleSentence-class.html#get_attribute"><a title="sentence.parallelsentence.ParallelSentence.get_attribute
+sentence.sentence.SimpleSentence.get_attribute" class="py-name" href="#" onclick="return doclink('link-31', 'get_attribute', 'link-31');">get_attribute</a></tt><tt class="py-op">(</tt><tt class="py-string">"system"</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-string">'post-edited'</tt><tt class="py-op">:</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">                <tt class="py-name">postedited_sentence</tt> <tt class="py-op">=</tt> <tt id="link-32" class="py-name"><a title="net.xmlrpctest.s" class="py-name" href="#" onclick="return doclink('link-32', 's', 'link-28');">s</a></tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">                <tt class="py-name">postedited_string</tt> <tt class="py-op">=</tt> <tt id="link-33" class="py-name"><a title="net.xmlrpctest.s" class="py-name" href="#" onclick="return doclink('link-33', 's', 'link-28');">s</a></tt><tt class="py-op">.</tt><tt id="link-34" class="py-name" targets="Method sentence.sentence.SimpleSentence.get_string()=sentence.sentence.SimpleSentence-class.html#get_string"><a title="sentence.sentence.SimpleSentence.get_string" class="py-name" href="#" onclick="return doclink('link-34', 'get_string', 'link-34');">get_string</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">                <tt class="py-op">(</tt><tt class="py-name">postedited_string</tt><tt class="py-op">,</tt> <tt class="py-name">postedited_comment</tt><tt class="py-op">)</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt><tt class="py-string">"(.*)\n{0,2}(.*)"</tt><tt class="py-op">,</tt> <tt class="py-name">postedited_string</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-35" class="py-name"><a title="net.xmlrpctest.s" class="py-name" href="#" onclick="return doclink('link-35', 's', 'link-28');">s</a></tt><tt class="py-op">.</tt><tt id="link-36" class="py-name"><a title="sentence.parallelsentence.ParallelSentence.get_attribute
+sentence.sentence.SimpleSentence.get_attribute" class="py-name" href="#" onclick="return doclink('link-36', 'get_attribute', 'link-31');">get_attribute</a></tt><tt class="py-op">(</tt><tt class="py-string">"name"</tt><tt class="py-op">)</tt> <tt class="py-op">!=</tt> <tt class="py-string">"google"</tt><tt class="py-op">:</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">                    <tt class="py-name">origin</tt> <tt class="py-op">=</tt> <tt class="py-string">""</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">                    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">                        <tt class="py-comment">#don't store the sentence if it originates from the faulty storage</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">                        <tt class="py-name">origin</tt> <tt class="py-op">=</tt> <tt id="link-37" class="py-name"><a title="net.xmlrpctest.s" class="py-name" href="#" onclick="return doclink('link-37', 's', 'link-28');">s</a></tt><tt class="py-op">.</tt><tt id="link-38" class="py-name"><a title="sentence.parallelsentence.ParallelSentence.get_attribute
+sentence.sentence.SimpleSentence.get_attribute" class="py-name" href="#" onclick="return doclink('link-38', 'get_attribute', 'link-31');">get_attribute</a></tt><tt class="py-op">(</tt><tt class="py-string">"origin"</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-string">"post-editing"</tt>  </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">                    <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">                        <tt class="py-keyword">pass</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt class="py-name">origin</tt> <tt class="py-op">!=</tt> <tt class="py-string">"post-editing"</tt><tt class="py-op">:</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">                        <tt class="py-name">system_outputs</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-39" class="py-name"><a title="net.xmlrpctest.s" class="py-name" href="#" onclick="return doclink('link-39', 's', 'link-28');">s</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">             </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt class="py-name">lev_values</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">         </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt class="py-comment">#get lev for each system output given the postedited reference</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">system_output</tt> <tt class="py-keyword">in</tt> <tt class="py-name">system_outputs</tt><tt class="py-op">:</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">            <tt class="py-name">lev_value</tt> <tt class="py-op">=</tt> <tt id="link-40" class="py-name"><a title="featuregenerator.levenshtein.levenshtein.levenshtein_tok" class="py-name" href="#" onclick="return doclink('link-40', 'levenshtein_tok', 'link-15');">levenshtein_tok</a></tt><tt class="py-op">(</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">postedited_string</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">system_output</tt><tt class="py-op">.</tt><tt id="link-41" class="py-name"><a title="sentence.sentence.SimpleSentence.get_string" class="py-name" href="#" onclick="return doclink('link-41', 'get_string', 'link-34');">get_string</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">)</tt>  </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">            <tt class="py-comment">#print lev_value</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">            <tt class="py-name">lev_values</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">lev_value</tt><tt class="py-op">)</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">            <tt class="py-name">system_output</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Method sentence.sentence.SimpleSentence.add_attribute()=sentence.sentence.SimpleSentence-class.html#add_attribute"><a title="sentence.sentence.SimpleSentence.add_attribute" class="py-name" href="#" onclick="return doclink('link-42', 'add_attribute', 'link-42');">add_attribute</a></tt><tt class="py-op">(</tt><tt class="py-string">'lev'</tt><tt class="py-op">,</tt> <tt class="py-name">lev_value</tt><tt class="py-op">)</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">             </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-name">min_lev_value</tt> <tt class="py-op">=</tt> <tt class="py-name">min</tt><tt class="py-op">(</tt><tt class="py-name">lev_values</tt><tt class="py-op">)</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">         </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt class="py-comment">#gather the systems that have equal lev</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">        <tt class="py-name">best_system_outputs</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">        <tt class="py-name">lev_diffs</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">system_output</tt> <tt class="py-keyword">in</tt> <tt class="py-name">system_outputs</tt><tt class="py-op">:</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">system_output</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="sentence.parallelsentence.ParallelSentence.get_attribute
+sentence.sentence.SimpleSentence.get_attribute" class="py-name" href="#" onclick="return doclink('link-43', 'get_attribute', 'link-31');">get_attribute</a></tt><tt class="py-op">(</tt><tt class="py-string">'lev'</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-name">min_lev_value</tt><tt class="py-op">:</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">                    <tt class="py-name">system_output</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name" targets="Method sentence.sentence.SimpleSentence.del_attribute()=sentence.sentence.SimpleSentence-class.html#del_attribute"><a title="sentence.sentence.SimpleSentence.del_attribute" class="py-name" href="#" onclick="return doclink('link-44', 'del_attribute', 'link-44');">del_attribute</a></tt><tt class="py-op">(</tt><tt class="py-string">"origin"</tt><tt class="py-op">)</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">                    <tt class="py-keyword">pass</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">                <tt class="py-name">system_output</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name"><a title="sentence.sentence.SimpleSentence.del_attribute" class="py-name" href="#" onclick="return doclink('link-45', 'del_attribute', 'link-44');">del_attribute</a></tt><tt class="py-op">(</tt><tt class="py-string">"system"</tt><tt class="py-op">)</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">                <tt class="py-name">best_system_outputs</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">system_output</tt><tt class="py-op">)</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-comment">#collect the differences to find the minimum</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">                <tt class="py-name">lev_diffs</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">int</tt><tt class="py-op">(</tt><tt class="py-name">system_output</tt><tt class="py-op">.</tt><tt id="link-46" class="py-name"><a title="sentence.parallelsentence.ParallelSentence.get_attribute
+sentence.sentence.SimpleSentence.get_attribute" class="py-name" href="#" onclick="return doclink('link-46', 'get_attribute', 'link-31');">get_attribute</a></tt><tt class="py-op">(</tt><tt class="py-string">'lev'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-op">-</tt> <tt class="py-name">min_lev_value</tt><tt class="py-op">)</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">                 </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">         </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">lev_diffs</tt><tt class="py-op">:</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">            <tt class="py-name">lev_diffs</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt class="py-comment">#this will show the certainty</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">        <tt class="py-name">min_lev_diff</tt> <tt class="py-op">=</tt> <tt class="py-name">min</tt><tt class="py-op">(</tt><tt class="py-name">lev_diffs</tt><tt class="py-op">)</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">         </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">         </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">        <tt class="py-comment">#now create the objects to be sent to the writer</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">        <tt class="py-name">postedited_sentence</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name"><a title="sentence.sentence.SimpleSentence.del_attribute" class="py-name" href="#" onclick="return doclink('link-47', 'del_attribute', 'link-44');">del_attribute</a></tt><tt class="py-op">(</tt><tt class="py-string">"system"</tt><tt class="py-op">)</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">        <tt class="py-name">ps_attributes</tt> <tt class="py-op">=</tt> <tt class="py-name">ps</tt><tt class="py-op">.</tt><tt id="link-48" class="py-name" targets="Method io_utils.input.genericxmlreader.GenericXmlReader.get_attributes()=io_utils.input.genericxmlreader.GenericXmlReader-class.html#get_attributes,Method sentence.parallelsentence.ParallelSentence.get_attributes()=sentence.parallelsentence.ParallelSentence-class.html#get_attributes,Method sentence.sentence.SimpleSentence.get_attributes()=sentence.sentence.SimpleSentence-class.html#get_attributes"><a title="io_utils.input.genericxmlreader.GenericXmlReader.get_attributes
+sentence.parallelsentence.ParallelSentence.get_attributes
+sentence.sentence.SimpleSentence.get_attributes" class="py-name" href="#" onclick="return doclink('link-48', 'get_attributes', 'link-48');">get_attributes</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">        <tt class="py-name">ps_attributes</tt><tt class="py-op">[</tt><tt class="py-string">"lev-diff"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">min_lev_diff</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">        <tt class="py-name">fixed_parallelsentence</tt> <tt class="py-op">=</tt> <tt id="link-49" class="py-name"><a title="sentence.parallelsentence.ParallelSentence" class="py-name" href="#" onclick="return doclink('link-49', 'ParallelSentence', 'link-21');">ParallelSentence</a></tt><tt class="py-op">(</tt><tt class="py-name">ps</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name" targets="Method sentence.parallelsentence.ParallelSentence.get_source()=sentence.parallelsentence.ParallelSentence-class.html#get_source"><a title="sentence.parallelsentence.ParallelSentence.get_source" class="py-name" href="#" onclick="return doclink('link-50', 'get_source', 'link-50');">get_source</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">best_system_outputs</tt><tt class="py-op">,</tt> <tt class="py-name">postedited_sentence</tt><tt class="py-op">,</tt> <tt class="py-name">ps_attributes</tt><tt class="py-op">)</tt>  </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">        <tt class="py-name">fixed_parallelsentences</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">fixed_parallelsentence</tt><tt class="py-op">)</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">         </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">         </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">best_system_outputs</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">1</tt> <tt class="py-op">:</tt>  </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">            <tt class="py-name">uncertain_decisions</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">         </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">         </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">         </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"><tt class="py-comment">#        print "post:" , postedited_string</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"><tt class="py-comment">#        for system_output in best_system_outputs:</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"><tt class="py-comment">#            print "%s [%f][%s]: %s" % (ps.get_attribute("id"), system_output.get_attribute("lev"), system_output.get_attribute("system"), system_output.get_string())</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"><tt class="py-comment">#            </tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"><tt class="py-comment">#        print "-----"</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"><tt class="py-comment">#        for system_output in system_outputs:</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"><tt class="py-comment">#            print "[%f][%s]: %s" % ( system_output.get_attribute("lev"), system_output.get_attribute("system"), system_output.get_string())</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"><tt class="py-comment">#        </tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"><tt class="py-comment">#        print min_lev_diff</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">    <tt class="py-name">testset_atts</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-string">"uncertain-lev-choices"</tt> <tt class="py-op">:</tt> <tt class="py-name">uncertain_decisions</tt> <tt class="py-op">}</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-name">uncertain_decisions</tt> <tt class="py-op">,</tt> <tt class="py-string">"uncertain decisions"</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-string">"writing to file"</tt><tt class="py-op">,</tt> <tt class="py-name">fixedfile</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">    <tt id="link-51" class="py-name"><a title="io_utils.output.posteditingwriter.PosteditingWriter" class="py-name" href="#" onclick="return doclink('link-51', 'PosteditingWriter', 'link-11');">PosteditingWriter</a></tt><tt class="py-op">(</tt><tt class="py-name">fixed_parallelsentences</tt><tt class="py-op">,</tt> <tt class="py-name">testset_atts</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-52" class="py-name" targets="Method io_utils.output.posteditingwriter.PosteditingWriter.write_to_file()=io_utils.output.posteditingwriter.PosteditingWriter-class.html#write_to_file,Method io_utils.output.taraxuwriter.TaraXUWriter.write_to_file()=io_utils.output.taraxuwriter.TaraXUWriter-class.html#write_to_file,Method io_utils.output.wmt11tabwriter.Wmt11TabWriter.write_to_file()=io_utils.output.wmt11tabwriter.Wmt11TabWriter-class.html#write_to_file,Method io_utils.output.xmlwriter.GenericWriter.write_to_file()=io_utils.output.xmlwriter.GenericWriter-class.html#write_to_file,Method io_utils.output.xmlwriter.GenericXMLWriter.write_to_file()=io_utils.output.xmlwriter.GenericXMLWriter-class.html#write_to_file,Method io_utils.sax.saxps2jcml.Parallelsentence2Jcml.write_to_file()=io_utils.sax.saxps2jcml.Parallelsentence2Jcml-class.html#write_to_file"><a title="io_utils.output.posteditingwriter.PosteditingWriter.write_to_file
+io_utils.output.taraxuwriter.TaraXUWriter.write_to_file
+io_utils.output.wmt11tabwriter.Wmt11TabWriter.write_to_file
+io_utils.output.xmlwriter.GenericWriter.write_to_file
+io_utils.output.xmlwriter.GenericXMLWriter.write_to_file
+io_utils.sax.saxps2jcml.Parallelsentence2Jcml.write_to_file" class="py-name" href="#" onclick="return doclink('link-52', 'write_to_file', 'link-52');">write_to_file</a></tt><tt class="py-op">(</tt><tt class="py-name">fixedfile</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">     </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">             </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"> </tt>
+<a name="fix_dirs"></a><div id="fix_dirs-def"><a name="L127"></a><tt class="py-lineno">127</tt> <a class="py-toggle" href="#" id="fix_dirs-toggle" onclick="return toggle('fix_dirs');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="support.evaluation.fixpostediting-module.html#fix_dirs">fix_dirs</a><tt class="py-op">(</tt><tt class="py-param">dirs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="fix_dirs-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="fix_dirs-expanded"><a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"><tt class="py-docstring">    Create pairs of complementary ranking and editing files for the same tasks</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"><tt class="py-docstring">    and fix them with the function above</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">     </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">     </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">    <tt class="py-name">rankingfiles</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">    <tt class="py-name">editingfiles</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">     </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">    <tt class="py-name">files</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">"%s/%s"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">dir</tt><tt class="py-op">,</tt> <tt id="link-53" class="py-name" targets="Variable experiment.data.Data.filename=experiment.data.Data-class.html#filename,Variable support.preprocessing.appraise_time_stats.filename=support.preprocessing.appraise_time_stats-module.html#filename"><a title="experiment.data.Data.filename
+support.preprocessing.appraise_time_stats.filename" class="py-name" href="#" onclick="return doclink('link-53', 'filename', 'link-53');">filename</a></tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">dir</tt> <tt class="py-keyword">in</tt> <tt class="py-name">dirs</tt> <tt class="py-keyword">for</tt> <tt id="link-54" class="py-name"><a title="experiment.data.Data.filename
+support.preprocessing.appraise_time_stats.filename" class="py-name" href="#" onclick="return doclink('link-54', 'filename', 'link-53');">filename</a></tt> <tt class="py-keyword">in</tt> <tt class="py-op">(</tt><tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">listdir</tt><tt class="py-op">(</tt><tt class="py-name">dir</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-55" class="py-name"><a title="experiment.data.Data.filename
+support.preprocessing.appraise_time_stats.filename" class="py-name" href="#" onclick="return doclink('link-55', 'filename', 'link-53');">filename</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">files</tt><tt class="py-op">:</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-56" class="py-name"><a title="experiment.data.Data.filename
+support.preprocessing.appraise_time_stats.filename" class="py-name" href="#" onclick="return doclink('link-56', 'filename', 'link-53');">filename</a></tt><tt class="py-op">.</tt><tt class="py-name">endswith</tt><tt class="py-op">(</tt><tt class="py-string">'ranking.xml'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">            <tt class="py-name">rankingfiles</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-57" class="py-name"><a title="experiment.data.Data.filename
+support.preprocessing.appraise_time_stats.filename" class="py-name" href="#" onclick="return doclink('link-57', 'filename', 'link-53');">filename</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt id="link-58" class="py-name"><a title="experiment.data.Data.filename
+support.preprocessing.appraise_time_stats.filename" class="py-name" href="#" onclick="return doclink('link-58', 'filename', 'link-53');">filename</a></tt><tt class="py-op">.</tt><tt class="py-name">endswith</tt><tt class="py-op">(</tt><tt class="py-string">'editing.xml'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">            <tt class="py-name">editingfiles</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-59" class="py-name"><a title="experiment.data.Data.filename
+support.preprocessing.appraise_time_stats.filename" class="py-name" href="#" onclick="return doclink('link-59', 'filename', 'link-53');">filename</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">     </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">    <tt id="link-60" class="py-name" targets="Variable support.evaluation.fixpostediting.filenames=support.evaluation.fixpostediting-module.html#filenames"><a title="support.evaluation.fixpostediting.filenames" class="py-name" href="#" onclick="return doclink('link-60', 'filenames', 'link-60');">filenames</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">     </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">    <tt class="py-comment">#separate files for the same datasets must be matched based on their name </tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">editingfile</tt> <tt class="py-keyword">in</tt> <tt class="py-name">editingfiles</tt><tt class="py-op">:</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">            <tt class="py-op">(</tt><tt id="link-61" class="py-name" targets="Variable experiment.autoranking.annotate.path=experiment.autoranking.annotate-module.html#path,Variable experiment.autoranking.annotate_updated.path=experiment.autoranking.annotate_updated-module.html#path,Variable experiment.autoranking.autoranking.path=experiment.autoranking.autoranking-module.html#path,Variable experiment.ml4hmt12.annotate_updated.path=experiment.ml4hmt12.annotate_updated-module.html#path,Variable experiment.ml4hmt12.bootstrap.path=experiment.ml4hmt12.bootstrap-module.html#path"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-61', 'path', 'link-61');">path</a></tt><tt class="py-op">,</tt> <tt class="py-name">task_id</tt><tt class="py-op">,</tt> <tt class="py-name">subtask</tt><tt class="py-op">,</tt> <tt class="py-name">set_name</tt><tt class="py-op">)</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt><tt class="py-string">"(.*)/(\d+)-(\[[0-9A-KM-Z]+\])\s(.*)-editing.xml"</tt><tt class="py-op">,</tt> <tt class="py-name">editingfile</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">            <tt class="py-name">found</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">rankingfile</tt> <tt class="py-keyword">in</tt> <tt class="py-name">rankingfiles</tt><tt class="py-op">:</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">                    <tt class="py-op">(</tt><tt class="py-name">r_path</tt><tt class="py-op">,</tt> <tt class="py-name">r_task_id</tt><tt class="py-op">,</tt> <tt class="py-name">r_subtask</tt><tt class="py-op">,</tt> <tt class="py-name">r_set_name</tt><tt class="py-op">)</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt><tt class="py-string">"(.*)/(\d+)-(\[\d+\])\s(.*)-ranking.xml"</tt><tt class="py-op">,</tt> <tt class="py-name">rankingfile</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">                    <tt class="py-keyword">continue</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">                 </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">r_set_name</tt> <tt class="py-op">==</tt> <tt class="py-name">set_name</tt><tt class="py-op">:</tt>  </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">                     </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">                    <tt class="py-comment">#also suggest the name for the output file</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">                    <tt class="py-keyword">print</tt> <tt class="py-string">"matched!"</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">                    <tt class="py-name">fixedfile</tt> <tt class="py-op">=</tt> <tt class="py-string">"%s/%s-[L] %s-editing.xml"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt id="link-62" class="py-name"><a title="experiment.autoranking.annotate.path
+experiment.autoranking.annotate_updated.path
+experiment.autoranking.autoranking.path
+experiment.ml4hmt12.annotate_updated.path
+experiment.ml4hmt12.bootstrap.path" class="py-name" href="#" onclick="return doclink('link-62', 'path', 'link-61');">path</a></tt><tt class="py-op">,</tt> <tt class="py-name">task_id</tt><tt class="py-op">,</tt> <tt class="py-name">set_name</tt><tt class="py-op">)</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">                    <tt id="link-63" class="py-name"><a title="support.evaluation.fixpostediting.filenames" class="py-name" href="#" onclick="return doclink('link-63', 'filenames', 'link-60');">filenames</a></tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">rankingfile</tt><tt class="py-op">,</tt> <tt class="py-name">editingfile</tt><tt class="py-op">,</tt> <tt class="py-name">fixedfile</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">                    <tt class="py-name">found</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">                    <tt class="py-keyword">break</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">found</tt> <tt class="py-op">:</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">                <tt class="py-keyword">print</tt> <tt class="py-string">"Didn't find a match for "</tt> <tt class="py-op">,</tt> <tt class="py-name">editingfile</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">            <tt class="py-keyword">print</tt> <tt class="py-string">"error matching"</tt> <tt class="py-op">,</tt> <tt class="py-name">editingfile</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">            <tt class="py-keyword">pass</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">     </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt id="link-64" class="py-name"><a title="support.evaluation.fixpostediting.filenames" class="py-name" href="#" onclick="return doclink('link-64', 'filenames', 'link-60');">filenames</a></tt><tt class="py-op">)</tt> <tt class="py-op">&lt;</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">editingfiles</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-string">"Didn't match everythin"</tt><tt class="py-op">,</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt id="link-65" class="py-name"><a title="support.evaluation.fixpostediting.filenames" class="py-name" href="#" onclick="return doclink('link-65', 'filenames', 'link-60');">filenames</a></tt><tt class="py-op">)</tt> <tt class="py-op">,</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">editingfiles</tt><tt class="py-op">)</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">         </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-op">(</tt><tt class="py-name">rankingfile</tt><tt class="py-op">,</tt> <tt class="py-name">editingfile</tt><tt class="py-op">,</tt> <tt class="py-name">fixedfile</tt><tt class="py-op">)</tt> <tt class="py-keyword">in</tt> <tt id="link-66" class="py-name"><a title="support.evaluation.fixpostediting.filenames" class="py-name" href="#" onclick="return doclink('link-66', 'filenames', 'link-60');">filenames</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line">        <tt id="link-67" class="py-name" targets="Function support.evaluation.fixpostediting.fix()=support.evaluation.fixpostediting-module.html#fix"><a title="support.evaluation.fixpostediting.fix" class="py-name" href="#" onclick="return doclink('link-67', 'fix', 'link-67');">fix</a></tt><tt class="py-op">(</tt><tt class="py-name">rankingfile</tt><tt class="py-op">,</tt> <tt class="py-name">editingfile</tt><tt class="py-op">,</tt> <tt class="py-name">fixedfile</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line">         </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">         </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line"> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"><tt id="link-68" class="py-name"><a title="support.evaluation.fixpostediting.filenames" class="py-name" href="#" onclick="return doclink('link-68', 'filenames', 'link-60');">filenames</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">arg</tt> <tt class="py-keyword">for</tt> <tt class="py-name">arg</tt> <tt class="py-keyword">in</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt><tt class="py-op">]</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"><tt id="link-69" class="py-name" targets="Function support.evaluation.fixpostediting.fix_dirs()=support.evaluation.fixpostediting-module.html#fix_dirs"><a title="support.evaluation.fixpostediting.fix_dirs" class="py-name" href="#" onclick="return doclink('link-69', 'fix_dirs', 'link-69');">fix_dirs</a></tt><tt class="py-op">(</tt><tt id="link-70" class="py-name"><a title="support.evaluation.fixpostediting.filenames" class="py-name" href="#" onclick="return doclink('link-70', 'filenames', 'link-60');">filenames</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">     </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">     </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">     </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line">         </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line"><tt class="py-comment">#    editingfile = "/home/elav01/taraxu_data/r1/results/5-1-WMT08-de-en-editing.xml"</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line"><tt class="py-comment">#    rankingfile = "/home/elav01/taraxu_data/r1/results/6-1-WMT08-de-en-ranking.xml"</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"><tt class="py-comment">#    fix(rankingfile, editingfile)</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:21 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

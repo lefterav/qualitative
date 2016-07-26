@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>ml.var.svmeasy</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="ml-module.html">Package&nbsp;ml</a> ::
+        <a href="ml.var-module.html">Package&nbsp;var</a> ::
+        Module&nbsp;svmeasy
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="ml.var.svmeasy-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="ml.var.svmeasy-module.html">Module ml.var.svmeasy</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">@author: Eleftherios Avramidis</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">Orange</tt><tt class="py-op">.</tt><tt class="py-name">classification</tt><tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Module ml.var.svm=ml.var.svm-module.html"><a title="ml.var.svm" class="py-name" href="#" onclick="return doclink('link-0', 'svm', 'link-0');">svm</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">SVMLearner</tt><tt class="py-op">,</tt> <tt class="py-name">SVMClassifierWrapper</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">Orange</tt><tt class="py-op">.</tt><tt class="py-name">optimization</tt> <tt class="py-keyword">import</tt> <tt class="py-name">TuneMParameters</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">Orange</tt><tt class="py-op">.</tt><tt class="py-name">core</tt> <tt class="py-keyword">import</tt> <tt class="py-name">DomainContinuizer</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"> </tt>
+<a name="SVMEasyLearner"></a><div id="SVMEasyLearner-def"><a name="L11"></a><tt class="py-lineno"> 11</tt> <a class="py-toggle" href="#" id="SVMEasyLearner-toggle" onclick="return toggle('SVMEasyLearner');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="ml.var.svmeasy.SVMEasyLearner-class.html">SVMEasyLearner</a><tt class="py-op">(</tt><tt class="py-base-class">SVMLearner</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SVMEasyLearner-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="SVMEasyLearner-expanded"><a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line">    <tt class="py-docstring">'''</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-docstring">    classdocs</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="SVMEasyLearner.__init__"></a><div id="SVMEasyLearner.__init__-def"><a name="L15"></a><tt class="py-lineno"> 15</tt> <a class="py-toggle" href="#" id="SVMEasyLearner.__init__-toggle" onclick="return toggle('SVMEasyLearner.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="ml.var.svmeasy.SVMEasyLearner-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwds</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SVMEasyLearner.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SVMEasyLearner.__init__-expanded"><a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">folds</tt><tt class="py-op">=</tt><tt class="py-number">4</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Variable util.ruffus_utils.DefaultLog.verbose=util.ruffus_utils.DefaultLog-class.html#verbose"><a title="util.ruffus_utils.DefaultLog.verbose" class="py-name" href="#" onclick="return doclink('link-1', 'verbose', 'link-1');">verbose</a></tt><tt class="py-op">=</tt><tt class="py-name">True</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">        <tt class="py-name">SVMLearner</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Method app.autoranking.application.Autoranking.__init__()=app.autoranking.application.Autoranking-class.html#__init__,Method app.autoranking.decode_batch.StreamToLogger.__init__()=app.autoranking.decode_batch.StreamToLogger-class.html#__init__,Method app.autoranking.suite.StreamToLogger.__init__()=app.autoranking.suite.StreamToLogger-class.html#__init__,Method dataprocessor.ce.ce.SelectRank.__init__()=dataprocessor.ce.ce.SelectRank-class.html#__init__,Method dataprocessor.ce.cejcml.CEJcmlReader.__init__()=dataprocessor.ce.cejcml.CEJcmlReader-class.html#__init__,Method dataprocessor.ce.cejcml.CEJcmlStats.__init__()=dataprocessor.ce.cejcml.CEJcmlStats-class.html#__init__,Method dataprocessor.ce.cejcml2orange.CElementTreeJcml2Orange.__init__()=dataprocessor.ce.cejcml2orange.CElementTreeJcml2Orange-class.html#__init__,Method dataprocessor.ce.cejcml2scikit.CElementTreeJcml2Orange.__init__()=dataprocessor.ce.cejcml2scikit.CElementTreeJcml2Orange-class.html#__init__,Method dataprocessor.input.genericreader.GenericReader.__init__()=dataprocessor.input.genericreader.GenericReader-class.html#__init__,Method dataprocessor.input.genericxmlreader.GenericXmlReader.__init__()=dataprocessor.input.genericxmlreader.GenericXmlReader-class.html#__init__,Method dataprocessor.input.linereader.AttributeLineReader.__init__()=dataprocessor.input.linereader.AttributeLineReader-class.html#__init__,Method dataprocessor.input.linereader.LineReader.__init__()=dataprocessor.input.linereader.LineReader-class.html#__init__,Method dataprocessor.input.orangeprocessor.AttributesReader.__init__()=dataprocessor.input.orangeprocessor.AttributesReader-class.html#__init__,Method dataprocessor.input.orangeprocessor.OrangeProcessor.__init__()=dataprocessor.input.orangeprocessor.OrangeProcessor-class.html#__init__,Method dataprocessor.input.orangeprocessor.SentenceReader.__init__()=dataprocessor.input.orangeprocessor.SentenceReader-class.html#__init__,Method dataprocessor.input.orangereader.OrangeData.__init__()=dataprocessor.input.orangereader.OrangeData-class.html#__init__,Method dataprocessor.input.posteditingreader.PosteditingReader.__init__()=dataprocessor.input.posteditingreader.PosteditingReader-class.html#__init__,Method dataprocessor.input.rankreader.R2RankReader.__init__()=dataprocessor.input.rankreader.R2RankReader-class.html#__init__,Method dataprocessor.input.rankreader.RankReader.__init__()=dataprocessor.input.rankreader.RankReader-class.html#__init__,Method dataprocessor.input.schemabasedreader.SchemaData.__init__()=dataprocessor.input.schemabasedreader.SchemaData-class.html#__init__,Method dataprocessor.input.taraxureader.TaraXUReader.__init__()=dataprocessor.input.taraxureader.TaraXUReader-class.html#__init__,Method dataprocessor.input.wmtreader.WmtReader.__init__()=dataprocessor.input.wmtreader.WmtReader-class.html#__init__,Method dataprocessor.output.posteditingwriter.PosteditingWriter.__init__()=dataprocessor.output.posteditingwriter.PosteditingWriter-class.html#__init__,Method dataprocessor.output.taraxuwriter.TaraXUWriter.__init__()=dataprocessor.output.taraxuwriter.TaraXUWriter-class.html#__init__,Method dataprocessor.output.wmt11tabwriter.Wmt11TabWriter.__init__()=dataprocessor.output.wmt11tabwriter.Wmt11TabWriter-class.html#__init__,Method dataprocessor.output.xmlwriter.GenericWriter.__init__()=dataprocessor.output.xmlwriter.GenericWriter-class.html#__init__,Method dataprocessor.output.xmlwriter.GenericXMLWriter.__init__()=dataprocessor.output.xmlwriter.GenericXMLWriter-class.html#__init__,Method dataprocessor.sax.jcml2Shogun.Jcml2Shogun.__init__()=dataprocessor.sax.jcml2Shogun.Jcml2Shogun-class.html#__init__,Method dataprocessor.sax.jcml2array.Jcml2Array.__init__()=dataprocessor.sax.jcml2array.Jcml2Array-class.html#__init__,Method dataprocessor.sax.sax_bestrank2simplefile.SaxBestRank2SimpleFile.__init__()=dataprocessor.sax.sax_bestrank2simplefile.SaxBestRank2SimpleFile-class.html#__init__,Method dataprocessor.sax.saxjcml.SaxJCMLProcessor.__init__()=dataprocessor.sax.saxjcml.SaxJCMLProcessor-class.html#__init__,Method dataprocessor.sax.saxjcml2orange.SaxJcml2Orange.__init__()=dataprocessor.sax.saxjcml2orange.SaxJcml2Orange-class.html#__init__,Method dataprocessor.sax.saxjcml2orange.SaxJcmlOrangeContent.__init__()=dataprocessor.sax.saxjcml2orange.SaxJcmlOrangeContent-class.html#__init__,Method dataprocessor.sax.saxjcml2orange.SaxJcmlOrangeHeader.__init__()=dataprocessor.sax.saxjcml2orange.SaxJcmlOrangeHeader-class.html#__init__,Method dataprocessor.sax.saxprocessor.SaxProcessor.__init__()=dataprocessor.sax.saxprocessor.SaxProcessor-class.html#__init__,Method dataprocessor.sax.saxps2jcml.IncrementalJcml.__init__()=dataprocessor.sax.saxps2jcml.IncrementalJcml-class.html#__init__,Method dataprocessor.sax.saxps2jcml.Parallelsentence2Jcml.__init__()=dataprocessor.sax.saxps2jcml.Parallelsentence2Jcml-class.html#__init__,Method dataprocessor.sax.saxscoring.SaxSystemScoring.__init__()=dataprocessor.sax.saxscoring.SaxSystemScoring-class.html#__init__,Method dataprocessor.sax.saxwmt11eval.SaxWMTexporter.__init__()=dataprocessor.sax.saxwmt11eval.SaxWMTexporter-class.html#__init__,Method dataprocessor.sax.saxwrapper.SaxWrapper.__init__()=dataprocessor.sax.saxwrapper.SaxWrapper-class.html#__init__,Method featuregenerator.attribute_rank.AttributeRankGenerator.__init__()=featuregenerator.attribute_rank.AttributeRankGenerator-class.html#__init__,Method featuregenerator.bestsystem.BestSystemFeatureGenerator.__init__()=featuregenerator.bestsystem.BestSystemFeatureGenerator-class.html#__init__,Method featuregenerator.hjerson.Hjerson.__init__()=featuregenerator.hjerson.Hjerson-class.html#__init__,Method featuregenerator.hjerson.levNode.__init__()=featuregenerator.hjerson.levNode-class.html#__init__,Method featuregenerator.ibm1featuregenerator.Ibm1FeatureGenerator.__init__()=featuregenerator.ibm1featuregenerator.Ibm1FeatureGenerator-class.html#__init__,Method featuregenerator.iq.acrolinxclient.IQFeatureGenerator.__init__()=featuregenerator.iq.acrolinxclient.IQFeatureGenerator-class.html#__init__,Method featuregenerator.languagechecker.languagetool.LanguageCheckerCmd.__init__()=featuregenerator.languagechecker.languagetool.LanguageCheckerCmd-class.html#__init__,Method featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.__init__()=featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html#__init__,Method featuregenerator.languagechecker.languagetool_socket.LanguageToolSocketFeatureGenerator.__init__()=featuregenerator.languagechecker.languagetool_socket.LanguageToolSocketFeatureGenerator-class.html#__init__,Method featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator.__init__()=featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html#__init__,Method featuregenerator.lm.srilm.srilm_ngram.SRILMngramGenerator.__init__()=featuregenerator.lm.srilm.srilm_ngram.SRILMngramGenerator-class.html#__init__,Method featuregenerator.meteor.meteor.MeteorGenerator.__init__()=featuregenerator.meteor.meteor.MeteorGenerator-class.html#__init__,Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.__init__()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator-class.html#__init__,Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator.__init__()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator-class.html#__init__,Method featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.__init__()=featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator-class.html#__init__,Method featuregenerator.parser.berkeley.cfgrules.CfgRulesExtractor.__init__()=featuregenerator.parser.berkeley.cfgrules.CfgRulesExtractor-class.html#__init__,Method featuregenerator.parser.berkeley.cfgrules.Rule.__init__()=featuregenerator.parser.berkeley.cfgrules.Rule-class.html#__init__,Method featuregenerator.parser.berkeley.parsermatches.ParserMatches.__init__()=featuregenerator.parser.berkeley.parsermatches.ParserMatches-class.html#__init__,Method featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket.__init__()=featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket-class.html#__init__,Method featuregenerator.parser.berkeley.standalone_parser_client.BerkeleyFeatures.__init__()=featuregenerator.parser.berkeley.standalone_parser_client.BerkeleyFeatures-class.html#__init__,Method featuregenerator.preprocessor.CommandlinePreprocessor.__init__()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#__init__,Method featuregenerator.preprocessor.Detokenizer.__init__()=featuregenerator.preprocessor.Detokenizer-class.html#__init__,Method featuregenerator.preprocessor.Normalizer.__init__()=featuregenerator.preprocessor.Normalizer-class.html#__init__,Method featuregenerator.preprocessor.Preprocessor.__init__()=featuregenerator.preprocessor.Preprocessor-class.html#__init__,Method featuregenerator.preprocessor.Tokenizer.__init__()=featuregenerator.preprocessor.Tokenizer-class.html#__init__,Method featuregenerator.preprocessor.Truecaser.__init__()=featuregenerator.preprocessor.Truecaser-class.html#__init__,Method featuregenerator.wer.wer.levNode.__init__()=featuregenerator.wer.wer.levNode-class.html#__init__,Method ml.learner.Classifier.__init__()=ml.learner.Classifier-class.html#__init__,Method ml.learner.Regressor.__init__()=ml.learner.Regressor-class.html#__init__,Method ml.lib.orange.OrangeClassifier.__init__()=ml.lib.orange.OrangeClassifier-class.html#__init__,Method ml.lib.orange.OrangeRuntimeRanker.__init__()=ml.lib.orange.OrangeRuntimeRanker-class.html#__init__,Method ml.lib.scikit.learn_model.CLIError.__init__()=ml.lib.scikit.learn_model.CLIError-class.html#__init__,Method ml.lib.scikit.scikit.FixedFolds.__init__()=ml.lib.scikit.scikit.FixedFolds-class.html#__init__,Method ml.lib.scikit.scikit.SkRegressor.__init__()=ml.lib.scikit.scikit.SkRegressor-class.html#__init__,Method ml.lib.scikit.scikit.TerRegressor.__init__()=ml.lib.scikit.scikit.TerRegressor-class.html#__init__,Method ml.lib.scikit.scikit.TerSVR.__init__()=ml.lib.scikit.scikit.TerSVR-class.html#__init__,Method ml.ranker.Ranker.__init__()=ml.ranker.Ranker-class.html#__init__,Method ml.var.bayes.Bayes.__init__()=ml.var.bayes.Bayes-class.html#__init__,Method ml.var.classifier.OrangeClassifier.__init__()=ml.var.classifier.OrangeClassifier-class.html#__init__,Method ml.var.knn.KnnLearner.__init__()=ml.var.knn.KnnLearner-class.html#__init__,Method ml.var.loglinear.LogLinear.__init__()=ml.var.loglinear.LogLinear-class.html#__init__,Method ml.var.orange.OrangeClassifier.__init__()=ml.var.orange.OrangeClassifier-class.html#__init__,Method ml.var.prank.PRank.__init__()=ml.var.prank.PRank-class.html#__init__,Method ml.var.ranker.Ranker.__init__()=ml.var.ranker.Ranker-class.html#__init__,Method ml.var.registry.AbstractClassifier.__init__()=ml.var.registry.AbstractClassifier-class.html#__init__,Method ml.var.svm.SVM.__init__()=ml.var.svm.SVM-class.html#__init__,Method ml.var.svmeasy.SVMEasyLearner.__init__()=ml.var.svmeasy.SVMEasyLearner-class.html#__init__,Method ml.var.svmrank.SvmRank.__init__()=ml.var.svmrank.SvmRank-class.html#__init__,Method ml.var.tree.TreeLearner.__init__()=ml.var.tree.TreeLearner-class.html#__init__,Method sentence.coupleddataset.CoupledDataSet.__init__()=sentence.coupleddataset.CoupledDataSet-class.html#__init__,Method sentence.coupleddataset.CoupledDataSetDisk.__init__()=sentence.coupleddataset.CoupledDataSetDisk-class.html#__init__,Method sentence.coupledparallelsentence.CoupledParallelSentence.__init__()=sentence.coupledparallelsentence.CoupledParallelSentence-class.html#__init__,Method sentence.dataset.DataSet.__init__()=sentence.dataset.DataSet-class.html#__init__,Method sentence.pairwisedataset.AnalyticPairwiseDataset.__init__()=sentence.pairwisedataset.AnalyticPairwiseDataset-class.html#__init__,Method sentence.pairwisedataset.CompactPairwiseDataset.__init__()=sentence.pairwisedataset.CompactPairwiseDataset-class.html#__init__,Method sentence.pairwisedataset.FilteredPairwiseDataset.__init__()=sentence.pairwisedataset.FilteredPairwiseDataset-class.html#__init__,Method sentence.pairwisedataset.RawPairwiseDataset.__init__()=sentence.pairwisedataset.RawPairwiseDataset-class.html#__init__,Method sentence.pairwiseparallelsentence.PairwiseParallelSentence.__init__()=sentence.pairwiseparallelsentence.PairwiseParallelSentence-class.html#__init__,Method sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.__init__()=sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet-class.html#__init__,Method sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet.__init__()=sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet-class.html#__init__,Method sentence.parallelsentence.ParallelSentence.__init__()=sentence.parallelsentence.ParallelSentence-class.html#__init__,Method sentence.rankhandler.RankHandler.__init__()=sentence.rankhandler.RankHandler-class.html#__init__,Method sentence.ranking.Ranking.__init__()=sentence.ranking.Ranking-class.html#__init__,Method sentence.scoring.Scoring.__init__()=sentence.scoring.Scoring-class.html#__init__,Method sentence.sentence.SimpleSentence.__init__()=sentence.sentence.SimpleSentence-class.html#__init__,Method support.preprocessing.jcml.jcml2arff.ArffWriter.__init__()=support.preprocessing.jcml.jcml2arff.ArffWriter-class.html#__init__,Method support.preprocessing.oolinkage.OOLinkage.__init__()=support.preprocessing.oolinkage.OOLinkage-class.html#__init__,Method util.freqcaser.FreqCaser.__init__()=util.freqcaser.FreqCaser-class.html#__init__,Method util.jvm.JVM.__init__()=util.jvm.JVM-class.html#__init__,Method util.paralleltemplate.BerkeleyFeatureGenerator.__init__()=util.paralleltemplate.BerkeleyFeatureGenerator-class.html#__init__,Method util.paralleltemplate.ParallelTemplate.__init__()=util.paralleltemplate.ParallelTemplate-class.html#__init__"><a title="app.autoranking.application.Autoranking.__init__
+app.autoranking.decode_batch.StreamToLogger.__init__
+app.autoranking.suite.StreamToLogger.__init__
+dataprocessor.ce.ce.SelectRank.__init__
+dataprocessor.ce.cejcml.CEJcmlReader.__init__
+dataprocessor.ce.cejcml.CEJcmlStats.__init__
+dataprocessor.ce.cejcml2orange.CElementTreeJcml2Orange.__init__
+dataprocessor.ce.cejcml2scikit.CElementTreeJcml2Orange.__init__
+dataprocessor.input.genericreader.GenericReader.__init__
+dataprocessor.input.genericxmlreader.GenericXmlReader.__init__
+dataprocessor.input.linereader.AttributeLineReader.__init__
+dataprocessor.input.linereader.LineReader.__init__
+dataprocessor.input.orangeprocessor.AttributesReader.__init__
+dataprocessor.input.orangeprocessor.OrangeProcessor.__init__
+dataprocessor.input.orangeprocessor.SentenceReader.__init__
+dataprocessor.input.orangereader.OrangeData.__init__
+dataprocessor.input.posteditingreader.PosteditingReader.__init__
+dataprocessor.input.rankreader.R2RankReader.__init__
+dataprocessor.input.rankreader.RankReader.__init__
+dataprocessor.input.schemabasedreader.SchemaData.__init__
+dataprocessor.input.taraxureader.TaraXUReader.__init__
+dataprocessor.input.wmtreader.WmtReader.__init__
+dataprocessor.output.posteditingwriter.PosteditingWriter.__init__
+dataprocessor.output.taraxuwriter.TaraXUWriter.__init__
+dataprocessor.output.wmt11tabwriter.Wmt11TabWriter.__init__
+dataprocessor.output.xmlwriter.GenericWriter.__init__
+dataprocessor.output.xmlwriter.GenericXMLWriter.__init__
+dataprocessor.sax.jcml2Shogun.Jcml2Shogun.__init__
+dataprocessor.sax.jcml2array.Jcml2Array.__init__
+dataprocessor.sax.sax_bestrank2simplefile.SaxBestRank2SimpleFile.__init__
+dataprocessor.sax.saxjcml.SaxJCMLProcessor.__init__
+dataprocessor.sax.saxjcml2orange.SaxJcml2Orange.__init__
+dataprocessor.sax.saxjcml2orange.SaxJcmlOrangeContent.__init__
+dataprocessor.sax.saxjcml2orange.SaxJcmlOrangeHeader.__init__
+dataprocessor.sax.saxprocessor.SaxProcessor.__init__
+dataprocessor.sax.saxps2jcml.IncrementalJcml.__init__
+dataprocessor.sax.saxps2jcml.Parallelsentence2Jcml.__init__
+dataprocessor.sax.saxscoring.SaxSystemScoring.__init__
+dataprocessor.sax.saxwmt11eval.SaxWMTexporter.__init__
+dataprocessor.sax.saxwrapper.SaxWrapper.__init__
+featuregenerator.attribute_rank.AttributeRankGenerator.__init__
+featuregenerator.bestsystem.BestSystemFeatureGenerator.__init__
+featuregenerator.hjerson.Hjerson.__init__
+featuregenerator.hjerson.levNode.__init__
+featuregenerator.ibm1featuregenerator.Ibm1FeatureGenerator.__init__
+featuregenerator.iq.acrolinxclient.IQFeatureGenerator.__init__
+featuregenerator.languagechecker.languagetool.LanguageCheckerCmd.__init__
+featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.__init__
+featuregenerator.languagechecker.languagetool_socket.LanguageToolSocketFeatureGenerator.__init__
+featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator.__init__
+featuregenerator.lm.srilm.srilm_ngram.SRILMngramGenerator.__init__
+featuregenerator.meteor.meteor.MeteorGenerator.__init__
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleyFeatureGenerator.__init__
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleySocketFeatureGenerator.__init__
+featuregenerator.parser.berkeley.berkeleyclient.BerkeleyXMLRPCFeatureGenerator.__init__
+featuregenerator.parser.berkeley.cfgrules.CfgRulesExtractor.__init__
+featuregenerator.parser.berkeley.cfgrules.Rule.__init__
+featuregenerator.parser.berkeley.parsermatches.ParserMatches.__init__
+featuregenerator.parser.berkeley.socket.berkeleyparsersocket.BerkeleyParserSocket.__init__
+featuregenerator.parser.berkeley.standalone_parser_client.BerkeleyFeatures.__init__
+featuregenerator.preprocessor.CommandlinePreprocessor.__init__
+featuregenerator.preprocessor.Detokenizer.__init__
+featuregenerator.preprocessor.Normalizer.__init__
+featuregenerator.preprocessor.Preprocessor.__init__
+featuregenerator.preprocessor.Tokenizer.__init__
+featuregenerator.preprocessor.Truecaser.__init__
+featuregenerator.wer.wer.levNode.__init__
+ml.learner.Classifier.__init__
+ml.learner.Regressor.__init__
+ml.lib.orange.OrangeClassifier.__init__
+ml.lib.orange.OrangeRuntimeRanker.__init__
+ml.lib.scikit.learn_model.CLIError.__init__
+ml.lib.scikit.scikit.FixedFolds.__init__
+ml.lib.scikit.scikit.SkRegressor.__init__
+ml.lib.scikit.scikit.TerRegressor.__init__
+ml.lib.scikit.scikit.TerSVR.__init__
+ml.ranker.Ranker.__init__
+ml.var.bayes.Bayes.__init__
+ml.var.classifier.OrangeClassifier.__init__
+ml.var.knn.KnnLearner.__init__
+ml.var.loglinear.LogLinear.__init__
+ml.var.orange.OrangeClassifier.__init__
+ml.var.prank.PRank.__init__
+ml.var.ranker.Ranker.__init__
+ml.var.registry.AbstractClassifier.__init__
+ml.var.svm.SVM.__init__
+ml.var.svmeasy.SVMEasyLearner.__init__
+ml.var.svmrank.SvmRank.__init__
+ml.var.tree.TreeLearner.__init__
+sentence.coupleddataset.CoupledDataSet.__init__
+sentence.coupleddataset.CoupledDataSetDisk.__init__
+sentence.coupledparallelsentence.CoupledParallelSentence.__init__
+sentence.dataset.DataSet.__init__
+sentence.pairwisedataset.AnalyticPairwiseDataset.__init__
+sentence.pairwisedataset.CompactPairwiseDataset.__init__
+sentence.pairwisedataset.FilteredPairwiseDataset.__init__
+sentence.pairwisedataset.RawPairwiseDataset.__init__
+sentence.pairwiseparallelsentence.PairwiseParallelSentence.__init__
+sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.__init__
+sentence.pairwiseparallelsentenceset.CompactPairwiseParallelSentenceSet.__init__
+sentence.parallelsentence.ParallelSentence.__init__
+sentence.rankhandler.RankHandler.__init__
+sentence.ranking.Ranking.__init__
+sentence.scoring.Scoring.__init__
+sentence.sentence.SimpleSentence.__init__
+support.preprocessing.jcml.jcml2arff.ArffWriter.__init__
+support.preprocessing.oolinkage.OOLinkage.__init__
+util.freqcaser.FreqCaser.__init__
+util.jvm.JVM.__init__
+util.paralleltemplate.BerkeleyFeatureGenerator.__init__
+util.paralleltemplate.ParallelTemplate.__init__" class="py-name" href="#" onclick="return doclink('link-2', '__init__', 'link-2');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwds</tt><tt class="py-op">)</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Module ml.learner=ml.learner-module.html"><a title="ml.learner" class="py-name" href="#" onclick="return doclink('link-3', 'learner', 'link-3');">learner</a></tt> <tt class="py-op">=</tt> <tt class="py-name">SVMLearner</tt><tt class="py-op">(</tt><tt class="py-op">**</tt><tt class="py-name">kwds</tt><tt class="py-op">)</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt>  </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">multinomialTreatment</tt> <tt class="py-op">=</tt> <tt class="py-name">eval</tt><tt class="py-op">(</tt><tt class="py-name">kwds</tt><tt class="py-op">[</tt><tt class="py-string">"multinomialTreatment"</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">multinomialTreatment</tt> <tt class="py-op">=</tt> <tt class="py-name">DomainContinuizer</tt><tt class="py-op">.</tt><tt class="py-name">NValues</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">continuousTreatment</tt> <tt class="py-op">=</tt> <tt class="py-name">eval</tt><tt class="py-op">(</tt><tt class="py-name">kwds</tt><tt class="py-op">[</tt><tt class="py-string">"continuousTreatment"</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">continuousTreatment</tt> <tt class="py-op">=</tt> <tt class="py-name">DomainContinuizer</tt><tt class="py-op">.</tt><tt class="py-name">NormalizeBySpan</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt>             </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">classTreatment</tt> <tt class="py-op">=</tt> <tt class="py-name">eval</tt><tt class="py-op">(</tt><tt class="py-name">kwds</tt><tt class="py-op">[</tt><tt class="py-string">"classTreatment"</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">classTreatment</tt> <tt class="py-op">=</tt> <tt class="py-name">DomainContinuizer</tt><tt class="py-op">.</tt><tt class="py-name">Ignore</tt> </tt>
+</div><a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"> </tt>
+<a name="SVMEasyLearner.__call__"></a><div id="SVMEasyLearner.__call__-def"><a name="L33"></a><tt class="py-lineno"> 33</tt> <a class="py-toggle" href="#" id="SVMEasyLearner.__call__-toggle" onclick="return toggle('SVMEasyLearner.__call__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="ml.var.svmeasy.SVMEasyLearner-class.html#__call__">__call__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">examples</tt><tt class="py-op">,</tt> <tt class="py-param">weight</tt><tt class="py-op">=</tt><tt class="py-number">0</tt><tt class="py-op">)</tt><tt class="py-op">:</tt>         </tt>
+</div><a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-string">"continuizing data"</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">        <tt class="py-name">newdomain</tt><tt class="py-op">,</tt> <tt class="py-name">newexamples</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Method ml.var.svmeasy.SVMEasyLearner.continuize()=ml.var.svmeasy.SVMEasyLearner-class.html#continuize"><a title="ml.var.svmeasy.SVMEasyLearner.continuize" class="py-name" href="#" onclick="return doclink('link-4', 'continuize', 'link-4');">continuize</a></tt><tt class="py-op">(</tt><tt class="py-name">examples</tt><tt class="py-op">)</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">        <tt class="py-name">newexamples</tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-string">"continuized_examples.tab"</tt><tt class="py-op">)</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name"><a title="util.ruffus_utils.DefaultLog.verbose" class="py-name" href="#" onclick="return doclink('link-5', 'verbose', 'link-1');">verbose</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-string">"tuning classifier"</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">        <tt id="link-6" class="py-name" targets="Module ml.var.classifier=ml.var.classifier-module.html,Variable ml.var.extract_liblinear_weights.classifier=ml.var.extract_liblinear_weights-module.html#classifier,Variable ml.var.extract_linear_regression_coefficients.classifier=ml.var.extract_linear_regression_coefficients-module.html#classifier,Variable ml.var.extract_logreg_weight.classifier=ml.var.extract_logreg_weight-module.html#classifier"><a title="ml.var.classifier
+ml.var.extract_liblinear_weights.classifier
+ml.var.extract_linear_regression_coefficients.classifier
+ml.var.extract_logreg_weight.classifier" class="py-name" href="#" onclick="return doclink('link-6', 'classifier', 'link-6');">classifier</a></tt><tt class="py-op">,</tt> <tt class="py-name">fittedParameters</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method ml.var.svmeasy.SVMEasyLearner.tuneClassifier()=ml.var.svmeasy.SVMEasyLearner-class.html#tuneClassifier"><a title="ml.var.svmeasy.SVMEasyLearner.tuneClassifier" class="py-name" href="#" onclick="return doclink('link-7', 'tuneClassifier', 'link-7');">tuneClassifier</a></tt><tt class="py-op">(</tt><tt class="py-name">newexamples</tt><tt class="py-op">,</tt> <tt class="py-name">newdomain</tt><tt class="py-op">,</tt> <tt class="py-name">examples</tt><tt class="py-op">)</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">         </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">        <tt class="py-name">paramfile</tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-string">"svm.params"</tt><tt class="py-op">,</tt> <tt class="py-string">'w'</tt><tt class="py-op">)</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-name">fittedParameters</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">param</tt> <tt class="py-keyword">in</tt> <tt class="py-name">fittedParameters</tt><tt class="py-op">:</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">            <tt class="py-name">paramfile</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method app.autoranking.decode_batch.StreamToLogger.write()=app.autoranking.decode_batch.StreamToLogger-class.html#write,Method app.autoranking.suite.StreamToLogger.write()=app.autoranking.suite.StreamToLogger-class.html#write,Method sentence.coupleddataset.CoupledDataSetDisk.write()=sentence.coupleddataset.CoupledDataSetDisk-class.html#write"><a title="app.autoranking.decode_batch.StreamToLogger.write
+app.autoranking.suite.StreamToLogger.write
+sentence.coupleddataset.CoupledDataSetDisk.write" class="py-name" href="#" onclick="return doclink('link-8', 'write', 'link-8');">write</a></tt><tt class="py-op">(</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">param</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">            <tt class="py-name">paramfile</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name"><a title="app.autoranking.decode_batch.StreamToLogger.write
+app.autoranking.suite.StreamToLogger.write
+sentence.coupleddataset.CoupledDataSetDisk.write" class="py-name" href="#" onclick="return doclink('link-9', 'write', 'link-8');">write</a></tt><tt class="py-op">(</tt><tt class="py-string">"\n"</tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">         </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt class="py-name">paramfile</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method dataprocessor.sax.saxps2jcml.IncrementalJcml.close()=dataprocessor.sax.saxps2jcml.IncrementalJcml-class.html#close,Method featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close()=featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html#close,Method featuregenerator.preprocessor.CommandlinePreprocessor.close()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#close,Method support.preprocessing.jcml.jcml2arff.ArffWriter.close()=support.preprocessing.jcml.jcml2arff.ArffWriter-class.html#close"><a title="dataprocessor.sax.saxps2jcml.IncrementalJcml.close
+featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-10', 'close', 'link-10');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-11" class="py-name"><a title="ml.var.classifier
+ml.var.extract_liblinear_weights.classifier
+ml.var.extract_linear_regression_coefficients.classifier
+ml.var.extract_logreg_weight.classifier" class="py-name" href="#" onclick="return doclink('link-11', 'classifier', 'link-6');">classifier</a></tt> </tt>
+</div><a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">         </tt>
+<a name="SVMEasyLearner.continuize"></a><div id="SVMEasyLearner.continuize-def"><a name="L50"></a><tt class="py-lineno"> 50</tt> <a class="py-toggle" href="#" id="SVMEasyLearner.continuize-toggle" onclick="return toggle('SVMEasyLearner.continuize');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="ml.var.svmeasy.SVMEasyLearner-class.html#continuize">continuize</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">examples</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SVMEasyLearner.continuize-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SVMEasyLearner.continuize-expanded"><a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">        <tt class="py-name">transformer</tt><tt class="py-op">=</tt><tt class="py-name">DomainContinuizer</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">        <tt class="py-comment">#transformer.multinomialTreatment=orange.DomainContinuizer.NValues</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">        <tt class="py-comment">#transformer.continuousTreatment=orange.DomainContinuizer.NormalizeBySpan</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">        <tt class="py-name">transformer</tt><tt class="py-op">.</tt><tt class="py-name">multinomialTreatment</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">multinomialTreatment</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">        <tt class="py-name">transformer</tt><tt class="py-op">.</tt><tt class="py-name">continuousTreatment</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">continuousTreatment</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">        <tt class="py-name">transformer</tt><tt class="py-op">.</tt><tt class="py-name">classTreatment</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">classTreatment</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">        <tt class="py-comment">#transformer.classTreatment = orange.DomainContinuizer.Ignore</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">        <tt class="py-name">newdomain</tt> <tt class="py-op">=</tt> <tt class="py-name">transformer</tt><tt class="py-op">(</tt><tt class="py-name">examples</tt><tt class="py-op">)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">        <tt class="py-name">newexamples</tt> <tt class="py-op">=</tt> <tt class="py-name">examples</tt><tt class="py-op">.</tt><tt class="py-name">translate</tt><tt class="py-op">(</tt><tt class="py-name">newdomain</tt><tt class="py-op">)</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">newdomain</tt><tt class="py-op">,</tt> <tt class="py-name">newexamples</tt> </tt>
+</div><a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">        <tt class="py-comment">#print newexamples[0]</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">         </tt>
+<a name="SVMEasyLearner.tuneClassifier"></a><div id="SVMEasyLearner.tuneClassifier-def"><a name="L63"></a><tt class="py-lineno"> 63</tt> <a class="py-toggle" href="#" id="SVMEasyLearner.tuneClassifier-toggle" onclick="return toggle('SVMEasyLearner.tuneClassifier');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="ml.var.svmeasy.SVMEasyLearner-class.html#tuneClassifier">tuneClassifier</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">newexamples</tt><tt class="py-op">,</tt> <tt class="py-param">newdomain</tt><tt class="py-op">,</tt> <tt class="py-param">examples</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SVMEasyLearner.tuneClassifier-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SVMEasyLearner.tuneClassifier-expanded"><a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">        <tt id="link-12" class="py-name" targets="Variable app.autoranking.annotate_batch.params=app.autoranking.annotate_batch-module.html#params"><a title="app.autoranking.annotate_batch.params" class="py-name" href="#" onclick="return doclink('link-12', 'params', 'link-12');">params</a></tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt class="py-name">parameters</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name"><a title="ml.learner" class="py-name" href="#" onclick="return doclink('link-13', 'learner', 'link-3');">learner</a></tt><tt class="py-op">.</tt><tt class="py-name">normalization</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> <tt class="py-comment">## Normalization already done</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">         </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">svm_type</tt> <tt class="py-keyword">in</tt> <tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">,</tt><tt class="py-number">4</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">            <tt class="py-name">numOfNuValues</tt><tt class="py-op">=</tt><tt class="py-number">9</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">svm_type</tt> <tt class="py-op">==</tt> <tt class="py-name">SVMLearner</tt><tt class="py-op">.</tt><tt class="py-name">Nu_SVC</tt><tt class="py-op">:</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">                <tt class="py-name">maxNu</tt> <tt class="py-op">=</tt> <tt class="py-name">max</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">maxNu</tt><tt class="py-op">(</tt><tt class="py-name">newexamples</tt><tt class="py-op">)</tt> <tt class="py-op">-</tt> <tt class="py-number">1e-7</tt><tt class="py-op">,</tt> <tt class="py-number">0.0</tt><tt class="py-op">)</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">                <tt class="py-name">maxNu</tt> <tt class="py-op">=</tt> <tt class="py-number">1.0</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">            <tt class="py-name">parameters</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-string">"nu"</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt id="link-14" class="py-name" targets="Variable dataprocessor.sax.saxwrapper.SaxWrapper.i=dataprocessor.sax.saxwrapper.SaxWrapper-class.html#i"><a title="dataprocessor.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-14', 'i', 'link-14');">i</a></tt><tt class="py-op">/</tt><tt class="py-number">10.0</tt> <tt class="py-keyword">for</tt> <tt id="link-15" class="py-name"><a title="dataprocessor.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-15', 'i', 'link-14');">i</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">range</tt><tt class="py-op">(</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-number">9</tt><tt class="py-op">)</tt> <tt class="py-keyword">if</tt> <tt id="link-16" class="py-name"><a title="dataprocessor.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-16', 'i', 'link-14');">i</a></tt><tt class="py-op">/</tt><tt class="py-number">10.0</tt> <tt class="py-op">&lt;</tt> <tt class="py-name">maxNu</tt><tt class="py-op">]</tt> <tt class="py-op">+</tt> <tt class="py-op">[</tt><tt class="py-name">maxNu</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">            <tt class="py-name">parameters</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-string">"C"</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">**</tt><tt class="py-name">a</tt> <tt class="py-keyword">for</tt> <tt class="py-name">a</tt> <tt class="py-keyword">in</tt>  <tt class="py-name">range</tt><tt class="py-op">(</tt><tt class="py-op">-</tt><tt class="py-number">5</tt><tt class="py-op">,</tt><tt class="py-number">15</tt><tt class="py-op">,</tt><tt class="py-number">2</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">kernel_type</tt><tt class="py-op">==</tt><tt class="py-number">2</tt><tt class="py-op">:</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">            <tt class="py-name">parameters</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-string">"gamma"</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">**</tt><tt class="py-name">a</tt> <tt class="py-keyword">for</tt> <tt class="py-name">a</tt> <tt class="py-keyword">in</tt> <tt class="py-name">range</tt><tt class="py-op">(</tt><tt class="py-op">-</tt><tt class="py-number">5</tt><tt class="py-op">,</tt><tt class="py-number">5</tt><tt class="py-op">,</tt><tt class="py-number">2</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">+</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">        <tt class="py-name">tunedLearner</tt> <tt class="py-op">=</tt> <tt class="py-name">TuneMParameters</tt><tt class="py-op">(</tt><tt class="py-name">object</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="ml.learner" class="py-name" href="#" onclick="return doclink('link-17', 'learner', 'link-3');">learner</a></tt><tt class="py-op">,</tt> <tt class="py-name">parameters</tt><tt class="py-op">=</tt><tt class="py-name">parameters</tt><tt class="py-op">,</tt> <tt class="py-name">folds</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">folds</tt><tt class="py-op">)</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-string">"apply learner"</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt class="py-name">orngWrap</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">        <tt class="py-name">tunedLearner</tt> <tt class="py-op">=</tt> <tt class="py-name">orngWrap</tt><tt class="py-op">.</tt><tt class="py-name">TuneMParameters</tt><tt class="py-op">(</tt><tt class="py-name">object</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name"><a title="ml.learner" class="py-name" href="#" onclick="return doclink('link-18', 'learner', 'link-3');">learner</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">                                                <tt class="py-name">parameters</tt><tt class="py-op">=</tt><tt class="py-name">parameters</tt><tt class="py-op">,</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">                                                <tt class="py-name">folds</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">folds</tt><tt class="py-op">)</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">              </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">SVMClassifierWrapper</tt><tt class="py-op">(</tt><tt class="py-name">tunedLearner</tt><tt class="py-op">(</tt><tt class="py-name">newexamples</tt><tt class="py-op">,</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">                                                 <tt id="link-19" class="py-name"><a title="util.ruffus_utils.DefaultLog.verbose" class="py-name" href="#" onclick="return doclink('link-19', 'verbose', 'link-1');">verbose</a></tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name"><a title="util.ruffus_utils.DefaultLog.verbose" class="py-name" href="#" onclick="return doclink('link-20', 'verbose', 'link-1');">verbose</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-comment">#        return appliedTunedLearner, appliedTunedLearner.fittedParameters</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">             </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">         </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-comment">#examples = orange.ExampleTable("/home/Eleftherios Avramidis/workspace/TaraXUscripts/src/training-attset1.100.tab")</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-comment">#svmlearner = SVMEasy(examples)</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"><tt class="py-comment">#testexamples = orange.ExampleTable("/home/Eleftherios Avramidis/workspace/TaraXUscripts/src/training-attset2.tab")</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-comment">#print svmlearner(testexamples[1])</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-comment">#objectfile = open("/tmp/svmeasy.pickle", 'w')</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-comment">#pickle.dump(svmlearner, objectfile)</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"><tt class="py-comment">#objectfile.close()</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"><tt class="py-comment">#objectfile = open("/tmp/svmeasy.pickle", 'r')</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt class="py-comment">#recovered_svmlearner = pickle.load(objectfile)</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-comment">#objectfile.close()</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-comment">#print recovered_svmlearner(testexamples[1])</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:17 2014
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
