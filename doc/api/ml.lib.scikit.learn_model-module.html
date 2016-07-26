@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>ml.lib.scikit.learn_model</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="ml-module.html">Package&nbsp;ml</a> ::
+        <a href="ml.lib-module.html">Package&nbsp;lib</a> ::
+        <a href="ml.lib.scikit-module.html">Package&nbsp;scikit</a> ::
+        Module&nbsp;learn_model
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="ml.lib.scikit.learn_model-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module learn_model</h1><p class="nomargin-top"><span class="codelink"><a href="ml.lib.scikit.learn_model-pysrc.html">source&nbsp;code</a></span></p>
+<p>learn_model -- Program that learns machine translation quality 
+  estimation models</p>
+  <p>learn_model is a program with which is possible to learn models for 
+  sentence-pair quality estimation models using the algorithms implemented 
+  in the scikit-learn machine learning toolkit.</p>
+  <p>It defines functions to work with different machine learning 
+  algorithms as well as feature selection techniques and features 
+  preprocessing. The only dependency so far is the sklearn package. 
+  ConfigParser is used to parse the configuration file which has a similar 
+  layout to the Java properties file.</p>
+
+<hr />
+<div class="fields">      <p><strong>Author:</strong>
+        Jose' de Souza
+      </p>
+      <p><strong>Copyright:</strong>
+        2012. All rights reserved.
+      </p>
+      <p><strong>License:</strong>
+        Apache License 2.0
+      </p>
+      <p><strong>Contact:</strong>
+        jose.camargo.souza@gmail.com
+      </p>
+      <p><strong>Date:</strong>
+        2012-11-01
+      </p>
+      <p><strong>Updated:</strong>
+        2012-11-01
+      </p>
+</div><!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Classes"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="ml.lib.scikit.learn_model.CLIError-class.html" class="summary-name" onclick="show_private();">CLIError</a><br />
+      Generic exception to raise and log different fatal errors.
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Functions</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Functions"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="ml.lib.scikit.learn_model-module.html#set_selection_method" class="summary-sig-name" onclick="show_private();">set_selection_method</a>(<span class="summary-sig-arg">config</span>,
+        <span class="summary-sig-arg">threshold</span>=<span class="summary-sig-default">.25</span>)</span><br />
+      Given the configuration settings, this function instantiates the 
+      configured feature selection method initialized with the preset 
+      parameters.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="ml.lib.scikit.learn_model-pysrc.html#set_selection_method">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_scorer_functions"></a><span class="summary-sig-name">set_scorer_functions</span>(<span class="summary-sig-arg">scorers</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="ml.lib.scikit.learn_model-pysrc.html#set_scorer_functions">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_optimization_params"></a><span class="summary-sig-name">set_optimization_params</span>(<span class="summary-sig-arg">opt</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="ml.lib.scikit.learn_model-pysrc.html#set_optimization_params">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="optimize_model"></a><span class="summary-sig-name">optimize_model</span>(<span class="summary-sig-arg">estimator</span>,
+        <span class="summary-sig-arg">X_train</span>,
+        <span class="summary-sig-arg">y_train</span>,
+        <span class="summary-sig-arg">params</span>,
+        <span class="summary-sig-arg">scores</span>,
+        <span class="summary-sig-arg">folds</span>,
+        <span class="summary-sig-arg">verbose</span>,
+        <span class="summary-sig-arg">n_jobs</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="ml.lib.scikit.learn_model-pysrc.html#optimize_model">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="ml.lib.scikit.learn_model-module.html#set_learning_method" class="summary-sig-name" onclick="show_private();">set_learning_method</a>(<span class="summary-sig-arg">config</span>,
+        <span class="summary-sig-arg">X_train</span>,
+        <span class="summary-sig-arg">y_train</span>)</span><br />
+      Instantiates the sklearn's class corresponding to the value set in 
+      the configuration file for running the learning method.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="ml.lib.scikit.learn_model-pysrc.html#set_learning_method">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="ml.lib.scikit.learn_model-module.html#fit_predict" class="summary-sig-name" onclick="show_private();">fit_predict</a>(<span class="summary-sig-arg">config</span>,
+        <span class="summary-sig-arg">X_train</span>,
+        <span class="summary-sig-arg">y_train</span>,
+        <span class="summary-sig-arg">X_test</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">y_test</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Uses the configuration dictionary settings to train a model using the
+      specified training algorithm.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="ml.lib.scikit.learn_model-pysrc.html#fit_predict">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="ml.lib.scikit.learn_model-module.html#cross_validate" class="summary-sig-name" onclick="show_private();">cross_validate</a>(<span class="summary-sig-arg">config</span>,
+        <span class="summary-sig-arg">X_train</span>,
+        <span class="summary-sig-arg">y_train</span>)</span><br />
+      Uses the configuration dictionary settings to train a model using the
+      specified training algorithm.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="ml.lib.scikit.learn_model-pysrc.html#cross_validate">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="ml.lib.scikit.learn_model-module.html#run" class="summary-sig-name" onclick="show_private();">run</a>(<span class="summary-sig-arg">config</span>)</span><br />
+      Runs the main code of the program.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="ml.lib.scikit.learn_model-pysrc.html#run">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="ml.lib.scikit.learn_model-module.html#run_crossvalidation" class="summary-sig-name" onclick="show_private();">run_crossvalidation</a>(<span class="summary-sig-arg">config</span>)</span><br />
+      Runs the main code of the only cross validation.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="ml.lib.scikit.learn_model-pysrc.html#run_crossvalidation">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="main"></a><span class="summary-sig-name">main</span>(<span class="summary-sig-arg">argv</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Command line options.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="ml.lib.scikit.learn_model-pysrc.html#main">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Variables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="DEBUG"></a><span class="summary-name">DEBUG</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="PROFILE"></a><span class="summary-name">PROFILE</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="DEFAULT_SEP"></a><span class="summary-name">DEFAULT_SEP</span> = <code title="&quot;\t&quot;">&quot;\t&quot;</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Function Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-FunctionDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="set_selection_method"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_selection_method</span>(<span class="sig-arg">config</span>,
+        <span class="sig-arg">threshold</span>=<span class="sig-default">.25</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="ml.lib.scikit.learn_model-pysrc.html#set_selection_method">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Given the configuration settings, this function instantiates the 
+  configured feature selection method initialized with the preset 
+  parameters.</p>
+  <p>TODO: implement the same method using reflection (load the class 
+  dinamically at runtime)</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>config</code></strong> - the configuration file object loaded using yaml.load()</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>an object that implements the TransformerMixin class (with fit(),
+          fit_transform() and transform() methods).</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_learning_method"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_learning_method</span>(<span class="sig-arg">config</span>,
+        <span class="sig-arg">X_train</span>,
+        <span class="sig-arg">y_train</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="ml.lib.scikit.learn_model-pysrc.html#set_learning_method">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Instantiates the sklearn's class corresponding to the value set in the
+  configuration file for running the learning method.</p>
+  <p>TODO: use reflection to instantiate the classes</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>config</code></strong> - configuration object</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>an estimator with fit() and predict() methods</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="fit_predict"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">fit_predict</span>(<span class="sig-arg">config</span>,
+        <span class="sig-arg">X_train</span>,
+        <span class="sig-arg">y_train</span>,
+        <span class="sig-arg">X_test</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">y_test</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="ml.lib.scikit.learn_model-pysrc.html#fit_predict">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Uses the configuration dictionary settings to train a model using the 
+  specified training algorithm. If set, also evaluates the trained model in
+  a test set. Additionally, performs feature selection and model parameters
+  optimization.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>config</code></strong> - the configuration dictionary obtained parsing the configuration 
+          file.</li>
+        <li><strong class="pname"><code>X_train</code></strong> - the np.array object for the matrix containing the feature values 
+          for each instance in the training set.</li>
+        <li><strong class="pname"><code>y_train</code></strong> - the np.array object for the response values of each instance in 
+          the training set.</li>
+        <li><strong class="pname"><code>X_test</code></strong> - the np.array object for the matrix containing the feature values 
+          for each instance in the test set. Default is None.</li>
+        <li><strong class="pname"><code>y_test</code></strong> - the np.array object for the response values of each instance in 
+          the test set. Default is None.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="cross_validate"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">cross_validate</span>(<span class="sig-arg">config</span>,
+        <span class="sig-arg">X_train</span>,
+        <span class="sig-arg">y_train</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="ml.lib.scikit.learn_model-pysrc.html#cross_validate">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Uses the configuration dictionary settings to train a model using the 
+  specified training algorithm. If set, also evaluates the trained model in
+  a test set. Additionally, performs feature selection and model parameters
+  optimization.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>config</code></strong> - the configuration dictionary obtained parsing the configuration 
+          file.</li>
+        <li><strong class="pname"><code>X_train</code></strong> - the np.array object for the matrix containing the feature values 
+          for each instance in the training set.</li>
+        <li><strong class="pname"><code>y_train</code></strong> - the np.array object for the response values of each instance in 
+          the training set.</li>
+        <li><strong class="pname"><code>X_test</code></strong> - the np.array object for the matrix containing the feature values 
+          for each instance in the test set. Default is None.</li>
+        <li><strong class="pname"><code>y_test</code></strong> - the np.array object for the response values of each instance in 
+          the test set. Default is None.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="run"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">run</span>(<span class="sig-arg">config</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="ml.lib.scikit.learn_model-pysrc.html#run">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Runs the main code of the program. Checks for mandatory parameters, 
+  opens input files and performs the learning steps.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="run_crossvalidation"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">run_crossvalidation</span>(<span class="sig-arg">config</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="ml.lib.scikit.learn_model-pysrc.html#run_crossvalidation">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Runs the main code of the only cross validation. Checks for mandatory 
+  parameters, opens input files and performs the learning steps.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >Qualitative</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:12 2014
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

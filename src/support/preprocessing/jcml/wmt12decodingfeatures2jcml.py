@@ -1,6 +1,6 @@
 '''
 Created on 29 Feb 2012
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 import re
 import sys
@@ -9,8 +9,8 @@ import subprocess
 import numpy
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
-from io_utils.input.jcmlreader import JcmlReader
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.input.jcmlreader import JcmlReader
 
 
 def process(path):
@@ -91,9 +91,9 @@ def _split_r_vector(graph_feature_value):
                         
 
 if __name__ == '__main__':
-    input_path = sys.argv[1] #"/home/elav01/taraxu_data/wmt12/quality-estimation/training_set/decoding"
-    input_jcml = sys.argv[2] #"/home/elav01/taraxu_data/wmt12/quality-estimation/training_set/training.jcml"
-    output_jcml = sys.argv[3] #"/home/elav01/taraxu_data/wmt12/quality-estimation/training_set/training.decoding.es.f.jcml"
+    input_path = sys.argv[1] #"/home/Eleftherios Avramidis/taraxu_data/wmt12/quality-estimation/training_set/decoding"
+    input_jcml = sys.argv[2] #"/home/Eleftherios Avramidis/taraxu_data/wmt12/quality-estimation/training_set/training.jcml"
+    output_jcml = sys.argv[3] #"/home/Eleftherios Avramidis/taraxu_data/wmt12/quality-estimation/training_set/training.decoding.es.f.jcml"
     
     if len(sys.argv)<4 :
         print "This script reads the supplementary decoding attributes of WMT12-quality estimation task and \

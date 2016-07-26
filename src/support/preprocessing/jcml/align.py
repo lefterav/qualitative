@@ -1,11 +1,11 @@
 '''
 Created on Jun 7, 2013
 
-@author: dupo
+@author: Eleftherios Avramidis
 '''
 import sys
-from io_utils.input.jcmlreader import JcmlReader
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.input.jcmlreader import JcmlReader
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
 
 
 if __name__ == '__main__':

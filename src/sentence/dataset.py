@@ -51,6 +51,12 @@ class DataSet(object):
                 self.attribute_names_found = False
                 self.attribute_names = []
             self.ensure_judgment_ids()
+            
+    def add_parallelsentence(self, parallelsentence):
+        self.parallelsentences.append(parallelsentence)
+        
+    def add_parallelsentences(self, parallelsentences):
+        self.parallelsentences.extend(parallelsentences)    
                 
     def ensure_judgment_ids(self):
         """
@@ -80,7 +86,7 @@ class DataSet(object):
         ps_sid = {}
         for parallelsentence in self.parallelsentences:
             #get the id of the particular multiple ranking (judgment) or create a new one
-            sentence_id = parallelsentence.get_compact_id()
+            sentence_id = parallelsentence.get_fileid_tuple()
             if not ps_sid.has_key(sentence_id):
                 ps_sid[sentence_id] = [parallelsentence]
             else:
@@ -114,14 +120,14 @@ class DataSet(object):
     def get_annotations(self):
         return self.annotations
     
-    def get_attribute_names(self):
+    def get_attribute_sets(self):
         if not self.attribute_names_found: 
             self.attribute_names = self._retrieve_attribute_names()
             self.attribute_names_found = True
         return self.attribute_names
     
     def get_all_attribute_names(self):
-        all_attribute_names =  self.get_attribute_names()
+        all_attribute_names =  self.get_attribute_sets()
         all_attribute_names.extend( self.get_nested_attribute_names() )
         return list(set(all_attribute_names))
     
@@ -134,7 +140,7 @@ class DataSet(object):
     def _retrieve_attribute_names(self):
         attribute_names = set()
         for parallelsentence in self.parallelsentences:
-            attribute_names.update( parallelsentence.get_attribute_names() )
+            attribute_names.update( parallelsentence.get_attribute_sets() )
         return list(attribute_names)
 
     def get_discrete_attribute_values(self, discrete_attribute_names):
@@ -176,8 +182,8 @@ class DataSet(object):
         @rtype add_dataset: L{DataSet}
         """
         self.parallelsentences.extend(add_dataset.get_parallelsentences())
-        existing_attribute_names = set(self.get_attribute_names())
-        new_attribute_names = set(add_dataset.get_attribute_names())
+        existing_attribute_names = set(self.get_attribute_sets())
+        new_attribute_names = set(add_dataset.get_attribute_sets())
         merged_attribute_names = existing_attribute_names.union(new_attribute_names)
         self.attribute_names = list(merged_attribute_names)
     
@@ -401,7 +407,8 @@ class DataSet(object):
                     print ps1.get_translations()[1].get_string() , "\n",  ps2.get_translations()[1].get_string()
                     print ps1.get_translations()[1].get_attributes() , "\n",  ps2.get_translations()[1].get_attributes()
             
-
+    def __len__(self):
+        return len(self.parallelsentences)
 
     def __iter__(self):
         """
