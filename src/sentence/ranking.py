@@ -156,7 +156,7 @@ class Ranking(list):
         '''
         return indexes(self, neededrank)   
 
-    def inverse(self, **kwargs):
+    def reverse(self, **kwargs):
         '''
         Created an inverted ranking, so that the best item becomes worse
         @keyword ties: Select how to handle ties. Accepted values are:

@@ -30,7 +30,7 @@ from sklearn.grid_search import GridSearchCV
 from sklearn.linear_model.coordinate_descent import LassoCV
 from sklearn.linear_model.least_angle import LassoLarsCV, LassoLars
 from sklearn.linear_model. randomized_l1 import RandomizedLasso
-from sklearn.metrics.metrics import mean_squared_error, f1_score, \
+from sklearn.metrics import mean_squared_error, f1_score, \
     precision_score, recall_score
 from sklearn.svm.classes import SVR, SVC
 from sklearn_utils import scale_datasets, open_datasets, assert_number, \
@@ -40,7 +40,6 @@ import logging as log
 import numpy as np
 import os
 import sys
-import yaml
 from sklearn_utils import open_datasets_crossvalidation,\
     scale_datasets_crossvalidation
 
@@ -153,23 +152,22 @@ def set_optimization_params(opt):
             params[key] = np.linspace(item[0], item[1], num=item[2], endpoint=True)
             
         elif isinstance(item, list) and assert_string(item):
-            print key, item
             params[key] = item
     
     return params
 
 
-def optimize_model(estimator, X_train, y_train, params, scores, folds, verbose, n_jobs):
+def optimize_model(estimator, X_train, y_train, params, scorers, folds, verbose, n_jobs):
     clf = None
-    for score_name, score_func in scores:
-        log.info("Tuning hyper-parameters for %s" % score_name)
+    for score_func in scorers:
+        log.info("Tuning hyper-parameters for %s" % score_func)
         
         log.debug(params)
-        log.debug(scores)
+        log.debug(scorers)
         
-        clf = GridSearchCV(estimator, params, loss_func=score_func, 
+        clf = GridSearchCV(estimator, params, scoring=score_func, 
                            cv=folds, verbose=verbose, n_jobs=n_jobs)
-        
+        log.info("Preparing for optimization. folds={}, samples={}".format(folds, len(y_train)))
         clf.fit(X_train, y_train)
         
         log.info("Best parameters set found on development set:")
@@ -537,8 +535,8 @@ USAGE
             
         # opens the config file
         config = None
-        with open(cfg_path, "r") as cfg_file:
-            config = yaml.load(cfg_file.read())
+#        with open(cfg_path, "r") as cfg_file:
+#            config = yaml.load(cfg_file.read())
          
         run(config)
         

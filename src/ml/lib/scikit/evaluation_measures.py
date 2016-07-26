@@ -12,7 +12,7 @@ sklearn.
 @contact:    jose.camargo.souza@gmail.com
 @deffield    updated: Updated
 '''
-from sklearn.metrics.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error
 from sklearn.metrics.pairwise import manhattan_distances
 import numpy as np
 
