@@ -27,12 +27,7 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -68,7 +63,7 @@ object --+
 <dl><dt>Known Subclasses:</dt>
 <dd>
       <ul class="subclass-list">
-<li><a href="sentence.coupledparallelsentence.CoupledParallelSentence-class.html">coupledparallelsentence.CoupledParallelSentence</a></li><li>, <a href="sentence.pairwiseparallelsentence.PairwiseParallelSentence-class.html">pairwiseparallelsentence.PairwiseParallelSentence</a></li>  </ul>
+<li><a href="sentence.pairwiseparallelsentence.PairwiseParallelSentence-class.html">pairwiseparallelsentence.PairwiseParallelSentence</a></li><li>, <a href="sentence.coupledparallelsentence.CoupledParallelSentence-class.html">coupledparallelsentence.CoupledParallelSentence</a></li>  </ul>
 </dd></dl>
 
 <hr />
@@ -92,6 +87,40 @@ object --+
     </table>
   </td>
 </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__eq__"></a><span class="summary-sig-name">__eq__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.__eq__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__gt__"></a><span class="summary-sig-name">__gt__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.__gt__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
@@ -126,23 +155,6 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="sentence.parallelsentence.ParallelSentence-class.html#__str__" class="summary-sig-name">__str__</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      str(x)</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.__str__">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a name="__lt__"></a><span class="summary-sig-name">__lt__</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">other</span>)</span></td>
           <td align="right" valign="top">
@@ -160,10 +172,48 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="__gt__"></a><span class="summary-sig-name">__gt__</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">other</span>)</span></td>
+          <td><span class="summary-sig"><a href="sentence.parallelsentence.ParallelSentence-class.html#__str__" class="summary-sig-name">__str__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      str(x)</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.__gt__">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.__str__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_get_class_pairwise"></a><span class="summary-sig-name">_get_class_pairwise</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">target1</span>,
+        <span class="summary-sig-arg">target2</span>,
+        <span class="summary-sig-arg">class_name</span>,
+        <span class="summary-sig-arg">ties</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence._get_class_pairwise">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_prefix"></a><span class="summary-sig-name">_prefix</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">listitems</span>,
+        <span class="summary-sig-arg">prefix</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence._prefix">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -177,10 +227,10 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="__eq__"></a><span class="summary-sig-name">__eq__</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">other</span>)</span></td>
+          <td><span class="summary-sig"><a name="add_attributes"></a><span class="summary-sig-name">add_attributes</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">attributes</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.__eq__">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.add_attributes">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -194,63 +244,10 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_rank"></a><span class="summary-sig-name">get_rank</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      provide the rank value of the parallel sentence return: the rank 
-      value rtype: string</td>
+          <td><span class="summary-sig"><a name="add_judgment_id"></a><span class="summary-sig-name">add_judgment_id</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">value</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_rank">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">Ranking</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="sentence.parallelsentence.ParallelSentence-class.html#get_ranking" class="summary-sig-name">get_ranking</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      returns a ranking list, containing the ranks of the included target 
-      translations</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_ranking">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">dict([(string,string), ...])</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="sentence.parallelsentence.ParallelSentence-class.html#get_attributes" class="summary-sig-name">get_attributes</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      provide all attributes</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_attributes">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">set([string, ...])</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="sentence.parallelsentence.ParallelSentence-class.html#get_attribute_names" class="summary-sig-name">get_attribute_names</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      provide all attribute names</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_attribute_names">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.add_judgment_id">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -278,15 +275,79 @@ object --+
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">set([string, ...])</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.parallelsentence.ParallelSentence-class.html#get_attribute_sets" class="summary-sig-name">get_attribute_sets</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      provide all attribute names</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_attribute_sets">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">dict([(string,string), ...])</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.parallelsentence.ParallelSentence-class.html#get_attributes" class="summary-sig-name">get_attributes</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      provide all attributes</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_attributes">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_target_attribute_values"></a><span class="summary-sig-name">get_target_attribute_values</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">attribute_name</span>,
-        <span class="summary-sig-arg">sub</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td><span class="summary-sig"><a name="get_compact_id"></a><span class="summary-sig-name">get_compact_id</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_target_attribute_values">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_compact_id">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_compact_judgment_id"></a><span class="summary-sig-name">get_compact_judgment_id</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_compact_judgment_id">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_fileid_tuple"></a><span class="summary-sig-name">get_fileid_tuple</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_fileid_tuple">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -319,109 +380,9 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="add_attributes"></a><span class="summary-sig-name">add_attributes</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">attributes</span>)</span></td>
+          <td><span class="summary-sig"><a name="get_id"></a><span class="summary-sig-name">get_id</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.add_attributes">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="set_langsrc"></a><span class="summary-sig-name">set_langsrc</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">langsrc</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.set_langsrc">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="set_langtgt"></a><span class="summary-sig-name">set_langtgt</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">langtgt</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.set_langtgt">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="set_id"></a><span class="summary-sig-name">set_id</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">id</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.set_id">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="get_compact_id"></a><span class="summary-sig-name">get_compact_id</span>(<span class="summary-sig-arg">self</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_compact_id">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="get_tuple_id"></a><span class="summary-sig-name">get_tuple_id</span>(<span class="summary-sig-arg">self</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_tuple_id">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="get_compact_judgment_id"></a><span class="summary-sig-name">get_compact_judgment_id</span>(<span class="summary-sig-arg">self</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_compact_judgment_id">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_id">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -451,9 +412,9 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="has_judgment_id"></a><span class="summary-sig-name">has_judgment_id</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a name="get_langpair"></a><span class="summary-sig-name">get_langpair</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.has_judgment_id">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_langpair">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -467,10 +428,9 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="add_judgment_id"></a><span class="summary-sig-name">add_judgment_id</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">value</span>)</span></td>
+          <td><span class="summary-sig"><a name="get_langsrc"></a><span class="summary-sig-name">get_langsrc</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.add_judgment_id">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_langsrc">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -484,92 +444,9 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_source"></a><span class="summary-sig-name">get_source</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a name="get_langtgt"></a><span class="summary-sig-name">get_langtgt</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_source">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="set_source"></a><span class="summary-sig-name">set_source</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">src</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.set_source">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="get_translations"></a><span class="summary-sig-name">get_translations</span>(<span class="summary-sig-arg">self</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_translations">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="set_translations"></a><span class="summary-sig-name">set_translations</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">tgt</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.set_translations">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="get_reference"></a><span class="summary-sig-name">get_reference</span>(<span class="summary-sig-arg">self</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_reference">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="set_reference"></a><span class="summary-sig-name">set_reference</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">ref</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.set_reference">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_langtgt">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -617,10 +494,12 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="recover_attributes"></a><span class="summary-sig-name">recover_attributes</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Moves the attributes back to the nested sentences</td>
+          <td><span class="summary-sig"><a name="get_pairwise_parallelsentences"></a><span class="summary-sig-name">get_pairwise_parallelsentences</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">bidirectional_pairs</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">class_name</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">ties</span>=<span class="summary-sig-default">True</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.recover_attributes">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_pairwise_parallelsentences">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -634,67 +513,208 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="serialize"></a><span class="summary-sig-name">serialize</span>(<span class="summary-sig-arg">self</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.serialize">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr class="private">
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="_prefix"></a><span class="summary-sig-name">_prefix</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">listitems</span>,
-        <span class="summary-sig-arg">prefix</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence._prefix">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="sentence.parallelsentence.ParallelSentence-class.html#merge_parallelsentence" class="summary-sig-name">merge_parallelsentence</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">ps</span>,
-        <span class="summary-sig-arg">attribute_replacements</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
-        <span class="summary-sig-arg">**kwargs</span>)</span><br />
-      Augment the parallelsentence with another parallesentence.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.merge_parallelsentence">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="sentence.parallelsentence.ParallelSentence-class.html#get_pairwise_parallelsentences" class="summary-sig-name">get_pairwise_parallelsentences</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="sentence.parallelsentence.ParallelSentence-class.html#get_pairwise_parallelsentences_old" class="summary-sig-name">get_pairwise_parallelsentences_old</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">replacement</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">**kwargs</span>)</span><br />
       Create a set of all available parallel sentence pairs (in tgt) from 
       one ParallelSentence object.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_pairwise_parallelsentences">source&nbsp;code</a></span>
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_pairwise_parallelsentences_old">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_rank"></a><span class="summary-sig-name">get_rank</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      provide the rank value of the parallel sentence return: the rank 
+      value rtype: string</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_rank">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">Ranking</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.parallelsentence.ParallelSentence-class.html#get_ranking" class="summary-sig-name">get_ranking</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      returns a ranking list, containing the ranks of the included target 
+      translations</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_ranking">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_reference"></a><span class="summary-sig-name">get_reference</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_reference">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_safe_id_tuple"></a><span class="summary-sig-name">get_safe_id_tuple</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_safe_id_tuple">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_source"></a><span class="summary-sig-name">get_source</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_source">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_target_attribute_values"></a><span class="summary-sig-name">get_target_attribute_values</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">attribute_name</span>,
+        <span class="summary-sig-arg">sub</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_target_attribute_values">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_translations"></a><span class="summary-sig-name">get_translations</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_translations">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_tuple_id"></a><span class="summary-sig-name">get_tuple_id</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_tuple_id">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_vector"></a><span class="summary-sig-name">get_vector</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">attribute_names</span>,
+        <span class="summary-sig-arg">default_value</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">replace_infinite</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">replace_nan</span>=<span class="summary-sig-default">False</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_vector">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>iterator</code> of <code>lists</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sentence.parallelsentence.ParallelSentence-class.html#get_vectors" class="summary-sig-name">get_vectors</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">attribute_set</span>,
+        <span class="summary-sig-arg">bidirectional_pairs</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">ties</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">class_name</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">default_value</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">replace_infinite</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">replace_nan</span>=<span class="summary-sig-default">False</span>)</span><br />
+      Return a feature vector in an efficient way, where only specified 
+      attributes are included</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_vectors">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="has_judgment_id"></a><span class="summary-sig-name">has_judgment_id</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.has_judgment_id">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -749,11 +769,166 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a href="sentence.parallelsentence.ParallelSentence-class.html#merge_parallelsentence" class="summary-sig-name">merge_parallelsentence</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">ps</span>,
+        <span class="summary-sig-arg">attribute_replacements</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Augment the parallelsentence with another parallesentence.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.merge_parallelsentence">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="recover_attributes"></a><span class="summary-sig-name">recover_attributes</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Moves the attributes back to the nested sentences</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.recover_attributes">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a href="sentence.parallelsentence.ParallelSentence-class.html#remove_ties" class="summary-sig-name">remove_ties</a>(<span class="summary-sig-arg">self</span>)</span><br />
       Function that modifies the current parallel sentence by removing the 
       target translations that create ties.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.remove_ties">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="serialize"></a><span class="summary-sig-name">serialize</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.serialize">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_id"></a><span class="summary-sig-name">set_id</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">id</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.set_id">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_langsrc"></a><span class="summary-sig-name">set_langsrc</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">langsrc</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.set_langsrc">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_langtgt"></a><span class="summary-sig-name">set_langtgt</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">langtgt</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.set_langtgt">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_reference"></a><span class="summary-sig-name">set_reference</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">ref</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.set_reference">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_source"></a><span class="summary-sig-name">set_source</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">src</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.set_source">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_translations"></a><span class="summary-sig-name">set_translations</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">tgt</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.set_translations">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -926,25 +1101,46 @@ object --+
   </dl>
 </td></tr></table>
 </div>
-<a name="get_ranking"></a>
+<a name="get_attribute"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_ranking</span>(<span class="sig-arg">self</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_attribute</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_ranking">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_attribute">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  <p>returns a ranking list, containing the ranks of the included target 
-  translations</p>
+  <p>provide the value of a particular attribute</p>
   <dl class="fields">
-    <dt>Returns: Ranking</dt>
-        <dd>the ranking list</dd>
+    <dt>Returns: string</dt>
+        <dd>the value of the attribute with the specified name</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_attribute_sets"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_attribute_sets</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_attribute_sets">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>provide all attribute names</p>
+  <dl class="fields">
+    <dt>Returns: set([string, ...])</dt>
+        <dd>a set with the names of the attributes</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -969,46 +1165,98 @@ object --+
   </dl>
 </td></tr></table>
 </div>
-<a name="get_attribute_names"></a>
+<a name="get_pairwise_parallelsentences_old"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_attribute_names</span>(<span class="sig-arg">self</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_pairwise_parallelsentences_old</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">replacement</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_attribute_names">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_pairwise_parallelsentences_old">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  <p>provide all attribute names</p>
+  <p>Create a set of all available parallel sentence pairs (in tgt) from 
+  one ParallelSentence object.</p>
   <dl class="fields">
-    <dt>Returns: set([string, ...])</dt>
-        <dd>a set with the names of the attributes</dd>
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>ps</code></strong> (sentence.parallelsentence.ParallelSentence
+          <p>kwargs:</p>) - Object of ParallelSetnece() with one source sentence and more 
+          target sentences</li>
+        <li><strong class="pname"><code>replacement</code></strong> (boolean) - If enabled, creates pairs with all possible combinations with 
+          replacement</li>
+        <li><strong class="pname"><code>include_references</code></strong> (boolean) - Include references as system translations from system 
+          &quot;_ref&quot; and lowest rank</li>
+        <li><strong class="pname"><code>filter_unassigned</code></strong> (boolean) - If enabled, it filters out pairs with rank = &quot;-1&quot;, 
+          which means no value was assigned It should not be turned on for 
+          test-sets</li>
+        <li><strong class="pname"><code>restrict_ranks</code></strong> ([int, ...]) - Filter pairs to keep only for the ones that include the given 
+          ranks. Don't filter if list empty. Before using this, make sure 
+          that the ranks are normalized</li>
+        <li><strong class="pname"><code>p</code></strong> (a list of PairwiseParallelSentence() objects)</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
-<a name="get_attribute"></a>
+<a name="get_ranking"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_attribute</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">name</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_ranking</span>(<span class="sig-arg">self</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_attribute">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_ranking">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
-  <p>provide the value of a particular attribute</p>
+  <p>returns a ranking list, containing the ranks of the included target 
+  translations</p>
   <dl class="fields">
-    <dt>Returns: string</dt>
-        <dd>the value of the attribute with the specified name</dd>
+    <dt>Returns: Ranking</dt>
+        <dd>the ranking list</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_vectors"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_vectors</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">attribute_set</span>,
+        <span class="sig-arg">bidirectional_pairs</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">ties</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">class_name</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">default_value</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">replace_infinite</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">replace_nan</span>=<span class="sig-default">False</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_vectors">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return a feature vector in an efficient way, where only specified 
+  attributes are included</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>attribute_set</code></strong> (<a href="sentence.parallelsentence.AttributeSet-class.html" 
+          class="link">AttributeSet</a>) - a definition of the attribute that need to be included</li>
+    </ul></dd>
+    <dt>Returns: <code>iterator</code> of <code>lists</code></dt>
+        <dd>one vector for each pairwise comparison of target sentences</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1044,45 +1292,6 @@ object --+
   </dl>
 </td></tr></table>
 </div>
-<a name="get_pairwise_parallelsentences"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_pairwise_parallelsentences</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">replacement</span>=<span class="sig-default">True</span>,
-        <span class="sig-arg">**kwargs</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="sentence.parallelsentence-pysrc.html#ParallelSentence.get_pairwise_parallelsentences">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Create a set of all available parallel sentence pairs (in tgt) from 
-  one ParallelSentence object.</p>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>ps</code></strong> (sentence.parallelsentence.ParallelSentence
-          <p>kwargs:</p>) - Object of ParallelSetnece() with one source sentence and more 
-          target sentences</li>
-        <li><strong class="pname"><code>replacement</code></strong> (boolean) - If enabled, creates pairs with all possible combinations with 
-          replacement</li>
-        <li><strong class="pname"><code>include_references</code></strong> (boolean) - Include references as system translations from system 
-          &quot;_ref&quot; and lowest rank</li>
-        <li><strong class="pname"><code>filter_unassigned</code></strong> (boolean) - If enabled, it filters out pairs with rank = &quot;-1&quot;, 
-          which means no value was assigned It should not be turned on for 
-          test-sets</li>
-        <li><strong class="pname"><code>restrict_ranks</code></strong> ([int, ...]) - Filter pairs to keep only for the ones that include the given 
-          ranks. Don't filter if list empty. Before using this, make sure 
-          that the ranks are normalized</li>
-        <li><strong class="pname"><code>p</code></strong> (a list of PairwiseParallelSentence() objects)</li>
-    </ul></dd>
-  </dl>
-</td></tr></table>
-</div>
 <a name="remove_ties"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1098,8 +1307,8 @@ object --+
   </tr></table>
   
   <p>Function that modifies the current parallel sentence by removing the 
-  target translations that create ties. Only first translation for each 
-  rank is kept</p>
+  target translations that create ties. Only last translation for each rank
+  is kept</p>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -1122,18 +1331,13 @@ object --+
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:13 2014
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:05 2016
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

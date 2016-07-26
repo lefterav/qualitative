@@ -27,12 +27,7 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -64,6 +59,12 @@ object --+
          |
         <strong class="uidshort">Regressor</strong>
 </pre>
+
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="ml.lib.scikit.scikit.SkRegressor-class.html">lib.scikit.scikit.SkRegressor</a></li>  </ul>
+</dd></dl>
 
 <hr />
 <!-- ==================== INSTANCE METHODS ==================== -->
@@ -107,16 +108,9 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="load_training_dataset"></a><span class="summary-sig-name">load_training_dataset</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">dataset</span>,
-        <span class="summary-sig-arg">class_name</span>,
-        <span class="summary-sig-arg">desired_parallel_attributes</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
-        <span class="summary-sig-arg">desired_source_attributes</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
-        <span class="summary-sig-arg">desired_target_attributes</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
-        <span class="summary-sig-arg">meta_attributes</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
-        <span class="summary-sig-arg">scale</span>=<span class="summary-sig-default">True</span>)</span></td>
+          <td><span class="summary-sig"><a name="cross_validate_scores"></a><span class="summary-sig-name">cross_validate_scores</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="ml.learner-pysrc.html#Regressor.load_training_dataset">source&nbsp;code</a></span>
+            <span class="codelink"><a href="ml.learner-pysrc.html#Regressor.cross_validate_scores">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -147,42 +141,49 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a name="load_training_dataset"></a><span class="summary-sig-name">load_training_dataset</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dataset</span>,
+        <span class="summary-sig-arg">class_name</span>,
+        <span class="summary-sig-arg">desired_parallel_attributes</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="summary-sig-arg">desired_source_attributes</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="summary-sig-arg">desired_target_attributes</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="summary-sig-arg">meta_attributes</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="summary-sig-arg">scale</span>=<span class="summary-sig-default">True</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="ml.learner-pysrc.html#Regressor.load_training_dataset">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="predict_dataset"></a><span class="summary-sig-name">predict_dataset</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="ml.learner-pysrc.html#Regressor.predict_dataset">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a name="set_learning_method"></a><span class="summary-sig-name">set_learning_method</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">config</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="ml.learner-pysrc.html#Regressor.set_learning_method">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="cross_validate_scores"></a><span class="summary-sig-name">cross_validate_scores</span>(<span class="summary-sig-arg">self</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="ml.learner-pysrc.html#Regressor.cross_validate_scores">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="train"></a><span class="summary-sig-name">train</span>(<span class="summary-sig-arg">self</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="ml.learner-pysrc.html#Regressor.train">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -212,9 +213,9 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="predict_dataset"></a><span class="summary-sig-name">predict_dataset</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a name="train"></a><span class="summary-sig-name">train</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="ml.learner-pysrc.html#Regressor.predict_dataset">source&nbsp;code</a></span>
+            <span class="codelink"><a href="ml.learner-pysrc.html#Regressor.train">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -327,18 +328,13 @@ object --+
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:13 2014
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:05 2016
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

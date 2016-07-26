@@ -390,7 +390,7 @@ Module exceptions, class and functions
 </tr>
 <tr class="private">
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">[ string ]</span>
+      <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -407,7 +407,7 @@ Module exceptions, class and functions
   </tr>
 <tr class="private">
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string.</span>
+      <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -424,7 +424,7 @@ Module exceptions, class and functions
   </tr>
 <tr class="private">
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">boolean</span>
+      <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -462,7 +462,7 @@ Module exceptions, class and functions
   </tr>
 <tr class="private">
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">list of string.</span>
+      <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -513,7 +513,7 @@ Module exceptions, class and functions
   </tr>
 <tr class="private">
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">dict</span>
+      <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -903,7 +903,7 @@ TreeTagger, and write TreeTagger output to files with .ttr extension.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="logger"></a><span class="summary-name">logger</span> = <code title="&lt;logging.Logger object at 0xb79c6ac&gt;">&lt;logging.Logger object at 0xb79c6ac&gt;</code>
+        <a name="logger"></a><span class="summary-name">logger</span> = <code title="&lt;logging.Logger object at 0x7fbd0a527e90&gt;">&lt;logging.Logger object at 0x7fbd0a527e90&gt;</code>
     </td>
   </tr>
 <tr class="private">
@@ -971,15 +971,18 @@ a6/\(\)\[\]\{\}&lt;&gt;\xab\xbb\x8b\x9b\x93\x94\xb4`\x91\x92\x88\xa8\x84&amp;~=#
     </td>
   </tr></table>
   
-  <p>Replace blanks characters by real spaces.</p>
-<p>May be good to prepare for regular expressions &amp; Co based on whitespaces.</p>
+  <pre class="literalblock">
+Replace blanks characters by real spaces.
+
+May be good to prepare for regular expressions &amp; Co based on whitespaces.
+
+:param  text: the text to clean from blanks.
+:type  text: string
+:return: List of parts in their apparition order.
+:rtype: [ string ]
+
+</pre>
   <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>text</code></strong> (string) - the text to clean from blanks.</li>
-    </ul></dd>
-    <dt>Returns: [ string ]</dt>
-        <dd>List of parts in their apparition order.</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -997,14 +1000,16 @@ a6/\(\)\[\]\{\}&lt;&gt;\xab\xbb\x8b\x9b\x93\x94\xb4`\x91\x92\x88\xa8\x84&amp;~=#
     </td>
   </tr></table>
   
-  Replace blanks characters by corresponding SGML tags.
+  <pre class="literalblock">
+Replace blanks characters by corresponding SGML tags.
+
+:param  text: the text to transform from blanks.
+:type  text: string
+:return: Text with replacement done.
+:rtype: string.
+
+</pre>
   <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>text</code></strong> (string) - the text to transform from blanks.</li>
-    </ul></dd>
-    <dt>Returns: string.</dt>
-        <dd>Text with replacement done.</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1022,14 +1027,16 @@ a6/\(\)\[\]\{\}&lt;&gt;\xab\xbb\x8b\x9b\x93\x94\xb4`\x91\x92\x88\xa8\x84&amp;~=#
     </td>
   </tr></table>
   
-  Test if a text is - completly - a SGML tag.
+  <pre class="literalblock">
+Test if a text is - completly - a SGML tag.
+
+:param  text: the text to test.
+:type  text: string
+:return: True if its an SGML tag.
+:rtype: boolean
+
+</pre>
   <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>text</code></strong> (string) - the text to test.</li>
-    </ul></dd>
-    <dt>Returns: boolean</dt>
-        <dd>True if its an SGML tag.</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1051,21 +1058,29 @@ a6/\(\)\[\]\{\}&lt;&gt;\xab\xbb\x8b\x9b\x93\x94\xb4`\x91\x92\x88\xa8\x84&amp;~=#
     </td>
   </tr></table>
   
-  <p>Write a text to a pipe and manage pre-post data to ensure flushing.</p>
-<p>For internal use.</p>
-<p>If text is composed of str strings, they are written as-is (ie. assume
+  <pre class="literalblock">
+Write a text to a pipe and manage pre-post data to ensure flushing.
+
+For internal use.
+
+If text is composed of str strings, they are written as-is (ie. assume
 ad-hoc encoding is providen by caller). If it is composed of unicode
-strings, then they are converted to the specified encoding.</p>
+strings, then they are converted to the specified encoding.
+
+:param  pipe: the Popen pipe on what to write the text.
+:type   pipe: Popen object (file-like with write and flush methods)
+:param  text: the text to write.
+:type   text: string or list of strings
+:param  flushsequence: lines of tokens to ensure flush by TreeTagger.
+:type   flushsequence: string (with \n between tokens)
+:param  encoding: encoding of texts written on the pipe.
+:type   encoding: str
+:param  errors: how to manage encoding errors: strict/ignore/replace,
+                default to strict as Python standard.
+:type  errors: str
+
+</pre>
   <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>pipe</code></strong> (Popen object (file-like with write and flush methods)) - the Popen pipe on what to write the text.</li>
-        <li><strong class="pname"><code>text</code></strong> (string or list of strings) - the text to write.</li>
-        <li><strong class="pname"><code>flushsequence</code></strong> (string (with n between tokens)) - lines of tokens to ensure flush by TreeTagger.</li>
-        <li><strong class="pname"><code>encoding</code></strong> (str) - encoding of texts written on the pipe.</li>
-        <li><strong class="pname"><code>errors</code></strong> (str) - how to manage encoding errors: strict/ignore/replace,
-default to strict as Python standard.</li>
-    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1083,14 +1098,16 @@ default to strict as Python standard.</li>
     </td>
   </tr></table>
   
-  Split a text between SGML-tags and non-SGML-tags parts.
+  <pre class="literalblock">
+Split a text between SGML-tags and non-SGML-tags parts.
+
+:param  text: the text to split.
+:type  text: string
+:return: List of parts in their apparition order.
+:rtype: list of string.
+
+</pre>
   <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>text</code></strong> (string) - the text to split.</li>
-    </ul></dd>
-    <dt>Returns: list of string.</dt>
-        <dd>List of parts in their apparition order.</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1108,10 +1125,14 @@ default to strict as Python standard.</li>
     </td>
   </tr></table>
   
-  <p>Setup logging module output.</p>
-<p>This setup a log file which register logs, and also dump logs to stdout.
+  <pre class="literalblock">
+Setup logging module output.
+
+This setup a log file which register logs, and also dump logs to stdout.
 You can just copy/paste and adapt it to make logging write to your own log
-files.</p>
+files.
+
+</pre>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -1132,16 +1153,20 @@ files.</p>
     </td>
   </tr></table>
   
-  Build translation table for use with unicode.translate().
+  <pre class="literalblock">
+Build translation table for use with unicode.translate().
+
+:param s1: string of characters to replace.
+:type s1: unicode
+:param s2: string of replacement characters (same order as in s1).
+:type s2: unicode
+:param todel: string of characters to remove.
+:type todel: unicode
+:return: translation table with character code -&gt; character code.
+:rtype: dict
+
+</pre>
   <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>s1</code></strong> (unicode) - string of characters to replace.</li>
-        <li><strong class="pname"><code>s2</code></strong> (unicode) - string of replacement characters (same order as in s1).</li>
-        <li><strong class="pname"><code>todel</code></strong> (unicode) - string of characters to remove.</li>
-    </ul></dd>
-    <dt>Returns: dict</dt>
-        <dd>translation table with character code -&gt; character code.</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1583,7 +1608,7 @@ a6/\(\)\[\]\{\}&lt;&gt;\xab\xbb\x8b\x9b\x93\x94\xb4`\x91\x92\x88\xa8\x84&amp;~=#
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:19 2013
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:05 2016
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
