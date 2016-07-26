@@ -61,10 +61,96 @@ object --+
 </pre>
 
 <hr />
-<p>Wrap TreeTagger binary to optimize its usage on multiple texts.</p>
-<p>The two main methods you may use are the L{__init__()} initializer,
+<pre class="literalblock">
+Wrap TreeTagger binary to optimize its usage on multiple texts.
+
+The two main methods you may use are the L{__init__()} initializer,
 and the L{TagText()} method to process your data and get TreeTagger
-output results.</p>
+output results.
+
+:ivar   lang: langage supported by this tagger ('en', 'fr', 'de', 'es).
+:type   lang: string
+:ivar   langsupport: dictionnary of langage specific values (ref. to
+                    g_langsupport[lang] dictionnary).
+:type   langsupport: dict
+:ivar   tagdir: path to directory of installation of TreeTagger.
+                Set via TAGDIR env. var or construction param.
+:type   tagdir: string
+:ivar   tagbindir: path to binary dir into TreeTagger dir.
+:type   tagbindir: string
+:ivar   tagcmddir: path to commands dir into TreeTagger dir.
+:type   tagcmddir: string
+:ivar   taglibdir: path to libraries dir into TreeTagger dir.
+:type   taglibdir: string
+:ivar   tagbin: path to TreeTagger binary file (used to launch process).
+:type   tagbin: string
+:ivar   tagopt: command line options for TreeTagger.
+:type   tagopt: string
+:ivar   tagparfile: path to TreeTagger library file.
+:type   tagparfile: string
+:ivar   abbrevfile: path to abbreviations file.
+:type   abbrevfile: string
+:ivar   taginencoding: encoding to use for TreeTagger input encoding.
+:type   taginencoding: str
+:ivar   tagoutencoding: encoding to use for TreeTagger output decoding.
+:type   tagoutencoding: str
+:ivar   taginencerr: management of encoding errors for TreeTagger input.
+:type   taginencerr: str
+:ivar   tagoutencerr: management of encoding errors for TreeTagger output.
+:type   tagoutencerr: str
+:ivar   abbterms: dictionnary of abbreviation terms for fast lookup.
+                Filled when reading abbreviations file.
+:type   abbterms: dict  [ form ] ==&gt; term
+:ivar   pchar: characters which have to be cut off at the beginning of
+            a word.
+            Filled from g_langsupport dict.
+:type   pchar: string
+:ivar   pchar_re: regular expression object to cut-off such chars.
+:type   pchar_re: SRE_Pattern
+:ivar   fchar: characters which have to be cut off at the end of a word.
+            Filled from g_langsupport dict.
+:type   fchar: string
+:ivar   fchar_re: regular expression object to cut-off such chars.
+:type   fchar_re: SRE_Pattern
+:ivar   pclictic: character sequences which have to be cut off at the
+                beginning of a word.
+                Filled from g_langsupport dict.
+:type   pclictic: string
+:ivar   pclictic_re: regular expression object to cut-off pclictic
+                    sequences.
+:type   pclictic_re: SRE_Pattern
+:ivar   fclictic: character sequences which have to be cut off at the end
+                of a word.
+                Filled from g_langsupport dict.
+:type   fclictic: string
+:ivar   fclictic_re: regular expression object to cut-off fclictic
+                    sequences.
+:type   fclictic_re: SRE_Pattern
+:ivar   number: regular expression of number recognition for the langage.
+                Filled from g_langsupport dict.
+:type   number: string
+:ivar   number_re: regular expression object to identify numbers.
+:type   number_re: SRE_Pattern
+:ivar   dummysequence: just a small but complete sentence in the langage.
+                    Filled from g_langsupport dict.
+:type   dummysequence: string
+:ivar   replurlexp: regular expression subtitution string for URLs.
+:type   replurlexp: string
+:ivar   replemailexp: regular expression subtitution string for emails.
+:type   replemailexp: string
+:ivar   replipexp: regular expression subtitution string for IP addresses.
+:type   replipexp: string
+:ivar   repldnsexp: regular expression subtitution string for DNS names.
+:type   repldnsexp: string
+:ivar   tagpopen: TreeTagger process control tool.
+:type   tagpopen: Popen
+:ivar   taginput: pipe to write to TreeTagger input. Set whe opening pipe.
+:type   taginput: write stream
+:ivar   tagoutput: pipe to read from TreeTagger input. Set whe opening
+                pipe.
+:type   tagoutput: read stream
+
+</pre>
 
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
@@ -85,7 +171,7 @@ output results.</p>
 </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">[ unicode ]</span>
+      <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -103,7 +189,7 @@ output results.</p>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">[ unicode ]</span>
+      <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -198,7 +284,7 @@ output results.</p>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">[ string ]</span>
+      <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -278,303 +364,6 @@ output results.</p>
     </td>
   </tr>
 </table>
-<!-- ==================== INSTANCE VARIABLES ==================== -->
-<a name="section-InstanceVariables"></a>
-<table class="summary" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Instance Variables</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-InstanceVariables"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
-</tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="abbrevfile"></a><span class="summary-name">abbrevfile</span><br />
-      path to abbreviations file.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">dict  [ form ] ==&gt; term</span>
-    </td><td class="summary">
-        <a name="abbterms"></a><span class="summary-name">abbterms</span><br />
-      dictionnary of abbreviation terms for fast lookup.
-Filled when reading abbreviations file.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="dummysequence"></a><span class="summary-name">dummysequence</span><br />
-      just a small but complete sentence in the langage.
-Filled from g_langsupport dict.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="fchar"></a><span class="summary-name">fchar</span><br />
-      characters which have to be cut off at the end of a word.
-Filled from g_langsupport dict.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">SRE_Pattern</span>
-    </td><td class="summary">
-        <a name="fchar_re"></a><span class="summary-name">fchar_re</span><br />
-      regular expression object to cut-off such chars.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="fclictic"></a><span class="summary-name">fclictic</span><br />
-      character sequences which have to be cut off at the end
-of a word.
-Filled from g_langsupport dict.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">SRE_Pattern</span>
-    </td><td class="summary">
-        <a name="fclictic_re"></a><span class="summary-name">fclictic_re</span><br />
-      regular expression object to cut-off fclictic
-sequences.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="lang"></a><span class="summary-name">lang</span><br />
-      langage supported by this tagger ('en', 'fr', 'de', 'es).
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">dict</span>
-    </td><td class="summary">
-        <a name="langsupport"></a><span class="summary-name">langsupport</span><br />
-      dictionnary of langage specific values (ref. to
-g_langsupport[lang] dictionnary).
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="number"></a><span class="summary-name">number</span><br />
-      regular expression of number recognition for the langage.
-Filled from g_langsupport dict.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">SRE_Pattern</span>
-    </td><td class="summary">
-        <a name="number_re"></a><span class="summary-name">number_re</span><br />
-      regular expression object to identify numbers.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="pchar"></a><span class="summary-name">pchar</span><br />
-      characters which have to be cut off at the beginning of
-a word.
-Filled from g_langsupport dict.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">SRE_Pattern</span>
-    </td><td class="summary">
-        <a name="pchar_re"></a><span class="summary-name">pchar_re</span><br />
-      regular expression object to cut-off such chars.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="pclictic"></a><span class="summary-name">pclictic</span><br />
-      character sequences which have to be cut off at the
-beginning of a word.
-Filled from g_langsupport dict.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">SRE_Pattern</span>
-    </td><td class="summary">
-        <a name="pclictic_re"></a><span class="summary-name">pclictic_re</span><br />
-      regular expression object to cut-off pclictic
-sequences.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="repldnsexp"></a><span class="summary-name">repldnsexp</span><br />
-      regular expression subtitution string for DNS names.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="replemailexp"></a><span class="summary-name">replemailexp</span><br />
-      regular expression subtitution string for emails.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="replipexp"></a><span class="summary-name">replipexp</span><br />
-      regular expression subtitution string for IP addresses.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="replurlexp"></a><span class="summary-name">replurlexp</span><br />
-      regular expression subtitution string for URLs.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="tagbin"></a><span class="summary-name">tagbin</span><br />
-      path to TreeTagger binary file (used to launch process).
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="tagbindir"></a><span class="summary-name">tagbindir</span><br />
-      path to binary dir into TreeTagger dir.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="tagcmddir"></a><span class="summary-name">tagcmddir</span><br />
-      path to commands dir into TreeTagger dir.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="tagdir"></a><span class="summary-name">tagdir</span><br />
-      path to directory of installation of TreeTagger.
-Set via TAGDIR env. var or construction param.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">str</span>
-    </td><td class="summary">
-        <a name="taginencerr"></a><span class="summary-name">taginencerr</span><br />
-      management of encoding errors for TreeTagger input.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">str</span>
-    </td><td class="summary">
-        <a name="taginencoding"></a><span class="summary-name">taginencoding</span><br />
-      encoding to use for TreeTagger input encoding.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">write stream</span>
-    </td><td class="summary">
-        <a name="taginput"></a><span class="summary-name">taginput</span><br />
-      pipe to write to TreeTagger input. Set whe opening pipe.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="taglibdir"></a><span class="summary-name">taglibdir</span><br />
-      path to libraries dir into TreeTagger dir.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="tagopt"></a><span class="summary-name">tagopt</span><br />
-      command line options for TreeTagger.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">str</span>
-    </td><td class="summary">
-        <a name="tagoutencerr"></a><span class="summary-name">tagoutencerr</span><br />
-      management of encoding errors for TreeTagger output.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">str</span>
-    </td><td class="summary">
-        <a name="tagoutencoding"></a><span class="summary-name">tagoutencoding</span><br />
-      encoding to use for TreeTagger output decoding.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">read stream</span>
-    </td><td class="summary">
-        <a name="tagoutput"></a><span class="summary-name">tagoutput</span><br />
-      pipe to read from TreeTagger input. Set whe opening
-pipe.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">string</span>
-    </td><td class="summary">
-        <a name="tagparfile"></a><span class="summary-name">tagparfile</span><br />
-      path to TreeTagger library file.
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">Popen</span>
-    </td><td class="summary">
-        <a name="tagpopen"></a><span class="summary-name">tagpopen</span><br />
-      TreeTagger process control tool.
-    </td>
-  </tr>
-</table>
 <!-- ==================== PROPERTIES ==================== -->
 <a name="section-Properties"></a>
 <table class="summary" border="1" cellpadding="3"
@@ -633,15 +422,18 @@ pipe.
     </td>
   </tr></table>
   
-  <p>Prepare a basic text.</p>
-<p>Prepare non-SGML text parts.</p>
+  <pre class="literalblock">
+Prepare a basic text.
+
+Prepare non-SGML text parts.
+
+:param  text: unicode text of part to process.
+:type   text: unicode
+:return: List of lines to process as TreeTagger input.
+:rtype: [ unicode ]
+
+</pre>
   <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>text</code></strong> (unicode) - unicode text of part to process.</li>
-    </ul></dd>
-    <dt>Returns: [ unicode ]</dt>
-        <dd>List of lines to process as TreeTagger input.</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -666,23 +458,31 @@ pipe.
     </td>
   </tr></table>
   
-  Prepare a text for processing by TreeTagger.
+  <pre class="literalblock">
+Prepare a text for processing by TreeTagger.
+
+:param  text: the text to split into base elements.
+:type   text: unicode   /   [ unicode ]
+:param  tagblanks: transform blanks chars into SGML tags.
+:type   tagblanks: boolean
+:param  numlines: indicator to pur tag for line numbering.
+:type   numlines: boolean
+:param  notagurl: indicator to not do URL replacement (default to False).
+:type   notagurl: boolean
+:param  notagemail: indicator to not do email address replacement
+                    (default to False).
+:type   notagemail: boolean
+:param  notagip: indicator to not do IP address replacement (default
+                 to False).
+:type   notagip: boolean
+:param  notagdns: indicator to not do DNS names replacement (default
+                  to False).
+:type   notagdns: boolean
+:return: List of lines to process as TreeTagger input (no \n at end of line).
+:rtype: [ unicode ]
+
+</pre>
   <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>text</code></strong> (unicode   /   [ unicode ]) - the text to split into base elements.</li>
-        <li><strong class="pname"><code>tagblanks</code></strong> (boolean) - transform blanks chars into SGML tags.</li>
-        <li><strong class="pname"><code>numlines</code></strong> (boolean) - indicator to pur tag for line numbering.</li>
-        <li><strong class="pname"><code>notagurl</code></strong> (boolean) - indicator to not do URL replacement (default to False).</li>
-        <li><strong class="pname"><code>notagemail</code></strong> (boolean) - indicator to not do email address replacement
-(default to False).</li>
-        <li><strong class="pname"><code>notagip</code></strong> (boolean) - indicator to not do IP address replacement (default
-to False).</li>
-        <li><strong class="pname"><code>notagdns</code></strong> (boolean) - indicator to not do DNS names replacement (default
-to False).</li>
-    </ul></dd>
-    <dt>Returns: [ unicode ]</dt>
-        <dd>List of lines to process as TreeTagger input (no n at end of line).</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -701,8 +501,12 @@ to False).</li>
     </td>
   </tr></table>
   
-  <p>Set langage for tagger.</p>
-<p>Internal use.</p>
+  <pre class="literalblock">
+Set langage for tagger.
+
+Internal use.
+
+</pre>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -722,8 +526,12 @@ to False).</li>
     </td>
   </tr></table>
   
-  <p>Set preprocessing files, and options.</p>
-<p>Internal use.</p>
+  <pre class="literalblock">
+Set preprocessing files, and options.
+
+Internal use.
+
+</pre>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -743,8 +551,12 @@ to False).</li>
     </td>
   </tr></table>
   
-  <p>Set tagger paths, files, and options.</p>
-<p>Internal use.</p>
+  <pre class="literalblock">
+Set tagger paths, files, and options.
+
+Internal use.
+
+</pre>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -763,8 +575,12 @@ to False).</li>
     </td>
   </tr></table>
   
-  <p>Start TreeTagger processing chain.</p>
-<p>Internal use.</p>
+  <pre class="literalblock">
+Start TreeTagger processing chain.
+
+Internal use.
+
+</pre>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -794,41 +610,54 @@ to False).</li>
     </td>
   </tr></table>
   
-  <p>Tag a text and return corresponding lines.</p>
-<p>This is normally the method you use on this class. Other methods
-are only helpers of this one.</p>
+  <pre class="literalblock">
+Tag a text and return corresponding lines.
+
+This is normally the method you use on this class. Other methods
+are only helpers of this one.
+
+:param  text: the text to tag.
+:type   text: string   /   [ string ]
+:param  numlines: indicator to keep line numbering information in
+                  data flow (done via SGML tags) (default to False).
+:type   numlines: boolean
+:param  tagonly: indicator to only do TreeTagger tagging processing
+                 on input (default to False).
+:type   tagonly: boolesn
+:param  prepronly: indicator to only do preprocessing of text without
+                   tagging (default to False).
+:type   prepronly: boolean
+:param  tagblanks: indicator to keep blanks characters information in
+                   data flow (done via SGML tags) (default to False).
+:type   tagblanks: boolean
+:param  notagurl: indicator to not do URL replacement (default to False).
+:type   notagurl: boolean
+:param  notagemail: indicator to not do email address replacement
+                    (default to False).
+:type   notagemail: boolean
+:param  notagip: indicator to not do IP address replacement (default
+                 to False).
+:type   notagip: boolean
+:param  notagdns: indicator to not do DNS names replacement (default
+                  to False).
+:type   notagdns: boolean
+:param encoding: encoding of input data (default to latin1 for C{str}
+                 text and unicode for C{unicode} text), usable values
+                 are standard encodings + C{&quot;unicode&quot;} and C{unicode}
+                 type.
+                 Mandatory if text is a C{list} or C{tuple} of
+                 strings.
+:type encoding: C{str}
+:param errors: indicator how to manage encoding/decoding errors for
+               your data, can be strict / replace / ignore (default
+               to strict).
+:type errors: C{str}
+:return: List of output lines from the tagger, unicode or str
+         strings.
+:rtype:  [ string ]
+
+</pre>
   <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>text</code></strong> (string   /   [ string ]) - the text to tag.</li>
-        <li><strong class="pname"><code>numlines</code></strong> (boolean) - indicator to keep line numbering information in
-data flow (done via SGML tags) (default to False).</li>
-        <li><strong class="pname"><code>tagonly</code></strong> (boolesn) - indicator to only do TreeTagger tagging processing
-on input (default to False).</li>
-        <li><strong class="pname"><code>prepronly</code></strong> (boolean) - indicator to only do preprocessing of text without
-tagging (default to False).</li>
-        <li><strong class="pname"><code>tagblanks</code></strong> (boolean) - indicator to keep blanks characters information in
-data flow (done via SGML tags) (default to False).</li>
-        <li><strong class="pname"><code>notagurl</code></strong> (boolean) - indicator to not do URL replacement (default to False).</li>
-        <li><strong class="pname"><code>notagemail</code></strong> (boolean) - indicator to not do email address replacement
-(default to False).</li>
-        <li><strong class="pname"><code>notagip</code></strong> (boolean) - indicator to not do IP address replacement (default
-to False).</li>
-        <li><strong class="pname"><code>notagdns</code></strong> (boolean) - indicator to not do DNS names replacement (default
-to False).</li>
-        <li><strong class="pname"><code>encoding</code></strong> (C{str}) - encoding of input data (default to latin1 for C{str}
-text and unicode for C{unicode} text), usable values
-are standard encodings + C{&quot;unicode&quot;} and C{unicode}
-type.
-Mandatory if text is a C{list} or C{tuple} of
-strings.</li>
-        <li><strong class="pname"><code>errors</code></strong> (C{str}) - indicator how to manage encoding/decoding errors for
-your data, can be strict / replace / ignore (default
-to strict).</li>
-    </ul></dd>
-    <dt>Returns: [ string ]</dt>
-        <dd>List of output lines from the tagger, unicode or str
-strings.</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -847,8 +676,12 @@ strings.</dd>
     </td>
   </tr></table>
   
-  <p>Wrapper to be deleted.</p>
-<p>Cut links with TreeTagger process.</p>
+  <pre class="literalblock">
+Wrapper to be deleted.
+
+Cut links with TreeTagger process.
+
+</pre>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -869,37 +702,49 @@ strings.</dd>
     </td>
   </tr></table>
   
-  <p>Construction of a wrapper for a TreeTagger process.</p>
-<p>You can specify several parameters at construction time.
+  <pre class="literalblock">
+
+Construction of a wrapper for a TreeTagger process.
+
+You can specify several parameters at construction time.
 These parameters can be set via environment variables too.
-Most of them have default values.</p>
+Most of them have default values.
+
+:keyword TAGLANG: langage code for texts ('en','fr',...)
+                  (default to 'en').
+:type   TAGLANG: string
+:keyword  TAGDIR: path to TreeTagger installation directory
+                  (optionnal but highly recommended).
+:type   TAGDIR: string
+:keyword  TAGOPT: options for TreeTagger
+                  (default to '-token -lemma -sgml -quiet').
+:type   TAGOPT: string
+:keyword  TAGPARFILE: parameter file for TreeTagger.
+                      (default available for supported langages).
+                      Use value None to force use of default if
+                      environment variable define a value you dont wants
+                      to use.
+:type   TAGPARFILE: string
+:keyword  TAGABBREV: abbreviation file for preprocessing.
+                     (default available for supported langages).
+:type   TAGABBREV: string
+:keyword TAGINENC: encoding to use for TreeTagger input, default
+                   to latin1.
+:type TAGINENC:    str
+:keyword TAGOUTENC: encoding to use for TreeTagger output, default
+                    to latin1
+:type TAGOUTENC:    str
+:keyword TAGINENCERR: management of encoding errors for TreeTagger
+                      input, strict or ignore or replace -
+                      default to replace.
+:type TAGINENCERR:    str
+:keyword TAGOUTENCERR: management of encoding errors for TreeTagger
+                       output, strict or ignore or replace -
+                       default to replace.
+:type TAGOUTENCERR:    str
+
+</pre>
   <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>TAGLANG</code></strong> (string) - langage code for texts ('en','fr',...)
-(default to 'en').</li>
-        <li><strong class="pname"><code>TAGDIR</code></strong> (string) - path to TreeTagger installation directory
-(optionnal but highly recommended).</li>
-        <li><strong class="pname"><code>TAGOPT</code></strong> (string) - options for TreeTagger
-(default to '-token -lemma -sgml -quiet').</li>
-        <li><strong class="pname"><code>TAGPARFILE</code></strong> (string) - parameter file for TreeTagger.
-(default available for supported langages).
-Use value None to force use of default if
-environment variable define a value you dont wants
-to use.</li>
-        <li><strong class="pname"><code>TAGABBREV</code></strong> (string) - abbreviation file for preprocessing.
-(default available for supported langages).</li>
-        <li><strong class="pname"><code>TAGINENC</code></strong> (str) - encoding to use for TreeTagger input, default
-to latin1.</li>
-        <li><strong class="pname"><code>TAGOUTENC</code></strong> (str) - encoding to use for TreeTagger output, default
-to latin1</li>
-        <li><strong class="pname"><code>TAGINENCERR</code></strong> (str) - management of encoding errors for TreeTagger
-input, strict or ignore or replace -
-default to replace.</li>
-        <li><strong class="pname"><code>TAGOUTENCERR</code></strong> (str) - management of encoding errors for TreeTagger
-output, strict or ignore or replace -
-default to replace.</li>
-    </ul></dd>
     <dt>Overrides:
         object.__init__
     </dt>
@@ -930,7 +775,7 @@ default to replace.</li>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 14:37:20 2013
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:05 2016
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

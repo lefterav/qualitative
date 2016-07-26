@@ -27,12 +27,7 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -78,8 +73,8 @@
 <a name="FreqCaser.isZipFile"></a><div id="FreqCaser.isZipFile-def"><a name="L18"></a><tt class="py-lineno">18</tt> <a class="py-toggle" href="#" id="FreqCaser.isZipFile-toggle" onclick="return toggle('FreqCaser.isZipFile');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="util.freqcaser.FreqCaser-class.html#isZipFile">isZipFile</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">fname</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
 </div><div id="FreqCaser.isZipFile-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="FreqCaser.isZipFile-expanded"><a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">        <tt class="py-name">fp</tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">fname</tt><tt class="py-op">,</tt> <tt class="py-string">"rb"</tt><tt class="py-op">)</tt> </tt>
 <a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">        <tt class="py-name">magic</tt> <tt class="py-op">=</tt> <tt class="py-name">fp</tt><tt class="py-op">.</tt><tt class="py-name">read</tt><tt class="py-op">(</tt><tt class="py-number">2</tt><tt class="py-op">)</tt> </tt>
-<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">        <tt class="py-name">fp</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Method dataprocessor.sax.saxps2jcml.IncrementalJcml.close()=dataprocessor.sax.saxps2jcml.IncrementalJcml-class.html#close,Method featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close()=featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html#close,Method featuregenerator.preprocessor.CommandlinePreprocessor.close()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#close,Method support.preprocessing.jcml.jcml2arff.ArffWriter.close()=support.preprocessing.jcml.jcml2arff.ArffWriter-class.html#close"><a title="dataprocessor.sax.saxps2jcml.IncrementalJcml.close
-featuregenerator.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">        <tt class="py-name">fp</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Method dataprocessor.sax.saxps2jcml.IncrementalJcml.close()=dataprocessor.sax.saxps2jcml.IncrementalJcml-class.html#close,Method featuregenerator.blackbox.languagechecker.languagetool.LanguageToolFeatureGenerator.close()=featuregenerator.blackbox.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html#close,Method featuregenerator.preprocessor.CommandlinePreprocessor.close()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#close,Method support.preprocessing.jcml.jcml2arff.ArffWriter.close()=support.preprocessing.jcml.jcml2arff.ArffWriter-class.html#close"><a title="dataprocessor.sax.saxps2jcml.IncrementalJcml.close
+featuregenerator.blackbox.languagechecker.languagetool.LanguageToolFeatureGenerator.close
 featuregenerator.preprocessor.CommandlinePreprocessor.close
 support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-4', 'close', 'link-4');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
 <a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">magic</tt> <tt class="py-op">==</tt> <tt class="py-string">'\x1f\x8b'</tt> </tt>
@@ -123,7 +118,7 @@ ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclic
 <a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">        <tt class="py-name">caseDict</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
 <a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">d</tt> <tt class="py-keyword">in</tt> <tt class="py-name">allDict</tt><tt class="py-op">.</tt><tt class="py-name">iteritems</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
 <a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">            <tt class="py-name">keysWithFreq</tt> <tt class="py-op">=</tt> <tt class="py-name">d</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">items</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line">            <tt class="py-name">keysWithFreq</tt><tt class="py-op">.</tt><tt class="py-name">sort</tt><tt class="py-op">(</tt><tt class="py-name">key</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">:</tt> <tt class="py-name">x</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">reverse</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line">            <tt class="py-name">keysWithFreq</tt><tt class="py-op">.</tt><tt class="py-name">sort</tt><tt class="py-op">(</tt><tt class="py-name">key</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">:</tt> <tt class="py-name">x</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt id="link-15" class="py-name" targets="Method sentence.ranking.Ranking.reverse()=sentence.ranking.Ranking-class.html#reverse"><a title="sentence.ranking.Ranking.reverse" class="py-name" href="#" onclick="return doclink('link-15', 'reverse', 'link-15');">reverse</a></tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
 <a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">            <tt class="py-name">caseDict</tt><tt class="py-op">[</tt><tt class="py-name">d</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">keysWithFreq</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
 <a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line">     </tt>
 <a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">caseDict</tt> </tt>
@@ -135,23 +130,23 @@ ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclic
 </div><div id="FreqCaser.freqcase-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="FreqCaser.freqcase-expanded"><a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line">        <tt class="py-name">words</tt> <tt class="py-op">=</tt> <tt class="py-name">PunktWordTokenizer</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">tokenize</tt><tt class="py-op">(</tt><tt class="py-name">string</tt><tt class="py-op">)</tt> </tt>
 <a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line">        <tt class="py-name">beginningOfSentence</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
 <a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line">        <tt class="py-name">cased_words</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
-<a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt id="link-15" class="py-name"><a title="ml.var.extract_liblinear_weights.w
-ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclick="return doclink('link-15', 'w', 'link-7');">w</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">words</tt><tt class="py-op">:</tt> </tt>
+<a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt id="link-16" class="py-name"><a title="ml.var.extract_liblinear_weights.w
+ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclick="return doclink('link-16', 'w', 'link-7');">w</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">words</tt><tt class="py-op">:</tt> </tt>
 <a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line"> </tt>
-<a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line">            <tt class="py-name">lowerW</tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name"><a title="ml.var.extract_liblinear_weights.w
-ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclick="return doclink('link-16', 'w', 'link-7');">w</a></tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line">            <tt class="py-name">lowerW</tt> <tt class="py-op">=</tt> <tt id="link-17" class="py-name"><a title="ml.var.extract_liblinear_weights.w
+ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclick="return doclink('link-17', 'w', 'link-7');">w</a></tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
 <a name="L70"></a><tt class="py-lineno">70</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">caseDict</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-name">lowerW</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
 <a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line">                <tt class="py-name">cased_words</tt><tt class="py-op">.</tt><tt class="py-name">append</tt> <tt class="py-op">(</tt> <tt class="py-string">"%s "</tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">caseDict</tt><tt class="py-op">[</tt><tt class="py-name">lowerW</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">encode</tt><tt class="py-op">(</tt><tt class="py-string">"utf-8"</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
 <a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
-<a name="L73"></a><tt class="py-lineno">73</tt>  <tt class="py-line">                <tt class="py-name">cased_words</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-string">"%s "</tt> <tt class="py-op">%</tt> <tt id="link-17" class="py-name"><a title="ml.var.extract_liblinear_weights.w
-ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclick="return doclink('link-17', 'w', 'link-7');">w</a></tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">encode</tt><tt class="py-op">(</tt><tt class="py-string">"utf-8"</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-<a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-18" class="py-name"><a title="ml.var.extract_liblinear_weights.w
-ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclick="return doclink('link-18', 'w', 'link-7');">w</a></tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">dontChangeBeginningOfSentence</tt><tt class="py-op">:</tt> </tt>
-<a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line">                <tt class="py-name">beginningOfSentence</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt id="link-19" class="py-name"><a title="ml.var.extract_liblinear_weights.w
-ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclick="return doclink('link-19', 'w', 'link-7');">w</a></tt> <tt class="py-op">==</tt> <tt class="py-string">"."</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-op">(</tt><tt id="link-20" class="py-name"><a title="ml.var.extract_liblinear_weights.w
-ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclick="return doclink('link-20', 'w', 'link-7');">w</a></tt> <tt class="py-op">==</tt> <tt class="py-string">"?"</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-op">(</tt><tt id="link-21" class="py-name"><a title="ml.var.extract_liblinear_weights.w
-ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclick="return doclink('link-21', 'w', 'link-7');">w</a></tt> <tt class="py-op">==</tt> <tt class="py-string">"!"</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-op">(</tt><tt id="link-22" class="py-name"><a title="ml.var.extract_liblinear_weights.w
-ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclick="return doclink('link-22', 'w', 'link-7');">w</a></tt> <tt class="py-op">==</tt> <tt class="py-string">"#"</tt><tt class="py-op">)</tt> <tt class="py-comment"># \# for mrefs</tt> </tt>
+<a name="L73"></a><tt class="py-lineno">73</tt>  <tt class="py-line">                <tt class="py-name">cased_words</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-string">"%s "</tt> <tt class="py-op">%</tt> <tt id="link-18" class="py-name"><a title="ml.var.extract_liblinear_weights.w
+ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclick="return doclink('link-18', 'w', 'link-7');">w</a></tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">encode</tt><tt class="py-op">(</tt><tt class="py-string">"utf-8"</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-19" class="py-name"><a title="ml.var.extract_liblinear_weights.w
+ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclick="return doclink('link-19', 'w', 'link-7');">w</a></tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">dontChangeBeginningOfSentence</tt><tt class="py-op">:</tt> </tt>
+<a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line">                <tt class="py-name">beginningOfSentence</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt id="link-20" class="py-name"><a title="ml.var.extract_liblinear_weights.w
+ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclick="return doclink('link-20', 'w', 'link-7');">w</a></tt> <tt class="py-op">==</tt> <tt class="py-string">"."</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-op">(</tt><tt id="link-21" class="py-name"><a title="ml.var.extract_liblinear_weights.w
+ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclick="return doclink('link-21', 'w', 'link-7');">w</a></tt> <tt class="py-op">==</tt> <tt class="py-string">"?"</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-op">(</tt><tt id="link-22" class="py-name"><a title="ml.var.extract_liblinear_weights.w
+ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclick="return doclink('link-22', 'w', 'link-7');">w</a></tt> <tt class="py-op">==</tt> <tt class="py-string">"!"</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-op">(</tt><tt id="link-23" class="py-name"><a title="ml.var.extract_liblinear_weights.w
+ml.var.extract_linear_regression_coefficients.w" class="py-name" href="#" onclick="return doclink('link-23', 'w', 'link-7');">w</a></tt> <tt class="py-op">==</tt> <tt class="py-string">"#"</tt><tt class="py-op">)</tt> <tt class="py-comment"># \# for mrefs</tt> </tt>
 <a name="L76"></a><tt class="py-lineno">76</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">' '</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-name">cased_words</tt><tt class="py-op">)</tt> </tt>
 </div></div><a name="L77"></a><tt class="py-lineno">77</tt>  <tt class="py-line"> </tt><script type="text/javascript">
 <!--
@@ -177,18 +172,13 @@ expandto(location.href);
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-  <!-- Project homepage -->
-      <th class="navbar" align="right" width="100%">
-        <table border="0" cellpadding="0" cellspacing="0">
-          <tr><th class="navbar" align="center"
-            >Qualitative</th>
-          </tr></table></th>
+      <th class="navbar" width="100%"></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Jul 18 11:46:17 2014
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:08 2016
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
