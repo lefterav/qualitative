@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>app.hybrid.test</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="app-module.html">Package&nbsp;app</a> ::
+        <a href="app.hybrid-module.html">Package&nbsp;hybrid</a> ::
+        Module&nbsp;test
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="app.hybrid.test-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="app.hybrid.test-module.html">Module app.hybrid.test</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-docstring">Created on 15 Feb 2015</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring">@author: lefterav</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">cPickle</tt> <tt class="py-keyword">as</tt> <tt class="py-name">pickle</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">logging</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package evaluation=evaluation-module.html"><a title="evaluation" class="py-name" href="#" onclick="return doclink('link-0', 'evaluation', 'link-0');">evaluation</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package evaluation.selection=evaluation.selection-module.html,Module mt.selection=mt.selection-module.html"><a title="evaluation.selection
+mt.selection" class="py-name" href="#" onclick="return doclink('link-1', 'selection', 'link-1');">selection</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module evaluation.ranking.set=evaluation.ranking.set-module.html,Module evaluation.selection.set=evaluation.selection.set-module.html"><a title="evaluation.ranking.set
+evaluation.selection.set" class="py-name" href="#" onclick="return doclink('link-2', 'set', 'link-2');">set</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Method app.hybrid.learn.RankingExperiment.evaluate_selection()=app.hybrid.learn.RankingExperiment-class.html#evaluate_selection,Function evaluation.selection.set.evaluate_selection()=evaluation.selection.set-module.html#evaluate_selection"><a title="app.hybrid.learn.RankingExperiment.evaluate_selection
+evaluation.selection.set.evaluate_selection" class="py-name" href="#" onclick="return doclink('link-3', 'evaluate_selection', 'link-3');">evaluate_selection</a></tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-4" class="py-name" targets="Package dataprocessor=dataprocessor-module.html"><a title="dataprocessor" class="py-name" href="#" onclick="return doclink('link-4', 'dataprocessor', 'link-4');">dataprocessor</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Package dataprocessor.ce=dataprocessor.ce-module.html,Module dataprocessor.ce.ce=dataprocessor.ce.ce-module.html"><a title="dataprocessor.ce
+dataprocessor.ce.ce" class="py-name" href="#" onclick="return doclink('link-5', 'ce', 'link-5');">ce</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Module dataprocessor.ce.cejcml=dataprocessor.ce.cejcml-module.html"><a title="dataprocessor.ce.cejcml" class="py-name" href="#" onclick="return doclink('link-6', 'cejcml', 'link-6');">cejcml</a></tt> <tt class="py-keyword">import</tt> <tt id="link-7" class="py-name" targets="Class dataprocessor.ce.cejcml.CEJcmlReader=dataprocessor.ce.cejcml.CEJcmlReader-class.html"><a title="dataprocessor.ce.cejcml.CEJcmlReader" class="py-name" href="#" onclick="return doclink('link-7', 'CEJcmlReader', 'link-7');">CEJcmlReader</a></tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-8" class="py-name" targets="Package util=util-module.html"><a title="util" class="py-name" href="#" onclick="return doclink('link-8', 'util', 'link-8');">util</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Module util.jvm=util.jvm-module.html"><a title="util.jvm" class="py-name" href="#" onclick="return doclink('link-9', 'jvm', 'link-9');">jvm</a></tt> <tt class="py-keyword">import</tt> <tt id="link-10" class="py-name" targets="Class util.jvm.JVM=util.jvm.JVM-class.html"><a title="util.jvm.JVM" class="py-name" href="#" onclick="return doclink('link-10', 'JVM', 'link-10');">JVM</a></tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">py4j</tt><tt class="py-op">.</tt><tt class="py-name">java_gateway</tt> <tt class="py-keyword">import</tt> <tt class="py-name">GatewayClient</tt><tt class="py-op">,</tt> <tt class="py-name">JavaGateway</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"> </tt>
+<a name="HybridTranslator"></a><div id="HybridTranslator-def"><a name="L14"></a><tt class="py-lineno">14</tt> <a class="py-toggle" href="#" id="HybridTranslator-toggle" onclick="return toggle('HybridTranslator');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="app.hybrid.test.HybridTranslator-class.html">HybridTranslator</a><tt class="py-op">:</tt> </tt>
+</div><div id="HybridTranslator-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="HybridTranslator-expanded"><a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">     </tt>
+<a name="HybridTranslator.__init__"></a><div id="HybridTranslator.__init__-def"><a name="L16"></a><tt class="py-lineno">16</tt> <a class="py-toggle" href="#" id="HybridTranslator.__init__-toggle" onclick="return toggle('HybridTranslator.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="app.hybrid.test.HybridTranslator-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">model_filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="HybridTranslator.__init__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="HybridTranslator.__init__-expanded"><a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Module ml.var.ranker=ml.var.ranker-module.html"><a title="ml.var.ranker" class="py-name" href="#" onclick="return doclink('link-11', 'ranker', 'link-11');">ranker</a></tt> <tt class="py-op">=</tt> <tt class="py-name">pickle</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Method dataprocessor.input.genericreader.GenericReader.load()=dataprocessor.input.genericreader.GenericReader-class.html#load,Method dataprocessor.input.genericxmlreader.GenericXmlReader.load()=dataprocessor.input.genericxmlreader.GenericXmlReader-class.html#load,Method dataprocessor.input.posteditingreader.PosteditingReader.load()=dataprocessor.input.posteditingreader.PosteditingReader-class.html#load,Method dataprocessor.input.rankreader.R2RankReader.load()=dataprocessor.input.rankreader.R2RankReader-class.html#load,Method dataprocessor.input.rankreader.RankReader.load()=dataprocessor.input.rankreader.RankReader-class.html#load,Method dataprocessor.input.xliffreader.XliffReader.load()=dataprocessor.input.xliffreader.XliffReader-class.html#load"><a title="dataprocessor.input.genericreader.GenericReader.load
+dataprocessor.input.genericxmlreader.GenericXmlReader.load
+dataprocessor.input.posteditingreader.PosteditingReader.load
+dataprocessor.input.rankreader.R2RankReader.load
+dataprocessor.input.rankreader.RankReader.load
+dataprocessor.input.xliffreader.XliffReader.load" class="py-name" href="#" onclick="return doclink('link-12', 'load', 'link-12');">load</a></tt><tt class="py-op">(</tt><tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">model_filename</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">        <tt id="link-13" class="py-name"><a title="util.jvm" class="py-name" href="#" onclick="return doclink('link-13', 'jvm', 'link-9');">jvm</a></tt> <tt class="py-op">=</tt> <tt id="link-14" class="py-name"><a title="util.jvm.JVM" class="py-name" href="#" onclick="return doclink('link-14', 'JVM', 'link-10');">JVM</a></tt><tt class="py-op">(</tt><tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">        <tt class="py-name">socket_no</tt> <tt class="py-op">=</tt> <tt id="link-15" class="py-name"><a title="util.jvm" class="py-name" href="#" onclick="return doclink('link-15', 'jvm', 'link-9');">jvm</a></tt><tt class="py-op">.</tt><tt class="py-name">socket_no</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">        <tt class="py-name">gatewayclient</tt> <tt class="py-op">=</tt> <tt class="py-name">GatewayClient</tt><tt class="py-op">(</tt><tt class="py-string">'localhost'</tt><tt class="py-op">,</tt> <tt class="py-name">socket_no</tt><tt class="py-op">)</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">        <tt id="link-16" class="py-name" targets="Variable app.autoranking.annotate_batch.gateway=app.autoranking.annotate_batch-module.html#gateway"><a title="app.autoranking.annotate_batch.gateway" class="py-name" href="#" onclick="return doclink('link-16', 'gateway', 'link-16');">gateway</a></tt> <tt class="py-op">=</tt> <tt class="py-name">JavaGateway</tt><tt class="py-op">(</tt><tt class="py-name">gatewayclient</tt><tt class="py-op">,</tt> <tt class="py-name">auto_convert</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">auto_field</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">        <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">info</tt><tt class="py-op">(</tt><tt class="py-string">"Initialized global Java gateway with pid {} in socket {}\n"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt id="link-17" class="py-name"><a title="util.jvm" class="py-name" href="#" onclick="return doclink('link-17', 'jvm', 'link-9');">jvm</a></tt><tt class="py-op">.</tt><tt class="py-name">pid</tt><tt class="py-op">,</tt> <tt class="py-name">socket_no</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name"><a title="app.autoranking.annotate_batch.gateway" class="py-name" href="#" onclick="return doclink('link-18', 'gateway', 'link-16');">gateway</a></tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name"><a title="app.autoranking.annotate_batch.gateway" class="py-name" href="#" onclick="return doclink('link-19', 'gateway', 'link-16');">gateway</a></tt> </tt>
+</div><a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">     </tt>
+<a name="HybridTranslator.rank_annotated_batch"></a><div id="HybridTranslator.rank_annotated_batch-def"><a name="L25"></a><tt class="py-lineno">25</tt> <a class="py-toggle" href="#" id="HybridTranslator.rank_annotated_batch-toggle" onclick="return toggle('HybridTranslator.rank_annotated_batch');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="app.hybrid.test.HybridTranslator-class.html#rank_annotated_batch">rank_annotated_batch</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">testset_input_filename</tt><tt class="py-op">,</tt> <tt class="py-param">testset_output_filename</tt><tt class="py-op">,</tt> <tt class="py-param">target_language</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">params</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="HybridTranslator.rank_annotated_batch-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="HybridTranslator.rank_annotated_batch-expanded"><a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">        <tt class="py-name">function</tt> <tt class="py-op">=</tt> <tt class="py-name">max</tt>  </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">        <tt class="py-name">mode</tt> <tt class="py-op">=</tt> <tt id="link-20" class="py-name" targets="Variable app.autoranking.annotate_batch.params=app.autoranking.annotate_batch-module.html#params"><a title="app.autoranking.annotate_batch.params" class="py-name" href="#" onclick="return doclink('link-20', 'params', 'link-20');">params</a></tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">"mode"</tt><tt class="py-op">,</tt> <tt class="py-string">"soft"</tt><tt class="py-op">)</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="ml.var.ranker" class="py-name" href="#" onclick="return doclink('link-21', 'ranker', 'link-11');">ranker</a></tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Method app.autoranking.learn.RankingExperiment.test()=app.autoranking.learn.RankingExperiment-class.html#test,Method app.hybrid.learn.RankingExperiment.test()=app.hybrid.learn.RankingExperiment-class.html#test,Module app.hybrid.test=app.hybrid.test-module.html,Method ml.ranking.Ranker.test()=ml.ranking.Ranker-class.html#test,Package test=test-module.html"><a title="app.autoranking.learn.RankingExperiment.test
+app.hybrid.learn.RankingExperiment.test
+app.hybrid.test
+ml.ranking.Ranker.test
+test" class="py-name" href="#" onclick="return doclink('link-22', 'test', 'link-22');">test</a></tt><tt class="py-op">(</tt><tt class="py-name">testset_input_filename</tt><tt class="py-op">,</tt> <tt class="py-string">"{}.jcml"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">testset_output_filename</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">reconstruct</tt><tt class="py-op">=</tt><tt class="py-name">mode</tt><tt class="py-op">,</tt> <tt class="py-name">new_rank_name</tt><tt class="py-op">=</tt><tt class="py-string">'rank_{}'</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">mode</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-23" class="py-name"><a title="app.autoranking.annotate_batch.params" class="py-name" href="#" onclick="return doclink('link-23', 'params', 'link-20');">params</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">        <tt class="py-comment">#testset_output_filename = "wmt14-4systems-de-en.all.selected.f.dev.jcml" </tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">        <tt class="py-name">testset</tt> <tt class="py-op">=</tt> <tt id="link-24" class="py-name"><a title="dataprocessor.ce.cejcml.CEJcmlReader" class="py-name" href="#" onclick="return doclink('link-24', 'CEJcmlReader', 'link-7');">CEJcmlReader</a></tt><tt class="py-op">(</tt><tt class="py-string">"{}.jcml"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">testset_output_filename</tt><tt class="py-op">,</tt> <tt class="py-name">all_general</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">desired_target</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-string">'system'</tt><tt class="py-op">,</tt> <tt class="py-string">'rank'</tt><tt class="py-op">,</tt> <tt class="py-string">'rank_soft'</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">all_target</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">        <tt class="py-name">refscores_soft</tt> <tt class="py-op">=</tt> <tt id="link-25" class="py-name"><a title="app.hybrid.learn.RankingExperiment.evaluate_selection
+evaluation.selection.set.evaluate_selection" class="py-name" href="#" onclick="return doclink('link-25', 'evaluate_selection', 'link-3');">evaluate_selection</a></tt><tt class="py-op">(</tt><tt class="py-name">testset</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name" targets="Method dataprocessor.ce.cejcml.CEJcmlReader.get_parallelsentences()=dataprocessor.ce.cejcml.CEJcmlReader-class.html#get_parallelsentences,Method dataprocessor.datareader.DataReader.get_parallelsentences()=dataprocessor.datareader.DataReader-class.html#get_parallelsentences,Method dataprocessor.input.genericreader.GenericReader.get_parallelsentences()=dataprocessor.input.genericreader.GenericReader-class.html#get_parallelsentences,Method dataprocessor.input.genericxmlreader.GenericXmlReader.get_parallelsentences()=dataprocessor.input.genericxmlreader.GenericXmlReader-class.html#get_parallelsentences,Method dataprocessor.input.linereader.AttributeLineReader.get_parallelsentences()=dataprocessor.input.linereader.AttributeLineReader-class.html#get_parallelsentences,Method dataprocessor.input.linereader.LineReader.get_parallelsentences()=dataprocessor.input.linereader.LineReader-class.html#get_parallelsentences,Method dataprocessor.input.posteditingreader.PosteditingReader.get_parallelsentences()=dataprocessor.input.posteditingreader.PosteditingReader-class.html#get_parallelsentences,Method dataprocessor.input.rankreader.R2RankReader.get_parallelsentences()=dataprocessor.input.rankreader.R2RankReader-class.html#get_parallelsentences,Method dataprocessor.input.rankreader.RankReader.get_parallelsentences()=dataprocessor.input.rankreader.RankReader-class.html#get_parallelsentences,Method dataprocessor.input.taraxureader.TaraXUReader.get_parallelsentences()=dataprocessor.input.taraxureader.TaraXUReader-class.html#get_parallelsentences,Method dataprocessor.input.xliffreader.XliffReader.get_parallelsentences()=dataprocessor.input.xliffreader.XliffReader-class.html#get_parallelsentences,Method dataprocessor.qtleapcsv.QtleapCSVReader.get_parallelsentences()=dataprocessor.qtleapcsv.QtleapCSVReader-class.html#get_parallelsentences,Method sentence.dataset.DataSet.get_parallelsentences()=sentence.dataset.DataSet-class.html#get_parallelsentences,Method sentence.pairwisedataset.PairwiseDataset.get_parallelsentences()=sentence.pairwisedataset.PairwiseDataset-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html#get_parallelsentences,Function support.preprocessing.jcml.manual2jcml.get_parallelsentences()=support.preprocessing.jcml.manual2jcml-module.html#get_parallelsentences"><a title="dataprocessor.ce.cejcml.CEJcmlReader.get_parallelsentences
+dataprocessor.datareader.DataReader.get_parallelsentences
+dataprocessor.input.genericreader.GenericReader.get_parallelsentences
+dataprocessor.input.genericxmlreader.GenericXmlReader.get_parallelsentences
+dataprocessor.input.linereader.AttributeLineReader.get_parallelsentences
+dataprocessor.input.linereader.LineReader.get_parallelsentences
+dataprocessor.input.posteditingreader.PosteditingReader.get_parallelsentences
+dataprocessor.input.rankreader.R2RankReader.get_parallelsentences
+dataprocessor.input.rankreader.RankReader.get_parallelsentences
+dataprocessor.input.taraxureader.TaraXUReader.get_parallelsentences
+dataprocessor.input.xliffreader.XliffReader.get_parallelsentences
+dataprocessor.qtleapcsv.QtleapCSVReader.get_parallelsentences
+sentence.dataset.DataSet.get_parallelsentences
+sentence.pairwisedataset.PairwiseDataset.get_parallelsentences
+sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences
+support.preprocessing.jcml.manual2jcml.get_parallelsentences" class="py-name" href="#" onclick="return doclink('link-26', 'get_parallelsentences', 'link-26');">get_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-name">compact</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">                                            <tt class="py-name">rank_name</tt><tt class="py-op">=</tt><tt class="py-string">"rank_soft"</tt><tt class="py-op">,</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">                                            <tt class="py-name">out_filename</tt><tt class="py-op">=</tt><tt class="py-string">"{}.soft.sel.txt"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">testset_output_filename</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">                                            <tt class="py-name">ref_filename</tt><tt class="py-op">=</tt><tt class="py-string">"{}.ref.txt"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">testset_output_filename</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">                                            <tt class="py-name">language</tt><tt class="py-op">=</tt><tt id="link-27" class="py-name" targets="Variable app.autoranking.annotate_batch.target_language=app.autoranking.annotate_batch-module.html#target_language"><a title="app.autoranking.annotate_batch.target_language" class="py-name" href="#" onclick="return doclink('link-27', 'target_language', 'link-27');">target_language</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">                                            <tt class="py-name">function</tt><tt class="py-op">=</tt><tt class="py-name">function</tt><tt class="py-op">,</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">                                            <tt id="link-28" class="py-name"><a title="app.autoranking.annotate_batch.gateway" class="py-name" href="#" onclick="return doclink('link-28', 'gateway', 'link-16');">gateway</a></tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name"><a title="app.autoranking.annotate_batch.gateway" class="py-name" href="#" onclick="return doclink('link-29', 'gateway', 'link-16');">gateway</a></tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">                                            <tt class="py-op">)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-name">refscores_soft</tt> </tt>
+</div></div><a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">         </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">     </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line"> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-30" class="py-name" targets="Variable featuregenerator.reference.meteor.meteor.MeteorGenerator.__name__=featuregenerator.reference.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.reference.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-30', '__name__', 'link-30');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">"__main__"</tt><tt class="py-op">:</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line"> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">    <tt class="py-name">loglevel</tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">INFO</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">    <tt class="py-comment">#loglevel = logging.DEBUG</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">    <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">basicConfig</tt><tt class="py-op">(</tt><tt class="py-name">level</tt><tt class="py-op">=</tt><tt class="py-name">loglevel</tt><tt class="py-op">,</tt>  </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">            <tt class="py-name">format</tt><tt class="py-op">=</tt><tt class="py-string">'%(asctime)s %(name)-12s %(levelname)-8s %(message)s'</tt><tt class="py-op">,</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">            <tt class="py-name">datefmt</tt><tt class="py-op">=</tt><tt class="py-string">'%m-%d %H:%M'</tt><tt class="py-op">)</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line"> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line"> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">    <tt class="py-name">model_filename</tt> <tt class="py-op">=</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">    <tt class="py-name">testset_input_filename</tt> <tt class="py-op">=</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">    <tt class="py-name">testset_output_filename</tt> <tt class="py-op">=</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">3</tt><tt class="py-op">]</tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line">    <tt id="link-31" class="py-name"><a title="app.autoranking.annotate_batch.target_language" class="py-name" href="#" onclick="return doclink('link-31', 'target_language', 'link-27');">target_language</a></tt> <tt class="py-op">=</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">4</tt><tt class="py-op">]</tt> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">     </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line">    <tt id="link-32" class="py-name"><a title="ml.var.ranker" class="py-name" href="#" onclick="return doclink('link-32', 'ranker', 'link-11');">ranker</a></tt> <tt class="py-op">=</tt> <tt id="link-33" class="py-name" targets="Class app.hybrid.test.HybridTranslator=app.hybrid.test.HybridTranslator-class.html,Class mt.hybrid.HybridTranslator=mt.hybrid.HybridTranslator-class.html"><a title="app.hybrid.test.HybridTranslator
+mt.hybrid.HybridTranslator" class="py-name" href="#" onclick="return doclink('link-33', 'HybridTranslator', 'link-33');">HybridTranslator</a></tt><tt class="py-op">(</tt><tt class="py-name">model_filename</tt><tt class="py-op">)</tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">    <tt id="link-34" class="py-name"><a title="ml.var.ranker" class="py-name" href="#" onclick="return doclink('link-34', 'ranker', 'link-11');">ranker</a></tt><tt class="py-op">.</tt><tt id="link-35" class="py-name" targets="Method app.hybrid.test.HybridTranslator.rank_annotated_batch()=app.hybrid.test.HybridTranslator-class.html#rank_annotated_batch"><a title="app.hybrid.test.HybridTranslator.rank_annotated_batch" class="py-name" href="#" onclick="return doclink('link-35', 'rank_annotated_batch', 'link-35');">rank_annotated_batch</a></tt><tt class="py-op">(</tt><tt class="py-name">testset_input_filename</tt><tt class="py-op">,</tt> <tt class="py-name">testset_output_filename</tt><tt class="py-op">,</tt> <tt id="link-36" class="py-name"><a title="app.autoranking.annotate_batch.target_language" class="py-name" href="#" onclick="return doclink('link-36', 'target_language', 'link-27');">target_language</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:07 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
