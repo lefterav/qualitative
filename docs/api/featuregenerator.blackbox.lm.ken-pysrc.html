@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>featuregenerator.blackbox.lm.ken</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="featuregenerator-module.html">Package&nbsp;featuregenerator</a> ::
+        <a href="featuregenerator.blackbox-module.html">Package&nbsp;blackbox</a> ::
+        <a href="featuregenerator.blackbox.lm-module.html">Package&nbsp;lm</a> ::
+        Module&nbsp;ken
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="featuregenerator.blackbox.lm.ken-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="featuregenerator.blackbox.lm.ken-module.html">Module featuregenerator.blackbox.lm.ken</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">Feature generator from Language Models via KenLM. (unimplemented)</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">Created on Aug 25, 2014</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">@author: Eleftherios Avramidis</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">kenlm</tt> <tt class="py-keyword">import</tt> <tt class="py-name">Model</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package featuregenerator=featuregenerator-module.html,Module featuregenerator.featuregenerator=featuregenerator.featuregenerator-module.html"><a title="featuregenerator
+featuregenerator.featuregenerator" class="py-name" href="#" onclick="return doclink('link-0', 'featuregenerator', 'link-0');">featuregenerator</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module featuregenerator.languagefeaturegenerator=featuregenerator.languagefeaturegenerator-module.html"><a title="featuregenerator.languagefeaturegenerator" class="py-name" href="#" onclick="return doclink('link-1', 'languagefeaturegenerator', 'link-1');">languagefeaturegenerator</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator=featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator-class.html"><a title="featuregenerator.languagefeaturegenerator.LanguageFeatureGenerator" class="py-name" href="#" onclick="return doclink('link-2', 'LanguageFeatureGenerator', 'link-2');">LanguageFeatureGenerator</a></tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">numpy</tt> <tt class="py-keyword">import</tt> <tt class="py-name">average</tt><tt class="py-op">,</tt> <tt class="py-name">std</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"> </tt>
+<a name="KenLMFeatureGenerator"></a><div id="KenLMFeatureGenerator-def"><a name="L13"></a><tt class="py-lineno"> 13</tt> <a class="py-toggle" href="#" id="KenLMFeatureGenerator-toggle" onclick="return toggle('KenLMFeatureGenerator');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="featuregenerator.blackbox.lm.ken.KenLMFeatureGenerator-class.html">KenLMFeatureGenerator</a><tt class="py-op">(</tt><tt class="py-base-class">LanguageFeatureGenerator</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="KenLMFeatureGenerator-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="KenLMFeatureGenerator-expanded"><a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line">    <tt class="py-docstring">'''</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring">    Provide ngram features by querying language model via KenLM python wrapper</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"> </tt>
+<a name="KenLMFeatureGenerator.__init__"></a><div id="KenLMFeatureGenerator.__init__-def"><a name="L18"></a><tt class="py-lineno"> 18</tt> <a class="py-toggle" href="#" id="KenLMFeatureGenerator.__init__-toggle" onclick="return toggle('KenLMFeatureGenerator.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.blackbox.lm.ken.KenLMFeatureGenerator-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">lang</tt><tt class="py-op">,</tt> <tt class="py-param">filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="KenLMFeatureGenerator.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="KenLMFeatureGenerator.__init__-expanded"><a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">        <tt class="py-docstring">'''</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">        Load the model</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-docstring">        '''</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">model</tt> <tt class="py-op">=</tt> <tt class="py-name">Model</tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">lang</tt> <tt class="py-op">=</tt> <tt class="py-name">lang</tt> </tt>
+</div><a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">         </tt>
+<a name="KenLMFeatureGenerator.get_features_string"></a><div id="KenLMFeatureGenerator.get_features_string-def"><a name="L25"></a><tt class="py-lineno"> 25</tt> <a class="py-toggle" href="#" id="KenLMFeatureGenerator.get_features_string-toggle" onclick="return toggle('KenLMFeatureGenerator.get_features_string');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.blackbox.lm.ken.KenLMFeatureGenerator-class.html#get_features_string">get_features_string</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">string</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="KenLMFeatureGenerator.get_features_string-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="KenLMFeatureGenerator.get_features_string-expanded"><a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">        <tt class="py-name">total_score</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">model</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Function app.autoranking.decode_batch.score()=app.autoranking.decode_batch-module.html#score,Function app.autoranking.optsuite.score()=app.autoranking.optsuite-module.html#score,Function app.autoranking.suite.score()=app.autoranking.suite-module.html#score,Method featuregenerator.reference.meteor.meteor.MeteorGenerator.score()=featuregenerator.reference.meteor.meteor.MeteorGenerator-class.html#score"><a title="app.autoranking.decode_batch.score
+app.autoranking.optsuite.score
+app.autoranking.suite.score
+featuregenerator.reference.meteor.meteor.MeteorGenerator.score" class="py-name" href="#" onclick="return doclink('link-3', 'score', 'link-3');">score</a></tt><tt class="py-op">(</tt><tt class="py-name">string</tt><tt class="py-op">,</tt> <tt class="py-name">bos</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">eos</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">        <tt class="py-name">partial_scores</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">model</tt><tt class="py-op">.</tt><tt class="py-name">full_scores</tt><tt class="py-op">(</tt><tt class="py-name">string</tt><tt class="py-op">,</tt> <tt class="py-name">bos</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">eos</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">        <tt class="py-name">ngram_lengths</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">        <tt class="py-name">probs</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">        <tt class="py-name">unk_count</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">        <tt class="py-name">unk_pos</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">        <tt class="py-name">unk_tokens</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">        <tt class="py-name">tokens</tt> <tt class="py-op">=</tt> <tt class="py-name">string</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Method sentence.dataset.DataSet.split()=sentence.dataset.DataSet-class.html#split"><a title="sentence.dataset.DataSet.split" class="py-name" href="#" onclick="return doclink('link-4', 'split', 'link-4');">split</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">        <tt class="py-name">tokens_iter</tt> <tt class="py-op">=</tt> <tt class="py-name">iter</tt><tt class="py-op">(</tt><tt class="py-name">tokens</tt><tt class="py-op">)</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">        <tt class="py-name">pos</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">pos</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt id="link-5" class="py-name" targets="Module evaluation.ranking.prob=evaluation.ranking.prob-module.html,Function evaluation.ranking.prob.prob()=evaluation.ranking.prob-module.html#prob"><a title="evaluation.ranking.prob
+evaluation.ranking.prob.prob" class="py-name" href="#" onclick="return doclink('link-5', 'prob', 'link-5');">prob</a></tt><tt class="py-op">,</tt> <tt class="py-name">ngram_length</tt><tt class="py-op">,</tt> <tt class="py-name">wid</tt><tt class="py-op">)</tt> <tt class="py-keyword">in</tt> <tt class="py-name">enumerate</tt><tt class="py-op">(</tt><tt class="py-name">partial_scores</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">                <tt class="py-name">token</tt> <tt class="py-op">=</tt> <tt class="py-name">next</tt><tt class="py-op">(</tt><tt class="py-name">tokens_iter</tt><tt class="py-op">)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">            <tt class="py-comment">#End of sentence score has no token</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt> <tt class="py-name">StopIteration</tt><tt class="py-op">:</tt>              </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">                <tt class="py-name">token</tt> <tt class="py-op">=</tt> <tt class="py-string">""</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">wid</tt><tt class="py-op">:</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">                <tt class="py-name">unk_count</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">                <tt class="py-name">unk_pos</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">pos</tt><tt class="py-op">)</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">                <tt class="py-name">unk_tokens</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">token</tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">                 </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">            <tt class="py-name">ngram_lengths</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">ngram_length</tt><tt class="py-op">)</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">            <tt class="py-name">probs</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-6" class="py-name"><a title="evaluation.ranking.prob
+evaluation.ranking.prob.prob" class="py-name" href="#" onclick="return doclink('link-6', 'prob', 'link-5');">prob</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">            <tt class="py-name">pos</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">             </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">        <tt class="py-name">unk_rel_pos</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">(</tt><tt class="py-name">unk_pos_item</tt> <tt class="py-op">*</tt> <tt class="py-number">1.00</tt><tt class="py-op">)</tt> <tt class="py-op">/</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">tokens</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">unk_pos_item</tt> <tt class="py-keyword">in</tt> <tt class="py-name">unk_pos</tt><tt class="py-op">]</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">        <tt class="py-name">unk_len</tt> <tt class="py-op">=</tt> <tt class="py-name">sum</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">token</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">token</tt> <tt class="py-keyword">in</tt> <tt class="py-name">unk_tokens</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">         </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">unk_pos</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">            <tt class="py-name">unk_pos</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">            <tt class="py-name">unk_rel_pos</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt>     </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">         </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">        <tt id="link-7" class="py-name" targets="Variable dataprocessor.input.testorange.attributes=dataprocessor.input.testorange-module.html#attributes"><a title="dataprocessor.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-7', 'attributes', 'link-7');">attributes</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> <tt class="py-string">'kenlm_unk_pos_abs_avg'</tt> <tt class="py-op">:</tt> <tt class="py-name">average</tt><tt class="py-op">(</tt><tt class="py-name">unk_pos</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_unk_pos_abs_std'</tt> <tt class="py-op">:</tt> <tt class="py-name">std</tt><tt class="py-op">(</tt><tt class="py-name">unk_pos</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_unk_pos_abs_min'</tt> <tt class="py-op">:</tt> <tt class="py-name">min</tt><tt class="py-op">(</tt><tt class="py-name">unk_pos</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_unk_pos_abs_max'</tt> <tt class="py-op">:</tt> <tt class="py-name">max</tt><tt class="py-op">(</tt><tt class="py-name">unk_pos</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_unk_pos_rel_avg'</tt> <tt class="py-op">:</tt> <tt class="py-name">average</tt><tt class="py-op">(</tt><tt class="py-name">unk_rel_pos</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_unk_pos_rel_std'</tt> <tt class="py-op">:</tt> <tt class="py-name">std</tt><tt class="py-op">(</tt><tt class="py-name">unk_rel_pos</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_unk_pos_rel_min'</tt> <tt class="py-op">:</tt> <tt class="py-name">min</tt><tt class="py-op">(</tt><tt class="py-name">unk_rel_pos</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_unk_pos_rel_max'</tt> <tt class="py-op">:</tt> <tt class="py-name">max</tt><tt class="py-op">(</tt><tt class="py-name">unk_rel_pos</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_unk'</tt> <tt class="py-op">:</tt> <tt class="py-name">unk_count</tt><tt class="py-op">,</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_unk_len'</tt> <tt class="py-op">:</tt> <tt class="py-name">unk_len</tt><tt class="py-op">,</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_length_avg'</tt> <tt class="py-op">:</tt> <tt class="py-name">average</tt><tt class="py-op">(</tt><tt class="py-name">ngram_lengths</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_length_std'</tt> <tt class="py-op">:</tt> <tt class="py-name">std</tt><tt class="py-op">(</tt><tt class="py-name">ngram_lengths</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_length_min'</tt> <tt class="py-op">:</tt> <tt class="py-name">min</tt><tt class="py-op">(</tt><tt class="py-name">ngram_lengths</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_length_max'</tt> <tt class="py-op">:</tt> <tt class="py-name">max</tt><tt class="py-op">(</tt><tt class="py-name">ngram_lengths</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_probs_avg'</tt> <tt class="py-op">:</tt> <tt class="py-name">average</tt><tt class="py-op">(</tt><tt class="py-name">probs</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_probs_std'</tt> <tt class="py-op">:</tt> <tt class="py-name">std</tt><tt class="py-op">(</tt><tt class="py-name">probs</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_probs_min'</tt> <tt class="py-op">:</tt> <tt class="py-name">min</tt><tt class="py-op">(</tt><tt class="py-name">probs</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_probs_max'</tt> <tt class="py-op">:</tt> <tt class="py-name">max</tt><tt class="py-op">(</tt><tt class="py-name">probs</tt><tt class="py-op">)</tt><tt class="py-op">,</tt>                        </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_probs_pos_max'</tt> <tt class="py-op">:</tt> <tt class="py-name">probs</tt><tt class="py-op">.</tt><tt class="py-name">index</tt><tt class="py-op">(</tt><tt class="py-name">max</tt><tt class="py-op">(</tt><tt class="py-name">probs</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_probs_pos_min'</tt> <tt class="py-op">:</tt> <tt class="py-name">probs</tt><tt class="py-op">.</tt><tt class="py-name">index</tt><tt class="py-op">(</tt><tt class="py-name">min</tt><tt class="py-op">(</tt><tt class="py-name">probs</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_probs_low'</tt> <tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method featuregenerator.blackbox.lm.ken.KenLMFeatureGenerator._standouts()=featuregenerator.blackbox.lm.ken.KenLMFeatureGenerator-class.html#_standouts,Method featuregenerator.blackbox.lm.server.ServerNgramFeatureGenerator._standouts()=featuregenerator.blackbox.lm.server.ServerNgramFeatureGenerator-class.html#_standouts"><a title="featuregenerator.blackbox.lm.ken.KenLMFeatureGenerator._standouts
+featuregenerator.blackbox.lm.server.ServerNgramFeatureGenerator._standouts" class="py-name" href="#" onclick="return doclink('link-8', '_standouts', 'link-8');">_standouts</a></tt><tt class="py-op">(</tt><tt class="py-name">probs</tt><tt class="py-op">,</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_probs_high'</tt> <tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name"><a title="featuregenerator.blackbox.lm.ken.KenLMFeatureGenerator._standouts
+featuregenerator.blackbox.lm.server.ServerNgramFeatureGenerator._standouts" class="py-name" href="#" onclick="return doclink('link-9', '_standouts', 'link-8');">_standouts</a></tt><tt class="py-op">(</tt><tt class="py-name">probs</tt><tt class="py-op">,</tt> <tt class="py-op">+</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_probs_low_pos_avg'</tt><tt class="py-op">:</tt> <tt class="py-name">average</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method featuregenerator.blackbox.lm.ken.KenLMFeatureGenerator._standout_pos()=featuregenerator.blackbox.lm.ken.KenLMFeatureGenerator-class.html#_standout_pos,Method featuregenerator.blackbox.lm.server.ServerNgramFeatureGenerator._standout_pos()=featuregenerator.blackbox.lm.server.ServerNgramFeatureGenerator-class.html#_standout_pos"><a title="featuregenerator.blackbox.lm.ken.KenLMFeatureGenerator._standout_pos
+featuregenerator.blackbox.lm.server.ServerNgramFeatureGenerator._standout_pos" class="py-name" href="#" onclick="return doclink('link-10', '_standout_pos', 'link-10');">_standout_pos</a></tt><tt class="py-op">(</tt><tt class="py-name">probs</tt><tt class="py-op">,</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_probs_low_pos_std'</tt><tt class="py-op">:</tt> <tt class="py-name">std</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name"><a title="featuregenerator.blackbox.lm.ken.KenLMFeatureGenerator._standout_pos
+featuregenerator.blackbox.lm.server.ServerNgramFeatureGenerator._standout_pos" class="py-name" href="#" onclick="return doclink('link-11', '_standout_pos', 'link-10');">_standout_pos</a></tt><tt class="py-op">(</tt><tt class="py-name">probs</tt><tt class="py-op">,</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">                       <tt class="py-string">'kenlm_prob'</tt> <tt class="py-op">:</tt> <tt class="py-name">total_score</tt> <tt class="py-op">}</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">         </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-12" class="py-name"><a title="dataprocessor.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-12', 'attributes', 'link-7');">attributes</a></tt> </tt>
+</div><a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"> </tt>
+<a name="KenLMFeatureGenerator._standouts"></a><div id="KenLMFeatureGenerator._standouts-def"><a name="L86"></a><tt class="py-lineno"> 86</tt> <a class="py-toggle" href="#" id="KenLMFeatureGenerator._standouts-toggle" onclick="return toggle('KenLMFeatureGenerator._standouts');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.blackbox.lm.ken.KenLMFeatureGenerator-class.html#_standouts">_standouts</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">vector</tt><tt class="py-op">,</tt> <tt class="py-param">sign</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="KenLMFeatureGenerator._standouts-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="KenLMFeatureGenerator._standouts-expanded"><a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-name">std_value</tt> <tt class="py-op">=</tt> <tt class="py-name">std</tt><tt class="py-op">(</tt><tt class="py-name">vector</tt><tt class="py-op">)</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-name">avg_value</tt> <tt class="py-op">=</tt> <tt class="py-name">average</tt><tt class="py-op">(</tt><tt class="py-name">vector</tt><tt class="py-op">)</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">        <tt class="py-name">standout</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">         </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">value</tt> <tt class="py-keyword">in</tt> <tt class="py-name">vector</tt><tt class="py-op">:</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">value</tt><tt class="py-op">*</tt><tt id="link-13" class="py-name" targets="Variable dataprocessor.sax.jcml2array.sign=dataprocessor.sax.jcml2array-module.html#sign"><a title="dataprocessor.sax.jcml2array.sign" class="py-name" href="#" onclick="return doclink('link-13', 'sign', 'link-13');">sign</a></tt> <tt class="py-op">&gt;</tt> <tt class="py-op">(</tt><tt class="py-name">avg_value</tt> <tt class="py-op">+</tt> <tt id="link-14" class="py-name"><a title="dataprocessor.sax.jcml2array.sign" class="py-name" href="#" onclick="return doclink('link-14', 'sign', 'link-13');">sign</a></tt><tt class="py-op">*</tt><tt class="py-name">std_value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">                <tt class="py-name">standout</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">             </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">standout</tt> </tt>
+</div><a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">     </tt>
+<a name="KenLMFeatureGenerator._standout_pos"></a><div id="KenLMFeatureGenerator._standout_pos-def"><a name="L97"></a><tt class="py-lineno"> 97</tt> <a class="py-toggle" href="#" id="KenLMFeatureGenerator._standout_pos-toggle" onclick="return toggle('KenLMFeatureGenerator._standout_pos');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="featuregenerator.blackbox.lm.ken.KenLMFeatureGenerator-class.html#_standout_pos">_standout_pos</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">vector</tt><tt class="py-op">,</tt> <tt class="py-param">sign</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="KenLMFeatureGenerator._standout_pos-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="KenLMFeatureGenerator._standout_pos-expanded"><a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">        <tt class="py-name">std_value</tt> <tt class="py-op">=</tt> <tt class="py-name">std</tt><tt class="py-op">(</tt><tt class="py-name">vector</tt><tt class="py-op">)</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">        <tt class="py-name">avg_value</tt> <tt class="py-op">=</tt> <tt class="py-name">average</tt><tt class="py-op">(</tt><tt class="py-name">vector</tt><tt class="py-op">)</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">        <tt class="py-name">standout</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">pos</tt><tt class="py-op">,</tt> <tt class="py-name">value</tt> <tt class="py-keyword">in</tt> <tt class="py-name">enumerate</tt><tt class="py-op">(</tt><tt class="py-name">vector</tt><tt class="py-op">,</tt> <tt id="link-15" class="py-name" targets="Method featuregenerator.blackbox.parser.bitpar.BitParChartParser.start()=featuregenerator.blackbox.parser.bitpar.BitParChartParser-class.html#start"><a title="featuregenerator.blackbox.parser.bitpar.BitParChartParser.start" class="py-name" href="#" onclick="return doclink('link-15', 'start', 'link-15');">start</a></tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">value</tt><tt class="py-op">*</tt><tt id="link-16" class="py-name"><a title="dataprocessor.sax.jcml2array.sign" class="py-name" href="#" onclick="return doclink('link-16', 'sign', 'link-13');">sign</a></tt> <tt class="py-op">&gt;</tt> <tt class="py-op">(</tt><tt class="py-name">avg_value</tt> <tt class="py-op">+</tt> <tt id="link-17" class="py-name"><a title="dataprocessor.sax.jcml2array.sign" class="py-name" href="#" onclick="return doclink('link-17', 'sign', 'link-13');">sign</a></tt><tt class="py-op">*</tt><tt class="py-name">std_value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">                <tt class="py-name">standout</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">pos</tt><tt class="py-op">)</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">             </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">standout</tt> </tt>
+</div></div><a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:06 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
