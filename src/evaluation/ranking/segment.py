@@ -11,6 +11,8 @@ from math import log
 import logging
 from collections import namedtuple
 from sentence.ranking import Ranking
+from scipy.special import erfc
+
 
 """""""""
 Kendall tau
@@ -18,7 +20,7 @@ Kendall tau
 
 def kendall_tau_prob(tau, pairs):
     """
-    Calculation of Kendall tau hypothesis testing based on scipy calculation
+    Calculation of Kendall tau two-tailed hypothesis testing based on scipy calculation
     @param tau: already calculated tau coefficient
     @type tau: float
     @param pairs: count of pairs
@@ -27,16 +29,15 @@ def kendall_tau_prob(tau, pairs):
     @rtype: float
     """
     import numpy as np
-    from scipy import special
     try:
         svar = (4.0 * pairs + 10.0) / (9.0 * pairs * (pairs - 1))
     except:
-        svar = 1
+        return 1.0
     try: 
         z = tau / np.sqrt(svar)
     except:
-        z = 1
-    return special.erfc(np.abs(z) / 1.4142136)
+        return 1.0
+    return erfc(np.abs(z) / 1.4142136)
 
 
 def kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
@@ -65,7 +66,7 @@ def kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
     predicted_rank_vector = predicted_rank_vector.normalize(ties=ties_handling)
     original_rank_vector = original_rank_vector.normalize(ties=ties_handling)
     
-    logging.debug("\n* Segment tau *")
+    logging.debug("Calculating Segment tau")
     logging.debug("predicted vector: {}".format(predicted_rank_vector))
     logging.debug("original vector : {}".format(original_rank_vector))
     
@@ -85,12 +86,15 @@ def kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
     predicted_pairs = [(float(i), float(j)) for i, j in itertools.combinations(predicted_rank_vector, 2)]
     original_pairs = [(inv*float(i), inv*float(j)) for i, j in itertools.combinations(original_rank_vector, 2)]
     
+    logging.debug("predicted pairs: {}".format(predicted_pairs))
+    logging.debug("original pairs: {}".format(original_pairs))
+    
     concordant_count = 0
     discordant_count = 0
     
     original_ties = 0
     predicted_ties = 0
-    pairs = 0
+    all_pairs_count = 0
     
     #iterate over the pairs
     for original_pair, predicted_pair in zip(original_pairs, predicted_pairs):
@@ -102,7 +106,7 @@ def kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
         logging.debug("%s\t%s", original_pair,  predicted_pair)
         
         #general statistics
-        pairs +=1
+        all_pairs_count +=1
         if original_i == original_j:
             original_ties +=1
         if predicted_i == predicted_j:
@@ -127,17 +131,18 @@ def kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
         else: 
             discordant_count += 1
             logging.debug("\t\tDIS")
-    all_pairs_count = concordant_count + discordant_count
+    #all_pairs_count = concordant_count + discordant_count
 
     logging.debug("original_ties = %d, predicted_ties = %d", original_ties, predicted_ties)   
     logging.debug("conc = %d, disc= %d", concordant_count, discordant_count) 
     
     try:
         tau = 1.00 * (concordant_count - discordant_count) / all_pairs_count
-        logging.debug("tau = {0} - {1} / {0} + {1}".format(concordant_count, discordant_count))
+        logging.debug("tau = {0} - {1} / {2}".format(concordant_count, discordant_count, all_pairs_count))
         logging.debug("tau = {0} / {1}".format(concordant_count - discordant_count, all_pairs_count))
         
     except ZeroDivisionError:
+        logging.debug("Devision by zero")
         tau = None
         prob = None
     else:
@@ -146,8 +151,15 @@ def kendall_tau(predicted_rank_vector, original_rank_vector, **kwargs):
     logging.debug("tau = {}, prob = {}\n".format(tau, prob))
     
     #wrap results in a named tuple
-    Result = namedtuple('Result', ['tau', 'prob', 'concordant_count', 'discordant_count', 'all_pairs_count', 'original_ties', 'predicted_ties', 'pairs'])
-    result = Result(tau, prob, concordant_count, discordant_count, all_pairs_count, original_ties, predicted_ties, pairs)
+    Result = namedtuple('Result', ['tau', 
+                                   'prob', 
+                                   'concordant_count', 
+                                   'discordant_count', 
+                                   'all_pairs_count', 
+                                   'original_ties', 
+                                   'predicted_ties', 
+                                   'pairs'])
+    result = Result(tau, prob, concordant_count, discordant_count, all_pairs_count, original_ties, predicted_ties, all_pairs_count)
     
     return result 
 

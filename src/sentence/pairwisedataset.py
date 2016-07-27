@@ -51,7 +51,7 @@ class PairwiseDataset(DataSet):
         for myset in self.pairwise_parallelsentence_sets.values():
             removed_ties += myset.remove_ties()
         #filter out sentences where nothing is left
-        self.pairwise_parallelsentence_sets = OrderedDict([(id, ps) for (id, ps) in self.pairwise_parallelsentence_sets.iteritems() if ps.length() > 0])
+        self.pairwise_parallelsentence_sets = OrderedDict([(sid, ps) for (sid, ps) in self.pairwise_parallelsentence_sets.iteritems() if ps.length() > 0])
         return removed_ties
 
 
@@ -65,14 +65,9 @@ class RevertablePairwiseDataset(PairwiseDataset):
     
     def get_multiclass_set(self):
         multirank_parallelsentences = []
-        for sentence_id in self.pairwise_parallelsentence_sets:
-            pairwise_parallelsentence_set = self.pairwise_parallelsentence_sets[sentence_id]
+        for pairwise_parallelsentence_set in self.pairwise_parallelsentence_sets.itervalues():
             multirank_parallelsentence = pairwise_parallelsentence_set.get_multiranked_sentence()
             multirank_parallelsentences.append(multirank_parallelsentence)
-#        try:
-#            multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute("id")))
-#        except:
-#            pass
         return DataSet(multirank_parallelsentences)
         
     def get_single_set_with_hard_ranks(self, critical_attribute=None, new_rank_name=None, **kwargs):
@@ -85,11 +80,6 @@ class RevertablePairwiseDataset(PairwiseDataset):
             multirank_parallelsentences.append(multirank_parallelsentence)
         if sort_attribute:
             multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute(sort_attribute)))
-        else:
-#            try:
-#                multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute("judgement_id")))
-#            except:
-            pass
         return DataSet(multirank_parallelsentences)
     
     def get_single_set_with_soft_ranks(self, attribute1="", attribute2="", critical_attribute="rank_soft_predicted", new_rank_name = None, **kwargs):
@@ -106,14 +96,8 @@ class RevertablePairwiseDataset(PairwiseDataset):
             multirank_parallelsentences.append(multirank_parallelsentence)
         if sort_attribute:
             multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute(sort_attribute)))
-        else:
-#            try:
-#                multirank_parallelsentences = sorted(multirank_parallelsentences, key=lambda ps: int(ps.get_attribute("judgement_id")))
-#            except:
-            pass
         return DataSet(multirank_parallelsentences)
-
-
+    
 
 class RawPairwiseDataset(RevertablePairwiseDataset):
     """
@@ -178,9 +162,10 @@ class RawPairwiseDataset(RevertablePairwiseDataset):
             
         for judgment_id, pairwiseparallelsentences in pairwise_parallelsentences_per_sid.iteritems():
         #then convert each group to a Analytic Pairwise Parallel SentenceSet
-            self.pairwise_parallelsentence_sets[judgment_id] = CompactPairwiseParallelSentenceSet(pairwiseparallelsentences)
-    
-    
+            self.pairwise_parallelsentence_sets[judgment_id] = CompactPairwiseParallelSentenceSet(pairwiseparallelsentences)      
+        
+        
+        
 
 class AnalyticPairwiseDataset(PairwiseDataset):
     """
@@ -215,7 +200,7 @@ class AnalyticPairwiseDataset(PairwiseDataset):
         pairwise_parallelsentences_per_sid = OrderedDict()
         
         self.include_references = kwargs.setdefault("include_references", False)
-        self.replacement = kwargs.setdefault("replacement", False)
+        self.replacement = kwargs.setdefault("replacement", True)
         self.filter_unassigned = kwargs.setdefault("filter_unassigned", False)
         self.restrict_ranks = kwargs.setdefault("restrict_ranks", [])
         self.rank_name = kwargs.setdefault("rank_name", "rank")
@@ -225,9 +210,9 @@ class AnalyticPairwiseDataset(PairwiseDataset):
         #first group by sentence ID or judgment ID
         for parallelsentence in plain_dataset.get_parallelsentences():
             #get a universal sentence_id (@todo: this could be parametrized)
-            sentence_id = parallelsentence.get_compact_id()
+            sentence_id = parallelsentence.get_fileid_tuple()
             pairwise_parallelsentences_per_sid.setdefault(sentence_id, []).extend(
-                                                                                  parallelsentence.get_pairwise_parallelsentences(
+                                                                                  parallelsentence.get_pairwise_parallelsentences_old(
                                                                                                                                   replacement=self.replacement, 
                                                                                                                                   include_references=self.include_references,
                                                                                                                                   filter_unassigned = self.filter_unassigned,
@@ -279,8 +264,34 @@ class FilteredPairwiseDataset(CompactPairwiseDataset):
         self.pairwise_parallelsentence_sets = OrderedDict()
         for sentence_id, analytic_pairwise_parallelsentence_set in analytic_pairwise_dataset.get_pairwise_parallelsentence_sets().iteritems():
             self.pairwise_parallelsentence_sets[sentence_id] = analytic_pairwise_parallelsentence_set.get_filtered_pairwise_parallelsentence_set(threshold)
+            
 
+from dataprocessor.ce.cejcml import CEJcmlReader
+from dataprocessor.sax.saxps2jcml import IncrementalJcml
 
+def pairwise_ondisk(plain_filename, pairwise_filename, read_method=CEJcmlReader, write_method=IncrementalJcml, **kwargs):
+        #self.read_method = read_method
+        #self.plain_filename = plain_filename
+        #self.pairwise_filename = pairwise_filename
+        plain_dataset = read_method(plain_filename, all_general=True, all_target=True)
+        pairwise_dataset = write_method(pairwise_filename) 
+        
+        for parallelsentence in plain_dataset.get_parallelsentences():
+            pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(**kwargs)
+            for pairwise_parallelsentence in pairwise_parallelsentences:
+                pairwise_dataset.add_parallelsentence(pairwise_parallelsentence)
+        pairwise_dataset.close()
+        
+        #self.pairwise_filename = pairwise_filename 
+    
+#    def get_parallelsentences(self):
+#        pairwise_dataset = self.read_method(self.pairwise_filename)
+#        for parallelsentence in pairwise_dataset.get_parallelsentences():
+#            yield parallelsentence
+    
+        
+        
+            
 
 
         
