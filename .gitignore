@@ -31,6 +31,9 @@
 /data/oo-preparation/scripts/*.pyc
 /data/oo-preparation/scripts/*~
 
+/lib/*
+/res/*
+
 # /loonybin-mt-toolpack/
 /loonybin-mt-toolpack/*.pyc
 /loonybin-mt-toolpack/*~
