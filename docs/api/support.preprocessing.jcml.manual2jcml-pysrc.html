@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>support.preprocessing.jcml.manual2jcml</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="support-module.html">Package&nbsp;support</a> ::
+        <a href="support.preprocessing-module.html">Package&nbsp;preprocessing</a> ::
+        <a href="support.preprocessing.jcml-module.html">Package&nbsp;jcml</a> ::
+        Module&nbsp;manual2jcml
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="support.preprocessing.jcml.manual2jcml-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="support.preprocessing.jcml.manual2jcml-module.html">Module support.preprocessing.jcml.manual2jcml</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-docstring">Convert from a csv file produced by Vivien Macketanz to a jcml file that can be fed</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-docstring">in the selection/ranking mechanism</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-docstring">Created on Jul 22, 2016</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-docstring">@author: lefterav</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">csv</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">itertools</tt> <tt class="py-keyword">import</tt> <tt class="py-name">izip</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package sentence=sentence-module.html,Module sentence.sentence=sentence.sentence-module.html"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-0', 'sentence', 'link-0');">sentence</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-1', 'sentence', 'link-0');">sentence</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class sentence.sentence.SimpleSentence=sentence.sentence.SimpleSentence-class.html"><a title="sentence.sentence.SimpleSentence" class="py-name" href="#" onclick="return doclink('link-2', 'SimpleSentence', 'link-2');">SimpleSentence</a></tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-3" class="py-name"><a title="sentence
+sentence.sentence" class="py-name" href="#" onclick="return doclink('link-3', 'sentence', 'link-0');">sentence</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Module sentence.parallelsentence=sentence.parallelsentence-module.html"><a title="sentence.parallelsentence" class="py-name" href="#" onclick="return doclink('link-4', 'parallelsentence', 'link-4');">parallelsentence</a></tt> <tt class="py-keyword">import</tt> <tt id="link-5" class="py-name" targets="Class sentence.parallelsentence.ParallelSentence=sentence.parallelsentence.ParallelSentence-class.html"><a title="sentence.parallelsentence.ParallelSentence" class="py-name" href="#" onclick="return doclink('link-5', 'ParallelSentence', 'link-5');">ParallelSentence</a></tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-6" class="py-name" targets="Package dataprocessor=dataprocessor-module.html"><a title="dataprocessor" class="py-name" href="#" onclick="return doclink('link-6', 'dataprocessor', 'link-6');">dataprocessor</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Package dataprocessor.sax=dataprocessor.sax-module.html"><a title="dataprocessor.sax" class="py-name" href="#" onclick="return doclink('link-7', 'sax', 'link-7');">sax</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Module dataprocessor.sax.saxps2jcml=dataprocessor.sax.saxps2jcml-module.html"><a title="dataprocessor.sax.saxps2jcml" class="py-name" href="#" onclick="return doclink('link-8', 'saxps2jcml', 'link-8');">saxps2jcml</a></tt> <tt class="py-keyword">import</tt> <tt id="link-9" class="py-name" targets="Class dataprocessor.sax.saxps2jcml.IncrementalJcml=dataprocessor.sax.saxps2jcml.IncrementalJcml-class.html"><a title="dataprocessor.sax.saxps2jcml.IncrementalJcml" class="py-name" href="#" onclick="return doclink('link-9', 'IncrementalJcml', 'link-9');">IncrementalJcml</a></tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"><tt id="link-10" class="py-name" targets="Variable support.preprocessing.jcml.manual2jcml.SRCLANG=support.preprocessing.jcml.manual2jcml-module.html#SRCLANG"><a title="support.preprocessing.jcml.manual2jcml.SRCLANG" class="py-name" href="#" onclick="return doclink('link-10', 'SRCLANG', 'link-10');">SRCLANG</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"en"</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"><tt id="link-11" class="py-name" targets="Variable support.preprocessing.jcml.manual2jcml.TGTLANG=support.preprocessing.jcml.manual2jcml-module.html#TGTLANG"><a title="support.preprocessing.jcml.manual2jcml.TGTLANG" class="py-name" href="#" onclick="return doclink('link-11', 'TGTLANG', 'link-11');">TGTLANG</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"de"</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt id="link-12" class="py-name" targets="Variable support.preprocessing.jcml.manual2jcml.TESTSET=support.preprocessing.jcml.manual2jcml-module.html#TESTSET"><a title="support.preprocessing.jcml.manual2jcml.TESTSET" class="py-name" href="#" onclick="return doclink('link-12', 'TESTSET', 'link-12');">TESTSET</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"batch2a"</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"><tt id="link-13" class="py-name" targets="Variable support.preprocessing.jcml.manual2jcml.FIRST_COLUMN=support.preprocessing.jcml.manual2jcml-module.html#FIRST_COLUMN"><a title="support.preprocessing.jcml.manual2jcml.FIRST_COLUMN" class="py-name" href="#" onclick="return doclink('link-13', 'FIRST_COLUMN', 'link-13');">FIRST_COLUMN</a></tt> <tt class="py-op">=</tt> <tt class="py-number">4</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"> </tt>
+<a name="get_parallelsentences"></a><div id="get_parallelsentences-def"><a name="L21"></a><tt class="py-lineno">21</tt> <a class="py-toggle" href="#" id="get_parallelsentences-toggle" onclick="return toggle('get_parallelsentences');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="support.preprocessing.jcml.manual2jcml-module.html#get_parallelsentences">get_parallelsentences</a><tt class="py-op">(</tt><tt class="py-param">filename</tt><tt class="py-op">,</tt> <tt class="py-param">errortype</tt><tt class="py-op">=</tt><tt class="py-string">"generic_errors"</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_parallelsentences-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="get_parallelsentences-expanded"><a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">    <tt class="py-name">overall_index</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">    <tt class="py-name">csvfile</tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">)</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">    <tt class="py-name">csvreader</tt> <tt class="py-op">=</tt> <tt class="py-name">csv</tt><tt class="py-op">.</tt><tt class="py-name">reader</tt><tt class="py-op">(</tt><tt class="py-name">csvfile</tt><tt class="py-op">,</tt> <tt class="py-name">delimiter</tt><tt class="py-op">=</tt><tt class="py-string">','</tt><tt class="py-op">,</tt> <tt class="py-name">quotechar</tt><tt class="py-op">=</tt><tt class="py-string">'"'</tt><tt class="py-op">)</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">    <tt class="py-name">sheet_index</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">row</tt> <tt class="py-keyword">in</tt> <tt class="py-name">csvreader</tt><tt class="py-op">:</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">        <tt class="py-name">sheet_index</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">sheet_index</tt><tt class="py-op">==</tt><tt class="py-number">1</tt><tt class="py-op">:</tt>  </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">            <tt class="py-name">header</tt> <tt class="py-op">=</tt> <tt class="py-name">row</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">            <tt class="py-keyword">continue</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">        <tt class="py-name">overall_index</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">        <tt class="py-name">sentence_id</tt> <tt class="py-op">=</tt> <tt class="py-name">row</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">        <tt class="py-name">source_string</tt> <tt class="py-op">=</tt> <tt class="py-name">row</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">        <tt class="py-name">reference_string</tt> <tt class="py-op">=</tt> <tt class="py-name">row</tt><tt class="py-op">[</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">sentence_id</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">==</tt><tt class="py-string">""</tt> <tt class="py-keyword">or</tt> <tt class="py-name">source_string</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">==</tt><tt class="py-string">""</tt> <tt class="py-keyword">or</tt> <tt class="py-name">reference_string</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">==</tt><tt class="py-string">""</tt><tt class="py-op">:</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">            <tt class="py-keyword">continue</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">                     </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">            <tt class="py-name">phenomenon_count</tt> <tt class="py-op">=</tt> <tt class="py-name">int</tt><tt class="py-op">(</tt><tt class="py-name">row</tt><tt class="py-op">[</tt><tt class="py-number">3</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">            <tt class="py-keyword">continue</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">         </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">        <tt id="link-14" class="py-name" targets="Variable ml.var.rvm.RVM.a=ml.var.rvm.RVM-class.html#a"><a title="ml.var.rvm.RVM.a" class="py-name" href="#" onclick="return doclink('link-14', 'a', 'link-14');">a</a></tt> <tt class="py-op">=</tt> <tt class="py-name">iter</tt><tt class="py-op">(</tt><tt class="py-name">row</tt><tt class="py-op">[</tt><tt id="link-15" class="py-name"><a title="support.preprocessing.jcml.manual2jcml.FIRST_COLUMN" class="py-name" href="#" onclick="return doclink('link-15', 'FIRST_COLUMN', 'link-13');">FIRST_COLUMN</a></tt><tt class="py-op">:</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">        <tt id="link-16" class="py-name" targets="Variable support.preprocessing.jcml.xliff2jcml.source=support.preprocessing.jcml.xliff2jcml-module.html#source"><a title="support.preprocessing.jcml.xliff2jcml.source" class="py-name" href="#" onclick="return doclink('link-16', 'source', 'link-16');">source</a></tt> <tt class="py-op">=</tt> <tt id="link-17" class="py-name"><a title="sentence.sentence.SimpleSentence" class="py-name" href="#" onclick="return doclink('link-17', 'SimpleSentence', 'link-2');">SimpleSentence</a></tt><tt class="py-op">(</tt><tt class="py-name">source_string</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-name">errortype</tt> <tt class="py-op">:</tt> <tt class="py-name">phenomenon_count</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">        <tt id="link-18" class="py-name" targets="Package featuregenerator.reference=featuregenerator.reference-module.html"><a title="featuregenerator.reference" class="py-name" href="#" onclick="return doclink('link-18', 'reference', 'link-18');">reference</a></tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name"><a title="sentence.sentence.SimpleSentence" class="py-name" href="#" onclick="return doclink('link-19', 'SimpleSentence', 'link-2');">SimpleSentence</a></tt><tt class="py-op">(</tt><tt class="py-name">reference_string</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">         </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">        <tt class="py-name">this_translations</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">        <tt id="link-20" class="py-name" targets="Variable dataprocessor.sax.saxwrapper.SaxWrapper.i=dataprocessor.sax.saxwrapper.SaxWrapper-class.html#i"><a title="dataprocessor.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-20', 'i', 'link-20');">i</a></tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">        <tt class="py-name">offset</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">translation_string</tt><tt class="py-op">,</tt> <tt class="py-name">count</tt> <tt class="py-keyword">in</tt> <tt class="py-name">izip</tt><tt class="py-op">(</tt><tt id="link-21" class="py-name"><a title="ml.var.rvm.RVM.a" class="py-name" href="#" onclick="return doclink('link-21', 'a', 'link-14');">a</a></tt><tt class="py-op">,</tt> <tt id="link-22" class="py-name"><a title="ml.var.rvm.RVM.a" class="py-name" href="#" onclick="return doclink('link-22', 'a', 'link-14');">a</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">count</tt><tt class="py-op">==</tt><tt class="py-string">""</tt><tt class="py-op">:</tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">                <tt class="py-keyword">continue</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">             </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">            <tt class="py-name">system_name</tt> <tt class="py-op">=</tt> <tt class="py-name">header</tt><tt class="py-op">[</tt><tt id="link-23" class="py-name"><a title="dataprocessor.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-23', 'i', 'link-20');">i</a></tt><tt class="py-op">*</tt><tt class="py-number">2</tt> <tt class="py-op">+</tt> <tt id="link-24" class="py-name"><a title="support.preprocessing.jcml.manual2jcml.FIRST_COLUMN" class="py-name" href="#" onclick="return doclink('link-24', 'FIRST_COLUMN', 'link-13');">FIRST_COLUMN</a></tt> <tt class="py-op">+</tt> <tt class="py-name">offset</tt><tt class="py-op">]</tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">                <tt class="py-name">count</tt> <tt class="py-op">=</tt> <tt class="py-name">int</tt><tt class="py-op">(</tt><tt class="py-name">count</tt><tt class="py-op">)</tt> </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">                <tt class="py-name">count</tt> <tt class="py-op">=</tt> <tt class="py-name">int</tt><tt class="py-op">(</tt><tt class="py-name">next</tt><tt class="py-op">(</tt><tt id="link-25" class="py-name"><a title="ml.var.rvm.RVM.a" class="py-name" href="#" onclick="return doclink('link-25', 'a', 'link-14');">a</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line">                <tt class="py-name">offset</tt><tt class="py-op">+=</tt><tt class="py-number">1</tt> </tt>
+<a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line">             </tt>
+<a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line">            <tt class="py-name">translation</tt> <tt class="py-op">=</tt> <tt id="link-26" class="py-name"><a title="sentence.sentence.SimpleSentence" class="py-name" href="#" onclick="return doclink('link-26', 'SimpleSentence', 'link-2');">SimpleSentence</a></tt><tt class="py-op">(</tt><tt class="py-name">translation_string</tt><tt class="py-op">,</tt>  </tt>
+<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line">                                         <tt class="py-op">{</tt><tt class="py-string">'rank'</tt> <tt class="py-op">:</tt> <tt class="py-name">phenomenon_count</tt> <tt class="py-op">-</tt> <tt class="py-name">count</tt> <tt class="py-op">+</tt> <tt class="py-number">1</tt><tt class="py-op">,</tt>  </tt>
+<a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line">                                          <tt class="py-string">'system'</tt> <tt class="py-op">:</tt> <tt class="py-name">system_name</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+<a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line">            <tt class="py-name">this_translations</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">translation</tt><tt class="py-op">)</tt> </tt>
+<a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line">            <tt id="link-27" class="py-name"><a title="dataprocessor.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-27', 'i', 'link-20');">i</a></tt><tt class="py-op">+=</tt><tt class="py-number">1</tt>         </tt>
+<a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line">         </tt>
+<a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line">        <tt class="py-keyword">yield</tt> <tt id="link-28" class="py-name"><a title="sentence.parallelsentence.ParallelSentence" class="py-name" href="#" onclick="return doclink('link-28', 'ParallelSentence', 'link-5');">ParallelSentence</a></tt><tt class="py-op">(</tt><tt id="link-29" class="py-name"><a title="support.preprocessing.jcml.xliff2jcml.source" class="py-name" href="#" onclick="return doclink('link-29', 'source', 'link-16');">source</a></tt><tt class="py-op">,</tt> <tt class="py-name">this_translations</tt><tt class="py-op">,</tt> <tt id="link-30" class="py-name"><a title="featuregenerator.reference" class="py-name" href="#" onclick="return doclink('link-30', 'reference', 'link-18');">reference</a></tt><tt class="py-op">,</tt>  </tt>
+<a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line">                               <tt class="py-op">{</tt><tt class="py-string">'id'</tt> <tt class="py-op">:</tt> <tt class="py-name">sentence_id</tt><tt class="py-op">,</tt> </tt>
+<a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line">                                <tt class="py-string">'langsrc'</tt> <tt class="py-op">:</tt> <tt id="link-31" class="py-name"><a title="support.preprocessing.jcml.manual2jcml.SRCLANG" class="py-name" href="#" onclick="return doclink('link-31', 'SRCLANG', 'link-10');">SRCLANG</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L70"></a><tt class="py-lineno">70</tt>  <tt class="py-line">                                <tt class="py-string">'langtgt'</tt> <tt class="py-op">:</tt> <tt id="link-32" class="py-name"><a title="support.preprocessing.jcml.manual2jcml.TGTLANG" class="py-name" href="#" onclick="return doclink('link-32', 'TGTLANG', 'link-11');">TGTLANG</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line">                                <tt class="py-string">'testset'</tt> <tt class="py-op">:</tt> <tt id="link-33" class="py-name"><a title="support.preprocessing.jcml.manual2jcml.TESTSET" class="py-name" href="#" onclick="return doclink('link-33', 'TESTSET', 'link-12');">TESTSET</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line">                                <tt class="py-string">'annotated_error'</tt> <tt class="py-op">:</tt> <tt class="py-name">filename</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name" targets="Variable featuregenerator.reference.bleu.replace=featuregenerator.reference.bleu-module.html#replace"><a title="featuregenerator.reference.bleu.replace" class="py-name" href="#" onclick="return doclink('link-34', 'replace', 'link-34');">replace</a></tt><tt class="py-op">(</tt><tt class="py-string">'.csv'</tt><tt class="py-op">,</tt> <tt class="py-string">''</tt><tt class="py-op">)</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L73"></a><tt class="py-lineno">73</tt>  <tt class="py-line"> </tt>
+<a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line"> </tt>
+<a name="convert_manual2jcml"></a><div id="convert_manual2jcml-def"><a name="L75"></a><tt class="py-lineno">75</tt> <a class="py-toggle" href="#" id="convert_manual2jcml-toggle" onclick="return toggle('convert_manual2jcml');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="support.preprocessing.jcml.manual2jcml-module.html#convert_manual2jcml">convert_manual2jcml</a><tt class="py-op">(</tt><tt class="py-param">source_filename</tt><tt class="py-op">,</tt> <tt class="py-param">target_filename</tt><tt class="py-op">,</tt> <tt class="py-param">writer</tt><tt class="py-op">=</tt><tt id="link-35" class="py-name"><a title="dataprocessor.sax.saxps2jcml.IncrementalJcml" class="py-name" href="#" onclick="return doclink('link-35', 'IncrementalJcml', 'link-9');">IncrementalJcml</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="convert_manual2jcml-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="convert_manual2jcml-expanded"><a name="L76"></a><tt class="py-lineno">76</tt>  <tt class="py-line">    <tt class="py-name">parallelsentences</tt> <tt class="py-op">=</tt> <tt id="link-36" class="py-name" targets="Method dataprocessor.ce.cejcml.CEJcmlReader.get_parallelsentences()=dataprocessor.ce.cejcml.CEJcmlReader-class.html#get_parallelsentences,Method dataprocessor.datareader.DataReader.get_parallelsentences()=dataprocessor.datareader.DataReader-class.html#get_parallelsentences,Method dataprocessor.input.genericreader.GenericReader.get_parallelsentences()=dataprocessor.input.genericreader.GenericReader-class.html#get_parallelsentences,Method dataprocessor.input.genericxmlreader.GenericXmlReader.get_parallelsentences()=dataprocessor.input.genericxmlreader.GenericXmlReader-class.html#get_parallelsentences,Method dataprocessor.input.linereader.AttributeLineReader.get_parallelsentences()=dataprocessor.input.linereader.AttributeLineReader-class.html#get_parallelsentences,Method dataprocessor.input.linereader.LineReader.get_parallelsentences()=dataprocessor.input.linereader.LineReader-class.html#get_parallelsentences,Method dataprocessor.input.posteditingreader.PosteditingReader.get_parallelsentences()=dataprocessor.input.posteditingreader.PosteditingReader-class.html#get_parallelsentences,Method dataprocessor.input.rankreader.R2RankReader.get_parallelsentences()=dataprocessor.input.rankreader.R2RankReader-class.html#get_parallelsentences,Method dataprocessor.input.rankreader.RankReader.get_parallelsentences()=dataprocessor.input.rankreader.RankReader-class.html#get_parallelsentences,Method dataprocessor.input.taraxureader.TaraXUReader.get_parallelsentences()=dataprocessor.input.taraxureader.TaraXUReader-class.html#get_parallelsentences,Method dataprocessor.input.xliffreader.XliffReader.get_parallelsentences()=dataprocessor.input.xliffreader.XliffReader-class.html#get_parallelsentences,Method dataprocessor.qtleapcsv.QtleapCSVReader.get_parallelsentences()=dataprocessor.qtleapcsv.QtleapCSVReader-class.html#get_parallelsentences,Method sentence.dataset.DataSet.get_parallelsentences()=sentence.dataset.DataSet-class.html#get_parallelsentences,Method sentence.pairwisedataset.PairwiseDataset.get_parallelsentences()=sentence.pairwisedataset.PairwiseDataset-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet-class.html#get_parallelsentences,Method sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences()=sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet-class.html#get_parallelsentences,Function support.preprocessing.jcml.manual2jcml.get_parallelsentences()=support.preprocessing.jcml.manual2jcml-module.html#get_parallelsentences"><a title="dataprocessor.ce.cejcml.CEJcmlReader.get_parallelsentences
+dataprocessor.datareader.DataReader.get_parallelsentences
+dataprocessor.input.genericreader.GenericReader.get_parallelsentences
+dataprocessor.input.genericxmlreader.GenericXmlReader.get_parallelsentences
+dataprocessor.input.linereader.AttributeLineReader.get_parallelsentences
+dataprocessor.input.linereader.LineReader.get_parallelsentences
+dataprocessor.input.posteditingreader.PosteditingReader.get_parallelsentences
+dataprocessor.input.rankreader.R2RankReader.get_parallelsentences
+dataprocessor.input.rankreader.RankReader.get_parallelsentences
+dataprocessor.input.taraxureader.TaraXUReader.get_parallelsentences
+dataprocessor.input.xliffreader.XliffReader.get_parallelsentences
+dataprocessor.qtleapcsv.QtleapCSVReader.get_parallelsentences
+sentence.dataset.DataSet.get_parallelsentences
+sentence.pairwisedataset.PairwiseDataset.get_parallelsentences
+sentence.pairwiseparallelsentenceset.AnalyticPairwiseParallelSentenceSet.get_parallelsentences
+sentence.pairwiseparallelsentenceset.PairwiseParallelSentenceSet.get_parallelsentences
+support.preprocessing.jcml.manual2jcml.get_parallelsentences" class="py-name" href="#" onclick="return doclink('link-36', 'get_parallelsentences', 'link-36');">get_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-name">source_filename</tt><tt class="py-op">)</tt> </tt>
+<a name="L77"></a><tt class="py-lineno">77</tt>  <tt class="py-line">    <tt class="py-name">writer</tt> <tt class="py-op">=</tt> <tt class="py-name">writer</tt><tt class="py-op">(</tt><tt class="py-name">target_filename</tt><tt class="py-op">)</tt> </tt>
+<a name="L78"></a><tt class="py-lineno">78</tt>  <tt class="py-line">    <tt class="py-name">writer</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name" targets="Method dataprocessor.sax.saxps2jcml.IncrementalJcml.add_parallelsentences()=dataprocessor.sax.saxps2jcml.IncrementalJcml-class.html#add_parallelsentences,Method sentence.dataset.DataSet.add_parallelsentences()=sentence.dataset.DataSet-class.html#add_parallelsentences"><a title="dataprocessor.sax.saxps2jcml.IncrementalJcml.add_parallelsentences
+sentence.dataset.DataSet.add_parallelsentences" class="py-name" href="#" onclick="return doclink('link-37', 'add_parallelsentences', 'link-37');">add_parallelsentences</a></tt><tt class="py-op">(</tt><tt class="py-name">parallelsentences</tt><tt class="py-op">)</tt> </tt>
+<a name="L79"></a><tt class="py-lineno">79</tt>  <tt class="py-line">    <tt class="py-name">writer</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name" targets="Method dataprocessor.sax.saxps2jcml.IncrementalJcml.close()=dataprocessor.sax.saxps2jcml.IncrementalJcml-class.html#close,Method featuregenerator.blackbox.languagechecker.languagetool.LanguageToolFeatureGenerator.close()=featuregenerator.blackbox.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html#close,Method featuregenerator.preprocessor.CommandlinePreprocessor.close()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#close,Method support.preprocessing.jcml.jcml2arff.ArffWriter.close()=support.preprocessing.jcml.jcml2arff.ArffWriter-class.html#close"><a title="dataprocessor.sax.saxps2jcml.IncrementalJcml.close
+featuregenerator.blackbox.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-38', 'close', 'link-38');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L80"></a><tt class="py-lineno">80</tt>  <tt class="py-line"> </tt>
+<a name="L81"></a><tt class="py-lineno">81</tt>  <tt class="py-line"> </tt>
+<a name="L82"></a><tt class="py-lineno">82</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-39" class="py-name" targets="Variable featuregenerator.reference.meteor.meteor.MeteorGenerator.__name__=featuregenerator.reference.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.reference.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-39', '__name__', 'link-39');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L83"></a><tt class="py-lineno">83</tt>  <tt class="py-line">    <tt id="link-40" class="py-name" targets="Function support.preprocessing.jcml.manual2jcml.convert_manual2jcml()=support.preprocessing.jcml.manual2jcml-module.html#convert_manual2jcml"><a title="support.preprocessing.jcml.manual2jcml.convert_manual2jcml" class="py-name" href="#" onclick="return doclink('link-40', 'convert_manual2jcml', 'link-40');">convert_manual2jcml</a></tt><tt class="py-op">(</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L84"></a><tt class="py-lineno">84</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:06 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
