@@ -1,13 +1,13 @@
 '''
 Created on 23 Feb 2012
 
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 from optparse import OptionParser
 from sentence.sentence import SimpleSentence
 from collections import OrderedDict
 from sentence.parallelsentence import ParallelSentence
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
 from featuregenerator.glassbox.moses.extractor import MosesGlassboxExtractor
 
 if __name__ == '__main__':

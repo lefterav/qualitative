@@ -1,10 +1,10 @@
 '''
 Created on 6 Mar 2012
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
-from io_utils.input.jcmlreader import JcmlReader
+from dataprocessor.input.jcmlreader import JcmlReader
 import sys
 
 

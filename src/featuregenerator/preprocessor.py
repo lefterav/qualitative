@@ -1,23 +1,36 @@
 '''
+Implementation of text preprocessors, including external commandline tools via pipes (tokenizer, truecaser, etc.) 
+
 Created on 24 Mar 2012
 
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
 
 from featuregenerator import FeatureGenerator
 import subprocess
 import util
-import codecs
 import os
-
-import Queue
-import threading
-from sentence.dataset import DataSet
+import codecs
 
 class Preprocessor(FeatureGenerator):
     """
+    Base class for a text pre-processor, to be inherited by applied pre-processors such as tokenizers etc.
+    Contrary to the majority of feature generators, pre-processors do not return features/attributes, but
+    instead they modify the string content of the sentences. For this purpose the order of pre-processors
+    in an annotation pipeline is important.
+    
+    Implemented methods of the base class divert the content of source or target sentences to the 
+    process_string function, which should do the job which is particular to the string. Strings are 
+    processed only if they comply with the language of the pre-processor
+    
+    @ivar lang: language code of supported language
+    @type lang: str
     """
     def __init__(self, lang):
+        """
+        @param lang: language code of supported language
+        @type lang: str
+        """
         self.lang = lang
     
     def add_features_src(self, simplesentence, parallelsentence = None):
@@ -31,30 +44,47 @@ class Preprocessor(FeatureGenerator):
         if tgt_lang == self.lang:
             simplesentence.string = self.process_string(simplesentence.string)  
         return simplesentence
-    
-    
+
     def process_string(self, string):
+        """
+        Abstract class to be overriden by implemented pre-processors
+        @param string: The string that needs to be pre-processed
+        @type string: str
+        @return: the string modified after pre-processing
+        @rtype: str
+        """
         raise NotImplementedError
     
     
 class CommandlinePreprocessor(Preprocessor):
-    
-    
+    """
+    Base class for pre-processor wrapping a commandline process
+    @ivar lang: language code
+    @type lang: str
+    @ivar running: boolean variable that signifies whether internal process is running or not
+    @type running: boolena
+    @ivar process: the encapsulated subprocess
+    @type process: subprocess.Popen
+    """    
     def _enqueue_output(self, stdout, queue):
         out = 0
         for line in iter(stdout.readline, ''):
             print "thread received response: ", line
             queue.put(line)
 #            break
-
-
-
-    
-
-
-
     
     def __init__(self, path, lang, params = {}, command_template = ""):
+        """
+        Initialize commandline-based feature generator. 
+        @param path: the path where the command is based
+        @type path: str
+        @param lang: the language code for the supported language
+        @type lang: str
+        @param params: commandline parameters for internal process
+        @type params: dict((str, str))
+        @param command_template: the template of the command
+        @type command_template: str        
+        """
         self.lang = lang
         params["lang"] = lang
         params["path"] = path
@@ -80,15 +110,17 @@ class CommandlinePreprocessor(Preprocessor):
         
         
 
-        
+        #block input        
         #self.process.stdin = codecs.getwriter('utf-8')(self.process.stdin)
         #self.process.stdout = codecs.getreader('utf-8')(self.process.stdout)
     
     def process_string(self, string):
-        #string = string.decode('utf-8')
-        
-        #string = string.encode('utf-8')
-        self.process.stdin.write('{0}{1}\n'.format(string, ' '*10240))
+        if isinstance(string, unicode):
+            string = u'{0}{1}\n'.format(string, u' '*10240)
+            string = string.encode('utf-8')
+        else:
+            string = '{0}{1}\n'.format(string, ' '*10240)
+        self.process.stdin.write(string)
         self.process.stdin.flush()   
         self.process.stdout.flush()
         
@@ -169,7 +201,7 @@ class Detokenizer(CommandlinePreprocessor):
     def __init__(self, lang):
         path = util.__path__[0]
         path = os.path.join(path, "detokenizer.perl")
-        command_template = "perl {path} -l {lang}"
+        command_template = "perl {path} -b -l {lang}"
         super(Detokenizer, self).__init__(path, lang, {}, command_template)
     
 
@@ -180,18 +212,26 @@ class Truecaser(CommandlinePreprocessor):
         command_template = "perl {path} -model {model}"
         super(Truecaser, self).__init__(path, lang, {"model": model}, command_template)
 
-    
+class Detruecaser(CommandlinePreprocessor):
+    def __init__(self, lang):
+        path = util.__path__[0]
+        path = os.path.join(path, "detruecase.perl")
+        command_template = "perl {path} -b"
+        super(Detruecaser, self).__init__(path, lang, {}, command_template)
+
+   
     
 if __name__ == '__main__':
-    from io_utils.input.jcmlreader import JcmlReader
-    from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
-    #path = "/home/lefterav/taraxu_tools/scripts/tokenizer/tokenizer.perl"
+    from dataprocessor.input.jcmlreader import JcmlReader
+    from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
+    import sys
+    #path = "/home/Eleftherios Avramidis/taraxu_tools/scripts/tokenizer/tokenizer.perl"
     #command_template = "{path} -b -l {lang}"
-#    path = "/home/lefterav/taraxu_tools/scripts/tokenizer/normalize-punctuation.perl"
+#    path = "/home/Eleftherios Avramidis/taraxu_tools/scripts/tokenizer/normalize-punctuation.perl"
 #    command_template = "perl {path} -l {lang} -b"
     tokenizer = Tokenizer("en")
-    parallelsentences = JcmlReader("/home/elav01/taraxu_data/jcml-latest/clean/wmt2011.newstest.en-de.rank-clean.jcml").get_parallelsentences()
+    parallelsentences = JcmlReader(sys.argv[1]).get_parallelsentences()
     tokenized = tokenizer.add_features_batch(parallelsentences)
     #tokenizer.close()
-    Parallelsentence2Jcml(tokenized).write_to_file("/home/elav01/taraxu_data/jcml-latest/tok/wmt2011.newstest.en-de.rank-clean.jcml")
+    Parallelsentence2Jcml(tokenized).write_to_file(sys.argv[1].replace(".jcml", ".tok.jcml"))
     
