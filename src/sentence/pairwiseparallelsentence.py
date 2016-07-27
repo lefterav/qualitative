@@ -3,7 +3,7 @@
 '''
 Created on Jul 12, 2011
 
-@author: jogin
+@author: Lukas Poustka
 '''
 
 
@@ -27,7 +27,7 @@ class PairwiseParallelSentence(ParallelSentence):
     @type rank_name: str   
     """
 
-    def __init__(self, source=None, translations=[], systems=[], reference=None, attributes={}, rank_name = u"rank", **kwargs):
+    def __init__(self, source=None, translations=[], systems=[], reference=None, attributes={}, rank_name = u"rank", normalize_ranks=True, **kwargs):
         """
         Constructor
         @param source: the source text of the parallel sentence
@@ -39,7 +39,7 @@ class PairwiseParallelSentence(ParallelSentence):
         @param the attributes: that describe the parallel sentence
         @type attributes: dict { String name : String value }
         @param systems: names of target systems
-        @type systems: tuple of strings
+        @type systems: tucall for papersple of strings
         @param cast: set True if you want to initialize a pairwise parallel sentence out of a simple parallel sentence
         """
         
@@ -57,7 +57,7 @@ class PairwiseParallelSentence(ParallelSentence):
             self.ref = reference
             self.attributes = deepcopy(attributes)
             self.rank_name = rank_name
-            if self.tgt and not rankless:
+            if self.tgt and normalize_ranks and not rankless and rank_name:
                 self._normalize_ranks(invert_ranks)
     #        self.ties_allowed = ties_allowed
 
@@ -92,8 +92,9 @@ class PairwiseParallelSentence(ParallelSentence):
         try:
             rank_a = float(self.tgt[0].get_attribute(self.rank_name)) * factor
             rank_b = float(self.tgt[1].get_attribute(self.rank_name)) * factor
-        except AttributeError:
+        except KeyError:
             #this happens if for some reasons no rank values have been written
+            #in that case normalization does not make sense
             return
         
         if rank_a > rank_b:

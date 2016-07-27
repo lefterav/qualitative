@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<jcml>
+	<judgedsentence document_id="idnes.cz/2009/12/11/76492" id="22" judge_id="AS53V0H5ZLCLN" segment_id="22">
+		<src>
+			Sollten die Pisten innerhalb von einer Woche verschneit sein, wird auch das Weihnachten ausverkauft sein, meint Schiefert.
+		</src>
+		<tgt rank="3" system="koc">
+			Should the pisten within a week, which will also be verschneit weihnachten ausverkauft, thinks schiefert.
+		</tgt>
+		<tgt rank="1" system="bbn-combo">
+			Should the Pisten within a week, will also be sold out this Christmas, says Schiefert.
+		</tgt>
+		<tgt rank="3" system="uu-ms">
+			Should the pisten be verschneit within a week will also be the Christmas that means Schiefert be sold out.
+		</tgt>
+	</judgedsentence>
+</jcml>

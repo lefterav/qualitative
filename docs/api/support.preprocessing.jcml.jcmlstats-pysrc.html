@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>support.preprocessing.jcml.jcmlstats</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="support-module.html">Package&nbsp;support</a> ::
+        <a href="support.preprocessing-module.html">Package&nbsp;preprocessing</a> ::
+        <a href="support.preprocessing.jcml-module.html">Package&nbsp;jcml</a> ::
+        Module&nbsp;jcmlstats
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="support.preprocessing.jcml.jcmlstats-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="support.preprocessing.jcml.jcmlstats-module.html">Module support.preprocessing.jcml.jcmlstats</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-docstring">Provide statistics for particular features from JCML files</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-docstring">Created on 22 Jul 2014</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-docstring">@author: Eleftherios Avramidis</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package dataprocessor=dataprocessor-module.html"><a title="dataprocessor" class="py-name" href="#" onclick="return doclink('link-0', 'dataprocessor', 'link-0');">dataprocessor</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package dataprocessor.ce=dataprocessor.ce-module.html,Module dataprocessor.ce.ce=dataprocessor.ce.ce-module.html"><a title="dataprocessor.ce
+dataprocessor.ce.ce" class="py-name" href="#" onclick="return doclink('link-1', 'ce', 'link-1');">ce</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module dataprocessor.ce.cejcml=dataprocessor.ce.cejcml-module.html"><a title="dataprocessor.ce.cejcml" class="py-name" href="#" onclick="return doclink('link-2', 'cejcml', 'link-2');">cejcml</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Function dataprocessor.ce.cejcml.get_statistics()=dataprocessor.ce.cejcml-module.html#get_statistics"><a title="dataprocessor.ce.cejcml.get_statistics" class="py-name" href="#" onclick="return doclink('link-3', 'get_statistics', 'link-3');">get_statistics</a></tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">argparse</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-4" class="py-name" targets="Variable featuregenerator.reference.meteor.meteor.MeteorGenerator.__name__=featuregenerator.reference.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.reference.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-4', '__name__', 'link-4');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">    <tt id="link-5" class="py-name" targets="Package featuregenerator.blackbox.parser=featuregenerator.blackbox.parser-module.html"><a title="featuregenerator.blackbox.parser" class="py-name" href="#" onclick="return doclink('link-5', 'parser', 'link-5');">parser</a></tt> <tt class="py-op">=</tt> <tt class="py-name">argparse</tt><tt class="py-op">.</tt><tt class="py-name">ArgumentParser</tt><tt class="py-op">(</tt><tt class="py-name">description</tt><tt class="py-op">=</tt><tt class="py-string">"Provide statistics for particular features from JCML files"</tt><tt class="py-op">)</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">    <tt id="link-6" class="py-name"><a title="featuregenerator.blackbox.parser" class="py-name" href="#" onclick="return doclink('link-6', 'parser', 'link-5');">parser</a></tt><tt class="py-op">.</tt><tt class="py-name">add_argument</tt><tt class="py-op">(</tt><tt class="py-string">'--files'</tt><tt class="py-op">,</tt> <tt class="py-name">metavar</tt><tt class="py-op">=</tt><tt class="py-string">'FILES'</tt><tt class="py-op">,</tt> <tt class="py-name">nargs</tt><tt class="py-op">=</tt><tt class="py-string">'+'</tt><tt class="py-op">,</tt> <tt class="py-name">help</tt><tt class="py-op">=</tt><tt class="py-string">"The JCML files to be parsed for calculating feature statistics"</tt><tt class="py-op">)</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">    <tt id="link-7" class="py-name"><a title="featuregenerator.blackbox.parser" class="py-name" href="#" onclick="return doclink('link-7', 'parser', 'link-5');">parser</a></tt><tt class="py-op">.</tt><tt class="py-name">add_argument</tt><tt class="py-op">(</tt><tt class="py-string">'--all'</tt><tt class="py-op">,</tt>  <tt class="py-name">help</tt><tt class="py-op">=</tt><tt class="py-string">"Get statistics for all features"</tt><tt class="py-op">,</tt> <tt class="py-name">nargs</tt><tt class="py-op">=</tt><tt class="py-string">'?'</tt><tt class="py-op">)</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">    <tt id="link-8" class="py-name"><a title="featuregenerator.blackbox.parser" class="py-name" href="#" onclick="return doclink('link-8', 'parser', 'link-5');">parser</a></tt><tt class="py-op">.</tt><tt class="py-name">add_argument</tt><tt class="py-op">(</tt><tt class="py-string">'--parallel'</tt><tt class="py-op">,</tt> <tt class="py-name">metavar</tt><tt class="py-op">=</tt><tt class="py-string">'PAR_FEATURES'</tt><tt class="py-op">,</tt> <tt class="py-name">nargs</tt><tt class="py-op">=</tt><tt class="py-string">'*'</tt><tt class="py-op">,</tt> <tt class="py-name">help</tt><tt class="py-op">=</tt><tt class="py-string">"The names of the parallel sentence features whose statistics will be calculated"</tt><tt class="py-op">)</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">    <tt id="link-9" class="py-name"><a title="featuregenerator.blackbox.parser" class="py-name" href="#" onclick="return doclink('link-9', 'parser', 'link-5');">parser</a></tt><tt class="py-op">.</tt><tt class="py-name">add_argument</tt><tt class="py-op">(</tt><tt class="py-string">'--src'</tt><tt class="py-op">,</tt> <tt class="py-name">metavar</tt><tt class="py-op">=</tt><tt class="py-string">'SRC_FEATURES'</tt><tt class="py-op">,</tt> <tt class="py-name">nargs</tt><tt class="py-op">=</tt><tt class="py-string">'*'</tt><tt class="py-op">,</tt> <tt class="py-name">help</tt><tt class="py-op">=</tt><tt class="py-string">"The names of the source features whose statistics will be calculated"</tt><tt class="py-op">)</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">    <tt id="link-10" class="py-name"><a title="featuregenerator.blackbox.parser" class="py-name" href="#" onclick="return doclink('link-10', 'parser', 'link-5');">parser</a></tt><tt class="py-op">.</tt><tt class="py-name">add_argument</tt><tt class="py-op">(</tt><tt class="py-string">'--tgt'</tt><tt class="py-op">,</tt> <tt class="py-name">metavar</tt><tt class="py-op">=</tt><tt class="py-string">'TGT_FEATURES'</tt><tt class="py-op">,</tt> <tt class="py-name">nargs</tt><tt class="py-op">=</tt><tt class="py-string">'*'</tt><tt class="py-op">,</tt> <tt class="py-name">help</tt><tt class="py-op">=</tt><tt class="py-string">"The names of the target features whose statistics will be calculated"</tt><tt class="py-op">)</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">    <tt id="link-11" class="py-name"><a title="featuregenerator.blackbox.parser" class="py-name" href="#" onclick="return doclink('link-11', 'parser', 'link-5');">parser</a></tt><tt class="py-op">.</tt><tt class="py-name">add_argument</tt><tt class="py-op">(</tt><tt class="py-string">'--ref'</tt><tt class="py-op">,</tt> <tt class="py-name">metavar</tt><tt class="py-op">=</tt><tt class="py-string">'REF_FEATURES'</tt><tt class="py-op">,</tt> <tt class="py-name">nargs</tt><tt class="py-op">=</tt><tt class="py-string">'*'</tt><tt class="py-op">,</tt> <tt class="py-name">help</tt><tt class="py-op">=</tt><tt class="py-string">"The names of the reference features whose statistics will be calculated"</tt><tt class="py-op">)</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">    <tt class="py-name">args</tt> <tt class="py-op">=</tt> <tt id="link-12" class="py-name"><a title="featuregenerator.blackbox.parser" class="py-name" href="#" onclick="return doclink('link-12', 'parser', 'link-5');">parser</a></tt><tt class="py-op">.</tt><tt class="py-name">parse_args</tt><tt class="py-op">(</tt><tt class="py-op">)</tt>  </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">     </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">args</tt><tt class="py-op">.</tt><tt class="py-name">all</tt><tt class="py-op">:</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">line</tt> <tt class="py-keyword">in</tt> <tt id="link-13" class="py-name"><a title="dataprocessor.ce.cejcml.get_statistics" class="py-name" href="#" onclick="return doclink('link-13', 'get_statistics', 'link-3');">get_statistics</a></tt><tt class="py-op">(</tt><tt class="py-name">args</tt><tt class="py-op">.</tt><tt class="py-name">files</tt><tt class="py-op">,</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">                                    <tt class="py-name">all_general</tt> <tt class="py-op">=</tt>  <tt class="py-name">True</tt><tt class="py-op">,</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">                                    <tt class="py-name">all_target</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">                                      </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">                                    <tt class="py-comment">#desired_general=args.parallel,</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">                                    <tt class="py-comment">#desired_source=args.src,</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">                                    <tt class="py-comment">#desired_target=args.tgt,</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">                                    <tt class="py-comment">#desired_ref=args.ref)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">                                    <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">             <tt class="py-keyword">print</tt> <tt class="py-name">line</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:08 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

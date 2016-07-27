@@ -1,4 +1,5 @@
 """
+Features from subtraction of numerical features with the same name in the two target sentences
 
 @author: Eleftherios Avramidis
 """
