@@ -1,12 +1,12 @@
 '''
 Created on 31 Oct 2013
 
-@author: elav01
+@author: Eleftherios Avramidis
 '''
 
 from xml.etree.cElementTree import iterparse
 import sys
-from io_utils.input.jcmlreader import JcmlReader
+from dataprocessor.input.jcmlreader import JcmlReader
 
 if __name__ == '__main__':
     source_file = open(sys.argv[1], "r")
