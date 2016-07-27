@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jcml>
+	<judgedsentence segment_id="22" langsrc="es" rank="1" document_id="idnes.cz/2009/12/11/76492" judgement_id="1" id="22" langtgt="en" judge_id="AS53V0H5ZLCLN">
+		<src>Sollten die Pisten innerhalb von einer Woche verschneit sein, wird auch das Weihnachten ausverkauft sein, meint Schiefert.</src>
+		<tgt system="koc" rank="3">Should the pisten within a week, which will also be verschneit weihnachten ausverkauft, thinks schiefert.</tgt>
+		<tgt system="bbn-combo" rank="1">Should the Pisten within a week, will also be sold out this Christmas, says Schiefert.</tgt>
+	</judgedsentence>
+	<judgedsentence segment_id="22" langsrc="es" rank="1" document_id="idnes.cz/2009/12/11/76492" judgement_id="1" id="22" langtgt="en" judge_id="AS53V0H5ZLCLN">
+		<src>Sollten die Pisten innerhalb von einer Woche verschneit sein, wird auch das Weihnachten ausverkauft sein, meint Schiefert.</src>
+		<tgt system="uu-ms" rank="3">Should the pisten be verschneit within a week will also be the Christmas that means Schiefert be sold out.</tgt>
+		<tgt system="bbn-combo" rank="1">Should the Pisten within a week, will also be sold out this Christmas, says Schiefert.</tgt>
+	</judgedsentence>
+	<judgedsentence segment_id="22" langsrc="es" rank="-1" document_id="idnes.cz/2009/12/11/76492" judgement_id="1" id="22" langtgt="en" judge_id="AS53V0H5ZLCLN">
+		<src>Sollten die Pisten innerhalb von einer Woche verschneit sein, wird auch das Weihnachten ausverkauft sein, meint Schiefert.</src>
+		<tgt system="bbn-combo" rank="1">Should the Pisten within a week, will also be sold out this Christmas, says Schiefert.</tgt>
+		<tgt system="uu-ms" rank="3">Should the pisten be verschneit within a week will also be the Christmas that means Schiefert be sold out.</tgt>
+	</judgedsentence>
+	<judgedsentence segment_id="22" langsrc="es" rank="-1" document_id="idnes.cz/2009/12/11/76492" judgement_id="1" id="22" langtgt="en" judge_id="AS53V0H5ZLCLN">
+		<src>Sollten die Pisten innerhalb von einer Woche verschneit sein, wird auch das Weihnachten ausverkauft sein, meint Schiefert.</src>
+		<tgt system="bbn-combo" rank="1">Should the Pisten within a week, will also be sold out this Christmas, says Schiefert.</tgt>
+		<tgt system="koc" rank="3">Should the pisten within a week, which will also be verschneit weihnachten ausverkauft, thinks schiefert.</tgt>
+	</judgedsentence>
+</jcml>
