@@ -36,6 +36,10 @@ from Orange.classification.neural import NeuralNetworkLearner
 from Orange.classification.logreg import LogRegLearner, LibLinearLogRegLearner
 from Orange.classification import Classifier 
 from Orange.feature import Continuous
+<<<<<<< HEAD
+=======
+from ml.lib.scikit.ranking import class_name
+>>>>>>> master
 #from checkbox.attribute import Attribute
 #from support.preprocessing.jcml.align import target_attribute_names
 
@@ -228,9 +232,19 @@ from Orange.statistics.basic import Domain as StatsDomain
 from Orange.classification import ClassifierFromVar 
 from Orange.data.utils import NormalizeContinuous
 
+<<<<<<< HEAD
 def normalize_continuous(data):
     newattrs = []
     domstat = StatsDomain(data)
+=======
+def normalize_continuous(data, domstat=None):
+    newattrs = []
+    
+    #domain stats should be calculated on the training data
+    #or be stored and passed as a param for the test instances
+    if not domstat:
+        domstat = StatsDomain(data)
+>>>>>>> master
 
     for attr in data.domain.features:
         if not isinstance(attr, Continuous):
@@ -246,7 +260,11 @@ def normalize_continuous(data):
 
     new_domain = Domain(newattrs, data.domain.classVar)
     new_data = Table(new_domain, data)
+<<<<<<< HEAD
     return new_data    
+=======
+    return domstat, new_data    
+>>>>>>> master
 
 class OrangeRanker(Ranker):
     """
@@ -275,14 +293,45 @@ class OrangeRanker(Ranker):
         if type(self.learner) == str:
             self.learner = eval(self.learner)
 
+<<<<<<< HEAD
     def train(self, dataset_filename, normalize=False, **kwargs):
         logging.info("Converting data for learner {}".format(self.learner))
         datatable = dataset_to_instances(filename=dataset_filename, **kwargs)
+=======
+    def train(self, dataset_filename, 
+              attribute_set=None,
+              class_name= None,
+              default_value = '',
+              replace_infinite=False,
+              normalize=False, 
+              **kwargs):
+        
+        #First save as class parameters the transformations that need also
+        #be applied on the test data
+        self.attribute_set = attribute_set
+        self.class_name = class_name
+        self.default_value = default_value
+        self.replace_infinite = replace_infinite
+        self.normalizer = None
+        
+        #convert the data to the format of the library        
+        logging.info("Converting data for learner {}".format(self.learner))
+        datatable = dataset_to_instances(filename=dataset_filename, 
+                                         attribute_set=attribute_set,
+                                         class_name=class_name,
+                                         default_value=default_value,
+                                         replace_infinite=replace_infinite,
+                                         **kwargs)
+>>>>>>> master
         logging.info("Data for learner {} loaded".format(self.learner))
 
         if normalize:
             logging.info("Normalizing data for learner {}".format(self.learner))
+<<<<<<< HEAD
             datatable = normalize_continuous(datatable)
+=======
+            self.normalizer, datatable = normalize_continuous(datatable)
+>>>>>>> master
 
         #training_params = self._clean_training_params(self.learner, kwargs)
         #self.learner = self.learner(training_params)
@@ -488,6 +537,10 @@ class OrangeRanker(Ranker):
             instance = parallelsentence_to_instance(pairwise_parallelsentence, domain=domain)
             
             #apply normalization if the model was trained with
+<<<<<<< HEAD
+=======
+            #TODO: normalization is not applied properly. Adapt and call normalize_continuous somewhere here
+>>>>>>> master
             try:
                 instance = instance.translate(self.continuizer_domain)
             except:

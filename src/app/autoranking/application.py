@@ -29,8 +29,37 @@ from featuregenerator.preprocessor import Tokenizer
 from featuregenerator.preprocessor import Truecaser
 
 from py4j.java_gateway import GatewayClient, JavaGateway 
+<<<<<<< HEAD
 
 
+=======
+import pickle
+
+
+class SelectionMechanism:
+    """
+    This is the class for all the functionality related to receiving text
+    and selecting translations accordiningly.
+    @ivar: ranker: Machine Learning class that handles ranking of sentences
+    @type: ranker: ml.ranking.Ranker
+    
+    """
+
+    def __init__(self, configfilenames, model):
+        #retrieve the ranking model from the given file
+        try:
+            self.ranker = pickle.load(model)
+        except:
+            self.ranker = pickle.load(open(model))
+        
+        #get the required attributes
+        attribute_set = self.ranker.attribute_set
+        
+    
+    
+    
+
+>>>>>>> master
 
 class Autoranking:
     """
