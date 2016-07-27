@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>app.hybrid.getliblinearweights</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="app-module.html">Package&nbsp;app</a> ::
+        <a href="app.hybrid-module.html">Package&nbsp;hybrid</a> ::
+        Module&nbsp;getliblinearweights
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="app.hybrid.getliblinearweights-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="app.hybrid.getliblinearweights-module.html">Module app.hybrid.getliblinearweights</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">pickle</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">collections</tt> <tt class="py-keyword">import</tt> <tt class="py-name">OrderedDict</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">time</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-string">"""</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-string">Draft script to retrieve LibLinear from the stored model,  and add them into the proper position in the repetitions logs, when they were not retrieved during the pipeline execution</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-string">"""</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"> </tt>
+<a name="get_weights_liblinear"></a><div id="get_weights_liblinear-def"><a name="L10"></a><tt class="py-lineno">10</tt> <a class="py-toggle" href="#" id="get_weights_liblinear-toggle" onclick="return toggle('get_weights_liblinear');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="app.hybrid.getliblinearweights-module.html#get_weights_liblinear">get_weights_liblinear</a><tt class="py-op">(</tt><tt class="py-param">model</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_weights_liblinear-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="get_weights_liblinear-expanded"><a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line">    <tt id="link-0" class="py-name" targets="Variable dataprocessor.input.testorange.attributes=dataprocessor.input.testorange-module.html#attributes"><a title="dataprocessor.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-0', 'attributes', 'link-0');">attributes</a></tt> <tt class="py-op">=</tt> <tt class="py-name">OrderedDict</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">    <tt class="py-name">weights</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-name">model</tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module ml.learner=ml.learner-module.html"><a title="ml.learner" class="py-name" href="#" onclick="return doclink('link-1', 'learner', 'link-1');">learner</a></tt><tt class="py-op">.</tt><tt class="py-name">weights</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">    <tt class="py-name">attnames</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt id="link-2" class="py-name" targets="Function dataprocessor.sax.saxps2jcml.att()=dataprocessor.sax.saxps2jcml-module.html#att"><a title="dataprocessor.sax.saxps2jcml.att" class="py-name" href="#" onclick="return doclink('link-2', 'att', 'link-2');">att</a></tt><tt class="py-op">.</tt><tt class="py-name">name</tt> <tt class="py-keyword">for</tt> <tt id="link-3" class="py-name"><a title="dataprocessor.sax.saxps2jcml.att" class="py-name" href="#" onclick="return doclink('link-3', 'att', 'link-2');">att</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">model</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name"><a title="ml.learner" class="py-name" href="#" onclick="return doclink('link-4', 'learner', 'link-1');">learner</a></tt><tt class="py-op">.</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">attname</tt><tt class="py-op">,</tt> <tt class="py-name">weight</tt> <tt class="py-keyword">in</tt> <tt class="py-name">zip</tt><tt class="py-op">(</tt><tt class="py-name">attnames</tt><tt class="py-op">,</tt> <tt class="py-name">weights</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">attname</tt><tt class="py-op">.</tt><tt class="py-name">startswith</tt><tt class="py-op">(</tt><tt class="py-string">"N_"</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">            <tt class="py-name">attname</tt> <tt class="py-op">=</tt> <tt class="py-name">attname</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">        <tt id="link-5" class="py-name"><a title="dataprocessor.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-5', 'attributes', 'link-0');">attributes</a></tt><tt class="py-op">[</tt><tt class="py-string">"att_{}_weight"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-name">attname</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">weight</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-6" class="py-name"><a title="dataprocessor.input.testorange.attributes" class="py-name" href="#" onclick="return doclink('link-6', 'attributes', 'link-0');">attributes</a></tt> </tt>
+</div><a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">         </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">         </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-7" class="py-name" targets="Variable featuregenerator.reference.meteor.meteor.MeteorGenerator.__name__=featuregenerator.reference.meteor.meteor.MeteorGenerator-class.html#__name__"><a title="featuregenerator.reference.meteor.meteor.MeteorGenerator.__name__" class="py-name" href="#" onclick="return doclink('link-7', '__name__', 'link-7');">__name__</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-8" class="py-name" targets="Variable dataprocessor.sax.saxwrapper.SaxWrapper.i=dataprocessor.sax.saxwrapper.SaxWrapper-class.html#i"><a title="dataprocessor.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-8', 'i', 'link-8');">i</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">range</tt><tt class="py-op">(</tt><tt class="py-number">10</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">        <tt class="py-name">filename</tt> <tt class="py-op">=</tt> <tt class="py-string">"{}.model.dump"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt id="link-9" class="py-name"><a title="dataprocessor.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-9', 'i', 'link-8');">i</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">        <tt class="py-name">model</tt> <tt class="py-op">=</tt> <tt class="py-name">pickle</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method dataprocessor.input.genericreader.GenericReader.load()=dataprocessor.input.genericreader.GenericReader-class.html#load,Method dataprocessor.input.genericxmlreader.GenericXmlReader.load()=dataprocessor.input.genericxmlreader.GenericXmlReader-class.html#load,Method dataprocessor.input.posteditingreader.PosteditingReader.load()=dataprocessor.input.posteditingreader.PosteditingReader-class.html#load,Method dataprocessor.input.rankreader.R2RankReader.load()=dataprocessor.input.rankreader.R2RankReader-class.html#load,Method dataprocessor.input.rankreader.RankReader.load()=dataprocessor.input.rankreader.RankReader-class.html#load,Method dataprocessor.input.xliffreader.XliffReader.load()=dataprocessor.input.xliffreader.XliffReader-class.html#load"><a title="dataprocessor.input.genericreader.GenericReader.load
+dataprocessor.input.genericxmlreader.GenericXmlReader.load
+dataprocessor.input.posteditingreader.PosteditingReader.load
+dataprocessor.input.rankreader.R2RankReader.load
+dataprocessor.input.rankreader.RankReader.load
+dataprocessor.input.xliffreader.XliffReader.load" class="py-name" href="#" onclick="return doclink('link-10', 'load', 'link-10');">load</a></tt><tt class="py-op">(</tt><tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">        <tt class="py-name">backed_log_filename</tt> <tt class="py-op">=</tt> <tt class="py-string">"{}.log.{}.bak"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt id="link-11" class="py-name"><a title="dataprocessor.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-11', 'i', 'link-8');">i</a></tt><tt class="py-op">,</tt> <tt class="py-name">time</tt><tt class="py-op">.</tt><tt class="py-name">strftime</tt><tt class="py-op">(</tt><tt class="py-string">"%Y-%m-%d_%H-%M"</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">        <tt class="py-name">new_log_filename</tt> <tt class="py-op">=</tt> <tt class="py-string">"{}.log"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt id="link-12" class="py-name"><a title="dataprocessor.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-12', 'i', 'link-8');">i</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line"> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">        <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">rename</tt><tt class="py-op">(</tt><tt class="py-name">new_log_filename</tt><tt class="py-op">,</tt> <tt class="py-name">backed_log_filename</tt><tt class="py-op">)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">        <tt class="py-name">old_log</tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">backed_log_filename</tt><tt class="py-op">)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">        <tt class="py-name">new_log</tt> <tt class="py-op">=</tt> <tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">new_log_filename</tt><tt class="py-op">,</tt> <tt class="py-string">'w'</tt><tt class="py-op">)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line"> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">        <tt class="py-name">weights</tt> <tt class="py-op">=</tt> <tt id="link-13" class="py-name" targets="Function app.hybrid.getliblinearweights.get_weights_liblinear()=app.hybrid.getliblinearweights-module.html#get_weights_liblinear"><a title="app.hybrid.getliblinearweights.get_weights_liblinear" class="py-name" href="#" onclick="return doclink('link-13', 'get_weights_liblinear', 'link-13');">get_weights_liblinear</a></tt><tt class="py-op">(</tt><tt class="py-name">model</tt><tt class="py-op">)</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">        <tt class="py-comment">#print " ".join(["{}:{}".format(k,v) for k,v in weights.iteritems()])</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">        <tt id="link-14" class="py-name"><a title="dataprocessor.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-14', 'i', 'link-8');">i</a></tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">line</tt> <tt class="py-keyword">in</tt> <tt class="py-name">old_log</tt><tt class="py-op">:</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-15" class="py-name"><a title="dataprocessor.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-15', 'i', 'link-8');">i</a></tt><tt class="py-op">==</tt><tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">                <tt class="py-keyword">print</tt> <tt class="py-op">&gt;&gt;</tt><tt class="py-name">new_log</tt><tt class="py-op">,</tt> <tt class="py-string">" "</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-string">"{}:{}"</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt id="link-16" class="py-name" targets="Function dataprocessor.sax.saxps2jcml.k()=dataprocessor.sax.saxps2jcml-module.html#k"><a title="dataprocessor.sax.saxps2jcml.k" class="py-name" href="#" onclick="return doclink('link-16', 'k', 'link-16');">k</a></tt><tt class="py-op">,</tt><tt class="py-name">v</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt id="link-17" class="py-name"><a title="dataprocessor.sax.saxps2jcml.k" class="py-name" href="#" onclick="return doclink('link-17', 'k', 'link-16');">k</a></tt><tt class="py-op">,</tt><tt class="py-name">v</tt> <tt class="py-keyword">in</tt> <tt class="py-name">weights</tt><tt class="py-op">.</tt><tt class="py-name">iteritems</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">                <tt class="py-name">new_log</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Method app.autoranking.decode_batch.StreamToLogger.write()=app.autoranking.decode_batch.StreamToLogger-class.html#write,Method app.autoranking.optsuite.StreamToLogger.write()=app.autoranking.optsuite.StreamToLogger-class.html#write,Method app.autoranking.suite.StreamToLogger.write()=app.autoranking.suite.StreamToLogger-class.html#write,Method sentence.coupleddataset.CoupledDataSetDisk.write()=sentence.coupleddataset.CoupledDataSetDisk-class.html#write"><a title="app.autoranking.decode_batch.StreamToLogger.write
+app.autoranking.optsuite.StreamToLogger.write
+app.autoranking.suite.StreamToLogger.write
+sentence.coupleddataset.CoupledDataSetDisk.write" class="py-name" href="#" onclick="return doclink('link-18', 'write', 'link-18');">write</a></tt><tt class="py-op">(</tt><tt class="py-name">line</tt><tt class="py-op">)</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">            <tt id="link-19" class="py-name"><a title="dataprocessor.sax.saxwrapper.SaxWrapper.i" class="py-name" href="#" onclick="return doclink('link-19', 'i', 'link-8');">i</a></tt><tt class="py-op">+=</tt><tt class="py-number">1</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">        <tt class="py-name">old_log</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name" targets="Method dataprocessor.sax.saxps2jcml.IncrementalJcml.close()=dataprocessor.sax.saxps2jcml.IncrementalJcml-class.html#close,Method featuregenerator.blackbox.languagechecker.languagetool.LanguageToolFeatureGenerator.close()=featuregenerator.blackbox.languagechecker.languagetool.LanguageToolFeatureGenerator-class.html#close,Method featuregenerator.preprocessor.CommandlinePreprocessor.close()=featuregenerator.preprocessor.CommandlinePreprocessor-class.html#close,Method support.preprocessing.jcml.jcml2arff.ArffWriter.close()=support.preprocessing.jcml.jcml2arff.ArffWriter-class.html#close"><a title="dataprocessor.sax.saxps2jcml.IncrementalJcml.close
+featuregenerator.blackbox.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-20', 'close', 'link-20');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">        <tt class="py-name">new_log</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="dataprocessor.sax.saxps2jcml.IncrementalJcml.close
+featuregenerator.blackbox.languagechecker.languagetool.LanguageToolFeatureGenerator.close
+featuregenerator.preprocessor.CommandlinePreprocessor.close
+support.preprocessing.jcml.jcml2arff.ArffWriter.close" class="py-name" href="#" onclick="return doclink('link-21', 'close', 'link-20');">close</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:07 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
