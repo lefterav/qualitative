@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>featuregenerator.blackbox.parser.berkeley.cfgrules.CfgAlignmentFeatureGenerator</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="featuregenerator-module.html">Package&nbsp;featuregenerator</a> ::
+        <a href="featuregenerator.blackbox-module.html">Package&nbsp;blackbox</a> ::
+        <a href="featuregenerator.blackbox.parser-module.html">Package&nbsp;parser</a> ::
+        <a href="featuregenerator.blackbox.parser.berkeley-module.html">Package&nbsp;berkeley</a> ::
+        <a href="featuregenerator.blackbox.parser.berkeley.cfgrules-module.html">Module&nbsp;cfgrules</a> ::
+        Class&nbsp;CfgAlignmentFeatureGenerator
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="featuregenerator.blackbox.parser.berkeley.cfgrules.CfgAlignmentFeatureGenerator-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class CfgAlignmentFeatureGenerator</h1><p class="nomargin-top"><span class="codelink"><a href="featuregenerator.blackbox.parser.berkeley.cfgrules-pysrc.html#CfgAlignmentFeatureGenerator">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+                       object --+    
+                                |    
+<a href="featuregenerator.featuregenerator.FeatureGenerator-class.html">featuregenerator.FeatureGenerator</a> --+
+                                    |
+                                   <strong class="uidshort">CfgAlignmentFeatureGenerator</strong>
+</pre>
+
+<hr />
+<p>Feature generator for aligning CFG rules between two sentences. It 
+  requires that a Berkeley tree and a symmetrized alignment exists</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">dict</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.blackbox.parser.berkeley.cfgrules.CfgAlignmentFeatureGenerator-class.html#get_features_tgt" class="summary-sig-name">get_features_tgt</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">targetsentence</span>,
+        <span class="summary-sig-arg">parallelsentence</span>)</span><br />
+      Abstract method to be overriden by the particular subclassed feature 
+      generator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.blackbox.parser.berkeley.cfgrules-pysrc.html#CfgAlignmentFeatureGenerator.get_features_tgt">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">set([int, ...])</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.blackbox.parser.berkeley.cfgrules.CfgAlignmentFeatureGenerator-class.html#_get_unaligned_target_indices" class="summary-sig-name" onclick="show_private();">_get_unaligned_target_indices</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">target_line</span>,
+        <span class="summary-sig-arg">alignment_string</span>)</span><br />
+      Find which target indices have not been aligned</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.blackbox.parser.berkeley.cfgrules-pysrc.html#CfgAlignmentFeatureGenerator._get_unaligned_target_indices">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.blackbox.parser.berkeley.cfgrules.CfgAlignmentFeatureGenerator-class.html#process_string" class="summary-sig-name">process_string</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">source_line</span>,
+        <span class="summary-sig-arg">target_line</span>,
+        <span class="summary-sig-arg">alignment_string</span>,
+        <span class="summary-sig-arg">sourceparse</span>,
+        <span class="summary-sig-arg">targetparse</span>)</span><br />
+      The function that processes the alignment between source and target 
+      parses</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.blackbox.parser.berkeley.cfgrules-pysrc.html#CfgAlignmentFeatureGenerator.process_string">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="featuregenerator.blackbox.parser.berkeley.cfgrules.CfgAlignmentFeatureGenerator-class.html#_match_targetlabels" class="summary-sig-name" onclick="show_private();">_match_targetlabels</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">targetrules</span>,
+        <span class="summary-sig-arg">target_indices</span>)</span><br />
+      Get the target labels that match to the given target_indices</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="featuregenerator.blackbox.parser.berkeley.cfgrules-pysrc.html#CfgAlignmentFeatureGenerator._match_targetlabels">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html">featuregenerator.FeatureGenerator</a></code></b>:
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_batch">add_features_batch</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_dataset">add_features_dataset</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_parallelsentence">add_features_parallelsentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_simplesentence">add_features_simplesentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_src">add_features_src</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#add_features_tgt">add_features_tgt</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_annotation_name">get_annotation_name</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_parallelsentence">get_features_parallelsentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_simplesentence">get_features_simplesentence</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_src">get_features_src</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_string">get_features_string</a></code>,
+      <code><a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#process_dataset">process_dataset</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__init__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="get_features_tgt"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_features_tgt</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">targetsentence</span>,
+        <span class="sig-arg">parallelsentence</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.blackbox.parser.berkeley.cfgrules-pysrc.html#CfgAlignmentFeatureGenerator.get_features_tgt">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Abstract method to be overriden by the particular subclassed feature 
+  generator. It receives a target simple sentence and returns a list of 
+  target features. Implementation here fallbacks to the 
+  get_features_simplesentence function, when feature generator doesn't 
+  differentiate between source and target features</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>simplesentence</code></strong> - An instance of the target sentence whose features will be 
+          extracted</li>
+        <li><strong class="pname"><code>parallelsentence</code></strong> - An instance of parallel sentence whose features will be extracted</li>
+    </ul></dd>
+    <dt>Returns: dict</dt>
+        <dd>the attributes extracted by the analysis process</dd>
+    <dt>Overrides:
+        <a href="featuregenerator.featuregenerator.FeatureGenerator-class.html#get_features_tgt">featuregenerator.FeatureGenerator.get_features_tgt</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_get_unaligned_target_indices"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_get_unaligned_target_indices</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">target_line</span>,
+        <span class="sig-arg">alignment_string</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.blackbox.parser.berkeley.cfgrules-pysrc.html#CfgAlignmentFeatureGenerator._get_unaligned_target_indices">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Find which target indices have not been aligned</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>target_line</code></strong> (str) - the full string of the translated sentence</li>
+        <li><strong class="pname"><code>alignment_string</code></strong> (str) - the alignment string in the common hyphen and space separated 
+          format like &quot;1-1 2-2&quot; etc</li>
+    </ul></dd>
+    <dt>Returns: set([int, ...])</dt>
+        <dd>a set of indices that have not been aligned</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="process_string"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">process_string</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">source_line</span>,
+        <span class="sig-arg">target_line</span>,
+        <span class="sig-arg">alignment_string</span>,
+        <span class="sig-arg">sourceparse</span>,
+        <span class="sig-arg">targetparse</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.blackbox.parser.berkeley.cfgrules-pysrc.html#CfgAlignmentFeatureGenerator.process_string">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>The function that processes the alignment between source and target 
+  parses</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>source_line</code></strong> (str) - the source string of the alignemnt</li>
+        <li><strong class="pname"><code>target_line</code></strong> (str) - the target string of the alignment</li>
+        <li><strong class="pname"><code>alignment_string</code></strong> (str) - the alignment string in the common hyphen and space separated 
+          format like &quot;1-1 2-2&quot; etc</li>
+        <li><strong class="pname"><code>sourceparse</code></strong> (str) - the parse of the source sentence in bracketed format</li>
+        <li><strong class="pname"><code>targetparse</code></strong> (str) - the parser of the target sentence in bracketed format</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_match_targetlabels"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_match_targetlabels</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">targetrules</span>,
+        <span class="sig-arg">target_indices</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="featuregenerator.blackbox.parser.berkeley.cfgrules-pysrc.html#CfgAlignmentFeatureGenerator._match_targetlabels">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get the target labels that match to the given target_indices</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>targetrules</code></strong> ([Rule, Rule, ...]) - a list of target rules</li>
+        <li><strong class="pname"><code>target_indices</code></strong> ([int, ...]) - a list of indices</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul 26 18:11:05 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
