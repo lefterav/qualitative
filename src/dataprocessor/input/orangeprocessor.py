@@ -381,7 +381,7 @@ class OrangeProcessor:
     
     def __getOrangeFormat__(self, dataset, class_name, desired_attributes=[], meta_attributes=[]):
         sys.stderr.write("retrieving attribute names\n")
-        self.attribute_names = dataset.get_all_attribute_names()
+        self.attribute_names = dataset.get_all_feature_names()
         
         sys.stderr.write("processing orange header\n") 
         output = self.__get_orange_header__(dataset, class_name, self.attribute_names, desired_attributes, meta_attributes)

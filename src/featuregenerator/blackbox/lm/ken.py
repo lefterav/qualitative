@@ -14,7 +14,33 @@ class KenLMFeatureGenerator(LanguageFeatureGenerator):
     '''
     Provide ngram features by querying language model via KenLM python wrapper
     '''
-
+    
+    feature_names = ['kenlm_unk_pos_abs_avg',
+                     'kenlm_unk_pos_abs_std',
+                     'kenlm_unk_pos_abs_min',
+                     'kenlm_unk_pos_abs_max',
+                     'kenlm_unk_pos_rel_avg',
+                     'kenlm_unk_pos_rel_std',
+                     'kenlm_unk_pos_rel_min',
+                     'kenlm_unk_pos_rel_max',
+                     'kenlm_unk',
+                     'kenlm_unk_len',
+                     'kenlm_length_avg',
+                     'kenlm_length_std',
+                     'kenlm_length_min',
+                     'kenlm_length_max',
+                     'kenlm_probs_avg',
+                     'kenlm_probs_std',
+                     'kenlm_probs_min',
+                     'kenlm_probs_max',                       
+                     'kenlm_probs_pos_max',
+                     'kenlm_probs_pos_min',
+                     'kenlm_probs_low',
+                     'kenlm_probs_high',
+                     'kenlm_probs_low_pos_avg',
+                     'kenlm_probs_low_pos_std',
+                     'kenlm_prob']
+    
     def __init__(self, lang, filename):
         '''
         Load the model
