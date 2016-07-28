@@ -12,7 +12,7 @@ import sys
 from collections import defaultdict, OrderedDict
 from xml.etree.ElementTree import iterparse
 from sentence.sentence import SimpleSentence
-from sentence.parallelsentence import ParallelSentence, DefaultAttributeSet
+from sentence.parallelsentence import ParallelSentence, DefaultFeatureSet
 from sentence.dataset import DataSet
 import subprocess
 
@@ -135,8 +135,8 @@ class CEJcmlReader(DataReader):
         target_continuous_attnames, target_discrete_attnames = self._separate_continuous_attributes(target_attributes)
         ref_continuous_attnames, ref_discrete_attnames = self._separate_continuous_attributes(ref_attributes)
         
-        return DefaultAttributeSet(general_continuous_attnames, source_continuous_attnames, target_continuous_attnames, ref_continuous_attnames), \
-            DefaultAttributeSet(general_discrete_attnames, source_discrete_attnames, target_discrete_attnames, ref_discrete_attnames)
+        return DefaultFeatureSet(general_continuous_attnames, source_continuous_attnames, target_continuous_attnames, ref_continuous_attnames), \
+            DefaultFeatureSet(general_discrete_attnames, source_discrete_attnames, target_discrete_attnames, ref_discrete_attnames)
        
     def get_attribute_names(self):
         """
@@ -179,7 +179,7 @@ class CEJcmlReader(DataReader):
          target_attribute_names, 
          ref_attribute_names) = self.get_attribute_names()
         
-        return DefaultAttributeSet(parallel_attribute_names, 
+        return DefaultFeatureSet(parallel_attribute_names, 
                             source_attribute_names, 
                             target_attribute_names, 
                             ref_attribute_names)

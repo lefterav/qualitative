@@ -163,7 +163,7 @@ def dataset_to_instances(filename,
     loader, which is implemented in C. This way no double object instances need to be on memory
     during conversion time.
     @param attribute_set: A description of the attributes we want to be included in the data table
-    @type attribute_set: L{AttributeSet}
+    @type attribute_set: L{FeatureSet}
     @param class_name: The name of the class (label) for the machine learning task
     @type class_name: C{str}
     @param reader: A class which is able to read from external files. This give the possibility to 
@@ -689,11 +689,11 @@ class SkRanker(Ranker, SkLearner):
 
 if __name__ == '__main__':
     import sys, logging
-    from sentence.parallelsentence import AttributeSet
+    from sentence.parallelsentence import FeatureSet
     filename = sys.argv[1]
     output_filename = sys.argv[2]
-    attribute_set = AttributeSet()
-    attribute_set.target_attribute_names = ['cross-meteor_score', 'lm_unk', 'l_tokens', 'berkeley-n', 'parse-VP', 'berkley-loglikelihood']
+    attribute_set = FeatureSet()
+    attribute_set.target_feature_names = ['cross-meteor_score', 'lm_unk', 'l_tokens', 'berkeley-n', 'parse-VP', 'berkley-loglikelihood']
     class_name = "ref-rgbF"
 
     loglevel = logging.DEBUG
