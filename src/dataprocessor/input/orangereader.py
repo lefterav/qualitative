@@ -278,7 +278,7 @@ class OrangeData:
     
     def _getOrangeFormat(self, orange_file, dataset, class_name, desired_attributes=[], meta_attributes=[]):
         sys.stderr.write("retrieving attribute names\n")
-        attribute_names = dataset.get_all_attribute_names()
+        attribute_names = dataset.get_all_feature_names()
 
         sys.stderr.write("processing orange header\n") 
         header_output = self._get_orange_header(dataset, class_name, attribute_names, desired_attributes, meta_attributes)
