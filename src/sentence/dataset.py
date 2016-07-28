@@ -126,7 +126,7 @@ class DataSet(object):
             self.attribute_names_found = True
         return self.attribute_names
     
-    def get_all_attribute_names(self):
+    def get_all_feature_names(self):
         all_attribute_names =  self.get_attribute_sets()
         all_attribute_names.extend( self.get_nested_attribute_names() )
         return list(set(all_attribute_names))
@@ -168,7 +168,7 @@ class DataSet(object):
         @param meta_attributes: attributes that need not participate in the ML process (meta)
         @rtype meta_attributes: [str, ...]
         """
-        attribute_names = self.get_all_attribute_names()
+        attribute_names = self.get_all_feature_names()
         asked_attributes = set(desired_attributes.extend(meta_attributes))
         for asked_attribute in asked_attributes:
             if asked_attribute not in attribute_names:
@@ -354,7 +354,7 @@ class DataSet(object):
         #compile the list of expressions first, so that there is minimal overhead
         compiled_expressions = [re.compile(expression) for expression in expressions]
         for expression in compiled_expressions:
-            for attribute_name in self.get_all_attribute_names(): 
+            for attribute_name in self.get_all_feature_names(): 
                 if re.match(expression, attribute_name):
                     attribute_names.add(attribute_name)
                 else:

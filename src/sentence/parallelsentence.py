@@ -34,53 +34,53 @@ def _noprefix(prefixes, names):
             notprefixed.append(name)
     return notprefixed
 
-class AttributeSet:
+class FeatureSet:
     """
     Structure that describes the attributes provided by a set of parallel sentences.
     It is very useful to carry the information for the contents of an entire set, 
     that might otherwise be needed to be parsed incrementally, so this information
     would not be available.
-    @ivar parallel_attribute_names: the names of the attributes on the 
+    @ivar parallel_feature_names: the names of the attributes on the 
     level of the parallel sentence
-    @type parallel_attribute_names: string
-    @ivar source_attribute_names: the names of the attributes of the source sentence
-    @type source_attribute_names: string
-    @ivar target_attribute_names: the names of the attributes of the target 
+    @type parallel_feature_names: string
+    @ivar source_feature_names: the names of the attributes of the source sentence
+    @type source_feature_names: string
+    @ivar target_feature_names: the names of the attributes of the target 
     sentences (translations
-    @type target_attribute_names: string
-    @ivar ref_attribute_names: the names of the attributes of the reference
-    @type: ref_attribute_names: string
+    @type target_feature_names: string
+    @ivar ref_feature_names: the names of the attributes of the reference
+    @type: ref_feature_names: string
     """
     def __init__(self, 
                  parallel_attribute_names=[], 
                  source_attribute_names=[],
                  target_attribute_names=[],
                  ref_attribute_names=[]):
-        self.parallel_attribute_names = sorted(list(parallel_attribute_names))
-        self.source_attribute_names = sorted(list(source_attribute_names))
-        self.target_attribute_names = sorted(list(target_attribute_names))
-        self.ref_attribute_names = sorted(list(ref_attribute_names))
+        self.parallel_feature_names = sorted(list(parallel_attribute_names))
+        self.source_feature_names = sorted(list(source_attribute_names))
+        self.target_feature_names = sorted(list(target_attribute_names))
+        self.ref_feature_names = sorted(list(ref_attribute_names))
 
     def get_names_pairwise(self):
         all_attribute_names = []
-        all_attribute_names.extend(self.parallel_attribute_names)
+        all_attribute_names.extend(self.parallel_feature_names)
         #attribute names for source and target pairs need to be prefixed 
-        all_attribute_names.extend(_prefix("src_{}", self.source_attribute_names))
-        all_attribute_names.extend(_prefix("tgt-1_{}", self.target_attribute_names))
-        all_attribute_names.extend(_prefix("tgt-2_{}", self.target_attribute_names))
+        all_attribute_names.extend(_prefix("src_{}", self.source_feature_names))
+        all_attribute_names.extend(_prefix("tgt-1_{}", self.target_feature_names))
+        all_attribute_names.extend(_prefix("tgt-2_{}", self.target_feature_names))
         return all_attribute_names
     
     def set_names_from_pairwise(self, pairwise_names=[]):
-        self.source_attribute_names = _deprefix("src", pairwise_names)
-        self.target_attribute_names = _deprefix("tgt-1", pairwise_names)
-        self.ref_attribute_names = _deprefix("ref", pairwise_names)
-        self.parallel_attribute_names = _noprefix(["src", "tgt", "ref"], pairwise_names)
+        self.source_feature_names = _deprefix("src", pairwise_names)
+        self.target_feature_names = _deprefix("tgt-1", pairwise_names)
+        self.ref_feature_names = _deprefix("ref", pairwise_names)
+        self.parallel_feature_names = _noprefix(["src", "tgt", "ref"], pairwise_names)
 
     def __str__(self):
-        return str([self.parallel_attribute_names, self.source_attribute_names, self.target_attribute_names])
+        return str([self.parallel_feature_names, self.source_feature_names, self.target_feature_names])
     
     
-class DefaultAttributeSet(AttributeSet):
+class DefaultFeatureSet(FeatureSet):
     """
     Create an attribute set by removing common meta-attributes that should
     not be used for training. 
@@ -88,35 +88,43 @@ class DefaultAttributeSet(AttributeSet):
     string values, but this is left to future implementation
     """
     def __init__(self, 
-                 parallel_attribute_names=[], 
-                 source_attribute_names=[],
-                 target_attribute_names=[],
-                 ref_attribute_names=[]):
+                 parallel_feature_names=[], 
+                 source_feature_names=[],
+                 target_feature_names=[],
+                 ref_feature_names=[]):
         
-        self.parallel_attribute_names = list(set(parallel_attribute_names) - \
+        self.parallel_feature_names = list(set(parallel_feature_names) - \
             set(["langsrc", "langtgt", "id", "judgement_id", "judgment_id",
             "testset", "rank", 'rank_predicted', "prob_-1", "prob_1"]))
-        self.parallel_attribute_names.sort()
+        self.parallel_feature_names.sort()
         
-        self.source_attribute_names = list(set(source_attribute_names) - \
+        self.source_feature_names = list(set(source_feature_names) - \
             set(['system', 'berkeley-tree', 'imb1-alignment-joined', 
                  'ibm1-alignment-inv', 'ibm1-alignment']))
-        self.source_attribute_names.sort()
+        self.source_feature_names.sort()
             
         todelete = ['system']
-        for attname in target_attribute_names:
+        for attname in target_feature_names:
             if (attname.startswith("rank")  
               or attname.endswith("tree") 
               or attname.startswith("ref-")):
                 todelete.append(attname)
         
-        self.target_attribute_names = list(set(target_attribute_names) 
+        self.target_feature_names = list(set(target_feature_names) 
                                            - set(todelete))
-        self.target_attribute_names.sort()
+        self.target_feature_names.sort()
         
-        self.ref_attribute_names = list(ref_attribute_names)
-        self.ref_attribute_names.sort()
-            
+        self.ref_feature_names = list(ref_feature_names)
+        self.ref_feature_names.sort()
+    
+    
+    def get_all_feature_names(self):
+        all_feature_names = []
+        all_feature_names.extend(self.parallel_feature_names)
+        all_feature_names.extend(self.source_feature_names)
+        all_feature_names.extend(self.target_feature_names)
+        all_feature_names.extend(self.ref_feature_names)
+        return sorted(list(set(all_feature_names)))
 
 class ParallelSentence(object):
     """
@@ -471,8 +479,8 @@ class ParallelSentence(object):
         
         from pairwiseparallelsentence import PairwiseParallelSentence
         
-        #parallel_attribute_values = [self.attributes[name] for name in attribute_set.parallel_attribute_names]
-        #source_attribute_values = [self.src.attributes[name] for name in attribute_set.source_attribute_names]
+        #parallel_attribute_values = [self.attributes[name] for name in attribute_set.parallel_feature_names]
+        #source_attribute_values = [self.src.attributes[name] for name in attribute_set.source_feature_names]
 
         if bidirectional_pairs:
             iterator = itertools.permutations(self.tgt, 2)
@@ -674,14 +682,14 @@ class ParallelSentence(object):
         """
         Return a feature vector in an efficient way, where only specified attributes are included
         @param attribute_set: a definition of the attribute that need to be included
-        @type attribute_set: L{AttributeSet}
+        @type attribute_set: L{FeatureSet}
         @return: one vector for each pairwise comparison of target sentences
         @rtype: C{iterator} of C{lists}
         """
        
         yielded = 0
-        parallel_attribute_values = self.get_vector(attribute_set.parallel_attribute_names, default_value, replace_infinite, replace_nan)
-        source_attribute_values = self.src.get_vector(attribute_set.source_attribute_names, default_value, replace_infinite, replace_nan)
+        parallel_attribute_values = self.get_vector(attribute_set.parallel_feature_names, default_value, replace_infinite, replace_nan)
+        source_attribute_values = self.src.get_vector(attribute_set.source_feature_names, default_value, replace_infinite, replace_nan)
 
         if len(self.tgt)==0:
             log.warning("Parallelsentence has got only one target sentence, so cannot produce pairs")
@@ -692,8 +700,8 @@ class ParallelSentence(object):
             iterator = itertools.combinations(self.tgt, 2)
         
         for target1, target2 in iterator:
-            target1_attribute_values = target1.get_vector(attribute_set.target_attribute_names, default_value, replace_infinite, replace_nan)
-            target2_attribute_values = target2.get_vector(attribute_set.target_attribute_names, default_value, replace_infinite, replace_nan)
+            target1_attribute_values = target1.get_vector(attribute_set.target_feature_names, default_value, replace_infinite, replace_nan)
+            target2_attribute_values = target2.get_vector(attribute_set.target_feature_names, default_value, replace_infinite, replace_nan)
            
             log.debug("Parallelsentence received vector 1: {} ".format(target1_attribute_values))
             log.debug("Parallelsentence received vector 2: {} ".format(target2_attribute_values))

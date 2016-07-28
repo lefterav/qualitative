@@ -8,7 +8,7 @@ import sys, os
 from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange
 from ml.lib.orange.ranking import dataset_to_instances
 from Orange.feature.scoring import Relief, InfoGain, GainRatio, Gini, Relevance, MDL, Distance 
-from sentence.parallelsentence import AttributeSet
+from sentence.parallelsentence import FeatureSet
 from collections import defaultdict
 from operator import itemgetter
 
@@ -80,11 +80,11 @@ if __name__ == '__main__':
             pairwise_names = [name for name,_ in attlist]
             #except AttributeError:
             #    continue
-            wrapped_attribute_set = AttributeSet()
+            wrapped_attribute_set = FeatureSet()
             wrapped_attribute_set.set_names_from_pairwise(pairwise_names)
-            print '{}\t{}\t{} = "{}"'.format(metric, measure, "attset_generic", ",".join(wrapped_attribute_set.parallel_attribute_names))
-            print '{}\t{}\t{} = "{}"'.format(metric, measure, "attset_source", ",".join(wrapped_attribute_set.source_attribute_names))        
-            print '{}\t{}\t{} = "{}"'.format(metric, measure, "attset_target", ",".join(wrapped_attribute_set.target_attribute_names))
+            print '{}\t{}\t{} = "{}"'.format(metric, measure, "attset_generic", ",".join(wrapped_attribute_set.parallel_feature_names))
+            print '{}\t{}\t{} = "{}"'.format(metric, measure, "attset_source", ",".join(wrapped_attribute_set.source_feature_names))        
+            print '{}\t{}\t{} = "{}"'.format(metric, measure, "attset_target", ",".join(wrapped_attribute_set.target_feature_names))
         
         
     
