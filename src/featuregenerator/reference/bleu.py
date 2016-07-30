@@ -10,10 +10,10 @@ score_cooked(alltest, n=4): Score a list of cooked test sentences.
 
 score_set(s, testid, refids, n=4): Interface with dataset.py; calculate BLEU score of testid against refids.
 
-The reason for breaking the BLEU computation into three phases cook_refs(), cook_test(), and score_cooked() is to allow the caller to calculate BLEU scores for multiple test sets as efficiently as possible.
+The reason for breaking the BLEU computation into three phases cook_refs(), cook_test(), and score_cooked() 
+is to allow the caller to calculate BLEU scores for multiple test sets as efficiently as possible.
 '''
 
-import optparse
 import sys, math, re, xml.sax.saxutils
 sys.path.append('/fs/clip-mteval/Programs/hiero')
 #import dataset
@@ -261,6 +261,7 @@ class BleuGenerator(FeatureGenerator):
     '''
     Provides BLEU score against the reference
     '''
+    feature_names = ['ref-bleu']
     
     def get_features_tgt(self, target, parallelsentence):
         """
@@ -291,6 +292,7 @@ class CrossBleuGenerator(FeatureGenerator):
     '''
     Provides cross-BLEU score of the current target sentence against the others
     '''
+    feature_names = ['cross_bleu']
     
     def get_features_tgt(self, translation, parallelsentence):
         current_system_name = translation.get_attribute("system")
