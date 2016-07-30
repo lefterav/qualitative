@@ -76,6 +76,14 @@ class FeatureSet:
         self.ref_feature_names = _deprefix("ref", pairwise_names)
         self.parallel_feature_names = _noprefix(["src", "tgt", "ref"], pairwise_names)
 
+    def __list__(self):
+        all_feature_names = []
+        all_feature_names.extend(self.parallel_feature_names)
+        all_feature_names.extend(self.source_feature_names)
+        all_feature_names.extend(self.target_feature_names)
+        all_feature_names.extend(self.ref_feature_names)
+        return list(set(all_feature_names))
+    
     def __str__(self):
         return str([self.parallel_feature_names, self.source_feature_names, self.target_feature_names])
     
@@ -118,13 +126,6 @@ class DefaultFeatureSet(FeatureSet):
         self.ref_feature_names.sort()
     
     
-    def get_all_feature_names(self):
-        all_feature_names = []
-        all_feature_names.extend(self.parallel_feature_names)
-        all_feature_names.extend(self.source_feature_names)
-        all_feature_names.extend(self.target_feature_names)
-        all_feature_names.extend(self.ref_feature_names)
-        return sorted(list(set(all_feature_names)))
 
 class ParallelSentence(object):
     """

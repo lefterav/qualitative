@@ -9,6 +9,8 @@ from featuregenerator.featuregenerator import FeatureGenerator
 
 class PunctuationFeatureGenerator(FeatureGenerator):
     
+    feature_patterns = ["p_.*"]
+    
     def get_features_string(self, sent_string):
         
         #punctuation marks
@@ -49,7 +51,7 @@ class LengthFeatureGenerator(FeatureGenerator):
     """
     Class that provides a feature generator able to count the number of the tokens in the given simplesentences 
     """
-
+    features = ["l_.*"]
             
     def get_features_string(self, sent_string):
         """
