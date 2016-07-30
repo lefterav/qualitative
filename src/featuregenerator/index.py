@@ -104,4 +104,4 @@ class FeatureGeneratorManager(object):
                 appeared_generators.add(generator)
                 shortened_generators.append(generator)
         
-        return appeared_generators
+        return shortened_generators
