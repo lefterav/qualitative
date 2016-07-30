@@ -15,7 +15,7 @@ class WERFeatureGenerator(FeatureGenerator):
     sudo pypi-install python-Levenshtein
     """
 
-
+    feature_names = ['ref-wer']
         
     
     def get_features_tgt(self, target, parallelsentence):
