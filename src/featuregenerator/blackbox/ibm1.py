@@ -19,7 +19,12 @@ class AlignmentFeatureGenerator(FeatureGenerator):
     @ivar targetlexicon: object containing IBM-1 word-level lexical probabilities for translating source-to-target
     @type targetlexicon: Lexicon
     '''
-    def __init__(self, source_lexicon_filename, target_lexicon_filename, thresholds=[0.2, 0.01]):
+    
+    feature_names = ["ibm1-score", 'ibm1-alignment', 'ibm1-score-inv', 'ibm1-alignment-inv', 'ibm1-alignment-joined']
+    
+    feature_pattens = ["ibm1-ratio\-.*"]
+    
+    def __init__(self, source_lexicon_filename, target_lexicon_filename, thresholds=[0.2, 0.01], **kwargs):
         """
         Initialize an instance of a feature generator able to generate IBM-1 features and multilingual string alignments
         @param source_lexicon_filename: table with IBM-1 word-level lexical probabilities for translating source-to-target

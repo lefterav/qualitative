@@ -5,22 +5,19 @@ Feature generator from Berkeley PCFG parses by using a remote Berkeley parsing s
 
 import xmlrpclib 
 import time
-import sys
 import logging as log
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
-from featuregenerator.blackbox.parser.berkeley import socketservice
-#/from nltk import PunktWordTokenizer, PunktSentenceTokenizer
 from featuregenerator.blackbox.parser.berkeley.socketservice.berkeleyparsersocket import BerkeleyParserSocket
 from numpy import std, average
-
-from py4j.java_gateway import JavaGateway
-from py4j.java_gateway import GatewayClient
-from py4j.java_gateway import java_import
-from py4j.protocol import Py4JError
+import socket
 
 class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
 
-    def __init__(self, *args):
+    feature_names = ['berkeley-n', 'berkley-loglikelihood', 'berkeley-best-parse-confidence', 'berkeley-avg-confidence', 
+                     'berkeley-tree', 'berkeley-min-confidence', 'berkeley-std-confidence', 'berkeley-confidence_high', 
+                     'berkeley-confidence_high', 'berkeley-loglikelihood_low', 'berkeley-loglikelihood_low']
+
+    def __init__(self, **kwargs):
         raise NotImplementedError( "BerkeleyFeatureGenerator class has been deprecated. Please use either of the subclasses" )
 
     def parse(self, string):
@@ -64,128 +61,28 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         avg_confidence = average(confidences)
         std_confidence = std(confidences)        
         
-        attributes = {}
-        attributes ["berkeley-n"] = n
-        attributes ["berkley-loglikelihood"] = loglikelihood
-        attributes ["berkeley-best-parse-confidence"] = best_confidence
-        attributes ["berkeley-avg-confidence"] =  avg_confidence
-        attributes ["berkeley-tree"] = best_parse
-        attributes ["berkeley-min-confidence"] = min(confidences)
-        attributes ["berkeley-std-confidence"] = std_confidence
+        features = {}
+        features["berkeley-n"] = n
+        features["berkley-loglikelihood"] = loglikelihood
+        features["berkeley-best-parse-confidence"] = best_confidence
+        features["berkeley-avg-confidence"] =  avg_confidence
+        features["berkeley-tree"] = best_parse
+        features["berkeley-min-confidence"] = min(confidences)
+        features["berkeley-std-confidence"] = std_confidence
         if loglikelihood > (avg_confidence + std_confidence): 
-            attributes ["berkeley-confidence_high"] = 1
+            features["berkeley-confidence_high"] = 1
         else:
-            attributes ["berkeley-confidence_high"] = 0
+            features["berkeley-confidence_high"] = 0
         if loglikelihood < (avg_confidence - std_confidence): 
-            attributes ["berkeley-loglikelihood_low"] = 1
+            features["berkeley-loglikelihood_low"] = 1
         else:
-            attributes ["berkeley-loglikelihood_low"] = 0
-        return attributes
+            features["berkeley-loglikelihood_low"] = 0
+        return features
     
-    def prepare_sentence(self, simplesentence):
-        
+    def prepare_sentence(self, simplesentence):  
         string =  simplesentence.get_string()
-        #if self.tokenize:   
-        #    string = string.replace(u'“', u'"')
-        #    strings = PunktSentenceTokenizer().tokenize(string)
-        #    fixed_string = []
-        #    for string in strings:
-        #        tokens = PunktWordTokenizer().tokenize(string)
-        #        tokens[-1] = tokens[-1].replace(".", " .")
-        #        fixed_string.extend(tokens)
-        #    string = " ".join(fixed_string) 
         return string
-    
-
-#        batch = []
-#        preprocessed_batch = []
-#        for parallelsentence in parallelsentences:
-#            batch.append((parallelsentence.serialize(), parallelsentence.get_attribute("langsrc"),  parallelsentence.get_attribute("langtgt")))
-#        
-#        for (row, langsrc, langtgt) in batch:
-#            preprocessed_row = []
-#            col_id = 0
-#            for simplesentence in row:
-#                if (col_id == 0 and langsrc == self.lang) or (col_id > 0 and langtgt == self.lang):
-#                    simplesentence = simplesentence.get_string()
-#                    #simplesentence = self.__prepare_sentence_b64__(simplesentence)
-#                    preprocessed_row.append(simplesentence)
-#                else:
-#                    simplesentence = ""
-#                    preprocessed_row.append(simplesentence)
-#                col_id += 1
-#            preprocessed_batch.append(preprocessed_row)
-#        
-#        socketservice.setdefaulttimeout(None) 
-#        connected = False
-#        while not connected:
-#            #try:
-#            features_batch = self.server.BParser.parse_batch(preprocessed_batch)
-#            connected = True
-#            #except TimeoutException: TODO: find a better way to handle timeouts
-#            #    sys.stderr.write("Connection to server %s failed, trying again after a few seconds...\n" % self.url)
-#            #    time.sleep(5)
-#        
-#        row_id = 0
-#
-#        
-#        new_parallelsentences = []
-#        for row in features_batch:
-#            parallelsentence = parallelsentences[row_id]
-#            src = parallelsentence.get_source()
-#            targets = parallelsentence.get_translations()
-#            
-#            column_id = 0
-#            #dig in the batch to retrieve features
-#            for feature_set in row:
-#                for key in feature_set:
-#                    if column_id == 0:
-#                        src.add_attribute(key, feature_set[key])
-#                    else:
-#                        targets[column_id - 1].add_attribute(key, feature_set[key])
-#                
-#                    
-#                column_id += 1
-#            
-#            parallelsentence.set_source(src)
-#            parallelsentence.set_translations(targets)
-#            new_parallelsentences.append(parallelsentence)
-#            row_id += 1
-#        
-#        return new_parallelsentences
-
-
-    
-#    
-#    def parse(self, string):
-#
-#        results = self.server.BParser.parse ( string )
-#        loglikelihood = results['loglikelihood']
-#        nbestList = results['nbest']
-#        n = len(nbestList)
-#        
-#
-#        
-#        best_confidence = -1e308;
-#        best_parse = ""
-#        sum_confidence = 0
-#        
-#        for entry in nbestList:
-#            confidence = entry["confidence"]
-#            parse = entry["tree"]
-#            if float(confidence) > best_confidence:
-#                best_confidence = float(confidence)
-#                best_parse = parse
-#            sum_confidence += float(confidence)
-#            
-#        avg_confidence = sum_confidence / n
-#        
-#        print "berkeley-n" + str(n)
-#        print "berkley-loglikelihood" + str(results['loglikelihood'])
-#        print "berkeley-best-parse-confidence" , best_confidence
-#        print "berkeley-avg-confidence" , avg_confidence
-#        print "berkeley-best-parse-tree" , best_parse
-        
+            
 
 class BerkeleySocketFeatureGenerator(BerkeleyFeatureGenerator):
     """
@@ -197,7 +94,7 @@ class BerkeleySocketFeatureGenerator(BerkeleyFeatureGenerator):
     experiments. In that case use an XMLRPC server    
     """
     
-    def __init__(self, lang, grammarfile, gateway, tokenize = False):
+    def __init__(self, lang=None, grammarfile=None, gateway=None, tokenize=False):
         self.lang = lang
         self.tokenize = tokenize
         log.info("berkeleyclient: initializing BerkeleyParserSocket")
@@ -211,7 +108,7 @@ class BerkeleySocketFeatureGenerator(BerkeleyFeatureGenerator):
     
 
 class BerkeleyXMLRPCFeatureGenerator(BerkeleyFeatureGenerator):
-    def __init__(self, url, lang="", tokenize = False):
+    def __init__(self, url=None, lang="", tokenize = False):
         '''
         Handles the connection with a Berkeley Server through XML-RPC
         '''
@@ -302,9 +199,4 @@ class BerkeleyXMLRPCFeatureGenerator(BerkeleyFeatureGenerator):
                 if errorcode[0] == 111:
                     print "error 10035, doing something..."
                     time.sleep(5)
-            #except TimeoutException: TODO: find a better way to handle timeouts
-            #    sys.stderr.write("Connection to server %s failed, trying again after a few seconds...\n" % self.url)
-            #    time.sleep(5)
         return features_batch
-#b = BerkeleyFeatureGenerator("http://percival.sb.dfki.de:8683", "fr")
-#b.parse("C' est notre travail pour continuer à soutenir Lettonie avec l' intégration de la population russe.")

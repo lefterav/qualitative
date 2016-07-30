@@ -28,25 +28,31 @@ import codecs
 from subprocess import check_call
 
 class BitPar(LanguageFeatureGenerator):
-    def __init__(self, path,
-                lexicon_filename,
-                grammar_filename,
-                unknownwords,
-                openclassdfsa, 
-                language,
+    
+    feature_names = ['bit_failed', 'bit_tree', 'bit_prob', 'bit_n', 'bit_avgprob', 'bit_stdprob'
+                     'bit_minprob', 'bit_probhigh']
+    
+    def __init__(self, path=None,
+                lexicon_filename=None,
+                grammar_filename=None,
+                unknownwords=None,
+                openclassdfsa=None, 
+                language=None,
                 timeout=30,
                 rootsymbol='TOP',
                 n=100):
         n=10
         path = os.path.join(path, "bitpar")
-        command_template = "{path} -q -b {n} -vp -s {rootsymbol} -u {unknownwords} -w {openclassdfsa} {grammar} {lexicon}".format(path=path,
-                                                                                                                                n=n,
-                                                                                                                                rootsymbol=rootsymbol,
-                                                                                                                                unknownwords=unknownwords,
-                                                                                                                                openclassdfsa=openclassdfsa,
-                                                                                                                                grammar=grammar_filename,
-                                                                                                                                lexicon=lexicon_filename
-                                                                                                                                )
+        command_template = "{path} -q -b {n} -vp -s {rootsymbol}" + \
+                           " -u {unknownwords} -w {openclassdfsa} {grammar} {lexicon}".format(
+                           path=path,
+                           n=n,
+                           rootsymbol=rootsymbol,
+                           unknownwords=unknownwords,
+                           openclassdfsa=openclassdfsa,
+                           grammar=grammar_filename,
+                           lexicon=lexicon_filename,
+                           )
         super(BitPar, self).__init__(path, language, {}, command_template)
     
         
@@ -93,7 +99,9 @@ class BitPar(LanguageFeatureGenerator):
 
 class BitParChartParser:    
     block = False
-    def __init__(self, lexicon_filename=None, grammar_filename=None, rootsymbol="TOP", unknownwords=None, openclassdfsa=None, cleanup=True, n=3, path=None, timeout=10):
+    def __init__(self, lexicon_filename=None, grammar_filename=None, rootsymbol="TOP", 
+                 unknownwords=None, openclassdfsa=None, cleanup=True, n=3, path=None, 
+                 timeout=10, name=None, **kwargs):
         """ Interface to bitpar chart parser. Expects a list of weighted
         productions with frequencies (not probabilities).
         
@@ -115,6 +123,8 @@ class BitParChartParser:
         log.debug("BitParChartParser path: {}".format(path))
         self.rootsymbol = rootsymbol
         self.timeout = timeout
+        if name: self.id = name
+        else: self.id = uuid1()
         self.cleanup = cleanup
         self.n = n
         self.unknownwords = unknownwords
@@ -221,12 +231,16 @@ class BitParChartParser:
     #     
     
 class BitParserFeatureGenerator(LanguageFeatureGenerator):
-    def __init__(self, path,
-                lexicon_filename,
-                grammar_filename,
-                unknownwords,
-                openclassdfsa, 
-                language,
+    
+    #feature_names = ['bit_failed', 'bit_tree', 'bit_prob', 'bit_n', 'bit_avgprob', 'bit_stdprob'
+    #                 'bit_minprob', 'bit_probhigh', 'bit']
+    
+    def __init__(self, path=None,
+                lexicon_filename=None,
+                grammar_filename=None,
+                unknownwords=None,
+                openclassdfsa=None, 
+                language=None,
                 timeout=30,
                 n=100):
         log.debug("BitParserFeatureGenerator path: {}".format(path))

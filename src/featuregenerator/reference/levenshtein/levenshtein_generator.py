@@ -12,7 +12,7 @@ class LevenshteinGenerator(FeatureGenerator):
     '''
     Produce attribute from Levenshtein Distance
     '''
-
+    feature_names = ['ref-lev']
 
     def get_features_tgt(self, target, parallelsentence):
         """
@@ -27,7 +27,7 @@ class LevenshteinGenerator(FeatureGenerator):
             ref_untokenized = parallelsentence.get_reference().get_string()
         
 
-            wer_value = levenshtein_tok(target_untokenized, ref_untokenized)
+            wer_value = levenshtein(target_untokenized, ref_untokenized)
             return {'ref-lev': str(wer_value)}
         except:
             return {}

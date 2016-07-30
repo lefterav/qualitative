@@ -21,9 +21,9 @@ import urllib
 import sys
 from urllib2 import URLError
 from xml.etree import ElementTree as ET
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 import os
 import time
+from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
 
 class IQFeatureGenerator(LanguageFeatureGenerator):
     """

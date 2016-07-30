@@ -14,6 +14,7 @@ class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
     '''
     Feature generator for the Language Tool, providing rule-based language suggestion
     '''
+    feature_patterns = ['lt_.*']
 
     def __init__(self, lang, gateway):
         '''
