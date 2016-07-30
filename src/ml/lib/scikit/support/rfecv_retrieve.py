@@ -10,10 +10,10 @@ import sys
 
 
 
-def get_selected_attributes(self, filename):
+def get_selected_attributes(filename):
     model = pickle.load(open(filename))
     fs = model.featureselector
-    attset = model.attribute_set.target_feature_names
+    attset = model.attribute_set.target_attribute_names
     selected = [name for name, mask in zip(attset, fs.support_) if mask]
     return selected
 
