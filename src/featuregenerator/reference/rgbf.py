@@ -61,6 +61,8 @@ def hyp_ref_errors(rwords, hwords):
 
 
 class RgbfGenerator(FeatureGenerator):
+    feature_names = ["ref-rgb.*"]
+    
     def __init__(self, n=4, unitweights=[], ngramweights=[]):
         self.n = n
         if not ngramweights:

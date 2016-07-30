@@ -42,6 +42,8 @@ class Hjerson(FeatureGenerator):
     """
     This is a class that wraps the Hjerson functionality on a sentence level.
     """
+    feature_names = ['ref-hj_.*']
+    
     def __init__(self, **kwargs):
         """
         By initializing Hjerson, we maintain a tokenizer (if needed) and a treetager object

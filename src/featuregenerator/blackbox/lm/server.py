@@ -16,8 +16,43 @@ class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
     '''
     Gets all the words of a sentence through a SRILM language model and counts how many of them are unknown (unigram prob -99) 
     '''
+    feature_names = ['lm_unk_pos_abs_avg',
+                       'lm_unk_pos_abs_std',
+                       'lm_unk_pos_abs_min',
+                       'lm_unk_pos_abs_max',
+                       'lm_unk_pos_rel_avg',
+                       'lm_unk_pos_rel_std',
+                       'lm_unk_pos_rel_min',
+                       'lm_unk_pos_rel_max',
+                       'lm_unk',
+                       'lm_unk_len',
+                    
+                       'lm_uni-prob',
+                       'lm_uni-prob_avg',
+                       'lm_uni-prob_std',
+                       'lm_uni-prob_low',
+                       'lm_uni-prob_high',
+                       'lm_uni-prob_low_pos_avg',
+                       'lm_uni-prob_low_pos_std',
+
+                       'lm_bi-prob',
+                       'lm_bi-prob_avg',
+                       'lm_bi-prob_std',
+                       'lm_bi-prob_low',
+                       'lm_bi-prob_high',
+                       'lm_bi-prob_low_pos_avg',
+                       'lm_bi-prob_low_pos_std',
+                       
+                       'lm_tri-prob',
+                       'lm_tri-prob_avg',
+                       'lm_tri-prob_std',
+                       'lm_tri-prob_low',
+                       'lm_tri-prob_high',
+                       'lm_tri-prob_low_pos_avg',
+                       'lm_tri-prob_low_pos_std',
+                       'lm_prob']
     
-    def __init__(self, url, lang="en", lowercase=True, tokenize=True, freqcase_file=False):
+    def __init__(self, url=None, lang="en", lowercase=True, tokenize=True, freqcase_file=False):
         '''
         Define connection with the server
         '''
@@ -174,7 +209,7 @@ class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
             unk_pos = [0]
             unk_rel_pos = [0]        
         
-	attributes = { 'lm_unk_pos_abs_avg' : str(average(unk_pos)),
+        features = { 'lm_unk_pos_abs_avg' : str(average(unk_pos)),
                        'lm_unk_pos_abs_std' : str(std(unk_pos)),
                        'lm_unk_pos_abs_min' : str(min(unk_pos)),
                        'lm_unk_pos_abs_max' : str(max(unk_pos)),
@@ -210,7 +245,7 @@ class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
                        'lm_tri-prob_low_pos_std': std(self._standout_pos(tri_probs_vector, -1)),
                        'lm_prob' : str(prob) }
         
-        return attributes
+        return features
             
             
     

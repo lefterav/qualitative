@@ -23,6 +23,8 @@ class MeteorGenerator(LanguageFeatureGenerator):
     @type scorer: edu.cmu.meteor.scorer.MeteorScorer
     '''
     __name__ = "Meteor"
+    feature_names = ['ref-meteor_precision', 'ref-meteor_recall', 
+                     'ref-meteor_fragPenalty', 'ref-meteor_score']
 
     def __init__(self, lang, gateway):
         '''
@@ -121,6 +123,8 @@ class CrossMeteorGenerator(MeteorGenerator):
     (i.e. translation) to be scored against the translations provided by the other systems
     embedded in this Parallel Sentence.
     '''
+    feature_names = ['cross-meteor_precision', 'cross-meteor_recall', 
+                     'cross-meteor_fragPenalty', 'cross-meteor_score']
     
     def get_features_tgt(self, translation, parallelsentence):
         current_system_name = translation.get_attribute("system")

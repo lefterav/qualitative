@@ -17,6 +17,10 @@ class ParserMatches(LanguageFeatureGenerator):
     @ivar mapping: A dictionary for mapping source labels to target labels
     @type mapping: dict 
     '''
+    
+    feature_patterns = ["parse\-.*"]
+    requirements = ["berkeley-tree"]
+    
     mapping = {}
     mapping[("de","en")] = [(["NP"], ["NP"]),
               (["VP", "VZ"], ["VP"]),
@@ -136,17 +140,11 @@ class ParserMatches(LanguageFeatureGenerator):
         
         if tgt_parse and src_parse:
             for (src_map, tgt_map) in self.mappings:
-                #src_label = self._canonicalize(src_map[0])
-                #src_map_count = int(parallelsentence.get_source().get_attribute("parse-%s" % src_label))
                 tgt_map_count, tgt_map_pos = self._count_nodetags(tgt_parse, tgt_map)
                 tgt_label = self._canonicalize(src_map[0])
                 attributes["parse-%s" % tgt_label] = str(tgt_map_count)
                 attributes["parse-%s-pos-avg" % tgt_label] = str(average(tgt_map_pos))
                 attributes["parse-%s-pos-std" % tgt_label] = str(std(tgt_map_pos))
-#                if tgt_map_count != 0:
-#                    attributes["parse-%s_ratio" % tgt_label] = str(1.0 * src_map_count / tgt_map_count)
-#                else:
-#                    attributes["parse-%s_ratio" % tgt_label] = str(float("Inf"))
         return attributes
         
 

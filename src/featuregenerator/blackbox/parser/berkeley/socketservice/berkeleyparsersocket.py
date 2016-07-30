@@ -36,7 +36,7 @@ class BerkeleyParserSocket():
     """
     
 #    def __init__(self, grammarfile, classpath):
-    def __init__(self, grammarfile, gateway):
+    def __init__(self, grammarfile=None, gateway=None):
         """
         fetches full parsing details from the Berkeley Engine and  calculates full features upon request
         @param grammarfile: Location of grammar file to be loaded

@@ -14,7 +14,7 @@ class NgramManager(object):
     '''
     classdocs
     '''
-    def __init__(self, ngram_counts_filename, max_ngram_order=3):
+    def __init__(self, ngram_counts_filename=None, max_ngram_order=3):
         '''
         Constructor
         '''
@@ -74,17 +74,20 @@ class NgramManager(object):
     
 
 class NgramFrequencyFeatureGenerator(LanguageFeatureGenerator):
-    def __init__(self, lang, ngram_counts_filename, max_ngram_order=3):
+    
+    feature_patterns = ['ngrams_n.*']
+    
+    def __init__(self, lang=None, ngram_counts_filename=None, max_ngram_order=3):
         self.max_ngram_order = max_ngram_order
         self.ngram_manager = NgramManager(ngram_counts_filename, max_ngram_order=3)
     
     def get_features_string(self, sentence_string):
-        attributes = OrderedDict()
+        features = OrderedDict()
         for ngram_order in range(1, self.max_ngram_order+1):
             for quartile in range(1, 5):
-                attributes["ngrams_n{}_q{}".format(ngram_order, quartile)] = self.ngram_manager.get_ngrams_per_quartile(sentence_string, ngram_order, quartile)
+                features["ngrams_n{}_q{}".format(ngram_order, quartile)] = self.ngram_manager.get_ngrams_per_quartile(sentence_string, ngram_order, quartile)
      
-        return attributes
+        return features
 
 
 if __name__ == '__main__':

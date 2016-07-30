@@ -41,7 +41,7 @@ class KenLMFeatureGenerator(LanguageFeatureGenerator):
                      'kenlm_probs_low_pos_std',
                      'kenlm_prob']
     
-    def __init__(self, lang, filename):
+    def __init__(self, lang=None, filename=None):
         '''
         Load the model
         '''
@@ -81,7 +81,7 @@ class KenLMFeatureGenerator(LanguageFeatureGenerator):
             unk_pos = [0]
             unk_rel_pos = [0]    
         
-        attributes = { 'kenlm_unk_pos_abs_avg' : average(unk_pos),
+        features = { 'kenlm_unk_pos_abs_avg' : average(unk_pos),
                        'kenlm_unk_pos_abs_std' : std(unk_pos),
                        'kenlm_unk_pos_abs_min' : min(unk_pos),
                        'kenlm_unk_pos_abs_max' : max(unk_pos),
@@ -107,7 +107,7 @@ class KenLMFeatureGenerator(LanguageFeatureGenerator):
                        'kenlm_probs_low_pos_std': std(self._standout_pos(probs, -1)),
                        'kenlm_prob' : total_score }
         
-        return attributes
+        return features
 
     def _standouts(self, vector, sign):
         std_value = std(vector)
