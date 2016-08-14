@@ -66,6 +66,11 @@ class Rule:
         string = "{}_{}".format(self.lhs, "-".join(self.rhs))
         return xml_normalize(string)        
 
+#TODO: for some reason, the rules produced have only the last part of the RHS
+#TODO: cfgal_start is always zero, _end always -1
+#TODO: cfg rules are not aligned (not sure if this was needed).
+#TODO: position of nodes is missing
+
 
 def get_cfg_rules(string, terminals=False):
     '''
