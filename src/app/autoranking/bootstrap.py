@@ -5,7 +5,7 @@
 
 import StringIO
 from ConfigParser import ConfigParser, NoOptionError
-from featuregenerator.blackbox.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator, BerkeleyXMLRPCFeatureGenerator
+from featuregenerator.blackbox.parser.berkeley.berkeleyclient import BerkeleyLocalFeatureGenerator, BerkeleyXMLRPCFeatureGenerator
 from featuregenerator.blackbox.iq.acrolinxclient import IQFeatureGenerator
 from featuregenerator.blackbox.lm.server import ServerNgramFeatureGenerator 
 import os
@@ -133,8 +133,8 @@ class ExperimentConfigParser(ConfigParser):
                     grammarfile = self.get(parser_name, "grammarfile")
                     sys.stderr.write("initializing socket parser with grammar file {}\n".format(grammarfile))
                     
-#                    return BerkeleySocketFeatureGenerator(language, grammarfile, self.get_classpath())
-                    return BerkeleySocketFeatureGenerator(language, grammarfile, self.gateway)
+#                    return BerkeleyLocalFeatureGenerator(language, grammarfile, self.get_classpath())
+                    return BerkeleyLocalFeatureGenerator(language, grammarfile, self.gateway)
         raise Exception("Parser for {} requested but not found".format(language))
     
     

@@ -43,7 +43,7 @@ class BitParChartParser:
             refer to the bitpar manpage.
         @param cleanup: boolean, when set to true the grammar files will be
             removed when the BitParChartParser object is deleted.
-        @param name: filename of grammar files in case you want to export it,
+        @param name: model of grammar files in case you want to export it,
             if not given will default to a unique identifier
         @param n: the n best parse trees will be requested
             """
@@ -160,23 +160,23 @@ class BitParChartParser:
     #     return ([ProbabilisticTree(b.node, b, prob=a) for a, b in zip(probs, trees)] for probs, trees in result)
     #     
     
-class BitParserFeatureGenerator(LanguageFeatureGenerator):
+class BitParFeatureGenerator(LanguageFeatureGenerator):
     
     feature_names = ['bit_failed', 'bit_tree', 'bit_prob', 'bit_n', 'bit_avgprob', 'bit_stdprob'
                      'bit_minprob', 'bit_probhigh', 'bit']
     
     def __init__(self, path=None,
-                lexicon_filename=None,
-                grammar_filename=None,
+                lexicon=None,
+                grammar=None,
                 unknownwords=None,
                 openclassdfsa=None, 
                 language=None,
                 timeout=30,
                 n=100):
-        log.debug("BitParserFeatureGenerator path: {}".format(path))
-        self.lang = language
-        self.parser = BitParChartParser(lexicon_filename=lexicon_filename, 
-                grammar_filename=grammar_filename, 
+        log.debug("BitParFeatureGenerator path: {}".format(path))
+        self.language = language
+        self.parser = BitParChartParser(lexicon=lexicon, 
+                grammar=grammar, 
                 unknownwords=unknownwords, 
                 openclassdfsa=openclassdfsa, 
                 n=n, 

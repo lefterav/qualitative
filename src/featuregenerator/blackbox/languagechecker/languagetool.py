@@ -24,12 +24,12 @@ class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
         while self.running:
             self.output.append(out.readline())
 
-    def __init__(self, path, lang, params = {}, command_template= 'java -jar {path} -v -l {lang} -b --api',):
+    def __init__(self, path, language, params = {}, command_template= 'java -jar {path} -v -l {language} -b --api',):
         '''
         Constructor
         '''
-        self.lang = lang
-        params["lang"] = lang
+        self.language = language
+        params["language"] = language
         params["path"] = path
         command = command_template.format(**params)
         self.command = command
@@ -138,8 +138,8 @@ class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
 
 class LanguageCheckerCmd(LanguageFeatureGenerator):
     
-    def __init__(self, path, lang, params = {}, command_template= 'java -jar {path} -v -l {lang} -b --api',):
-        self.lang = lang
+    def __init__(self, path, language, params = {}, command_template= 'java -jar {path} -v -l {language} -b --api',):
+        self.language = language
     
     def add_features_batch(self, parallelsentences):
         process = subprocess.Popen(['commandline', 'test2.py'], shell=False, stdin=subprocess.PIPE)

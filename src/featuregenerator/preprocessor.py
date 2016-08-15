@@ -23,25 +23,25 @@ class Preprocessor(FeatureGenerator):
     process_string function, which should do the job which is particular to the string. Strings are 
     processed only if they comply with the language of the pre-processor
     
-    @ivar lang: language code of supported language
-    @type lang: str
+    @ivar language: language code of supported language
+    @type language: str
     """
-    def __init__(self, lang):
+    def __init__(self, language):
         """
-        @param lang: language code of supported language
-        @type lang: str
+        @param language: language code of supported language
+        @type language: str
         """
-        self.lang = lang
+        self.language = language
     
     def add_features_src(self, simplesentence, parallelsentence = None):
         src_lang = parallelsentence.get_attribute("langsrc") #TODO: make this format independent by adding it as an attribute of the sentence objects
-        if src_lang == self.lang:
+        if src_lang == self.language:
             simplesentence.string = self.process_string(simplesentence.string)  
         return simplesentence
     
     def add_features_tgt(self, simplesentence, parallelsentence = None):
         tgt_lang = parallelsentence.get_attribute("langtgt")
-        if tgt_lang == self.lang:
+        if tgt_lang == self.language:
             simplesentence.string = self.process_string(simplesentence.string)  
         return simplesentence
 
@@ -59,8 +59,8 @@ class Preprocessor(FeatureGenerator):
 class CommandlinePreprocessor(Preprocessor):
     """
     Base class for pre-processor wrapping a commandline process
-    @ivar lang: language code
-    @type lang: str
+    @ivar language: language code
+    @type language: str
     @ivar running: boolean variable that signifies whether internal process is running or not
     @type running: boolena
     @ivar process: the encapsulated subprocess
@@ -73,20 +73,20 @@ class CommandlinePreprocessor(Preprocessor):
             queue.put(line)
 #            break
     
-    def __init__(self, path, lang, params = {}, command_template = ""):
+    def __init__(self, path, language, params = {}, command_template = ""):
         """
         Initialize commandline-based feature generator. 
         @param path: the path where the command is based
         @type path: str
-        @param lang: the language code for the supported language
-        @type lang: str
+        @param language: the language code for the supported language
+        @type language: str
         @param params: commandline parameters for internal process
         @type params: dict((str, str))
         @param command_template: the template of the command
         @type command_template: str        
         """
-        self.lang = lang
-        params["lang"] = lang
+        self.language = language
+        params["language"] = language
         params["path"] = path
         self.command = command_template.format(**params)
         command_items = self.command.split(' ')
@@ -169,13 +169,13 @@ class CommandlinePreprocessor(Preprocessor):
 #    def add_features_batch(self, parallelsentences):
 #        dataset = DataSet(parallelsentences)
 #        
-#        if dataset.get_parallelsentences()[0].get_attribute("langsrc") == self.lang:
+#        if dataset.get_parallelsentences()[0].get_attribute("langsrc") == self.language:
 #            sourcestrings = dataset.get_singlesource_strings()
 #            processed_sourcestrings = self._get_tool_output(sourcestrings)
 #            dataset.modify_singlesource_strings(processed_sourcestrings)
 #        
 #        
-#        if dataset.get_parallelsentences()[0].get_attribute("langtgt") == self.lang:
+#        if dataset.get_parallelsentences()[0].get_attribute("langtgt") == self.language:
 #            targetstringlists = dataset.get_target_strings()
 #            processed_targetstringslist = [self._get_tool_output(targetstrings) for targetstrings in targetstringlists]
 #            dataset.modify_target_strings(processed_targetstringslist)
@@ -184,40 +184,40 @@ class CommandlinePreprocessor(Preprocessor):
 #    
 
 class Normalizer(CommandlinePreprocessor):
-    def __init__(self, lang):
+    def __init__(self, language):
         path = util.__path__[0]
         path = os.path.join(path, "normalize-punctuation.perl")
-        command_template = "perl {path} -b -l {lang}"
-        super(Normalizer, self).__init__(path, lang, {}, command_template)
+        command_template = "perl {path} -b -l {language}"
+        super(Normalizer, self).__init__(path, language, {}, command_template)
         
 class Tokenizer(CommandlinePreprocessor):
-    def __init__(self, lang):
+    def __init__(self, language):
         path = util.__path__[0]
         path = os.path.join(path, "tokenizer.perl")
-        command_template = "perl {path} -b -l {lang}"
-        super(Tokenizer, self).__init__(path, lang, {}, command_template)
+        command_template = "perl {path} -b -l {language}"
+        super(Tokenizer, self).__init__(path, language, {}, command_template)
 
 class Detokenizer(CommandlinePreprocessor):
-    def __init__(self, lang):
+    def __init__(self, language):
         path = util.__path__[0]
         path = os.path.join(path, "detokenizer.perl")
-        command_template = "perl {path} -b -l {lang}"
-        super(Detokenizer, self).__init__(path, lang, {}, command_template)
+        command_template = "perl {path} -b -l {language}"
+        super(Detokenizer, self).__init__(path, language, {}, command_template)
     
 
 class Truecaser(CommandlinePreprocessor):
-    def __init__(self, lang, model):
+    def __init__(self, language, model):
         path = util.__path__[0]
         path = os.path.join(path, "truecase.perl")
         command_template = "perl {path} -model {model}"
-        super(Truecaser, self).__init__(path, lang, {"model": model}, command_template)
+        super(Truecaser, self).__init__(path, language, {"model": model}, command_template)
 
 class Detruecaser(CommandlinePreprocessor):
-    def __init__(self, lang):
+    def __init__(self, language):
         path = util.__path__[0]
         path = os.path.join(path, "detruecase.perl")
         command_template = "perl {path} -b"
-        super(Detruecaser, self).__init__(path, lang, {}, command_template)
+        super(Detruecaser, self).__init__(path, language, {}, command_template)
 
    
     
@@ -226,9 +226,9 @@ if __name__ == '__main__':
     from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
     import sys
     #path = "/home/Eleftherios Avramidis/taraxu_tools/scripts/tokenizer/tokenizer.perl"
-    #command_template = "{path} -b -l {lang}"
+    #command_template = "{path} -b -l {language}"
 #    path = "/home/Eleftherios Avramidis/taraxu_tools/scripts/tokenizer/normalize-punctuation.perl"
-#    command_template = "perl {path} -l {lang} -b"
+#    command_template = "perl {path} -l {language} -b"
     tokenizer = Tokenizer("en")
     parallelsentences = JcmlReader(sys.argv[1]).get_parallelsentences()
     tokenized = tokenizer.add_features_batch(parallelsentences)

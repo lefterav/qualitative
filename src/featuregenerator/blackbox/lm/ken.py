@@ -13,6 +13,10 @@ from numpy import average, std
 class KenLMFeatureGenerator(LanguageFeatureGenerator):
     '''
     Provide ngram features by querying language model via KenLM python wrapper
+    @param model: the filename of the compact language model to be loaded
+    @type model: str
+    @param language: the language that this model has been trained on
+    @type language: str
     '''
     
     feature_names = ['kenlm_unk_pos_abs_avg',
@@ -41,12 +45,12 @@ class KenLMFeatureGenerator(LanguageFeatureGenerator):
                      'kenlm_probs_low_pos_std',
                      'kenlm_prob']
     
-    def __init__(self, lang=None, filename=None):
+    def __init__(self, language=None, model=None, **kwargs):
         '''
         Load the model
         '''
-        self.model = Model(filename)
-        self.lang = lang
+        self.model = Model(model)
+        self.language = language
         
     def get_features_string(self, string):
         total_score = self.model.score(string, bos = True, eos = True)
