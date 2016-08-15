@@ -10,4 +10,8 @@ wget http://www.quest.dcs.shef.ac.uk/quest_files/de-en/truecase-model.3.en
 mv *truecase* trucasers/
 wget http://www.qt21.eu/software/qualitative/res/qe/classifier.de-en.clsf
 mv classifier.de-en.clsf qe/
+cd ibm1
+lex.cs-en.tar.gz
+cd ..
+
 echo "Resources downloaded. Please modify the necessary "annotation*.cfg" configuration file(s) and pass it as parameter to app/autoranking/application.py for testing"
