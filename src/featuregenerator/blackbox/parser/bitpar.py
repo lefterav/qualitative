@@ -166,7 +166,7 @@ class BitParFeatureGenerator(LanguageFeatureGenerator):
                      'bit_minprob', 'bit_probhigh', 'bit']
     
     def __init__(self, path=None,
-                lexicon=None,
+                model=None,
                 grammar=None,
                 unknownwords=None,
                 openclassdfsa=None, 
@@ -175,7 +175,7 @@ class BitParFeatureGenerator(LanguageFeatureGenerator):
                 n=100):
         log.debug("BitParFeatureGenerator path: {}".format(path))
         self.language = language
-        self.parser = BitParChartParser(lexicon=lexicon, 
+        self.parser = BitParChartParser(model=model, 
                 grammar=grammar, 
                 unknownwords=unknownwords, 
                 openclassdfsa=openclassdfsa, 

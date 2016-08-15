@@ -47,7 +47,7 @@ class Test(unittest.TestCase):
         
     def test_load_feature_generators(self):
         #generators = [BerkeleyLocalFeatureGenerator, CfgRulesExtractor, KenLMFeatureGenerator, ]
-        generators = [CrossMeteorGenerator, Ibm1FeatureGenerator, ParserMatches, LanguageToolSocketFeatureGenerator]
+        generators = [CrossMeteorGenerator, ParserMatches, LanguageToolSocketFeatureGenerator]
         manager = FeatureGeneratorManager()
         
         config = RawConfigParser()
@@ -63,6 +63,13 @@ class Test(unittest.TestCase):
         gateway = LocalJavaGateway()
         
         print manager.initialize_given_feature_generators(generators, config, source_language, target_language, gateway)
+        
+    def test_load_bilingual_generators(self):
+        generators = [Ibm1FeatureGenerator]
+        config = RawConfigParser()
+        config.add_section("Ibm1:en-de")
+        config.set("BerkeleyLocal:en", "grammarfile", os.path.abspath("../../../res/grammars/eng_sm6.gr"))
+        
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_get_feature_generators']
