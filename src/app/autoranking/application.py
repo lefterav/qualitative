@@ -14,7 +14,7 @@ import time
 import sys
 import logging as log
 
-from featuregenerator.blackbox.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator
+from featuregenerator.blackbox.parser.berkeley.berkeleyclient import BerkeleyLocalFeatureGenerator
 from sentence.sentence import SimpleSentence
 
 from ml.lib.orange.ranking import OrangeRanker 
@@ -76,7 +76,7 @@ class Autoranking:
         @param configfilenames: a list of annotation configuration files that contain
         the settings for all feature generators etc.
         @type configfilenames: list(str)
-        @param ranker_filename: the filename of a picked learner object
+        @param ranker_filename: the model of a picked learner object
         @type ranker_filename: str
         """
         cfg = ExperimentConfigParser()
@@ -87,7 +87,7 @@ class Autoranking:
         self.reverse = reverse
         
         self.featuregenerators = self.initialize_featuregenerators(cfg)
-        self.ranker = OrangeRanker(filename=ranker_filename)
+        self.ranker = OrangeRanker(model=ranker_filename)
         log.debug("Ranker loaded")
         self.source_language =  cfg.get("general", "source_language")
         self.target_language =  cfg.get("general", "target_language")
@@ -153,7 +153,7 @@ class Autoranking:
             if cfg.get(parser_name, "language") == language:
                 grammarfile = cfg.get(parser_name, "grammarfile")
                 sys.stderr.write("initializing socket parser with grammar file {}\n".format(grammarfile))
-                return BerkeleySocketFeatureGenerator(language, grammarfile, self.gateway)
+                return BerkeleyLocalFeatureGenerator(language, grammarfile, self.gateway)
                 
     def _get_java_gateway(self, cfg):
         java_classpath, dir_path = cfg.get_classpath()

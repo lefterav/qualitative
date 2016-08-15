@@ -16,13 +16,13 @@ class BerkeleyFeatures():
     '''
 
 
-    def __init__(self, url, lang=""):
+    def __init__(self, url, language=""):
         '''
         Constructor
         '''
         self.server = xmlrpclib.Server(url)
         self.url = url
-        self.lang = lang
+        self.language = language
     
 
     #Warning: not language-aware function. Use the ones above

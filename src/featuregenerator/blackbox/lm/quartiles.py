@@ -77,7 +77,7 @@ class NgramFrequencyFeatureGenerator(LanguageFeatureGenerator):
     
     feature_patterns = ['ngrams_n.*']
     
-    def __init__(self, lang=None, ngram_counts_filename=None, max_ngram_order=3):
+    def __init__(self, language=None, ngram_counts_filename=None, max_ngram_order=3):
         self.max_ngram_order = max_ngram_order
         self.ngram_manager = NgramManager(ngram_counts_filename, max_ngram_order=3)
     

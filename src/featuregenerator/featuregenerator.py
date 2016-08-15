@@ -18,10 +18,11 @@ class FeatureGenerator(object):
         If you want to code a new FeatureGenerator, it must inherit this class and override one or all of the methods 
         get_features_src, get_features_tgt, get_features_simplesentence, get_features_parallelsentence 
     """
-#    def __init__(self):
-#        pass
-#        __metaclass__ = ABCMeta
-#
+    is_bilingual = False
+    is_language_specific = False
+    
+    def __init__(self, **params):
+        pass
     
     def add_features_parallelsentence(self, parallelsentence):
         """
