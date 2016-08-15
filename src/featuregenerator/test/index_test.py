@@ -51,25 +51,51 @@ class Test(unittest.TestCase):
         manager = FeatureGeneratorManager()
         
         config = RawConfigParser()
+
+        source_language = "en"
+        target_language = "de"
+        
+        gateway = LocalJavaGateway()
+        
+        initialized = manager.initialize_given_feature_generators(generators, config, source_language, target_language, gateway)
+        self.assertEqual(len(initialized), 6)
+    
+    def test_load_berkeley_generator(self):
+        generators = [BerkeleyLocalFeatureGenerator]
+        
+        manager = FeatureGeneratorManager()
+        
+        config = RawConfigParser()
+        source_language = "en"
+        target_language = "de"
         config.add_section("BerkeleyLocal:en")
         config.set("BerkeleyLocal:en", "grammarfile", os.path.abspath("../../../res/grammars/eng_sm6.gr"))
         
         config.add_section("BerkeleyLocal:de")
         config.set("BerkeleyLocal:de", "grammarfile", os.path.abspath("../../../res/grammars/ger_sm5.gr"))
         
-        source_language = "en"
-        target_language = "de"
-        
         gateway = LocalJavaGateway()
         
-        print manager.initialize_given_feature_generators(generators, config, source_language, target_language, gateway)
+        initialized = manager.initialize_given_feature_generators(generators, config, source_language, target_language, gateway)
+        self.assertEqual(len(initialized), 2)
         
     def test_load_bilingual_generators(self):
         generators = [Ibm1FeatureGenerator]
         config = RawConfigParser()
+        config.add_section("Ibm1:de-en")
+        config.set("Ibm1:de-en", "model", os.path.abspath("../../../res/ibm1/lex.de-en"))
         config.add_section("Ibm1:en-de")
-        config.set("BerkeleyLocal:en", "grammarfile", os.path.abspath("../../../res/grammars/eng_sm6.gr"))
+        config.set("Ibm1:en-de", "model", os.path.abspath("../../../res/ibm1/lex.en-de"))       
         
+        source_language = "en"
+        target_language = "de"
+
+        manager = FeatureGeneratorManager()        
+        gateway = LocalJavaGateway()
+        
+        initialized = manager.initialize_given_feature_generators(generators, config, source_language, target_language, gateway)
+        print initialized
+        self.assertEqual(len(initialized), 1)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_get_feature_generators']
