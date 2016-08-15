@@ -18,6 +18,11 @@ class Ibm1FeatureGenerator(FeatureGenerator):
     @type sourcelexicon: Lexicon
     @ivar targetlexicon: object containing IBM-1 word-level lexical probabilities for translating source-to-target
     @type targetlexicon: Lexicon
+    @ivar source_language: the language code of the source language
+    @type source_language: str
+    @ivar target_language: the language code of the target language
+    @type target_language: str
+
     '''
     
     feature_names = ["ibm1-score", 'ibm1-alignment', 'ibm1-score-inv', 'ibm1-alignment-inv', 'ibm1-alignment-joined']
@@ -25,19 +30,26 @@ class Ibm1FeatureGenerator(FeatureGenerator):
     feature_pattens = ["ibm1-ratio\-.*"]
     is_bilingual = True
     
-    def __init__(self, lexicon, inverted_lexicon, thresholds=[0.2, 0.01], **kwargs):
+    def __init__(self, model, inverted_model, thresholds=[0.2, 0.01], 
+                 source_language=None, target_language=None, **kwargs):
         """
         Initialize an instance of a feature generator able to generate IBM-1 features and multilingual string alignments
-        @param lexicon: table with IBM-1 word-level lexical probabilities for translating source-to-target
-        @type lexicon: str
-        @param inverted_lexicon: table with IBM-1 word-level lexical probabilities for translating source-to-target
-        @type inverted_lexicon: str
+        @param model: table with IBM-1 word-level lexical probabilities for translating source-to-target
+        @type model: str
+        @param inverted_model: table with IBM-1 word-level lexical probabilities for translating source-to-target
+        @type inverted_model: str
+        @param source_language: the language code of the source language
+        @type source_language: str
+        @param target_language: the language code of the target language
+        @type target_language: str
         """        
-        logging.info("Loading source side IBM1 lexicon...")
-        self.sourcelexicon = Lexicon(lexicon)
-        logging.info("Done. \nLoading target side IBM1 lexicon...")
-        self.targetlexicon = Lexicon(inverted_lexicon)
+        logging.info("Loading source side IBM1 model...")
+        self.sourcelexicon = Lexicon(model)
+        logging.info("Done. \nLoading target side IBM1 model...")
+        self.targetlexicon = Lexicon(inverted_model)
         logging.info("Done.")
+        self.source_language = source_language
+        self.target_language = target_language
         self.thresholds = thresholds
     
     def get_features_tgt(self, simplesentence, parallelsentence):

@@ -46,7 +46,7 @@ class LucyWorker(Worker):
                  username="traductor", password="traductor", 
                  source_language="en", target_language="de",
                  subject_areas="(DP TECH CTV ECON)",
-                 lexicon=None,
+                 model=None,
                  alternatives=False,
                  unknowns=False,
                  compounds=False,
@@ -59,7 +59,7 @@ class LucyWorker(Worker):
         self.username = username
         self.password = password
         self.subject_areas = subject_areas
-        self.lexicon = lexicon
+        self.lexicon = model
         
         self.alternatives = alternatives
         self.unknowns = unknowns
