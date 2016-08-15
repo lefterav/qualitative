@@ -42,9 +42,15 @@ class FeatureGeneratorManager(object):
         #get a list of those who report the attributes given
         self.generator_index = defaultdict(list)    
         self.generator_patterns = []
-
+        
+        #get a list of the featuregenerator subclasses and their antecedents
         generators = FeatureGenerator.__subclasses__()
         generators.extend(LanguageFeatureGenerator.__subclasses__())
+    
+        second_level_subclasses = []
+        for generator in generators:
+            second_level_subclasses.extend(generator.__subclasses__())        
+        generators.extend(second_level_subclasses)
         
         for generator in generators:
 
@@ -105,3 +111,45 @@ class FeatureGeneratorManager(object):
                 shortened_generators.append(generator)
         
         return shortened_generators
+    
+    
+    def _initialize_from_config(self, generator, section_name, config, gateway, language):
+        try:
+            params = dict(config.items(section_name))
+        except:
+            params = {}
+        
+        params['gateway'] = gateway
+        params['language'] = language
+        return [generator(**params)]
+        
+    
+    def initialize_given_feature_generators(self, feature_generators, config, source_language, target_language, gateway):
+        
+        initialized_generators = []
+        for generator in feature_generators:
+            if generator.is_bilingual:
+                #section_name = "{}:{}-{}".format(generator.__name__.replace("FeatureGenerator", ""), 
+                #                                 source_language, target_language)
+                
+                #initialized_generator = self._initialize_from_config(generator, section_name, config, gateway)
+                #initialized_generators.append(initialized_generator)
+                pass
+                
+            elif generator.is_language_specific:
+                for language in [source_language, target_language]:
+                    section_name = "{}:{}".format(generator.__name__.replace("FeatureGenerator", ""), language)                    
+                    initialized_generators.extend(self._initialize_from_config(generator, section_name, config, gateway, language))
+            else:
+                section_name = "{}".format(generator.__name__.replace("FeatureGenerator", ""))
+                initialized_generators.extend(self._initialize_from_config(generator, section_name, config, gateway, language))
+        return initialized_generators                
+            
+             
+            
+    
+        
+        
+            
+        
+        

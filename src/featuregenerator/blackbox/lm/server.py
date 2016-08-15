@@ -52,12 +52,15 @@ class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
                        'lm_tri-prob_low_pos_std',
                        'lm_prob']
     
-    def __init__(self, url=None, lang="en", lowercase=True, tokenize=True, freqcase_file=False):
+    def __init__(self, url=None, language="en", lowercase=True, tokenize=True, freqcase_file=False, **kwargs):
         '''
         Define connection with the server
         '''
+        if url == None:
+            raise AttributeError("Feature generator for LM server requires a URL to connect to")
+        
         self.server = xmlrpclib.Server(url)
-        self.lang = lang
+        self.language = language
         self.lowercase = lowercase
         self.tokenize = tokenize
         self.freqcaser = None
@@ -67,7 +70,7 @@ class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
     def get_features_src(self, simplesentence, parallelsentence):
         atts = {}
         src_lang = parallelsentence.get_attribute("langsrc")
-        if src_lang == self.lang:
+        if src_lang == self.language:
             atts = self.get_features_simplesentence(simplesentence)
 
         return atts
@@ -75,7 +78,7 @@ class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
     def get_features_tgt(self, simplesentence, parallelsentence):
         atts = {}
         tgt_lang = parallelsentence.get_attribute("langtgt")
-        if tgt_lang == self.lang:
+        if tgt_lang == self.language:
             atts = self.get_features_simplesentence(simplesentence)
         return atts        
     
@@ -275,7 +278,7 @@ class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
 #            preprocessed_row = []
 #            col_id = 0
 #            for simplesentence in row:
-#                if (col_id == 0 and langsrc == self.lang) or (col_id > 0 and langtgt == self.lang):
+#                if (col_id == 0 and langsrc == self.language) or (col_id > 0 and langtgt == self.language):
 #                    simplesentence = self.prepare_sentence(simplesentence)
 #                    preprocessed_row.append(simplesentence)
 #                else:

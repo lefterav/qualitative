@@ -17,16 +17,18 @@ class LanguageFeatureGenerator(FeatureGenerator):
     Extends the base FeatureGenerator class, by providing basic checking/functioning for language-specific feature processes.
     This way, this class can be inhereted and extended for feature categories that can only correspond to a particular language
     specified upon the initialization of the object
-    @ivar lang: the language abrev. code
-    @type lang: str
+    @ivar language: the language abrev. code
+    @type language: str
     """
-    def __init__(self, lang):
+    is_language_specific = True
+    
+    def __init__(self, language):
         """
         In order to initialize a language-specific feature generator, the language needs to be instantiatied as a class variable
-        @param lang: the language code of the language that the feature generator is capable of
-        @type lang: string 
+        @param language: the language code of the language that the feature generator is capable of
+        @type language: string 
         """
-        self.lang = lang
+        self.language = language
 #        __metaclass__ = ABCMeta
 
     
@@ -38,7 +40,7 @@ class LanguageFeatureGenerator(FeatureGenerator):
 
         attributes = OrderedDict()
         src_lang = parallelsentence.get_attribute("langsrc") #TODO: make this format independent by adding it as an attribute of the sentence objects
-        if src_lang == self.lang:
+        if src_lang == self.language:
             attributes = self.get_features_simplesentence(simplesentence, parallelsentence)
         return attributes 
 
@@ -49,7 +51,7 @@ class LanguageFeatureGenerator(FeatureGenerator):
         """
         attributes = OrderedDict()
         src_lang = parallelsentence.get_attribute("langtgt") #TODO: make this format independent by adding it as an attribute of the sentence objects
-        if src_lang == self.lang:
+        if src_lang == self.language:
             attributes = self.get_features_simplesentence(simplesentence, parallelsentence)
         return attributes 
     
