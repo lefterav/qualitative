@@ -129,12 +129,25 @@ class FeatureGeneratorManager(object):
         initialized_generators = []
         for generator in feature_generators:
             if generator.is_bilingual:
-                #section_name = "{}:{}-{}".format(generator.__name__.replace("FeatureGenerator", ""), 
-                #                                 source_language, target_language)
                 
-                #initialized_generator = self._initialize_from_config(generator, section_name, config, gateway)
-                #initialized_generators.append(initialized_generator)
-                pass
+                section_name = "{}:{}-{}".format(generator.__name__.replace("FeatureGenerator", ""), 
+                                                 source_language, target_language)
+                
+                try:
+                    params = dict(config.items(section_name))
+                except:
+                    params = {}
+                
+                inverted_section_name = "{}:{}-{}".format(generator.__name__.replace("FeatureGenerator", ""), 
+                                                          target_language, source_language)
+                inverted_model = config.get(inverted_section_name, "model")
+        
+                initialized_generator = generator(gateway=gateway, 
+                                                  source_language=source_language, 
+                                                  target_language=target_language, 
+                                                  inverted_model=inverted_model,
+                                                  **params)
+                initialized_generators.append(initialized_generator)                
                 
             elif generator.is_language_specific:
                 for language in [source_language, target_language]:
