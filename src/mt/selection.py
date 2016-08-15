@@ -7,7 +7,7 @@ import pickle
 from app.autoranking.application import Autoranking
 from app.autoranking.bootstrap import ExperimentConfigParser
 from featuregenerator.blackbox.counts import LengthFeatureGenerator
-from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
+from featuregenerator.blackbox.ibm1 import Ibm1FeatureGenerator
 from featuregenerator.blackbox.parser.berkeley.cfgrules import CfgAlignmentFeatureGenerator
 from featuregenerator.blackbox.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.preprocessor import Normalizer, Tokenizer, Truecaser
@@ -20,7 +20,7 @@ class SystemSelector(Autoranking):
         @param configfilenames: a list of annotation configuration files that contain
         the settings for all feature generators etc.
         @type configfilenames: list(str)
-        @param classifiername: the filename of a picked learner object
+        @param classifiername: the model of a picked learner object
         @type classifiername: str
         """
         cfg = ExperimentConfigParser()
@@ -69,7 +69,7 @@ class SystemSelector(Autoranking):
             cfg.get_lm(source_language),
             cfg.get_lm(target_language),    
                     
-            AlignmentFeatureGenerator(cfg.get("ibm1:{}-{}".format(source_language, target_language), "lexicon"), 
+            Ibm1FeatureGenerator(cfg.get("ibm1:{}-{}".format(source_language, target_language), "lexicon"), 
                                       cfg.get("ibm1:{}-{}".format(target_language, source_language), "lexicon")),
             CfgAlignmentFeatureGenerator(),
             #LanguageToolSocketFeatureGenerator(target_language, self.gateway),

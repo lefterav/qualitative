@@ -16,19 +16,19 @@ class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
     '''
     feature_patterns = ['lt_.*']
 
-    def __init__(self, lang, gateway):
+    def __init__(self, language, gateway, **kwargs):
         '''
         Constructor
         '''
-        self.lang = lang
+        self.language = language
         ltool_view = gateway.new_jvm_view()
         java_import(ltool_view, 'org.languagetool.Languages')
         java_import(ltool_view, 'org.languagetool.JLanguageTool')
 
-        if lang=='ru':
-            lang = 'ru-RU' 
+        if language=='ru':
+            language = 'ru-RU' 
         
-        tool_language = ltool_view.Languages.getLanguageForShortName(lang)
+        tool_language = ltool_view.Languages.getLanguageForShortName(language)
         self.ltool = ltool_view.JLanguageTool(tool_language)        
         
     def get_features_string(self, string):

@@ -557,10 +557,10 @@ class TreeTagger (object) :
     and the L{TagText()} method to process your data and get TreeTagger
     output results.
 
-    :ivar   lang: langage supported by this tagger ('en', 'fr', 'de', 'es).
-    :type   lang: string
+    :ivar   language: langage supported by this tagger ('en', 'fr', 'de', 'es).
+    :type   language: string
     :ivar   langsupport: dictionnary of langage specific values (ref. to
-                        g_langsupport[lang] dictionnary).
+                        g_langsupport[language] dictionnary).
     :type   langsupport: dict
     :ivar   tagdir: path to directory of installation of TreeTagger.
                     Set via TAGDIR env. var or construction param.
@@ -696,17 +696,17 @@ class TreeTagger (object) :
         """
         #----- Find langage to tag.
         if kargs.has_key("TAGLANG") :
-            self.lang = kargs["TAGLANG"]
+            self.language = kargs["TAGLANG"]
         elif os.environ.has_key("TAGLANG") :
-            self.lang = os.environ["TAGLANG"]
+            self.language = os.environ["TAGLANG"]
         else :
-            self.lang = "en"
-        self.lang = self.lang[:2].lower()
-        if not g_langsupport.has_key(self.lang) :
-            logger.error("Langage %s not supported.",self.lang)
-            raise TreeTaggerError,"Unsupported langage code: "+self.lang
-        logger.info("lang=%s",self.lang)
-        self.langsupport = g_langsupport[self.lang]
+            self.language = "en"
+        self.language = self.language[:2].lower()
+        if not g_langsupport.has_key(self.language) :
+            logger.error("Langage %s not supported.",self.language)
+            raise TreeTaggerError,"Unsupported langage code: "+self.language
+        logger.info("language=%s",self.language)
+        self.langsupport = g_langsupport[self.language]
 
     #-------------------------------------------------------------------------
     def SetTagger(self,kargs) :
@@ -1667,7 +1667,7 @@ Options:
     -t          tagger only (no preprocessor)
     -n          number lines of original text as SGML tags
     -b          transform blanks into SGML tags
-    -l lang     langage to tag (default to en)
+    -l language     langage to tag (default to en)
     -d dir      TreeTagger base directory
     -e enc      files encoding to use (default to """+USER_ENCODING+""")
 

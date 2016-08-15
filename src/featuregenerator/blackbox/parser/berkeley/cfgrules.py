@@ -13,7 +13,7 @@ import re
 import sys
 
 from dataprocessor.sax import saxjcml
-from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
+from featuregenerator.blackbox.ibm1 import Ibm1FeatureGenerator
 from featuregenerator.featuregenerator import FeatureGenerator
 from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator 
 
@@ -399,7 +399,7 @@ if __name__ == "__main__":
     srcalignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.2.e2f"
     tgtalignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.2.f2e"
 
-    aligner = AlignmentFeatureGenerator(srcalignmentfile, tgtalignmentfile)
+    aligner = Ibm1FeatureGenerator(srcalignmentfile, tgtalignmentfile)
 #    reader = CEJcmlReader(sys.argv[1])
 #    for parallelsentence in reader.get_parallelsentences():
     

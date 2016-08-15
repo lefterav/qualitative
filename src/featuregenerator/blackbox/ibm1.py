@@ -11,7 +11,7 @@ import logging
 from collections import defaultdict
 from featuregenerator.featuregenerator import FeatureGenerator
 
-class AlignmentFeatureGenerator(FeatureGenerator):
+class Ibm1FeatureGenerator(FeatureGenerator):
     '''
     Provides features generation from IBM Model 1 (See Popovic et. al 2011) and basic source-to-target alignment
     @ivar sourcelexicon: object containing IBM-1 word-level lexical probabilities for translating source-to-target
@@ -23,19 +23,20 @@ class AlignmentFeatureGenerator(FeatureGenerator):
     feature_names = ["ibm1-score", 'ibm1-alignment', 'ibm1-score-inv', 'ibm1-alignment-inv', 'ibm1-alignment-joined']
     
     feature_pattens = ["ibm1-ratio\-.*"]
+    is_bilingual = True
     
-    def __init__(self, source_lexicon_filename, target_lexicon_filename, thresholds=[0.2, 0.01], **kwargs):
+    def __init__(self, lexicon, inverted_lexicon, thresholds=[0.2, 0.01], **kwargs):
         """
         Initialize an instance of a feature generator able to generate IBM-1 features and multilingual string alignments
-        @param source_lexicon_filename: table with IBM-1 word-level lexical probabilities for translating source-to-target
-        @type source_lexicon_filename: str
-        @param target_lexicon_filename: table with IBM-1 word-level lexical probabilities for translating source-to-target
-        @type target_lexicon_filename: str
+        @param lexicon: table with IBM-1 word-level lexical probabilities for translating source-to-target
+        @type lexicon: str
+        @param inverted_lexicon: table with IBM-1 word-level lexical probabilities for translating source-to-target
+        @type inverted_lexicon: str
         """        
         logging.info("Loading source side IBM1 lexicon...")
-        self.sourcelexicon = Lexicon(source_lexicon_filename)
+        self.sourcelexicon = Lexicon(lexicon)
         logging.info("Done. \nLoading target side IBM1 lexicon...")
-        self.targetlexicon = Lexicon(target_lexicon_filename)
+        self.targetlexicon = Lexicon(inverted_lexicon)
         logging.info("Done.")
         self.thresholds = thresholds
     
@@ -108,13 +109,13 @@ class Lexicon:
     @type lex: dict
     """
 
-    def __init__(self, lexicon_filename):
+    def __init__(self, lexicon):
         '''
         Load the lexicon into the memory
-        @param lexicon_filename: points to the filename of the lexicon to be loaded
+        @param lexicon: points to the model of the lexicon to be loaded
         @type lexicon_filenam: str
         '''
-        lextxt = open(lexicon_filename, 'r')
+        lextxt = open(lexicon, 'r')
         self.lex = {}
 
         lexline = lextxt.readline()
@@ -364,7 +365,7 @@ class SentenceAlignment(list):
 if __name__ == "__main__":
     srcalignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.2.e2f"
     tgtalignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.2.f2e"
-    aligner = AlignmentFeatureGenerator(srcalignmentfile, tgtalignmentfile)
+    aligner = Ibm1FeatureGenerator(srcalignmentfile, tgtalignmentfile)
     print aligner.get_features_strings("das ist eine gute Idee , er hat gesagt", "he said that this is a good idea")
     print aligner.get_features_strings("er hat einen Wiederspruch und eine Erklärung gemacht", "he made an appeal and a declaration")
     

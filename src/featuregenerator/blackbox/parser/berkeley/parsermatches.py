@@ -71,7 +71,7 @@ class ParserMatches(LanguageFeatureGenerator):
 
     
 
-    def __init__(self, langpair=("de","en")):
+    def __init__(self, langpair=("de","en"), **kwargs):
         '''
         Instantiate a parse label matcher for a particular language pair
         @param langpair: a tuple with the source and the target language codes
