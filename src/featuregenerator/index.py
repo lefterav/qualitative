@@ -132,16 +132,13 @@ class FeatureGeneratorManager(object):
                 
                 section_name = "{}:{}-{}".format(generator.__name__.replace("FeatureGenerator", ""), 
                                                  source_language, target_language)
-                
                 try:
                     params = dict(config.items(section_name))
                 except:
                     params = {}
-                
                 inverted_section_name = "{}:{}-{}".format(generator.__name__.replace("FeatureGenerator", ""), 
                                                           target_language, source_language)
                 inverted_model = config.get(inverted_section_name, "model")
-        
                 initialized_generator = generator(gateway=gateway, 
                                                   source_language=source_language, 
                                                   target_language=target_language, 
@@ -158,11 +155,3 @@ class FeatureGeneratorManager(object):
                 initialized_generators.extend(self._initialize_from_config(generator, section_name, config, gateway, language))
         return initialized_generators                
             
-             
-            
-    
-        
-        
-            
-        
-        
