@@ -213,7 +213,7 @@ class AutorankingSuite(PyExperimentSuite):
                  dir=dir,
                  remove_infinite=self.remove_infinite,
                  nullimputation=self.nullimputation,
-                 #filter_attributes={"rank" : "0"},
+                 #filter_attributes={"rank_strings" : "0"},
 #                 class_type=class_type
                 ).convert()
         
@@ -241,7 +241,7 @@ class AutorankingSuite(PyExperimentSuite):
                  dir=dir,
                  remove_infinite=self.remove_infinite,
                  nullimputation=self.nullimputation,
-                 #filter_attributes={"rank" : "0"},
+                 #filter_attributes={"rank_strings" : "0"},
 #                 class_type=class_type
                 ).convert()
             
@@ -306,7 +306,7 @@ class AutorankingSuite(PyExperimentSuite):
             att_prob_pos = [{"prob_1": v[1]} for v in self.classified_probs_vector]
 #            print att_vector
             
-            print "adding guessed rank"
+            print "adding guessed rank_strings"
             self.simple_testset.add_attribute_vector(att_vector, "ps")
             self.simple_testset.add_attribute_vector(att_prob_neg, "ps")
             self.simple_testset.add_attribute_vector(att_prob_pos, "ps")
@@ -371,7 +371,7 @@ class AutorankingSuite(PyExperimentSuite):
 #            Parallelsentence2Jcml(self.reconstructed_soft_testset).write_to_file("testset.reconstructed.org.soft.jcml")
     
     def restore_state(self,params, rep, n):
-        self.class_name = "rank" #TODO: hardcoded
+        self.class_name = "rank_strings" #TODO: hardcoded
         if n > 0 and n <=20 :
             self.trainset = JcmlReader("trainset.jcml").get_dataset()
         
@@ -443,8 +443,8 @@ def get_scoring(testset, class_name, xid, featurename):
     ret["pr-%s"%xid] = scoringset.avg_predicted_ranked(featurename, class_name)
     
     sb_percentages = scoringset.best_predicted_vs_human(featurename, class_name)  
-    for rank, percentage in sb_percentages.iteritems():
-        ret["sb-{}-{}".format(rank,xid)] = str(percentage)
+    for rank_strings, percentage in sb_percentages.iteritems():
+        ret["sb-{}-{}".format(rank_strings,xid)] = str(percentage)
     return ret
 
 def score(testset, class_name, xid, featurename, invert_ranks=False):

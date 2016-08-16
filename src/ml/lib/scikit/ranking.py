@@ -329,11 +329,11 @@ class SkLearner:
             plt.savefig(plot_filename, bbox_inches='tight')
             
         #put ranks in an array, so that we can get them in the log file
-        for i, rank in enumerate(transformer.ranking_):
-            attributes["RFE_rank_f{}".format(i)] = rank
+        for i, rank_strings in enumerate(transformer.ranking_):
+            attributes["RFE_rank_f{}".format(i)] = rank_strings
         
-        for i, rank in enumerate(transformer.support_):
-            attributes["RFE_mask_f{}".format(i)] = rank
+        for i, rank_strings in enumerate(transformer.support_):
+            attributes["RFE_mask_f{}".format(i)] = rank_strings
                 
         return transformer, data, attributes
 
@@ -390,11 +390,11 @@ class SkLearner:
             plt.savefig(plot_filename, bbox_inches='tight')
             
         #put ranks in an array, so that we can get them in the log file
-        for i, rank in enumerate(transformer.ranking_):
-            attributes["RFE_rank_f{}".format(i)] = rank
+        for i, rank_strings in enumerate(transformer.ranking_):
+            attributes["RFE_rank_f{}".format(i)] = rank_strings
         
-        for i, rank in enumerate(transformer.support_):
-            attributes["RFE_mask_f{}".format(i)] = rank
+        for i, rank_strings in enumerate(transformer.support_):
+            attributes["RFE_mask_f{}".format(i)] = rank_strings
                 
         return transformer, data, attributes
     
