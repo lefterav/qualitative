@@ -6,7 +6,7 @@ Created on 15 Jun 2012
 '''
 
 from py4j.java_gateway import java_import
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from featuregenerator import LanguageFeatureGenerator
 
 class MeteorGenerator(LanguageFeatureGenerator):
     '''

@@ -7,7 +7,7 @@ Created on 15 Σεπ 2011
 import xmlrpclib 
 import time
 import sys
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from featuregenerator import LanguageFeatureGenerator
 from featuregenerator.blackbox.parser.berkeley import socketservice
 
 class BerkeleyFeatures():

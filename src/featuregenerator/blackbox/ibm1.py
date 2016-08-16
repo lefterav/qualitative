@@ -9,7 +9,7 @@ Created on 17 Sept 2011, updated 09 August 2014
 import math
 import logging
 from collections import defaultdict
-from featuregenerator.featuregenerator import FeatureGenerator
+from featuregenerator import FeatureGenerator
 
 class Ibm1FeatureGenerator(FeatureGenerator):
     '''

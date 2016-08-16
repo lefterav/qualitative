@@ -3,19 +3,20 @@ Feature generator for LM features from external LM server
 """
 
 import xmlrpclib 
-#import base64
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
-#from nltk.tokenize.punkt import PunktWordTokenizer
+from featuregenerator import LanguageFeatureGenerator
 import sys
-#from util.freqcaser import FreqCaser
 from numpy import average, std
-
-
 
 class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
     '''
-    Gets all the words of a sentence through a SRILM language model and counts how many of them are unknown (unigram prob -99) 
+    Gets all the words of a sentence through a language model loaded on a remote server
+    and returns language model statistics    
+    @ivar server: the object handling the communication with the XML RPC server 
+    @type server: L{xmlrpclib.Server}
+    @ivar language: the language code of the loaded model
+    @type language: C{str} 
     '''
+    
     feature_names = ['lm_unk_pos_abs_avg',
                        'lm_unk_pos_abs_std',
                        'lm_unk_pos_abs_min',
@@ -64,8 +65,7 @@ class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
         self.lowercase = lowercase
         self.tokenize = tokenize
         self.freqcaser = None
-#        if freqcase_file:
-#            self.freqcaser = FreqCaser(freqcase_file)
+
     
     def get_features_src(self, simplesentence, parallelsentence):
         atts = {}
