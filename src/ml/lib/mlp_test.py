@@ -35,8 +35,8 @@ class MLpTest(unittest.TestCase):
             translations = []
             for j in range(5):
                 attributes = dict([("att_{}".format(k), k+j) for k in range(20)])
-                #attributes["rank"] = j
-                attributes["rank"] = default_rank[j]
+                #attributes["rank_strings"] = j
+                attributes["rank_strings"] = default_rank[j]
                 translation = SimpleSentence("", attributes)
                 translations.append(translation)
             source = SimpleSentence("", {})
@@ -57,11 +57,11 @@ class MLpTest(unittest.TestCase):
         newdata = []
         default_rank = Ranking(default_rank).inverse().integers()
         for i in range(1, 101):
-            for rank in range(5):
-                vector = sorted([(str(k),k+rank) for k in range(20)])
+            for rank_strings in range(5):
+                vector = sorted([(str(k),k+rank_strings) for k in range(20)])
                 vector = np.array([float(v) for _, v in vector])
-                #newdata.append([vector, int(rank)+1, i])
-                newdata.append([vector, default_rank[rank], i])
+                #newdata.append([vector, int(rank_strings)+1, i])
+                newdata.append([vector, default_rank[rank_strings], i])
         newdata = np.array(newdata)
         newmetadata = {'input_size' : 20, #size of feature vector
                        'scores' :  set([1, 2, 3, 4, 5])}
@@ -71,13 +71,13 @@ class MLpTest(unittest.TestCase):
             vector1, rank1, query1 = data[i]
             vector2, rank2, query2 = newdata[i]
             assert_array_almost_equal(vector1, vector2, err_msg="MLPython: error in the conversion of batch data")
-            assert_equal(rank1, rank2, err_msg="MLPython: error in the conversion of rank value")
+            assert_equal(rank1, rank2, err_msg="MLPython: error in the conversion of rank_strings value")
             assert_equal(query1, query2)
         assert_equal(metadata, newmetadata, err_msg="MLPython: error in the conversion of metadata")
 
     def _create_single_instance(self):
-        for rank in range(5):
-            vector = sorted([(str(k),k+rank) for k in range(20)])
+        for rank_strings in range(5):
+            vector = sorted([(str(k),k+rank_strings) for k in range(20)])
             data = np.array([float(v) for _, v in vector])
             
         metadata = {'input_size' : 20, #size of feature vector
@@ -86,7 +86,7 @@ class MLpTest(unittest.TestCase):
             
     def test_listnet_train(self):
         learner = ListNetRanker()
-        learner.train(self.train_filename, class_name="rank")
+        learner.train(self.train_filename, class_name="rank_strings")
         
         self._create_dataset(1, self.test_filename)
         print "Result: "

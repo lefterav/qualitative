@@ -23,11 +23,11 @@ class PairwiseParallelSentence(ParallelSentence):
     @type reference: L{SimpleSentence}
     @ival attributes: a dict with the attributes at the parallel sentence level
     @type attributes: dict{str : str}
-    @ivar rank_name: the name of the attribute that serves as the rank
+    @ivar rank_name: the name of the attribute that serves as the rank_strings
     @type rank_name: str   
     """
 
-    def __init__(self, source=None, translations=[], systems=[], reference=None, attributes={}, rank_name = u"rank", normalize_ranks=True, **kwargs):
+    def __init__(self, source=None, translations=[], systems=[], reference=None, attributes={}, rank_name = u"rank_strings", normalize_ranks=True, **kwargs):
         """
         Constructor
         @param source: the source text of the parallel sentence
@@ -77,7 +77,7 @@ class PairwiseParallelSentence(ParallelSentence):
     
     def _normalize_ranks(self, invert_ranks=False):
         """
-        Reads the two rank scores for the two respective system outputs, compares them and sets a universal
+        Reads the two rank_strings scores for the two respective system outputs, compares them and sets a universal
         comparison value, namely -1 if the first system is better, +1 if the second system output is better, 
         and 0 if they are equally good. The value is set as a new argument of the current object
         @param invert_ranks: If set to True, it inverts the ranks (useful for non-penalty metrics)
@@ -93,17 +93,17 @@ class PairwiseParallelSentence(ParallelSentence):
             rank_a = float(self.tgt[0].get_attribute(self.rank_name)) * factor
             rank_b = float(self.tgt[1].get_attribute(self.rank_name)) * factor
         except KeyError:
-            #this happens if for some reasons no rank values have been written
+            #this happens if for some reasons no rank_strings values have been written
             #in that case normalization does not make sense
             return
         
         if rank_a > rank_b:
-            rank = 1
+            rank_strings = 1
         elif rank_b > rank_a:
-            rank = -1
+            rank_strings = -1
         else:
-            rank = 0
-        self.attributes[self.rank_name] = str(rank)
+            rank_strings = 0
+        self.attributes[self.rank_name] = str(rank_strings)
 #        del(self.tgt[0].attributes[self.rank_name])
 #        del(self.tgt[1].attributes[self.rank_name])
         

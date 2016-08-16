@@ -9,7 +9,7 @@ def prob(tau, n):
     all_ranks = list(permutations(perfect_rank))
     print all_ranks
 
-    taus = [kendall_tau(Ranking(rank), Ranking(perfect_rank)).tau for rank in all_ranks]
+    taus = [kendall_tau(Ranking(rank_strings), Ranking(perfect_rank)).tau for rank_strings in all_ranks]
     print taus
     print taus
     taus_count = len([t for t in taus if t >= tau])
