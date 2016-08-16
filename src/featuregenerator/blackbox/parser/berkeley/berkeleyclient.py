@@ -6,7 +6,7 @@ Feature generator from Berkeley PCFG parses by using a remote Berkeley parsing s
 import xmlrpclib 
 import time
 import logging as log
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from featuregenerator import LanguageFeatureGenerator
 from featuregenerator.blackbox.parser.berkeley.socketservice.berkeleyparsersocket import BerkeleyParserSocket
 from numpy import std, average
 import socket

@@ -23,7 +23,7 @@ from urllib2 import URLError
 from xml.etree import ElementTree as ET
 import os
 import time
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from featuregenerator import LanguageFeatureGenerator
 
 class IQFeatureGenerator(LanguageFeatureGenerator):
     """

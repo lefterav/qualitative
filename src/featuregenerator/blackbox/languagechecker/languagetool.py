@@ -6,18 +6,20 @@ Created on 24 Mar 2012
 '''
 
 import subprocess
-import sys
 import re
-import codecs
 import time
-from threading  import Thread
 import os
 
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from featuregenerator import LanguageFeatureGenerator
 
 class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
     '''
-    classdocs
+    A feature generator wrapping the LanguageTool (from languagetool.org, Libreoffice etc) 
+    on the commandline.
+    The sentence is analyzed and the count of specific errors, error types and total sentence
+    errors are added as features, along with their length as characters.
+    This class wraps the commandline and is not very efficient. It has been mostly replaced
+    with LanguageToolSocketFeatureGenerator
     '''
     
     def print_output(self, out):

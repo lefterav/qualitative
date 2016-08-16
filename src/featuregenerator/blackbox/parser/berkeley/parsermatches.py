@@ -5,7 +5,7 @@ Created on 22 March 2011
 @author: Eleftherios Avramidis
 '''
 
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from featuregenerator import LanguageFeatureGenerator
 from numpy import average, std
 
 
