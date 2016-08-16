@@ -44,7 +44,7 @@ class PRank:
             log.info("\nIteration {} from {}".format(i+1, iterations))
             for t in xrange(T):
                 log.info("\nRound {} from {}".format(t+1, T))
-                #get a new rank (featurevector)
+                #get a new rank_strings (featurevector)
                 x = X[t]
                 #predict 
                 wx = np.inner(w, x)
@@ -88,7 +88,7 @@ class PRank:
             if (wx - b < 0):
                 return r
     
-    def rank(self, x):
+    def rank_strings(self, x):
         log.info("decoding")
         wx = np.inner(self.w, x)
         return self._predict_y(wx, self.B)

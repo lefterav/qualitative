@@ -1,5 +1,5 @@
 '''
-This module allows for the calculation of the basic rank metrics that evaluate
+This module allows for the calculation of the basic rank_strings metrics that evaluate
 on a segment level (i.e. one ranking list at a time)
 
 Created on 18 Dec 2012
@@ -29,7 +29,7 @@ def kendall_tau_set(predicted_rank_vectors, original_rank_vectors, **kwargs):
     It returns both set-level Kendall tau and average segment-level Kendall tau
     @param predicted_rank_vectors: a list of lists containing integers representing the predicted ranks, one ranking for each segment
     @type predicted_rank_vectors: [Ranking, ..] 
-    @param original_rank_vectors:  a list of the names of the attribute containing the human rank, one ranking for each segment
+    @param original_rank_vectors:  a list of the names of the attribute containing the human rank_strings, one ranking for each segment
     @type original_rank_vectors: [Ranking, ..] 
     @return: overall Kendall tau score,
       - average segment Kendall tau score,
@@ -197,12 +197,12 @@ def _inverse_weighted_tau(ranking_counts_per_length, sum_tau_per_length):
 
 def mrr(predicted_rank_vectors, original_rank_vectors, **kwargs):
     """
-    Calculation of mean reciprocal rank based on Radev et. all (2002)
+    Calculation of mean reciprocal rank_strings based on Radev et. all (2002)
     @param predicted_rank_vectors: a list of lists containing integers representing the predicted ranks, one ranking for each segment
     @type predicted_rank_vectors: [Ranking, ..] 
-    @param original_rank_vectors:  a list of the names of the attribute containing the human rank, one ranking for each segment
+    @param original_rank_vectors:  a list of the names of the attribute containing the human rank_strings, one ranking for each segment
     @type original_rank_vectors: [Ranking, ..]
-    @return: mean reciprocal rank
+    @return: mean reciprocal rank_strings
     @rtype: {string, float} 
     """
     reciprocal_ranks = []
@@ -221,9 +221,9 @@ def best_predicted_vs_human(predicted_rank_vectors, original_rank_vectors):
     This is useful for plotting. 
     @param predicted_rank_vectors: a list of lists containing integers representing the predicted ranks, one ranking for each segment
     @type predicted_rank_vectors: [Ranking, ..] 
-    @param original_rank_vectors:  a list of the names of the attribute containing the human rank, one ranking for each segment
+    @param original_rank_vectors:  a list of the names of the attribute containing the human rank_strings, one ranking for each segment
     @type original_rank_vectors: [Ranking, ..]
-    @return: a dictionary with percentages for each human rank
+    @return: a dictionary with percentages for each human rank_strings
     @rtype: {string, float}
     """
     actual_values_of_best_predicted = {}
@@ -241,7 +241,7 @@ def best_predicted_vs_human(predicted_rank_vectors, original_rank_vectors):
             if predicted_rank == best_predicted_rank:
                 original_ranks.append(original_rank)
         
-        #if best rank given to many items, get the worst human rank for it
+        #if best rank_strings given to many items, get the worst human rank_strings for it
         selected_original_rank = max(original_ranks)
         a = actual_values_of_best_predicted.setdefault(selected_original_rank, 0)
         actual_values_of_best_predicted[selected_original_rank] = a + 1
@@ -250,18 +250,18 @@ def best_predicted_vs_human(predicted_rank_vectors, original_rank_vectors):
     percentages = {}
     total = 0
     #gather everything into a dictionary
-    for rank, counts in  actual_values_of_best_predicted.iteritems():
-        percentages["bph_" + str(rank)] = round(100.00 * counts / n , 2 )
+    for rank_strings, counts in  actual_values_of_best_predicted.iteritems():
+        percentages["bph_" + str(rank_strings)] = round(100.00 * counts / n , 2 )
         total += counts
     return percentages
 
 def avg_predicted_ranked(predicted_rank_vectors, original_rank_vectors, **kwargs):
     
     """
-    It will provide the average human rank of the item chosen by the system as best
+    It will provide the average human rank_strings of the item chosen by the system as best
     @param predicted_rank_vectors: a list of lists containing integers representing the predicted ranks, one ranking for each segment
     @type predicted_rank_vectors: [Ranking, ..] 
-    @param original_rank_vectors:  a list of the names of the attribute containing the human rank, one ranking for each segment
+    @param original_rank_vectors:  a list of the names of the attribute containing the human rank_strings, one ranking for each segment
     @type original_rank_vectors: [Ranking, ..]
     @return: a dictionary with the name of the metric and its value
     @rtype: {string, float}
@@ -295,7 +295,7 @@ def avg_ndgc_err(predicted_rank_vectors, original_rank_vectors, **kwargs):
     Returns normalize Discounted Cumulative Gain and the Expected Reciprocal Rank, both averaged over number of sentences
     @param predicted_rank_vectors: a list of lists containing integers representing the predicted ranks, one ranking for each segment
     @type predicted_rank_vectors: [Ranking, ..] 
-    @param original_rank_vectors:  a list of the names of the attribute containing the human rank, one ranking for each segment
+    @param original_rank_vectors:  a list of the names of the attribute containing the human rank_strings, one ranking for each segment
     @type original_rank_vectors: [Ranking, ..]
     @keyword k: cut-off passed to the segment L{ndgc_err} function
     @type k: int 
