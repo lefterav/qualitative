@@ -4,7 +4,7 @@ Features from subtraction of numerical features with the same name in the two ta
 @author: Eleftherios Avramidis
 """
 from __future__ import division
-from featuregenerator import FeatureGenerator
+from . import FeatureGenerator
 
 
 class DiffGenerator(FeatureGenerator):

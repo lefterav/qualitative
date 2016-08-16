@@ -5,7 +5,7 @@ Created on Jun 24, 2011
 @author: Eleftherios Avramidis
 '''
 
-from featuregenerator import FeatureGenerator
+from . import FeatureGenerator
 
 class BestSystemFeatureGenerator(FeatureGenerator):
     '''

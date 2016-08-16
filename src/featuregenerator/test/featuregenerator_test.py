@@ -1,11 +1,14 @@
 '''
 Created on Jul 28, 2016
-
-@author: lefterav
+A test for the manager of the feature generators
+@author: Eleftherios Avramidis
 '''
 from __future__ import absolute_import
+import os
 import unittest
-from featuregenerator.index import FeatureGeneratorManager
+from util.jvm import LocalJavaGateway
+
+from featuregenerator import FeatureGeneratorManager
 from featuregenerator.blackbox.parser.berkeley.berkeleyclient import BerkeleyLocalFeatureGenerator
 from featuregenerator.blackbox.parser.bitpar import BitParFeatureGenerator
 from featuregenerator.blackbox.ibm1 import Ibm1FeatureGenerator
@@ -15,9 +18,6 @@ from featuregenerator.blackbox.parser.berkeley.parsermatches import ParserMatche
 from featuregenerator.blackbox.lm.server import ServerNgramFeatureGenerator
 from featuregenerator.reference.meteor.meteor import CrossMeteorGenerator
 from ConfigParser import RawConfigParser
-from util.jvm import LocalJavaGateway
-import os
-from featuregenerator.blackbox.lm.ken import KenLMFeatureGenerator
 
 
 class Test(unittest.TestCase):
