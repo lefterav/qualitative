@@ -6,7 +6,7 @@ Created on 24 Mar 2012
 @author: Eleftherios Avramidis
 '''
 
-from featuregenerator import FeatureGenerator
+from . import FeatureGenerator
 import subprocess
 import util
 import os

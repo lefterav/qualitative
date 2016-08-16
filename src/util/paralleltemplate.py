@@ -10,7 +10,7 @@ Created on May 31, 2011
 import pprocess
 from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence
-from featuregenerator.featuregenerator import FeatureGenerator
+from featuregenerator import FeatureGenerator
 
 class ParallelTemplate(object):
     """

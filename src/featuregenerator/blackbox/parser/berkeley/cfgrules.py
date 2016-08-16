@@ -14,8 +14,8 @@ import sys
 
 from dataprocessor.sax import saxjcml
 from featuregenerator.blackbox.ibm1 import Ibm1FeatureGenerator
-from featuregenerator.featuregenerator import FeatureGenerator
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator 
+from featuregenerator import FeatureGenerator
+from featuregenerator import LanguageFeatureGenerator 
 
 def xml_normalize(string):
         string = string.replace("$,", "COMMA") #german grammar

@@ -6,7 +6,7 @@ Created on 11 Nov 2014
 
 import numpy as np  
 from collections import OrderedDict
-from featuregenerator.featuregenerator import FeatureGenerator
+from featuregenerator import FeatureGenerator
 import logging as log
 
 def take_ngrams(line, m):

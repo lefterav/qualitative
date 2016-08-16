@@ -6,7 +6,7 @@ Created on Aug 25, 2014
 '''
 
 from kenlm import Model
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from featuregenerator import LanguageFeatureGenerator
 from numpy import average, std
 
 

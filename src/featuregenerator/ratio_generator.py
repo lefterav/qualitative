@@ -3,7 +3,7 @@
 @author: Eleftherios Avramidis
 """
 from __future__ import division
-from featuregenerator import FeatureGenerator
+from . import FeatureGenerator
 from nltk.tokenize.punkt import PunktWordTokenizer
 
 
