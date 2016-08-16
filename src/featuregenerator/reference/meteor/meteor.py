@@ -7,6 +7,7 @@ Created on 15 Jun 2012
 
 from py4j.java_gateway import java_import
 from featuregenerator import LanguageFeatureGenerator
+import sys
 
 class MeteorGenerator(LanguageFeatureGenerator):
     '''
@@ -51,6 +52,7 @@ class MeteorGenerator(LanguageFeatureGenerator):
         config = self.meteor_view.MeteorConfiguration();
         config.setLanguage(language);
         #initialize object with the given config
+        sys.stderr.write("Ignoring Transducer ")
         self.scorer = self.meteor_view.MeteorScorer(config)
 
     

@@ -3,7 +3,9 @@ Created on Jul 28, 2016
 A test for the manager of the feature generators
 @author: Eleftherios Avramidis
 '''
+
 from __future__ import absolute_import
+from ConfigParser import RawConfigParser
 import os
 import unittest
 from util.jvm import LocalJavaGateway
@@ -17,7 +19,6 @@ from featuregenerator.blackbox.languagechecker.languagetool_socket import Langua
 from featuregenerator.blackbox.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.blackbox.lm.server import ServerNgramFeatureGenerator
 from featuregenerator.reference.meteor.meteor import CrossMeteorGenerator
-from ConfigParser import RawConfigParser
 
 
 class Test(unittest.TestCase):
@@ -57,8 +58,8 @@ class Test(unittest.TestCase):
         
         gateway = LocalJavaGateway()
         
-        initialized = manager.initialize_given_feature_generators(generators, config, source_language, target_language, gateway)
-        self.assertEqual(len(initialized), 6)
+        initialized = manager.initialize_given_feature_generators(generators, config, target_language, gateway, source_language=source_language)
+        self.assertEqual(len(initialized), 3)
     
     def test_load_berkeley_generator(self):
         generators = [BerkeleyLocalFeatureGenerator]
@@ -76,8 +77,8 @@ class Test(unittest.TestCase):
         
         gateway = LocalJavaGateway()
         
-        initialized = manager.initialize_given_feature_generators(generators, config, source_language, target_language, gateway)
-        self.assertEqual(len(initialized), 2)
+        initialized = manager.initialize_given_feature_generators(generators, config, target_language, gateway, source_language=source_language)
+        self.assertEqual(len(initialized), 1)
         
     def test_load_bilingual_generators(self):
         generators = [Ibm1FeatureGenerator]
@@ -93,8 +94,7 @@ class Test(unittest.TestCase):
         manager = FeatureGeneratorManager()        
         gateway = LocalJavaGateway()
         
-        initialized = manager.initialize_given_feature_generators(generators, config, source_language, target_language, gateway)
-        print initialized
+        initialized = manager.initialize_given_feature_generators(generators, config, target_language, gateway, source_language=source_language)
         self.assertEqual(len(initialized), 1)
 
 if __name__ == "__main__":

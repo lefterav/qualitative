@@ -4,6 +4,7 @@ generation of features over the parallel objects. Any new featuregenerator
 should implement languagefeaturegenerator.py (if it is language-specific)
 or featuregenerator.py  (it is language-generic).
 """
+from ocrfeeder.odf.meta import InitialCreator
 
 '''
 Created on Jul 28, 2016
@@ -424,6 +425,13 @@ class FeatureGeneratorManager(object):
             
     
     def _get_requirements(self, generator):
+        """
+        Function for the recursion to get the requirements for generators
+        @param generator: the feature generator whose requirements need to be resolved
+        @type generator: L{FeatureGenerator}
+        @return: a list of generators who are requirements for the given generator
+        @rtype: [L{FeatureGenerator}, ...]
+        """
         generators = []
         try:
             requirements = generator.requirements
@@ -437,14 +445,17 @@ class FeatureGeneratorManager(object):
         return generators
                     
     
-    def get_feature_generators(self, feature_set):
+    def get_feature_generators(self, feature_names):
         """
         Return the feature generators that are required to provide the features 
         in the given feature_name set 
-        @param 
+        @param feature_names: a list of the features whose generators are needed
+        @type feature_names: C{str}
+        @return: the non-initialized classes of the required feature generators
+        @rtype: [L{Featuregenerator}, ...]        
         """
         selected_generators = []
-        for feature_name in feature_set:
+        for feature_name in feature_names:
             # if the feature is provided by some generators add them to the list
             
             for generator in self.generator_index[feature_name]:
@@ -476,37 +487,73 @@ class FeatureGeneratorManager(object):
         
         params['gateway'] = gateway
         params['language'] = language
-        return [generator(**params)]
+        log.info("Feature generator manager initializing {} for {} ...".format(generator.__name__, language))
+        initialized_generator = generator(**params)
+        log.info("Feature generator manager successfully initialized {} for {}.".format(generator.__name__, language))
+        return initialized_generator
         
     
-    def initialize_given_feature_generators(self, feature_generators, config, source_language, target_language, gateway):
-        
+    def initialize_given_feature_generators(self, feature_generators, config, language, gateway, source_language=None):
+        """
+        Given a list of feature generator classes and a configuration file, 
+        initialize them as feature generator instances  
+        """
         initialized_generators = []
         for generator in feature_generators:
-            if generator.is_bilingual:
-                
+            if generator.is_bilingual and source_language:
                 section_name = "{}:{}-{}".format(generator.__name__.replace("FeatureGenerator", ""), 
-                                                 source_language, target_language)
+                                                 source_language, language)
                 try:
                     params = dict(config.items(section_name))
                 except:
                     params = {}
                 inverted_section_name = "{}:{}-{}".format(generator.__name__.replace("FeatureGenerator", ""), 
-                                                          target_language, source_language)
+                                                          language, source_language)
                 inverted_model = config.get(inverted_section_name, "model")
                 initialized_generator = generator(gateway=gateway, 
                                                   source_language=source_language, 
-                                                  target_language=target_language, 
+                                                  language=language, 
                                                   inverted_model=inverted_model,
                                                   **params)
                 initialized_generators.append(initialized_generator)                
                 
-            elif generator.is_language_specific:
-                for language in [source_language, target_language]:
-                    section_name = "{}:{}".format(generator.__name__.replace("FeatureGenerator", ""), language)                    
-                    initialized_generators.extend(self._initialize_from_config(generator, section_name, config, gateway, language))
+            elif generator.is_language_specific:                
+                section_name = "{}:{}".format(generator.__name__.replace("FeatureGenerator", ""), language)                    
+                initialized_generators.append(self._initialize_from_config(generator, section_name, config, gateway, language))
             else:
                 section_name = "{}".format(generator.__name__.replace("FeatureGenerator", ""))
-                initialized_generators.extend(self._initialize_from_config(generator, section_name, config, gateway, language))
-        return initialized_generators                
+                initialized_generators.append(self._initialize_from_config(generator, section_name, config, gateway, language))
+        return initialized_generators  
+    
+    def initialize_feature_generators(self, featurelist, config, language, gateway, source_language=None):
+        featuregenerator_classes = self.get_feature_generators(featurelist)
+        return self.initialize_given_feature_generators(featuregenerator_classes, config, language, gateway, source_language=None)
+
+    def get_parallel_features_pipeline(self, featureset, config, source_language, target_language, gateway):
+        """
+        Prepares the full pipeline for feature generation on source, targets and references
+        @param featureset: a FeatureSet instance, containing the names of source, target and reference features
+        @type featureset: L{sentence.parallelsentence.FeatureSet}
+        @param config: a ConfigParser object containing the parameters for the language resources
+        @type config: C{ConfigParser}
+        @param source_language: the language code of the source language
+        @type source_language: C{str}
+        @param target_language: the language code of the target language
+        @type target_language: C{str}
+        @param gateway: a Py4J gateway object, necessary for loading Java feature generators
+        @type gateway: L{LocalGateway}
+        @return: a tuple of the initialized feature generators for source, target and reference
+        @rtype: tuple with 3 lists of L{FeatureGenerator} subclasses
+        """
+        #TODO: solve the issue that some language agnostic generators will be 
+        #initialized for both source and target -- or maybe its not a big issue cause they oftern are
+        #not expensive              
+        source_featuregenerators = self.initialize_feature_generators(featureset.source_feature_names, config,
+                                                                      source_language, gateway, source_language=None)
+        target_featuregenerators = self.initialize_feature_generators(featureset.target_feature_names, config,
+                                                                      target_language, gateway, source_language=source_language)        
+        reference_featuregenerators = self.initialize_feature_generators(featureset.ref_feature_names, config, target_language, 
+                                                                         gateway, source_language=source_language)
+    
+        return source_featuregenerators, target_featuregenerators, reference_featuregenerators
             
