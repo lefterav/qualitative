@@ -1,7 +1,7 @@
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
 from app.autoranking.application import Autoranking
-from translate import DummyTriangleTranslator
+from mt.hybrid import DummyTriangleTranslator
 import sys
 from app.hybrid.translate import SimpleTriangleTranslator
 

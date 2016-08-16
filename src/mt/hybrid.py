@@ -9,7 +9,7 @@ from featuregenerator.preprocessor import Tokenizer, Truecaser
 from featuregenerator.blackbox.wsd import WSDclient
 from mt.lucy import LucyWorker
 from mt.moses import MtMonkeyWorker
-from mt.selection import SystemSelector
+from mt.selection import Autoranking
 from mt.worker import Worker
 
 class HybridTranslator(Worker):
@@ -30,7 +30,7 @@ class DummyTriangleTranslator():
                  lcm_url,  
                  lucy_username="traductor", lucy_password="traductor",                
                  source_language="en", target_language="de",
-                 configfilenames=[],
+                 config_files=[],
                  classifiername=None):
         self.moses_worker = MtMonkeyWorker(moses_url)
         self.lucy_worker = LucyWorker(url=lucy_url,
@@ -57,10 +57,10 @@ class SimpleTriangleTranslator(Worker):
                  lcm_url,  
                  lucy_username="traductor", lucy_password="traductor",                
                  source_language="en", target_language="de",
-                 configfilenames=[],
+                 config_files=[],
                  classifiername=None,
                  reverse=False):
-        self.selector =  SystemSelector(configfilenames, classifiername, reverse)
+        self.selector =  Autoranking(config_files, classifiername, reverse)
         self.moses_worker = MtMonkeyWorker(moses_url)
         self.lucy_worker = LucyWorker(url=lucy_url,
                                       username=lucy_username, password=lucy_password,
@@ -78,10 +78,10 @@ class SimpleTriangleTranslator(Worker):
         sys.stderr.write("Sending to LcM\n")
         lcm_translation, _ = self.lcm_worker.translate(lucy_translation)
         outputs_ordered = [moses_translation, lucy_translation, lcm_translation]
-        rank, description = self.selector.rank(string, outputs_ordered, reconstruct="soft")
-        #print "Rank: ", rank
+        rank_strings, description = self.selector.rank_strings(string, outputs_ordered, reconstruct="soft")
+        #print "Rank: ", rank_strings
         
-        for rank_item, output in zip(rank, outputs_ordered):
+        for rank_item, output in zip(rank_strings, outputs_ordered):
             if float(rank_item)==1:
                 return output, description
 
@@ -95,7 +95,7 @@ class LcMWorker(Worker):
                  lcm_url,  
                  lucy_username="traductor", lucy_password="traductor",        
                  source_language="en", target_language="de",
-                 configfilenames=[],
+                 config_files=[],
                  classifiername=None,
                  truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-model.3.en",
                  reverse=False):
@@ -126,11 +126,11 @@ class SimpleWsdTriangleTranslator(Worker):
                  wsd_url,
                  lucy_username="traductor", lucy_password="traductor",        
                  source_language="en", target_language="de",
-                 configfilenames=[],
+                 config_files=[],
                  classifiername=None,
                  truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-model.3.en",
                  reverse=False):
-        self.selector = SystemSelector(configfilenames, classifiername, reverse)
+        self.selector = Autoranking(config_files, classifiername, reverse)
         self.wsd_worker = WSDclient(wsd_url)
         self.moses_worker = MtMonkeyWorker(moses_url)
         self.lucy_worker = LucyWorker(url=lucy_url,
@@ -154,9 +154,9 @@ class SimpleWsdTriangleTranslator(Worker):
         sys.stderr.write("Sending to LcM\n")
         lcm_translation, _ = self.lcm_worker.translate(lucy_translation)
         outputs_ordered = [moses_translation, lucy_translation, lcm_translation]
-        rank, description = self.selector.rank(string, outputs_ordered, reconstruct="soft")
-        #print "Rank: ", rank
+        rank_strings, description = self.selector.rank_strings(string, outputs_ordered, reconstruct="soft")
+        #print "Rank: ", rank_strings
         
-        for rank_item, output in zip(rank, outputs_ordered):
+        for rank_item, output in zip(rank_strings, outputs_ordered):
             if int(rank_item)==1:
                 return output, description

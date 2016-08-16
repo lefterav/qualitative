@@ -29,10 +29,10 @@ server.register_introspection_functions()
 
 
 # Register a function under a different name
-def rank(source, mosestranslation, lucytranslation, googletranslation, langsrc, langtgt):
+def rank_strings(source, mosestranslation, lucytranslation, googletranslation, langsrc, langtgt):
 
     
-    output = autoranker.rank(source, [mosestranslation, lucytranslation, googletranslation])
+    output = autoranker.rank_strings(source, [mosestranslation, lucytranslation, googletranslation])
     result= str(output)
 
     return result
@@ -40,7 +40,7 @@ def rank(source, mosestranslation, lucytranslation, googletranslation, langsrc, 
 
 def qualityRank(source, mosestranslation, lucytranslation, googletranslation, langsrc, langtgt):
 
-    ranking, description = autoranker.rank(source, [mosestranslation, lucytranslation, googletranslation])
+    ranking, description = autoranker.rank_strings(source, [mosestranslation, lucytranslation, googletranslation])
     result="{rank1}$##${rank2}$##${rank3}$##${description}".format(rank1=ranking[0],
                                                                    rank2=ranking[1],
                                                                    rank3=ranking[2],
@@ -50,7 +50,7 @@ def qualityRank(source, mosestranslation, lucytranslation, googletranslation, la
 
 
     
-server.register_function(rank, 'rank')
+server.register_function(rank_strings, 'rank_strings')
 server.register_function(qualityRank, 'qualityRank')
 print "server ready"
 server.serve_forever()
