@@ -32,7 +32,6 @@ server.register_introspection_functions()
 
 def process_task(params):
     text = params['text']
-#    try:
     sys.stderr.write("Received task\n")
     translated_text, description = translator.translate(text)
     transaction_id = 0
@@ -53,12 +52,7 @@ def process_task(params):
             "translationId": transaction_id
         }
     return result
-#    except:
-#        result = """{
-#            "errorCode": 1, 
-#            "errorMessage": "ERROR"
-#            }"""
-#        return result
+
 
 server.register_function(process_task, 'process_task')
 print "server ready"
