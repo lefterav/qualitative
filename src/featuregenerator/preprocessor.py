@@ -219,12 +219,10 @@ class Detruecaser(CommandlinePreprocessor):
         command_template = "perl {path} -b"
         super(Detruecaser, self).__init__(path, language, {}, command_template)
 
-
 class CompoundSplitter(CommandlinePreprocessor):
     def __init__(self, language, model):
-        #path = util.__path__[0]
-        #path = os.path.join(path, "compound-splitter.perl")
-        path = '/project/qtleap/software/mtmonkey/user/en-de/mt-2.1/worker/tasks/compound-splitter.perl'
+        path = util.__path__[0]
+        path = os.path.join(path, 'compound-splitter.perl')
         command_template = "perl {path} -model {model}"
         super(CompoundSplitter, self).__init__(path, language, {"model": model}, command_template)   
 
