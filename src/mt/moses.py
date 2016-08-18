@@ -59,13 +59,21 @@ class MosesWorker(Worker):
         return text, response
     
 
-class ProcessedMosesWorker(MosesWorker):
+class ProcessedMosesWorker:
     """
     Wrapper class for Moses worker, that also takes care of pre-processing the given requests
     and post-processing the output
+    @ivar worker: a worker that connects to a MT engine
+    @type worker: L{Worker}
+    @ivar sentencesplitter: the class for splitting sentences
+    @type sentencesplitter: L{SentenceSplitter}
+    @ivar preprocessors: a list of pre-processors
+    @type preprocessors: list of L{Preprocessor}
+    @ivar postprocessors: a list of post-processors
+    @type postprocessors: list of L{Postprocessor}
     """
     def __init__(self, uri, source_language, target_language, 
-                 truecaser_model, splitter_model=None, **kwargs):
+                 truecaser_model, splitter_model=None, worker=MosesWorker, **kwargs):
         
         self.sentencesplitter = SentenceSplitter({'language': source_language})
         self.preprocessors = [Normalizer(language=source_language),
@@ -79,7 +87,7 @@ class ProcessedMosesWorker(MosesWorker):
         self.postprocessors = [Detruecaser(language=target_language),
                                Detokenizer(language=target_language)
                                ]
-        self.server = xmlrpclib.ServerProxy(uri)
+        self.worker = worker(uri)
         
     def translate(self, string):
         strings = self.sentencesplitter.split_sentences(string)
@@ -89,10 +97,10 @@ class ProcessedMosesWorker(MosesWorker):
         for string in strings:
             for preprocessor in self.preprocessors:
                 string = preprocessor.process_string(string)
-            translated_string, response = super(ProcessedMosesWorker, self).translate(string)
-            print translated_string, response
+            translated_string, response = self.worker.translate(string)
+            print "output: ", translated_string, response
             for postprocessor in self.postprocessors:
-                string = postprocessor.process_string(translated_string)
+                translated_string = postprocessor.process_string(translated_string)
             translated_strings.append(translated_string)
             responses.append(response)
         

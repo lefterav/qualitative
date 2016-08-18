@@ -4,6 +4,7 @@
 # Sample De-Tokenizer
 # written by Josh Schroeder, based on code by Philipp Koehn
 # further modifications by Ondrej Bojar
+$|=1;
 
 binmode(STDIN, ":utf8");
 binmode(STDOUT, ":utf8");

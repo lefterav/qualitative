@@ -23,5 +23,10 @@ wget http://www.qt21.eu/software/qualitative/res/ibm1/lex.fr-en.tar.gz
 tar xzf *gz
 rm *gz
 cd ..
+mkdir -p splitter
+cd splitter
+wget http://www.qt21.eu/software/qualitative/res/splitter/split-model.de.gz
+gunzip split-model.de.gz
+cd ..
 
-echo "Resources downloaded. Please modify the necessary "annotation*.cfg" configuration file(s) and pass it as parameter to app/autoranking/application.py for testing"
+echo "Resources downloaded. Please modify the necessary "features*.cfg" configuration file(s) and pass it as parameter to app/autoranking/application.py for testing"

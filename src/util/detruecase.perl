@@ -1,4 +1,5 @@
 #!/usr/bin/perl -w
+$|=1;
 
 use strict;
 use Getopt::Long "GetOptions";
