@@ -4,7 +4,6 @@ generation of features over the parallel objects. Any new featuregenerator
 should implement languagefeaturegenerator.py (if it is language-specific)
 or featuregenerator.py  (it is language-generic).
 """
-from ocrfeeder.odf.meta import InitialCreator
 
 '''
 Created on Jul 28, 2016
