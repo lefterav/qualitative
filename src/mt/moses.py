@@ -12,14 +12,17 @@ import logging as log
 
 from featuregenerator.blackbox.wsd import WSDclient
 from featuregenerator.preprocessor import Tokenizer, Truecaser, Detokenizer,\
-    Detruecaser
+    Detruecaser, Normalizer, CompoundSplitter
 from mt.worker import Worker
+from featuregenerator.sentencesplitter import SentenceSplitter
 
 class MosesWorker(Worker):
     """
     Wrapper class for Moses server
+    @ivar server: the proxy to the Moses Server
+    @type server: C{xmlrpclib.ServerProxy}
     """
-    def __init__(self, uri, **params):
+    def __init__(self, uri, **kwargs):
         """
         Initialize connection to Moses server
         @param uri: ip address or url of mosesserver followed by : and the port number
@@ -41,7 +44,7 @@ class MosesWorker(Worker):
                 response = response
                 efforts += 1
             except Exception as e:
-                log.error("Connection to MosesServer was refused, trying again in 20 secs...")
+                log.error("{} \n Connection to MosesServer was refused, trying again in 20 secs...".format(e))
                 sleep(20)
                 log.error(e)
 
@@ -54,6 +57,47 @@ class MosesWorker(Worker):
         if isinstance(text, unicode):
             text = text.encode('utf-8')
         return text, response
+    
+
+class ProcessedMosesWorker(MosesWorker):
+    """
+    Wrapper class for Moses worker, that also takes care of pre-processing the given requests
+    and post-processing the output
+    """
+    def __init__(self, uri, source_language, target_language, 
+                 truecaser_model, splitter_model=None, **kwargs):
+        
+        self.sentencesplitter = SentenceSplitter({'language': source_language})
+        self.preprocessors = [Normalizer(language=source_language),
+                              Tokenizer(language=source_language),
+                              Truecaser(language=source_language, 
+                                        model=truecaser_model),
+                              ]
+        if source_language == 'de' and splitter_model:
+            self.preprocessors.append(CompoundSplitter(language=source_language,
+                                                       model=splitter_model))
+        self.postprocessors = [Detruecaser(language=target_language),
+                               Detokenizer(language=target_language)
+                               ]
+        self.server = xmlrpclib.ServerProxy(uri)
+        
+    def translate(self, string):
+        strings = self.sentencesplitter.split_sentences(string)
+        translated_strings = []
+        responses = []
+        
+        for string in strings:
+            for preprocessor in self.preprocessors:
+                string = preprocessor.process_string(string)
+            translated_string, response = super(ProcessedMosesWorker, self).translate(string)
+            print translated_string, response
+            for postprocessor in self.postprocessors:
+                string = postprocessor.process_string(translated_string)
+            translated_strings.append(translated_string)
+            responses.append(response)
+        
+        return " ".join(translated_strings), responses
+            
 
 
 class MtMonkeyWorker(Worker):
