@@ -7,10 +7,11 @@ import sys
 
 from featuregenerator.preprocessor import Tokenizer, Truecaser
 from featuregenerator.blackbox.wsd import WSDclient
-from mt.lucy import LucyWorker
-from mt.moses import MtMonkeyWorker
+from mt.lucy import LucyWorker, AdvancedLucyWorker
+from mt.moses import MtMonkeyWorker, ProcessedMosesWorker, MosesWorker
 from mt.selection import Autoranking
 from mt.worker import Worker
+from ConfigParser import SafeConfigParser
 
 class HybridTranslator(Worker):
     def __init__(self, single_workers, worker_pipelines):
@@ -21,7 +22,7 @@ class HybridTranslator(Worker):
         translated_string = None
         #TODO
         return translated_string 
-
+    
 
 class DummyTriangleTranslator():
     def __init__(self,
@@ -31,7 +32,7 @@ class DummyTriangleTranslator():
                  lucy_username="traductor", lucy_password="traductor",                
                  source_language="en", target_language="de",
                  config_files=[],
-                 classifiername=None):
+                 ranking_model=None):
         self.moses_worker = MtMonkeyWorker(moses_url)
         self.lucy_worker = LucyWorker(url=lucy_url,
                                       username=lucy_username, password=lucy_password,
@@ -86,8 +87,48 @@ class SimpleTriangleTranslator(Worker):
                 return output, description
 
 
+class Pilot3Translator(SimpleTriangleTranslator):
+    def __init__(self,
+                 engines,
+                 configfiles=[],
+                 source_language="en",
+                 target_language="de",
+                 ranking_model=None):
+        
+        config = SafeConfigParser()
+        config.read(configfiles)
+        
+        # get resources
+        truecaser_model = config.get("Truecaser:{}".format(source_language), 'model')
+        splitter_model = None
+        if source_language == 'de':
+            splitter_model = config.get("Splitter:{}".format(source_language), 'model')            
 
-    
+        if "Moses" in engines:
+            uri = config.get("Moses:{}-{}".format(source_language, target_language), "uri")
+            self.moses_worker = ProcessedMosesWorker(uri, source_language, target_language, 
+                                                     truecaser_model, splitter_model)
+        if "Lucy" in engines:
+            self.lucy_worker = AdvancedLucyWorker(source_language=source_language,
+                                                  target_language=target_language,
+                                                  **dict(config.items("Lucy")))
+        if "LcM" in engines:
+            uri = config.get("LcM:{}-{}".format(source_language, target_language), "uri")
+            self.lcm_worker = ProcessedMosesWorker(uri, source_language, target_language, 
+                                                   truecaser_model, splitter_model)
+            
+        if "NeuralMonkey" in engines:
+            uri = config.get("NeuralMonkey:{}-{}".format(source_language, target_language), 
+                             "uri")
+            self.neuralmonkey_worker = NeuralMonkeyWorker(uri, source_language, 
+                                                          target_language, 
+                                                          truecaser_model, splitter_model)
+        
+        self.selector = Autoranking(configfiles, ranking_model, source_language, 
+                                    target_language, reverse=False)
+        
+
+
     
 class LcMWorker(Worker):
     def __init__(self,

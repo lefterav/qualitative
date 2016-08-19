@@ -5,7 +5,8 @@ from mt.hybrid import DummyTriangleTranslator
 import sys
 from app.hybrid.translate import SimpleTriangleTranslator
 import argparse
-from mt.moses import ProcessedMosesWorker
+from mt.moses import ProcessedMosesWorker, MosesWorker
+from mt.neuralmonkey import NeuralMonkeyWorker
 
 # Restrict to a particular path.
 class RequestHandler(SimpleXMLRPCRequestHandler):
@@ -19,9 +20,11 @@ parser.add_argument('--source_language', help="source language 2-letter code")
 parser.add_argument('--target_language', help="target language 2-letter code")
 parser.add_argument('--truecaser_model', help="filename of the truecasing model")
 parser.add_argument('--splitter_model', default=None, help="filename of the compound splitting model")
+parser.add_argument('--worker', default="ProcessedMoses")
 args = parser.parse_args()
 
-translator = ProcessedMosesWorker(uri=args.uri,
+worker_class = eval(args.worker+"Worker")
+translator = ProcessedMosesWorker(uri=args.uri, 
                                   source_language=args.source_language,
                                   target_language=args.target_language,
                                   truecaser_model=args.truecaser_model,
@@ -29,6 +32,7 @@ translator = ProcessedMosesWorker(uri=args.uri,
 server = SimpleXMLRPCServer((args.host, args.port),
                             requestHandler=RequestHandler)
 server.register_introspection_functions()
+
 
 def process_task(params):
     text = params['text']
