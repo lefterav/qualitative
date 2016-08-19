@@ -1,9 +1,7 @@
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
 from app.autoranking.application import Autoranking
-from mt.hybrid import DummyTriangleTranslator
 import sys
-from app.hybrid.translate import SimpleTriangleTranslator
 import argparse
 from mt.moses import ProcessedMosesWorker, MosesWorker
 from mt.neuralmonkey import NeuralMonkeyWorker
@@ -24,11 +22,11 @@ parser.add_argument('--worker', default="ProcessedMoses")
 args = parser.parse_args()
 
 worker_class = eval(args.worker+"Worker")
-translator = ProcessedMosesWorker(uri=args.uri, 
-                                  source_language=args.source_language,
-                                  target_language=args.target_language,
-                                  truecaser_model=args.truecaser_model,
-                                  splitter_model=args.splitter_model)
+translator = worker_class(uri=args.uri, 
+                          source_language=args.source_language,
+                          target_language=args.target_language,
+                          truecaser_model=args.truecaser_model,
+                          splitter_model=args.splitter_model)
 server = SimpleXMLRPCServer((args.host, args.port),
                             requestHandler=RequestHandler)
 server.register_introspection_functions()
