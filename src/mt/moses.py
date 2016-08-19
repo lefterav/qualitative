@@ -59,11 +59,11 @@ class MosesWorker(Worker):
         return text, response
     
 
-class ProcessedMosesWorker:
+class ProcessedWorker(object):
     """
-    Wrapper class for Moses worker, that also takes care of pre-processing the given requests
-    and post-processing the output
-    @ivar worker: a worker that connects to a MT engine
+    Wrapper class for another worker, that also takes care of pre-processing the given requests
+    and post-processing the output.
+    @ivar worker: an initialized worker that connects to a MT engine
     @type worker: L{Worker}
     @ivar sentencesplitter: the class for splitting sentences
     @type sentencesplitter: L{SentenceSplitter}
@@ -72,8 +72,8 @@ class ProcessedMosesWorker:
     @ivar postprocessors: a list of post-processors
     @type postprocessors: list of L{Postprocessor}
     """
-    def __init__(self, uri, source_language, target_language, 
-                 truecaser_model, splitter_model=None, worker=MosesWorker, **kwargs):
+    def __init__(self, source_language, target_language, 
+                 truecaser_model, splitter_model=None, worker=None, **kwargs):
         
         self.sentencesplitter = SentenceSplitter({'language': source_language})
         self.preprocessors = [Normalizer(language=source_language),
@@ -87,7 +87,7 @@ class ProcessedMosesWorker:
         self.postprocessors = [Detruecaser(language=target_language),
                                Detokenizer(language=target_language)
                                ]
-        self.worker = worker(uri)
+        self.worker = worker
         
     def translate(self, string):
         strings = self.sentencesplitter.split_sentences(string)
@@ -106,6 +106,15 @@ class ProcessedMosesWorker:
         
         return " ".join(translated_strings), responses
             
+
+class ProcessedMosesWorker(ProcessedWorker):
+    def __init__(self, uri, source_language, target_language, 
+                 truecaser_model, splitter_model=None, **kwargs):
+        
+        worker = MosesWorker(uri)
+        super(ProcessedMosesWorker, self).__init__(source_language, target_language, 
+                                                   truecaser_model, splitter_model, worker)
+        
 
 
 class MtMonkeyWorker(Worker):
