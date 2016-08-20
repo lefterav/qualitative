@@ -23,8 +23,8 @@ if __name__ == '__main__':
         ranking, description = ranker.rank_sentence(parallelsentence)
         #ranking.sort(key=lambda x: x[1].get_attribute("system"))
 
-        for rank, sentence in ranking:
-            if rank=="1":
+        for rank_strings, sentence in ranking:
+            if rank_strings=="1":
                 selected_sentence = sentence
                 system_name = sentence.get_attribute("system")
                 #selected_text = text[system_name]

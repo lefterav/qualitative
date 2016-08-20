@@ -12,7 +12,7 @@ import os
 from collections import OrderedDict
 from ml.ranking import forname
 from expsuite import PyExperimentSuite 
-from sentence.parallelsentence import FeatureSet
+from sentence.parallelsentence import AttributeSet
 from dataprocessor.ce.utils import join_jcml, fold_jcml_respect_ids
 from dataprocessor.ce.cejcml import CEJcmlReader
 from sentence import scoring
@@ -77,7 +77,7 @@ class RankingExperiment(PyExperimentSuite):
         general_attributes = self._read_attributes(params, "general")
         source_attributes = self._read_attributes(params, "source")
         target_attributes = self._read_attributes(params, "target")    
-        attribute_set = FeatureSet(general_attributes, source_attributes, target_attributes)
+        attribute_set = AttributeSet(general_attributes, source_attributes, target_attributes)
         return attribute_set
     
     def _read_attributes(self, params, key):

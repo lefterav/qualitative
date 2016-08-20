@@ -15,7 +15,7 @@ class RankHandler(object):
     '''
 
 
-    def __init__(self, rank_name = "rank"):
+    def __init__(self, rank_name = "rank_strings"):
         """
         Collection of convenience functions for transforming parallel sentences with many ranks
         into pairwise mode and vice versa. Most of the implementations here are ugly with many nested loops,
@@ -45,21 +45,21 @@ class RankHandler(object):
             rank_per_system = OrderedDict()
             tranlsations_per_system = OrderedDict()
             for pairwise_sentence in pairwise_sentences:
-                rank = int(pairwise_sentence.get_attribute(self.rank_name))
+                rank_strings = int(pairwise_sentence.get_attribute(self.rank_name))
                 
                 #it is supposed to have only two translations
                 translation1 = pairwise_sentence.get_translations()[0]
                 if translation1.get_attribute("system") in rank_per_system:
-                    rank_per_system[translation1.get_attribute("system")] += rank
+                    rank_per_system[translation1.get_attribute("system")] += rank_strings
                 else:
-                    rank_per_system[translation1.get_attribute("system")] = rank
+                    rank_per_system[translation1.get_attribute("system")] = rank_strings
                     tranlsations_per_system[translation1.get_attribute("system")] = translation1
    
                 translation2 = pairwise_sentence.get_translations()[1]
                 if translation2.get_attribute("system") in rank_per_system:
-                    rank_per_system[translation2.get_attribute("system")] -= rank
+                    rank_per_system[translation2.get_attribute("system")] -= rank_strings
                 else:
-                    rank_per_system[translation2.get_attribute("system")] = -1 * rank
+                    rank_per_system[translation2.get_attribute("system")] = -1 * rank_strings
                     tranlsations_per_system[translation2.get_attribute("system")] = translation2
             
             i = 0
@@ -78,7 +78,7 @@ class RankHandler(object):
 #                    neg_comparisons = [int(ps.get_attribute(self.rank_name)) for ps in best_ranked_pairwise if ps.get_translations()[1].get_attribute("system") == best_ranked_system ]
 #                    new_rank = 0.50 * (sum(pos_comparisons) - sum(neg_comparisons)) / (len(pos_comparisons) + len(neg_comparisons) + 0.01)
 #                    rank_per_system[best_ranked_system] += new_rank
-#                print "second pass best rank" , rank_per_system
+#                print "second pass best rank_strings" , rank_per_system
 #            
 #            for system in sorted(rank_per_system, key=lambda system: rank_per_system[system]):     
             for system in rank_per_system.keys():            
@@ -122,9 +122,9 @@ class RankHandler(object):
         so that system output can be compared in a pairwise manner. 
         @param parallelsentence: the parallesentences than needs to be split into pairs
         @type parallelsentence: ParallelSentence
-        @param allow_ties: sentences of equal performance (rank=0) will be included in the set, if this is set to True
+        @param allow_ties: sentences of equal performance (rank_strings=0) will be included in the set, if this is set to True
         @type allow_ties: boolean
-        @return a list of parallelsentences containing a pair of system translations and a universal rank value 
+        @return a list of parallelsentences containing a pair of system translations and a universal rank_strings value 
         """
         source = parallelsentence.get_source()
         translations = parallelsentence.get_translations()
@@ -138,18 +138,18 @@ class RankHandler(object):
                 if system_b in systems_parsed and not exponential:
                     continue
                 systems_parsed.append(system_a)
-                rank = self._normalize_rank(system_a, system_b)
-                if not rank:
+                rank_strings = self._normalize_rank(system_a, system_b)
+                if not rank_strings:
                     new_attributes = parallelsentence.get_attributes()
                     new_attributes["judgement_id"] = judgement_id
                     #new_attributes["orig_rank"] = new_attributes[self.rank_name]
                     new_attributes[self.rank_name] = "-99"
                     pairwise_sentence = ParallelSentence(source, [system_a, system_b], None, new_attributes) 
                     pairwise_sentences.append(pairwise_sentence)
-                elif rank != "0" or allow_ties:
+                elif rank_strings != "0" or allow_ties:
                     new_attributes = parallelsentence.get_attributes()
                     #new_attributes["orig_rank"] = new_attributes[self.rank_name]
-                    new_attributes[self.rank_name] = rank 
+                    new_attributes[self.rank_name] = rank_strings 
                     new_attributes["judgement_id"] = judgement_id
                     pairwise_sentence = ParallelSentence(source, [system_a, system_b], None, new_attributes) 
                     pairwise_sentences.append(pairwise_sentence)
@@ -160,7 +160,7 @@ class RankHandler(object):
                 try:
                     system.rename_attribute(self.rank_name, "orig_rank")
                 except KeyError:
-                    print "didn't rename rank attribute"
+                    print "didn't rename rank_strings attribute"
                     pass
         
         return pairwise_sentences
@@ -218,20 +218,20 @@ class RankHandler(object):
                 
                 system_pairs = set([(ps.get_translations()[0].get_attribute("system"), ps.get_translations()[1].get_attribute("system")) for ps in pslist])
                 for (system_a, system_b) in system_pairs:
-                    rank = 0
+                    rank_strings = 0
                     j = 0
                     mod = 0
                     for ps in pslist:
                         
                         if ps.get_translations()[0].get_attribute("system") == system_a \
                             and ps.get_translations()[1].get_attribute("system") == system_b:
-                                rank += int(ps.get_attribute(self.rank_name)) * self._annotator_weight(ps)
+                                rank_strings += int(ps.get_attribute(self.rank_name)) * self._annotator_weight(ps)
                                 mod += 1
                                 i = j
                         j += 1
-                    if rank > 0:
+                    if rank_strings > 0:
                         final_rank = 1
-                    elif rank < 0:
+                    elif rank_strings < 0:
                         final_rank = -1
                     else:
                         final_rank = 0
@@ -262,7 +262,7 @@ class RankHandler(object):
     
     def _normalize_rank(self, system_a, system_b):
         """
-        Receives two rank scores for the two respective system outputs, compares them and returns a universal
+        Receives two rank_strings scores for the two respective system outputs, compares them and returns a universal
         comparison value, namely -1 if the first system is better, +1 if the second system output is better, 
         and 0 if they are equally good. 
         """
@@ -270,12 +270,12 @@ class RankHandler(object):
             rank_a = system_a.get_attribute(self.rank_name)
             rank_b = system_b.get_attribute(self.rank_name)
             if rank_a < rank_b:
-                rank = "-1"
+                rank_strings = "-1"
             elif rank_a > rank_b:
-                rank = "1"
+                rank_strings = "1"
             else:
-                rank = "0"       
-            return rank
+                rank_strings = "0"       
+            return rank_strings
         except KeyError:
             return None
         

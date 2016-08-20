@@ -24,7 +24,7 @@ from featuregenerator.blackbox.parser.berkeley.parsermatches import ParserMatche
 from featuregenerator.blackbox.parser.berkeley.cfgrules import CfgRulesExtractor, CfgAlignmentFeatureGenerator
 from featuregenerator.blackbox.counts import LengthFeatureGenerator
 from featuregenerator.ratio_generator import RatioGenerator
-from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
+from featuregenerator.blackbox.ibm1 import Ibm1FeatureGenerator
 from featuregenerator.reference.levenshtein.levenshtein_generator import LevenshteinGenerator
 from featuregenerator.reference.bleu import CrossBleuGenerator, BleuGenerator
 from featuregenerator.reference.meteor.meteor import CrossMeteorGenerator, MeteorGenerator
@@ -307,7 +307,7 @@ parallel_feature_functions.append(features_length)
 
 #@active_if(False)
 #def features_ibm(input_file, output_file, ibm1lexicon):
-#    ibmfeaturegenerator = AlignmentFeatureGenerator(ibm1lexicon)
+#    ibmfeaturegenerator = Ibm1FeatureGenerator(ibm1lexicon)
 #    saxjcml.run_features_generator(input_file, output_file, [ibmfeaturegenerator])
 
 """
@@ -375,7 +375,7 @@ def features_gather(singledataset_annotations, gathered_singledataset_annotation
 @transform(features_gather, suffix(".all.f.jcml"), ".all.ibm1.f.jcml", cfg.get("ibm1:{}-{}".format(source_language, target_language), "lexicon"), cfg.get("ibm1:{}-{}".format(target_language, source_language), "lexicon"))    
 def features_ibm1(input_file, output_file, sourcelexicon, targetlexicon):
     analyzers = [
-             AlignmentFeatureGenerator(sourcelexicon, targetlexicon),
+             Ibm1FeatureGenerator(sourcelexicon, targetlexicon),
              CfgAlignmentFeatureGenerator(),
              ]
     saxjcml.run_features_generator(input_file, output_file, analyzers)

@@ -5,30 +5,34 @@ Created on 30 Mar 2012
 @author: Eleftherios Avramidis
 '''
 from py4j.java_gateway import java_import
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from featuregenerator import LanguageFeatureGenerator
 import numpy as np
 from collections import defaultdict
-import string
 
 class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
     '''
     Feature generator for the Language Tool, providing rule-based language suggestion
+    Language tool is wrapped via JVM and loaded on the background
+    The sentence is analyzed and the count of specific errors, error types and total sentence
+    errors are added as features, along with their length as characters.
+    @ivar ltoot: the JVM object of the LanguageTool
+    @type ltool: org.languagetool.JLanguageTool as described in LanguageTool Java API
     '''
     feature_patterns = ['lt_.*']
 
-    def __init__(self, lang, gateway):
+    def __init__(self, language, gateway, **kwargs):
         '''
         Constructor
         '''
-        self.lang = lang
+        self.language = language
         ltool_view = gateway.new_jvm_view()
         java_import(ltool_view, 'org.languagetool.Languages')
         java_import(ltool_view, 'org.languagetool.JLanguageTool')
 
-        if lang=='ru':
-            lang = 'ru-RU' 
+        if language=='ru':
+            language = 'ru-RU' 
         
-        tool_language = ltool_view.Languages.getLanguageForShortName(lang)
+        tool_language = ltool_view.Languages.getLanguageForShortName(language)
         self.ltool = ltool_view.JLanguageTool(tool_language)        
         
     def get_features_string(self, string):
@@ -82,6 +86,3 @@ class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
         
         return prefixed_atts
             
-    
-#    def __del__(self):
-#        self.jvm.terminate()

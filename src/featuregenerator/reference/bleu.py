@@ -252,7 +252,7 @@ def score_multitarget_sentences(sentence_tuples, n=4):
     return score_cooked(cooked_tests, n)
 
 
-from featuregenerator.featuregenerator import FeatureGenerator
+from featuregenerator import FeatureGenerator
 
 from collections import OrderedDict
 

@@ -152,7 +152,7 @@ class AutorankingSuite(PyExperimentSuite):
                  get_nested_attributes=True,
                  dir=dir,
                  remove_infinite=self.remove_infinite
-                 #filter_attributes={"rank" : "0"},
+                 #filter_attributes={"rank_strings" : "0"},
 #                 class_type=class_type
                 ).convert()
             
@@ -184,7 +184,7 @@ class AutorankingSuite(PyExperimentSuite):
             att_prob_pos = [{"prob_1": v[1]} for v in self.classified_probs_vector]
 #            print att_vector
             
-            print "adding guessed rank"
+            print "adding guessed rank_strings"
             self.simple_testset.add_attribute_vector(att_vector, "ps")
             self.simple_testset.add_attribute_vector(att_prob_neg, "ps")
             self.simple_testset.add_attribute_vector(att_prob_pos, "ps")
@@ -202,9 +202,9 @@ class AutorankingSuite(PyExperimentSuite):
  
             self.testset = JcmlReader("testset.jcml").get_dataset() 
             self.final_reconstructed_hard = deepcopy(self.testset)
-            self.final_reconstructed_hard.import_target_attributes_onsystem(reconstructed_hard_testset, ["rank_hard"],['langsrc','id','langtgt'],[],['rank','system'])
+            self.final_reconstructed_hard.import_target_attributes_onsystem(reconstructed_hard_testset, ["rank_hard"],['langsrc','id','langtgt'],[],['rank_strings','system'])
             self.final_reconstructed_soft = deepcopy(self.testset)
-            self.final_reconstructed_soft.import_target_attributes_onsystem(reconstructed_soft_testset, ["rank_soft"],['langsrc','id','langtgt'],[],['rank','system'])
+            self.final_reconstructed_soft.import_target_attributes_onsystem(reconstructed_soft_testset, ["rank_soft"],['langsrc','id','langtgt'],[],['rank_strings','system'])
         
             
             self.simple_testset = None
@@ -261,7 +261,7 @@ class AutorankingSuite(PyExperimentSuite):
 #            Parallelsentence2Jcml(self.reconstructed_soft_testset).write_to_file("testset.reconstructed.org.soft.jcml")
     
     def restore_state(self,params, rep, n):
-        self.class_name = "rank" #TODO: hardcoded
+        self.class_name = "rank_strings" #TODO: hardcoded
 
         
         if n > 10 and n <=30 :
@@ -325,8 +325,8 @@ def get_scoring(testset, class_name, xid, featurename):
     ret["pr-%s"%xid] = scoringset.avg_predicted_ranked(featurename, class_name)
     
     sb_percentages = scoringset.best_predicted_vs_human(featurename, class_name)  
-    for rank, percentage in sb_percentages.iteritems():
-        ret["sb-{}-{}".format(rank,xid)] = str(percentage)
+    for rank_strings, percentage in sb_percentages.iteritems():
+        ret["sb-{}-{}".format(rank_strings,xid)] = str(percentage)
     return ret
 
 def score(testset, class_name, xid, featurename):
