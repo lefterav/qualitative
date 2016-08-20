@@ -486,7 +486,7 @@ class FeatureGeneratorManager(object):
         
         params['gateway'] = gateway
         params['language'] = language
-        log.info("Feature generator manager initializing {} for {} ...".format(generator.__name__, language))
+        log.info("Feature generator manager initializing {} for {} with params {}...".format(generator.__name__, language, params))
         initialized_generator = generator(**params)
         log.info("Feature generator manager successfully initialized {} for {}.".format(generator.__name__, language))
         return initialized_generator
@@ -526,7 +526,7 @@ class FeatureGeneratorManager(object):
     
     def initialize_feature_generators(self, featurelist, config, language, gateway, source_language=None):
         featuregenerator_classes = self.get_feature_generators(featurelist)
-        return self.initialize_given_feature_generators(featuregenerator_classes, config, language, gateway, source_language=None)
+        return self.initialize_given_feature_generators(featuregenerator_classes, config, language, gateway, source_language)
 
     def get_parallel_features_pipeline(self, featureset, config, source_language, target_language, gateway):
         """
@@ -547,11 +547,11 @@ class FeatureGeneratorManager(object):
         #TODO: solve the issue that some language agnostic generators will be 
         #initialized for both source and target -- or maybe its not a big issue cause they oftern are
         #not expensive              
-        source_featuregenerators = self.initialize_feature_generators(featureset.source_feature_names, config,
+        source_featuregenerators = self.initialize_feature_generators(featureset.source_attribute_names, config,
                                                                       source_language, gateway, source_language=None)
-        target_featuregenerators = self.initialize_feature_generators(featureset.target_feature_names, config,
+        target_featuregenerators = self.initialize_feature_generators(featureset.target_attribute_names, config,
                                                                       target_language, gateway, source_language=source_language)        
-        reference_featuregenerators = self.initialize_feature_generators(featureset.ref_feature_names, config, target_language, 
+        reference_featuregenerators = self.initialize_feature_generators(featureset.ref_attribute_names, config, target_language, 
                                                                          gateway, source_language=source_language)
     
         return source_featuregenerators, target_featuregenerators, reference_featuregenerators
