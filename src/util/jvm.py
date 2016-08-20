@@ -73,7 +73,11 @@ class LocalJavaGateway(JavaGateway):
         
     def __del__(self):
         self.shutdown()
-        super(LocalJavaGateway, self).__del__()
+        try:
+            super(LocalJavaGateway, self).__del__()
+        except AttributeError:
+            pass
+        
         
 
 class JVM(object):

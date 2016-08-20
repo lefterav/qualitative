@@ -16,6 +16,9 @@ from sklearn_utils import scale_datasets_crossvalidation
 from sklearn.cross_validation import train_test_split
 from sklearn.neural_network import BernoulliRBM
 
+import sys, logging
+from sentence.parallelsentence import AttributeSet, AttributeSet
+
 #generic
 import numpy as np
 import logging as log
@@ -51,6 +54,7 @@ from sklearn.preprocessing.data import StandardScaler
 from sklearn.metrics import mean_squared_error, f1_score, precision_score, recall_score
 from sklearn.feature_selection.rfe import RFECV, RFE
 from sklearn.cross_validation import StratifiedKFold
+
 
 
 def _get_numpy_arrays(vector_tuples):
@@ -163,7 +167,7 @@ def dataset_to_instances(filename,
     loader, which is implemented in C. This way no double object instances need to be on memory
     during conversion time.
     @param attribute_set: A description of the attributes we want to be included in the data table
-    @type attribute_set: L{FeatureSet}
+    @type attribute_set: L{AttributeSet}
     @param class_name: The name of the class (label) for the machine learning task
     @type class_name: C{str}
     @param reader: A class which is able to read from external files. This give the possibility to 
@@ -329,11 +333,11 @@ class SkLearner:
             plt.savefig(plot_filename, bbox_inches='tight')
             
         #put ranks in an array, so that we can get them in the log file
-        for i, rank in enumerate(transformer.ranking_):
-            attributes["RFE_rank_f{}".format(i)] = rank
+        for i, rank_strings in enumerate(transformer.ranking_):
+            attributes["RFE_rank_f{}".format(i)] = rank_strings
         
-        for i, rank in enumerate(transformer.support_):
-            attributes["RFE_mask_f{}".format(i)] = rank
+        for i, rank_strings in enumerate(transformer.support_):
+            attributes["RFE_mask_f{}".format(i)] = rank_strings
                 
         return transformer, data, attributes
 
@@ -390,11 +394,11 @@ class SkLearner:
             plt.savefig(plot_filename, bbox_inches='tight')
             
         #put ranks in an array, so that we can get them in the log file
-        for i, rank in enumerate(transformer.ranking_):
-            attributes["RFE_rank_f{}".format(i)] = rank
+        for i, rank_strings in enumerate(transformer.ranking_):
+            attributes["RFE_rank_f{}".format(i)] = rank_strings
         
-        for i, rank in enumerate(transformer.support_):
-            attributes["RFE_mask_f{}".format(i)] = rank
+        for i, rank_strings in enumerate(transformer.support_):
+            attributes["RFE_mask_f{}".format(i)] = rank_strings
                 
         return transformer, data, attributes
     
@@ -688,12 +692,11 @@ class SkRanker(Ranker, SkLearner):
         return ranked_sentence, resultvector
 
 if __name__ == '__main__':
-    import sys, logging
-    from sentence.parallelsentence import FeatureSet
+
     filename = sys.argv[1]
     output_filename = sys.argv[2]
-    attribute_set = FeatureSet()
-    attribute_set.target_feature_names = ['cross-meteor_score', 'lm_unk', 'l_tokens', 'berkeley-n', 'parse-VP', 'berkley-loglikelihood']
+    attribute_set = AttributeSet()
+    attribute_set.target_attribute_names = ['cross-meteor_score', 'lm_unk', 'l_tokens', 'berkeley-n', 'parse-VP', 'berkley-loglikelihood']
     class_name = "ref-rgbF"
 
     loglevel = logging.DEBUG

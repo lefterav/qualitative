@@ -2,7 +2,7 @@
 
 @author: Eleftherios Avramidis
 """
-from featuregenerator.featuregenerator import FeatureGenerator
+from featuregenerator import FeatureGenerator
 from nltk.tokenize.punkt import PunktWordTokenizer
 from wer import wer
 from numpy import average
@@ -15,7 +15,7 @@ class WERFeatureGenerator(FeatureGenerator):
     sudo pypi-install python-Levenshtein
     """
 
-
+    feature_names = ['ref-wer']
         
     
     def get_features_tgt(self, target, parallelsentence):

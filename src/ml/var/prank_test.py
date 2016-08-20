@@ -28,7 +28,7 @@ class PRankTest(unittest.TestCase):
         ranker = PRank(k)
         ranker.train(traindata, labels)
         testdata = np.array([1.1, 1, 0, 0, 1])
-        print ranker.rank(testdata)
+        print ranker.rank_strings(testdata)
     
 
 if __name__ == "__main__":

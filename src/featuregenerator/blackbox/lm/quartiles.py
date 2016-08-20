@@ -8,15 +8,26 @@ import logging as log
 import codecs
 from collections import OrderedDict
 #from marisa_trie import RecordTrie
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator 
+from featuregenerator import LanguageFeatureGenerator 
 
 class NgramManager(object):
     '''
-    classdocs
+    Manager of tables with n-grams counts. These are the intermediate
+    tables creating in the first stage of building language models. 
+    This is a python re-implementation of the  original Java n-gram 
+    manager appearing in QuEst    
+    @ivar cutoffs: cutoff for every n-gram order
+    @type cutoffs: {C{int}: C{float}, ...}
+    @ivar ngram_trie: n-gram entries 
+    @type ngram_trie: {C{str}: C{float}, ...}
     '''
+    
     def __init__(self, ngram_counts_filename=None, max_ngram_order=3):
         '''
-        Constructor
+        @param ngram_counts_filename: the filename containing the counts
+        @type ngram_counts_filename: C{str}
+        @param max_ngram_order: the maximum order of n-grams in the table
+        @type max_ngram_order: C{int}
         '''
         self.cutoffs = {}
         ngram_entries = []
@@ -74,12 +85,21 @@ class NgramManager(object):
     
 
 class NgramFrequencyFeatureGenerator(LanguageFeatureGenerator):
+    """
+    Generator for features from n-gram counts, split into 4 frequency quartiles
+    @ivar max_ngram_order: the maximum n-gram order supported by the table
+    @type max_ngram_order: C{int}
+    @ivar ngram_manager: the class that provides n-gram statistics
+    @type ngram_manager: L{NgramManager}
+    """
     
     feature_patterns = ['ngrams_n.*']
     
-    def __init__(self, lang=None, ngram_counts_filename=None, max_ngram_order=3):
+    def __init__(self, language=None, ngram_counts_filename=None, max_ngram_order=3):
         self.max_ngram_order = max_ngram_order
-        self.ngram_manager = NgramManager(ngram_counts_filename, max_ngram_order=3)
+        self.ngram_manager = NgramManager(ngram_counts_filename, 
+                                          max_ngram_order=max_ngram_order)
+        self.language = language
     
     def get_features_string(self, sentence_string):
         features = OrderedDict()
