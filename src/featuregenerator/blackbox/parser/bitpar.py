@@ -172,8 +172,9 @@ class BitParFeatureGenerator(LanguageFeatureGenerator):
                 openclassdfsa=None, 
                 language=None,
                 timeout=30,
-                n=100):
-        log.debug("BitParFeatureGenerator path: {}".format(path))
+                n=100,
+                **kwargs):
+        log.debug("BitParFeatureGenerator path: {}".format(path))        
         self.language = language
         self.parser = BitParChartParser(model=model, 
                 grammar=grammar, 

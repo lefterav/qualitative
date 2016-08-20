@@ -96,7 +96,7 @@ class BerkeleyLocalFeatureGenerator(BerkeleyFeatureGenerator):
                      'berkeley-confidence_high', 'berkeley-loglikelihood_low', 'berkeley-loglikelihood_low']
 
     
-    def __init__(self, language=None, grammarfile=None, gateway=None, tokenize=False):
+    def __init__(self, language=None, grammarfile=None, gateway=None, tokenize=False, **kwargs):
         self.language = language
         self.tokenize = tokenize
         log.info("berkeleyclient: initializing BerkeleyParserSocket")
