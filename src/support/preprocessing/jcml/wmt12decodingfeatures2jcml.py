@@ -7,7 +7,7 @@ import sys
 import os
 import subprocess
 import numpy
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from featuregenerator import LanguageFeatureGenerator
 
 from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
 from dataprocessor.input.jcmlreader import JcmlReader

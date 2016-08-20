@@ -57,10 +57,10 @@ class IncrementalJcml(object):
     Write line by line incrementally on an XML file, without loading anything in the memory.
     Don't forget the close function. Object sentences cannot be edited after written
     """
-    def __init__(self, filename, xmlformat=JcmlFormat):
+    def __init__(self, model, xmlformat=JcmlFormat):
         self.TAG = xmlformat.TAG
-        self.filename = filename
-        self.file = tempfile.NamedTemporaryFile(mode='w',delete=False,suffix='.jcml', prefix='tmp_', dir='.') #"/tmp/%s.tmp" % os.path.basename(filename)
+        self.filename = model
+        self.file = tempfile.NamedTemporaryFile(mode='w',delete=False,suffix='.jcml', prefix='tmp_', dir='.') #"/tmp/%s.tmp" % os.path.basename(model)
         self.tempfilename = self.file.name
         self.generator = XMLGenerator(self.file, "utf-8")
         self.generator.startDocument()

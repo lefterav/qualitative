@@ -23,12 +23,12 @@ from urllib2 import URLError
 from xml.etree import ElementTree as ET
 import os
 import time
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from featuregenerator import LanguageFeatureGenerator
 
 class IQFeatureGenerator(LanguageFeatureGenerator):
     """
     Handles communication with an Acrolinx IQ server
-    @ivar lang:
+    @ivar language:
     @ivar host:
     @ivar user_id:
     @ivar license_data:
@@ -36,10 +36,10 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
     """
     
     
-    def __init__(self, lang, settings = {}, user_id = 'dfkitaraxu', host = "msv-3231.sb.dfki.de:8031", wsdl_path = "/acrolinx/services/core-no-mtom?wsdl", protocol = "http" , license_file = "license.dat"):
+    def __init__(self, language, settings = {}, user_id = 'dfkitaraxu', host = "msv-3231.sb.dfki.de:8031", wsdl_path = "/acrolinx/services/core-no-mtom?wsdl", protocol = "http" , license_file = "license.dat"):
         """
-        @param lang: abrev. code for the language that this generator will be responsible for
-        @type lang: str
+        @param language: abrev. code for the language that this generator will be responsible for
+        @type language: str
         @param host: the hostname (and the port) of the SOAP server
         @type host: str
         @param wsdl_path: the wsdl path of the MTOM service, that needs to be appended to the end of the request url
@@ -47,7 +47,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
         @param protocol: the protocol, default value http
         @type protocol: str
         """
-        self.lang = lang
+        self.language = language
         self.host = host
         url = "{0}://{1}{2}".format(protocol, host, wsdl_path)
         self.soap_client = Client(url, timeout=60)
@@ -268,7 +268,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
                                    check_terms = 'MT-preediting-DE-EN-T1.modules.terms',
                                     )
         license_data_str = open(self.license_data_filename, 'r').read()
-        soap_attributes["text_lang"] = self.lang
+        soap_attributes["text_lang"] = self.language
         soap_attributes["client_session_id"] = self.sessionIdStr
         soap_attributes["license.data"] = license_data_str
         soap_attributes["user.id"] = self.user_id
@@ -340,7 +340,7 @@ class IQFeatureGenerator(LanguageFeatureGenerator):
             
     
     def get_language_options(self):
-        return self.soap_client.service.getLanguageOptions(self.lang)
+        return self.soap_client.service.getLanguageOptions(self.language)
             
     def __del__(self):
         try:

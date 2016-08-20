@@ -155,8 +155,8 @@ class SaxSystemScoring(handler.ContentHandler):
             #first sort the ranks by system
             for target in parallelsentence.get_translations():
                 system = target.get_attribute("system")
-                rank = int(float(target.get_attribute(self.rank_attribute_name)))
-                rank_per_system[system] = rank
+                rank_strings = int(float(target.get_attribute(self.rank_attribute_name)))
+                rank_per_system[system] = rank_strings
             #then count the times a system performs as best
             for system in rank_per_system:
                 if rank_per_system[system] == min(rank_per_system.values()):

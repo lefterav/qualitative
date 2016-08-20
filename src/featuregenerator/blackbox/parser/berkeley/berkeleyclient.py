@@ -6,17 +6,14 @@ Feature generator from Berkeley PCFG parses by using a remote Berkeley parsing s
 import xmlrpclib 
 import time
 import logging as log
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from featuregenerator import LanguageFeatureGenerator
 from featuregenerator.blackbox.parser.berkeley.socketservice.berkeleyparsersocket import BerkeleyParserSocket
 from numpy import std, average
 import socket
 
 class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
 
-    feature_names = ['berkeley-n', 'berkley-loglikelihood', 'berkeley-best-parse-confidence', 'berkeley-avg-confidence', 
-                     'berkeley-tree', 'berkeley-min-confidence', 'berkeley-std-confidence', 'berkeley-confidence_high', 
-                     'berkeley-confidence_high', 'berkeley-loglikelihood_low', 'berkeley-loglikelihood_low']
-
+    
     def __init__(self, **kwargs):
         raise NotImplementedError( "BerkeleyFeatureGenerator class has been deprecated. Please use either of the subclasses" )
 
@@ -84,9 +81,9 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         return string
             
 
-class BerkeleySocketFeatureGenerator(BerkeleyFeatureGenerator):
+class BerkeleyLocalFeatureGenerator(BerkeleyFeatureGenerator):
     """
-    Class that handles the feature generation functions by calling Berkeley parser 
+    Class that handles the feature generation functions by loading Berkeley parser locally 
     through a socketservice connection. This class has the advantage that it gets controlled
     fully by python code. So many parsers can be started and run in parallel, e.g. 
     for speeding up parsing process via parallelization. 
@@ -94,8 +91,13 @@ class BerkeleySocketFeatureGenerator(BerkeleyFeatureGenerator):
     experiments. In that case use an XMLRPC server    
     """
     
-    def __init__(self, lang=None, grammarfile=None, gateway=None, tokenize=False):
-        self.lang = lang
+    feature_names = ['berkeley-n', 'berkley-loglikelihood', 'berkeley-best-parse-confidence', 'berkeley-avg-confidence', 
+                     'berkeley-tree', 'berkeley-min-confidence', 'berkeley-std-confidence', 'berkeley-confidence_high', 
+                     'berkeley-confidence_high', 'berkeley-loglikelihood_low', 'berkeley-loglikelihood_low']
+
+    
+    def __init__(self, language=None, grammarfile=None, gateway=None, tokenize=False, **kwargs):
+        self.language = language
         self.tokenize = tokenize
         log.info("berkeleyclient: initializing BerkeleyParserSocket")
         self.berkeleyparser = BerkeleyParserSocket(grammarfile, gateway)
@@ -108,13 +110,13 @@ class BerkeleySocketFeatureGenerator(BerkeleyFeatureGenerator):
     
 
 class BerkeleyXMLRPCFeatureGenerator(BerkeleyFeatureGenerator):
-    def __init__(self, url=None, lang="", tokenize = False):
+    def __init__(self, url=None, language="", tokenize = False):
         '''
         Handles the connection with a Berkeley Server through XML-RPC
         '''
         self.server = xmlrpclib.ServerProxy(url)
         self.url = url
-        self.lang = lang
+        self.language = language
         self.tokenize = tokenize
     
     def parse(self, string):
@@ -135,7 +137,7 @@ class BerkeleyXMLRPCFeatureGenerator(BerkeleyFeatureGenerator):
     def add_features_batch(self, parallelsentences):
         row_id = 0
 
-        if parallelsentences[0].get_attribute("langsrc") == self.lang:
+        if parallelsentences[0].get_attribute("langsrc") == self.language:
             batch = [[self.prepare_sentence(parallelsentence.get_source())] for parallelsentence in parallelsentences]
 
             features_batch = self.xmlrpc_call(batch) #self.server.getNgramFeatures_batch(batch)
@@ -156,7 +158,7 @@ class BerkeleyXMLRPCFeatureGenerator(BerkeleyFeatureGenerator):
                 #parallelsentence.set_translations(targets)
                 parallelsentences[row_id] = parallelsentence
                 row_id += 1
-        elif  parallelsentences[0].get_attribute("langtgt") == self.lang:
+        elif  parallelsentences[0].get_attribute("langtgt") == self.language:
             batch = [[self.prepare_sentence(translation) for translation in parallelsentence.get_translations()] for parallelsentence in parallelsentences]
 
             features_batch = self.xmlrpc_call_batch(batch) 

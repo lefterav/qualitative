@@ -3,7 +3,7 @@
 '''
 
 from sentence.rankhandler import RankHandler 
-from featuregenerator.featuregenerator import FeatureGenerator
+from featuregenerator import FeatureGenerator
 from featuregenerator.diff_generator import DiffGenerator
 from sentence.dataset import DataSet
 from dataprocessor.input.orangereader import OrangeData
