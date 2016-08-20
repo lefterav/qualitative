@@ -12,6 +12,7 @@ from mt.moses import MtMonkeyWorker, ProcessedMosesWorker, MosesWorker
 from mt.selection import Autoranking
 from mt.worker import Worker
 from ConfigParser import SafeConfigParser
+from mt.neuralmonkey import NeuralMonkeyWorker
 
 class HybridTranslator(Worker):
     def __init__(self, single_workers, worker_pipelines):
@@ -109,9 +110,11 @@ class Pilot3Translator(SimpleTriangleTranslator):
             self.moses_worker = ProcessedMosesWorker(uri, source_language, target_language, 
                                                      truecaser_model, splitter_model)
         if "Lucy" in engines:
-            self.lucy_worker = AdvancedLucyWorker(source_language=source_language,
+            params = dict(config.items("Lucy"))
+            self.lucy_worker = AdvancedLucyWorker(self.moses_worker,
+                                                  source_language=source_language,
                                                   target_language=target_language,
-                                                  **dict(config.items("Lucy")))
+                                                  **params)
         if "LcM" in engines:
             uri = config.get("LcM:{}-{}".format(source_language, target_language), "uri")
             self.lcm_worker = ProcessedMosesWorker(uri, source_language, target_language, 

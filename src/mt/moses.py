@@ -31,6 +31,7 @@ class MosesWorker(Worker):
         #initialize XML rpc client
         #throw error if Moses server not started
         #self.server = xmlrpc.initialize("{}:{}".format(address, port))
+        print uri
         self.server = xmlrpclib.ServerProxy(uri)
 
     def translate(self, string):
@@ -41,7 +42,6 @@ class MosesWorker(Worker):
         while response == False and efforts < 1250:
             try:
                 response = self.server.translate({'text': string})
-                response = response
                 efforts += 1
             except Exception as e:
                 log.error("{} \n Connection to MosesServer was refused, trying again in 20 secs...".format(e))

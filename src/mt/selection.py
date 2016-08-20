@@ -34,6 +34,7 @@ from py4j.java_gateway import GatewayClient, JavaGateway
 import pickle
 from featuregenerator import FeatureGeneratorManager
 from ConfigParser import SafeConfigParser
+from util.jvm import LocalJavaGateway
 
 
 class Autoranking:
@@ -78,7 +79,7 @@ class Autoranking:
         
         #initialize a java gateway 
         #TODO: find a way to avoid loading java if not required by generators
-        gateway = JavaGateway(config.get("general", "java"))
+        gateway = LocalJavaGateway(config.get("general", "java"))
         
         #whether the ranks should be reversed before used
         #NOT supported
