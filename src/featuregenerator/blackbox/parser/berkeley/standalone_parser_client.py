@@ -7,7 +7,7 @@ Created on 15 Σεπ 2011
 import xmlrpclib 
 import time
 import sys
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from featuregenerator import LanguageFeatureGenerator
 from featuregenerator.blackbox.parser.berkeley import socketservice
 
 class BerkeleyFeatures():
@@ -16,13 +16,13 @@ class BerkeleyFeatures():
     '''
 
 
-    def __init__(self, url, lang=""):
+    def __init__(self, url, language=""):
         '''
         Constructor
         '''
         self.server = xmlrpclib.Server(url)
         self.url = url
-        self.lang = lang
+        self.language = language
     
 
     #Warning: not language-aware function. Use the ones above

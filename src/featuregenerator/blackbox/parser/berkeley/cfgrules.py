@@ -13,9 +13,9 @@ import re
 import sys
 
 from dataprocessor.sax import saxjcml
-from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
-from featuregenerator.featuregenerator import FeatureGenerator
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator 
+from featuregenerator.blackbox.ibm1 import Ibm1FeatureGenerator
+from featuregenerator import FeatureGenerator
+from featuregenerator import LanguageFeatureGenerator 
 
 def xml_normalize(string):
         string = string.replace("$,", "COMMA") #german grammar
@@ -65,6 +65,11 @@ class Rule:
         """ 
         string = "{}_{}".format(self.lhs, "-".join(self.rhs))
         return xml_normalize(string)        
+
+#TODO: for some reason, the rules produced have only the last part of the RHS
+#TODO: cfgal_start is always zero, _end always -1
+#TODO: cfg rules are not aligned (not sure if this was needed).
+#TODO: position of nodes is missing
 
 
 def get_cfg_rules(string, terminals=False):
@@ -394,7 +399,7 @@ if __name__ == "__main__":
     srcalignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.2.e2f"
     tgtalignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.2.f2e"
 
-    aligner = AlignmentFeatureGenerator(srcalignmentfile, tgtalignmentfile)
+    aligner = Ibm1FeatureGenerator(srcalignmentfile, tgtalignmentfile)
 #    reader = CEJcmlReader(sys.argv[1])
 #    for parallelsentence in reader.get_parallelsentences():
     

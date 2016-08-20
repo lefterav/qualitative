@@ -70,9 +70,9 @@ def get_metrics_scores(data, predicted_rank_name, original_rank_name,
                        **kwargs):
     """
     Calculates all metrics 
-    @param predicted_rank_name: the name of the attribute containing the predicted rank
+    @param predicted_rank_name: the name of the attribute containing the predicted rank_strings
     @type predicted_rank_name: str 
-    @param original_rank_name: the name of the attribute containing the human rank
+    @param original_rank_name: the name of the attribute containing the human rank_strings
     @type original_rank_name: str
     @param filter_ref: don't include reference sentences when existing in the pairs
     @type filter_ref: boolean
@@ -105,7 +105,7 @@ def get_baseline_scores(data, original_rank_name,
     for metric_name, metric_inverted in REFERENCE_METRIC_ATTRIBUTES.iteritems():
         metric_prefix = "_".join([prefix, metric_name])
         invert_these_ranks = (bool(invert_ranks)!=bool(metric_inverted)) 
-        #TODO: clarify what happens when class is an error metric; maybe reverse either predicted or original rank, depending on which one is an error metric
+        #TODO: clarify what happens when class is an error metric; maybe reverse either predicted or original rank_strings, depending on which one is an error metric
 
         logging.info("Calculating scores for ref-based {}".format(metric_name))
         stats.update(get_ranking_scores(data, metric_name, original_rank_name, invert_these_ranks, filter_ref, suffix, prefix=metric_prefix))
@@ -127,7 +127,7 @@ def get_baseline_ranking_scores(data, baseline_name, original_rank_name,
     for parallelsentence in data.get_parallelsentences():
 
         if filter_ref:
-            #get a vector with all the rank labels from all systems apart from the references
+            #get a vector with all the rank_strings labels from all systems apart from the references
             original_rank_vector = parallelsentence.get_filtered_target_attribute_values(original_rank_name, 
                                                                                         filter_attribute_name="system", 
                                                                                         filter_attribute_value="_ref")
@@ -197,7 +197,7 @@ def get_ranking_scores(data, predicted_rank_name, original_rank_name,
     for parallelsentence in data.get_parallelsentences():
 
         if filter_ref:
-            #get a vector with all the rank labels from all systems apart from the references
+            #get a vector with all the rank_strings labels from all systems apart from the references
             try:
                 predicted_rank_vector = parallelsentence.get_filtered_target_attribute_values(predicted_rank_name, 
                                                                                          filter_attribute_name="system", 
@@ -211,7 +211,7 @@ def get_ranking_scores(data, predicted_rank_name, original_rank_name,
                                                                                         filter_attribute_name="system", 
                                                                                         filter_attribute_value="_ref")
         else:
-            #get a vector with all the rank labels
+            #get a vector with all the rank_strings labels
             predicted_rank_vector = parallelsentence.get_target_attribute_values(predicted_rank_name)
             original_rank_vector = parallelsentence.get_target_attribute_values(original_rank_name)
         #construct ranking objects
@@ -410,8 +410,8 @@ class Scoring(MultiRankedDataset):
         """
         Provides a performance score for every system. The score is the percentage of times the system
         performed better than all other systems or equally to the systems that performed better than all other systems
-        @param rank_attribute_name: the name of the target sentence attribute which contains the rank value, that we compare upon 
-        Smaller rank means better system.  
+        @param rank_attribute_name: the name of the target sentence attribute which contains the rank_strings value, that we compare upon 
+        Smaller rank_strings means better system.  
         @type rank_attribute_name: string
         @return A map of the system names and their performance percentage
         """
@@ -421,8 +421,8 @@ class Scoring(MultiRankedDataset):
             #first sort the ranks by system
             for target in parallelsentence.get_translations():
                 system = target.get_attribute("system")
-                rank = int(float(target.get_attribute(rank_attribute_name)))
-                rank_per_system[system] = rank
+                rank_strings = int(float(target.get_attribute(rank_attribute_name)))
+                rank_per_system[system] = rank_strings
             #then count the times a system performs as best
             for system in rank_per_system:
                 if rank_per_system[system] == min(rank_per_system.values()):
@@ -438,11 +438,11 @@ class Scoring(MultiRankedDataset):
     def get_spearman_correlation(self, rank_name_1, rank_name_2):
         from scipy.stats import spearmanr
         """
-        Calculates the system-level Spearman rank correlation given two sentence-level features, i.e. 
-        the human and the estimated rank of each parallelsentence 
-        @param rank_name_1: the name of the target sentence attribute containing the first rank value
+        Calculates the system-level Spearman rank_strings correlation given two sentence-level features, i.e. 
+        the human and the estimated rank_strings of each parallelsentence 
+        @param rank_name_1: the name of the target sentence attribute containing the first rank_strings value
         @type rank_name_1: string
-        @param rank_name_2: the name of the target sentence attribute containing the second rank value
+        @param rank_name_2: the name of the target sentence attribute containing the second rank_strings value
         @type rank_name_2: string
         @return the Spearman correlation rho and p value
         """
@@ -456,7 +456,7 @@ class Scoring(MultiRankedDataset):
             rank_evaluation_1.append(rank_1)
             rank_2 = systems_evaluation_2[system]
             rank_evaluation_2.append(rank_2)
-        #print "rank------" 
+        #print "rank_strings------" 
         #print rank_evaluation_1
         #print rank_evaluation_2
         return spearmanr(rank_evaluation_1, rank_evaluation_2)
@@ -535,7 +535,7 @@ class Scoring(MultiRankedDataset):
     
     def normalize_rank_list(self, rank_list):
         """
-        Normalizes a rank list so that it doesn't contain gaps. E.g [1,3,3,4] will be converted to [1,2,2,3]
+        Normalizes a rank_strings list so that it doesn't contain gaps. E.g [1,3,3,4] will be converted to [1,2,2,3]
         
         """
     
@@ -578,8 +578,8 @@ class Scoring(MultiRankedDataset):
         n = len(self.parallelsentences)
         percentages = {}
         total = 0
-        for rank, counts in  actual_values_of_best_predicted.iteritems():
-            percentages[rank] = round(100.00 * counts / n , 2 )
+        for rank_strings, counts in  actual_values_of_best_predicted.iteritems():
+            percentages[rank_strings] = round(100.00 * counts / n , 2 )
             total += counts
         return percentages
            
@@ -629,7 +629,7 @@ class Scoring(MultiRankedDataset):
     
     def avg_first_ranked(self, predicted_rank_name, original_rank_name):
         """
-        Provide an integer that shows the predicted rank of the best system
+        Provide an integer that shows the predicted rank_strings of the best system
         It is averaged over all segments. Tied predictions are penalized
         """
         from numpy import average
@@ -660,7 +660,7 @@ class Scoring(MultiRankedDataset):
                     #if counting of ranks starts higher than 1, then this should fix it
                     predicted_rank_normalized =  predicted_rank_order.index(predicted_rank) 
                     #penalize ties
-                    #if the best system was found first, but the same rank was predicted for another 4 system outputs, then rank = 5
+                    #if the best system was found first, but the same rank_strings was predicted for another 4 system outputs, then rank_strings = 5
                     penalized_rank = predicted_rank_normalized + predicted_rank_vector.count(predicted_rank) 
 #                    penalized_rank = corresponding_rank
                     current_corresponding_ranks.append(penalized_rank)
@@ -677,9 +677,9 @@ class Scoring(MultiRankedDataset):
     def get_kendall_tau(self, predicted_rank_name, original_rank_name, **kwargs):
         """
         Calculates average Kendall tau of predicted vs human ranking according to WMT12 (Birch et. al 2012)
-        @param predicted_rank_name: the name of the attribute containing the predicted rank
+        @param predicted_rank_name: the name of the attribute containing the predicted rank_strings
         @type predicted_rank_name: str 
-        @param original_rank_name: the name of the attribute containing the human rank
+        @param original_rank_name: the name of the attribute containing the human rank_strings
         @type original_rank_name: str
         @param filter_ref: don't include reference sentences when existing in the pairs
         @type filter_ref: boolean
@@ -768,9 +768,9 @@ class Scoring(MultiRankedDataset):
         """
         Calculates Kendall tau beta of predicted vs human ranking according to the Knight (1966) 
         [scipy implementation] taking account of ties    
-        @param predicted_rank_name: the name of the attribute containing the predicted rank
+        @param predicted_rank_name: the name of the attribute containing the predicted rank_strings
         @type predicted_rank_name: str 
-        @param original_rank_name: the name of the attribute containing the human rank
+        @param original_rank_name: the name of the attribute containing the human rank_strings
         @type original_rank_name: str
         @return: the Kendall tau score and the probability for the null hypothesis of X and Y being independent
         @rtype: tuple(float, float)
@@ -818,7 +818,7 @@ def regenerate_tau():
     from dataprocessor.input.jcmlreader import JcmlReader
     d = JcmlReader("testset.reconstructed.hard.jcml").get_dataset()
     scoringset = Scoring(d)
-    print scoringset.get_kendall_tau("rank_hard", "rank")
+    print scoringset.get_kendall_tau("rank_hard", "rank_strings")
             
             
         

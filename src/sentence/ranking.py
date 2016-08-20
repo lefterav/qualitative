@@ -11,25 +11,25 @@ def indexes(ranking_list, neededrank):
     Returns the indexes of the particular ranks in the list
     @param ranking_list: the list of ranks that will be searched
     @type ranking_list: list
-    @param rank: a rank value
-    @type rank: float
-    @return: the indexes where the given rank appears
+    @param rank_strings: a rank_strings value
+    @type rank_strings: float
+    @return: the indexes where the given rank_strings appears
     @rtype: [int, ...]
     '''
-    indexes = [index for index, rank in enumerate(ranking_list) if neededrank==rank]
+    indexes = [index for index, rank_strings in enumerate(ranking_list) if neededrank==rank_strings]
     return indexes    
 
 def _handle_tie(ranking_list, original_rank, modified_rank, ties_handling):
     ''' Modifies the values of the tied items as specified by the parameters
     @param ranking_list: the list of ranks
     @type ranking_list: list
-    @param original_rank: the original rank value
+    @param original_rank: the original rank_strings value
     @type original_rank: float
-    @param modified_rank: the new normalized rank value that would have been assigned if there was no tie 
+    @param modified_rank: the new normalized rank_strings value that would have been assigned if there was no tie 
     @type modified_rank: float
     @param ties_handling: A string defining the mode of handling ties. For the description see function normalized()
     @type: string
-    @return: the new value of the given rank after considering its ties and the value of the rank that the normalization iteration should continue with
+    @return: the new value of the given rank_strings after considering its ties and the value of the rank_strings that the normalization iteration should continue with
     @rtype: tuple(float, float)
     ''' 
     count = ranking_list.count(original_rank)
@@ -51,10 +51,10 @@ def normalize(ranking_list, **kwargs):
     @param ranking_list: the list of ranks that will be normalized
     @type ranking_list: list
     @keyword ties: Select how to handle ties. Accepted values are:
-     - 'minimize', which reserves only one rank position for all tied items of the same rank
-     - 'floor', which reserves all rank positions for all tied items of the same rank, but sets their value to the minimum tied rank position 
-     - 'ceiling', which reserves all rank positions for all tied items of the same rank, but sets their value to the maximum tied rank position
-     - 'middle', which reserves all rank positions for all tied items of the same rank, but sets their value to the middle of the tied rank positions
+     - 'minimize', which reserves only one rank_strings position for all tied items of the same rank_strings
+     - 'floor', which reserves all rank_strings positions for all tied items of the same rank_strings, but sets their value to the minimum tied rank_strings position 
+     - 'ceiling', which reserves all rank_strings positions for all tied items of the same rank_strings, but sets their value to the maximum tied rank_strings position
+     - 'middle', which reserves all rank_strings positions for all tied items of the same rank_strings, but sets their value to the middle of the tied rank_strings positions
     @type inflate_ties: string 
     @return: a new normalized list of ranks
     @rtype: [float, ...]
@@ -66,18 +66,18 @@ def normalize(ranking_list, **kwargs):
     #create an empty ranking list
     normalized_rank = [0]*length
     new_rank = 0
-    #iterate through the ordered rank values in the list
+    #iterate through the ordered rank_strings values in the list
     for original_rank in sorted(set(ranking_list)):
-        #this is incrementing the actual order of the rank
+        #this is incrementing the actual order of the rank_strings
         new_rank += 1
-        #find the positions where this particular rank value appears
+        #find the positions where this particular rank_strings value appears
         rank_indexes = indexes(ranking_list, original_rank)
-        #check if this particular rank value is tied and get the new rank value according to the tie handling preferences
+        #check if this particular rank_strings value is tied and get the new rank_strings value according to the tie handling preferences
         new_rank, next_rank = _handle_tie(ranking_list, original_rank, new_rank, ties_handling)
-        #assign the new rank value to the respective position of the new ranking list
+        #assign the new rank_strings value to the respective position of the new ranking list
         for rank_index in rank_indexes:
             normalized_rank[rank_index] = new_rank
-        #this is needed, if ties existed and the next rank needs to increment in a special way according to the tie handling preferences
+        #this is needed, if ties existed and the next rank_strings needs to increment in a special way according to the tie handling preferences
         new_rank = next_rank
     #make sure that all ranks have been processed
     assert(normalized_rank.count(0)==0)
@@ -88,7 +88,7 @@ def invert(ranking_list, **kwargs):
     Inverts a ranking list so that the best item becomes worse and vice versa
     @param ranking_list: the list whose ranks are to be inverted
     @type ranking_list: [float, ...]
-    @return: the inverted rank list
+    @return: the inverted rank_strings list
     @rtype: [float, ...]
     '''
     inverted_ranking_list = [-1.0*item for item in ranking_list]
@@ -133,10 +133,10 @@ class Ranking(list):
         '''
         Create a new normaliyed ranking out of a messy ranking like [1,3,5,4] to [1,2,4,3]
         @keyword ties: Select how to handle ties. Accepted values are:
-         - 'minimize', which reserves only one rank position for all tied items of the same rank
-         - 'floor', which reserves all rank positions for all tied items of the same rank, but sets their value to the minimum tied rank position 
-         - 'ceiling', which reserves all rank positions for all tied items of the same rank, but sets their value to the maximum tied rank position
-         - 'middle', which reserves all rank positions for all tied items of the same rank, but sets their value to the middle of the tied rank positions
+         - 'minimize', which reserves only one rank_strings position for all tied items of the same rank_strings
+         - 'floor', which reserves all rank_strings positions for all tied items of the same rank_strings, but sets their value to the minimum tied rank_strings position 
+         - 'ceiling', which reserves all rank_strings positions for all tied items of the same rank_strings, but sets their value to the maximum tied rank_strings position
+         - 'middle', which reserves all rank_strings positions for all tied items of the same rank_strings, but sets their value to the middle of the tied rank_strings positions
         @type inflate_ties: boolean 
         @return a new normalized ranking
         @rtype Ranking 
@@ -149,9 +149,9 @@ class Ranking(list):
         Returns the indexes of the particular ranks in the list
         @param ranking_list: the list of ranks that will be searched
         @type ranking_list: list
-        @param rank: a rank value
-        @type rank: float
-        @return: the indexes where the given rank appears
+        @param rank_strings: a rank_strings value
+        @type rank_strings: float
+        @return: the indexes where the given rank_strings appears
         @rtype: [int, ...]
         '''
         return indexes(self, neededrank)   
@@ -160,10 +160,10 @@ class Ranking(list):
         '''
         Created an inverted ranking, so that the best item becomes worse
         @keyword ties: Select how to handle ties. Accepted values are:
-         - 'minimize', which reserves only one rank position for all tied items of the same rank
-         - 'floor', which reserves all rank positions for all tied items of the same rank, but sets their value to the minimum tied rank position 
-         - 'ceiling', which reserves all rank positions for all tied items of the same rank, but sets their value to the maximum tied rank position
-         - 'middle', which reserves all rank positions for all tied items of the same rank, but sets their value to the middle of the tied rank positions
+         - 'minimize', which reserves only one rank_strings position for all tied items of the same rank_strings
+         - 'floor', which reserves all rank_strings positions for all tied items of the same rank_strings, but sets their value to the minimum tied rank_strings position 
+         - 'ceiling', which reserves all rank_strings positions for all tied items of the same rank_strings, but sets their value to the maximum tied rank_strings position
+         - 'middle', which reserves all rank_strings positions for all tied items of the same rank_strings, but sets their value to the middle of the tied rank_strings positions
         @return: the inverted ranking
         @rtype: Ranking
         '''

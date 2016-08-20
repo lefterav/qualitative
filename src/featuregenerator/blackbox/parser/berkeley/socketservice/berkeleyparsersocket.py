@@ -47,17 +47,17 @@ class BerkeleyParserSocket():
         self.grammarfile = grammarfile
         self.gateway = gateway
         
-        bparser_class = os.path.dirname(__file__)
-        dir_socket = os.path.dirname(bparser_class)                
-        dir_berkeley = os.path.dirname(dir_socket)
-        dir_parser = os.path.dirname(dir_berkeley)
+        #bparser_class = os.path.dirname(__file__)
+        #dir_socket = os.path.dirname(bparser_class)                
+        #dir_berkeley = os.path.dirname(dir_socket)
+        #dir_parser = os.path.dirname(dir_berkeley)
         ####MODIFIED FOR USE WITH COMMANDLINE THING CHECK IF RUFFUS VERSION FAILS
-        dir_src = os.path.dirname(dir_parser)
+        #dir_src = os.path.dirname(dir_parser)
 #        dir_featuregenerator = os.path.dirname(dir_parser)
 #        dir_src = os.path.dirname(dir_featuregenerator)
-        dir_lib = os.path.join(dir_src, "support", "berkeleyserver", "lib")
+        #dir_lib = os.path.join(dir_src, "support", "berkeleyserver", "lib")
         
-        log.info("Berkeley directory: {}".format(dir_lib))
+        #log.info("Berkeley directory: {}".format(dir_lib))
         
         #self.classpath = []
         #self.classpath.append(dir_lib)
@@ -97,6 +97,7 @@ class BerkeleyParserSocket():
         java_import(module_view, 'BParser')
         
         # get the application instance
+        log.info("Grammar file: {}".format(grammarfile))
         self.bp_obj =  module_view.BParser(grammarfile)
         sys.stderr.write("got BParser object\n")
 

@@ -68,17 +68,17 @@ class CoupledParallelSentence(ParallelSentence):
     
     def _generate_rank(self):
         """
-        Generates rank attribute after comparing the scores of the two sentences
+        Generates rank_strings attribute after comparing the scores of the two sentences
         """
         score1 = float(self.attributes["tgt-1_score"])
         score2 = float(self.attributes["tgt-2_score"])
         if score1 < score2:
-            rank = 1 
+            rank_strings = 1 
         elif score2 < score1:
-            rank = -1
+            rank_strings = -1
         else:
-            rank = 0
-        self.attributes["rank"] = str(rank)
+            rank_strings = 0
+        self.attributes["rank_strings"] = str(rank_strings)
     
     
     def _prefix_parallelsentence_attributes(self, attdict1, attdict2):

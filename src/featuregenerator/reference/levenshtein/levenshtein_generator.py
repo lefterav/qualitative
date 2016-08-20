@@ -4,7 +4,7 @@ Created on 07.10.2011
 
 @author: Eleftherios Avramidis
 '''
-from featuregenerator.featuregenerator import FeatureGenerator
+from featuregenerator import FeatureGenerator
 from levenshtein import levenshtein
 from numpy.lib.function_base import average
 
