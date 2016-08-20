@@ -36,7 +36,6 @@ from Orange.classification.neural import NeuralNetworkLearner
 from Orange.classification.logreg import LogRegLearner, LibLinearLogRegLearner
 from Orange.classification import Classifier 
 from Orange.feature import Continuous
-from ml.lib.scikit.ranking import class_name
 #from checkbox.attribute import Attribute
 #from support.preprocessing.jcml.align import target_attribute_names
 
