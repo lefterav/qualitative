@@ -23,9 +23,9 @@ def dataset_to_instances(filename,
     
     if attribute_set == None:
         attribute_set = dataset.get_attribute_set()
-    par_attnames = attribute_set.parallel_feature_names
-    src_attnames = attribute_set.source_feature_names
-    tgt_attnames = attribute_set.target_feature_names
+    par_attnames = attribute_set.parallel_attribute_names
+    src_attnames = attribute_set.source_attribute_names
+    tgt_attnames = attribute_set.target_attribute_names
 
     i = 0
     data = []
@@ -95,9 +95,9 @@ def dataset_to_instances(filename,
 def parallelsentence_to_instance(parallelsentence, attribute_set,
                                  invert_ranks=False,
                                  class_name="rank_strings"):
-    par_attnames = attribute_set.parallel_feature_names
-    src_attnames = attribute_set.source_feature_names
-    tgt_attnames = attribute_set.target_feature_names
+    par_attnames = attribute_set.parallel_attribute_names
+    src_attnames = attribute_set.source_attribute_names
+    tgt_attnames = attribute_set.target_attribute_names
     ranking = Ranking(parallelsentence.get_target_attribute_values(class_name))
     # needs to be reversed, cause normally RankList works with scores 
     if not invert_ranks:

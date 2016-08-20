@@ -17,41 +17,41 @@ class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
     @type language: C{str} 
     '''
     
-    feature_names = ['lm_unk_pos_abs_avg',
-                       'lm_unk_pos_abs_std',
-                       'lm_unk_pos_abs_min',
-                       'lm_unk_pos_abs_max',
-                       'lm_unk_pos_rel_avg',
-                       'lm_unk_pos_rel_std',
-                       'lm_unk_pos_rel_min',
-                       'lm_unk_pos_rel_max',
-                       'lm_unk',
-                       'lm_unk_len',
-                    
-                       'lm_uni-prob',
-                       'lm_uni-prob_avg',
-                       'lm_uni-prob_std',
-                       'lm_uni-prob_low',
-                       'lm_uni-prob_high',
-                       'lm_uni-prob_low_pos_avg',
-                       'lm_uni-prob_low_pos_std',
-
-                       'lm_bi-prob',
-                       'lm_bi-prob_avg',
-                       'lm_bi-prob_std',
-                       'lm_bi-prob_low',
-                       'lm_bi-prob_high',
-                       'lm_bi-prob_low_pos_avg',
-                       'lm_bi-prob_low_pos_std',
-                       
-                       'lm_tri-prob',
-                       'lm_tri-prob_avg',
-                       'lm_tri-prob_std',
-                       'lm_tri-prob_low',
-                       'lm_tri-prob_high',
-                       'lm_tri-prob_low_pos_avg',
-                       'lm_tri-prob_low_pos_std',
-                       'lm_prob']
+#     feature_names = ['lm_unk_pos_abs_avg',
+#                        'lm_unk_pos_abs_std',
+#                        'lm_unk_pos_abs_min',
+#                        'lm_unk_pos_abs_max',
+#                        'lm_unk_pos_rel_avg',
+#                        'lm_unk_pos_rel_std',
+#                        'lm_unk_pos_rel_min',
+#                        'lm_unk_pos_rel_max',
+#                        'lm_unk',
+#                        'lm_unk_len',
+#                     
+#                        'lm_uni-prob',
+#                        'lm_uni-prob_avg',
+#                        'lm_uni-prob_std',
+#                        'lm_uni-prob_low',
+#                        'lm_uni-prob_high',
+#                        'lm_uni-prob_low_pos_avg',
+#                        'lm_uni-prob_low_pos_std',
+# 
+#                        'lm_bi-prob',
+#                        'lm_bi-prob_avg',
+#                        'lm_bi-prob_std',
+#                        'lm_bi-prob_low',
+#                        'lm_bi-prob_high',
+#                        'lm_bi-prob_low_pos_avg',
+#                        'lm_bi-prob_low_pos_std',
+#                        
+#                        'lm_tri-prob',
+#                        'lm_tri-prob_avg',
+#                        'lm_tri-prob_std',
+#                        'lm_tri-prob_low',
+#                        'lm_tri-prob_high',
+#                        'lm_tri-prob_low_pos_avg',
+#                        'lm_tri-prob_low_pos_std',
+#                        'lm_prob']
     
     def __init__(self, url=None, language="en", lowercase=True, tokenize=True, freqcase_file=False, **kwargs):
         '''
