@@ -7,8 +7,7 @@ Created on Jul 24, 2016
 '''
 import pickle
 import sys
-
-
+from sentence.parallelsentence import FeatureSet as AttributeSet
 
 def get_selected_attributes(filename):
     model = pickle.load(open(filename))

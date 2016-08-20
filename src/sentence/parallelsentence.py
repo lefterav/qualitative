@@ -34,6 +34,7 @@ def _noprefix(prefixes, names):
             notprefixed.append(name)
     return notprefixed
 
+
 class FeatureSet:
     """
     Structure that describes the attributes provided by a set of parallel sentences.
@@ -86,7 +87,9 @@ class FeatureSet:
     
     def __str__(self):
         return str([self.parallel_feature_names, self.source_feature_names, self.target_feature_names])
-    
+
+class AttributeSet(FeatureSet):
+    pass
     
 class DefaultFeatureSet(FeatureSet):
     """
