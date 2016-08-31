@@ -89,15 +89,20 @@ class Autoranking:
         self.featureset = self.ranker.attribute_set
         featuregenerator_manager = FeatureGeneratorManager()
         self.pipeline = featuregenerator_manager.get_parallel_features_pipeline(self.featureset, config, source_language, target_language, gateway)
-        self.featuregenerators = self.pipeline[0] + self.pipeline[1] + self.pipeline[2]
         
+        self.featuregenerators = self.pipeline[0] + self.pipeline[1] + self.pipeline[2]
+        log.info("pipeline: {}".format(self.featuregenerators))
+
+        self.source_language = source_language
+        self.target_language = target_language
+
         self.preprocessors = [
             Normalizer(source_language),
             Normalizer(target_language),
             Tokenizer(source_language),
             Tokenizer(target_language),
-            Truecaser(source_language, config.get("Truecaser:{}".format(source_language), model)),
-            Truecaser(target_language, config.get("Truecaser:{}".format(target_language), model)),
+            Truecaser(source_language, config.get("Truecaser:{}".format(source_language), "model")),
+            Truecaser(target_language, config.get("Truecaser:{}".format(target_language), "model")),
         ]
         
     def rank_strings(self, source, translations, reconstruct='soft'):
@@ -154,5 +159,6 @@ class Autoranking:
                 log.info("got sentence")
             else: 
                 log.warn("Received inactive feature generator")
+        log.info("Annotated parallel sentence: {}".format(parallelsentence))
         return parallelsentence
         
