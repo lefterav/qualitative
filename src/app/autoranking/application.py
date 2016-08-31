@@ -134,10 +134,10 @@ class Autoranking:
         #TODO: parallelize source target
         #TODO: before parallelizing take care of diverse dependencies on preprocessing
         for featuregenerator in self.featuregenerators:
-            sys.stderr.write("Running {} \n".format(str(featuregenerator)))
+            log.debug("Annotating sentence with {} \n".format(str(featuregenerator)))
             if featuregenerator:
                 parallelsentence = featuregenerator.add_features_parallelsentence(parallelsentence)
-                log.info("got sentence")
+                log.debug("Succesfully annotated sentence with {} \n".format(str(featuregenerator)))
             else: 
                 log.warn("Received inactive feature generator")
         return parallelsentence
