@@ -1,4 +1,5 @@
-JAVA_PATH=/usr/lib/jvm/java-8-openjdk-amd64/bin
+#JAVA_PATH=/usr/lib/jvm/java-8-openjdk-amd64/bin
+JAVA_PATH=/project/qtleap/software/java/jdk1.8.0_72/bin
 echo "Downloading required java libraries. Please be patient..."
 wget http://www.dfki.de/~elav01/download/qualitative/lib/BerkeleyParser.jar
 #wget https://berkeleyparser.googlecode.com/files/BerkeleyParser-1.7.jar
