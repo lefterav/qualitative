@@ -18,7 +18,9 @@ parser.add_argument('--source_language', help="source language 2-letter code")
 parser.add_argument('--target_language', help="target language 2-letter code")
 parser.add_argument('--truecaser_model', help="filename of the truecasing model")
 parser.add_argument('--splitter_model', default=None, help="filename of the compound splitting model")
-parser.add_argument('--worker', default="ProcessedMoses")
+parser.add_argument('--worker', 
+                    help="[ProcessedMoses|Moses|NeuralMonkey] worker that performs the translation, defaults to ProcessedMoses", 
+                    default="ProcessedMoses")
 args = parser.parse_args()
 
 worker_class = eval(args.worker+"Worker")
