@@ -5,6 +5,7 @@ Created on 19 Apr 2016
 '''
 import sys
 
+import logging as log
 from featuregenerator.preprocessor import Tokenizer, Truecaser
 from featuregenerator.blackbox.wsd import WSDclient
 from mt.lucy import LucyWorker, AdvancedLucyWorker
@@ -78,8 +79,9 @@ class SimpleTriangleTranslator(Worker):
         sys.stderr.write("Sending to Lucy\n")
         lucy_translation, _ = self.lucy_worker.translate(string)
         sys.stderr.write("Sending to LcM\n")
-        lcm_translation, _ = self.lcm_worker.translate(lucy_translation)
-        outputs_ordered = [moses_translation, lucy_translation, lcm_translation]
+        #lcm_translation, _ = self.lcm_worker.translate(lucy_translation)
+        #outputs_ordered = [moses_translation, lucy_translation, lcm_translation]
+        outputs_ordered = [moses_translation, lucy_translation]
         rank_strings, description = self.selector.rank_strings(string, outputs_ordered, reconstruct="soft")
         #print "Rank: ", rank_strings
         
@@ -97,6 +99,7 @@ class Pilot3Translator(SimpleTriangleTranslator):
                  ranking_model=None):
         
         config = SafeConfigParser()
+        log.error("Loading config files {}".format(configfiles))
         config.read(configfiles)
         
         # get resources
