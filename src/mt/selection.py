@@ -153,12 +153,12 @@ class Autoranking:
             parallelsentence = preprocessor.add_features_parallelsentence(parallelsentence)
         
         for featuregenerator in self.featuregenerators:
-            sys.stderr.write("Running {} \n".format(str(featuregenerator)))
+            log.debug("Running {} \n".format(str(featuregenerator)))
             if featuregenerator:
                 parallelsentence = featuregenerator.add_features_parallelsentence(parallelsentence)
-                log.info("got sentence")
+                log.debug("got sentence")
             else: 
                 log.warn("Received inactive feature generator")
-        log.info("Annotated parallel sentence: {}".format(parallelsentence))
+        log.debug("Annotated parallel sentence: {}".format(parallelsentence))
         return parallelsentence
         

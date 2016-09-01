@@ -138,6 +138,7 @@ class Autoranking:
             if featuregenerator:
                 parallelsentence = featuregenerator.add_features_parallelsentence(parallelsentence)
                 log.debug("Succesfully annotated sentence with {} \n".format(str(featuregenerator)))
+                log.debug("Produced features: {} \n".format(parallelsentence))
             else: 
                 log.warn("Received inactive feature generator")
         return parallelsentence

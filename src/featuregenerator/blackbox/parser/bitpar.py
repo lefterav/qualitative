@@ -30,7 +30,7 @@ from featuregenerator import LanguageFeatureGenerator
 
 class BitParChartParser:    
     block = False
-    def __init__(self, lexicon_filename=None, grammar_filename=None, rootsymbol="TOP", 
+    def __init__(self, lexicon=None, grammar=None, rootsymbol="TOP", 
                  unknownwords=None, openclassdfsa=None, cleanup=True, n=3, path=None, 
                  timeout=10, name=None, **kwargs):
         """ Interface to bitpar chart parser. Expects a list of weighted
@@ -48,8 +48,9 @@ class BitParChartParser:
         @param n: the n best parse trees will be requested
             """
 
-        self.grammar_filename = grammar_filename
-        self.lexicon_filename = lexicon_filename
+        self.grammar_filename = grammar
+        self.lexicon_filename = lexicon
+        log.debug("BitParChartParser lexicon and grammar: {}".format(lexicon, grammar))
         self.path = path
         log.debug("BitParChartParser path: {}".format(path))
         self.rootsymbol = rootsymbol
@@ -82,6 +83,7 @@ class BitParChartParser:
             self.cmd += " %s %s" % (self.grammar_filename, self.lexicon_filename)
         log.debug("BitParChartParser command: {}".format(self.cmd))
         self.bitpar = spawn(self.cmd)
+        log.debug("BitPar Object: {}".format(self.bitpar))
         self.bitpar.setecho(False)
         # allow bitpar to initialize; just to be sure
         sleep(1)
@@ -103,7 +105,9 @@ class BitParChartParser:
         log.debug("BitParChartParser: sending sentence '{}'".format(sent))
         sent = "\n".join(sent.strip().split()) + "\n\n"
 
-        if self.bitpar.terminated: self.start()
+        if self.bitpar.terminated: 
+            log.warning("BitPar has been terminated for unknown reason. Trying to restart")
+            self.start()
         self.bitpar.send(sent)
         log.debug("BitParChartParser: sent '{}'".format(sent.strip().replace("\n"," ")))
         output = []
@@ -166,7 +170,7 @@ class BitParFeatureGenerator(LanguageFeatureGenerator):
                      'bit_minprob', 'bit_probhigh', 'bit']
     
     def __init__(self, path=None,
-                model=None,
+                lexicon=None,
                 grammar=None,
                 unknownwords=None,
                 openclassdfsa=None, 
@@ -176,8 +180,8 @@ class BitParFeatureGenerator(LanguageFeatureGenerator):
                 **kwargs):
         log.debug("BitParFeatureGenerator path: {}".format(path))        
         self.language = language
-        self.parser = BitParChartParser(model=model, 
-                grammar=grammar, 
+        self.parser = BitParChartParser(lexicon=lexicon,
+                grammar=grammar,
                 unknownwords=unknownwords, 
                 openclassdfsa=openclassdfsa, 
                 n=n, 
