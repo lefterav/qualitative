@@ -250,7 +250,7 @@ class CfgAlignmentFeatureGenerator(FeatureGenerator):
     Feature generator for aligning CFG rules between two sentences. It requires
     that a Berkeley tree and a symmetrized alignment exists
     """
-    feature_names = ['cfgal_.*']
+    feature_patterns = ['cfgal_.*']
     requirements = ["imb1-alignment-joined", "berkeley-tree"]
         
     def get_features_tgt(self, targetsentence, parallelsentence):

@@ -132,7 +132,7 @@ class BerkeleyParserSocket():
          
         # call the python function parse() on BParser object
 #        try:
-        log.debug(u"<p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
+        #log.debug(u"<p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
         
 #        signal.signal(signal.SIGALRM, handler)
 #        signal.alarm(20)
@@ -153,7 +153,7 @@ class BerkeleyParserSocket():
                 self._connect(self.gateway, self.grammarfile)
                 parseresult = self.bp_obj.parse(sentence_string)
                 log.warning("{0} crashed, restarting object".format(self.parsername))
-        log.debug(u"<\p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
+        #log.debug(u"<\p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
 
         return parseresult
     

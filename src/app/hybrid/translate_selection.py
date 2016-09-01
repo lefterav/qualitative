@@ -42,4 +42,4 @@ if __name__ == '__main__':
                                   args.source_language, 
                                   args.target_language, 
                                   args.ranking_model)
-    print translator.translate("Ein Unternehmensverkehr muss untersucht werden")
+    print translator.translate("as opposed to the US , UK , and Canadian central banks , the European Central Bank ( ECB ) did not cut interest rates , arguing that a rate drop combined with rising raw material prices and declining unemployment would trigger an inflationary spiral .")
