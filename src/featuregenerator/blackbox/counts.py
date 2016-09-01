@@ -6,10 +6,22 @@
 from featuregenerator import FeatureGenerator
 #from nltk.tokenize.punkt import PunktWordTokenizer
 
-
 class PunctuationFeatureGenerator(FeatureGenerator):
     
-    feature_patterns = ["p_.*"]
+    feature_names = ['p_commas', 'p_dots', 'p_questionmarks', 'p_questionmark_start',
+                'p_exclamations',
+                'p_exclamation_start',
+                'p_colons',
+                'p_semicolons',
+                'p_hyphens',
+                'p_apostrophes',
+                'p_quotes',
+                'p_openbrackets',
+                'p_closebrackets',
+                'p_special1',
+                'p_special2',
+                'p_special3']
+  
     
     def get_features_string(self, sent_string):
         
@@ -51,7 +63,7 @@ class LengthFeatureGenerator(FeatureGenerator):
     """
     Class that provides a feature generator able to count the number of the tokens in the given simplesentences 
     """
-    features = ["l_.*"]
+    feature_names = ["l_tokens", "l_chars", "l_avgchars", "l_avgoccurences"]
             
     def get_features_string(self, sent_string):
         """

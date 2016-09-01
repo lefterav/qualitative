@@ -292,7 +292,7 @@ class CrossBleuGenerator(FeatureGenerator):
     '''
     Provides cross-BLEU score of the current target sentence against the others
     '''
-    feature_names = ['cross_bleu']
+    feature_names = ['cross-bleu']
     
     def get_features_tgt(self, translation, parallelsentence):
         current_system_name = translation.get_attribute("system")
