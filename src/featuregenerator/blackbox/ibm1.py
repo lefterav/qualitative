@@ -25,7 +25,7 @@ class Ibm1FeatureGenerator(FeatureGenerator):
 
     '''
     
-    feature_names = ["ibm1-score", 'ibm1-alignment', 'ibm1-score-inv', 'ibm1-alignment-inv', 'ibm1-alignment-joined']
+    feature_names = ["ibm1-score", 'ibm1-alignment', 'ibm1-score-inv', 'ibm1-alignment-inv', 'ibm1-alignment-joined', 'imb1-alignment-joined']
     
     feature_pattens = ["ibm1-ratio\-.*"]
     is_bilingual = True
@@ -74,6 +74,7 @@ class Ibm1FeatureGenerator(FeatureGenerator):
                       'ibm1-alignment' : " ".join(source_alignment_string),
                       'ibm1-score-inv' : "%.4f" % self.targetlexicon.get_score(target_line, source_line),
                       'ibm1-alignment-inv' : " ".join(target_alignment_string),
+                      'ibm1-alignment-joined' : " ".join(joined_alignment_string),
                       'imb1-alignment-joined' : " ".join(joined_alignment_string)
                       }
         attributes.update(attributes_translation_ratio)

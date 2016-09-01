@@ -7,7 +7,7 @@ Created on 22 March 2011
 
 from featuregenerator import LanguageFeatureGenerator
 from numpy import average, std
-
+import logging as log
 
 class ParserMatches(LanguageFeatureGenerator):
     '''
@@ -145,6 +145,7 @@ class ParserMatches(LanguageFeatureGenerator):
                 attributes["parse-%s" % tgt_label] = str(tgt_map_count)
                 attributes["parse-%s-pos-avg" % tgt_label] = str(average(tgt_map_pos))
                 attributes["parse-%s-pos-std" % tgt_label] = str(std(tgt_map_pos))
+        log.debug("Attributes from parsematch: {}".format(attributes))
         return attributes
         
 

@@ -458,23 +458,28 @@ class FeatureGeneratorManager(object):
             # if the feature is provided by some generators add them to the list
             
             for generator in self.generator_index[feature_name]:
-                selected_generators.extend(self._get_requirements(generator))
+                required_generators = self._get_requirements(generator)
+                selected_generators.extend(required_generators)
+                log.debug("Adding requirements for generator {}: {}".format(generator, required_generators))
                 selected_generators.append(generator)
             
             for pattern, matched_generators in self.generator_patterns:
                 if re.match(pattern, feature_name):
                     for generator in matched_generators:
-                        selected_generators.extend(self._get_requirements(generator))
+                        required_generators = self._get_requirements(generator)
+                        selected_generators.extend(required_generators)
+                        log.debug("Adding requirements for generator {}: {}".format(generator, required_generators))
                         selected_generators.append(generator)
         
         #remove duplicates but keep list sorted
         appeared_generators = set()
         shortened_generators = []
+        log.debug("Selected generators: {}".format(selected_generators))
         for generator in selected_generators:
             if generator not in appeared_generators:
                 appeared_generators.add(generator)
                 shortened_generators.append(generator)
-        
+        log.debug("Shortened generators list: {}".format(shortened_generators))
         return shortened_generators
     
     
