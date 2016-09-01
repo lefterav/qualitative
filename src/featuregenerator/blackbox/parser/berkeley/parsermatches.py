@@ -20,6 +20,7 @@ class ParserMatches(LanguageFeatureGenerator):
     
     feature_patterns = ["parse\-.*"]
     requirements = ["berkeley-tree"]
+    is_bilingual = True    
     
     mapping = {}
     mapping[("de","en")] = [(["NP"], ["NP"]),
@@ -71,12 +72,15 @@ class ParserMatches(LanguageFeatureGenerator):
 
     
 
-    def __init__(self, langpair=("de","en"), **kwargs):
+    def __init__(self, langpair=("de","en"), source_language=None, target_language=None, **kwargs):
         '''
         Instantiate a parse label matcher for a particular language pair
         @param langpair: a tuple with the source and the target language codes
         @type langpair: (str, str)
         '''
+        if not (source_language is None) and not (target_language is None):
+            langpair = (source_language, target_language)
+        
         #reverse mappings as well
         reversed_mapping = {}
         for (source_language, target_language), mapping in self.mapping.iteritems():

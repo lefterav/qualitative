@@ -8,6 +8,7 @@ Created on Aug 25, 2014
 from kenlm import Model
 from featuregenerator import LanguageFeatureGenerator
 from numpy import average, std
+from sklearn.ensemble.tests.test_bagging import boston
 
 
 class KenLMFeatureGenerator(LanguageFeatureGenerator):
@@ -74,16 +75,18 @@ class KenLMFeatureGenerator(LanguageFeatureGenerator):
                      
                      ]
     
-    def __init__(self, language=None, model=None, **kwargs):
+    def __init__(self, language=None, model=None, bos=True, eos=True, **kwargs):
         '''
         Load the model
         '''
         self.model = Model(model)
         self.language = language
+        self.bos = bos
+        self.eos = eos
         
     def get_features_string(self, string):
-        total_score = self.model.score(string, bos = True, eos = True)
-        partial_scores = self.model.full_scores(string, bos = True, eos = True)
+        total_score = self.model.score(string, bos=self.bos, eos=self.eos)
+        partial_scores = self.model.full_scores(string, bos=self.bos, eos=self.eos)
         ngram_lengths = []
         probs = []
         unk_count = 0
