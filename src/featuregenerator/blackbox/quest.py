@@ -26,9 +26,9 @@ class QuestSubstitutes(FeatureGenerator):
     requirements = [r for _,r in mapping]
 
     def get_features_tgt(self, simplesentence, parallelsentence):
-        attributes = []
+        attributes = {}
         for new_feature, existing_feature in self.mapping:
-            attributes[new_feature] = simplesentence[existing_feature]
+            attributes[new_feature] = simplesentence.get_attribute(existing_feature)
         return attributes
 
         
