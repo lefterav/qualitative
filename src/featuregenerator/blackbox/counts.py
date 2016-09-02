@@ -4,7 +4,6 @@
 @author: Eleftherios Avramidis
 """
 from featuregenerator import FeatureGenerator
-from debian.arfile import a
 import re
 #from nltk.tokenize.punkt import PunktWordTokenizer
 
@@ -33,9 +32,9 @@ class PunctuationFeatureGenerator(FeatureGenerator):
         punctuation_marks = {'commas': ',',
                 'dots': '.',
                 'questionmarks': '?',
-                'questionmark_start': u'¿',
+                #'questionmark_start': u'¿',
                 'exclamations': '!',
-                'exclamation_start': u'¡',
+                #'exclamation_start': u'¡',
                 'colons': ':',
                 'semicolons': ';',
                 'hyphens': '-',
@@ -43,9 +42,10 @@ class PunctuationFeatureGenerator(FeatureGenerator):
                 'quotes': '"',
                 'openbrackets': "(",
                 'closebrackets': ")",
-                'special1': u"؟",
-                'special2': u"،",
-                'special3': u"؛"}
+                #'special1': u"؟",
+                #'special2': u"،",
+                #'special3': u"؛"
+                }
     
     
     
@@ -63,8 +63,8 @@ class PunctuationFeatureGenerator(FeatureGenerator):
         return attributes
     
     def get_features_tgt(self, simplesentence, parallelsentence):
-        attributes = self.get_features_simplesentence(self, simplesentence, parallelsentence)
-        source_attributes = self.get_features_src(parallelsentence.get_source())
+        attributes = self.get_features_simplesentence(simplesentence, parallelsentence)
+        source_attributes = self.get_features_src(parallelsentence.get_source(), parallelsentence)
         #getting only this diff, since it seems it is successful in previous experiments 
         attributes["p_commas_diff"] = source_attributes["p_commas"] - attributes['p_commas']
         return attributes 
@@ -97,7 +97,7 @@ class LengthFeatureGenerator(FeatureGenerator):
         avg_chars = 1.000 * chars / tokens
         
         numbers = len([i for i in re.findall('[\d,.]*', sent_string) if i])
-        az_tokens = len([i for i in re.findall('[A-Za-z]*', a) if i])
+        az_tokens = len([i for i in re.findall('[A-Za-z]*', sent_string) if i])
         non_az_tokens = tokens - az_tokens
         non_az_tokens_per = non_az_tokens * 1.00 / tokens
 
@@ -116,11 +116,11 @@ class LengthFeatureGenerator(FeatureGenerator):
     
     def get_features_tgt(self, simplesentence, parallelsentence):
         attributes = self.get_features_simplesentence(simplesentence, parallelsentence)
-        source_attributes = self.get_features_src(parallelsentence.get_source())
+        source_attributes = self.get_features_src(parallelsentence.get_source(), parallelsentence)
         #manually adding supplements for sucessful quest features        
         attributes["l_srctokens_ratio"] = (1.00 * source_attributes['l_tokens']) / attributes['l_tokens'] 
         attributes["l_tokens_ratio"] = attributes['l_tokens'] / (1.00 * source_attributes['l_tokens'])
         attributes["l_numbers_diff_norm"] = (source_attributes['l_numbers'] - attributes['l_numbers']) * 1.00 / source_attributes['l_tokens']  
         attributes["l_aztokens_ratio"] = source_attributes['l_aztokens'] / (1.00 * attributes['l_aztokens'])
-        return attributes()
+        return attributes
        
