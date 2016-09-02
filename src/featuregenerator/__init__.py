@@ -505,20 +505,27 @@ class FeatureGeneratorManager(object):
         initialized_generators = []
         for generator in feature_generators:
             if generator.is_bilingual and source_language:
-                section_name = "{}:{}-{}".format(generator.__name__.replace("FeatureGenerator", ""), 
+                section_name = "{}:{}-{}".format(generator.__name__.replace("FeatureGenerator", ""),
                                                  source_language, language)
                 try:
                     params = dict(config.items(section_name))
                 except:
                     params = {}
-                inverted_section_name = "{}:{}-{}".format(generator.__name__.replace("FeatureGenerator", ""), 
-                                                          language, source_language)
-                inverted_model = config.get(inverted_section_name, "model")
-                initialized_generator = generator(gateway=gateway, 
-                                                  source_language=source_language, 
-                                                  language=language, 
-                                                  inverted_model=inverted_model,
-                                                  **params)
+                if config.has_option(section_name, "model"):
+                    inverted_section_name = "{}:{}-{}".format(generator.__name__.replace("FeatureGenerator", ""), 
+                                                              language, source_language)
+                    inverted_model = config.get(inverted_section_name, "model")
+                    initialized_generator = generator(gateway=gateway, 
+                                                      source_language=source_language, 
+                                                      language=language, 
+                                                      inverted_model=inverted_model,
+                                                      **params)
+                else:
+                     initialized_generator = generator(gateway=gateway, 
+                                                      source_language=source_language, 
+                                                      language=language, 
+                                                      **params)
+
                 initialized_generators.append(initialized_generator)                
                 
             elif generator.is_language_specific:                
