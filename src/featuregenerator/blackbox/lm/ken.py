@@ -8,8 +8,6 @@ Created on Aug 25, 2014
 from kenlm import Model
 from featuregenerator import LanguageFeatureGenerator
 from numpy import average, std
-from sklearn.ensemble.tests.test_bagging import boston
-
 
 class KenLMFeatureGenerator(LanguageFeatureGenerator):
     '''
