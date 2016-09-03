@@ -86,8 +86,12 @@ class SimpleTriangleTranslator(Worker):
         #print "Rank: ", rank_strings
         
         for rank_item, output in zip(rank_strings, outputs_ordered):
-            if float(rank_item)==1:
+            if int(rank_item)==1:
+                log.debug("RESULT: {}".format(output)
+                log.debug("Description: {}".format(description)
                 return output, description
+            else:
+                log.debug("No result {}: {}".format(output, description))
 
 
 class Pilot3Translator(SimpleTriangleTranslator):
