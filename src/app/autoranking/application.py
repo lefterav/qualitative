@@ -87,8 +87,6 @@ class Autoranking:
         self.featureset = self.ranker.attribute_set
         featuregenerator_manager = FeatureGeneratorManager()
         self.pipeline = featuregenerator_manager.get_parallel_features_pipeline(self.featureset, config, source_language, target_language, gateway)
-        self.featuregenerators = self.pipeline[0] + self.pipeline[1] + self.pipeline[2]
-        
         
     def rank_strings(self, source, translations, reconstruct='soft'):
         """
@@ -103,12 +101,13 @@ class Autoranking:
         atts = {"langsrc" : self.source_language, "langtgt" : self.target_language}
         parallelsentence = ParallelSentence(sourcesentence, translationsentences, None, atts)
         return self.rank_parallelsentence(parallelsentence)
-    
+
     def rank_parallelsentence(self, parallelsentence):
         #annotate the parallelsentence
-        annotated_parallelsentence = self._annotate(parallelsentence)
+        annotated_parallelsentence = self.pipeline.annotate_parallelsentence(parallelsentence)
         log.info("line annotated")
-        ranking, description = self.ranker.rank_sentence(annotated_parallelsentence)
+        
+        ranking, result_vector = self.ranker.get_ranked_sentence(annotated_parallelsentence)
         
         #put things in the original order given by the user
         #because the ranker scrambles the order
@@ -118,9 +117,9 @@ class Autoranking:
             ranking.reverse()
             
         #return only ranks without system ids
-        description += "Final ranking: {}".format([(r[0], r[1].get_system_name(), r[1].get_string()) for r in ranking])
+        result_vector["Final ranking"] = ([(r[0], r[1].get_system_name(), r[1].get_string()) for r in ranking])
         ranking = [r[0] for r in ranking]
-        return ranking, description
+        return ranking, result_vector
     
     def get_ranked_sentence(self, sourcesentence, translationsentences):
         atts = {"langsrc":self.source_language, "langtgt":self.target_language}
