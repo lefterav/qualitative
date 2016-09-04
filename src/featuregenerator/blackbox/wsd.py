@@ -101,8 +101,8 @@ class AsyncReader:
         
 
 class WSDreader:
-    def __init__(self, model, filename_source=None, filename_tokenized=None, async=True):
-        self.wsdfile = open(model, 'rb')
+    def __init__(self, filename, filename_source=None, filename_tokenized=None, async=True):
+        self.wsdfile = open(filename, 'rb')
         self.items = ijson.items(self.wsdfile, "documents.item")
 
         if async:

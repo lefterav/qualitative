@@ -18,7 +18,7 @@ class LineReader(GenericReader):
         @param source_filename: Name of file containing source sentences, one sentence per line
         @type source_filename: str
         @param submission_filenames: List of files containing MT system output corresponding with 
-        the source file, one sentence per line. The model of each file will be used for extracting
+        the source file, one sentence per line. The filename of each file will be used for extracting
         the 'system' attribute for its imported sentences (see \L{pattern_name} below)
         @type submission_filenames: str
         @param langpair: A string containing the language codes of the the language pair, source-target e.g.: de-en or en-fr
@@ -26,7 +26,7 @@ class LineReader(GenericReader):
         @param testset: The name of the data set, e.g: testset2011
         @type testset: str
         @param pattern_name: A regular expression which contains a bracketed pattern for extracting 
-        the system name out of the model. If empty, the entire model will be used as a system name 
+        the system name out of the filename. If empty, the entire filename will be used as a system name 
         '''
         self.source_filename = source_filename
         self.submission_filenames = submission_filenames

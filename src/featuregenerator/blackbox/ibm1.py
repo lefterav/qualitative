@@ -30,12 +30,12 @@ class Ibm1FeatureGenerator(FeatureGenerator):
     feature_pattens = ["ibm1-ratio\-.*"]
     is_bilingual = True
     
-    def __init__(self, model, inverted_model, thresholds=[0.2, 0.01], 
+    def __init__(self, filename, inverted_model, thresholds=[0.2, 0.01], 
                  source_language=None, target_language=None, **kwargs):
         """
         Initialize an instance of a feature generator able to generate IBM-1 features and multilingual string alignments
-        @param model: table with IBM-1 word-level lexical probabilities for translating source-to-target
-        @type model: str
+        @param filename: table with IBM-1 word-level lexical probabilities for translating source-to-target
+        @type filename: str
         @param inverted_model: table with IBM-1 word-level lexical probabilities for translating source-to-target
         @type inverted_model: str
         @param source_language: the language code of the source language
@@ -43,9 +43,9 @@ class Ibm1FeatureGenerator(FeatureGenerator):
         @param target_language: the language code of the target language
         @type target_language: str
         """        
-        logging.info("Loading source side IBM1 model...")
-        self.sourcelexicon = Lexicon(model)
-        logging.info("Done. \nLoading target side IBM1 model...")
+        logging.info("Loading source side IBM1 filename...")
+        self.sourcelexicon = Lexicon(filename)
+        logging.info("Done. \nLoading target side IBM1 filename...")
         self.targetlexicon = Lexicon(inverted_model)
         logging.info("Done.")
         self.source_language = source_language
@@ -125,7 +125,7 @@ class Lexicon:
     def __init__(self, lexicon):
         '''
         Load the lexicon into the memory
-        @param lexicon: points to the model of the lexicon to be loaded
+        @param lexicon: points to the filename of the lexicon to be loaded
         @type lexicon_filenam: str
         '''
         lextxt = open(lexicon, 'r')
