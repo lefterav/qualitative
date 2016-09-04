@@ -156,6 +156,7 @@ class AdvancedLucyWorker(LucyWorker):
         self.menu_items = menu_items
         self.menu_translator = menu_translator
         self.menu_quotes = menu_quotes
+        self.name = "lucy"
         
         super(AdvancedLucyWorker, self).__init__(**kwargs)
     

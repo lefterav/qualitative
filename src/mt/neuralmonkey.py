@@ -31,6 +31,7 @@ class NeuralMonkeyWorker:
         self.postprocessors = [Detruecaser(language=target_language),
                                Detokenizer(language=target_language)]
         self.uri = uri
+        self.name = "neuralmonkey"
         
         
     def translate(self, string):
