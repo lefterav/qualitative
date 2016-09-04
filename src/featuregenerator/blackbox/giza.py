@@ -21,7 +21,7 @@ class GizaFeatureGenerator:
         @param gizadir: Full path of mGiza executable
         @type gizadir: str
 
-        @param modeldir: Full path to model directory files
+        @param modeldir: Full path to filename directory files
         @type modeldir: str
         '''
         self.gizadir = gizadir

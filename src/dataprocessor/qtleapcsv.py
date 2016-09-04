@@ -13,9 +13,9 @@ from collections import defaultdict
 
 class QtleapCSVReader(DataReader):
     
-    def __init__(self, model, sourcefile=None, 
+    def __init__(self, filename, sourcefile=None, 
                  source_language="en", target_language="de"):
-        self.filename = model
+        self.filename = filename
         self.source_language = source_language
         self.target_language = target_language
         self.indexed_sources = defaultdict(str)
