@@ -22,7 +22,7 @@ class OOLinkage():
         @type: string
         @param: newOOLinks: new Open Office file with source links of aligned sentences
         @type: string
-        @param: oldOOLinks: model for saving links of sentence and source
+        @param: oldOOLinks: filename for saving links of sentence and source
         @type: string
         """
         f = open(oldOOSnts)

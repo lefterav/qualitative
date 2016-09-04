@@ -95,7 +95,7 @@ class SimpleTriangleTranslator(Worker):
 
 class Pilot3Translator(SimpleTriangleTranslator):
     def __init__(self,
-                 engines=["Moses", "Lucy"],
+                 engines=["Moses", "Lucy", "NeuralMonkey"],
                  configfiles=[],
                  source_language="en",
                  target_language="de",
@@ -108,10 +108,10 @@ class Pilot3Translator(SimpleTriangleTranslator):
         self.workers = []
         
         # get resources
-        truecaser_model = config.get("Truecaser:{}".format(source_language), 'model')
+        truecaser_model = config.get("Truecaser:{}".format(source_language), 'filename')
         splitter_model = None
         if source_language == 'de':
-            splitter_model = config.get("Splitter:{}".format(source_language), 'model')            
+            splitter_model = config.get("Splitter:{}".format(source_language), 'filename')            
 
         for engine in engines:
         
@@ -155,8 +155,9 @@ class Pilot3Translator(SimpleTriangleTranslator):
                 
         attributes = {"langsrc" : self.source_language, "langtgt" : self.target_language}
         parallelsentence = ParallelSentence(source, translations, attributes=attributes)
-        return self.selector.rank_parallelsentence(parallelsentence)
-        
+        ranked_parallelsentence, description = self.selector.get_ranked_sentence(parallelsentence)
+        return ranked_parallelsentence, description     
+
         
 def worker_translate(worker, string):
     """
@@ -182,7 +183,7 @@ class LcMWorker(Worker):
                  source_language="en", target_language="de",
                  config_files=[],
                  classifiername=None,
-                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-model.3.en",
+                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-filename.3.en",
                  reverse=False):
         self.lucy_worker = LucyWorker(url=lucy_url,
                                       username=lucy_username, password=lucy_password,
@@ -213,7 +214,7 @@ class SimpleWsdTriangleTranslator(Worker):
                  source_language="en", target_language="de",
                  config_files=[],
                  classifiername=None,
-                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-model.3.en",
+                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-filename.3.en",
                  reverse=False):
         self.selector = Autoranking(config_files, classifiername, reverse)
         self.wsd_worker = WSDclient(wsd_url)

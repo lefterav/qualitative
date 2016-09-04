@@ -47,17 +47,17 @@ class Ranker:
     @type learner: toolkit-specific C{object} 
     '''
 
-    def __init__(self, learner=None, model=None, name=None, **kwargs):
+    def __init__(self, learner=None, filename=None, name=None, **kwargs):
         self.fit = True
         if learner:
             self.learner = learner
             self.name = str(learner)
             if isinstance(learner, basestring):
                 self.fit = False
-        elif model:
-            model_file = open(model)
-            self.learner = pickle.load(open(model,'r'))
-            logging.info("Loaded {} learner for file {}".format(self.learner, model))
+        elif filename:
+            model_file = open(filename)
+            self.learner = pickle.load(open(filename,'r'))
+            logging.info("Loaded {} learner for file {}".format(self.learner, filename))
             model_file.close()
         else:
             self.name = name
