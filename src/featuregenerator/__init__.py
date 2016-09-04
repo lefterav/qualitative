@@ -4,6 +4,7 @@ generation of features over the parallel objects. Any new featuregenerator
 should implement languagefeaturegenerator.py (if it is language-specific)
 or featuregenerator.py  (it is language-generic).
 """
+from multiprocessing.pool import Pool
 
 '''
 Created on Jul 28, 2016
@@ -218,19 +219,7 @@ class FeatureGenerator(object):
         name = self.__class__.__name__
         if name.endswith("FeatureGenerator"):
             name = name[0:len(name)-len("FeatureGenerator")].lower()
-        
-    
-    #TODO: remove this, as it breaks architecture    
-#    def add_features_batch_xml(self, filename_in, filename_out):
-#        reader = XmlReader(filename_in)
-#        parallelsentences = reader.get_parallelsentences()
-#        parallelsentences = self.add_features_batch(parallelsentences)
-#        reader = None
-#        writer = XmlWriter(parallelsentences)
-#        writer.write_to_file(filename_out)
-    
 
-    
     def process_dataset(self, dataset):
         """
         Abstract method to be overriden by the particular subclassed feature generator,
@@ -241,9 +230,7 @@ class FeatureGenerator(object):
         @rtype: sentence.dataset.DataSet
         """
         return self.add_features_dataset(dataset)
-
-
-
+    
 
 class LanguageFeatureGenerator(FeatureGenerator):
     """
@@ -297,7 +284,6 @@ class LanguageFeatureGenerator(FeatureGenerator):
         #stderr.println("Featuregenerator of type %s doesn't provide SimpleSentence features" % self.__class__.__name__)
         
         return self.get_features_string(simplesentence.get_string())
-
     
     def add_features_dataset(self, dataset):
         """
@@ -331,7 +317,6 @@ class LanguageFeatureGenerator(FeatureGenerator):
 
         return parallelsentences
     
-    
     def get_features_string(self, string):
         raise NotImplementedError
     
@@ -345,7 +330,46 @@ class LanguageFeatureGenerator(FeatureGenerator):
         writer = XmlWriter(parallelsentences)
         writer.write_to_file(filename_out)
         
+
+class Pipeline:
+    """
+    An objects that aggregates the serialized functionality of many feature 
+    generators. It can annotate many translations in parallel 
+    """
+    def __init__(self, source_featuregenerators, target_featuregeneratos, ref_featuregenerators):
+        self.source_featuregenerators = source_featuregenerators
+        self.target_featuregenerators = target_featuregeneratos
+        self.ref_featuregenerators = ref_featuregenerators
+    
+    def annotate_parallelsentence(self, parallelsentence):
         
+        parallel_attributes = deepcopy(parallelsentence.att)
+        if self.source_featuregenerators:
+            #annotate source and update parallelsentence bundle 
+            for featuregenerator in self.source_featuregenerators:
+                source = parallelsentence.get_source()
+                source = featuregenerator.add_features_src(source)
+            parallelsentence = ParallelSentence(source, parallelsentence.tgt, attributes=parallel_attributes)
+        
+        
+        featuregenerators = self.target_featuregenerators
+        translations = parallelsentence.get_translations()
+        pool = Pool(processes=len(translations))
+        annotated_translations = pool.map(featuregenerators_annotate, [(featuregenerators, t, parallelsentence) for t in translations])
+        parallelsentence = ParallelSentence(source, annotated_translations, attributes=parallel_attributes)
+        return parallelsentence
+        
+def featuregenerators_annotate(featuregenerators, translation, parallelsentence):
+    for featuregenerator in featuregenerators:
+        log.debug("Annotating sentence with {} \n".format(str(featuregenerator)))
+        if featuregenerator:
+            translation = featuregenerator.add_features_tgt(translation, parallelsentence)
+            log.debug("Succesfully annotated sentence with {} \n".format(str(featuregenerator)))
+            log.debug("Produced features: {} \n".format(translation))
+        else: 
+            log.warn("Received inactive feature generator")
+    return translation    
+
         
 class FeatureGeneratorManager(object):
     '''
@@ -521,7 +545,7 @@ class FeatureGeneratorManager(object):
                                                       inverted_model=inverted_model,
                                                       **params)
                 else:
-                     initialized_generator = generator(gateway=gateway, 
+                    initialized_generator = generator(gateway=gateway, 
                                                       source_language=source_language, 
                                                       language=language, 
                                                       **params)
@@ -566,5 +590,5 @@ class FeatureGeneratorManager(object):
         reference_featuregenerators = self.initialize_feature_generators(featureset.ref_attribute_names, config, target_language, 
                                                                          gateway, source_language=source_language)
     
-        return source_featuregenerators, target_featuregenerators, reference_featuregenerators
+        return Pipeline(source_featuregenerators, target_featuregenerators, reference_featuregenerators)
             

@@ -14,6 +14,9 @@ from mt.selection import Autoranking
 from mt.worker import Worker
 from ConfigParser import SafeConfigParser
 from mt.neuralmonkey import NeuralMonkeyWorker
+from multiprocessing import Pool
+from sentence.sentence import SimpleSentence
+from sentence.parallelsentence import ParallelSentence
 
 class HybridTranslator(Worker):
     def __init__(self, single_workers, worker_pipelines):
@@ -86,25 +89,23 @@ class SimpleTriangleTranslator(Worker):
         #print "Rank: ", rank_strings
         
         for rank_item, output in zip(rank_strings, outputs_ordered):
-            if int(rank_item)==1:
-                log.debug("RESULT: {}".format(output)
-                log.debug("Description: {}".format(description)
+            if float(rank_item)==1:
                 return output, description
-            else:
-                log.debug("No result {}: {}".format(output, description))
 
 
 class Pilot3Translator(SimpleTriangleTranslator):
     def __init__(self,
-                 engines,
+                 engines=["Moses", "Lucy"],
                  configfiles=[],
                  source_language="en",
                  target_language="de",
                  ranking_model=None):
         
+        # load configuration files
         config = SafeConfigParser()
         log.error("Loading config files {}".format(configfiles))
         config.read(configfiles)
+        self.workers = []
         
         # get resources
         truecaser_model = config.get("Truecaser:{}".format(source_language), 'model')
@@ -112,31 +113,64 @@ class Pilot3Translator(SimpleTriangleTranslator):
         if source_language == 'de':
             splitter_model = config.get("Splitter:{}".format(source_language), 'model')            
 
-        if "Moses" in engines:
-            uri = config.get("Moses:{}-{}".format(source_language, target_language), "uri")
-            self.moses_worker = ProcessedMosesWorker(uri, source_language, target_language, 
-                                                     truecaser_model, splitter_model)
-        if "Lucy" in engines:
-            params = dict(config.items("Lucy"))
-            self.lucy_worker = AdvancedLucyWorker(self.moses_worker,
-                                                  source_language=source_language,
-                                                  target_language=target_language,
-                                                  **params)
-        if "LcM" in engines:
-            uri = config.get("LcM:{}-{}".format(source_language, target_language), "uri")
-            self.lcm_worker = ProcessedMosesWorker(uri, source_language, target_language, 
-                                                   truecaser_model, splitter_model)
-            
-        if "NeuralMonkey" in engines:
-            uri = config.get("NeuralMonkey:{}-{}".format(source_language, target_language), 
-                             "uri")
-            self.neuralmonkey_worker = NeuralMonkeyWorker(uri, source_language, 
-                                                          target_language, 
-                                                          truecaser_model, splitter_model)
+        for engine in engines:
+        
+            if engine == "Moses":
+                uri = config.get("Moses:{}-{}".format(source_language, target_language), "uri")
+                self.moses_worker = ProcessedMosesWorker(uri, source_language, target_language, 
+                                                         truecaser_model, splitter_model)
+                self.workers.append(self.moses_worker)
+                
+            if engine == "Lucy":
+                params = dict(config.items("Lucy"))
+                self.lucy_worker = AdvancedLucyWorker(self.moses_worker,
+                                                      source_language=source_language,
+                                                      target_language=target_language,
+                                                      **params)
+                self.workers.append(self.lucy_worker)
+                
+            if engine == "LcM":
+                uri = config.get("LcM:{}-{}".format(source_language, target_language), "uri")
+                self.lcm_worker = ProcessedMosesWorker(uri, source_language, target_language, 
+                                                       truecaser_model, splitter_model)
+                
+            if engine == "NeuralMonkey":
+                uri = config.get("NeuralMonkey:{}-{}".format(source_language, target_language), 
+                                 "uri")
+                self.neuralmonkey_worker = NeuralMonkeyWorker(uri, source_language, 
+                                                              target_language, 
+                                                              truecaser_model, splitter_model)
+                self.workers.append(self.neuralmonkey_worker)
         
         self.selector = Autoranking(configfiles, ranking_model, source_language, 
                                     target_language, reverse=False)
         
+        
+    def translate(self, string):
+        
+        pool = Pool(processes=len(self.workers))
+        translations = pool.map(worker_translate, [(w, string) for w in self.workers])
+        
+        source = SimpleSentence(string, {})
+                
+        attributes = {"langsrc" : self.source_language, "langtgt" : self.target_language}
+        parallelsentence = ParallelSentence(source, translations, attributes=attributes)
+        return self.selector.rank_parallelsentence(parallelsentence)
+        
+        
+def worker_translate(worker, string):
+    """
+    Helper function that orders and fetches a translation from a worker
+    @param worker: A machine translation worker
+    @type worker: L{mt.worker.Worker}
+    @param string: the text to be translated
+    @type string: string
+    @return: a bundled simple sentence object
+    @rtype: L{sentence.sentence.SimpleSentence}
+    """
+    return worker.translate_sentence(string)
+
+
 
 
     
