@@ -33,6 +33,7 @@ class MosesWorker(Worker):
         #self.server = xmlrpc.initialize("{}:{}".format(address, port))
         print uri
         self.server = xmlrpclib.ServerProxy(uri)
+        self.name = "moses"
 
     def translate(self, string):
         #send request to moses client
@@ -114,6 +115,7 @@ class ProcessedMosesWorker(ProcessedWorker):
         worker = MosesWorker(uri)
         super(ProcessedMosesWorker, self).__init__(source_language, target_language, 
                                                    truecaser_model, splitter_model, worker)
+        self.name = "moses"
         
 
 
@@ -131,6 +133,7 @@ class MtMonkeyWorker(Worker):
         #throw error if Moses server not started
         #self.server = xmlrpc.initialize("{}:{}".format(address, port))
         self.server = xmlrpclib.ServerProxy(uri)
+        self.name = "moses"
 
     def translate(self, string):
         
