@@ -764,6 +764,47 @@ class ParallelSentence(object):
         except KeyError:
             return None
         
+    def get_system_names(self):
+        """
+        Return the system names of the included translations
+        @return: the list of system names
+        @rtype: list of strings
+        """
+        return [t.get_system_name() for t in self.tgt]
+        
+    def get_best_translation(self, systems_order=None):
+        """
+        Return the best translation from a ranked parallel sentence. Allows the
+        caller to specify a predefined preference list, in case of ties
+        @param systems_order: a list of system names in order of preference, 
+        for the case of ties. If not specified, the existing order of systems in 
+        the parallel sentence is used.
+        @type systems_order: list of strings
+        @return: the translation that has the best rank and (optionally) the 
+        highest predefined user preference
+        @rtype: L{sentence.sentence.SimpleSentence}
+        """
+        if not systems_order:
+            systems_order = self.get_system_names()
+        
+        ranking = self.get_ranking()
+        minimum_value = min(ranking)
+        best_translations = {}
+        for translation in self.tgt:
+            if translation.get_rank() == minimum_value:
+                best_translations[translation.get_system_name()] = translation
+        
+        for system_name in systems_order:
+            try:
+                return best_translations[system_name]
+            except KeyError:
+                pass
+        
+                
+                
+        
+            
+            
                 
         
 

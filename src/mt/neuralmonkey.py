@@ -23,11 +23,11 @@ class NeuralMonkeyWorker:
         self.preprocessors = [Normalizer(language=source_language),
                               Tokenizer(language=source_language),
                               Truecaser(language=source_language, 
-                                        model=truecaser_model),
+                                        filename=truecaser_model),
                               ]
         if source_language == 'de' and splitter_model:
             self.preprocessors.append(CompoundSplitter(language=source_language,
-                                                       model=splitter_model))
+                                                       filename=splitter_model))
         self.postprocessors = [Detruecaser(language=target_language),
                                Detokenizer(language=target_language)]
         self.uri = uri
