@@ -4,7 +4,6 @@ Created on 19 Apr 2016
 '''
 import pickle
 
-from app.autoranking.application import Autoranking
 from featuregenerator.blackbox.counts import LengthFeatureGenerator
 from featuregenerator.blackbox.ibm1 import Ibm1FeatureGenerator
 from featuregenerator.blackbox.parser.berkeley.cfgrules import CfgAlignmentFeatureGenerator
@@ -91,8 +90,8 @@ class Autoranking:
         featuregenerator_manager = FeatureGeneratorManager()
         self.pipeline = featuregenerator_manager.get_parallel_features_pipeline(self.featureset, config, source_language, target_language, gateway)
         
-        self.featuregenerators = self.pipeline[0] + self.pipeline[1] + self.pipeline[2]
-        log.info("pipeline: {}".format(self.featuregenerators))
+        #self.featuregenerators = self.pipeline
+        #log.info("pipeline: {}".format(self.featuregenerators))
 
         self.source_language = source_language
         self.target_language = target_language
@@ -120,14 +119,16 @@ class Autoranking:
         parallelsentence = ParallelSentence(sourcesentence, translationsentences, None, atts)
         return self.rank_parallelsentence(parallelsentence)
     
-    def get_ranked_sentence(self, parallelsentence):
+    def get_ranked_sentence(self, parallelsentence, new_rank_name="rank_soft", reconstruct="soft"):
         annotated_parallelsentence = self._annotate(parallelsentence)
-        ranked_sentence, description = self.ranker.get_ranked_sentence(annotated_parallelsentence)
+        ranked_sentence, description = self.ranker.get_ranked_sentence(annotated_parallelsentence, new_rank_name=new_rank_name, reconstruct=reconstruct)
         # add a dictionary of information about the ranking
         ranking_description = OrderedDict()
         for translation in ranked_sentence.get_translations():
-            ranking_description[translation.get_system_name()] = translation.get_rank()            
+            ranking_description[translation.get_system_name()] = translation.get_attribute(new_rank_name)           
+            log.debug("Augmenting description for {}".format(translation.get_system_name()))
         description['ranking'] = ranking_description
+        log.debug("Description: {}".format(description))
         return ranked_sentence, description
     
     def rank_parallelsentence(self, parallelsentence):
@@ -164,14 +165,6 @@ class Autoranking:
             parallelsentence = preprocessor.add_features_parallelsentence(parallelsentence)
         
         parallelsentence = self.pipeline.annotate_parallelsentence(parallelsentence)
-        
-        for featuregenerator in self.featuregenerators:
-            log.debug("Running {} \n".format(str(featuregenerator)))
-            if featuregenerator:
-                parallelsentence = featuregenerator.add_features_parallelsentence(parallelsentence)
-                log.debug("got sentence")
-            else: 
-                log.warn("Received inactive feature generator")
         log.debug("Annotated parallel sentence: {}".format(parallelsentence))
         return parallelsentence
         

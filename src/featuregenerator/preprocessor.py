@@ -42,7 +42,7 @@ class Preprocessor(FeatureGenerator):
     def add_features_tgt(self, simplesentence, parallelsentence = None):
         tgt_lang = parallelsentence.get_attribute("langtgt")
         if tgt_lang == self.language:
-            simplesentence.string = self.process_string(simplesentence.string)  
+            simplesentence.string = self.process_string(simplesentence.get_string())  
         return simplesentence
 
     def process_string(self, string):
@@ -209,7 +209,7 @@ class Truecaser(CommandlinePreprocessor):
     def __init__(self, language, filename):
         path = util.__path__[0]
         path = os.path.join(path, "truecase.perl")
-        command_template = "perl {path} -filename {filename}"
+        command_template = "perl {path} --model {filename}"
         super(Truecaser, self).__init__(path, language, {"filename": filename}, command_template)
 
 class Detruecaser(CommandlinePreprocessor):
@@ -223,7 +223,7 @@ class CompoundSplitter(CommandlinePreprocessor):
     def __init__(self, language, filename):
         path = util.__path__[0]
         path = os.path.join(path, 'compound-splitter.perl')
-        command_template = "perl {path} -filename {filename}"
+        command_template = "perl {path} --model {filename}"
         super(CompoundSplitter, self).__init__(path, language, {"filename": filename}, command_template)   
 
 

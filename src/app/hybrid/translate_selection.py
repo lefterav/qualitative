@@ -21,7 +21,7 @@ splitter_model="/home/lefterav/workspace/qualitative/res/splitter/split-model.de
 
 
 parser = argparse.ArgumentParser(description="Run translate engine on a file")
-parser.add_argument('--engines', nargs='*', action='append', default=['Moses','Lucy','LcM'])
+parser.add_argument('--engines', nargs='*', action='append', default=['Lucy','Moses','NeuralMonkey'])
 parser.add_argument('--source_language', default='en')
 parser.add_argument('--target_language', default='de')
 parser.add_argument('--config', nargs='*', default=["/home/lefterav/workspace/qualitative/config/autoranking/features.dev.cfg",
@@ -49,16 +49,16 @@ if __name__ == '__main__':
                                   args.source_language, 
                                   args.target_language, 
                                   args.ranking_model)
-    parallelsentence, description = translator.translate(source)
+    best_translation_string, parallelsentence, description = translator.translate_with_selection(source)
     
-    with open(args.text_output) as f:
-        f.write(parallelsentence.get_best_translation().get_string())
+    with open(args.text_output, 'w') as f:
+        f.write(best_translation_string)
     
-    parallelsentence_output = IncrementalJcml(args.jcml_output)
+    parallelsentence_output = IncrementalJcml(args.parallelsentence_output)
     parallelsentence_output.add_parallelsentence(parallelsentence)
     parallelsentence_output.close()
     
-    with open(args.description_output) as f:
+    with open(args.description_output, 'w') as f:
         f.write(str(description))
     
     

@@ -126,7 +126,7 @@ class BitParChartParser:
             if not chars.endswith("\r\n\r\n"):
                 sleep(0.1)
                 log.debug("Waiting one more second")
-            print chars
+           #print chars
         output = "".join(output)
         log.debug("BitParChartParser: received sentence '{}'".format(sent.replace("\n", " ")))
         # remove bitpar's escaping (why does it do that?), strip trailing blank line

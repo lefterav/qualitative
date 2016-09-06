@@ -619,7 +619,7 @@ class SkRanker(Ranker, SkLearner):
             return parallelsentence, {}
         #list that will hold the pairwise parallel sentences including the learner's decision
         classified_pairwise_parallelsentences = []
-        resultvector = []
+        resultvector = {}
         
         for pairwise_parallelsentence in pairwise_parallelsentences:
             #convert pairwise parallel sentence into an orange instance
@@ -661,7 +661,7 @@ class SkRanker(Ranker, SkLearner):
             
             
             #gather several metadata from the classification, which may be needed 
-            resultvector.append({'systems' : pairwise_parallelsentence.get_system_names(),
+            resultvector.update({'systems' : pairwise_parallelsentence.get_system_names(),
                                  'value' : predicted_value,
                                  'distribution': distribution,
                                  'confidence': distribution[int(predicted_value)],
@@ -679,12 +679,14 @@ class SkRanker(Ranker, SkLearner):
         #gather all classified pairwise comparisons of into one parallel sentence again
         sentenceset = CompactPairwiseParallelSentenceSet(classified_pairwise_parallelsentences)
         if reconstruct == 'hard':
+            log.debug("Applying hard reconstruction to produce rank {}".format(new_rank_name))
             ranked_sentence = sentenceset.get_multiranked_sentence(critical_attribute=critical_attribute, 
                                                                new_rank_name=new_rank_name, 
                                                                del_orig_class_att=del_orig_class_att)
         else:
             attribute1 = "prob_-1"
             attribute2 = "prob_1"
+            log.debug("Applying soft reconstruction to produce rank {}".format(new_rank_name))
             try:
                 ranked_sentence = sentenceset.get_multiranked_sentence_with_soft_ranks(attribute1, attribute2, critical_attribute, new_rank_name)
             except:
