@@ -191,11 +191,13 @@ class Normalizer(CommandlinePreprocessor):
         super(Normalizer, self).__init__(path, language, {}, command_template)
         
 class Tokenizer(CommandlinePreprocessor):
-    def __init__(self, language):
+    def __init__(self, language, protected=None):
         path = util.__path__[0]
         path = os.path.join(path, "tokenizer.perl")
         command_template = "perl {path} -b -l {language}"
-        super(Tokenizer, self).__init__(path, language, {}, command_template)
+        if protected:
+            command_template = "perl {path} -b -l {language} -protected {protected}"
+        super(Tokenizer, self).__init__(path, language, {'protected': protected}, command_template)
 
 class Detokenizer(CommandlinePreprocessor):
     def __init__(self, language):
