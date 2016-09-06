@@ -8,6 +8,7 @@ import re
 import shutil
 import sys
 import tempfile
+from collections import OrderedDict
 from random import shuffle
 import string as stringlib 
 from unidecode import unidecode
@@ -47,11 +48,15 @@ def att(sentence):
     to avoid unicode errors
     """
     attributes = OrderedDict()
+    failed = set()
     for key, val in sentence.get_attributes().iteritems():
         try:
             attributes[k(key)] = unicode(val)
         except UnicodeDecodeError:
+            failed.add(k(key))
             attributes[k(key)] = str(val)
+    if failed:
+        log.debug("The following keys caused unicode errors: {}".format(list(failed)))
     return attributes
 
 class IncrementalJcml(object):
