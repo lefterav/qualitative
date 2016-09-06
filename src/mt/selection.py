@@ -98,8 +98,8 @@ class Autoranking:
 
         self.preprocessors = [
             Normalizer(source_language),
-            Normalizer(target_language),
-            Tokenizer(source_language),
+            +++++(target_language),
+            Tokenizer(source_language, config.get("Tokenizer:{}".format(source_language)), "protected"),
             Tokenizer(target_language),
             Truecaser(source_language, config.get("Truecaser:{}".format(source_language), "filename")),
             Truecaser(target_language, config.get("Truecaser:{}".format(target_language), "filename")),
