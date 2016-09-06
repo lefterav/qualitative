@@ -30,7 +30,7 @@ class Ibm1FeatureGenerator(FeatureGenerator):
     feature_pattens = ["ibm1-ratio\-.*"]
     is_bilingual = True
     
-    def __init__(self, filename, inverted_model, thresholds=[0.2, 0.01], 
+    def __init__(self, model, inverted_model, thresholds=[0.2, 0.01], 
                  source_language=None, target_language=None, **kwargs):
         """
         Initialize an instance of a feature generator able to generate IBM-1 features and multilingual string alignments
@@ -44,7 +44,7 @@ class Ibm1FeatureGenerator(FeatureGenerator):
         @type target_language: str
         """        
         logging.info("Loading source side IBM1 filename...")
-        self.sourcelexicon = Lexicon(filename)
+        self.sourcelexicon = Lexicon(model)
         logging.info("Done. \nLoading target side IBM1 filename...")
         self.targetlexicon = Lexicon(inverted_model)
         logging.info("Done.")

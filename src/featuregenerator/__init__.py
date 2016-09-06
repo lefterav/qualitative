@@ -343,11 +343,11 @@ class Pipeline:
     
     def annotate_parallelsentence(self, parallelsentence):
         
-        parallel_attributes = deepcopy(parallelsentence.att)
+        parallel_attributes = deepcopy(parallelsentence.get_attributes())
+        source = parallelsentence.get_source()
         if self.source_featuregenerators:
             #annotate source and update parallelsentence bundle 
             for featuregenerator in self.source_featuregenerators:
-                source = parallelsentence.get_source()
                 source = featuregenerator.add_features_src(source)
             parallelsentence = ParallelSentence(source, parallelsentence.tgt, attributes=parallel_attributes)
         
@@ -355,7 +355,8 @@ class Pipeline:
         featuregenerators = self.target_featuregenerators
         translations = parallelsentence.get_translations()
         pool = Pool(processes=len(translations))
-        annotated_translations = pool.map(featuregenerators_annotate, [(featuregenerators, t, parallelsentence) for t in translations])
+        #annotated_translations = pool.map(featuregenerators_annotate, [(featuregenerators, t, parallelsentence) for t in translations])
+        annotated_translations = [featuregenerators_annotate(featuregenerators, t, parallelsentence) for t in translations]
         parallelsentence = ParallelSentence(source, annotated_translations, attributes=parallel_attributes)
         return parallelsentence
         
@@ -515,7 +516,6 @@ class FeatureGeneratorManager(object):
         
         params['gateway'] = gateway
         params['language'] = language
-        log.info("Feature generator manager initializing {} for {} with params {}...".format(generator.__name__, language, params))
         initialized_generator = generator(**params)
         log.info("Feature generator manager successfully initialized {} for {}.".format(generator.__name__, language))
         return initialized_generator
@@ -528,6 +528,7 @@ class FeatureGeneratorManager(object):
         """
         initialized_generators = []
         for generator in feature_generators:
+            log.info("Feature generator manager initializing {} for {} ...".format(generator.__name__, language))
             if generator.is_bilingual and source_language:
                 section_name = "{}:{}-{}".format(generator.__name__.replace("FeatureGenerator", ""),
                                                  source_language, language)
@@ -541,15 +542,16 @@ class FeatureGeneratorManager(object):
                     inverted_model = config.get(inverted_section_name, "model")
                     initialized_generator = generator(gateway=gateway, 
                                                       source_language=source_language, 
-                                                      language=language, 
+                                                      target_language=language, 
                                                       inverted_model=inverted_model,
                                                       **params)
+                    log.info("Feature generator manager successfully initialized {} for {}.".format(generator.__name__, language))
                 else:
                     initialized_generator = generator(gateway=gateway, 
                                                       source_language=source_language, 
                                                       language=language, 
                                                       **params)
-
+                    log.info("Feature generator manager successfully initialized {} for {}.".format(generator.__name__, language))
                 initialized_generators.append(initialized_generator)                
                 
             elif generator.is_language_specific:                
