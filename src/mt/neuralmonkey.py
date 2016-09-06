@@ -2,8 +2,9 @@ from featuregenerator.sentencesplitter import SentenceSplitter
 from featuregenerator.preprocessor import Normalizer, Tokenizer, Truecaser,\
     CompoundSplitter, Detruecaser, Detokenizer
 import requests
+from worker import Worker
 
-class NeuralMonkeyWorker:
+class NeuralMonkeyWorker(Worker):
     """
     Wrapper class for another worker, that also takes care of pre-processing the given requests
     and post-processing the output.
@@ -54,5 +55,5 @@ class NeuralMonkeyWorker:
                 translated_string = postprocessor.process_string(translated_string)
             translated_strings.append(translated_string)
         
-        return " ".join(translated_strings), response.text
+        return " ".join(translated_strings), {'response' : response.text}
             

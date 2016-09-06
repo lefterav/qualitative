@@ -60,7 +60,7 @@ class MosesWorker(Worker):
         return text, response
     
 
-class ProcessedWorker(object):
+class ProcessedWorker(Worker):
     """
     Wrapper class for another worker, that also takes care of pre-processing the given requests
     and post-processing the output.
@@ -105,7 +105,7 @@ class ProcessedWorker(object):
             translated_strings.append(translated_string)
             responses.append(response)
         
-        return " ".join(translated_strings), responses
+        return " ".join(translated_strings), {'responses' : responses}
             
 
 class ProcessedMosesWorker(ProcessedWorker):

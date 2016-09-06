@@ -100,7 +100,9 @@ class Pilot3Translator(SimpleTriangleTranslator):
                  source_language="en",
                  target_language="de",
                  ranking_model=None):
-        
+       
+        self.source_language = source_language
+        self.target_language = target_language
         # load configuration files
         config = SafeConfigParser()
         log.error("Loading config files {}".format(configfiles))
@@ -113,16 +115,23 @@ class Pilot3Translator(SimpleTriangleTranslator):
         if source_language == 'de':
             splitter_model = config.get("Splitter:{}".format(source_language), 'filename')            
 
+        # initialize Moses, even if not prefered engine, before Lucy cause it may be reused
+        try:
+            uri = config.get("Moses:{}-{}".format(source_language, target_language), "uri")
+            self.moses_worker = ProcessedMosesWorker(uri, source_language, target_language, 
+                                                     truecaser_model, splitter_model)
+        except:
+            self.moses_worker = None
+
         for engine in engines:
         
             if engine == "Moses":
-                uri = config.get("Moses:{}-{}".format(source_language, target_language), "uri")
-                self.moses_worker = ProcessedMosesWorker(uri, source_language, target_language, 
-                                                         truecaser_model, splitter_model)
-                self.workers.append(self.moses_worker)
+               self.workers.append(self.moses_worker)
                 
             if engine == "Lucy":
                 params = dict(config.items("Lucy"))
+                if not self.moses_worker:
+                    params["menu_translator"] = None
                 self.lucy_worker = AdvancedLucyWorker(self.moses_worker,
                                                       source_language=source_language,
                                                       target_language=target_language,
@@ -146,17 +155,23 @@ class Pilot3Translator(SimpleTriangleTranslator):
                                     target_language, reverse=False)
         
         
-    def translate(self, string):
+    def translate_with_selection(self, string, new_rank_name="rank_soft", reconstruct="soft"):
         
         pool = Pool(processes=len(self.workers))
-        translations = pool.map(worker_translate, [(w, string) for w in self.workers])
+        #translations = pool.map(worker_translate, [(w, string) for w in self.workers])
+        translations = [worker_translate(w, string) for w in self.workers]
         
         source = SimpleSentence(string, {})
                 
         attributes = {"langsrc" : self.source_language, "langtgt" : self.target_language}
         parallelsentence = ParallelSentence(source, translations, attributes=attributes)
-        ranked_parallelsentence, description = self.selector.get_ranked_sentence(parallelsentence)
-        return ranked_parallelsentence, description     
+        ranked_parallelsentence, description = self.selector.get_ranked_sentence(parallelsentence, reconstruct=reconstruct, new_rank_name=new_rank_name)
+        translation_string = ranked_parallelsentence.get_best_translation(new_rank_name=new_rank_name).get_string()
+        return translation_string, ranked_parallelsentence, description     
+
+    def translate(self, string, new_rank_name="rank_soft", reconstruct="soft"):
+        translation_string, _, _ = self.translate_with_selection(string, new_rank_name=new_rank_name, reconstruct=reconstruct)
+        return translation_string
 
         
 def worker_translate(worker, string):
@@ -169,8 +184,9 @@ def worker_translate(worker, string):
     @return: a bundled simple sentence object
     @rtype: L{sentence.sentence.SimpleSentence}
     """
-    return worker.translate_sentence(string)
-
+    translated_sentence = worker.translate_sentence(string)
+    translated_sentence.add_attribute("system", worker.name)
+    return translated_sentence
 
 
 
