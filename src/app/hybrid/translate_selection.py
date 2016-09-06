@@ -64,10 +64,10 @@ def translate_file(args):
     for source in text_input:
         counter+=1
         log.info("Translating sentence {}".format(counter))
-        best_translation_string, parallelsentence, description = translator.translate_with_selection(source)
+        best_translation_string, parallelsentences, description = translator.translate_with_selection(source)
         text_output.write(best_translation_string)
         if args.parallelsentence_output:
-            parallelsentence_output.add_parallelsentence(parallelsentence)
+            parallelsentence_output.add_parallelsentences(parallelsentences)
         if args.description_output:
             description_output.write(str(description))
 

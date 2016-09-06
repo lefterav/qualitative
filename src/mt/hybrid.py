@@ -17,6 +17,7 @@ from mt.neuralmonkey import NeuralMonkeyWorker
 from multiprocessing import Pool
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
+from featuregenerator.sentencesplitter import SentenceSplitter
 
 class HybridTranslator(Worker):
     def __init__(self, single_workers, worker_pipelines):
@@ -109,15 +110,15 @@ class Pilot3Translator(SimpleTriangleTranslator):
         config.read(configfiles)
         self.workers = []
         
-        # get resources
-        truecaser_model = config.get("Truecaser:{}".format(source_language), 'filename')
-        splitter_model = None
-        if source_language == 'de':
-            splitter_model = config.get("Splitter:{}".format(source_language), 'filename')            
 
         # initialize Moses, even if not prefered engine, before Lucy cause it may be reused
         try:
+            # get resources
             uri = config.get("Moses:{}-{}".format(source_language, target_language), "uri")
+            truecaser_model = config.get("Truecaser:{}".format(source_language), 'filename')
+            splitter_model = None
+            if source_language == 'de':
+                splitter_model = config.get("Splitter:{}".format(source_language), 'filename')            
             self.moses_worker = ProcessedMosesWorker(uri, source_language, target_language, 
                                                      truecaser_model, splitter_model)
         except:
@@ -126,7 +127,7 @@ class Pilot3Translator(SimpleTriangleTranslator):
         for engine in engines:
         
             if engine == "Moses":
-               self.workers.append(self.moses_worker)
+                self.workers.append(self.moses_worker)
                 
             if engine == "Lucy":
                 params = dict(config.items("Lucy"))
@@ -154,27 +155,47 @@ class Pilot3Translator(SimpleTriangleTranslator):
         self.selector = Autoranking(configfiles, ranking_model, source_language, 
                                     target_language, reverse=False)
         
+        self.sentencesplitter = SentenceSplitter({'language': source_language})
+
         
-    def translate_with_selection(self, string, new_rank_name="rank_soft", reconstruct="soft"):
         
-        pool = Pool(processes=len(self.workers))
-        #translations = pool.map(worker_translate, [(w, string) for w in self.workers])
-        translations = [worker_translate(w, string) for w in self.workers]
+    def translate_with_selection(self, text, new_rank_name="rank_soft", reconstruct="soft"):
         
-        source = SimpleSentence(string, {})
-                
-        attributes = {"langsrc" : self.source_language, "langtgt" : self.target_language}
-        parallelsentence = ParallelSentence(source, translations, attributes=attributes)
-        ranked_parallelsentence, description = self.selector.get_ranked_sentence(parallelsentence, reconstruct=reconstruct, new_rank_name=new_rank_name)
-        translation_string = ranked_parallelsentence.get_best_translation(new_rank_name=new_rank_name).get_string()
-        return translation_string, ranked_parallelsentence, description     
+        strings = self.sentencesplitter.split_sentences(text)
+        translation_strings = []
+        ranked_parallelsentences = []
+        descriptions = []
+        
+        for string in strings:
+            pool = Pool(processes=len(self.workers))
+            translations = pool.map(worker_translate, [(w, string) for w in self.workers])
+            #translations = [worker_translate(w, string) for w in self.workers]
+            
+            source = SimpleSentence(string, {})
+                    
+            attributes = {"langsrc" : self.source_language, "langtgt" : self.target_language}
+            parallelsentence = ParallelSentence(source, translations, attributes=attributes)
+            ranked_parallelsentence, description = self.selector.get_ranked_sentence(parallelsentence, reconstruct=reconstruct, new_rank_name=new_rank_name)
+            translation_string = ranked_parallelsentence.get_best_translation(new_rank_name=new_rank_name).get_string()
+            
+            ranked_parallelsentences.append(ranked_parallelsentence)
+            translation_strings.append(translation_string)
+            descriptions.append(description)
+        
+        translation_string = " ".join(translation_strings)
+        if len(descriptions) > 1:
+            description = {}
+            for i, descr in enumerate(descriptions):
+                description[i] = descr 
+            
+        return translation_string, ranked_parallelsentences, description     
 
     def translate(self, string, new_rank_name="rank_soft", reconstruct="soft"):
         translation_string, _, _ = self.translate_with_selection(string, new_rank_name=new_rank_name, reconstruct=reconstruct)
         return translation_string
 
         
-def worker_translate(worker, string):
+def worker_translate(worker_string):
     """
     Helper function that orders and fetches a translation from a worker
     @param worker: A machine translation worker
@@ -184,6 +205,7 @@ def worker_translate(worker, string):
     @return: a bundled simple sentence object
     @rtype: L{sentence.sentence.SimpleSentence}
     """
+    worker, string = worker_string
     translated_sentence = worker.translate_sentence(string)
     translated_sentence.add_attribute("system", worker.name)
     return translated_sentence
