@@ -8,6 +8,7 @@ import re
 import shutil
 import sys
 import tempfile
+import logging as log
 from collections import OrderedDict
 from random import shuffle
 import string as stringlib 
@@ -54,7 +55,9 @@ def att(sentence):
             attributes[k(key)] = unicode(val)
         except UnicodeDecodeError:
             failed.add(k(key))
-            attributes[k(key)] = str(val)
+            #skip items that break the file writing, usually it's the parse tree from BitPar
+            #TODO: the unicode error may originate at the importing of data from BitPar
+            #attributes[k(key)] = str(val)
     if failed:
         log.debug("The following keys caused unicode errors: {}".format(list(failed)))
     return attributes

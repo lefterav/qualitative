@@ -98,8 +98,8 @@ class Autoranking:
 
         self.preprocessors = [
             Normalizer(source_language),
-            +++++(target_language),
-            Tokenizer(source_language, config.get("Tokenizer:{}".format(source_language)), "protected"),
+            Normalizer(target_language),
+            Tokenizer(source_language, config.get("Tokenizer:{}".format(source_language), "protected", None)),
             Tokenizer(target_language),
             Truecaser(source_language, config.get("Truecaser:{}".format(source_language), "filename")),
             Truecaser(target_language, config.get("Truecaser:{}".format(target_language), "filename")),
@@ -125,7 +125,8 @@ class Autoranking:
         # add a dictionary of information about the ranking
         ranking_description = OrderedDict()
         for translation in ranked_sentence.get_translations():
-            ranking_description[translation.get_system_name()] = translation.get_attribute(new_rank_name)           
+            ranking_description[translation.get_system_name()] = {'rank' : translation.get_attribute(new_rank_name),
+                                                                  'string' : translation.get_string()}
             log.debug("Augmenting description for {}".format(translation.get_system_name()))
         description['ranking'] = ranking_description
         log.debug("Description: {}".format(description))
