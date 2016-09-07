@@ -74,11 +74,12 @@ class ProcessedWorker(Worker):
     @type postprocessors: list of L{Postprocessor}
     """
     def __init__(self, source_language, target_language, 
-                 truecaser_model, splitter_model=None, worker=None, **kwargs):
+                 truecaser_model, splitter_model=None, worker=None, 
+                 tokenizer_protected=None, **kwargs):
         
         self.sentencesplitter = SentenceSplitter({'language': source_language})
         self.preprocessors = [Normalizer(language=source_language),
-                              Tokenizer(language=source_language),
+                              Tokenizer(source_language, tokenizer_protected),
                               Truecaser(language=source_language, 
                                         filename=truecaser_model),
                               ]
@@ -110,11 +111,13 @@ class ProcessedWorker(Worker):
 
 class ProcessedMosesWorker(ProcessedWorker):
     def __init__(self, uri, source_language, target_language, 
-                 truecaser_model, splitter_model=None, **kwargs):
+                 truecaser_model, splitter_model=None, 
+                 tokenizer_protected=None, **kwargs):
         
         worker = MosesWorker(uri)
         super(ProcessedMosesWorker, self).__init__(source_language, target_language, 
-                                                   truecaser_model, splitter_model, worker)
+                                                   truecaser_model, splitter_model, 
+                                                   worker, tokenizer_protected)
         self.name = "moses"
         
 

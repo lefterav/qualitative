@@ -150,9 +150,12 @@ class BerkeleyParserSocket():
                 
         
             except:
-                self._connect(self.gateway, self.grammarfile)
-                parseresult = self.bp_obj.parse(sentence_string)
-                log.warning("{0} crashed, restarting object".format(self.parsername))
+                try:
+                    self._connect(self.gateway, self.grammarfile)
+                    parseresult = self.bp_obj.parse(sentence_string)
+                    log.warning("{0} crashed, restarting object".format(self.parsername))
+                except:
+                    pass
         #log.debug(u"<\p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
 
         return parseresult

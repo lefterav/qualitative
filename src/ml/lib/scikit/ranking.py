@@ -665,7 +665,8 @@ class SkRanker(Ranker, SkLearner):
                                  'value' : predicted_value,
                                  'distribution': distribution,
                                  'confidence': distribution[int(predicted_value)],
-                                 'instance' : instance})
+#                                 'instance' : instance,
+                                 })
             
             #add the new predicted ranks as attributes of the new pairwise sentence
             pairwise_parallelsentence.add_attributes({"rank_predicted":predicted_value,
