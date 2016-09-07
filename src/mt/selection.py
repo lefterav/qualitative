@@ -8,7 +8,8 @@ from featuregenerator.blackbox.counts import LengthFeatureGenerator
 from featuregenerator.blackbox.ibm1 import Ibm1FeatureGenerator
 from featuregenerator.blackbox.parser.berkeley.cfgrules import CfgAlignmentFeatureGenerator
 from featuregenerator.blackbox.parser.berkeley.parsermatches import ParserMatches
-from featuregenerator.preprocessor import Normalizer, Tokenizer, Truecaser
+from featuregenerator.preprocessor import Normalizer, Tokenizer, Truecaser,\
+    Detruecaser, Detokenizer
 from featuregenerator.reference.meteor.meteor import CrossMeteorGenerator
 from ConfigParser import SafeConfigParser
 
@@ -100,10 +101,17 @@ class Autoranking:
             Normalizer(source_language),
             Normalizer(target_language),
             Tokenizer(source_language, config.get("Tokenizer:{}".format(source_language), "protected", None)),
-            Tokenizer(target_language),
+            Tokenizer(target_language, config.get("Tokenizer:{}".format(target_language), "protected", None)),
             Truecaser(source_language, config.get("Truecaser:{}".format(source_language), "filename")),
             Truecaser(target_language, config.get("Truecaser:{}".format(target_language), "filename")),
         ]
+        
+        #TODO: change this, so that the original output of the system is used
+        # without double detokenization 
+        self.postprocessors = [
+                               Detruecaser(target_language),
+                               Detokenizer(target_language)]
+        
         
     def rank_strings(self, source, translations, reconstruct='soft'):
         """
@@ -124,6 +132,7 @@ class Autoranking:
         ranked_sentence, description = self.ranker.get_ranked_sentence(annotated_parallelsentence, 
                                                                        new_rank_name=new_rank_name, 
                                                                        reconstruct=reconstruct)
+        ranked_sentence = self._postprocess(ranked_sentence)
         # add a dictionary of information about the ranking
         ranking_description = OrderedDict()
         for translation in ranked_sentence.get_translations():
@@ -170,4 +179,8 @@ class Autoranking:
         parallelsentence = self.pipeline.annotate_parallelsentence(parallelsentence)
         log.debug("Annotated parallel sentence: {}".format(parallelsentence))
         return parallelsentence
-        
+    
+    def _postprocess(self, parallelsentence):
+        for postprocessor in self.postprocessors:
+            parallelsentence = postprocessor.add_features_parallelsentence(parallelsentence)
+        return parallelsentence
