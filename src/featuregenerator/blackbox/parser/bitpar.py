@@ -124,8 +124,8 @@ class BitParChartParser:
                 log.warning("BitParChartParser: exception caused by sentence '{}'".format(sent.strip().replace("\n", " ")))
                 break
             if not chars.endswith("\r\n\r\n"):
+                log.debug("Waiting 100 milliseconds")
                 sleep(0.1)
-                log.debug("Waiting one more second")
            #print chars
         output = "".join(output)
         log.debug("BitParChartParser: received sentence '{}'".format(sent.replace("\n", " ")))

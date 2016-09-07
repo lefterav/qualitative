@@ -184,6 +184,8 @@ class AdvancedLucyWorker(LucyWorker):
         if self.unknowns:
             text, unk_description = self._process_unknowns(text)
             description.update(unk_description)
+
+        log.debug("Lucy sending out translation: {}".format(text))
         return text, description
     
     def _preprocess_menu_items(self, text, menu_quotes=False):
@@ -299,9 +301,9 @@ class AdvancedLucyWorker(LucyWorker):
             #clean_chunk = self.tokenizer.process_string(clean_chunk)
             # get the translation from Moses (or lucy?)
             if translator == "Moses":
-                #log.debug("Sending clean menu chunk to Moses: '{}'".format(clean_chunk))
+                log.debug("Sending clean menu chunk to Moses: '{}'".format(clean_chunk))
                 chunk_translation, _ = self.moses.translate(clean_chunk)
-                #log.debug("Moses returned menu chunk: '{}'".format(chunk_translation))
+                log.debug("Moses returned menu chunk: '{}'".format(chunk_translation))
             else:
                 chunk_translation = []
                 for item in clean_chunk.split(" > "):

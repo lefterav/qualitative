@@ -19,3 +19,22 @@
 2014-07-18.10-06-28 mv JavaServer.class0 JavaServer.class
 2014-07-18.10-06-33 git rm *class*
 2014-07-18.10-06-45 rm JavaServer.class 
+2016-09-07.20-56-23 cp /project/qtleap/software/mtmonkey/user/en-de.wsd/mt-2.1/git/worker/src/tasks/tokenizer.perl .
+2016-09-07.20-56-31 perl /project/qtleap/software/selection_mechanism/qualitative/src/util/tokenizer.perl -b -l en -protected ./software/mtmonkey/user/en-de.wsd/mt-2.1/git/worker/src/tasks/protect-urls.rex
+2016-09-07.20-56-45 perl /project/qtleap/software/selection_mechanism/qualitative/src/util/tokenizer.perl -b -l en -protected ./software/mtmonkey/user/en-de.wsd/mt-2.1/git/worker/src/tasks/protect-urls.rex
+2016-09-07.20-56-53 perl /project/qtleap/software/selection_mechanism/qualitative/src/util/tokenizer.perl -b -l en -protected /project/qtleap/pilot2/wsd/data_tok/protect-urls.rex 
+2016-09-07.20-57-53 less tokenizer.perl 
+2016-09-07.20-57-58 perl /project/qtleap/software/selection_mechanism/qualitative/src/util/tokenizer.perl -b -l en -protected /project/qtleap/pilot2/wsd/data_tok/protect-urls.rex
+2016-09-07.20-59-37 vim ~/.bashrc 
+2016-09-07.20-59-39 perl /project/qtleap/software/selection_mechanism/qualitative/src/util/tokenizer.perl -b -l en -protected /project/qtleap/pilot2/wsd/data_tok/protect-urls.rex
+2016-09-07.20-59-54 perl /project/qtleap/software/selection_mechanism/qualitative/src/util/tokenizer.perl -b -l en -protected /project/qtleap/pilot2/wsd/data_tok/protect-urls.rex
+2016-09-07.21-00-16 vim ~/.bashrc 
+2016-09-07.21-01-25 vim tokenizer.perl 
+2016-09-07.21-01-30 perl /project/qtleap/software/selection_mechanism/qualitative/src/util/tokenizer.perl -b -l en -protected /project/qtleap/pilot2/wsd/data_tok/protect-urls.rex 
+2016-09-07.21-01-46 perl /project/qtleap/software/selection_mechanism/qualitative/src/util/tokenizer.perl -b -protected /project/qtleap/pilot2/wsd/data_tok/protect-urls.rex 
+2016-09-07.21-03-20 vim tokenizer.perl 
+2016-09-07.21-05-37 perl /project/qtleap/software/selection_mechanism/qualitative/src/util/tokenizer.perl -b -l en -protected /project/qtleap/pilot2/wsd/data_tok/protect-urls.rex 
+2016-09-07.21-05-53 diff ~/workspace/qualitative/src/util/tokenizer.perl tokenizer.perl 
+2016-09-07.21-06-06 diff ~/workspace/qualitative/src/util/tokenizer.perl tokenizer.perl  | less
+2016-09-07.21-06-46 diff -y ~/workspace/qualitative/src/util/tokenizer.perl tokenizer.perl  | less
+2016-09-07.21-11-09 which perl
