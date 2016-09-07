@@ -384,7 +384,9 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
         
         return ParallelSentence(source, translations_new_rank, reference, attributes)      
 
-    def get_multiranked_sentence_with_soft_ranks(self, attribute1="", attribute2="", critical_attribute="rank_soft_predicted", new_rank_name = None):
+    def get_multiranked_sentence_with_soft_ranks(self, attribute1="", attribute2="", 
+            critical_attribute="rank_soft_predicted", new_rank_name = None,
+            normalize_ranking=True):
         """
         It reconstructs a single parallel sentence object with a gathered discrete [1-9] 
         ranking out of the pairwise comparisons that exist in the pairwise parallel sentence instances
@@ -432,7 +434,10 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
             if this_rank != prev_rank: 
                 i += 1
             prev_rank = this_rank
-            translations_per_system[system].add_attribute(new_rank_name, str(i))
+            if normalize_ranking:
+                translations_per_system[system].add_attribute(new_rank_name, i)
+            else:
+                translations_per_system[system].add_attribute(new_rank_name, this_rank)
             
         #get the values of the first sentence as template
         source = deepcopy(self.pps_dict.values()[0].get_source())

@@ -11,6 +11,7 @@ import subprocess
 import util
 import os
 import logging as log
+from xml.sax import saxutils
 
 class Preprocessor(FeatureGenerator):
     """
@@ -73,7 +74,7 @@ class CommandlinePreprocessor(Preprocessor):
             queue.put(line)
 #            break
     
-    def __init__(self, path, language, params = {}, command_template = ""):
+    def __init__(self, path, language, params = {}, command_template = "", unescape=False):
         """
         Initialize commandline-based feature generator. 
         @param path: the path where the command is based
@@ -93,7 +94,9 @@ class CommandlinePreprocessor(Preprocessor):
         command_items = self.command.split(' ')
         self.output = []
         self.running = True
+        self.unescape = unescape
         
+
         self.process = subprocess.Popen(command_items, 
                                         shell=False, 
                                         bufsize=1, 
@@ -131,6 +134,8 @@ class CommandlinePreprocessor(Preprocessor):
         if output == "" and len(string) > 1:
             output = self.process.stdout.readline().strip()
         
+        if self.unescape:
+            output = saxutils.unescape(output)
         return output
     
     def close(self):
@@ -192,13 +197,14 @@ class Normalizer(CommandlinePreprocessor):
         super(Normalizer, self).__init__(path, language, {}, command_template)
         
 class Tokenizer(CommandlinePreprocessor):
-    def __init__(self, language, protected=None):
+    def __init__(self, language, protected=None, unescape=True):
         path = util.__path__[0]
         path = os.path.join(path, "tokenizer.perl")
         command_template = "perl {path} -b -l {language}"
         if protected:
             command_template = "perl {path} -b -l {language} -protected {protected}"
-        super(Tokenizer, self).__init__(path, language, {'protected': protected}, command_template)
+        super(Tokenizer, self).__init__(path, language, {'protected': protected}, 
+                command_template, unescape=unescape)
 
 class Detokenizer(CommandlinePreprocessor):
     def __init__(self, language):

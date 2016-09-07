@@ -9,6 +9,7 @@ from xml.sax.saxutils import escape
 import sys
 import xmlrpclib
 import logging as log
+from xml.sax.saxutils import unescape
 
 from featuregenerator.blackbox.wsd import WSDclient
 from featuregenerator.preprocessor import Tokenizer, Truecaser, Detokenizer,\
@@ -79,7 +80,7 @@ class ProcessedWorker(Worker):
         
         self.sentencesplitter = SentenceSplitter({'language': source_language})
         self.preprocessors = [Normalizer(language=source_language),
-                              Tokenizer(source_language, tokenizer_protected),
+                              Tokenizer(source_language, protected=tokenizer_protected),
                               Truecaser(language=source_language, 
                                         filename=truecaser_model),
                               ]
@@ -100,6 +101,7 @@ class ProcessedWorker(Worker):
             for preprocessor in self.preprocessors:
                 string = preprocessor.process_string(string)
             translated_string, response = self.worker.translate(string)
+            translated_string = unescape(translated_string)
             print "output: ", translated_string, response
             for postprocessor in self.postprocessors:
                 translated_string = postprocessor.process_string(translated_string)
