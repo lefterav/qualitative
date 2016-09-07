@@ -121,7 +121,9 @@ class Autoranking:
     
     def get_ranked_sentence(self, parallelsentence, new_rank_name="rank_soft", reconstruct="soft"):
         annotated_parallelsentence = self._annotate(parallelsentence)
-        ranked_sentence, description = self.ranker.get_ranked_sentence(annotated_parallelsentence, new_rank_name=new_rank_name, reconstruct=reconstruct)
+        ranked_sentence, description = self.ranker.get_ranked_sentence(annotated_parallelsentence, 
+                                                                       new_rank_name=new_rank_name, 
+                                                                       reconstruct=reconstruct)
         # add a dictionary of information about the ranking
         ranking_description = OrderedDict()
         for translation in ranked_sentence.get_translations():
@@ -161,7 +163,7 @@ class Autoranking:
         
         #TODO: parallelize source target
         #TODO: before parallelizing take care of diverse dependencies on preprocessing
-
+        
         for preprocessor in self.preprocessors:
             parallelsentence = preprocessor.add_features_parallelsentence(parallelsentence)
         
