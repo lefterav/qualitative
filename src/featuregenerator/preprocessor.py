@@ -10,7 +10,7 @@ from . import FeatureGenerator
 import subprocess
 import util
 import os
-import codecs
+import logging as log
 
 class Preprocessor(FeatureGenerator):
     """
@@ -89,6 +89,7 @@ class CommandlinePreprocessor(Preprocessor):
         params["language"] = language
         params["path"] = path
         self.command = command_template.format(**params)
+        log.debug("Command of preprocessor: '{}'".format(self.command))
         command_items = self.command.split(' ')
         self.output = []
         self.running = True
