@@ -689,7 +689,8 @@ class SkRanker(Ranker, SkLearner):
             attribute2 = "prob_1"
             log.debug("Applying soft reconstruction to produce rank {}".format(new_rank_name))
             try:
-                ranked_sentence = sentenceset.get_multiranked_sentence_with_soft_ranks(attribute1, attribute2, critical_attribute, new_rank_name)
+                ranked_sentence = sentenceset.get_multiranked_sentence_with_soft_ranks(attribute1, attribute2, 
+                        critical_attribute, new_rank_name, normalize_ranking=False)
             except:
                 raise ValueError("Sentenceset {} from {} caused exception".format(classified_pairwise_parallelsentences, parallelsentence))
         return ranked_sentence, resultvector

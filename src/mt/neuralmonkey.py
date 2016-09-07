@@ -3,6 +3,7 @@ from featuregenerator.preprocessor import Normalizer, Tokenizer, Truecaser,\
     CompoundSplitter, Detruecaser, Detokenizer
 import requests
 from worker import Worker
+import logging as log
 
 class NeuralMonkeyWorker(Worker):
     """
@@ -24,7 +25,8 @@ class NeuralMonkeyWorker(Worker):
         self.sentencesplitter = SentenceSplitter({'language': source_language})
         self.preprocessors = [Normalizer(language=source_language),
                               Tokenizer(language=source_language, 
-                                        protected=tokenizer_protected),
+                                        protected=tokenizer_protected,
+                                        unescape=False),
                               Truecaser(language=source_language, 
                                         filename=truecaser_model),
                               ]
@@ -45,7 +47,7 @@ class NeuralMonkeyWorker(Worker):
             for preprocessor in self.preprocessors:
                 string = preprocessor.process_string(string)
             preprocessed_strings.append(string.split())
-        
+        log.debug("Preprocessed strings sent to Neural Monkey: {}".format(preprocessed_strings))
         request = {"source": preprocessed_strings}
         response = requests.post(self.uri, json=request)
         translated_token_lists = response.json()['target']
