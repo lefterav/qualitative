@@ -171,12 +171,12 @@ class Pilot3Translator(SimpleTriangleTranslator):
         descriptions = []
         
         for string in strings:
-            pool = Pool(processes=len(self.workers))
+            #pool = Pool(processes=len(self.workers))
             #translations = pool.map(worker_translate, [(w, string) for w in self.workers])
             translations = [worker_translate((w, string)) for w in self.workers]
             
             source = SimpleSentence(string, {})
-                    
+            
             attributes = {"langsrc" : self.source_language, "langtgt" : self.target_language}
             parallelsentence = ParallelSentence(source, translations, attributes=attributes)
             ranked_parallelsentence, description = self.selector.get_ranked_sentence(parallelsentence, reconstruct=reconstruct, new_rank_name=new_rank_name)
@@ -213,6 +213,7 @@ def worker_translate(worker_string):
     log.info("Translating with {}".format(worker.name))
     translated_sentence = worker.translate_sentence(string)
     translated_sentence.add_attribute("system", worker.name)
+    log.debug("{} return this string: {}".format(worker.name, translated_sentence.get_string()))
     return translated_sentence
 
 
