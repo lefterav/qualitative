@@ -110,17 +110,20 @@ class Pilot3Translator(SimpleTriangleTranslator):
         config.read(configfiles)
         self.workers = []
         
+        truecaser_model = config.get("Truecaser:{}".format(source_language), 'filename')
+        splitter_model = None
+        if source_language == 'de':
+            splitter_model = config.get("Splitter:{}".format(source_language), 'filename')            
+
+        tokenizer_protected = config.get("Tokenizer:{}".format(source_language), 'protected', None)
 
         # initialize Moses, even if not prefered engine, before Lucy cause it may be reused
         try:
             # get resources
             uri = config.get("Moses:{}-{}".format(source_language, target_language), "uri")
-            truecaser_model = config.get("Truecaser:{}".format(source_language), 'filename')
-            splitter_model = None
-            if source_language == 'de':
-                splitter_model = config.get("Splitter:{}".format(source_language), 'filename')            
             self.moses_worker = ProcessedMosesWorker(uri, source_language, target_language, 
-                                                     truecaser_model, splitter_model)
+                                                     truecaser_model, splitter_model, 
+                                                     tokenizer_protected)
         except:
             self.moses_worker = None
 
@@ -149,7 +152,8 @@ class Pilot3Translator(SimpleTriangleTranslator):
                                  "uri")
                 self.neuralmonkey_worker = NeuralMonkeyWorker(uri, source_language, 
                                                               target_language, 
-                                                              truecaser_model, splitter_model)
+                                                              truecaser_model, splitter_model,
+                                                              tokenizer_protected)
                 self.workers.append(self.neuralmonkey_worker)
         
         self.selector = Autoranking(configfiles, ranking_model, source_language, 
@@ -168,8 +172,8 @@ class Pilot3Translator(SimpleTriangleTranslator):
         
         for string in strings:
             pool = Pool(processes=len(self.workers))
-            translations = pool.map(worker_translate, [(w, string) for w in self.workers])
-            #translations = [worker_translate(w, string) for w in self.workers]
+            #translations = pool.map(worker_translate, [(w, string) for w in self.workers])
+            translations = [worker_translate((w, string)) for w in self.workers]
             
             source = SimpleSentence(string, {})
                     
@@ -206,6 +210,7 @@ def worker_translate(worker_string):
     @rtype: L{sentence.sentence.SimpleSentence}
     """
     worker, string = worker_string
+    log.info("Translating with {}".format(worker.name))
     translated_sentence = worker.translate_sentence(string)
     translated_sentence.add_attribute("system", worker.name)
     return translated_sentence

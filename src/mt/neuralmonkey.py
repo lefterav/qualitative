@@ -18,11 +18,13 @@ class NeuralMonkeyWorker(Worker):
     @type postprocessors: list of L{Postprocessor}
     """
     def __init__(self, uri, source_language, target_language, 
-                 truecaser_model, splitter_model=None, worker=None, **kwargs):
+                 truecaser_model, splitter_model=None, worker=None, 
+                 tokenizer_protected=None, **kwargs):
         
         self.sentencesplitter = SentenceSplitter({'language': source_language})
         self.preprocessors = [Normalizer(language=source_language),
-                              Tokenizer(language=source_language),
+                              Tokenizer(language=source_language, 
+                                        protected=tokenizer_protected),
                               Truecaser(language=source_language, 
                                         filename=truecaser_model),
                               ]
