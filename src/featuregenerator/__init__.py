@@ -354,21 +354,30 @@ class Pipeline:
         
         featuregenerators = self.target_featuregenerators
         translations = parallelsentence.get_translations()
-        pool = Pool(processes=len(translations))
+        #pool = Pool(processes=len(translations))
         #annotated_translations = pool.map(featuregenerators_annotate, [(featuregenerators, t, parallelsentence) for t in translations])
         annotated_translations = [featuregenerators_annotate(featuregenerators, t, parallelsentence) for t in translations]
         parallelsentence = ParallelSentence(source, annotated_translations, attributes=parallel_attributes)
         return parallelsentence
         
 def featuregenerators_annotate(featuregenerators, translation, parallelsentence):
+    errors = set()
     for featuregenerator in featuregenerators:
-        log.debug("Annotating sentence with {} \n".format(str(featuregenerator)))
-        if featuregenerator:
-            translation = featuregenerator.add_features_tgt(translation, parallelsentence)
-            log.debug("Succesfully annotated sentence with {} \n".format(str(featuregenerator)))
-            log.debug("Produced features: {} \n".format(translation))
-        else: 
-            log.warn("Received inactive feature generator")
+        try:
+            log.debug("Annotating sentence with {} \n".format(str(featuregenerator)))
+            if featuregenerator:
+                translation = featuregenerator.add_features_tgt(translation, parallelsentence)
+                log.debug("Succesfully annotated sentence with {} \n".format(str(featuregenerator)))
+                log.debug("Produced features: {} \n".format(translation))
+            else: 
+                log.warn("Received inactive feature generator")
+        except Exception as e:
+            log.warn("Ignored exception {}".format(e))
+            errors.add(featuregenerator.__class__.__name__)
+    errors = list(errors)
+    if errors:
+        log.warn("The following featuregenerators did not run {}".format(errors))
+
     return translation    
 
         

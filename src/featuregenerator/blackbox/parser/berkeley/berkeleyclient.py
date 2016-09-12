@@ -32,9 +32,19 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         results = self.parse(sent_string)
         if results == {}:
             return {}
-        loglikelihood = results['loglikelihood']
-        nbestList = results['nbest']
-        n = len(nbestList)
+        try:
+            loglikelihood = results['loglikelihood']
+        except:
+            loglikelihood = -500
+        try:
+            nbestList = results['nbest']
+        except:
+            return {}
+
+        try:
+            n = len(nbestList)
+        except:
+            return {}
 
         best_confidence = -1e308;
         best_parse = ""
@@ -42,10 +52,21 @@ class BerkeleyFeatureGenerator(LanguageFeatureGenerator):
         
         confidences = []
         #print "analyzing tree statistics",
+        try:
+            nbestList = list(nbestList)
+        except:
+            nbestList = []
+
         for entry in nbestList:
-            confidence = entry["confidence"]
-            confidences.append(float(confidence))
-            parse = entry["tree"]
+            try:
+                confidence = entry["confidence"]
+                confidences.append(float(confidence))
+            except:
+                return {}
+            try:
+                parse = entry["tree"]
+            except:
+                parse = ""
             if float(confidence) > best_confidence:
                 best_confidence = float(confidence)
                 best_parse = parse

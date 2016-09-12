@@ -136,8 +136,10 @@ class BerkeleyParserSocket():
         
 #        signal.signal(signal.SIGALRM, handler)
 #        signal.alarm(20)
-        parseresult = None        
-        while not parseresult:
+        parseresult = None       
+        tries = 0
+        while parseresult is None and tries<10:
+            tries += 1
             try:
                 parseresult = self.bp_obj.parse(sentence_string)
 #            except:
@@ -149,13 +151,16 @@ class BerkeleyParserSocket():
 #            parseresult = {}
                 
         
-            except:
+            except Exception as e:
+                log.warning(e)
+                log.warning("{0} crashed, trying again".format(self.parsername))
                 try:
                     self._connect(self.gateway, self.grammarfile)
                     parseresult = self.bp_obj.parse(sentence_string)
                     log.warning("{0} crashed, restarting object".format(self.parsername))
                 except:
                     pass
+            log.debug("Tried to run parser for the {} time".format(tries))
         #log.debug(u"<\p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
 
         return parseresult

@@ -8,6 +8,8 @@ from py4j.java_gateway import java_import
 from featuregenerator import LanguageFeatureGenerator
 import numpy as np
 from collections import defaultdict
+from time import sleep
+import logging as log
 
 class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
     '''
@@ -37,7 +39,19 @@ class LanguageToolSocketFeatureGenerator(LanguageFeatureGenerator):
         
     def get_features_string(self, string):
         atts = {}
-        matches = self.ltool.check(string)
+        tries = 0
+        found = False
+        while tries < 10 and not found:
+            tries+=1
+            try:
+                log.debug("Language tooltrying on effort {}.".format(tries))
+                matches = self.ltool.check(string)
+                found = True
+            except Exception as e:
+                log.debug("Language tool crashed on effort {}. Trying again. Error given {}".format(tries, e))
+                sleep(1)
+        if not found:
+            return {}
         errors = 0
         total_error_chars = 0
         total_replacements = 0
