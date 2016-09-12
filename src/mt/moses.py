@@ -93,7 +93,12 @@ class ProcessedWorker(Worker):
         self.worker = worker
         
     def translate(self, string):
-        strings = self.sentencesplitter.split_sentences(string)
+        try:
+            strings = self.sentencesplitter.split_sentences(string)
+        except UnicodeDecodeError:
+            string = unicode(string, errors='replace')
+            strings = self.sentencesplitter.split_sentences(string)
+
         translated_strings = []
         responses = []
         
