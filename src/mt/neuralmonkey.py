@@ -40,7 +40,11 @@ class NeuralMonkeyWorker(Worker):
         
         
     def translate(self, string):
-        strings = self.sentencesplitter.split_sentences(string)
+        try:
+            strings = self.sentencesplitter.split_sentences(string)
+        except UnicodeDecodeError:
+            string = unicode(string, errors='replace')
+            strings = self.sentencesplitter.split_sentences(string)
         
         preprocessed_strings = []
         for string in strings:
