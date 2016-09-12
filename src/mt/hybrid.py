@@ -165,7 +165,14 @@ class Pilot3Translator(SimpleTriangleTranslator):
         
     def translate_with_selection(self, text, new_rank_name="rank_soft", reconstruct="soft"):
         
-        strings = self.sentencesplitter.split_sentences(text)
+        try:
+            strings = self.sentencesplitter.split_sentences(text)
+        except UnicodeDecodeError:
+            try:
+                text = unicode(text, errors='replace')
+                strings = self.sentencesplitter.split_sentences(text)
+            except:
+                strings = [""]
         translation_strings = []
         ranked_parallelsentences = []
         descriptions = []
