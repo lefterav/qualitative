@@ -9,7 +9,8 @@ import logging as log
 from featuregenerator.preprocessor import Tokenizer, Truecaser
 from featuregenerator.blackbox.wsd import WSDclient
 from mt.lucy import LucyWorker, AdvancedLucyWorker
-from mt.moses import MtMonkeyWorker, ProcessedMosesWorker, MosesWorker
+from mt.moses import MtMonkeyWorker, ProcessedMosesWorker, MosesWorker,\
+    WsdMosesWorker
 from mt.selection import Autoranking
 from mt.worker import Worker
 from ConfigParser import SafeConfigParser
@@ -100,7 +101,8 @@ class Pilot3Translator(SimpleTriangleTranslator):
                  configfiles=[],
                  source_language="en",
                  target_language="de",
-                 ranking_model=None):
+                 ranking_model=None,
+                 reverse=False):
        
         self.source_language = source_language
         self.target_language = target_language
@@ -110,10 +112,11 @@ class Pilot3Translator(SimpleTriangleTranslator):
         config.read(configfiles)
         self.workers = []
         
-        truecaser_model = config.get("Truecaser:{}".format(source_language), 'filename')
+        truecaser_model = config.get("Truecaser:{}".format(source_language), 'model')
+        truecaser_model_target = config.get("Truecaser:{}".format(target_language), 'model')
         splitter_model = None
         if source_language == 'de':
-            splitter_model = config.get("Splitter:{}".format(source_language), 'filename')            
+            splitter_model = config.get("Splitter:{}".format(source_language), 'model')            
 
         tokenizer_protected = config.get("Tokenizer:{}".format(source_language), 'protected', None)
 
@@ -126,6 +129,10 @@ class Pilot3Translator(SimpleTriangleTranslator):
                                                      tokenizer_protected)
         except:
             self.moses_worker = None
+            
+        self.lucy_worker = None
+        self.lcm_worker = None
+        self.wsd_worker = None
 
         for engine in engines:
         
@@ -141,11 +148,32 @@ class Pilot3Translator(SimpleTriangleTranslator):
                                                       target_language=target_language,
                                                       **params)
                 self.workers.append(self.lucy_worker)
+            
+            if engine == "OldLucy" or (engine == "LcM" and not self.lucy_worker):
+                params = dict(config.items("Lucy"))
+                log.debug("Old Lucy starting with params: {}".format(params))
+                self.lucy_worker = LucyWorker(source_language=source_language,
+                                              target_language=target_language,
+                                              **params)
+                self.workers.append(self.lucy_worker)
+                
                 
             if engine == "LcM":
                 uri = config.get("LcM:{}-{}".format(source_language, target_language), "uri")
-                self.lcm_worker = ProcessedMosesWorker(uri, source_language, target_language, 
-                                                       truecaser_model, splitter_model)
+                self.lcm_worker = ProcessedMosesWorker(uri, target_language, target_language, 
+                                                       None, None,
+                                                       tokenizer_protected, 
+                                                       sentence_splitter=False)
+                self.lcm_worker.name = "lcm"
+                self.workers.append(self.lcm_worker)
+                
+            if engine == "WsdMoses":
+                moses_url = config.get("WsdMoses:{}-{}".format(source_language, target_language), "moses_uri")
+                wsd_url = config.get("WsdMoses:{}-{}".format(source_language, target_language), "wsd_uri")
+                
+                self.wsd_worker = WsdMosesWorker(moses_url, wsd_url, source_language, target_language, 
+                                                 truecaser_model, reverse) 
+                self.workers.append(self.wsd_worker)
                 
             if engine == "NeuralMonkey":
                 uri = config.get("NeuralMonkey:{}-{}".format(source_language, target_language), 
@@ -179,8 +207,9 @@ class Pilot3Translator(SimpleTriangleTranslator):
         
         for string in strings:
             #pool = Pool(processes=len(self.workers))
-            #translations = pool.map(worker_translate, [(w, string) for w in self.workers])
-            translations = [worker_translate((w, string)) for w in self.workers]
+            #translations = pool.map(worker_translate, [(w, string) for w in self.workers])\
+            
+            translations = self.workers_translate(string)
             
             source = SimpleSentence(string, {})
             
@@ -204,9 +233,25 @@ class Pilot3Translator(SimpleTriangleTranslator):
     def translate(self, string, new_rank_name="rank_soft", reconstruct="soft"):
         translation_string, _, _ = self.translate_with_selection(string, new_rank_name=new_rank_name, reconstruct=reconstruct)
         return translation_string
+    
+    def workers_translate(self, string):
+        lucy_string = ""
+        translated_sentences = []
+        for worker in self.workers:
+            if worker.name == "lcm":
+                #if lucy_string == "":
+                #    raise Exception("Lucy should be in the order before LcM")
+                translation = worker_translate(worker, lucy_string)
+            else:
+                translation = worker_translate(worker, string)
+            if worker.name == "lucy":
+                lucy_string = translation.get_string()
+                log.debug("storing lucy output {}".format(lucy_string))
+            translated_sentences.append(translation)
+        return translated_sentences    
 
         
-def worker_translate(worker_string):
+def worker_translate(worker, string):
     """
     Helper function that orders and fetches a translation from a worker
     @param worker: A machine translation worker
@@ -216,11 +261,10 @@ def worker_translate(worker_string):
     @return: a bundled simple sentence object
     @rtype: L{sentence.sentence.SimpleSentence}
     """
-    worker, string = worker_string
     log.info("Translating with {}".format(worker.name))
     translated_sentence = worker.translate_sentence(string)
     translated_sentence.add_attribute("system", worker.name)
-    log.debug("{} return this string: {}".format(worker.name, translated_sentence.get_string()))
+    log.debug("{} returned this string: {}".format(worker.name, translated_sentence.get_string()))
     return translated_sentence
 
 
@@ -235,24 +279,27 @@ class LcMWorker(Worker):
                  config_files=[],
                  classifiername=None,
                  truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-filename.3.en",
+                 splitter_model=None,
                  reverse=False):
         self.lucy_worker = LucyWorker(url=lucy_url,
                                       username=lucy_username, password=lucy_password,
                                       source_language=source_language,
                                       target_language=target_language) 
-        self.lcm_worker = MtMonkeyWorker(lcm_url)
+        self.lcm_worker = ProcessedMosesWorker(lcm_url, source_language, target_language, 
+                                               truecaser_model, splitter_model)
         self.tokenizer = Tokenizer(source_language)
         self.truecaser = Truecaser(source_language, truecaser_model)
+        self.name = 'lcm'
     
     def translate(self, string):
-        string = self.tokenizer.process_string(string)
-        string = self.truecaser.process_string(string)
+        #string = self.tokenizer.process_string(string)
+        #string = self.truecaser.process_string(string)
         
         sys.stderr.write("Sending to Lucy\n")
         lucy_translation, _ = self.lucy_worker.translate(string)
         sys.stderr.write("Sending to LcM\n")
         lcm_translation, _ = self.lcm_worker.translate(lucy_translation)
-        return lcm_translation, None
+        return lcm_translation, {}
     
 
 class SimpleWsdTriangleTranslator(Worker):

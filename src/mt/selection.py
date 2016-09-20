@@ -102,8 +102,8 @@ class Autoranking:
             Normalizer(target_language),
             Tokenizer(source_language, config.get("Tokenizer:{}".format(source_language), "protected", None)),
             Tokenizer(target_language, config.get("Tokenizer:{}".format(target_language), "protected", None)),
-            Truecaser(source_language, config.get("Truecaser:{}".format(source_language), "filename")),
-            Truecaser(target_language, config.get("Truecaser:{}".format(target_language), "filename")),
+            Truecaser(source_language, config.get("Truecaser:{}".format(source_language), "model")),
+            Truecaser(target_language, config.get("Truecaser:{}".format(target_language), "model")),
         ]
         
         #TODO: change this, so that the original output of the system is used
@@ -128,6 +128,8 @@ class Autoranking:
         return self.rank_parallelsentence(parallelsentence)
     
     def get_ranked_sentence(self, parallelsentence, new_rank_name="rank_soft", reconstruct="soft"):
+        if not parallelsentence:
+            log.info("Bingo1")
         annotated_parallelsentence = self._annotate(parallelsentence)
         ranked_sentence, description = self.ranker.get_ranked_sentence(annotated_parallelsentence, 
                                                                        new_rank_name=new_rank_name, 
@@ -175,6 +177,8 @@ class Autoranking:
         
         for preprocessor in self.preprocessors:
             parallelsentence = preprocessor.add_features_parallelsentence(parallelsentence)
+            if not parallelsentence:
+                log.info("Bingo: {}".format(preprocessor.__class__.__name__))
         
         parallelsentence = self.pipeline.annotate_parallelsentence(parallelsentence)
         log.debug("Annotated parallel sentence: {}".format(parallelsentence))
