@@ -348,9 +348,8 @@ class Pipeline:
         if self.source_featuregenerators:
             #annotate source and update parallelsentence bundle 
             for featuregenerator in self.source_featuregenerators:
-                source = featuregenerator.add_features_src(source)
+                source = featuregenerator.add_features_src(source, parallelsentence)
             parallelsentence = ParallelSentence(source, parallelsentence.tgt, attributes=parallel_attributes)
-        
         
         featuregenerators = self.target_featuregenerators
         translations = parallelsentence.get_translations()

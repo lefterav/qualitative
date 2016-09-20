@@ -36,7 +36,8 @@ from sklearn.ensemble.forest import ExtraTreesClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+from sklearn.lda import LDA
+#from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis as QDA
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import RandomTreesEmbedding
@@ -604,8 +605,19 @@ class SkRanker(Ranker, SkLearner):
         if type(self.learner) == str:
             if self.classifier:
                 self.learner = self.classifier
-                self.learner._dual_coef_ = self.learner.dual_coef_
-                self.learner._intercept_ = self.learner.intercept_
+                # this is to provide backwards compatibility for old models 
+                # whose classes used differeent attribute names
+                try:
+                    self.learner._dual_coef_ = self.learner.dual_coef_
+                    self.learner._intercept_ = self.learner.intercept_
+                except AttributeError:
+                    # it's ok if the model doesn't have these variables
+                    pass
+
+                try: # backwards compatibility for old LogisticRegression
+                    try_classes = self.learner.classes_
+                except AttributeError:
+                    self.learner.classes_ = [-1, 1]
 
         #de-compose multiranked sentence into pairwise comparisons
         pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(bidirectional_pairs=bidirectional_pairs,

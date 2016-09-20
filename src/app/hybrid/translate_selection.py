@@ -14,12 +14,13 @@ import logging
 import logging as log
 import sys
 import os
+import codecs
 from dataprocessor.sax.saxps2jcml import IncrementalJcml
 
 def parse_args():
 
     parser = argparse.ArgumentParser(description="Run translate engines and selection mechanism on a file")
-    parser.add_argument('--engines', nargs='*', action='append', default=['Lucy','Moses','NeuralMonkey'],
+    parser.add_argument('--engines', nargs='*', default=['Lucy', 'Moses', 'NeuralMonkey'],
                         help="A list of the engines to be used for translating, in the prefered order")
     parser.add_argument('--source_language', default='en', help="The language code of the source language")
     parser.add_argument('--target_language', default='de', help="The language code of the target language")
@@ -33,8 +34,9 @@ def parse_args():
                         help="The location of the text file where the description of the selection process will be written")
     parser.add_argument('--parallelsentence_output', default=None,
                         help="The location of the JCML file where the full annotated and ranked parallel sentences will be written")
-    parser.add_argument('--debug', action='store_true', default=False, help="Run in full verbose mode")
-
+    parser.add_argument('--debug', action='store_true', default=False, help="Run in full verbose mode")   
+    parser.add_argument('--reverse', action='store_true', default=False,
+                        help="Whether ranker's decisions should be reversed")
     args = parser.parse_args()
     return args
 
@@ -51,12 +53,14 @@ def set_loglevel(debug=False):
 
 
 def translate_file(args):
+    log.info("Engines: {}".format(args.engines)) 
     translator = Pilot3Translator(args.engines, args.config, 
                                   args.source_language, 
                                   args.target_language, 
-                                  args.ranking_model)
+                                  args.ranking_model,
+                                  args.reverse)
     
-    text_input = open(args.input)
+    text_input = codecs.open(args.input, 'r', 'utf8')
     text_output = open(args.text_output, 'w')
 
     if args.description_output:

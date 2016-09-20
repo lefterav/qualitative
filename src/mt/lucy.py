@@ -64,20 +64,33 @@ class LucyWorker(Worker):
         self.alternatives = alternatives
         self.unknowns = unknowns
         self.compounds = compounds
+        self.name = "lucy"
         
 
     def translate(self, string):
         alternatives = 1 if self.alternatives else 0
         unknowns = 1 if self.unknowns else 0
         compounds = 1 if self.compounds else 0
-        
-        data = TEMPLATE.format(langpair=self.langpair, 
-                               input=quoteattr(string), 
-                               subject_areas=self.subject_areas,
-                               alternatives=alternatives,
-                               unknowns=unknowns,
-                               compounds=compounds
-                               )
+
+        try:
+            data = TEMPLATE.format(langpair=self.langpair, 
+                                input=quoteattr(string), 
+                                subject_areas=self.subject_areas,
+                                alternatives=alternatives,
+                                unknowns=unknowns,
+                                compounds=compounds
+                                )
+        except UnicodeEncodeError:
+            string = string.encode('utf8')
+            #log.debug("translating string with Lucy: {}".format(string))
+            data = TEMPLATE.format(langpair=self.langpair, 
+                                input=quoteattr(string), 
+                                subject_areas=self.subject_areas,
+                                alternatives=alternatives,
+                                unknowns=unknowns,
+                                compounds=compounds
+                                )
+
         headers = {'Content-type': 'application/xml'}
         auth = HTTPBasicAuth(self.username, self.password)
         log.debug("Lucy request: {}".format(data))

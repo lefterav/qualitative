@@ -1,6 +1,5 @@
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
-from app.autoranking.application import Autoranking
 import sys
 import argparse
 from mt.moses import ProcessedMosesWorker, MosesWorker

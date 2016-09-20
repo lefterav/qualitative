@@ -76,14 +76,16 @@ class ProcessedWorker(Worker):
     """
     def __init__(self, source_language, target_language, 
                  truecaser_model, splitter_model=None, worker=None, 
-                 tokenizer_protected=None, **kwargs):
+                 tokenizer_protected=None, sentence_splitter=True, **kwargs):
         
+        self.sentencesplitter_enabled = sentence_splitter
         self.sentencesplitter = SentenceSplitter({'language': source_language})
         self.preprocessors = [Normalizer(language=source_language),
                               Tokenizer(source_language, protected=tokenizer_protected),
-                              Truecaser(language=source_language, 
-                                        filename=truecaser_model),
-                              ]
+                             ]
+        if truecaser_model:
+            self.preprocessors.append(Truecaser(language=source_language, 
+                                        filename=truecaser_model))
         if source_language == 'de' and splitter_model:
             self.preprocessors.append(CompoundSplitter(language=source_language,
                                                        filename=splitter_model))
@@ -93,21 +95,29 @@ class ProcessedWorker(Worker):
         self.worker = worker
         
     def translate(self, string):
-        try:
-            strings = self.sentencesplitter.split_sentences(string)
-        except UnicodeDecodeError:
-            string = unicode(string, errors='replace')
-            strings = self.sentencesplitter.split_sentences(string)
-
+    
+        if self.sentencesplitter_enabled:
+            try:
+                strings = self.sentencesplitter.split_sentences(string)
+            except UnicodeDecodeError:
+                string = unicode(string, errors='replace')
+                strings = self.sentencesplitter.split_sentences(string)
+        else:
+            log.debug("Won't perform sentence splitting")
+            strings = [string]
         translated_strings = []
         responses = []
         
         for string in strings:
             for preprocessor in self.preprocessors:
+                if isinstance(string, unicode):
+                    string = string.encode('utf-8')
+                log.debug("{}: {}".format(preprocessor, string))
                 string = preprocessor.process_string(string)
+            
             translated_string, response = self.worker.translate(string)
             translated_string = unescape(translated_string)
-            print "output: ", translated_string, response
+            log.debug("output: {}, {}".format(translated_string, response))
             for postprocessor in self.postprocessors:
                 translated_string = postprocessor.process_string(translated_string)
             translated_strings.append(translated_string)
@@ -124,7 +134,7 @@ class ProcessedMosesWorker(ProcessedWorker):
         worker = MosesWorker(uri)
         super(ProcessedMosesWorker, self).__init__(source_language, target_language, 
                                                    truecaser_model, splitter_model, 
-                                                   worker, tokenizer_protected)
+                                                   worker, tokenizer_protected, **kwargs)
         self.name = "moses"
         
 
@@ -199,6 +209,7 @@ class WsdMosesWorker(Worker):
         self.truecaser = Truecaser(source_language, truecaser_model)
         self.detokenizer = Detokenizer(target_language)
         self.detruecaser = Detruecaser(target_language)
+        self.name = "wsdmoses" 
     
     def translate(self, string):
         sys.stderr.write("Sending to WSD Analyzer\n")
@@ -212,4 +223,4 @@ class WsdMosesWorker(Worker):
         moses_translation, _ = self.moses_worker.translate(wsd_source)
         moses_translation = self.detruecaser.process_string(moses_translation)
         moses_translation = self.detokenizer.process_string(moses_translation)
-        return moses_translation, None
+        return moses_translation, {}
