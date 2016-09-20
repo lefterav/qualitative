@@ -111,6 +111,7 @@ class Pilot3Translator(SimpleTriangleTranslator):
         log.error("Loading config files {}".format(configfiles))
         config.read(configfiles)
         self.workers = []
+        self.reverse = reverse
         
         truecaser_model = config.get("Truecaser:{}".format(source_language), 'model')
         truecaser_model_target = config.get("Truecaser:{}".format(target_language), 'model')
@@ -216,7 +217,7 @@ class Pilot3Translator(SimpleTriangleTranslator):
             attributes = {"langsrc" : self.source_language, "langtgt" : self.target_language}
             parallelsentence = ParallelSentence(source, translations, attributes=attributes)
             ranked_parallelsentence, description = self.selector.get_ranked_sentence(parallelsentence, reconstruct=reconstruct, new_rank_name=new_rank_name)
-            translation_string = ranked_parallelsentence.get_best_translation(new_rank_name=new_rank_name).get_string()
+            translation_string = ranked_parallelsentence.get_best_translation(new_rank_name=new_rank_name, reverse=self.reverse).get_string()
             
             ranked_parallelsentences.append(ranked_parallelsentence)
             translation_strings.append(translation_string)
