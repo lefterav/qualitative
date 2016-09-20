@@ -299,7 +299,7 @@ class LcMWorker(Worker):
         lucy_translation, _ = self.lucy_worker.translate(string)
         sys.stderr.write("Sending to LcM\n")
         lcm_translation, _ = self.lcm_worker.translate(lucy_translation)
-        return lcm_translation, {}
+        return lcm_translation, None
     
 
 class SimpleWsdTriangleTranslator(Worker):
