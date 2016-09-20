@@ -36,7 +36,7 @@ def parse_args():
                         help="The location of the JCML file where the full annotated and ranked parallel sentences will be written")
     parser.add_argument('--debug', action='store_true', default=False, help="Run in full verbose mode")   
     parser.add_argument('--reverse', action='store_true', default=False,
-                        help="Whether ranker's decisions should be reversed")
+                        help="Whether ranker's decisions should be reversed. Useful if ranker trained with BLEU or meteor and not reversed before it was stored.")
     args = parser.parse_args()
     return args
 
