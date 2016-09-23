@@ -39,7 +39,7 @@ class DummyTriangleTranslator():
                  lucy_username="traductor", lucy_password="traductor",                
                  source_language="en", target_language="de",
                  config_files=[],
-                 ranking_model=None):
+                 model=None):
         self.moses_worker = MtMonkeyWorker(moses_url)
         self.lucy_worker = LucyWorker(url=lucy_url,
                                       username=lucy_username, password=lucy_password,
@@ -101,7 +101,7 @@ class Pilot3Translator(SimpleTriangleTranslator):
                  configfiles=[],
                  source_language="en",
                  target_language="de",
-                 ranking_model=None,
+                 model=None,
                  reverse=False):
        
         self.source_language = source_language
@@ -185,14 +185,14 @@ class Pilot3Translator(SimpleTriangleTranslator):
                                                               tokenizer_protected)
                 self.workers.append(self.neuralmonkey_worker)
         
-        self.selector = Autoranking(configfiles, ranking_model, source_language, 
+        self.selector = Autoranking(configfiles, model, source_language, 
                                     target_language, reverse=False)
         
         self.sentencesplitter = SentenceSplitter({'language': source_language})
 
         
         
-    def translate_with_selection(self, text, new_rank_name="rank_soft", reconstruct="soft"):
+    def translate(self, text, reconstruct="soft"):
         
         try:
             strings = self.sentencesplitter.split_sentences(text)
@@ -216,25 +216,22 @@ class Pilot3Translator(SimpleTriangleTranslator):
             
             attributes = {"langsrc" : self.source_language, "langtgt" : self.target_language}
             parallelsentence = ParallelSentence(source, translations, attributes=attributes)
-            ranked_parallelsentence, description = self.selector.get_ranked_sentence(parallelsentence, reconstruct=reconstruct, new_rank_name=new_rank_name)
-            translation_string = ranked_parallelsentence.get_best_translation(new_rank_name=new_rank_name, reverse=self.reverse).get_string()
-            
+            translation_string, ranked_parallelsentence, description = self.selector.get_best_sentence(parallelsentence, 
+                                                                                                       reconstruct=reconstruct)
             ranked_parallelsentences.append(ranked_parallelsentence)
             translation_strings.append(translation_string)
             descriptions.append(description)
         
         translation_string = " ".join(translation_strings)
-        if len(descriptions) > 1:
-            description = {}
-            for i, descr in enumerate(descriptions):
-                description[i] = descr 
-            
+        
+        description = {}
+        for i, descr in enumerate(descriptions):
+            description[i] = descr 
+        
+        #TODO: maybe description should not be returned, as it is already contained in the ranked_sentence arguments
         return translation_string, ranked_parallelsentences, description     
 
-    def translate(self, string, new_rank_name="rank_soft", reconstruct="soft"):
-        translation_string, _, _ = self.translate_with_selection(string, new_rank_name=new_rank_name, reconstruct=reconstruct)
-        return translation_string
-    
+
     def workers_translate(self, string):
         lucy_string = ""
         translated_sentences = []
@@ -279,7 +276,7 @@ class LcMWorker(Worker):
                  source_language="en", target_language="de",
                  config_files=[],
                  classifiername=None,
-                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-filename.3.en",
+                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-model.3.en",
                  splitter_model=None,
                  reverse=False):
         self.lucy_worker = LucyWorker(url=lucy_url,
@@ -313,7 +310,7 @@ class SimpleWsdTriangleTranslator(Worker):
                  source_language="en", target_language="de",
                  config_files=[],
                  classifiername=None,
-                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-filename.3.en",
+                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-model.3.en",
                  reverse=False):
         self.selector = Autoranking(config_files, classifiername, reverse)
         self.wsd_worker = WSDclient(wsd_url)

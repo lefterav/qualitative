@@ -215,11 +215,11 @@ class Detokenizer(CommandlinePreprocessor):
     
 
 class Truecaser(CommandlinePreprocessor):
-    def __init__(self, language, filename):
+    def __init__(self, language, model):
         path = util.__path__[0]
         path = os.path.join(path, "truecase.perl")
-        command_template = "perl {path} --model {filename}"
-        super(Truecaser, self).__init__(path, language, {"filename": filename}, command_template)
+        command_template = "perl {path} --model {model}"
+        super(Truecaser, self).__init__(path, language, {"model": model}, command_template)
 
 class Detruecaser(CommandlinePreprocessor):
     def __init__(self, language):
@@ -229,11 +229,11 @@ class Detruecaser(CommandlinePreprocessor):
         super(Detruecaser, self).__init__(path, language, {}, command_template)
 
 class CompoundSplitter(CommandlinePreprocessor):
-    def __init__(self, language, filename):
+    def __init__(self, language, model):
         path = util.__path__[0]
         path = os.path.join(path, 'compound-splitter.perl')
-        command_template = "perl {path} --model {filename}"
-        super(CompoundSplitter, self).__init__(path, language, {"filename": filename}, command_template)   
+        command_template = "perl {path} --model {model}"
+        super(CompoundSplitter, self).__init__(path, language, {"model": model}, command_template)   
 
 
 

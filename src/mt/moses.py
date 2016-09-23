@@ -85,10 +85,10 @@ class ProcessedWorker(Worker):
                              ]
         if truecaser_model:
             self.preprocessors.append(Truecaser(language=source_language, 
-                                        filename=truecaser_model))
+                                        model=truecaser_model))
         if source_language == 'de' and splitter_model:
             self.preprocessors.append(CompoundSplitter(language=source_language,
-                                                       filename=splitter_model))
+                                                       model=splitter_model))
         self.postprocessors = [Detruecaser(language=target_language),
                                Detokenizer(language=target_language)
                                ]
@@ -201,7 +201,7 @@ class WsdMosesWorker(Worker):
                  moses_url,
                  wsd_url,
                  source_language="en", target_language="de",
-                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-filename.3.en",
+                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-model.3.en",
                  reverse=False):
         self.wsd_worker = WSDclient(wsd_url)
         self.moses_worker = MosesWorker(moses_url)
