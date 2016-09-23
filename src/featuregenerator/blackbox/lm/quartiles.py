@@ -24,7 +24,7 @@ class NgramManager(object):
     
     def __init__(self, ngram_counts_filename=None, max_ngram_order=3):
         '''
-        @param ngram_counts_filename: the filename containing the counts
+        @param ngram_counts_filename: the model containing the counts
         @type ngram_counts_filename: C{str}
         @param max_ngram_order: the maximum order of n-grams in the table
         @type max_ngram_order: C{int}

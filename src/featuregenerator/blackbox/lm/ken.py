@@ -75,7 +75,7 @@ class KenLMFeatureGenerator(LanguageFeatureGenerator):
     
     def __init__(self, language=None, model=None, bos=True, eos=True, **kwargs):
         '''
-        Load the filename
+        Load the model
         '''
         self.model = Model(model)
         self.language = language

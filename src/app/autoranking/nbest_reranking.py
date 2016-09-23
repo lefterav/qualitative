@@ -45,8 +45,8 @@ def get_sources(sourcefilename):
 
 class NbestProcessor:
     
-    def __init__(self, ranking_model, config_files):
-        self.ranker = Autoranking(config_files, ranking_model)
+    def __init__(self, model, config_files):
+        self.ranker = Autoranking(config_files, model)
     
     def process_files(self, sourcefilename, nbestfilename, outputfilename):
         outputfile = open(outputfilename, 'w')
