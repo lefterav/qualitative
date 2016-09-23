@@ -28,11 +28,11 @@ class NeuralMonkeyWorker(Worker):
                                         protected=tokenizer_protected,
                                         unescape=False),
                               Truecaser(language=source_language, 
-                                        filename=truecaser_model),
+                                        model=truecaser_model),
                               ]
         if source_language == 'de' and splitter_model:
             self.preprocessors.append(CompoundSplitter(language=source_language,
-                                                       filename=splitter_model))
+                                                       model=splitter_model))
         self.postprocessors = [Detruecaser(language=target_language),
                                Detokenizer(language=target_language)]
         self.uri = uri
