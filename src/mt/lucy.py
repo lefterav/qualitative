@@ -15,7 +15,7 @@ import requests
 import xml.etree.ElementTree as et
 
 from mt.worker import Worker
-from mt.moses import MtMonkeyWorker
+from mt.moses import MtMonkeyWorker, MosesWorker
 from featuregenerator.preprocessor import Normalizer, Tokenizer
 from argparse import SUPPRESS
 
@@ -147,8 +147,10 @@ class AdvancedLucyWorker(LucyWorker):
                  suppress_where_it_says=False,
                  normalize=True, **kwargs):
         
-        #self.moses = MtMonkeyWorker(moses_uri)
-        self.moses = moses
+        if not type(moses) is str:
+            self.moses = moses
+        else:
+            self.moses = MosesWorker(uri=moses) 
         
         # normalizer fixes punctuation like weird quotes
         if normalize:
