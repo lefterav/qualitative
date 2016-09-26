@@ -22,6 +22,7 @@ from sentence.sentence import SimpleSentence
 
 from ml.lib.orange.ranking import OrangeRanker 
 from sentence.parallelsentence import ParallelSentence
+from featuregenerator.sentencesplitter import SentenceSplitter
 
 from featuregenerator.blackbox.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.blackbox.counts import LengthFeatureGenerator
@@ -110,7 +111,9 @@ class Autoranking:
         self.postprocessors = [
                                Detruecaser(target_language),
                                Detokenizer(target_language)]
-        
+
+        self.source_sentencesplitter = SentenceSplitter({'language': source_language})
+        self.translation_sentencesplitter = SentenceSplitter({'language': target_language})
         
     def rank_strings(self, source, translations, reconstruct='soft'):
         # TODO: obsolete function. remove
@@ -150,13 +153,13 @@ class Autoranking:
                                                                 reverse=self.reverse)
         return best_translation.get_string(), ranked_sentence, description
     
-    def _split_sentences(self, text):
+    def _split_sentences(self, text, splitter):
         try:
-            strings = self.sentencesplitter.split_sentences(text)
+            strings = splitter.split_sentences(text)
         except UnicodeDecodeError:
             try:
                 text = unicode(text, errors='replace')
-                strings = self.sentencesplitter.split_sentences(text)
+                strings = self.splitter.split_sentences(text)
             except:
                 strings = [""]
         return strings
@@ -168,7 +171,7 @@ class Autoranking:
             system_names = [str(i) for i in range(1, len(translation_strings)+1)]
         
         # split source text into sentences and create a sentence object for each
-        source_sentence_strings = self._split_sentences(source_string)
+        source_sentence_strings = self._split_sentences(source_string, self.source_sentencesplitter)
         source_sentences = [SimpleSentence(s, {}) for s in source_sentence_strings]
         
         # create a dict to associate sentences 
@@ -177,7 +180,7 @@ class Autoranking:
         # iterate for each system-made translation
         for translation_string, system_name in zip(translation_strings, system_names):
             # split each translation into sentences and map them to the respective sources
-            translation_sentence_strings = self._split_sentences(translation_string)
+            translation_sentence_strings = self._split_sentences(translation_string, self.translation_sentencesplitter)
             for source_sentence, translation_sentence_string in zip(source_sentences, translation_sentence_strings):
                 translation = SimpleSentence(translation_sentence_string, {'system': system_name})
                 translations_per_source_sentence.setdefault(source_sentence, default=[]).append(translation)
@@ -195,7 +198,7 @@ class Autoranking:
             # create a unique id for the sentence
             sentence_id+=1
             if request_id:
-                atts['sentence_id'] = "_".join([request_id, sentence_id])
+                atts['sentence_id'] = "{}_{}".format(request_id, sentence_id)
             else:
                 atts['sentence_id'] = sentence_id
             parallelsentence = ParallelSentence(source_sentence, translations, attributes=atts)
@@ -209,7 +212,7 @@ class Autoranking:
         ranked_sentences = self.get_ranked_sentences_from_strings(source_string, translation_strings, 
                                                                   system_names, new_rank_name, reconstruct,
                                                                   request_id=request_id)
-        best_translation_strings = [r.get_best_translation(systems_order=self.engines, new_rank_name=new_rank_name,
+        best_translation_strings = [r.get_best_translation(systems_order=system_names, new_rank_name=new_rank_name,
                                                            reverse=self.reverse).get_string() 
                                     for r in ranked_sentences]
         return " ".join(best_translation_strings), ranked_sentences
