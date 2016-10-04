@@ -147,9 +147,11 @@ class Autoranking:
         #TODO: maybe description should not be returned, as it is already contained in the ranked_sentence arguments
         return ranked_sentence, description
     
-    def get_best_sentence(self, parallelsentence, new_rank_name="rank_soft", reconstruct="soft"):
+    def get_best_sentence(self, parallelsentence, new_rank_name="rank_soft", reconstruct="soft", engines=[]):
+        if not engines:
+            engines = parallelsentence.get_system_names()
         ranked_sentence, description = self.get_ranked_sentence(parallelsentence, new_rank_name, reconstruct)
-        best_translation = ranked_sentence.get_best_translation(systems_order=self.engines, new_rank_name=new_rank_name,
+        best_translation = ranked_sentence.get_best_translation(systems_order=engines, new_rank_name=new_rank_name,
                                                                 reverse=self.reverse)
         return best_translation.get_string(), ranked_sentence, description
     
