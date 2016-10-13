@@ -12,6 +12,7 @@ import util
 import os
 import logging as log
 from xml.sax import saxutils
+from pexpect import spawn
 
 class Preprocessor(FeatureGenerator):
     """
@@ -103,6 +104,8 @@ class CommandlinePreprocessor(Preprocessor):
                                         stdin=subprocess.PIPE, 
                                         stdout=subprocess.PIPE,
                                         )
+
+        #self.process = spawn(self.command)
         
 
 #        self.q = Queue.Queue()
@@ -121,17 +124,42 @@ class CommandlinePreprocessor(Preprocessor):
     def process_string(self, string):
         if isinstance(string, unicode):
             string = u'{0}{1}\n'.format(string, u' '*10240)
+            #string = u'{0}\n'.format(string)
             string = string.encode('utf-8')
         else:
             string = '{0}{1}\n'.format(string, ' '*10240)
+            #string = '{0}\n'.format(string)
         self.process.stdin.write(string)
         self.process.stdin.flush()   
         self.process.stdout.flush()
-        
+        #self.process.send(string)
         output = self.process.stdout.readline().strip()
-        
+        #output = []
+        #chars = ""
+        #while not chars.endswith("\r\n\r\n"):
+        #    try:
+        #        chars = self.process.read_nonblocking(size=32767, timeout=self.timeout)
+                #BitParChartParser.block = False
+        #        log.debug("Characters: {}".format(chars))
+        #        output.append(chars)
+        #    except  Exception as inst:
+        #        log.error(type(inst))
+        #        log.error(inst)
+        #        log.warning("BitParChartParser: exception caused by sentence '{}'".format(string.strip().replace("\n", " ")))
+        #        break
+        #    if not chars.endswith("\r\n\r\n"):
+        #        log.debug("Waiting 100 milliseconds")
+        #        sleep(0.1)
+        #   #print chars
+        #output = "".join(output)
+
+
+        #output = self.process.read_nonblocking(size=1024, timeout=0)
+        #output = output.strip()
+
         #some preprocessors occasionally return an empty string. In that case read once more
         if output == "" and len(string) > 1:
+            #output = self.process.stdout.readline().strip()
             output = self.process.stdout.readline().strip()
         
         if self.unescape:
