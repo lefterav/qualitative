@@ -32,6 +32,7 @@ class QtLeapJudgementReader:
         # read csv files into the dictionaries
         self.read_csv_files()
         self.calculate_iaaa_langid()
+        self.calculate_iaaa_taskid()
     
         
     def read_csv_files(self):
@@ -69,6 +70,12 @@ class QtLeapJudgementReader:
             #print langid
             raters, agreement = self.calculate_agreement(self.judgments_per_langid[langid])
             print langid, raters, round(agreement, 3) 
+    
+    def calculate_iaaa_taskid(self):
+        for taskid in sorted(self.judgments_per_taskid.keys()):
+            #print langid
+            _, agreement = self.calculate_agreement(self.judgments_per_taskid[taskid])
+            print taskid, round(agreement, 3) 
         
         
     def calculate_agreement(self, judgments):
