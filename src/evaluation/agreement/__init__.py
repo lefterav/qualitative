@@ -66,27 +66,32 @@ class QtLeapJudgementReader:
     
     def calculate_iaaa_langid(self):
         for langid in sorted(self.judgments_per_langid.keys()):
-            print langid
+            #print langid
             raters, agreement = self.calculate_agreement(self.judgments_per_langid[langid])
-            print langid, raters, agreement 
+            print langid, raters, round(agreement, 3) 
         
         
     def calculate_agreement(self, judgments):
         total = 0
         total_agreed = 0
         judgments_size = []
-        print "judgments for langid {}".format(len(judgments))
+        uids = set()
+        #print "judgments for langid {}".format(len(judgments))
         for qid, query_judgments in judgments.iteritems():
-            print "judgments for qid {}: {}".format(qid, len(query_judgments))
+            #print "judgments for qid {}: {}".format(qid, len(query_judgments))
             for taskid, task_judgments in query_judgments.iteritems():
-                print "judgments for task_id {}: {}: {}".format(taskid, len(task_judgments), ", ".join([str(j) for j in task_judgments]))
+                #print "judgments for task_id {}: {}: {}".format(taskid, len(task_judgments), ", ".join([str(j) for j in task_judgments]))
                 judgments_size.append(len(task_judgments))
                 #print qid, taskid, len(task_judgments)
                 for judgment_1, judgment_2 in itertools.combinations(task_judgments, 2):
+                    uids.add(judgment_1.uid)
+                    uids.add(judgment_2.uid)
+                    if judgment_1.uid == judgment_2.uid:
+                        continue
                     total+=1
                     if judgment_1.score == judgment_2.score:
                         total_agreed+=1
-        return max(judgments_size), total_agreed*1.00/total
+        return len(uids), total_agreed*1.00/total
             
 if __name__ == "__main__":
     filenames = sys.argv[1:]
