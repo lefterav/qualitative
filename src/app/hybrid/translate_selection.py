@@ -119,15 +119,17 @@ def select_from_translated_textfiles(args):
     request_id = 0
     for source_string in open(sourcefile):
         request_id += 1
+        log.info("Translating sentence {}".format(request_id))
         translation_strings = ([t.readline() for t in textfiles])
+        log.debug("Read {} translations".format(len(translation_strings)))
         system_names = args.engines
         selected_translation_string, ranked_sentences = selector.get_best_sentence_from_strings(source_string, 
                                                                                                 translation_strings, 
                                                                                                 system_names, 
                                                                                                 reconstruct='soft',
                                                                                                 request_id=request_id)
-        text_output.write(selected_translation_string)
-        text_output.write(os.linesep)
+        log.debug("Writing selected translation for sentence {}".format(request_id))
+        print >>text_output, selected_translation_string
         
         if args.parallelsentence_output:
             parallelsentence_output.add_parallelsentences(ranked_sentences)

@@ -8,6 +8,9 @@ from mt.neuralmonkey import NeuralMonkeyWorker
 from app.hybrid.translate_selection import set_loglevel
 from mt.hybrid import Pilot3Translator
 
+# Restrict to a particular path.
+class RequestHandler(SimpleXMLRPCRequestHandler):
+    rpc_paths = ('/RPC2',) 
 
 def parse_args():
 
@@ -35,14 +38,11 @@ def parse_args():
     args = parser.parse_args()
     return args
 
-# Restrict to a particular path.
-class RequestHandler(SimpleXMLRPCRequestHandler):
-    rpc_paths = ('/RPC2',)
-    
+   
 args = parse_args()
 
 
-server = SimpleXMLRPCServer((args.host, args.port),
+server = SimpleXMLRPCServer((args.host, int(args.port)),
                             requestHandler=RequestHandler)
 server.register_introspection_functions()
 
@@ -58,7 +58,7 @@ translator = Pilot3Translator(args.engines, args.config,
 def process_task(params):
     text = params['text']
     sys.stderr.write("Received task\n")
-    translated_text, description = translator.translate(text)
+    translated_text, _, description = translator.translate(text)
     transaction_id = 0
     result = {
             "errorCode": 0, 
@@ -68,7 +68,7 @@ def process_task(params):
                     "translated": [
                         {
                             "text": translated_text, 
-                            "description": description,
+                            #"description": description,
                             "score": 0,
                         }
                     ], 
