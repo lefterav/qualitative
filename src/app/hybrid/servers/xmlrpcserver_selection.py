@@ -58,7 +58,10 @@ translator = Pilot3Translator(args.engines, args.config,
 def process_task(params):
     text = params['text']
     sys.stderr.write("Received task\n")
-    translated_text, _, description = translator.translate(text)
+    try:
+        translated_text, parallelsentences, description = translator.translate(text)
+    except Exception as e:
+        sys.stderr.write("{}\n".format(e))
     transaction_id = 0
     result = {
             "errorCode": 0, 
@@ -68,7 +71,7 @@ def process_task(params):
                     "translated": [
                         {
                             "text": translated_text, 
-                            #"description": description,
+                            "description": str(description),
                             "score": 0,
                         }
                     ], 

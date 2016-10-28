@@ -93,6 +93,7 @@ class ProcessedWorker(Worker):
                                Detokenizer(language=target_language)
                                ]
         self.worker = worker
+        log.debug("Loaded processed Worker for {}".format(worker))
         
     def translate(self, string):
     

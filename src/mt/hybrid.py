@@ -236,16 +236,19 @@ class Pilot3Translator(SimpleTriangleTranslator):
         lucy_string = ""
         translated_sentences = []
         for worker in self.workers:
-            if worker.name == "lcm":
-                #if lucy_string == "":
-                #    raise Exception("Lucy should be in the order before LcM")
-                translation = worker_translate(worker, lucy_string)
-            else:
-                translation = worker_translate(worker, string)
-            if worker.name == "lucy":
-                lucy_string = translation.get_string()
-                log.debug("storing lucy output {}".format(lucy_string))
-            translated_sentences.append(translation)
+            try:
+                if worker.name == "lcm":
+                    #if lucy_string == "":
+                    #    raise Exception("Lucy should be in the order before LcM")
+                    translation = worker_translate(worker, lucy_string)
+                else:
+                    translation = worker_translate(worker, string)
+                if worker.name == "lucy":
+                    lucy_string = translation.get_string()
+                    log.debug("storing lucy output {}".format(lucy_string))
+                translated_sentences.append(translation)
+            except Exception as e:
+                log.error("Cannot translate with {}. Exception raised: {}".format(worker, e))
         return translated_sentences    
 
         

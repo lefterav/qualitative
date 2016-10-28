@@ -37,7 +37,7 @@ class NeuralMonkeyWorker(Worker):
                                Detokenizer(language=target_language)]
         self.uri = uri
         self.name = "neuralmonkey"
-        
+        log.debug("Neural Monkey wrapper initialized")        
         
     def translate(self, string):
         try:
