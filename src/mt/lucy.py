@@ -15,7 +15,7 @@ import requests
 import xml.etree.ElementTree as et
 
 from mt.worker import Worker
-from mt.moses import MtMonkeyWorker
+from mt.moses import MtMonkeyWorker, MosesWorker
 from featuregenerator.preprocessor import Normalizer, Tokenizer
 from argparse import SUPPRESS
 
@@ -46,7 +46,7 @@ class LucyWorker(Worker):
                  username="traductor", password="traductor", 
                  source_language="en", target_language="de",
                  subject_areas="(DP TECH CTV ECON)",
-                 filename=None,
+                 model=None,
                  alternatives=False,
                  unknowns=False,
                  compounds=False,
@@ -59,25 +59,38 @@ class LucyWorker(Worker):
         self.username = username
         self.password = password
         self.subject_areas = subject_areas
-        self.lexicon = filename
+        self.lexicon = model
         
         self.alternatives = alternatives
         self.unknowns = unknowns
         self.compounds = compounds
+        self.name = "lucy"
         
 
     def translate(self, string):
         alternatives = 1 if self.alternatives else 0
         unknowns = 1 if self.unknowns else 0
         compounds = 1 if self.compounds else 0
-        
-        data = TEMPLATE.format(langpair=self.langpair, 
-                               input=quoteattr(string), 
-                               subject_areas=self.subject_areas,
-                               alternatives=alternatives,
-                               unknowns=unknowns,
-                               compounds=compounds
-                               )
+
+        try:
+            data = TEMPLATE.format(langpair=self.langpair, 
+                                input=quoteattr(string), 
+                                subject_areas=self.subject_areas,
+                                alternatives=alternatives,
+                                unknowns=unknowns,
+                                compounds=compounds
+                                )
+        except UnicodeEncodeError:
+            string = string.encode('utf8')
+            #log.debug("translating string with Lucy: {}".format(string))
+            data = TEMPLATE.format(langpair=self.langpair, 
+                                input=quoteattr(string), 
+                                subject_areas=self.subject_areas,
+                                alternatives=alternatives,
+                                unknowns=unknowns,
+                                compounds=compounds
+                                )
+
         headers = {'Content-type': 'application/xml'}
         auth = HTTPBasicAuth(self.username, self.password)
         log.debug("Lucy request: {}".format(data))
@@ -134,8 +147,10 @@ class AdvancedLucyWorker(LucyWorker):
                  suppress_where_it_says=False,
                  normalize=True, **kwargs):
         
-        #self.moses = MtMonkeyWorker(moses_uri)
-        self.moses = moses
+        if not type(moses) is str:
+            self.moses = moses
+        else:
+            self.moses = MosesWorker(uri=moses) 
         
         # normalizer fixes punctuation like weird quotes
         if normalize:
@@ -184,6 +199,8 @@ class AdvancedLucyWorker(LucyWorker):
         if self.unknowns:
             text, unk_description = self._process_unknowns(text)
             description.update(unk_description)
+
+        log.debug("Lucy sending out translation: {}".format(text))
         return text, description
     
     def _preprocess_menu_items(self, text, menu_quotes=False):
@@ -299,9 +316,9 @@ class AdvancedLucyWorker(LucyWorker):
             #clean_chunk = self.tokenizer.process_string(clean_chunk)
             # get the translation from Moses (or lucy?)
             if translator == "Moses":
-                #log.debug("Sending clean menu chunk to Moses: '{}'".format(clean_chunk))
+                log.debug("Sending clean menu chunk to Moses: '{}'".format(clean_chunk))
                 chunk_translation, _ = self.moses.translate(clean_chunk)
-                #log.debug("Moses returned menu chunk: '{}'".format(chunk_translation))
+                log.debug("Moses returned menu chunk: '{}'".format(chunk_translation))
             else:
                 chunk_translation = []
                 for item in clean_chunk.split(" > "):

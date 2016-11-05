@@ -43,7 +43,7 @@ class BitParChartParser:
             refer to the bitpar manpage.
         @param cleanup: boolean, when set to true the grammar files will be
             removed when the BitParChartParser object is deleted.
-        @param name: filename of grammar files in case you want to export it,
+        @param name: model of grammar files in case you want to export it,
             if not given will default to a unique identifier
         @param n: the n best parse trees will be requested
             """
@@ -124,8 +124,8 @@ class BitParChartParser:
                 log.warning("BitParChartParser: exception caused by sentence '{}'".format(sent.strip().replace("\n", " ")))
                 break
             if not chars.endswith("\r\n\r\n"):
+                log.debug("Waiting 100 milliseconds")
                 sleep(0.1)
-                log.debug("Waiting one more second")
            #print chars
         output = "".join(output)
         log.debug("BitParChartParser: received sentence '{}'".format(sent.replace("\n", " ")))

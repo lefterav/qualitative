@@ -772,7 +772,8 @@ class ParallelSentence(object):
         """
         return [t.get_system_name() for t in self.tgt]
         
-    def get_best_translation(self, systems_order=None, new_rank_name="rank_soft"):
+    def get_best_translation(self, systems_order=None, new_rank_name="rank_soft",
+                             reverse=False):
         """
         Return the best translation from a ranked parallel sentence. Allows the
         caller to specify a predefined preference list, in case of ties
@@ -788,10 +789,15 @@ class ParallelSentence(object):
             systems_order = self.get_system_names()
         
         ranking = [t.get_attribute(new_rank_name) for t in self.tgt]
-        minimum_value = min(ranking)
+        
+        if reverse:
+            best_rank = max(ranking)
+        else:
+            best_rank = min(ranking)
+            
         best_translations = {}
         for translation in self.tgt:
-            if translation.get_attribute(new_rank_name) == minimum_value:
+            if translation.get_attribute(new_rank_name) == best_rank:
                 best_translations[translation.get_system_name()] = translation
         
         for system_name in systems_order:

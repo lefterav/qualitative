@@ -10,7 +10,9 @@ from . import FeatureGenerator
 import subprocess
 import util
 import os
-import codecs
+import logging as log
+from xml.sax import saxutils
+from pexpect import spawn
 
 class Preprocessor(FeatureGenerator):
     """
@@ -73,7 +75,7 @@ class CommandlinePreprocessor(Preprocessor):
             queue.put(line)
 #            break
     
-    def __init__(self, path, language, params = {}, command_template = ""):
+    def __init__(self, path, language, params = {}, command_template = "", unescape=False):
         """
         Initialize commandline-based feature generator. 
         @param path: the path where the command is based
@@ -89,16 +91,21 @@ class CommandlinePreprocessor(Preprocessor):
         params["language"] = language
         params["path"] = path
         self.command = command_template.format(**params)
+        log.debug("Command of preprocessor: '{}'".format(self.command))
         command_items = self.command.split(' ')
         self.output = []
         self.running = True
+        self.unescape = unescape
         
+
         self.process = subprocess.Popen(command_items, 
                                         shell=False, 
                                         bufsize=1, 
                                         stdin=subprocess.PIPE, 
                                         stdout=subprocess.PIPE,
                                         )
+
+        #self.process = spawn(self.command)
         
 
 #        self.q = Queue.Queue()
@@ -117,19 +124,46 @@ class CommandlinePreprocessor(Preprocessor):
     def process_string(self, string):
         if isinstance(string, unicode):
             string = u'{0}{1}\n'.format(string, u' '*10240)
+            #string = u'{0}\n'.format(string)
             string = string.encode('utf-8')
         else:
             string = '{0}{1}\n'.format(string, ' '*10240)
+            #string = '{0}\n'.format(string)
         self.process.stdin.write(string)
         self.process.stdin.flush()   
         self.process.stdout.flush()
-        
+        #self.process.send(string)
         output = self.process.stdout.readline().strip()
-        
+        #output = []
+        #chars = ""
+        #while not chars.endswith("\r\n\r\n"):
+        #    try:
+        #        chars = self.process.read_nonblocking(size=32767, timeout=self.timeout)
+                #BitParChartParser.block = False
+        #        log.debug("Characters: {}".format(chars))
+        #        output.append(chars)
+        #    except  Exception as inst:
+        #        log.error(type(inst))
+        #        log.error(inst)
+        #        log.warning("BitParChartParser: exception caused by sentence '{}'".format(string.strip().replace("\n", " ")))
+        #        break
+        #    if not chars.endswith("\r\n\r\n"):
+        #        log.debug("Waiting 100 milliseconds")
+        #        sleep(0.1)
+        #   #print chars
+        #output = "".join(output)
+
+
+        #output = self.process.read_nonblocking(size=1024, timeout=0)
+        #output = output.strip()
+
         #some preprocessors occasionally return an empty string. In that case read once more
         if output == "" and len(string) > 1:
+            #output = self.process.stdout.readline().strip()
             output = self.process.stdout.readline().strip()
         
+        if self.unescape:
+            output = saxutils.unescape(output)
         return output
     
     def close(self):
@@ -191,13 +225,14 @@ class Normalizer(CommandlinePreprocessor):
         super(Normalizer, self).__init__(path, language, {}, command_template)
         
 class Tokenizer(CommandlinePreprocessor):
-    def __init__(self, language, protected=None):
+    def __init__(self, language, protected=None, unescape=True):
         path = util.__path__[0]
         path = os.path.join(path, "tokenizer.perl")
         command_template = "perl {path} -b -l {language}"
         if protected:
             command_template = "perl {path} -b -l {language} -protected {protected}"
-        super(Tokenizer, self).__init__(path, language, {'protected': protected}, command_template)
+        super(Tokenizer, self).__init__(path, language, {'protected': protected}, 
+                command_template, unescape=unescape)
 
 class Detokenizer(CommandlinePreprocessor):
     def __init__(self, language):
@@ -208,11 +243,11 @@ class Detokenizer(CommandlinePreprocessor):
     
 
 class Truecaser(CommandlinePreprocessor):
-    def __init__(self, language, filename):
+    def __init__(self, language, model):
         path = util.__path__[0]
         path = os.path.join(path, "truecase.perl")
-        command_template = "perl {path} --model {filename}"
-        super(Truecaser, self).__init__(path, language, {"filename": filename}, command_template)
+        command_template = "perl {path} --model {model}"
+        super(Truecaser, self).__init__(path, language, {"model": model}, command_template)
 
 class Detruecaser(CommandlinePreprocessor):
     def __init__(self, language):
@@ -222,11 +257,11 @@ class Detruecaser(CommandlinePreprocessor):
         super(Detruecaser, self).__init__(path, language, {}, command_template)
 
 class CompoundSplitter(CommandlinePreprocessor):
-    def __init__(self, language, filename):
+    def __init__(self, language, model):
         path = util.__path__[0]
         path = os.path.join(path, 'compound-splitter.perl')
-        command_template = "perl {path} --model {filename}"
-        super(CompoundSplitter, self).__init__(path, language, {"filename": filename}, command_template)   
+        command_template = "perl {path} --model {model}"
+        super(CompoundSplitter, self).__init__(path, language, {"model": model}, command_template)   
 
 
 

@@ -10,6 +10,7 @@ ssh -l<username> <servername>
 sudo -sHu lt-mts
 cd /project/qtleap/software/selection_mechanism/qualitative/src/app/hybrid/servers/
 source /project/qtleap/software/virtual_environments/qualitative_14.04/bin/activate
+export PYTHONPATH=$PYTHONPATH:/project/qtleap/software/selection_mechanism/qualitative/src/
 script /dev/null
 screen
 # now run the following commands in the commandline
@@ -19,13 +20,13 @@ screen
 2. Start Moses pilot1 en-de at lns-87247.dfki.uni-sb.de
 
 bash /project/qtleap/software/mtmonkey/user/en-de/mt-2.1/scripts/run_moses
-python xmlrpcserver_worker.py --host lns-87247.dfki.uni-sb.de --port 9200 --uri http://lns-87247.dfki.uni-sb.de:9302 --source_language en --target_language de --truecaser_model /project/qtleap/pilot0/systems/de-en/truecaser/truecase-model.2.en  --splitter_model /project/qtleap/pilot0/systems/de-en/splitter/split-model.2.en
+python xmlrpcserver_worker.py --host lns-87247.dfki.uni-sb.de --port 9200 --uri http://lns-87247.dfki.uni-sb.de:9202 --source_language en --target_language de --truecaser_model /project/qtleap/pilot0/systems/de-en/truecaser/truecase-model.2.en  --splitter_model /project/qtleap/pilot0/systems/de-en/splitter/split-model.2.en
 
 
 3. Start Moses pilot 1 de-en at lns-87257.dfki.uni-sb.de
 
 bash /project/qtleap/software/mtmonkey/user/en-de/mt-2.1/scripts/run_moses
-python xmlrpcserver_worker.py --host lns-87247.dfki.uni-sb.de --port 9200 --uri http://lns-87247.dfki.uni-sb.de:9302 --source_language en --target_language de --truecaser_model /project/qtleap/pilot0/systems/de-en/truecaser/truecase-model.2.en
+python xmlrpcserver_worker.py --host lns-87247.dfki.uni-sb.de --port 9300 --uri http://lns-87247.dfki.uni-sb.de:9302 --source_language en --target_language de --truecaser_model /project/qtleap/pilot0/systems/de-en/truecaser/truecase-model.2.en
 
 4. Start Neural Monkey en-de at blade-1.dfki.uni-sb.de
 
