@@ -11,89 +11,28 @@ Todo:
  - yield n best parses with probabilites (parameter)
  - parse chart output"""
 
-from pexpect import spawn
-from time import sleep
-import os, re, sys
+import codecs
 import logging as log
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+import os
+import re
+import sys
 from collections import OrderedDict
 from numpy import average, std
-#from featuregenerator.preprocessor import CommandlinePreprocessor
-from xml.etree import cElementTree
+from pexpect import spawn
+from subprocess import check_call
+from time import sleep
+from uuid import uuid1
+
 from dataprocessor.sax.saxps2jcml import IncrementalJcml
 from dataprocessor.ce.cejcml import CEJcmlReader
-from tempfile import mkstemp
-import codecs
+from featuregenerator import LanguageFeatureGenerator
 
-from subprocess import check_call
-
-class BitPar(LanguageFeatureGenerator):
-    def __init__(self, path,
-                lexicon_filename,
-                grammar_filename,
-                unknownwords,
-                openclassdfsa, 
-                language,
-                timeout=30,
-                rootsymbol='TOP',
-                n=100):
-        n=10
-        path = os.path.join(path, "bitpar")
-        command_template = "{path} -q -b {n} -vp -s {rootsymbol} -u {unknownwords} -w {openclassdfsa} {grammar} {lexicon}".format(path=path,
-                                                                                                                                n=n,
-                                                                                                                                rootsymbol=rootsymbol,
-                                                                                                                                unknownwords=unknownwords,
-                                                                                                                                openclassdfsa=openclassdfsa,
-                                                                                                                                grammar=grammar_filename,
-                                                                                                                                lexicon=lexicon_filename
-                                                                                                                                )
-        super(BitPar, self).__init__(path, language, {}, command_template)
-    
-        
-    def get_features_string(self, string):
-        att = OrderedDict()
-        try: 
-            parses = self.nbest_parse(string)
-        except:
-            parses = []
-            
-        if not parses:
-            return {'bit_failed': 1}
-        att['bit_failed'] = 0
-        best_parse = sorted(parses)[0]
-        att["bit_tree"], att["bit_prob"] = best_parse
-        att["bit_n"] = len(parses)
-        probabilities = [prob for _, prob in parses]
-        att["bit_avgprob"] = average(probabilities)
-        att["bit_stdprob"] = std(probabilities)
-        att["bit_minprob"] = min(probabilities)
-        if att["bit_prob"] > (att["bit_avgprob"] + att["bit_stdprob"]):
-            att["bit_probhigh"] = 1
-        else:
-            att["bit_probhigh"] = 0
-        return att
-        
-    def nbest_parse(self, sent):
-        """ n has to be specified in the constructor because it is specified
-        as a command line parameter to bitpar, allowing it here would require
-        potentially expensive restarts of bitpar. """
-        
-        if self.bitpar.terminated: self.start()
-        log.debug("BitParChartParser: sending sentence '{}'".format(sent))
-        sent = "\n".join(sent.strip().split()) + "\n\n\n"
-        output = self.process_string(sent)
-        log.debug("BitParChartParser: received sentence '{}'".format(sent.replace("\n", " ")))
-        # remove bitpar's escaping (why does it do that?), strip trailing blank line
-        results = re.sub(r"\\([/{}\[\]<>'\$])", r"\1", output).splitlines()[:-1]
-        
-        probs = [float(a.split("=")[1]) for a in results[::2] if "=" in a]
-        trees = [a for a in results[1::2]]
-        return zip(trees, probs)
-    
 
 class BitParChartParser:    
     block = False
-    def __init__(self, lexicon_filename=None, grammar_filename=None, rootsymbol="TOP", unknownwords=None, openclassdfsa=None, cleanup=True, n=3, path=None, timeout=10):
+    def __init__(self, lexicon=None, grammar=None, rootsymbol="TOP", 
+                 unknownwords=None, openclassdfsa=None, cleanup=True, n=3, path=None, 
+                 timeout=10, name=None, **kwargs):
         """ Interface to bitpar chart parser. Expects a list of weighted
         productions with frequencies (not probabilities).
         
@@ -104,24 +43,28 @@ class BitParChartParser:
             refer to the bitpar manpage.
         @param cleanup: boolean, when set to true the grammar files will be
             removed when the BitParChartParser object is deleted.
-        @param name: filename of grammar files in case you want to export it,
+        @param name: model of grammar files in case you want to export it,
             if not given will default to a unique identifier
         @param n: the n best parse trees will be requested
             """
 
-        self.grammar_filename = grammar_filename
-        self.lexicon_filename = lexicon_filename
+        self.grammar_filename = grammar
+        self.lexicon_filename = lexicon
+        log.debug("BitParChartParser lexicon and grammar: {}".format(lexicon, grammar))
         self.path = path
         log.debug("BitParChartParser path: {}".format(path))
         self.rootsymbol = rootsymbol
         self.timeout = timeout
+        if name: self.id = name
+        else: self.id = uuid1()
         self.cleanup = cleanup
         self.n = n
         self.unknownwords = unknownwords
         self.openclassdfsa = openclassdfsa
         self.start()
-        #self.block = False
 
+    def __del__(self):
+        self.stop()
 
     def start(self):
         # quiet, yield best parse, show viterbi prob., use frequencies
@@ -140,6 +83,7 @@ class BitParChartParser:
             self.cmd += " %s %s" % (self.grammar_filename, self.lexicon_filename)
         log.debug("BitParChartParser command: {}".format(self.cmd))
         self.bitpar = spawn(self.cmd)
+        log.debug("BitPar Object: {}".format(self.bitpar))
         self.bitpar.setecho(False)
         # allow bitpar to initialize; just to be sure
         sleep(1)
@@ -160,11 +104,10 @@ class BitParChartParser:
         
         log.debug("BitParChartParser: sending sentence '{}'".format(sent))
         sent = "\n".join(sent.strip().split()) + "\n\n"
-        #while BitParChartParser.block:
-        #    sleep(1)
-        #    log.debug("Waiting for block to be removed")
-        #BitParChartParser.block = True
-        if not self.bitpar.isalive(): self.start()
+
+        if self.bitpar.terminated: 
+            log.warning("BitPar has been terminated for unknown reason. Trying to restart")
+            self.start()
         self.bitpar.send(sent)
         log.debug("BitParChartParser: sent '{}'".format(sent.strip().replace("\n"," ")))
         output = []
@@ -176,13 +119,14 @@ class BitParChartParser:
                 log.debug("Characters: {}".format(chars))
                 output.append(chars)
             except  Exception as inst:
-                log.debug(type(inst))
-                log.debug(inst)
+                log.error(type(inst))
+                log.error(inst)
                 log.warning("BitParChartParser: exception caused by sentence '{}'".format(sent.strip().replace("\n", " ")))
                 break
             if not chars.endswith("\r\n\r\n"):
+                log.debug("Waiting 100 milliseconds")
                 sleep(0.1)
-                log.debug("Waiting one more second")
+           #print chars
         output = "".join(output)
         log.debug("BitParChartParser: received sentence '{}'".format(sent.replace("\n", " ")))
         # remove bitpar's escaping (why does it do that?), strip trailing blank line
@@ -220,19 +164,24 @@ class BitParChartParser:
     #     return ([ProbabilisticTree(b.node, b, prob=a) for a, b in zip(probs, trees)] for probs, trees in result)
     #     
     
-class BitParserFeatureGenerator(LanguageFeatureGenerator):
-    def __init__(self, path,
-                lexicon_filename,
-                grammar_filename,
-                unknownwords,
-                openclassdfsa, 
-                language,
+class BitParFeatureGenerator(LanguageFeatureGenerator):
+    
+    feature_names = ['bit_failed', 'bit_tree', 'bit_prob', 'bit_n', 'bit_avgprob', 'bit_stdprob'
+                     'bit_minprob', 'bit_probhigh', 'bit']
+    
+    def __init__(self, path=None,
+                lexicon=None,
+                grammar=None,
+                unknownwords=None,
+                openclassdfsa=None, 
+                language=None,
                 timeout=30,
-                n=100):
-        log.debug("BitParserFeatureGenerator path: {}".format(path))
-        self.lang = language
-        self.parser = BitParChartParser(lexicon_filename=lexicon_filename, 
-                grammar_filename=grammar_filename, 
+                n=100,
+                **kwargs):
+        log.debug("BitParFeatureGenerator path: {}".format(path))        
+        self.language = language
+        self.parser = BitParChartParser(lexicon=lexicon,
+                grammar=grammar,
                 unknownwords=unknownwords, 
                 openclassdfsa=openclassdfsa, 
                 n=n, 
@@ -430,32 +379,38 @@ def get_bitpar_features(parses):
 
     
 if __name__ == '__main__': 
-#===============================================================================
-#     parser = BitParChartParser(path="/home/lefterav/tools/bitpar/GermanParser/bin",
-#                             lexicon_filename="/home/lefterav/tools/bitpar/GermanParser/Tiger/lexicon",
-#                             grammar_filename="/home/lefterav/tools/bitpar/GermanParser/Tiger/grammar",
-#                             unknownwords="/home/lefterav/tools/bitpar/GermanParser/Tiger/open-class-tags", 
-#                             openclassdfsa="/home/lefterav/tools/bitpar/GermanParser/Tiger/wordclass.txt",
-#                             n=100
-#                             )
-#     print parser.nbest_parse("der Vorsitzende hat gesagt , dass es eine gute Frage ist .")
-#                             
-#                             
-# 
-#     
-#===============================================================================
-#    path = "/home/elav01/tools/bitpar/GermanParser/"
-    path = "/project/qtleap/software/bitpar/GermanParser/"
-    parser = BitParserBatchProcessor(
-                                    path=os.path.join(path,"bin"),
-                                    lexicon_filename=os.path.join(path,"Tiger/lexicon"),
-                                    grammar_filename=os.path.join(path,"Tiger/grammar"),
-                                    unknownwords=os.path.join(path,"Tiger/open-class-tags"),
-                                    openclassdfsa=os.path.join(path,"Tiger/wordclass.txt"),
-                                    tmpdir=os.path.join(path,"tmp"),
-                                    n=1)
-                                    
     
-    input_filename = sys.argv[1] #os.path.join(path, "tmp", "0.trainingset.dev.jcml")
-    output_filename = sys.argv[2] #os.path.join(path, "tmp", "0.trainingset.dev.out.jcml")
-    parser.process_target_batch(input_filename, output_filename)
+    loglevel = log.INFO
+    if "--debug" in sys.argv:
+        loglevel = log.DEBUG
+    log.basicConfig(level=loglevel,
+                    format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                    datefmt='%m-%d %H:%M')
+    
+    parser = BitParChartParser(path="/home/lefterav/tools/bitpar/GermanParser/bin",
+                             lexicon_filename="/home/lefterav/tools/bitpar/GermanParser/Tiger/lexicon",
+                             grammar_filename="/home/lefterav/tools/bitpar/GermanParser/Tiger/grammar",
+                             unknownwords="/home/lefterav/tools/bitpar/GermanParser/Tiger/open-class-tags", 
+                             openclassdfsa="/home/lefterav/tools/bitpar/GermanParser/Tiger/wordclass.txt",
+                             n=100
+                             )
+    print parser.nbest_parse("der Vorsitzende hat gesagt , dass es eine gute Frage ist .")
+                             
+                             
+ 
+     
+#    path = "/home/elav01/tools/bitpar/GermanParser/"
+#     path = "/project/qtleap/software/bitpar/GermanParser/"
+#     parser = BitParserBatchProcessor(
+#                                     path=os.path.join(path,"bin"),
+#                                     lexicon_filename=os.path.join(path,"Tiger/lexicon"),
+#                                     grammar_filename=os.path.join(path,"Tiger/grammar"),
+#                                     unknownwords=os.path.join(path,"Tiger/open-class-tags"),
+#                                     openclassdfsa=os.path.join(path,"Tiger/wordclass.txt"),
+#                                     tmpdir=os.path.join(path,"tmp"),
+#                                     n=1)
+#                                     
+#     
+#     input_filename = sys.argv[1] #os.path.join(path, "tmp", "0.trainingset.dev.jcml")
+#     output_filename = sys.argv[2] #os.path.join(path, "tmp", "0.trainingset.dev.out.jcml")
+#     parser.process_target_batch(input_filename, output_filename)

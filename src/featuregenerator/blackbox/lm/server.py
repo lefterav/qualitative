@@ -3,36 +3,74 @@ Feature generator for LM features from external LM server
 """
 
 import xmlrpclib 
-#import base64
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
-#from nltk.tokenize.punkt import PunktWordTokenizer
+from featuregenerator import LanguageFeatureGenerator
 import sys
-#from util.freqcaser import FreqCaser
 from numpy import average, std
-
-
 
 class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
     '''
-    Gets all the words of a sentence through a SRILM language model and counts how many of them are unknown (unigram prob -99) 
+    Gets all the words of a sentence through a language model loaded on a remote server
+    and returns language model statistics    
+    @ivar server: the object handling the communication with the XML RPC server 
+    @type server: L{xmlrpclib.Server}
+    @ivar language: the language code of the loaded model
+    @type language: C{str} 
     '''
     
-    def __init__(self, url, lang="en", lowercase=True, tokenize=True, freqcase_file=False):
+#     feature_names = ['lm_unk_pos_abs_avg',
+#                        'lm_unk_pos_abs_std',
+#                        'lm_unk_pos_abs_min',
+#                        'lm_unk_pos_abs_max',
+#                        'lm_unk_pos_rel_avg',
+#                        'lm_unk_pos_rel_std',
+#                        'lm_unk_pos_rel_min',
+#                        'lm_unk_pos_rel_max',
+#                        'lm_unk',
+#                        'lm_unk_len',
+#                     
+#                        'lm_uni-prob',
+#                        'lm_uni-prob_avg',
+#                        'lm_uni-prob_std',
+#                        'lm_uni-prob_low',
+#                        'lm_uni-prob_high',
+#                        'lm_uni-prob_low_pos_avg',
+#                        'lm_uni-prob_low_pos_std',
+# 
+#                        'lm_bi-prob',
+#                        'lm_bi-prob_avg',
+#                        'lm_bi-prob_std',
+#                        'lm_bi-prob_low',
+#                        'lm_bi-prob_high',
+#                        'lm_bi-prob_low_pos_avg',
+#                        'lm_bi-prob_low_pos_std',
+#                        
+#                        'lm_tri-prob',
+#                        'lm_tri-prob_avg',
+#                        'lm_tri-prob_std',
+#                        'lm_tri-prob_low',
+#                        'lm_tri-prob_high',
+#                        'lm_tri-prob_low_pos_avg',
+#                        'lm_tri-prob_low_pos_std',
+#                        'lm_prob']
+    
+    def __init__(self, url=None, language="en", lowercase=True, tokenize=True, freqcase_file=False, **kwargs):
         '''
         Define connection with the server
         '''
+        if url == None:
+            raise AttributeError("Feature generator for LM server requires a URL to connect to")
+        
         self.server = xmlrpclib.Server(url)
-        self.lang = lang
+        self.language = language
         self.lowercase = lowercase
         self.tokenize = tokenize
         self.freqcaser = None
-#        if freqcase_file:
-#            self.freqcaser = FreqCaser(freqcase_file)
+
     
     def get_features_src(self, simplesentence, parallelsentence):
         atts = {}
         src_lang = parallelsentence.get_attribute("langsrc")
-        if src_lang == self.lang:
+        if src_lang == self.language:
             atts = self.get_features_simplesentence(simplesentence)
 
         return atts
@@ -40,7 +78,7 @@ class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
     def get_features_tgt(self, simplesentence, parallelsentence):
         atts = {}
         tgt_lang = parallelsentence.get_attribute("langtgt")
-        if tgt_lang == self.lang:
+        if tgt_lang == self.language:
             atts = self.get_features_simplesentence(simplesentence)
         return atts        
     
@@ -174,7 +212,7 @@ class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
             unk_pos = [0]
             unk_rel_pos = [0]        
         
-	attributes = { 'lm_unk_pos_abs_avg' : str(average(unk_pos)),
+        features = { 'lm_unk_pos_abs_avg' : str(average(unk_pos)),
                        'lm_unk_pos_abs_std' : str(std(unk_pos)),
                        'lm_unk_pos_abs_min' : str(min(unk_pos)),
                        'lm_unk_pos_abs_max' : str(max(unk_pos)),
@@ -210,7 +248,7 @@ class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
                        'lm_tri-prob_low_pos_std': std(self._standout_pos(tri_probs_vector, -1)),
                        'lm_prob' : str(prob) }
         
-        return attributes
+        return features
             
             
     
@@ -240,7 +278,7 @@ class ServerNgramFeatureGenerator(LanguageFeatureGenerator):
 #            preprocessed_row = []
 #            col_id = 0
 #            for simplesentence in row:
-#                if (col_id == 0 and langsrc == self.lang) or (col_id > 0 and langtgt == self.lang):
+#                if (col_id == 0 and langsrc == self.language) or (col_id > 0 and langtgt == self.language):
 #                    simplesentence = self.prepare_sentence(simplesentence)
 #                    preprocessed_row.append(simplesentence)
 #                else:

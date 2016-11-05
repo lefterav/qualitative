@@ -5,9 +5,9 @@ Created on 22 March 2011
 @author: Eleftherios Avramidis
 '''
 
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from featuregenerator import LanguageFeatureGenerator
 from numpy import average, std
-
+import logging as log
 
 class ParserMatches(LanguageFeatureGenerator):
     '''
@@ -17,6 +17,11 @@ class ParserMatches(LanguageFeatureGenerator):
     @ivar mapping: A dictionary for mapping source labels to target labels
     @type mapping: dict 
     '''
+    
+    feature_patterns = ["parse\-.*"]
+    requirements = ["berkeley-tree"]
+    is_bilingual = True    
+    
     mapping = {}
     mapping[("de","en")] = [(["NP"], ["NP"]),
               (["VP", "VZ"], ["VP"]),
@@ -67,12 +72,15 @@ class ParserMatches(LanguageFeatureGenerator):
 
     
 
-    def __init__(self, langpair=("de","en")):
+    def __init__(self, langpair=("de","en"), source_language=None, language=None, **kwargs):
         '''
         Instantiate a parse label matcher for a particular language pair
         @param langpair: a tuple with the source and the target language codes
         @type langpair: (str, str)
         '''
+        if not (source_language is None) and not (language is None):
+            langpair = (source_language, language)
+        log.debug("Initialized parsematch for {}".format(langpair)) 
         #reverse mappings as well
         reversed_mapping = {}
         for (source_language, target_language), mapping in self.mapping.iteritems():
@@ -97,9 +105,12 @@ class ParserMatches(LanguageFeatureGenerator):
         match_count = 0
         match_pos = [] 
         labels = treestring.split() 
+        log.debug("Labels: {}".format(labels))
         for parse_tag in taglist:
             parse_tag = "(%s" %parse_tag #get the bracket so that you can search in the parse string
-            match_count += labels.count(parse_tag)
+            labels_count = labels.count(parse_tag)
+            match_count += labels_count 
+            log.debug("Labels for parse_tag {}: {}".format(parse_tag, match_count))
             for pos, label in enumerate(labels, start=1):
                 if parse_tag == label:
                     match_pos.append(pos)
@@ -129,24 +140,19 @@ class ParserMatches(LanguageFeatureGenerator):
             tgt_parse = simplesentence.get_attribute("berkeley-tree")
         except:
             tgt_parse = ""
-        try:
-            src_parse = parallelsentence.get_source().get_attribute("berkeley-tree")
-        except:
-            src_parse = ""
+        #try:
+        #    src_parse = parallelsentence.get_source().get_attribute("berkeley-tree")
+        #except:
+        #    src_parse = ""
         
-        if tgt_parse and src_parse:
+        if tgt_parse: # and src_parse:
             for (src_map, tgt_map) in self.mappings:
-                #src_label = self._canonicalize(src_map[0])
-                #src_map_count = int(parallelsentence.get_source().get_attribute("parse-%s" % src_label))
                 tgt_map_count, tgt_map_pos = self._count_nodetags(tgt_parse, tgt_map)
                 tgt_label = self._canonicalize(src_map[0])
                 attributes["parse-%s" % tgt_label] = str(tgt_map_count)
                 attributes["parse-%s-pos-avg" % tgt_label] = str(average(tgt_map_pos))
                 attributes["parse-%s-pos-std" % tgt_label] = str(std(tgt_map_pos))
-#                if tgt_map_count != 0:
-#                    attributes["parse-%s_ratio" % tgt_label] = str(1.0 * src_map_count / tgt_map_count)
-#                else:
-#                    attributes["parse-%s_ratio" % tgt_label] = str(float("Inf"))
+        log.debug("Attributes from parsematch: {}".format(attributes))
         return attributes
         
 

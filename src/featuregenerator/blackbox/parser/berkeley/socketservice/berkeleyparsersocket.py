@@ -36,7 +36,7 @@ class BerkeleyParserSocket():
     """
     
 #    def __init__(self, grammarfile, classpath):
-    def __init__(self, grammarfile, gateway):
+    def __init__(self, grammarfile=None, gateway=None):
         """
         fetches full parsing details from the Berkeley Engine and  calculates full features upon request
         @param grammarfile: Location of grammar file to be loaded
@@ -47,17 +47,17 @@ class BerkeleyParserSocket():
         self.grammarfile = grammarfile
         self.gateway = gateway
         
-        bparser_class = os.path.dirname(__file__)
-        dir_socket = os.path.dirname(bparser_class)                
-        dir_berkeley = os.path.dirname(dir_socket)
-        dir_parser = os.path.dirname(dir_berkeley)
+        #bparser_class = os.path.dirname(__file__)
+        #dir_socket = os.path.dirname(bparser_class)                
+        #dir_berkeley = os.path.dirname(dir_socket)
+        #dir_parser = os.path.dirname(dir_berkeley)
         ####MODIFIED FOR USE WITH COMMANDLINE THING CHECK IF RUFFUS VERSION FAILS
-        dir_src = os.path.dirname(dir_parser)
+        #dir_src = os.path.dirname(dir_parser)
 #        dir_featuregenerator = os.path.dirname(dir_parser)
 #        dir_src = os.path.dirname(dir_featuregenerator)
-        dir_lib = os.path.join(dir_src, "support", "berkeleyserver", "lib")
+        #dir_lib = os.path.join(dir_src, "support", "berkeleyserver", "lib")
         
-        log.info("Berkeley directory: {}".format(dir_lib))
+        #log.info("Berkeley directory: {}".format(dir_lib))
         
         #self.classpath = []
         #self.classpath.append(dir_lib)
@@ -97,6 +97,7 @@ class BerkeleyParserSocket():
         java_import(module_view, 'BParser')
         
         # get the application instance
+        log.info("Grammar file: {}".format(grammarfile))
         self.bp_obj =  module_view.BParser(grammarfile)
         sys.stderr.write("got BParser object\n")
 
@@ -131,12 +132,14 @@ class BerkeleyParserSocket():
          
         # call the python function parse() on BParser object
 #        try:
-        log.debug(u"<p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
+        #log.debug(u"<p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
         
 #        signal.signal(signal.SIGALRM, handler)
 #        signal.alarm(20)
-        parseresult = None        
-        while not parseresult:
+        parseresult = None       
+        tries = 0
+        while parseresult is None and tries<10:
+            tries += 1
             try:
                 parseresult = self.bp_obj.parse(sentence_string)
 #            except:
@@ -148,11 +151,17 @@ class BerkeleyParserSocket():
 #            parseresult = {}
                 
         
-            except:
-                self._connect(self.gateway, self.grammarfile)
-                parseresult = self.bp_obj.parse(sentence_string)
-                log.warning("{0} crashed, restarting object".format(self.parsername))
-        log.debug(u"<\p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
+            except Exception as e:
+                log.warning(e)
+                log.warning("{0} crashed, trying again".format(self.parsername))
+                try:
+                    self._connect(self.gateway, self.grammarfile)
+                    parseresult = self.bp_obj.parse(sentence_string)
+                    log.warning("{0} crashed, restarting object".format(self.parsername))
+                except:
+                    pass
+            log.debug("Tried to run parser for the {} time".format(tries))
+        #log.debug(u"<\p process='{0}' string='{1}'>\n".format(self.parsername, sentence_string))
 
         return parseresult
     

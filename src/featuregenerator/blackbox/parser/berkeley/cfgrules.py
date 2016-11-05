@@ -5,21 +5,17 @@ Created on Jul 13, 2014
 
 @author: Eleftherios Avramidis
 '''
+from __builtin__ import enumerate
 import logging as log
-
-#from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
-#from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator 
-#from numpy import average
-#from featuregenerator.featuregenerator import FeatureGenerator
-
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator 
-from numpy import average
-from featuregenerator.featuregenerator import FeatureGenerator
-
 from nltk.align import AlignedSent
+from numpy import average
 import re
 import sys
-from __builtin__ import enumerate
+
+from dataprocessor.sax import saxjcml
+from featuregenerator.blackbox.ibm1 import Ibm1FeatureGenerator
+from featuregenerator import FeatureGenerator
+from featuregenerator import LanguageFeatureGenerator 
 
 def xml_normalize(string):
         string = string.replace("$,", "COMMA") #german grammar
@@ -34,7 +30,7 @@ def xml_normalize(string):
         string = string.replace("'", "QUOT")
         string = re.sub("[^A-Za-z0-9_]", "_", string)
         return string
-
+    
 
 class Rule:
     """
@@ -69,6 +65,11 @@ class Rule:
         """ 
         string = "{}_{}".format(self.lhs, "-".join(self.rhs))
         return xml_normalize(string)        
+
+#TODO: for some reason, the rules produced have only the last part of the RHS
+#TODO: cfgal_start is always zero, _end always -1
+#TODO: cfg rules are not aligned (not sure if this was needed).
+#TODO: position of nodes is missing
 
 
 def get_cfg_rules(string, terminals=False):
@@ -170,6 +171,8 @@ class CfgRulesExtractor(FeatureGenerator):
     '''
     Handle the extraction of features out of CFG rules 
     '''
+    feature_patterns = ["parse_.*", "cfgpos_.*", "cfg_.*"]
+    requirements = ["berkeley-tree"]
     
     def get_features_simplesentence(self, simplesentence, parallelsentence):
         '''
@@ -247,6 +250,8 @@ class CfgAlignmentFeatureGenerator(FeatureGenerator):
     Feature generator for aligning CFG rules between two sentences. It requires
     that a Berkeley tree and a symmetrized alignment exists
     """
+    feature_patterns = ['cfgal_.*']
+    requirements = ["imb1-alignment-joined", "berkeley-tree"]
         
     def get_features_tgt(self, targetsentence, parallelsentence):
         source_line = parallelsentence.get_source().get_string()
@@ -386,8 +391,6 @@ class CfgAlignmentFeatureGenerator(FeatureGenerator):
         return matched_labels
 
 
-from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
-from dataprocessor.sax import saxjcml
 
 if __name__ == "__main__":
     log.basicConfig(format='%(asctime)s %(message)s', level=log.debug)
@@ -396,7 +399,7 @@ if __name__ == "__main__":
     srcalignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.2.e2f"
     tgtalignmentfile = "/share/taraxu/systems/r2/de-en/moses/model/lex.2.f2e"
 
-    aligner = AlignmentFeatureGenerator(srcalignmentfile, tgtalignmentfile)
+    aligner = Ibm1FeatureGenerator(srcalignmentfile, tgtalignmentfile)
 #    reader = CEJcmlReader(sys.argv[1])
 #    for parallelsentence in reader.get_parallelsentences():
     

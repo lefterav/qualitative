@@ -1,9 +1,0 @@
-2015-03-31.12-30-37 vim annotation.cfg 
-2015-03-31.12-31-22 vim annotation.cfg 
-2015-03-31.14-35-15 ssh -lelav01 blade-4.dfki.uni-sb.de
-2015-03-31.14-42-46 ssh blade-1.dfki.uni-sb.de
-2015-03-31.14-57-18 ssh lns-87247.dfki.uni-sb.de
-2015-03-31.16-32-02 curl -i -H "Content-Type: application/json" -X POST -d '{ "action":"translate", "sourceLang":"en", "systemId":"pilot1", "targetLang":"es", "text": "click on the left window to maximize it." }' http://blade-3.dfki.uni-sb.de:8100/translate 
-2015-03-31.16-40-22 ssh lns-87247.dfki.uni-sb.de
-2015-03-31.17-06-34 ssh -lelav01 blade-2.dfki.uni-sb.de
-2015-04-01.00-13-21 ssh blade-1.dfki.uni-sb.de

@@ -8,6 +8,8 @@ import re
 import shutil
 import sys
 import tempfile
+import logging as log
+from collections import OrderedDict
 from random import shuffle
 import string as stringlib 
 from unidecode import unidecode
@@ -46,10 +48,18 @@ def att(sentence):
     Returns a dict for the attribute names and values including the necessary string transformation
     to avoid unicode errors
     """
-    try:
-        attributes = dict([(k(key),unicode(val)) for key,val in sentence.get_attributes().iteritems()])
-    except UnicodeEncodeError:
-        attributes = dict([(k(key),str(val)) for key,val in sentence.get_attributes().iteritems()])
+    attributes = OrderedDict()
+    failed = set()
+    for key, val in sentence.get_attributes().iteritems():
+        try:
+            attributes[k(key)] = unicode(val)
+        except UnicodeDecodeError:
+            failed.add(k(key))
+            #skip items that break the file writing, usually it's the parse tree from BitPar
+            #TODO: the unicode error may originate at the importing of data from BitPar
+            #attributes[k(key)] = str(val)
+    if failed:
+        log.debug("The following keys caused unicode errors: {}".format(list(failed)))
     return attributes
 
 class IncrementalJcml(object):
@@ -57,10 +67,10 @@ class IncrementalJcml(object):
     Write line by line incrementally on an XML file, without loading anything in the memory.
     Don't forget the close function. Object sentences cannot be edited after written
     """
-    def __init__(self, filename, xmlformat=JcmlFormat):
+    def __init__(self, model, xmlformat=JcmlFormat):
         self.TAG = xmlformat.TAG
-        self.filename = filename
-        self.file = tempfile.NamedTemporaryFile(mode='w',delete=False,suffix='.jcml', prefix='tmp_', dir='.') #"/tmp/%s.tmp" % os.path.basename(filename)
+        self.filename = model
+        self.file = tempfile.NamedTemporaryFile(mode='w',delete=False,suffix='.jcml', prefix='tmp_', dir='.') #"/tmp/%s.tmp" % os.path.basename(model)
         self.tempfilename = self.file.name
         self.generator = XMLGenerator(self.file, "utf-8")
         self.generator.startDocument()
@@ -69,15 +79,14 @@ class IncrementalJcml(object):
     def add_parallelsentence(self, parallelsentence):
         self.generator.characters("\n\t")
         #convert all attribute values to string, otherwise it breaks
-        attributes = dict([(k(key),str(val)) for key,val in parallelsentence.get_attributes().iteritems()])
+        attributes = att(parallelsentence) 
         self.generator.startElement(self.TAG["sent"], attributes)
         
         src = parallelsentence.get_source()
         
         if isinstance(src, SimpleSentence):            
             self.generator.characters("\n\t\t")           
-            src_attributes = {}
-            src_attributes = dict([(k(key),unicode(val)) for key,val in src.get_attributes().iteritems()])
+            src_attributes = att(src) 
             self.generator.startElement(self.TAG["src"], src_attributes)
             self.generator.characters(c(src.get_string()))
             self.generator.endElement(self.TAG["src"])
@@ -85,14 +94,14 @@ class IncrementalJcml(object):
         elif isinstance(src, tuple):
             for src in parallelsentence.get_source():
                 self.generator.characters("\n\t\t")
-                src_attributes = dict([(k(key),unicode(val)) for key,val in src.get_attributes().iteritems()])
+                src_attributes = att(src)
                 self.generator.startElement(self.TAG["src"], src_attributes)
                 self.generator.characters(c(src.get_string()))
                 self.generator.endElement(self.TAG["src"])
         
         for tgt in parallelsentence.get_translations():
             self.generator.characters("\n\t\t")
-            tgt_attributes = dict([(k(key),unicode(val)) for key,val in tgt.get_attributes().iteritems()])
+            tgt_attributes = att(tgt)
             self.generator.startElement(self.TAG["tgt"], tgt_attributes)
             self.generator.characters(c(tgt.get_string()))
             self.generator.endElement(self.TAG["tgt"])
@@ -100,7 +109,7 @@ class IncrementalJcml(object):
         ref = parallelsentence.get_reference()
         if ref and ref.get_string() != "":
             self.generator.characters("\n\t\t")
-            ref_attributes = dict([(k(key),unicode(val)) for key,val in ref.get_attributes().iteritems()])
+            ref_attributes = att(ref)
             self.generator.startElement(self.TAG["ref"], ref_attributes)
             self.generator.characters(c(ref.get_string()))
             self.generator.endElement(self.TAG["ref"])

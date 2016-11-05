@@ -11,7 +11,7 @@ from copy import deepcopy
 
 def dataset_to_instances(filename, 
                          attribute_set=None,
-                         class_name="rank",
+                         class_name="rank_strings",
                          reader=CEJcmlReader,
                          default_value = 0,
                          replace_infinite=False,
@@ -38,10 +38,10 @@ def dataset_to_instances(filename,
         #try:
         ranking = Ranking(parallelsentence.get_target_attribute_values(class_name))
         #except KeyError:
-            #if rank is missing, skip this parallelsentence I guess
+            #if rank_strings is missing, skip this parallelsentence I guess
         #    skipped.append(parallelsentence.get_id())
         #    continue
-        # for rank, levenstein distance etc needs to be reversed, cause normally RankList works with scores 
+        # for rank_strings, levenstein distance etc needs to be reversed, cause normally RankList works with scores 
         if not invert_ranks:
             ranking = ranking.normalize().reverse().integers()
         # for BLEU, METEOR and other metrics needs not be reversed
@@ -64,7 +64,7 @@ def dataset_to_instances(filename,
         
         #iterate for all translations of this parallel sentence
         #and a get one row for each
-        for rank, translation in zip(ranking, parallelsentence.get_translations()):
+        for rank_strings, translation in zip(ranking, parallelsentence.get_translations()):
             vector = []
             vector.extend(parallel_vector)
             vector.extend(source_vector)
@@ -77,24 +77,24 @@ def dataset_to_instances(filename,
             vector.extend(target_vector)
             #gather the lengths of the attributes
             lengths.append(len(vector))
-            #gather the rank vectors in the required format
-            data.append([np.array(vector), rank, i])
-            #gather the possible rank values
-            ranks.add(rank)
+            #gather the rank_strings vectors in the required format
+            data.append([np.array(vector), rank_strings, i])
+            #gather the possible rank_strings values
+            ranks.add(rank_strings)
             
     if len(skipped) > 0:
         log.warning("Conversion from rankings to MLPython structures failed to convert {} rankings: {}".format(len(skipped), skipped))
     max_len = max(lengths)
     data = np.array(data)
     metadata = {'input_size' : max_len, #size of feature vector
-                'scores' :  ranks}      #seen rank values
+                'scores' :  ranks}      #seen rank_strings values
     open("/tmp/filename.np", 'w').write(str(data))
     problemdata = RankingProblem(data, metadata)
     return problemdata    
 
 def parallelsentence_to_instance(parallelsentence, attribute_set,
                                  invert_ranks=False,
-                                 class_name="rank"):
+                                 class_name="rank_strings"):
     par_attnames = attribute_set.parallel_attribute_names
     src_attnames = attribute_set.source_attribute_names
     tgt_attnames = attribute_set.target_attribute_names
@@ -124,7 +124,7 @@ def parallelsentence_to_instance(parallelsentence, attribute_set,
     data = []
     #iterate for all translations of this parallel sentence
     #and a get one row for each
-    for rank, translation in zip(ranking, parallelsentence.get_translations()):
+    for rank_strings, translation in zip(ranking, parallelsentence.get_translations()):
         vector = []
         vector.extend(parallel_vector)
         vector.extend(source_vector)
@@ -137,10 +137,10 @@ def parallelsentence_to_instance(parallelsentence, attribute_set,
         vector.extend(target_vector)
         #gather the lengths of the attributes
         lengths.append(len(vector))
-        #gather the rank vectors in the required format
-        data.append([np.array(vector), rank, 0])
-        #gather the possible rank values
-        ranks.add(rank)
+        #gather the rank_strings vectors in the required format
+        data.append([np.array(vector), rank_strings, 0])
+        #gather the possible rank_strings values
+        ranks.add(rank_strings)
     max_len = max(lengths)
     data = np.array(data)
     metadata = {'input_size' : max_len, #size of feature vector
@@ -163,7 +163,7 @@ class ListNetRanker(Ranker):
               #optimization_params={}, 
               #scorers=['f1_score'],
               attribute_set=None,
-              class_name="rank",
+              class_name="rank_strings",
               #metaresults_prefix="./0-",
               reader=CEJcmlReader,
               n_stages=200,
@@ -207,9 +207,9 @@ class ListNetRanker(Ranker):
         Get the first item of the ranked data
         """
         new_sample_data = []
-        for vector, rank, query in sample_data:
+        for vector, rank_strings, query in sample_data:
             if query == 0:
-                new_sample_data.append([vector, rank, query])
+                new_sample_data.append([vector, rank_strings, query])
             else:
                 return new_sample_data     
        
@@ -243,7 +243,7 @@ class ListNetRanker(Ranker):
         instance = self.data_structure.apply_on(instance.data, 
                                                 instance.metadata)
         ranking = Ranking(self.learner.use(instance)[0])
-        # if we reversed ranks on training (rank, levenshtein) order stays the same
+        # if we reversed ranks on training (rank_strings, levenshtein) order stays the same
         try:
             if not self.invert_ranks:
                 ranking = ranking.normalize().integers()

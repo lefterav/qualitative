@@ -14,7 +14,7 @@ import time
 import sys
 import logging as log
 
-from featuregenerator.blackbox.parser.berkeley.berkeleyclient import BerkeleySocketFeatureGenerator
+from featuregenerator.blackbox.parser.berkeley.berkeleyclient import BerkeleyLocalFeatureGenerator
 from sentence.sentence import SimpleSentence
 
 from ml.lib.orange.ranking import OrangeRanker 
@@ -248,6 +248,6 @@ if __name__ == "__main__":
             else:
                 break
 
-        result, description = autoranker.rank(source, translations)
+        result, description = autoranker.rank_strings(source, translations)
         print description
         print "The right order of the given sentences is ", result

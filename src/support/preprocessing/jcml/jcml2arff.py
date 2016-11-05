@@ -60,7 +60,7 @@ class Jcml2Arff:
                 hidden_attribute_names, discrete_attribute_names, string_attribute_names, 
                 relation_name, class_name, class_type, class_values):
         dataset = JcmlReader(jcml_filename).get_dataset()
-        attribute_names = set(dataset.get_all_attribute_names()) - set(hidden_attribute_names)
+        attribute_names = set(dataset.get_all_feature_names()) - set(hidden_attribute_names)
         nominal_attributes = dataset.get_discrete_attribute_values(discrete_attribute_names)
         numeric_attribute_names = attribute_names - set(discrete_attribute_names)
         arff = ArffWriter(arff_filename, class_type, class_values, numeric_attribute_names, string_attribute_names, nominal_attributes)

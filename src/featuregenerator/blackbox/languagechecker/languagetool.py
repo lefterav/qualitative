@@ -6,30 +6,32 @@ Created on 24 Mar 2012
 '''
 
 import subprocess
-import sys
 import re
-import codecs
 import time
-from threading  import Thread
 import os
 
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from featuregenerator import LanguageFeatureGenerator
 
 class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
     '''
-    classdocs
+    A feature generator wrapping the LanguageTool (from languagetool.org, Libreoffice etc) 
+    on the commandline.
+    The sentence is analyzed and the count of specific errors, error types and total sentence
+    errors are added as features, along with their length as characters.
+    This class wraps the commandline and is not very efficient. It has been mostly replaced
+    with LanguageToolSocketFeatureGenerator
     '''
     
     def print_output(self, out):
         while self.running:
             self.output.append(out.readline())
 
-    def __init__(self, path, lang, params = {}, command_template= 'java -jar {path} -v -l {lang} -b --api',):
+    def __init__(self, path, language, params = {}, command_template= 'java -jar {path} -v -l {language} -b --api',):
         '''
         Constructor
         '''
-        self.lang = lang
-        params["lang"] = lang
+        self.language = language
+        params["language"] = language
         params["path"] = path
         command = command_template.format(**params)
         self.command = command
@@ -138,8 +140,8 @@ class LanguageToolFeatureGenerator(LanguageFeatureGenerator):
 
 class LanguageCheckerCmd(LanguageFeatureGenerator):
     
-    def __init__(self, path, lang, params = {}, command_template= 'java -jar {path} -v -l {lang} -b --api',):
-        self.lang = lang
+    def __init__(self, path, language, params = {}, command_template= 'java -jar {path} -v -l {language} -b --api',):
+        self.language = language
     
     def add_features_batch(self, parallelsentences):
         process = subprocess.Popen(['commandline', 'test2.py'], shell=False, stdin=subprocess.PIPE)

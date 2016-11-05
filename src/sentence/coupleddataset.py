@@ -79,7 +79,7 @@ class CoupledDataSet(DataSet):
             prob_neg = -1.00 * float(coupled_parallelsentence.get_attribute(attribute1))
             prob_pos = -1.00 * float(coupled_parallelsentence.get_attribute(attribute2))
              
-#            int(ps2.attributes[critical_attribute]) - rank
+#            int(ps2.attributes[critical_attribute]) - rank_strings
             single_parallelsentences[ps1.get_tuple_id()] = ps1
             try:
                 single_parallelsentences_rank[ps1.get_tuple_id()] += prob_neg
@@ -96,14 +96,14 @@ class CoupledDataSet(DataSet):
         prev_rank = None
         prev_j = None
         normalized_rank = {}
-        for key, rank in sorted(single_parallelsentences_rank.iteritems(), key=lambda (k,v): (v,k)):
+        for key, rank_strings in sorted(single_parallelsentences_rank.iteritems(), key=lambda (k,v): (v,k)):
             j+=1
-            if rank == prev_rank:
+            if rank_strings == prev_rank:
                 normalized_rank[key] = prev_j
             else:
                 normalized_rank[key] = j
                 prev_j = j
-                prev_rank = rank
+                prev_rank = rank_strings
              
         
         sorted_keys = sorted(single_parallelsentences)
@@ -127,33 +127,33 @@ class CoupledDataSet(DataSet):
         single_parallelsentences_rank = {}
         for coupled_parallelsentence in self.parallelsentences:
             ps1, ps2 = coupled_parallelsentence.get_couple()
-            rank = int(coupled_parallelsentence.get_attribute(critical_attribute))
+            rank_strings = int(coupled_parallelsentence.get_attribute(critical_attribute))
              
-#            int(ps2.attributes[critical_attribute]) - rank
+#            int(ps2.attributes[critical_attribute]) - rank_strings
             single_parallelsentences[ps1.get_tuple_id()] = ps1
             try:
-                single_parallelsentences_rank[ps1.get_tuple_id()] += rank
+                single_parallelsentences_rank[ps1.get_tuple_id()] += rank_strings
             except:
-                single_parallelsentences_rank[ps1.get_tuple_id()] = rank
+                single_parallelsentences_rank[ps1.get_tuple_id()] = rank_strings
             
             single_parallelsentences[ps2.get_tuple_id()] = ps2
             try:
-                single_parallelsentences_rank[ps2.get_tuple_id()] -= rank
+                single_parallelsentences_rank[ps2.get_tuple_id()] -= rank_strings
             except:
-                single_parallelsentences_rank[ps2.get_tuple_id()] = -1 * rank
+                single_parallelsentences_rank[ps2.get_tuple_id()] = -1 * rank_strings
         
         j = 0
         prev_rank = None
         prev_j = None
         normalized_rank = {}
-        for key, rank in sorted(single_parallelsentences_rank.iteritems(), key=lambda (k,v): (v,k)):
+        for key, rank_strings in sorted(single_parallelsentences_rank.iteritems(), key=lambda (k,v): (v,k)):
             j+=1
-            if rank == prev_rank:
+            if rank_strings == prev_rank:
                 normalized_rank[key] = prev_j
             else:
                 normalized_rank[key] = j
                 prev_j = j
-                prev_rank = rank
+                prev_rank = rank_strings
              
         
         sorted_keys = sorted(single_parallelsentences)
@@ -279,7 +279,7 @@ class OrangeCoupledDataSet(OrangeData):
     
     def _getOrangeFormat(self, orange_file, dataset, class_name, desired_attributes=[], meta_attributes=[]):
         sys.stderr.write("retrieving attribute names\n")
-        attribute_names = dataset.get_all_attribute_names()
+        attribute_names = dataset.get_all_feature_names()
 
         sys.stderr.write("processing orange header\n") 
         output = self._get_orange_header(dataset, class_name, attribute_names, desired_attributes, meta_attributes)

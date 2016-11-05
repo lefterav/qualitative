@@ -6,7 +6,8 @@ Created on 15 Jun 2012
 '''
 
 from py4j.java_gateway import java_import
-from featuregenerator.languagefeaturegenerator import LanguageFeatureGenerator
+from featuregenerator import LanguageFeatureGenerator
+import sys
 
 class MeteorGenerator(LanguageFeatureGenerator):
     '''
@@ -14,25 +15,27 @@ class MeteorGenerator(LanguageFeatureGenerator):
     serve that as features. This Feature Generator overwrites the inherited get_features_tgt 
     function for scoring target vs. the embedded reference translation of the 
     ParallelSentence. See L{CrossMeteorGenerator} for target cross-scoring.
-    @ivar lang: The language code for the proper initialization of the included 
+    @ivar language: The language code for the proper initialization of the included 
     language-dependent tool
-    @type lang: string
+    @type language: string
     @ivar gateway: An already initialized Py4j java gateway
     @type gateway: py4j.java_gateway.JavaGateway
     @ival scorer: The initialized object of the MeteorScorer
     @type scorer: edu.cmu.meteor.scorer.MeteorScorer
     '''
     __name__ = "Meteor"
+    feature_names = ['ref-meteor_precision', 'ref-meteor_recall', 
+                     'ref-meteor_fragPenalty', 'ref-meteor_score']
 
-    def __init__(self, lang, gateway):
+    def __init__(self, language, gateway, **kwargs):
         '''
         Constructor
-        @param lang: The language code for the proper initialization of this language-dependent tool
-        @type lang: string
+        @param language: The language code for the proper initialization of this language-dependent tool
+        @type language: string
         @param gateway: An already initialized Py4j java gateway
         @type gateway: py4j.java_gateway.JavaGateway
         '''
-        self.lang = lang
+        self.language = language
         #self.jvm = JVM(java_classpath)
         #socket_no = self.jvm.socket_no
         #gatewayclient = GatewayClient('localhost', socket_no)
@@ -47,8 +50,9 @@ class MeteorGenerator(LanguageFeatureGenerator):
         
         #pass the language setting into the meteor configuration object
         config = self.meteor_view.MeteorConfiguration();
-        config.setLanguage(lang);
+        config.setLanguage(language);
         #initialize object with the given config
+        sys.stderr.write("Ignoring Transducer ")
         self.scorer = self.meteor_view.MeteorScorer(config)
 
     
@@ -121,6 +125,8 @@ class CrossMeteorGenerator(MeteorGenerator):
     (i.e. translation) to be scored against the translations provided by the other systems
     embedded in this Parallel Sentence.
     '''
+    feature_names = ['cross-meteor_precision', 'cross-meteor_recall', 
+                     'cross-meteor_fragPenalty', 'cross-meteor_score']
     
     def get_features_tgt(self, translation, parallelsentence):
         current_system_name = translation.get_attribute("system")

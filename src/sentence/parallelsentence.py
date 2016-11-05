@@ -34,6 +34,7 @@ def _noprefix(prefixes, names):
             notprefixed.append(name)
     return notprefixed
 
+
 class AttributeSet:
     """
     Structure that describes the attributes provided by a set of parallel sentences.
@@ -57,8 +58,11 @@ class AttributeSet:
                  target_attribute_names=[],
                  ref_attribute_names=[]):
         self.parallel_attribute_names = sorted(list(parallel_attribute_names))
+        #self.parallel_attribute_names = self.parallel_attribute_names
         self.source_attribute_names = sorted(list(source_attribute_names))
+        #self.source_attribute_names = self.source_attribute_names
         self.target_attribute_names = sorted(list(target_attribute_names))
+        #self.target_attribute_names = self.target_attribute_names
         self.ref_attribute_names = sorted(list(ref_attribute_names))
 
     def get_names_pairwise(self):
@@ -76,9 +80,17 @@ class AttributeSet:
         self.ref_attribute_names = _deprefix("ref", pairwise_names)
         self.parallel_attribute_names = _noprefix(["src", "tgt", "ref"], pairwise_names)
 
+    def __list__(self):
+        all_attribute_names = []
+        all_attribute_names.extend(self.parallel_attribute_names)
+        all_attribute_names.extend(self.source_attribute_names)
+        all_attribute_names.extend(self.target_attribute_names)
+        all_attribute_names.extend(self.ref_attribute_names)
+        return list(set(all_attribute_names))
+    
     def __str__(self):
         return str([self.parallel_attribute_names, self.source_attribute_names, self.target_attribute_names])
-    
+
     
 class DefaultAttributeSet(AttributeSet):
     """
@@ -88,35 +100,36 @@ class DefaultAttributeSet(AttributeSet):
     string values, but this is left to future implementation
     """
     def __init__(self, 
-                 parallel_attribute_names=[], 
-                 source_attribute_names=[],
-                 target_attribute_names=[],
-                 ref_attribute_names=[]):
+                 parallel_feature_names=[], 
+                 source_feature_names=[],
+                 target_feature_names=[],
+                 ref_feature_names=[]):
         
-        self.parallel_attribute_names = list(set(parallel_attribute_names) - \
+        self.parallel_attribute_names = list(set(parallel_feature_names) - \
             set(["langsrc", "langtgt", "id", "judgement_id", "judgment_id",
             "testset", "rank", 'rank_predicted', "prob_-1", "prob_1"]))
         self.parallel_attribute_names.sort()
         
-        self.source_attribute_names = list(set(source_attribute_names) - \
+        self.source_attribute_names = list(set(source_feature_names) - \
             set(['system', 'berkeley-tree', 'imb1-alignment-joined', 
                  'ibm1-alignment-inv', 'ibm1-alignment']))
         self.source_attribute_names.sort()
             
         todelete = ['system']
-        for attname in target_attribute_names:
+        for attname in target_feature_names:
             if (attname.startswith("rank")  
               or attname.endswith("tree") 
               or attname.startswith("ref-")):
                 todelete.append(attname)
         
-        self.target_attribute_names = list(set(target_attribute_names) 
+        self.target_attribute_names = list(set(target_feature_names) 
                                            - set(todelete))
         self.target_attribute_names.sort()
         
-        self.ref_attribute_names = list(ref_attribute_names)
+        self.ref_attribute_names = list(ref_feature_names)
         self.ref_attribute_names.sort()
-            
+    
+    
 
 class ParallelSentence(object):
     """
@@ -751,6 +764,53 @@ class ParallelSentence(object):
         except KeyError:
             return None
         
+    def get_system_names(self):
+        """
+        Return the system names of the included translations
+        @return: the list of system names
+        @rtype: list of strings
+        """
+        return [t.get_system_name() for t in self.tgt]
+        
+    def get_best_translation(self, systems_order=None, new_rank_name="rank_soft",
+                             reverse=False):
+        """
+        Return the best translation from a ranked parallel sentence. Allows the
+        caller to specify a predefined preference list, in case of ties
+        @param systems_order: a list of system names in order of preference, 
+        for the case of ties. If not specified, the existing order of systems in 
+        the parallel sentence is used.
+        @type systems_order: list of strings
+        @return: the translation that has the best rank and (optionally) the 
+        highest predefined user preference
+        @rtype: L{sentence.sentence.SimpleSentence}
+        """
+        if not systems_order:
+            systems_order = self.get_system_names()
+        
+        ranking = [t.get_attribute(new_rank_name) for t in self.tgt]
+        
+        if reverse:
+            best_rank = max(ranking)
+        else:
+            best_rank = min(ranking)
+            
+        best_translations = {}
+        for translation in self.tgt:
+            if translation.get_attribute(new_rank_name) == best_rank:
+                best_translations[translation.get_system_name()] = translation
+        
+        for system_name in systems_order:
+            try:
+                return best_translations[system_name]
+            except KeyError:
+                pass
+        
+                
+                
+        
+            
+            
                 
         
 

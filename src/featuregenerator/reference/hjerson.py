@@ -25,7 +25,7 @@
 # Mathematical Linguistics No. 96, pp. 59--68, October 2011
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-from featuregenerator.featuregenerator import FeatureGenerator
+from featuregenerator import FeatureGenerator
 from featuregenerator.preprocessor import Tokenizer
 from util.treetaggerwrapper import TreeTagger
 from collections import defaultdict
@@ -42,25 +42,27 @@ class Hjerson(FeatureGenerator):
     """
     This is a class that wraps the Hjerson functionality on a sentence level.
     """
+    feature_names = ['ref-hj_.*']
+    
     def __init__(self, **kwargs):
         """
         By initializing Hjerson, we maintain a tokenizer (if needed) and a treetager object
         so that they are available for sentence-level calls
         @keyword tokenize: specify if tokenizer should be run by Hjerson, false if it has already happened
         @type tokenize: boolean
-        @keyword lang: specify which language is the content using the language 2-letter iso code
-        @type lang: str
+        @keyword language: specify which language is the content using the language 2-letter iso code
+        @type language: str
         @keyword tagdir: specify the directory where the treetager bin folder exists
         @type tagdir: str 
         """
         self.tokenize = kwargs.setdefault('tokenize', True)
-        self.lang = kwargs.setdefault('lang', 'en')
+        self.language = kwargs.setdefault('language', 'en')
         tagdir = kwargs.setdefault('tagdir', os.path.expanduser(TAGDIR))
         
         if self.tokenize:
-            self.tokenizer = Tokenizer(self.lang)
+            self.tokenizer = Tokenizer(self.language)
         
-        self.treetager = TreeTagger(TAGLANG=self.lang, 
+        self.treetager = TreeTagger(TAGLANG=self.language, 
                                     TAGDIR=tagdir, 
 #                                    TAGINENC='latin1', 
 #                                    TAGOUTENC='latin1'

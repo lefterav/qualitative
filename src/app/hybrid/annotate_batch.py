@@ -19,7 +19,7 @@ from ruffus.task import pipeline_printout_graph, pipeline_printout
 
 #internal code classes
 from app.autoranking import bootstrap 
-from featuregenerator.blackbox.parser.bitpar import BitParserFeatureGenerator,\
+from featuregenerator.blackbox.parser.bitpar import BitParFeatureGenerator,\
     BitParserBatchProcessor
 cfg = bootstrap.get_cfg()
 from dataprocessor.input.jcmlreader import JcmlReader
@@ -29,7 +29,7 @@ from featuregenerator.blackbox.parser.berkeley.parsermatches import ParserMatche
 from featuregenerator.blackbox.parser.berkeley.cfgrules import CfgRulesExtractor, CfgAlignmentFeatureGenerator
 from featuregenerator.blackbox.counts import LengthFeatureGenerator, PunctuationFeatureGenerator
 from featuregenerator.ratio_generator import RatioGenerator
-from featuregenerator.blackbox.ibm1 import AlignmentFeatureGenerator
+from featuregenerator.blackbox.ibm1 import Ibm1FeatureGenerator
 from featuregenerator.reference.levenshtein.levenshtein_generator import LevenshteinGenerator
 from featuregenerator.reference.bleu import CrossBleuGenerator, BleuGenerator
 from featuregenerator.reference.meteor.meteor import CrossMeteorGenerator, MeteorGenerator
@@ -276,7 +276,7 @@ except:
 @transform(truecase_parse_output, suffix(".tc.parsed.f.jcml"), ".ibm1.f.jcml" , sourcelexicon, targetlexicon, source_language, target_language)        
 def features_ibm1(input_file, output_file, sourcelexicon, targetlexicon, source_language, target_language):
     analyzers = [
-             AlignmentFeatureGenerator(sourcelexicon, targetlexicon),
+             Ibm1FeatureGenerator(sourcelexicon, targetlexicon),
              CfgAlignmentFeatureGenerator(),
              ]
     saxjcml.run_features_generator(input_file, output_file, analyzers)
@@ -448,7 +448,7 @@ parallel_feature_functions.append(features_length)
 
 #@active_if(False)
 #def features_ibm(input_file, output_file, ibm1lexicon):
-#    ibmfeaturegenerator = AlignmentFeatureGenerator(ibm1lexicon)
+#    ibmfeaturegenerator = Ibm1FeatureGenerator(ibm1lexicon)
 #    saxjcml.run_features_generator(input_file, output_file, [ibmfeaturegenerator])
 
 """

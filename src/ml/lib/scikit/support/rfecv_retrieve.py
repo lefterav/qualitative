@@ -7,10 +7,11 @@ Created on Jul 24, 2016
 '''
 import pickle
 import sys
+from sentence.parallelsentence import FeatureSet as AttributeSet
 
 
 
-def get_selected_attributes(self, filename):
+def get_selected_attributes(filename):
     model = pickle.load(open(filename))
     fs = model.featureselector
     attset = model.attribute_set.target_attribute_names

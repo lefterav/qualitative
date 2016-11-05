@@ -4,7 +4,7 @@ Created on 07.10.2011
 
 @author: Eleftherios Avramidis
 '''
-from featuregenerator import FeatureGenerator
+from . import FeatureGenerator
 
 class AttributeRankGenerator(FeatureGenerator):
     '''
@@ -14,19 +14,18 @@ class AttributeRankGenerator(FeatureGenerator):
 
     def __init__(self, critical_attribute, new_attribute_name = None, reverse = False):
         '''
-        @param critical_attribute The name of the attribute whose value will guide the ranking
-        @type critical_attribute String
-        @param new_attribute_name If the attributes needs to be renamed, the new name must be entered here. If not entered, then the attribute name is created based on the critical attribute, with the addition of the ending "-rank" 
-        @type new_attribute_name String
-        @param reverse Set True if you need it to be sorted on the reverse order
-        @type boolean 
+        @param critical_attribute: The name of the attribute whose value will guide the ranking
+        @type critical_attribute: \C{str}
+        @param new_attribute_name: If the attributes needs to be renamed, the new name must be entered here. If not entered, then the attribute name is created based on the critical attribute, with the addition of the ending "-rank" 
+        @type new_attribute_name: \C{str}
+        @param reverse: Set True if you need it to be sorted on the reverse order
+        @type reverse: \C{boolean} 
         '''
         self.critical_attribute = critical_attribute
         self.new_attribute_name = new_attribute_name
         self.reverse = reverse
         if not new_attribute_name:
             self.new_attribute_name = "%s-rank" % critical_attribute
-        
         
         
     def add_features_parallelsentence(self, ps):

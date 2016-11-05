@@ -3,7 +3,7 @@
 @author: Eleftherios Avramidis
 """
 from __future__ import division
-from featuregenerator import FeatureGenerator
+from . import FeatureGenerator
 from nltk.tokenize.punkt import PunktWordTokenizer
 
 
@@ -11,7 +11,7 @@ class RatioGenerator(FeatureGenerator):
     """
     Computes the ratio of source features and target features, if they have the same name
     """
-
+    feature_names = [".*_ratio"]
     
     def get_features_tgt(self, simplesentence, parallelsentence):
         #get the length of the source

@@ -16,6 +16,9 @@ from sklearn_utils import scale_datasets_crossvalidation
 from sklearn.cross_validation import train_test_split
 from sklearn.neural_network import BernoulliRBM
 
+import sys, logging
+from sentence.parallelsentence import AttributeSet, AttributeSet
+
 #generic
 import numpy as np
 import logging as log
@@ -33,7 +36,8 @@ from sklearn.ensemble.forest import ExtraTreesClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+from sklearn.lda import LDA
+#from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis as QDA
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import RandomTreesEmbedding
@@ -51,6 +55,7 @@ from sklearn.preprocessing.data import StandardScaler
 from sklearn.metrics import mean_squared_error, f1_score, precision_score, recall_score
 from sklearn.feature_selection.rfe import RFECV, RFE
 from sklearn.cross_validation import StratifiedKFold
+
 
 
 def _get_numpy_arrays(vector_tuples):
@@ -329,11 +334,11 @@ class SkLearner:
             plt.savefig(plot_filename, bbox_inches='tight')
             
         #put ranks in an array, so that we can get them in the log file
-        for i, rank in enumerate(transformer.ranking_):
-            attributes["RFE_rank_f{}".format(i)] = rank
+        for i, rank_strings in enumerate(transformer.ranking_):
+            attributes["RFE_rank_f{}".format(i)] = rank_strings
         
-        for i, rank in enumerate(transformer.support_):
-            attributes["RFE_mask_f{}".format(i)] = rank
+        for i, rank_strings in enumerate(transformer.support_):
+            attributes["RFE_mask_f{}".format(i)] = rank_strings
                 
         return transformer, data, attributes
 
@@ -390,11 +395,11 @@ class SkLearner:
             plt.savefig(plot_filename, bbox_inches='tight')
             
         #put ranks in an array, so that we can get them in the log file
-        for i, rank in enumerate(transformer.ranking_):
-            attributes["RFE_rank_f{}".format(i)] = rank
+        for i, rank_strings in enumerate(transformer.ranking_):
+            attributes["RFE_rank_f{}".format(i)] = rank_strings
         
-        for i, rank in enumerate(transformer.support_):
-            attributes["RFE_mask_f{}".format(i)] = rank
+        for i, rank_strings in enumerate(transformer.support_):
+            attributes["RFE_mask_f{}".format(i)] = rank_strings
                 
         return transformer, data, attributes
     
@@ -600,8 +605,19 @@ class SkRanker(Ranker, SkLearner):
         if type(self.learner) == str:
             if self.classifier:
                 self.learner = self.classifier
-                self.learner._dual_coef_ = self.learner.dual_coef_
-                self.learner._intercept_ = self.learner.intercept_
+                # this is to provide backwards compatibility for old models 
+                # whose classes used differeent attribute names
+                try:
+                    self.learner._dual_coef_ = self.learner.dual_coef_
+                    self.learner._intercept_ = self.learner.intercept_
+                except AttributeError:
+                    # it's ok if the model doesn't have these variables
+                    pass
+
+                try: # backwards compatibility for old LogisticRegression
+                    try_classes = self.learner.classes_
+                except AttributeError:
+                    self.learner.classes_ = [-1, 1]
 
         #de-compose multiranked sentence into pairwise comparisons
         pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(bidirectional_pairs=bidirectional_pairs,
@@ -615,7 +631,7 @@ class SkRanker(Ranker, SkLearner):
             return parallelsentence, {}
         #list that will hold the pairwise parallel sentences including the learner's decision
         classified_pairwise_parallelsentences = []
-        resultvector = []
+        resultvector = {}
         
         for pairwise_parallelsentence in pairwise_parallelsentences:
             #convert pairwise parallel sentence into an orange instance
@@ -657,11 +673,12 @@ class SkRanker(Ranker, SkLearner):
             
             
             #gather several metadata from the classification, which may be needed 
-            resultvector.append({'systems' : pairwise_parallelsentence.get_system_names(),
+            resultvector.update({'systems' : pairwise_parallelsentence.get_system_names(),
                                  'value' : predicted_value,
                                  'distribution': distribution,
                                  'confidence': distribution[int(predicted_value)],
-                                 'instance' : instance})
+#                                 'instance' : instance,
+                                 })
             
             #add the new predicted ranks as attributes of the new pairwise sentence
             pairwise_parallelsentence.add_attributes({"rank_predicted":predicted_value,
@@ -675,21 +692,23 @@ class SkRanker(Ranker, SkLearner):
         #gather all classified pairwise comparisons of into one parallel sentence again
         sentenceset = CompactPairwiseParallelSentenceSet(classified_pairwise_parallelsentences)
         if reconstruct == 'hard':
+            log.debug("Applying hard reconstruction to produce rank {}".format(new_rank_name))
             ranked_sentence = sentenceset.get_multiranked_sentence(critical_attribute=critical_attribute, 
                                                                new_rank_name=new_rank_name, 
                                                                del_orig_class_att=del_orig_class_att)
         else:
             attribute1 = "prob_-1"
             attribute2 = "prob_1"
+            log.debug("Applying soft reconstruction to produce rank {}".format(new_rank_name))
             try:
-                ranked_sentence = sentenceset.get_multiranked_sentence_with_soft_ranks(attribute1, attribute2, critical_attribute, new_rank_name)
+                ranked_sentence = sentenceset.get_multiranked_sentence_with_soft_ranks(attribute1, attribute2, 
+                        critical_attribute, new_rank_name, normalize_ranking=False)
             except:
                 raise ValueError("Sentenceset {} from {} caused exception".format(classified_pairwise_parallelsentences, parallelsentence))
         return ranked_sentence, resultvector
 
 if __name__ == '__main__':
-    import sys, logging
-    from sentence.parallelsentence import AttributeSet
+
     filename = sys.argv[1]
     output_filename = sys.argv[2]
     attribute_set = AttributeSet()

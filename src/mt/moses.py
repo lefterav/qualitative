@@ -9,17 +9,21 @@ from xml.sax.saxutils import escape
 import sys
 import xmlrpclib
 import logging as log
+from xml.sax.saxutils import unescape
 
 from featuregenerator.blackbox.wsd import WSDclient
 from featuregenerator.preprocessor import Tokenizer, Truecaser, Detokenizer,\
-    Detruecaser
+    Detruecaser, Normalizer, CompoundSplitter
 from mt.worker import Worker
+from featuregenerator.sentencesplitter import SentenceSplitter
 
 class MosesWorker(Worker):
     """
     Wrapper class for Moses server
+    @ivar server: the proxy to the Moses Server
+    @type server: C{xmlrpclib.ServerProxy}
     """
-    def __init__(self, uri, **params):
+    def __init__(self, uri, **kwargs):
         """
         Initialize connection to Moses server
         @param uri: ip address or url of mosesserver followed by : and the port number
@@ -28,7 +32,9 @@ class MosesWorker(Worker):
         #initialize XML rpc client
         #throw error if Moses server not started
         #self.server = xmlrpc.initialize("{}:{}".format(address, port))
+        print uri
         self.server = xmlrpclib.ServerProxy(uri)
+        self.name = "moses"
 
     def translate(self, string):
         #send request to moses client
@@ -38,10 +44,9 @@ class MosesWorker(Worker):
         while response == False and efforts < 1250:
             try:
                 response = self.server.translate({'text': string})
-                response = response
                 efforts += 1
             except Exception as e:
-                log.error("Connection to MosesServer was refused, trying again in 20 secs...")
+                log.error("{} \n Connection to MosesServer was refused, trying again in 20 secs...".format(e))
                 sleep(20)
                 log.error(e)
 
@@ -54,6 +59,85 @@ class MosesWorker(Worker):
         if isinstance(text, unicode):
             text = text.encode('utf-8')
         return text, response
+    
+
+class ProcessedWorker(Worker):
+    """
+    Wrapper class for another worker, that also takes care of pre-processing the given requests
+    and post-processing the output.
+    @ivar worker: an initialized worker that connects to a MT engine
+    @type worker: L{Worker}
+    @ivar sentencesplitter: the class for splitting sentences
+    @type sentencesplitter: L{SentenceSplitter}
+    @ivar preprocessors: a list of pre-processors
+    @type preprocessors: list of L{Preprocessor}
+    @ivar postprocessors: a list of post-processors
+    @type postprocessors: list of L{Postprocessor}
+    """
+    def __init__(self, source_language, target_language, 
+                 truecaser_model, splitter_model=None, worker=None, 
+                 tokenizer_protected=None, sentence_splitter=True, **kwargs):
+        
+        self.sentencesplitter_enabled = sentence_splitter
+        self.sentencesplitter = SentenceSplitter({'language': source_language})
+        self.preprocessors = [Normalizer(language=source_language),
+                              Tokenizer(source_language, protected=tokenizer_protected),
+                             ]
+        if truecaser_model:
+            self.preprocessors.append(Truecaser(language=source_language, 
+                                        model=truecaser_model))
+        if source_language == 'de' and splitter_model:
+            self.preprocessors.append(CompoundSplitter(language=source_language,
+                                                       model=splitter_model))
+        self.postprocessors = [Detruecaser(language=target_language),
+                               Detokenizer(language=target_language)
+                               ]
+        self.worker = worker
+        log.debug("Loaded processed Worker for {}".format(worker))
+        
+    def translate(self, string):
+    
+        if self.sentencesplitter_enabled:
+            try:
+                strings = self.sentencesplitter.split_sentences(string)
+            except UnicodeDecodeError:
+                string = unicode(string, errors='replace')
+                strings = self.sentencesplitter.split_sentences(string)
+        else:
+            log.debug("Won't perform sentence splitting")
+            strings = [string]
+        translated_strings = []
+        responses = []
+        
+        for string in strings:
+            for preprocessor in self.preprocessors:
+                if isinstance(string, unicode):
+                    string = string.encode('utf-8')
+                log.debug("{}: {}".format(preprocessor, string))
+                string = preprocessor.process_string(string)
+            
+            translated_string, response = self.worker.translate(string)
+            translated_string = unescape(translated_string)
+            log.debug("output: {}, {}".format(translated_string, response))
+            for postprocessor in self.postprocessors:
+                translated_string = postprocessor.process_string(translated_string)
+            translated_strings.append(translated_string)
+            responses.append(response)
+        
+        return " ".join(translated_strings), {'responses' : responses}
+            
+
+class ProcessedMosesWorker(ProcessedWorker):
+    def __init__(self, uri, source_language, target_language, 
+                 truecaser_model, splitter_model=None, 
+                 tokenizer_protected=None, **kwargs):
+        
+        worker = MosesWorker(uri)
+        super(ProcessedMosesWorker, self).__init__(source_language, target_language, 
+                                                   truecaser_model, splitter_model, 
+                                                   worker, tokenizer_protected, **kwargs)
+        self.name = "moses"
+        
 
 
 class MtMonkeyWorker(Worker):
@@ -70,6 +154,7 @@ class MtMonkeyWorker(Worker):
         #throw error if Moses server not started
         #self.server = xmlrpc.initialize("{}:{}".format(address, port))
         self.server = xmlrpclib.ServerProxy(uri)
+        self.name = "moses"
 
     def translate(self, string):
         
@@ -125,6 +210,7 @@ class WsdMosesWorker(Worker):
         self.truecaser = Truecaser(source_language, truecaser_model)
         self.detokenizer = Detokenizer(target_language)
         self.detruecaser = Detruecaser(target_language)
+        self.name = "wsdmoses" 
     
     def translate(self, string):
         sys.stderr.write("Sending to WSD Analyzer\n")
@@ -138,4 +224,4 @@ class WsdMosesWorker(Worker):
         moses_translation, _ = self.moses_worker.translate(wsd_source)
         moses_translation = self.detruecaser.process_string(moses_translation)
         moses_translation = self.detokenizer.process_string(moses_translation)
-        return moses_translation, None
+        return moses_translation, {}
