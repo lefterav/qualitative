@@ -9,7 +9,8 @@ import logging as log
 from featuregenerator.preprocessor import Tokenizer, Truecaser
 from featuregenerator.blackbox.wsd import WSDclient
 from mt.lucy import LucyWorker, AdvancedLucyWorker
-from mt.moses import MtMonkeyWorker, ProcessedMosesWorker, MosesWorker
+from mt.moses import MtMonkeyWorker, ProcessedMosesWorker, MosesWorker,\
+    WsdMosesWorker
 from mt.selection import Autoranking
 from mt.worker import Worker
 from ConfigParser import SafeConfigParser
@@ -38,7 +39,7 @@ class DummyTriangleTranslator():
                  lucy_username="traductor", lucy_password="traductor",                
                  source_language="en", target_language="de",
                  config_files=[],
-                 ranking_model=None):
+                 model=None):
         self.moses_worker = MtMonkeyWorker(moses_url)
         self.lucy_worker = LucyWorker(url=lucy_url,
                                       username=lucy_username, password=lucy_password,
@@ -100,7 +101,8 @@ class Pilot3Translator(SimpleTriangleTranslator):
                  configfiles=[],
                  source_language="en",
                  target_language="de",
-                 ranking_model=None):
+                 model=None,
+                 reverse=False):
        
         self.source_language = source_language
         self.target_language = target_language
@@ -109,20 +111,29 @@ class Pilot3Translator(SimpleTriangleTranslator):
         log.error("Loading config files {}".format(configfiles))
         config.read(configfiles)
         self.workers = []
+        self.reverse = reverse
         
+        truecaser_model = config.get("Truecaser:{}".format(source_language), 'model')
+        truecaser_model_target = config.get("Truecaser:{}".format(target_language), 'model')
+        splitter_model = None
+        if source_language == 'de':
+            splitter_model = config.get("Splitter:{}".format(source_language), 'model')            
+
+        tokenizer_protected = config.get("Tokenizer:{}".format(source_language), 'protected', None)
 
         # initialize Moses, even if not prefered engine, before Lucy cause it may be reused
         try:
             # get resources
             uri = config.get("Moses:{}-{}".format(source_language, target_language), "uri")
-            truecaser_model = config.get("Truecaser:{}".format(source_language), 'filename')
-            splitter_model = None
-            if source_language == 'de':
-                splitter_model = config.get("Splitter:{}".format(source_language), 'filename')            
             self.moses_worker = ProcessedMosesWorker(uri, source_language, target_language, 
-                                                     truecaser_model, splitter_model)
+                                                     truecaser_model, splitter_model, 
+                                                     tokenizer_protected)
         except:
             self.moses_worker = None
+            
+        self.lucy_worker = None
+        self.lcm_worker = None
+        self.wsd_worker = None
 
         for engine in engines:
         
@@ -138,64 +149,110 @@ class Pilot3Translator(SimpleTriangleTranslator):
                                                       target_language=target_language,
                                                       **params)
                 self.workers.append(self.lucy_worker)
+            
+            if engine == "OldLucy" or (engine == "LcM" and not self.lucy_worker):
+                params = dict(config.items("Lucy"))
+                log.debug("Old Lucy starting with params: {}".format(params))
+                self.lucy_worker = LucyWorker(source_language=source_language,
+                                              target_language=target_language,
+                                              **params)
+                self.workers.append(self.lucy_worker)
+                
                 
             if engine == "LcM":
                 uri = config.get("LcM:{}-{}".format(source_language, target_language), "uri")
-                self.lcm_worker = ProcessedMosesWorker(uri, source_language, target_language, 
-                                                       truecaser_model, splitter_model)
+                self.lcm_worker = ProcessedMosesWorker(uri, target_language, target_language, 
+                                                       None, None,
+                                                       tokenizer_protected, 
+                                                       sentence_splitter=False)
+                self.lcm_worker.name = "lcm"
+                self.workers.append(self.lcm_worker)
+                
+            if engine == "WsdMoses":
+                moses_url = config.get("WsdMoses:{}-{}".format(source_language, target_language), "moses_uri")
+                wsd_url = config.get("WsdMoses:{}-{}".format(source_language, target_language), "wsd_uri")
+                
+                self.wsd_worker = WsdMosesWorker(moses_url, wsd_url, source_language, target_language, 
+                                                 truecaser_model, reverse) 
+                self.workers.append(self.wsd_worker)
                 
             if engine == "NeuralMonkey":
                 uri = config.get("NeuralMonkey:{}-{}".format(source_language, target_language), 
                                  "uri")
                 self.neuralmonkey_worker = NeuralMonkeyWorker(uri, source_language, 
                                                               target_language, 
-                                                              truecaser_model, splitter_model)
+                                                              truecaser_model, splitter_model,
+                                                              tokenizer_protected)
                 self.workers.append(self.neuralmonkey_worker)
         
-        self.selector = Autoranking(configfiles, ranking_model, source_language, 
+        self.selector = Autoranking(configfiles, model, source_language, 
                                     target_language, reverse=False)
         
         self.sentencesplitter = SentenceSplitter({'language': source_language})
 
         
         
-    def translate_with_selection(self, text, new_rank_name="rank_soft", reconstruct="soft"):
+    def translate(self, text, reconstruct="soft"):
         
-        strings = self.sentencesplitter.split_sentences(text)
+        try:
+            strings = self.sentencesplitter.split_sentences(text)
+        except UnicodeDecodeError:
+            try:
+                text = unicode(text, errors='replace')
+                strings = self.sentencesplitter.split_sentences(text)
+            except:
+                strings = [""]
         translation_strings = []
         ranked_parallelsentences = []
         descriptions = []
         
         for string in strings:
-            pool = Pool(processes=len(self.workers))
-            translations = pool.map(worker_translate, [(w, string) for w in self.workers])
-            #translations = [worker_translate(w, string) for w in self.workers]
+            #pool = Pool(processes=len(self.workers))
+            #translations = pool.map(worker_translate, [(w, string) for w in self.workers])\
+            
+            translations = self.workers_translate(string)
             
             source = SimpleSentence(string, {})
-                    
+            
             attributes = {"langsrc" : self.source_language, "langtgt" : self.target_language}
             parallelsentence = ParallelSentence(source, translations, attributes=attributes)
-            ranked_parallelsentence, description = self.selector.get_ranked_sentence(parallelsentence, reconstruct=reconstruct, new_rank_name=new_rank_name)
-            translation_string = ranked_parallelsentence.get_best_translation(new_rank_name=new_rank_name).get_string()
-            
+            translation_string, ranked_parallelsentence, description = self.selector.get_best_sentence(parallelsentence, 
+                                                                                                       reconstruct=reconstruct)
             ranked_parallelsentences.append(ranked_parallelsentence)
             translation_strings.append(translation_string)
             descriptions.append(description)
         
         translation_string = " ".join(translation_strings)
-        if len(descriptions) > 1:
-            description = {}
-            for i, descr in enumerate(descriptions):
-                description[i] = descr 
-            
+        
+        description = {}
+        for i, descr in enumerate(descriptions):
+            description[i] = descr 
+        
+        #TODO: maybe description should not be returned, as it is already contained in the ranked_sentence arguments
         return translation_string, ranked_parallelsentences, description     
 
-    def translate(self, string, new_rank_name="rank_soft", reconstruct="soft"):
-        translation_string, _, _ = self.translate_with_selection(string, new_rank_name=new_rank_name, reconstruct=reconstruct)
-        return translation_string
+
+    def workers_translate(self, string):
+        lucy_string = ""
+        translated_sentences = []
+        for worker in self.workers:
+            try:
+                if worker.name == "lcm":
+                    #if lucy_string == "":
+                    #    raise Exception("Lucy should be in the order before LcM")
+                    translation = worker_translate(worker, lucy_string)
+                else:
+                    translation = worker_translate(worker, string)
+                if worker.name == "lucy":
+                    lucy_string = translation.get_string()
+                    log.debug("storing lucy output {}".format(lucy_string))
+                translated_sentences.append(translation)
+            except Exception as e:
+                log.error("Cannot translate with {}. Exception raised: {}".format(worker, e))
+        return translated_sentences    
 
         
-def worker_translate(worker_string):
+def worker_translate(worker, string):
     """
     Helper function that orders and fetches a translation from a worker
     @param worker: A machine translation worker
@@ -205,9 +262,10 @@ def worker_translate(worker_string):
     @return: a bundled simple sentence object
     @rtype: L{sentence.sentence.SimpleSentence}
     """
-    worker, string = worker_string
+    log.info("Translating with {}".format(worker.name))
     translated_sentence = worker.translate_sentence(string)
     translated_sentence.add_attribute("system", worker.name)
+    log.debug("{} returned this string: {}".format(worker.name, translated_sentence.get_string()))
     return translated_sentence
 
 
@@ -221,19 +279,22 @@ class LcMWorker(Worker):
                  source_language="en", target_language="de",
                  config_files=[],
                  classifiername=None,
-                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-filename.3.en",
+                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-model.3.en",
+                 splitter_model=None,
                  reverse=False):
         self.lucy_worker = LucyWorker(url=lucy_url,
                                       username=lucy_username, password=lucy_password,
                                       source_language=source_language,
                                       target_language=target_language) 
-        self.lcm_worker = MtMonkeyWorker(lcm_url)
+        self.lcm_worker = ProcessedMosesWorker(lcm_url, source_language, target_language, 
+                                               truecaser_model, splitter_model)
         self.tokenizer = Tokenizer(source_language)
         self.truecaser = Truecaser(source_language, truecaser_model)
+        self.name = 'lcm'
     
     def translate(self, string):
-        string = self.tokenizer.process_string(string)
-        string = self.truecaser.process_string(string)
+        #string = self.tokenizer.process_string(string)
+        #string = self.truecaser.process_string(string)
         
         sys.stderr.write("Sending to Lucy\n")
         lucy_translation, _ = self.lucy_worker.translate(string)
@@ -252,7 +313,7 @@ class SimpleWsdTriangleTranslator(Worker):
                  source_language="en", target_language="de",
                  config_files=[],
                  classifiername=None,
-                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-filename.3.en",
+                 truecaser_model="/share/taraxu/systems/r2/de-en/moses/truecaser/truecase-model.3.en",
                  reverse=False):
         self.selector = Autoranking(config_files, classifiername, reverse)
         self.wsd_worker = WSDclient(wsd_url)

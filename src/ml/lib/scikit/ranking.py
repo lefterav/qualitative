@@ -36,7 +36,8 @@ from sklearn.ensemble.forest import ExtraTreesClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+from sklearn.lda import LDA
+#from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis as QDA
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import RandomTreesEmbedding
@@ -604,8 +605,19 @@ class SkRanker(Ranker, SkLearner):
         if type(self.learner) == str:
             if self.classifier:
                 self.learner = self.classifier
-                self.learner._dual_coef_ = self.learner.dual_coef_
-                self.learner._intercept_ = self.learner.intercept_
+                # this is to provide backwards compatibility for old models 
+                # whose classes used differeent attribute names
+                try:
+                    self.learner._dual_coef_ = self.learner.dual_coef_
+                    self.learner._intercept_ = self.learner.intercept_
+                except AttributeError:
+                    # it's ok if the model doesn't have these variables
+                    pass
+
+                try: # backwards compatibility for old LogisticRegression
+                    try_classes = self.learner.classes_
+                except AttributeError:
+                    self.learner.classes_ = [-1, 1]
 
         #de-compose multiranked sentence into pairwise comparisons
         pairwise_parallelsentences = parallelsentence.get_pairwise_parallelsentences(bidirectional_pairs=bidirectional_pairs,
@@ -665,7 +677,8 @@ class SkRanker(Ranker, SkLearner):
                                  'value' : predicted_value,
                                  'distribution': distribution,
                                  'confidence': distribution[int(predicted_value)],
-                                 'instance' : instance})
+#                                 'instance' : instance,
+                                 })
             
             #add the new predicted ranks as attributes of the new pairwise sentence
             pairwise_parallelsentence.add_attributes({"rank_predicted":predicted_value,
@@ -688,7 +701,8 @@ class SkRanker(Ranker, SkLearner):
             attribute2 = "prob_1"
             log.debug("Applying soft reconstruction to produce rank {}".format(new_rank_name))
             try:
-                ranked_sentence = sentenceset.get_multiranked_sentence_with_soft_ranks(attribute1, attribute2, critical_attribute, new_rank_name)
+                ranked_sentence = sentenceset.get_multiranked_sentence_with_soft_ranks(attribute1, attribute2, 
+                        critical_attribute, new_rank_name, normalize_ranking=False)
             except:
                 raise ValueError("Sentenceset {} from {} caused exception".format(classified_pairwise_parallelsentences, parallelsentence))
         return ranked_sentence, resultvector

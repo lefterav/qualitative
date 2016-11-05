@@ -3,6 +3,7 @@ from featuregenerator.preprocessor import Normalizer, Tokenizer, Truecaser,\
     CompoundSplitter, Detruecaser, Detokenizer
 import requests
 from worker import Worker
+import logging as log
 
 class NeuralMonkeyWorker(Worker):
     """
@@ -18,32 +19,39 @@ class NeuralMonkeyWorker(Worker):
     @type postprocessors: list of L{Postprocessor}
     """
     def __init__(self, uri, source_language, target_language, 
-                 truecaser_model, splitter_model=None, worker=None, **kwargs):
+                 truecaser_model, splitter_model=None, worker=None, 
+                 tokenizer_protected=None, **kwargs):
         
         self.sentencesplitter = SentenceSplitter({'language': source_language})
         self.preprocessors = [Normalizer(language=source_language),
-                              Tokenizer(language=source_language),
+                              Tokenizer(language=source_language, 
+                                        protected=tokenizer_protected,
+                                        unescape=False),
                               Truecaser(language=source_language, 
-                                        filename=truecaser_model),
+                                        model=truecaser_model),
                               ]
         if source_language == 'de' and splitter_model:
             self.preprocessors.append(CompoundSplitter(language=source_language,
-                                                       filename=splitter_model))
+                                                       model=splitter_model))
         self.postprocessors = [Detruecaser(language=target_language),
                                Detokenizer(language=target_language)]
         self.uri = uri
         self.name = "neuralmonkey"
-        
+        log.debug("Neural Monkey wrapper initialized")        
         
     def translate(self, string):
-        strings = self.sentencesplitter.split_sentences(string)
+        try:
+            strings = self.sentencesplitter.split_sentences(string)
+        except UnicodeDecodeError:
+            string = unicode(string, errors='replace')
+            strings = self.sentencesplitter.split_sentences(string)
         
         preprocessed_strings = []
         for string in strings:
             for preprocessor in self.preprocessors:
                 string = preprocessor.process_string(string)
             preprocessed_strings.append(string.split())
-        
+        log.debug("Preprocessed strings sent to Neural Monkey: {}".format(preprocessed_strings))
         request = {"source": preprocessed_strings}
         response = requests.post(self.uri, json=request)
         translated_token_lists = response.json()['target']

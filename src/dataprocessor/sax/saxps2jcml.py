@@ -8,6 +8,7 @@ import re
 import shutil
 import sys
 import tempfile
+import logging as log
 from collections import OrderedDict
 from random import shuffle
 import string as stringlib 
@@ -54,7 +55,9 @@ def att(sentence):
             attributes[k(key)] = unicode(val)
         except UnicodeDecodeError:
             failed.add(k(key))
-            attributes[k(key)] = str(val)
+            #skip items that break the file writing, usually it's the parse tree from BitPar
+            #TODO: the unicode error may originate at the importing of data from BitPar
+            #attributes[k(key)] = str(val)
     if failed:
         log.debug("The following keys caused unicode errors: {}".format(list(failed)))
     return attributes
@@ -64,10 +67,10 @@ class IncrementalJcml(object):
     Write line by line incrementally on an XML file, without loading anything in the memory.
     Don't forget the close function. Object sentences cannot be edited after written
     """
-    def __init__(self, filename, xmlformat=JcmlFormat):
+    def __init__(self, model, xmlformat=JcmlFormat):
         self.TAG = xmlformat.TAG
-        self.filename = filename
-        self.file = tempfile.NamedTemporaryFile(mode='w',delete=False,suffix='.jcml', prefix='tmp_', dir='.') #"/tmp/%s.tmp" % os.path.basename(filename)
+        self.filename = model
+        self.file = tempfile.NamedTemporaryFile(mode='w',delete=False,suffix='.jcml', prefix='tmp_', dir='.') #"/tmp/%s.tmp" % os.path.basename(model)
         self.tempfilename = self.file.name
         self.generator = XMLGenerator(self.file, "utf-8")
         self.generator.startDocument()
