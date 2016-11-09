@@ -49,8 +49,12 @@ server.register_introspection_functions()
 def process_task(params):
     text = params['text']
     log.info("Received task\n")
-    translated_text, description = translator.translate(text)
-    log.debug(translated_text)
+    try:
+        translated_text, description = translator.translate(text)
+        log.debug(translated_text)
+    except Exception as e:
+        exception_str = "Exception: {}\n".format(e)
+        sys.stderr.write(exception_str)
     transaction_id = 0
     result = {
             "errorCode": 0, 
@@ -60,7 +64,7 @@ def process_task(params):
                     "translated": [
                         {
                             "text": translated_text, 
-                            #"description": description,
+                            "description": str(description),
                             "score": 0,
                         }
                     ], 
