@@ -118,6 +118,8 @@ def dataset_to_instances(filename,
                          output_filename=None,
                          default_value = '',
                          replace_infinite=False,
+                         attribute_set_limit=None,
+                         length_limit=None,
                          **kwargs):
     """
     Receive a dataset filename and convert it into a memory table for the Orange machine learning
@@ -151,7 +153,7 @@ def dataset_to_instances(filename,
     if not attribute_set:
         attribute_set, _ = reader(filename, compact=True, 
                      all_general=True,
-                     all_target=True).get_attribute_sets()
+                     all_target=True).get_attribute_sets(limit=attribute_set_limit)
                      
     #get the text for the header of the orange file
     header = _get_pairwise_header(attribute_set, class_name)
@@ -163,9 +165,13 @@ def dataset_to_instances(filename,
                      all_general=True,
                      all_target=True)
     
+    counter = 0
     
     #iterate over all parallel sentences provided by the data reader
     for parallelsentence in dataset.get_parallelsentences():
+        counter+=1
+        if length_limit and counter>length_limit:
+            break
         vectors = parallelsentence.get_vectors(attribute_set, 
                                                class_name=class_name, 
                                                default_value=default_value,
