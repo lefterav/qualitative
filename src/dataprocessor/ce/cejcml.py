@@ -341,7 +341,7 @@ class CEJcmlReader(DataReader):
         for key, value in target_attributes.iteritems():
             self._print_statistics(key, value, fileobject)            
                 
-    def get_attribute_vectors(self):
+    def get_attribute_vectors(self, limit=None):
         """
         Extract a list of values for each attribute
         """
@@ -360,9 +360,15 @@ class CEJcmlReader(DataReader):
         # get the root element
         event, root = context.next()
         
+        counter=0
+        
         for event, elem in context:
             #new sentence: get attributes
             if event == "start" and elem.tag == self.TAG_SENT:
+                counter+=1
+                if limit and counter>limit:
+                    log.info("Finished extracting feature names from the first {} sentences".format(limit))
+                    break
                 for key, value in elem.attrib.iteritems():
 
                
