@@ -43,14 +43,14 @@ class AttributeSet:
     would not be available.
     @ivar parallel_attribute_names: the names of the attributes on the 
     level of the parallel sentence
-    @type parallel_attribute_names: string
+    @type parallel_attribute_names: list of string
     @ivar source_attribute_names: the names of the attributes of the source sentence
-    @type source_attribute_names: string
+    @type source_attribute_names: list of string
     @ivar target_attribute_names: the names of the attributes of the target 
     sentences (translations
-    @type target_attribute_names: string
+    @type target_attribute_names: list of string
     @ivar ref_attribute_names: the names of the attributes of the reference
-    @type: ref_attribute_names: string
+    @type: ref_attribute_names: list of string
     """
     def __init__(self, 
                  parallel_attribute_names=[], 
