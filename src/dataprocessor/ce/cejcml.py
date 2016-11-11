@@ -118,7 +118,7 @@ class CEJcmlReader(DataReader):
                 discrete_attribute_names.append(key)
         return continuous_attribute_names, discrete_attribute_names
     
-    def get_attribute_sets(self):
+    def get_attribute_sets(self, limit=None):
         """
         TODO: does not work!!!
         Attributes of parallel sentence files can be sparse, i.e. not all attributes appear in all sentences. Therefore
@@ -129,7 +129,7 @@ class CEJcmlReader(DataReader):
         @rtype: L{AttributeSet}
         """
         
-        general_attributes, source_attributes, target_attributes, ref_attributes = self.get_attribute_vectors()
+        general_attributes, source_attributes, target_attributes, ref_attributes = self.get_attribute_vectors(limit=limit)
         general_continuous_attnames, general_discrete_attnames = self._separate_continuous_attributes(general_attributes)
         source_continuous_attnames, source_discrete_attnames = self._separate_continuous_attributes(source_attributes)
         target_continuous_attnames, target_discrete_attnames = self._separate_continuous_attributes(target_attributes)
