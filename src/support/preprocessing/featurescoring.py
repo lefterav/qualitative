@@ -10,7 +10,7 @@ from ml.lib.orange.ranking import dataset_to_instances
 import sys
 from Orange.feature.scoring import score_all, InfoGain, GainRatio, Relief, Relevance, Cost, Gini, Distance, MDL
 
-ATTRIBUTE_SET_LIMIT=100
+ATTRIBUTE_SET_LIMIT=10
 LENGTH_LIMIT=1000
 
 def print_feature_scores(instances, methods):
