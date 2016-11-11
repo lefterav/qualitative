@@ -9,9 +9,58 @@ Created on Nov 9, 2016
 from ml.lib.orange.ranking import dataset_to_instances
 import sys
 from Orange.feature.scoring import score_all, InfoGain, GainRatio, Relief, Relevance, Cost, Gini, Distance, MDL
+from sentence.parallelsentence import AttributeSet
 
 ATTRIBUTE_SET_LIMIT=100
 LENGTH_LIMIT=1000
+
+
+source_features = ['berkeley-avg-confidence',
+                   'berkeley-best-parse-confidence',
+                   'berkeley-n',
+                   'berkley-loglikelihood',
+                   'length', 
+                   'parse-comma', 
+                   'parse-dot', 
+                   'parse-NN', 
+                   'parse-NP',
+                   'parse-PP',
+                   'parse-VP',
+                   'parse-VVFIN',
+                   ]
+
+target_features = ['berkeley-avg-confidence',
+                   'berkeley-avg-confidence_ratio',
+                   'berkeley-best-parse-confidence',
+                   'berkeley-best-parse-confidence_ratio ',
+                   'berkeley-n ',
+                   'berkeley-n_ratio ',
+                   'berkley-loglikelihood ',
+                   'berkley-loglikelihood_ratio',
+                   'bi-prob',
+                   'length ',
+                   'length_ratio ',
+                   'parse-comma',
+                   'parse-comma_ratio ',
+                   'parse-dot ',
+                   'parse-dot_ratio',
+                   'parse-NN',
+                   'parse-NN_ratio ',
+                   'parse-NP ',
+                   'parse-NP_ratio ',
+                   'parse-PP',
+                   'parse-PP_ratio ',
+                   'parse-VB',
+                   'parse-VP',
+                   'parse-VP_ratio',
+                   'prob',
+                   'tri-prob ',
+                   'uni-prob',
+                   'unk ',
+                   ]
+
+
+attributes_set = AttributeSet([], source_features, target_features, [])
 
 def print_feature_scores(instances, methods):
     for method in methods:
