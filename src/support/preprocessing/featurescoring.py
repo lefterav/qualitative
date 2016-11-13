@@ -10,9 +10,10 @@ from ml.lib.orange.ranking import dataset_to_instances
 import sys
 from Orange.feature.scoring import score_all, InfoGain, GainRatio, Relief, Relevance, Cost, Gini, Distance, MDL
 from sentence.parallelsentence import AttributeSet
+from operator import itemgetter
 
-ATTRIBUTE_SET_LIMIT=100
-LENGTH_LIMIT=1000
+ATTRIBUTE_SET_LIMIT=10
+LENGTH_LIMIT=None
 
 
 source_features = ['berkeley-avg-confidence',
@@ -67,7 +68,8 @@ def print_feature_scores(instances, methods):
         print method
         scores = score_all(instances, method)
         i = 0
-        for score, attribute_name in sorted(scores):
+        scores = [s for s in scores if not str(s[1])=='nan']
+        for attribute_name, score in sorted(scores, key=lambda s: abs(s[1]), reverse=True):
             i += 1
             print "%5.3f\t%s" % (score, attribute_name)
             
@@ -76,8 +78,10 @@ if __name__ == '__main__':
     filename = sys.argv[1]
     instances = dataset_to_instances(filename, 
                                      attribute_set_limit=ATTRIBUTE_SET_LIMIT, 
-                                     length_limit=LENGTH_LIMIT)
-    methods = [InfoGain, GainRatio, Relief, Relevance, Cost, Gini, Distance, MDL]
+                                     length_limit=LENGTH_LIMIT,
+                                     class_name='rank')
+    methods = [Relief]
+#, Relevance, Cost, Gini, Distance, MDL]
     print_feature_scores(instances, methods)
 
     
