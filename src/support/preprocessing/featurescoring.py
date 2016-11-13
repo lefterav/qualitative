@@ -105,6 +105,9 @@ if __name__ == '__main__':
     instances = dataset_to_instances(filename, 
                                      attribute_set=attribute_set,
                                      #attribute_set_limit=ATTRIBUTE_SET_LIMIT, 
+                                     replace_infinite=True,
+                                     replace_nan=True,
+                                     default_value=0,
                                      length_limit=LENGTH_LIMIT,
                                      class_name='rank')
     log.info("Finished dataset conversion")

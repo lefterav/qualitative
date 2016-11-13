@@ -120,6 +120,7 @@ def dataset_to_instances(filename,
                          replace_infinite=False,
                          attribute_set_limit=None,
                          length_limit=None,
+                         replace_nan=False,
                          **kwargs):
     """
     Receive a dataset filename and convert it into a memory table for the Orange machine learning
@@ -176,6 +177,7 @@ def dataset_to_instances(filename,
                                                class_name=class_name, 
                                                default_value=default_value,
                                                replace_infinite=replace_infinite,
+                                               replace_nan=replace_nan,
                                                )
                 
         #every parallelsentence has many instances
