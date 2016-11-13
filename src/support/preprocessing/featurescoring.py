@@ -19,7 +19,7 @@ source_features = ['berkeley-avg-confidence',
                    'berkeley-best-parse-confidence',
                    'berkeley-n',
                    'berkley-loglikelihood',
-                   'length', 
+                   'length',
                    'parse-comma', 
                    'parse-dot', 
                    'parse-NN', 
@@ -32,31 +32,31 @@ source_features = ['berkeley-avg-confidence',
 target_features = ['berkeley-avg-confidence',
                    'berkeley-avg-confidence_ratio',
                    'berkeley-best-parse-confidence',
-                   'berkeley-best-parse-confidence_ratio ',
-                   'berkeley-n ',
-                   'berkeley-n_ratio ',
-                   'berkley-loglikelihood ',
+                   'berkeley-best-parse-confidence_ratio',
+                   'berkeley-n',
+                   'berkeley-n_ratio',
+                   'berkley-loglikelihood',
                    'berkley-loglikelihood_ratio',
                    'bi-prob',
-                   'length ',
-                   'length_ratio ',
+                   'length',
+                   'length_ratio',
                    'parse-comma',
-                   'parse-comma_ratio ',
-                   'parse-dot ',
+                   'parse-comma_ratio',
+                   'parse-dot',
                    'parse-dot_ratio',
                    'parse-NN',
-                   'parse-NN_ratio ',
-                   'parse-NP ',
-                   'parse-NP_ratio ',
+                   'parse-NN_ratio',
+                   'parse-NP',
+                   'parse-NP_ratio',
                    'parse-PP',
-                   'parse-PP_ratio ',
+                   'parse-PP_ratio',
                    'parse-VB',
                    'parse-VP',
                    'parse-VP_ratio',
                    'prob',
-                   'tri-prob ',
+                   'tri-prob',
                    'uni-prob',
-                   'unk ',
+                   'unk',
                    ]
 
 
@@ -67,7 +67,7 @@ def print_feature_scores(instances, methods):
         print method
         scores = score_all(instances, method)
         i = 0
-        for score, attribute_name in scores:
+        for score, attribute_name in sorted(scores):
             i += 1
             print "%5.3f\t%s" % (score, attribute_name)
             
