@@ -9,9 +9,12 @@ Created on Nov 9, 2016
 from ml.lib.orange.ranking import dataset_to_instances
 import sys
 from Orange.feature.scoring import score_all, InfoGain, GainRatio, Relief, Relevance, Cost, Gini, Distance, MDL
+
 from sentence.parallelsentence import AttributeSet
 from operator import itemgetter
 import logging as log
+from Orange.orange import VarTypes, Domain
+from Orange.data.preprocess import EquiNDiscretization
 
 ATTRIBUTE_SET_LIMIT=10
 LENGTH_LIMIT=None
@@ -66,27 +69,53 @@ attribute_set = AttributeSet([], source_features, target_features, [])
 
 def print_feature_scores(instances, methods):
     for method in methods:
-        print method
-        log.info("Starting scoring")
+        print method.__class__.__name__
+        # apply the method to all features 
+        log.info("Starting scoring with {}".format(method.__class__.__name__))
         scores = score_all(instances, method)
         log.info("Finished scoring")
         i = 0
-        scores = [s for s in scores if not str(s[1])=='nan']
+        # Filter out nans because they break sorting
+        scores = [(a, s) for a, s in scores if not str(s)=='nan']
         for attribute_name, score in sorted(scores, key=lambda s: abs(s[1]), reverse=True):
             i += 1
             print "%5.3f\t%s" % (score, attribute_name)
-            
+
+
+#function copied from rank widget
+def get_discretized_data(data, intervals):
+    discretizer = EquiNDiscretization(numberOfIntervals=intervals)
+    continuous_attributes = filter(lambda attr: attr.varType == VarTypes.Continuous, data.domain.attributes)
+    at = []
+    attr_dict = {}
+    for attri in continuous_attributes:
+        try:
+            nattr = discretizer(attri, data)
+            at.append(nattr)
+            attr_dict[attri] = nattr
+        except:
+            pass
+    discretized_data = data.select(Domain(at, data.domain.classVar))
+    discretized_data.setattr("attr_dict", attr_dict)
+    return discretized_data
+
 
 if __name__ == '__main__':
     filename = sys.argv[1]
     instances = dataset_to_instances(filename, 
                                      attribute_set=attribute_set,
-                                     attribute_set_limit=ATTRIBUTE_SET_LIMIT, 
+                                     #attribute_set_limit=ATTRIBUTE_SET_LIMIT, 
                                      length_limit=LENGTH_LIMIT,
                                      class_name='rank')
     log.info("Finished dataset conversion")
-    methods = [Relief, InfoGain]
-#, Relevance, Cost, Gini, Distance, MDL]
-    print_feature_scores(instances, methods)
+    
+    # first score with the methods working on continuous features
+    continuous_methods = [Relief, MDL]
+    print_feature_scores(instances, continuous_methods)
+    
+    # the score with the methods working only on discrete features
+    discrete_methods = [InfoGain, Relevance, Cost, Gini, Distance]
+    discrete_instances = get_discretized_data(instances, 100)
+    print_feature_scores(discrete_instances, discrete_methods)
 
     
