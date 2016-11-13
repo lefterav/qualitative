@@ -11,6 +11,7 @@ import sys
 from Orange.feature.scoring import score_all, InfoGain, GainRatio, Relief, Relevance, Cost, Gini, Distance, MDL
 from sentence.parallelsentence import AttributeSet
 from operator import itemgetter
+import logging as log
 
 ATTRIBUTE_SET_LIMIT=10
 LENGTH_LIMIT=None
@@ -61,12 +62,14 @@ target_features = ['berkeley-avg-confidence',
                    ]
 
 
-attributes_set = AttributeSet([], source_features, target_features, [])
+attribute_set = AttributeSet([], source_features, target_features, [])
 
 def print_feature_scores(instances, methods):
     for method in methods:
         print method
+        log.info("Starting scoring")
         scores = score_all(instances, method)
+        log.info("Finished scoring")
         i = 0
         scores = [s for s in scores if not str(s[1])=='nan']
         for attribute_name, score in sorted(scores, key=lambda s: abs(s[1]), reverse=True):
@@ -77,10 +80,12 @@ def print_feature_scores(instances, methods):
 if __name__ == '__main__':
     filename = sys.argv[1]
     instances = dataset_to_instances(filename, 
+                                     attribute_set=attribute_set,
                                      attribute_set_limit=ATTRIBUTE_SET_LIMIT, 
                                      length_limit=LENGTH_LIMIT,
                                      class_name='rank')
-    methods = [Relief]
+    log.info("Finished dataset conversion")
+    methods = [Relief, InfoGain]
 #, Relevance, Cost, Gini, Distance, MDL]
     print_feature_scores(instances, methods)
 
