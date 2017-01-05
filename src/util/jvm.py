@@ -120,7 +120,10 @@ class JVM(object):
         self.jvm.stdout.flush()
         response = self.jvm.stdout.readline().strip()
         log.info("response = {}".format(response))
-        self.socket_no = int(response)
+        try:
+            self.socket_no = int(response)
+        except:
+            raise Exception("{}\n{}".format(response, "The above exception raised during JVM initialization, check JVM installation"))
         self.pid = self.jvm.pid
         log.info("pid = {}".format(self.pid))
         
