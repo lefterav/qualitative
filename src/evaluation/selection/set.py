@@ -78,7 +78,7 @@ def evaluate_selection(parallelsentences,
             except:
                     reference_string = ". ."
             original_sentences[system_name].append((translation.get_string(), [reference_string]))
-            if int(translation.get_attribute(rank_name)) == int(best_rank):
+            if float(translation.get_attribute(rank_name)) == float(best_rank):
                 selected_systems[system_name] += 1
                 #if there is a tie, collect the first sentence that appears TODO:improve
                 if counter == 0:
