@@ -52,7 +52,10 @@ def retrieve_results(mysuite, path, reps = [0], tags='all'):
             values_std = mysuite.get_histories_over_repetitions(exp=exp, tags=tags, aggregate=std)
         except ValueError:
             continue
-        values_std = OrderedDict([("{}_std".format(k),v) for k,v in values_std.iteritems()])
+        try:
+            values_std = OrderedDict([("{}_std".format(k),v) for k,v in values_std.iteritems()])
+        except AttributeError:
+            continue
         
         #values_rep = mysuite.get_histories_over_repetitions(exp=exp, tags='all', aggregate=list)
         #for rep, key, vs in enumerate(values_rep.iteritems()):

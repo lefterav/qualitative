@@ -35,32 +35,32 @@ source_features = ['berkeley-avg-confidence',
                    ]
 
 target_features = ['berkeley-avg-confidence',
-                   'berkeley-avg-confidence_ratio',
+                   #'berkeley-avg-confidence_ratio',
                    'berkeley-best-parse-confidence',
-                   'berkeley-best-parse-confidence_ratio',
+                   #'berkeley-best-parse-confidence_ratio',
                    'berkeley-n',
-                   'berkeley-n_ratio',
+                   #'berkeley-n_ratio',
                    'berkley-loglikelihood',
-                   'berkley-loglikelihood_ratio',
-                   'bi-prob',
+                   #'berkley-loglikelihood_ratio',
+                   #'bi-prob',
                    'length',
-                   'length_ratio',
+                   #'length_ratio',
                    'parse-comma',
-                   'parse-comma_ratio',
+                   #'parse-comma_ratio',
                    'parse-dot',
-                   'parse-dot_ratio',
-                   'parse-NN',
-                   'parse-NN_ratio',
+                   #'parse-dot_ratio',
+                   #'parse-NN',
+                   #'parse-NN_ratio',
                    'parse-NP',
-                   'parse-NP_ratio',
-                   'parse-PP',
-                   'parse-PP_ratio',
-                   'parse-VB',
+                   #'parse-NP_ratio',
+                   #'parse-PP',
+                   #'parse-PP_ratio',
+                   #'parse-VB',
                    'parse-VP',
-                   'parse-VP_ratio',
+                   #'parse-VP_ratio',
                    'prob',
-                   'tri-prob',
-                   'uni-prob',
+                   #'tri-prob',
+                   #'uni-prob',
                    'unk',
                    ]
 
@@ -69,17 +69,17 @@ attribute_set = AttributeSet([], source_features, target_features, [])
 
 def print_feature_scores(instances, methods):
     for method in methods:
-        print method.__class__.__name__
+        print method
         # apply the method to all features 
-        log.info("Starting scoring with {}".format(method.__class__.__name__))
+        log.info("Starting scoring with {}".format(method))
         scores = score_all(instances, method)
         log.info("Finished scoring")
         i = 0
         # Filter out nans because they break sorting
         scores = [(a, s) for a, s in scores if not str(s)=='nan']
-        for attribute_name, score in sorted(scores, key=lambda s: abs(s[1]), reverse=True):
+        for attribute_name, score in sorted(scores, key=lambda s: s[1], reverse=True):
             i += 1
-            print "%5.3f\t%s" % (score, attribute_name)
+            print "%s\t%5.3f" % (attribute_name, score)
 
 
 #function copied from rank widget
@@ -102,9 +102,14 @@ def get_discretized_data(data, intervals):
 
 if __name__ == '__main__':
     filename = sys.argv[1]
+
+    log.basicConfig(level=log.INFO,
+                        format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                        datefmt='%m-%d %H:%M')
+
     instances = dataset_to_instances(filename, 
                                      attribute_set=attribute_set,
-                                     #attribute_set_limit=ATTRIBUTE_SET_LIMIT, 
+                                     attribute_set_limit=ATTRIBUTE_SET_LIMIT, 
                                      replace_infinite=True,
                                      replace_nan=True,
                                      default_value=0,
@@ -117,7 +122,7 @@ if __name__ == '__main__':
     print_feature_scores(instances, continuous_methods)
     
     # the score with the methods working only on discrete features
-    discrete_methods = [InfoGain, Relevance, Cost, Gini, Distance]
+    discrete_methods = [InfoGain, Relevance, Gini, Distance]
     discrete_instances = get_discretized_data(instances, 100)
     print_feature_scores(discrete_instances, discrete_methods)
 

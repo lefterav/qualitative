@@ -1,0 +1,6 @@
+2016-12-25.17-16-52 cp learning.cfg learning.featuresets.cfg
+2016-12-25.17-19-53 vim learning.featuresets.cfg 
+2016-12-25.17-25-19 vim learning.cfg 
+2016-12-25.17-26-47 hgrep python | tail -n 5
+2016-12-25.17-27-35 python ~/workspace/qualitative/src/app/hybrid/learn.py -c ~/workspace/qualitative/config/autoranking/learning.cfg -e diss_basic_3301 -n 30 &> ../log/learning_basic_rfecvfeatures_3301.log
+2016-12-25.17-27-47 python ~/workspace/qualitative/src/app/hybrid/learn.py -c ~/workspace/qualitative/config/autoranking/learning.cfg -e diss_basic_3301 -n 30 &> ../log/learning_basic_rfecvfeatures_3301.log

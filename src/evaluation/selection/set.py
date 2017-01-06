@@ -21,7 +21,7 @@ def _get_ranking(parallelsentence, rank_name):
     failed = 0
     for tgt in parallelsentence.get_translations():
         try:
-            ranking.append(int(tgt.get_attribute(rank_name)))
+            ranking.append(float(tgt.get_attribute(rank_name)))
         except KeyError:
             failed += 1
             pass

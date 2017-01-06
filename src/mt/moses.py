@@ -16,6 +16,9 @@ from featuregenerator.preprocessor import Tokenizer, Truecaser, Detokenizer,\
     Detruecaser, Normalizer, CompoundSplitter
 from mt.worker import Worker
 from featuregenerator.sentencesplitter import SentenceSplitter
+from HTMLParser import HTMLParser
+html = HTMLParser()
+
 
 class MosesWorker(Worker):
     """
@@ -38,7 +41,7 @@ class MosesWorker(Worker):
 
     def translate(self, string):
         #send request to moses client
-        string = escape(string)
+        #string = escape(string)
         response = False
         efforts = 0
         while response == False and efforts < 1250:
@@ -115,7 +118,9 @@ class ProcessedWorker(Worker):
                     string = string.encode('utf-8')
                 log.debug("{}: {}".format(preprocessor, string))
                 string = preprocessor.process_string(string)
-            
+
+            string = unescape(string)
+            log.debug("input: {}".format(string))
             translated_string, response = self.worker.translate(string)
             translated_string = unescape(translated_string)
             log.debug("output: {}, {}".format(translated_string, response))
