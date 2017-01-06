@@ -327,7 +327,7 @@ class OrangeRanker(Ranker):
         except Exception as e:
             if "not enough examples with so many attributes" in str(e):
                 logging.warning("Need to normalize features to get that trained")
-                datatable = normalize_continuous(datatable)
+                self.normalizer, datatable = normalize_continuous(datatable)
                 self.learner = self.learner(datatable)
             else:
                 raise Exception(e)
