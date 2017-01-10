@@ -260,6 +260,15 @@ def normalize_continuous(data, domstat=None):
     new_data = Table(new_domain, data)
     return domstat, new_data    
 
+def normalize_training(data):    
+    dc = DomainContinuizer()
+    #dc.multinomial_treatment = self.multinomial_treatment
+    dc.class_treatment = dc.Ignore
+    dc.continuous_treatment = dc.NormalizeByVariance
+    c_domain = dc(data)
+    data = data.translate(c_domain)
+    return c_domain, data
+
 class OrangeRanker(Ranker):
     """
     This class represents a ranker implemented over pairwise orange classifiers. 
@@ -315,7 +324,7 @@ class OrangeRanker(Ranker):
 
         if normalize:
             logging.info("Normalizing data for learner {}".format(self.learner))
-            self.normalizer, datatable = normalize_continuous(datatable)
+            self.normalizer, datatable = normalize_training(datatable)
 
         #training_params = self._clean_training_params(self.learner, kwargs)
         #self.learner = self.learner(training_params)
@@ -327,7 +336,7 @@ class OrangeRanker(Ranker):
         except Exception as e:
             if "not enough examples with so many attributes" in str(e):
                 logging.warning("Need to normalize features to get that trained")
-                self.normalizer, datatable = normalize_continuous(datatable)
+                self.normalizer, datatable = normalize_training(datatable)
                 self.learner = self.learner(datatable)
             else:
                 raise Exception(e)
@@ -523,7 +532,7 @@ class OrangeRanker(Ranker):
             #apply normalization if the model was trained with
             #TODO: normalization is not applied properly. Adapt and call normalize_continuous somewhere here
             try:
-                instance = instance.translate(self.continuizer_domain)
+                instance = instance.translate(self.normalizer)
             except:
                 pass
             
