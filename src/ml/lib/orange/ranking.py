@@ -531,9 +531,11 @@ class OrangeRanker(Ranker):
             instance = parallelsentence_to_instance(pairwise_parallelsentence, domain=domain)
             
             #apply normalization if the model was trained with
-            #TODO: normalization is not applied properly. Adapt and call normalize_continuous somewhere here
             if self.normalizer:
-                instance = instance.translate(self.normalizer)
+                single_data = Table(instance.domain, [instance])
+                normalized_data = single_data.translate(self.normalizer)
+                #we only have one instance, so that should work (lack of doc)
+                instance = normalized_data.random_instance()
             
             #run learner for this instance
             value, distribution = self.learner(instance, return_type)
