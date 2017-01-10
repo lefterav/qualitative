@@ -295,6 +295,7 @@ class OrangeRanker(Ranker):
     def initialize(self):
         if type(self.learner) == str:
             self.learner = eval(self.learner)
+        self.normalizer = None
 
     def train(self, dataset_filename, 
               attribute_set=None,
@@ -531,10 +532,8 @@ class OrangeRanker(Ranker):
             
             #apply normalization if the model was trained with
             #TODO: normalization is not applied properly. Adapt and call normalize_continuous somewhere here
-            try:
+            if self.normalizer:
                 instance = instance.translate(self.normalizer)
-            except:
-                pass
             
             #run learner for this instance
             value, distribution = self.learner(instance, return_type)
