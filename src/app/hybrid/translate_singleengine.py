@@ -29,6 +29,7 @@ def parse_args():
                         help="A list of configuration files for the engines and the feature generators")
     parser.add_argument('--input', help="The location of a text file to be translated")
     parser.add_argument('--text_output', help="The location of the text file where translations will be written")
+    parser.add_argument('--subject_areas', help="")
     parser.add_argument('--debug', action='store_true', default=False, help="Run in full verbose mode")   
     args = parser.parse_args()
     return args
@@ -61,6 +62,7 @@ def load_worker(config, args):
 
     if engine_name.endswith("Lucy"):
         worker_kwargs.update(config.items(engine_name))
+        worker_kwargs['subject_areas'] = args.subject_areas
     else:
         worker_section = "{}:{}-{}".format(engine_name, args.source_language, args.target_language)
         log.info("Loading {}".format(worker_section))
