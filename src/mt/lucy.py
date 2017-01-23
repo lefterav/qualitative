@@ -50,6 +50,7 @@ class LucyWorker(Worker):
                  alternatives=False,
                  unknowns=False,
                  compounds=False,
+                 batch_size=100,
                  ):
         
         self.langpair = "{}-{}".format(LANGMAP[source_language], 
@@ -65,6 +66,7 @@ class LucyWorker(Worker):
         self.unknowns = unknowns
         self.compounds = compounds
         self.name = "lucy"
+        self.batch_size = batch_size
         
 
     def translate(self, string):
@@ -120,7 +122,7 @@ class LucyWorker(Worker):
         #text = re.sub("\<A\[(?P<alt>\w*)\|\w*\]\>", "\g<alt>", text)
         #text = re.sub("\<U\[(?P<unk>[^]]*)\]\>", "\g<unk>", text)
         #text = re.sub("\<M\[(?P<m>[^]]*)\]\>", "\g<m>", text)
-        return text, params
+        return text, params        
  
 def encode_chunk_simple(tokens):
     text = " ".join(tokens)
