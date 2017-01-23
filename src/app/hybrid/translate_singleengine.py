@@ -17,6 +17,7 @@ from dataprocessor.sax.saxps2jcml import IncrementalJcml
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 from ConfigParser import SafeConfigParser
+import time
 
 def parse_args():
 
@@ -75,11 +76,20 @@ def load_worker(config, args):
 def translate_file(worker, source_file, target_file):
     source = open(source_file)
     target = open(target_file, 'w')
+    
+    start_time = time.time()
+    i = 0
     for line in source:
+        i+=1
         translation, _ = worker.translate(line)
         print >>target, translation
+        diff = time.time() - start_time
+        log.info("Execution: {} sec, {} sentences".format(round(diff, 0), i))
+        log.info("{} sec/sentence" .format(round(1.0 * diff / i, 2)))
+        
     target.close()
     source.close()
+    log.info("Done")
 
 if __name__ == '__main__':
     args = parse_args()
