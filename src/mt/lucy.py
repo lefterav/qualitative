@@ -45,12 +45,11 @@ class LucyWorker(Worker):
     def __init__(self, url, 
                  username="traductor", password="traductor", 
                  source_language="en", target_language="de",
-                 subject_areas="(DP TECH CTV ECON)",
+                 subject_areas="(CSV)",
                  model=None,
-                 alternatives=False,
-                 unknowns=False,
-                 compounds=False,
-                 batch_size=100,
+                 alternatives=True,
+                 unknowns=True,
+                 compounds=True,
                  ):
         
         self.langpair = "{}-{}".format(LANGMAP[source_language], 
@@ -66,7 +65,6 @@ class LucyWorker(Worker):
         self.unknowns = unknowns
         self.compounds = compounds
         self.name = "lucy"
-        self.batch_size = batch_size
         
 
     def translate(self, string):

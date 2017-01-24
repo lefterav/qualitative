@@ -7,14 +7,15 @@ Created on Jul 24, 2016
 '''
 import pickle
 import sys
-from sentence.parallelsentence import FeatureSet as AttributeSet
+from sentence.parallelsentence import AttributeSet
 
 def get_selected_attributes(filename):
     model = pickle.load(open(filename))
     fs = model.featureselector
     attset = model.attribute_set.target_attribute_names
     selected = [name for name, mask in zip(attset, fs.support_) if mask]
-    return selected
+    ranked = [(rank, name) for name, rank in zip(attset, fs.ranking_)]
+    return selected, ranked
 
 if __name__ == '__main__':
     print get_selected_attributes(sys.argv[1])

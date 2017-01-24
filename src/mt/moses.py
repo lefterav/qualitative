@@ -118,6 +118,7 @@ class ProcessedWorker(Worker):
                     string = string.encode('utf-8')
                 log.debug("{}: {}".format(preprocessor, string))
                 string = preprocessor.process_string(string)
+                log.debug("Finished with preprocessor {}".format(preprocessor))
 
             string = unescape(string)
             log.debug("input: {}".format(string))

@@ -40,11 +40,14 @@ def set_loglevel(debug=False):
     if debug:
         print "Enable debug verbose mode"
         loglevel = log.DEBUG
-        log.basicConfig(level=loglevel,
+    log.basicConfig(level=loglevel,
                         format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                         datefmt='%m-%d %H:%M')
 
     log.debug("Setting verbose output ON")
+    # suppress one of the loggers which is too verbose on INFO level
+    reqlogger = logging.getLogger("requests.packages.urllib3.connectionpool")
+    reqlogger.setLevel(log.ERROR)
 
 def load_worker(config, args):
     worker_kwargs = {'source_language': args.source_language, 
@@ -84,8 +87,8 @@ def translate_file(worker, source_file, target_file):
         translation, _ = worker.translate(line)
         print >>target, translation
         diff = time.time() - start_time
-        log.info("Execution: {} sec, {} sentences".format(round(diff, 0), i))
-        log.info("{} sec/sentence" .format(round(1.0 * diff / i, 2)))
+    log.info("Execution: {} sec, {} sentences".format(round(diff, 0), i))
+    log.info("{} sec/sentence" .format(round(1.0 * diff / i, 2)))
         
     target.close()
     source.close()

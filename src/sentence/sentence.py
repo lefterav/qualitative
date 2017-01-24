@@ -136,7 +136,7 @@ class SimpleSentence(object):
             try:
                 attvalue = float(self.attributes[name])
                 if replace_infinite:
-                    attvalue = float(str(attvalue).replace("inf", "500"))
+                    attvalue = float(str(attvalue).replace("inf", str(replace_infinite)))
                 if replace_nan:
                     attvalue = float(str(attvalue).replace("nan", "0"))
                 vector.append(attvalue)

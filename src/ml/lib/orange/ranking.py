@@ -323,6 +323,9 @@ class OrangeRanker(Ranker):
                                          **kwargs)
         logging.info("Data for learner {} loaded".format(self.learner))
 
+        if replace_infinite:
+            logging.info("Replacement of infinites has been enabled")
+
         if normalize:
             logging.info("Normalizing data for learner {}".format(self.learner))
             self.normalizer, datatable = normalize_training(datatable)

@@ -3,7 +3,7 @@
 # $Id: train-recaser.perl 1326 2007-03-26 05:44:27Z bojar $
 use strict;
 use Getopt::Long "GetOptions";
-$|=1;
+$| = 1;
 
 binmode(STDIN, ":utf8");
 binmode(STDOUT, ":utf8");
