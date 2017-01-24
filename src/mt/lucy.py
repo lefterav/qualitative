@@ -35,6 +35,7 @@ TEMPLATE = """<task>
 #Map iso language code to Lucy names
 LANGMAP = {"en": "ENGLISH", 
            "de": "GERMAN",
+           "es": "SPANISH", 
            }
 
 class LucyWorker(Worker):
