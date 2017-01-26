@@ -13,6 +13,7 @@ import logging as log
 import re
 import requests
 import xml.etree.ElementTree as et
+from time import sleep
 
 from mt.worker import Worker
 from mt.moses import MtMonkeyWorker, MosesWorker
@@ -69,6 +70,8 @@ class LucyWorker(Worker):
         
 
     def translate(self, string):
+        # shorten text if longer than 4200 characters
+        string = string[:4000]
         alternatives = 1 if self.alternatives else 0
         unknowns = 1 if self.unknowns else 0
         compounds = 1 if self.compounds else 0
@@ -97,18 +100,28 @@ class LucyWorker(Worker):
         log.debug("Lucy request: {}".format(data))
         response = requests.post(url=self.url, data=data, headers=headers, auth=auth)
         response.encoding = 'utf-8'
-        # Interpret the XML response 
-        try:        
-            # get the xml node with the response
-            try:
-                xml = et.fromstring(response.text)
-            except:
-                xml = et.fromstring(response.text.encode('utf-8'))
-            output = xml.findall("outputParams/param[@name='OUTPUT']")
-            params = xml.findall("outputParams/param")
-        except Exception as e:
-            log.error("Got exception '{}' while parsing Lucy's response: {}".format(e, response.text.encode('utf-8')))
-            return
+        # Interpret the XML response
+        success = False
+        tries = 0
+        while not success and tries < 10:
+            try:        
+                # get the xml node with the response
+                try:
+                    xml = et.fromstring(response.text)
+                except:
+                    xml = et.fromstring(response.text.encode('utf-8'))
+                output = xml.findall("outputParams/param[@name='OUTPUT']")
+                params = xml.findall("outputParams/param")
+                success = True
+            except Exception as e:
+                log.error("Got exception '{}' while parsing Lucy's response: '{}'".format(e, 
+                    response.text.encode('utf-8')))
+                tries += 1
+                sleep(1)
+                log.error("Trying effort Nr. {}".format(tries))
+        if not success:
+            log.error("Giving up after {} tries".format(tries))
+            raise Exception(response.text.encode('utf-8'))
         text = " ".join(t.attrib["value"] for t in output)
         
         if isinstance(text, unicode):
