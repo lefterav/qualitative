@@ -27,8 +27,10 @@ LANGUAGES = {
              'All': 'All'
              }
 
-class WMTEvalReader:
-    
+
+       
+
+class WMTEvalCsvReader:
 
     def __init__(self, config):
         """
@@ -74,12 +76,12 @@ class WMTEvalReader:
         #standardize naming of languages and testsets
         row = self.convert_languages(row)
         if not (row):
-            continue
+            return None
         row = self.map_testsets(row)
 
         #skip this row if it doesn't match filtering criteria
         if not self.check_filters(row):
-            continue
+            return None
         
         #additional row fields are useful for arguments of the parallel sentences but need to be renamed
         attributes = {}
@@ -117,11 +119,14 @@ class WMTEvalReader:
             if firstrow:
                 firstrow = False
                 continue
+            #parse the row
             parallelsentence = self.parse_row(row)
-            yield parallelsentence
+            # return the result if not None
+            if parallelsentence:
+                yield parallelsentence
         
         
-    def sort_sentences(self):
+    def sort_sentences(self, parallelsentences):
         for (criterion, type) in self.config.items("sort"):
             if type == "int":
                 parallelsentences = sorted(parallelsentences, key=lambda parallelsentence: int(parallelsentence.get_attribute(criterion)))
@@ -139,7 +144,7 @@ class WMTEvalReader:
         
         if self.config.has_section("sort"):
             parallelsentences = self.sort_sentences(parallelsentences)        
-    
+        return parallelsentences
     
     def map_testsets(self, row ):
         if "testset" in row:
@@ -326,10 +331,10 @@ if __name__ == "__main__":
         config = ConfigParser.RawConfigParser()
         sys.stderr.write("Opening config file: %s\n" % sys.argv[1])
         config.read([sys.argv[1]])
-        wmtr = WMTEvalReader(config)
+        wmtr = WMTEvalCsvReader(config)
         parallelsentences = wmtr.parse()
         
-        sys.stderr.write("%d sentences read, proceeding with writing XML\n" % len(parallelsentences))
+        sys.stderr.write("%d sentences read, proceeding with writing XML\n" % len(list(parallelsentences)))
         filename = config.get("output", "filename")
         Parallelsentence2Jcml(parallelsentences).write_to_file(filename)
         sys.stderr.write("Done")
