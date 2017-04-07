@@ -7,10 +7,8 @@ Created on Mar 30, 2017
 from xml.etree.ElementTree import iterparse
 import ConfigParser
 import sys
-import logging as log
 
-from dataprocessor.sax.saxps2jcml import IncrementalJcml,\
-    MultiLangpairIncrementalWriter
+from dataprocessor.sax.saxps2jcml import MultiLangpairIncrementalWriter
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 
