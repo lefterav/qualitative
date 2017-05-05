@@ -62,12 +62,15 @@ class Hjerson(FeatureGenerator):
         if self.tokenize:
             self.tokenizer = Tokenizer(self.language)
         
-        self.treetager = TreeTagger(TAGLANG=self.language, 
-                                    TAGDIR=tagdir, 
-#                                    TAGINENC='latin1', 
-#                                    TAGOUTENC='latin1'
-                                    )
-        
+        if tagdir:
+            self.treetager = TreeTagger(TAGLANG=self.language, 
+                                        TAGDIR=tagdir, 
+    #                                    TAGINENC='latin1', 
+    #                                    TAGOUTENC='latin1'
+                                        )
+        else:
+            self.treetager = None
+            
         self.totalHypLength = 0.0
         self.totalWerRefLength = 0.0
         
@@ -180,7 +183,10 @@ class Hjerson(FeatureGenerator):
         logging.debug("Hjerson sending to TreeTagger")
         
         #replace target string with the one from the tagger, and also get tags and base forms
-        target_string, target_tag, target_base = self._tag(target_string)
+        if self.treetager:
+            target_string, target_tag, target_base = self._tag(target_string)
+        else:
+            target_string, target_tag, target_base = (target_string, target_string, target_string)
         logging.debug("Hjerson received output from TreeTagger")
         logging.debug(", ".join([target_string, target_tag, target_base]))
 
