@@ -14,7 +14,6 @@ from random import shuffle
 import string as stringlib 
 from unidecode import unidecode
 from xml.sax.saxutils import XMLGenerator
-from xml.sax.xmlreader import AttributesImpl
 
 from dataprocessor.dataformat.jcmlformat import JcmlFormat
 from sentence.sentence import SimpleSentence
@@ -62,14 +61,23 @@ def att(sentence):
         log.debug("The following keys caused unicode errors: {}".format(list(failed)))
     return attributes
 
+
 class IncrementalJcml(object):
     """
     Write line by line incrementally on an XML file, without loading anything in the memory.
     Don't forget the close function. Object sentences cannot be edited after written
+    @ivar TAG: the basic tags of the XML annotation
+    @type: dict((string, string))
+    @ivar filename: the name of the file being written
+    @type filename: string
+    @ivar tempfilename: the name of the temporary file being written
+    @type tempfilename: string
+    @ivar generator: the python object that takes care of writing the XML
+    @type generator: XMLGenerator
     """
-    def __init__(self, model, xmlformat=JcmlFormat):
+    def __init__(self, filename, xmlformat=JcmlFormat):
         self.TAG = xmlformat.TAG
-        self.filename = model
+        self.filename = filename
         self.file = tempfile.NamedTemporaryFile(mode='w',delete=False,suffix='.jcml', prefix='tmp_', dir='.') #"/tmp/%s.tmp" % os.path.basename(model)
         self.tempfilename = self.file.name
         self.generator = XMLGenerator(self.file, "utf-8")
@@ -77,6 +85,11 @@ class IncrementalJcml(object):
         self.generator.startElement(self.TAG["doc"], {})
         
     def add_parallelsentence(self, parallelsentence):
+        """
+        Write a the given parallel sentence to a JCML file. 
+        @param parallelsentence: the parallel sentence to be written
+        @type parallelsentences: L{sentence.parallelsentence.ParallelSentence}
+        """  
         self.generator.characters("\n\t")
         #convert all attribute values to string, otherwise it breaks
         attributes = att(parallelsentence) 
@@ -118,10 +131,21 @@ class IncrementalJcml(object):
         self.generator.endElement(self.TAG["sent"])
     
     def add_parallelsentences(self, parallelsentences):
+        """
+        Write a the given parallel sentences to a JCML file. If the given argument is
+        a generator, the parallel sentences are written incrementally in a 
+        memory-efficient way
+        @param parallelsentences: an iterator of parallel sentences
+        @type parallelsentences: list or generator of L{sentence.parallelsentence.ParallelSentence}
+        """        
         for parallelsentence in parallelsentences:
             self.add_parallelsentence(parallelsentence)
     
     def close(self):
+        """
+        Finalize the open entries of the XML file, flush the content and move it
+        from the temporary file to the final filename 
+        """
         self.generator.characters("\n")
         self.generator.endElement(self.TAG["doc"])
         self.generator.characters("\n")
@@ -134,7 +158,51 @@ class IncrementalJcml(object):
             self.close()
         except:
             pass
+
+
+class MultiLangpairIncrementalWriter:
+    """
+    Incremental JCML writer that writes the parallel sentences in a different file per
+    language pair/direction. 
+    @ivar writer: a dictionary that maps one incremental writer per language pair
+    @type writer: IncrementalJcml
+    """    
+    def __init__(self, langpairs, output_pattern):
+        """
+        @param langpairs: a list of pairs of 2-letter language codes separated by a
+        hyphen (e.g de-en)
+        @type langpairs: list of strings
+        @param output_pattern: a pattern compatible to the format command, that
+        defines the 'langpair' field 
+        @type output_pattern: string
+        """
+        self.writer = {}
         
+        for langpair in langpairs:
+            filename = output_pattern.format(langpair=langpair)
+            log.info("Initializing writing sentences to {}".format(filename))
+            self.writer[langpair] = IncrementalJcml(filename)
+        
+    
+    def add_parallelsentences(self, parallelsentences):
+        """
+        Write a the given parallel sentences to a JCML file. If the given argument is
+        a generator, the parallel sentences are written incrementally in a 
+        memory-efficient way
+        @param parallelsentences: an iterator of parallel sentences
+        @type parallelsentences: list or generator of L{sentence.parallelsentence.ParallelSentence}
+        """
+        for parallelsentence in parallelsentences:
+            langpair = parallelsentence.get_langpair()
+            self.writer[langpair].add_parallelsentence(parallelsentence)
+
+        
+    def __del__(self):
+        # close the files being written
+        for writer in self.writer.values():
+            writer.close()  
+
+
 
 class Parallelsentence2Jcml(object):
     '''

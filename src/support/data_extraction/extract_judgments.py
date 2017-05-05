@@ -27,8 +27,10 @@ LANGUAGES = {
              'All': 'All'
              }
 
-class WMTEvalReader:
-    
+
+       
+
+class WMTEvalCsvReader:
 
     def __init__(self, config):
         """
@@ -56,72 +58,93 @@ class WMTEvalReader:
             self.tokenize_target = self.config.getboolean("preprocessing", "tokenize_target")
         except:
             pass
-        
-
-       
-    def parse(self):
+    
+    
+    def parse_row(self, row):
         """
-        Iterates through the csv rows, parses the data and creates a list of parallelsentences
-        @return A list of Parallelsentence objects, one object for each csv row
-        """ 
-        parallelsentences = []
-        firstrow = True
-        for row in self.reader:
+        Parse one specific row and return a parallel sentence
+        @param row: contains all values of the row in a dictionary keyed by their column label
+        @type row: dict(str, str)
+        @return: a parallel sentence containing the data of this row
+        @rtype: L{sentence.parallelsentence.ParallelSentence}
+        """
+        
+        #for some sets (eg wmt08) one needs to split a space separated cell to get some information
+        if self.config.getboolean("format", "split_task_column"):
+            row = self.get_task_data(row)
             
+        #standardize naming of languages and testsets
+        row = self.convert_languages(row)
+        if not (row):
+            return None
+        row = self.map_testsets(row)
+
+        #skip this row if it doesn't match filtering criteria
+        if not self.check_filters(row):
+            return None
+        
+        #additional row fields are useful for arguments of the parallel sentences but need to be renamed
+        attributes = {}
+        attributes = self.map_attributes(row, attributes)
+        
+        if row["srclang"] != 'en' and row["trglang"] == 'en':
+            lang2en = "{}en".format(row["srclang"])
+        elif row["trglang"] != 'en' and row["srclang"] == 'en':
+            lang2en = "{}en".format(row["trglang"])
+        
+        #this will open the file of the source sentences, get its text and create a SimpleSentence objece            
+        source_text = self.extract_sourceref(row["srclang"], row["testset"], row["srcIndex"], lang2en=lang2en)
+        source = SimpleSentence(source_text)
+        
+        #this will get a list of Simplsentences containing the translations provided by the several systems from the files
+        translations = self.get_translations(row)
+        
+        #this uses the same function for extracting source sentences, but asks for the target language id instead. this is the reference
+        if self.config.has_option("data", "pattern_ref"):            
+            reference_text = self.extract_sourceref(row["trglang"], row["testset"], row["srcIndex"], type="ref", lang2en=lang2en)
+        else:
+            reference_text = self.extract_sourceref(row["trglang"], row["testset"], row["srcIndex"])
+        reference = SimpleSentence(reference_text)
+        
+        #initialize object and append it to the list
+        parallelsentence = ParallelSentence(source, translations, reference, attributes)
+        return parallelsentence
+
+
+    def parse_rows(self):
+        firstrow = True
+        
+        for row in self.reader:
             #skip the first row as it contains headers
             if firstrow:
                 firstrow = False
                 continue
-            
-            #for some sets (eg wmt08) one needs to split a space separated cell to get some information
-            if self.config.getboolean("format", "split_task_column"):
-                row = self.get_task_data(row)
-                
-            #standardize naming of languages and testsets
-            row = self.convert_languages(row)
-            if not (row):
-                continue
-            row = self.map_testsets(row)
-
-            #skip this row if it doesn't match filtering criteria
-            if not self.check_filters(row):
-                continue
-            
-            #additional row fields are useful for arguments of the parallel sentences but need to be renamed
-            attributes = {}
-            attributes = self.map_attributes(row, attributes)
-            
-            if row["srclang"] != 'en' and row["trglang"] == 'en':
-                lang2en = "{}en".format(row["srclang"])
-            elif row["trglang"] != 'en' and row["srclang"] == 'en':
-                lang2en = "{}en".format(row["trglang"])
-            
-            #this will open the file of the source sentences, get its text and create a SimpleSentence objece            
-            source_text = self.extract_sourceref(row["srclang"], row["testset"], row["srcIndex"], lang2en=lang2en)
-            source = SimpleSentence(source_text)
-            
-            #this will get a list of Simplsentences containing the translations provided by the several systems from the files
-            translations = self.get_translations(row)
-            
-            #this uses the same function for extracting source sentences, but asks for the target language id instead. this is the reference
-            if self.config.has_option("data", "pattern_ref"):            
-                reference_text = self.extract_sourceref(row["trglang"], row["testset"], row["srcIndex"], type="ref", lang2en=lang2en)
-            else:
-                reference_text = self.extract_sourceref(row["trglang"], row["testset"], row["srcIndex"])
-            reference = SimpleSentence(reference_text)
-            
-            #initialize object and append it to the list
-            parallelsentence = ParallelSentence(source, translations, reference, attributes)
-            parallelsentences.append(parallelsentence)
+            #parse the row
+            parallelsentence = self.parse_row(row)
+            # return the result if not None
+            if parallelsentence:
+                yield parallelsentence
         
-        #sort sentences with sort criteria
+        
+    def sort_sentences(self, parallelsentences):
         for (criterion, type) in self.config.items("sort"):
             if type == "int":
                 parallelsentences = sorted(parallelsentences, key=lambda parallelsentence: int(parallelsentence.get_attribute(criterion)))
             else:
                 parallelsentences = sorted(parallelsentences, key=lambda parallelsentence: parallelsentence.get_attribute(criterion))
         return parallelsentences
-    
+       
+       
+    def parse(self):
+        """
+        Iterates through the csv rows, parses the data and creates a list of parallelsentences
+        @return A list of Parallelsentence objects, one object for each csv row
+        """ 
+        parallelsentences = self.parse_rows()
+        
+        if self.config.has_section("sort"):
+            parallelsentences = self.sort_sentences(parallelsentences)        
+        return parallelsentences
     
     def map_testsets(self, row ):
         if "testset" in row:
@@ -310,10 +333,10 @@ if __name__ == "__main__":
         config = ConfigParser.RawConfigParser()
         sys.stderr.write("Opening config file: %s\n" % sys.argv[1])
         config.read([sys.argv[1]])
-        wmtr = WMTEvalReader(config)
+        wmtr = WMTEvalCsvReader(config)
         parallelsentences = wmtr.parse()
         
-        sys.stderr.write("%d sentences read, proceeding with writing XML\n" % len(parallelsentences))
+        sys.stderr.write("%d sentences read, proceeding with writing XML\n" % len(list(parallelsentences)))
         filename = config.get("output", "filename")
         Parallelsentence2Jcml(parallelsentences).write_to_file(filename)
         sys.stderr.write("Done")
