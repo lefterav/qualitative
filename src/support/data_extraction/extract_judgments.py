@@ -10,16 +10,16 @@ import codecs
 import subprocess
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
-from io_utils.sax.saxps2jcml import Parallelsentence2Jcml
-from io_utils.output.xmlwriter import XmlWriter
+from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.output.xmlwriter import XmlWriter
 
 #Language mapping, needed for browsing the correct test/source/ref file
 LANGUAGES = {
              'Spanish' : 'es',
-             'English' : 'en',
+             'eng' : 'en',
              'Czech' : 'cz',
              'Czech' : 'cs',
-             'German' : 'de',
+             'deu' : 'de',
              'French' : 'fr',
              'Hungarian' : 'hu',
              'Russian' : 'ru',
@@ -37,7 +37,7 @@ class WMTEvalReader:
         """
         self.config = config
         fieldnames = config.get("format","fieldnames").split(',')
-        csvfilename = "%s/%s" % (config.get("data", "path"), config.get("data", "filename"))
+        csvfilename = config.get("data", "filename")
         csvfile = open(csvfilename, 'r')
         try:
             dialect = config.get("format","dialect")
@@ -185,10 +185,12 @@ class WMTEvalReader:
                 
         if system != '_ref':
             pattern_submissions = self.config.get('data', 'pattern_submissions')
+            print pattern_submissions
+            print fieldmap
             filename = pattern_submissions % fieldmap
 #            try:
                 #print "trying to access %s" % (pattern_submissions % fieldmap)
-                
+            filename = filename.replace(".txt", "")    
             file = open(filename, 'r')
             file = self.tokenize_file(file, trglang)
 #            except:
