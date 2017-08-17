@@ -5,7 +5,7 @@ Created on 18 Feb 2015
 '''
 from dataprocessor.jcml.reader import CEJcmlReader
 import sys, os
-from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange
+from ml.lib.orange.util import CElementTreeJcml2Orange
 from ml.lib.orange.ranking import dataset_to_instances
 from Orange.feature.scoring import Relief, InfoGain, GainRatio, Gini, Relevance, MDL, Distance 
 from sentence.parallelsentence import AttributeSet
