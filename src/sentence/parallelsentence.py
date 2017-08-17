@@ -385,7 +385,22 @@ class ParallelSentence(object):
         except:
             pass
         return new_attributes
-
+    
+    
+    def get_nested_featurevector(self, nested_attribute_names):
+        """
+        Get a list of feature names named with nested abbreviations and return a vector with the values of the
+        respective features
+        @param nested_attribute_names: a list of names prefixed with src_ or tgt1_
+        @type list of strings
+        """
+        nested_attributes = self.get_nested_attributes()
+        nested_attribute_values = []
+        for name in nested_attribute_names:
+            nested_attribute_values.append(nested_attributes[name])
+        return nested_attribute_values
+         
+       
 
     def recover_attributes(self):
         """
