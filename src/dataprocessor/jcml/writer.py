@@ -1,24 +1,28 @@
 '''
+Classes for writing XML files of JCML format
+
 Created on 14 Dec 2011
 
 @author: Eleftherios Avramidis
 '''
 
+from collections import OrderedDict
+from random import shuffle
 import re
 import shutil
 import sys
 import tempfile
-import logging as log
-from collections import OrderedDict
-from random import shuffle
-import string as stringlib 
-from unidecode import unidecode
 from xml.sax.saxutils import XMLGenerator
-from xml.sax.xmlreader import AttributesImpl
 
-from dataprocessor.dataformat.jcmlformat import JcmlFormat
-from sentence.sentence import SimpleSentence
+from unidecode import unidecode
+
+import logging as log
 from sentence.dataset import DataSet
+from sentence.sentence import SimpleSentence
+import string as stringlib 
+
+from .format import JcmlFormat
+
 
 #compile the much needed regular expression
 illegal_xml_chars_RE = re.compile(u'[\x00-\x08\x0b\x0c\x0e-\x1F\uD800-\uDFFF\uFFFE\uFFFF]') 

@@ -1,20 +1,24 @@
 '''
+Classes for optimal reading of XML files of JCML format
+
 Created on 26 Jun 2012
 
 @author: Eleftherios Avramidis
 '''
 
-from numpy import average, std, min, max, asarray
-import logging as log
-from dataprocessor.datareader import DataReader
-
-import sys
-from collections import defaultdict, OrderedDict
-from xml.etree.ElementTree import iterparse
-from sentence.sentence import SimpleSentence
-from sentence.parallelsentence import ParallelSentence, DefaultAttributeSet
-from sentence.dataset import DataSet
+from collections import defaultdict
 import subprocess
+import sys
+from xml.etree.ElementTree import iterparse
+
+from numpy import average, std, min, max, asarray
+
+from dataprocessor.datareader import DataReader
+import logging as log
+from sentence.dataset import DataSet
+from sentence.parallelsentence import ParallelSentence, DefaultAttributeSet
+from sentence.sentence import SimpleSentence
+
 
 def prefix_source_atts(source_attribute_names):
     return ["src_{}".format(att) for att in source_attribute_names]
@@ -407,19 +411,19 @@ def get_statistics(input_xml_filenames, **kwargs):
             source_attributes = parallelsentence.get_source().get_attributes()
             source_attributes = dict([("src_{}".format(att), value) for att, value in source_attributes.iteritems()]) 
             try:
-               ref_attributes = parallelsentence.get_reference().get_attributes()
+                ref_attributes = parallelsentence.get_reference().get_attributes()
             except:
-               ref_attributes = {}
+                ref_attributes = {}
             
             general_attributes.update(source_attributes)
             general_attributes.update(ref_attributes)
 
             for att, value in general_attributes.iteritems():
-                 vector[att].append(value)
+                vector[att].append(value)
 
             for target in parallelsentence.get_translations():                
                 for att, value in target.get_attributes().iteritems():
-                     vector["tgt_{}".format(att)].append(value)
+                    vector["tgt_{}".format(att)].append(value)
     yield "feat \t avg \t std \t min \t max " 
     for att, values in vector.iteritems():    
         try:
