@@ -4,42 +4,47 @@ Created on 19 Apr 2013
 
 @author: Eleftherios Avramidis
 '''
+import codecs
 from collections import OrderedDict
-import cPickle as pickle
+import logging
 import os
 import shutil
 import tempfile
-import logging
-import codecs
 
-from ml.ranking import Ranker
-from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange
-from dataprocessor.jcml.reader import CEJcmlReader
-from dataprocessor.jcml.writer import IncrementalJcml
-from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentenceSet
+# TODO: remove references to custom JCML processors. They should be indirectly processed via incremental reader and writer
 
-from Orange.data import Table
-from Orange.data import Instance, Value, Domain
-from Orange.data.continuization import DomainContinuizer
-from Orange.evaluation.scoring import CA, Precision, Recall, F1 
-from Orange.evaluation.testing import cross_validation
-from Orange.classification.rules import rule_to_string
-from Orange.classification.svm import get_linear_svm_weights
+from Orange.classification import Classifier 
+from Orange.classification import ClassifierFromVar 
 from Orange.classification import logreg
-
 from Orange.classification.bayes import NaiveLearner
 from Orange.classification.knn import kNNLearner
-from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
-from Orange.classification.tree import TreeLearner
-from Orange.classification.tree import C45Learner
-from Orange.classification.neural import NeuralNetworkLearner
 from Orange.classification.logreg import LogRegLearner, LibLinearLogRegLearner
-from Orange.classification import Classifier 
+from Orange.classification.neural import NeuralNetworkLearner
+from Orange.classification.rules import rule_to_string
+from Orange.classification.svm import SVMLearnerEasy as SVMEasyLearner
+from Orange.classification.svm import get_linear_svm_weights
+from Orange.classification.tree import C45Learner
+from Orange.classification.tree import TreeLearner
+from Orange.data import Instance, Value, Domain
+from Orange.data import Table
+from Orange.data.continuization import DomainContinuizer
+from Orange.data.utils import NormalizeContinuous
+from Orange.evaluation.scoring import CA, Precision, Recall, F1 
+from Orange.evaluation.testing import cross_validation
 from Orange.feature import Continuous
+from Orange.statistics.basic import Domain as StatsDomain
+
+import cPickle as pickle
+from dataprocessor.jcml.reader import CEJcmlReader
+from dataprocessor.jcml.writer import IncrementalJcml
+from ml.ranking import Ranker
+from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentenceSet
+
+from .util import CElementTreeJcml2Orange
+
+
 #from checkbox.attribute import Attribute
 #from support.preprocessing.jcml.align import target_attribute_names
-
-
 # def forname(name, **kwargs):
 #     """
 #     Pythonic way to initialize and return an orange learner. 
@@ -51,8 +56,6 @@ from Orange.feature import Continuous
 #     """
 #     orangeclass = eval(name)
 #     return orangeclass(**kwargs)
-
-
 def forname(name, **kwargs):
     """
     Return particular ranker class given a string
@@ -229,10 +232,6 @@ def _get_pairwise_header(attribute_names, class_name):
     header = "{}\n{}\n{}\n".format(line_names, line_types, line_class)
     return header
 
-from Orange.feature import Continuous
-from Orange.statistics.basic import Domain as StatsDomain
-from Orange.classification import ClassifierFromVar 
-from Orange.data.utils import NormalizeContinuous
 
 def normalize_continuous(data, domstat=None):
     newattrs = []
