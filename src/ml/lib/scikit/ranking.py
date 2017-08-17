@@ -11,7 +11,7 @@ from ml.ranking import Ranker
 from ml.lib.scikit.learn_model import optimize_model
 from evaluation_measures import mean_absolute_error, root_mean_squared_error
 from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentenceSet
-from dataprocessor.ce.cejcml import CEJcmlReader
+from dataprocessor.jcml.reader import CEJcmlReader
 from sklearn_utils import scale_datasets_crossvalidation
 from sklearn.cross_validation import train_test_split
 from sklearn.neural_network import BernoulliRBM

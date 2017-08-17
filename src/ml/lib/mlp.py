@@ -1,5 +1,5 @@
 from ml.ranking import Ranker
-from dataprocessor.ce.cejcml import CEJcmlReader
+from dataprocessor.jcml.reader import CEJcmlReader
 
 import logging as log
 from mlpython.learners.ranking import ListNet

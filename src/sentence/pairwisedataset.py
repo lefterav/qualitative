@@ -266,8 +266,8 @@ class FilteredPairwiseDataset(CompactPairwiseDataset):
             self.pairwise_parallelsentence_sets[sentence_id] = analytic_pairwise_parallelsentence_set.get_filtered_pairwise_parallelsentence_set(threshold)
             
 
-from dataprocessor.ce.cejcml import CEJcmlReader
-from dataprocessor.sax.saxps2jcml import IncrementalJcml
+from dataprocessor.jcml.reader import CEJcmlReader
+from dataprocessor.jcml.writer import IncrementalJcml
 
 def pairwise_ondisk(plain_filename, pairwise_filename, read_method=CEJcmlReader, write_method=IncrementalJcml, **kwargs):
         #self.read_method = read_method

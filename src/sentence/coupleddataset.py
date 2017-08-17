@@ -10,7 +10,7 @@ import shutil
 from dataset import DataSet
 from coupledparallelsentence import CoupledParallelSentence
 from dataprocessor.input.orangereader import OrangeData
-from dataprocessor.sax.saxps2jcml import IncrementalJcml
+from dataprocessor.jcml.writer import IncrementalJcml
 from dataprocessor.input.jcmlreader import JcmlReader
 
 

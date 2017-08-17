@@ -2,7 +2,7 @@
 @author: Eleftherios Avramidis
 '''
 from dataprocessor.input.jcmlreader import JcmlReader
-from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.jcml.writer import Parallelsentence2Jcml
 from sentence.pairwisedataset import AnalyticPairwiseDataset, CompactPairwiseDataset, FilteredPairwiseDataset
 import os
 import unittest

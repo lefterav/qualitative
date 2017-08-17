@@ -8,8 +8,8 @@ Created on 26 Mar 2013
 import cPickle as pickle 
 import logging
 import sys
-from dataprocessor.ce.cejcml import CEJcmlReader
-from dataprocessor.sax.saxps2jcml import IncrementalJcml
+from dataprocessor.jcml.reader import CEJcmlReader
+from dataprocessor.jcml.writer import IncrementalJcml
 
 def forname(learner, **kwargs):
     """

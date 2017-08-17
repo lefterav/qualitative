@@ -14,8 +14,8 @@ import codecs
 
 from ml.ranking import Ranker
 from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange
-from dataprocessor.ce.cejcml import CEJcmlReader
-from dataprocessor.sax.saxps2jcml import IncrementalJcml
+from dataprocessor.jcml.reader import CEJcmlReader
+from dataprocessor.jcml.writer import IncrementalJcml
 from sentence.pairwiseparallelsentenceset import CompactPairwiseParallelSentenceSet
 
 from Orange.data import Table

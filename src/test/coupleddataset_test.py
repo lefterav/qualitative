@@ -6,7 +6,7 @@ Created on 27 Feb 2012
 import unittest
 from dataprocessor.input.jcmlreader import JcmlReader
 from sentence.coupleddataset import CoupledDataSet, OrangeCoupledDataSet, CoupledDataSetDisk
-from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.jcml.writer import Parallelsentence2Jcml
 
 
 class CoupledDataSetTest(unittest.TestCase):

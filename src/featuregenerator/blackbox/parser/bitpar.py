@@ -23,8 +23,8 @@ from subprocess import check_call
 from time import sleep
 from uuid import uuid1
 
-from dataprocessor.sax.saxps2jcml import IncrementalJcml
-from dataprocessor.ce.cejcml import CEJcmlReader
+from dataprocessor.jcml.writer import IncrementalJcml
+from dataprocessor.jcml.reader import CEJcmlReader
 from featuregenerator import LanguageFeatureGenerator
 
 

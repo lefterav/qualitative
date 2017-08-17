@@ -199,7 +199,7 @@ if __name__ == '__main__':
     from util.jvm import JVM
     cmdfg = LanguageToolFeatureGenerator(path, 'en')
     from dataprocessor.input.jcmlreader import JcmlReader
-    from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
+    from dataprocessor.jcml.writer import Parallelsentence2Jcml
     parallelsentences = JcmlReader("/home/Eleftherios Avramidis/taraxu_data/selection-mechanism/ml4hmt/app/autoranking/4/wmt00-test-devpart.orig.jcml").get_parallelsentences()
     annotated = cmdfg.add_features_batch(parallelsentences)
     cmdfg.close()

@@ -5,7 +5,7 @@ Created on Apr 7, 2016
 '''
 
 from ml.lib.mlp import ListNetRanker, dataset_to_instances
-from dataprocessor.sax.saxps2jcml import IncrementalJcml
+from dataprocessor.jcml.writer import IncrementalJcml
 from sentence.parallelsentence import ParallelSentence
 from sentence.sentence import SimpleSentence
 

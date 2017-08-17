@@ -268,7 +268,7 @@ class CompoundSplitter(CommandlinePreprocessor):
     
 if __name__ == '__main__':
     from dataprocessor.input.jcmlreader import JcmlReader
-    from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
+    from dataprocessor.jcml.writer import Parallelsentence2Jcml
     import sys
     #path = "/home/Eleftherios Avramidis/taraxu_tools/scripts/tokenizer/tokenizer.perl"
     #command_template = "{path} -b -l {language}"
