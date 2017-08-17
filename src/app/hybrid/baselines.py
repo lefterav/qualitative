@@ -8,7 +8,7 @@ from collections import OrderedDict
 import logging
 import os
 import sys
-from dataprocessor.ce.cejcml import CEJcmlReader
+from dataprocessor.jcml.reader import CEJcmlReader
 from sentence import scoring
 
 class BaseLineSimulation(RankingExperiment):

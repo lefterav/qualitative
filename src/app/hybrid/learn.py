@@ -15,7 +15,7 @@ from expsuite import PyExperimentSuite
 from sentence.parallelsentence import AttributeSet
 from dataprocessor.ce.utils import join_jcml, fold_jcml_respect_ids,\
     fold_jcml_cache
-from dataprocessor.ce.cejcml import CEJcmlReader
+from dataprocessor.jcml.reader import CEJcmlReader
 from sentence import scoring
 import cPickle as pickle
 from evaluation.selection.set import evaluate_selection

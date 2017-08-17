@@ -1,0 +1,4 @@
+2014-07-18.10-06-50 s
+2014-07-18.11-45-13 epydoc --html --name Qualitative -o doc/api/ *
+2014-07-18.11-45-34 rm app/autoranking/jvmtest.py
+2014-07-18.11-46-18 epydoc --html --name Qualitative -o ../doc/api/ *

@@ -25,7 +25,7 @@ from Orange import evaluation
 
 from dataprocessor.input.jcmlreader import JcmlReader
 #from sentence.coupleddataset import CoupledDataSet, OrangeCoupledDataSet, CoupledDataSetDisk
-from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.jcml.writer import Parallelsentence2Jcml
 from dataprocessor.sax.saxjcml2orange import SaxJcml2Orange
 from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange 
 from ml.var.classifier import OrangeClassifier

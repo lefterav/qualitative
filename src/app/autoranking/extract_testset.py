@@ -6,7 +6,7 @@ Created on 7 Feb 2012
 
 from dataprocessor.input.jcmlreader import JcmlReader
 from sentence.pairwisedataset import FilteredPairwiseDataset , AnalyticPairwiseDataset
-from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
+from dataprocessor.jcml.writer import Parallelsentence2Jcml
 import os
 import argparse
 from ConfigParser import ConfigParser

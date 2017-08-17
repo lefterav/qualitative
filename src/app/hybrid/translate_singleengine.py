@@ -13,7 +13,7 @@ import logging as log
 import sys
 import os
 import codecs
-from dataprocessor.sax.saxps2jcml import IncrementalJcml
+from dataprocessor.jcml.writer import IncrementalJcml
 from sentence.sentence import SimpleSentence
 from sentence.parallelsentence import ParallelSentence
 from ConfigParser import SafeConfigParser

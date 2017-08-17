@@ -14,7 +14,7 @@ from ml.ranking import forname
 from expsuite import PyExperimentSuite 
 from sentence.parallelsentence import AttributeSet
 from dataprocessor.ce.utils import join_jcml, fold_jcml_respect_ids
-from dataprocessor.ce.cejcml import CEJcmlReader
+from dataprocessor.jcml.reader import CEJcmlReader
 from sentence import scoring
 import cPickle as pickle
 

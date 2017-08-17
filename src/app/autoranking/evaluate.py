@@ -5,7 +5,7 @@ Created on 26 Feb 2016
 '''
 
 import logging
-from dataprocessor.ce.cejcml import CEJcmlReader
+from dataprocessor.jcml.reader import CEJcmlReader
 from sentence import scoring
 import sys
 

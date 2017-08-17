@@ -18,7 +18,7 @@ from ruffus.task import pipeline_printout_graph, pipeline_printout
 import bootstrap 
 cfg = bootstrap.get_cfg()
 from dataprocessor.input.jcmlreader import JcmlReader
-from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml 
+from dataprocessor.jcml.writer import Parallelsentence2Jcml 
 from dataprocessor.sax import saxjcml
 from featuregenerator.blackbox.parser.berkeley.parsermatches import ParserMatches
 from featuregenerator.blackbox.parser.berkeley.cfgrules import CfgRulesExtractor, CfgAlignmentFeatureGenerator

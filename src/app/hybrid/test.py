@@ -7,7 +7,7 @@ import cPickle as pickle
 import sys
 import logging
 from evaluation.selection.set import evaluate_selection
-from dataprocessor.ce.cejcml import CEJcmlReader
+from dataprocessor.jcml.reader import CEJcmlReader
 from util.jvm import JVM
 from py4j.java_gateway import GatewayClient, JavaGateway
 

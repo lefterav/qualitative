@@ -3,7 +3,7 @@ Created on 18 Feb 2015
 
 @author: Eleftherios Avramidis
 '''
-from dataprocessor.ce.cejcml import CEJcmlReader
+from dataprocessor.jcml.reader import CEJcmlReader
 import sys, os
 from dataprocessor.ce.cejcml2orange import CElementTreeJcml2Orange
 from ml.lib.orange.ranking import dataset_to_instances
