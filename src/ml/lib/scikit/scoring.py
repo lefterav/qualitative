@@ -4,7 +4,9 @@ Created on Aug 17, 2017
 @author: lefterav
 '''
 
-class PreloadedSkScorer(object):
+from ml.scoring import Scorer
+
+class PreloadedSkScorer(Scorer):
     '''
     This is a generic scorer that loads a model from a file and is capable of scoring based on it   
     '''
