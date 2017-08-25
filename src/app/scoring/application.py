@@ -4,6 +4,7 @@ Created on Aug 17, 2017
 @author: lefterav
 '''
 
+
 class Baseline(object):
     '''
     Class that encapsulates the basic characteristics of a baseline scoring model,
@@ -36,7 +37,15 @@ class Baseline(object):
         #=======================================================================
         
         #TODO: find the feature names of qualitative that correspond to the quest features above
-        self.featurenames = []
+        self.featurenames = ['src_l_tokens', 
+                             'tgt-1_tokens', 
+                             'src_l_avgchars',
+                             'src_lmprob',
+                             'tgt-1_lmprob',
+                             'tgt-1_l_avgoccurences',
+                             'tgt-1_ibm1-ratio-02', #average number of translations per source word in the sentence (as given by IBM 1 table thresholded such that prob(t|s) > 0.2)
+                             '', # average number of translations per source word in the sentence (as given by IBM 1 table thresholded such that prob(t|s) > 0.01) weighted by the inverse frequency of each word in the source corpus
+                             ]
         
         #TODO: add preprocessors
         self.preprocessors = []
