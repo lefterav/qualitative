@@ -24,7 +24,8 @@ class Baseline(object):
         # LM probability of target sentence
         # number of occurrences of the target word within the target hypothesis (averaged for all words in the hypothesis - type/token ratio)
         # average number of translations per source word in the sentence (as given by IBM 1 table thresholded such that prob(t|s) > 0.2)
-        # average number of translations per source word in the sentence (as given by IBM 1 table thresholded such that prob(t|s) > 0.01) weighted by the inverse frequency of each word in the source corpus
+        # average number of translations per source word in the sentence (as given by IBM 1 table thresholded such that prob(t|s) > 0.01) 
+        #    weighted by the inverse frequency of each word in the source corpus
         # percentage of unigrams in quartile 1 of frequency (lower frequency words) in a corpus of the source language (SMT training corpus)
         # percentage of unigrams in quartile 4 of frequency (higher frequency words) in a corpus of the source language
         # percentage of bigrams in quartile 1 of frequency of source words in a corpus of the source language
@@ -44,7 +45,16 @@ class Baseline(object):
                              'tgt-1_lmprob',
                              'tgt-1_l_avgoccurences',
                              'tgt-1_ibm1-ratio-02', #average number of translations per source word in the sentence (as given by IBM 1 table thresholded such that prob(t|s) > 0.2)
-                             '', # average number of translations per source word in the sentence (as given by IBM 1 table thresholded such that prob(t|s) > 0.01) weighted by the inverse frequency of each word in the source corpus
+                             'tgt-1_ibm1-ratio-001',
+                             'src_ngrams_n1_q1', # average number of translations per source word in the sentence (as given by IBM 1 table thresholded such that prob(t|s) > 0.01) weighted by the inverse frequency of each word in the source corpus
+                             'src_ngrams_n1_q4',
+                             'src_ngrams_n2_q1',
+                             'src_ngrams_n2_q4',
+                             'src_ngrams_n3_q1',
+                             'src_ngrams_n3_q4',
+                             'src_ngrams_n1',
+                             'src_p_lgc',
+                             'tgt-1_p_lgc'                                                          
                              ]
         
         #TODO: add preprocessors

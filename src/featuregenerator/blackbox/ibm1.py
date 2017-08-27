@@ -10,6 +10,7 @@ import math
 import logging
 from collections import defaultdict
 from featuregenerator import FeatureGenerator
+from featuregenerator.blackbox.lm.quartiles import NgramManager
 
 class Ibm1FeatureGenerator(FeatureGenerator):
     '''
@@ -27,11 +28,13 @@ class Ibm1FeatureGenerator(FeatureGenerator):
     
     feature_names = ["ibm1-score", 'ibm1-alignment', 'ibm1-score-inv', 'ibm1-alignment-inv', 'ibm1-alignment-joined', 'imb1-alignment-joined']
     
-    feature_pattens = ["ibm1-ratio\-.*"]
+    feature_pattens = ["ibm1-ratio\-.*", "ibm1-wratio\-.*"]
     is_bilingual = True
     
     def __init__(self, model, inverted_model, thresholds=[0.2, 0.01], 
-                 source_language=None, target_language=None, **kwargs):
+                 source_language=None, target_language=None,
+                 ngram_counts_filename=None,
+                 **kwargs):
         """
         Initialize an instance of a feature generator able to generate IBM-1 features and multilingual string alignments
         @param model: table with IBM-1 word-level lexical probabilities for translating source-to-target
@@ -47,7 +50,13 @@ class Ibm1FeatureGenerator(FeatureGenerator):
         self.sourcelexicon = Lexicon(model)
         logging.info("Done. \nLoading target side IBM1 model...")
         self.targetlexicon = Lexicon(inverted_model)
+        # load the ngram counts manager if its filename is provided
+        if ngram_counts_filename is not None:
+            logging.info("Done. \nLoading source-side corpus frequencies...")
+            self.ngram_manager = NgramManager(ngram_counts_filename, 
+                                              max_ngram_order=1)
         logging.info("Done.")
+
         self.source_language = source_language
         self.target_language = target_language
         self.thresholds = thresholds
@@ -61,13 +70,14 @@ class Ibm1FeatureGenerator(FeatureGenerator):
         
         source_alignment = self.sourcelexicon.get_alignment(source_line, target_line)
         target_alignment = self.targetlexicon.get_alignment(target_line, source_line)
+        source_length = len(source_line.strip().split())
 
         source_alignment_string = source_alignment.get_alignment_string()
         target_alignment_string = target_alignment.get_alignment_string_inv()
         joined_alignment_string = self.join_alignments(source_alignment_string, target_alignment_string)
 
         #translations per source word
-        attributes_translation_ratio = self._get_translations_ratio(source_alignment, self.thresholds)
+        attributes_translation_ratio = self._get_translations_ratio(source_alignment, self.thresholds, source_length)
         
         attributes = {
                       'ibm1-score' : "%.4f" % self.sourcelexicon.get_score(source_line, target_line),
@@ -81,18 +91,32 @@ class Ibm1FeatureGenerator(FeatureGenerator):
 
         return attributes
 
-    def _get_translations_ratio(self, alignment, thresholds):
+    def _get_translations_ratio(self, alignment, thresholds, source_length):
         """
         Average number of translations per source word, as given by IBM-1 
         table thresholded so that prob(t|s) > threshold
         """
         count = 0
+        weighed_count = 0
         att = {}
         for threshold in thresholds:
             for source_item, tokenalignments in alignment.sourcealignment_probs.iteritems():
-                count += len([t for t in tokenalignments if t.probability>threshold])
+                item_count = len([t for t in tokenalignments if t.probability>threshold])
+                count += item_count
+                
+                # average number of translations per source word in the sentence 
+                # (as given by IBM 1 table thresholded such that prob(t|s) > threshold) 
+                # weighted by the inverse frequency of each word in the source corpus
+                item_frequency = self.ngram_manager.get_frequency(source_item)
+                weighed_item_count = 1.0 * item_count * item_frequency
+                weighed_count += weighed_item_count
+                 
             try:
-                att['ibm1-ratio-{}'.format(threshold).replace(".","")] = 1.00 * count / len(alignment.sourcealignment_probs.keys())
+                ibm_ratio = 1.00 * count / len(alignment.sourcealignment_probs.keys())
+                att['ibm1-ratio-{}'.format(threshold).replace(".","")] = ibm_ratio
+                
+                ibm_wratio = 1.00 * weighed_count / source_length
+                att['ibm1-wratio-{}'.format(threshold).replace(".","")] = ibm_wratio
             except ZeroDivisionError:
                 att['ibm1-ratio-{}'.format(threshold).replace(".","")] = 0
                 att['imb1-ratio-failed'] = 1

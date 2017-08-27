@@ -23,6 +23,8 @@ class PunctuationFeatureGenerator(FeatureGenerator):
                 'p_special2',
                 'p_special3',
                 'p_commas_diff',
+                'p_all',
+                'p_lgc',
                 ]
   
     

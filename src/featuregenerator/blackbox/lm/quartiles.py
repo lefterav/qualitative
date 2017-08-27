@@ -83,6 +83,14 @@ class NgramManager(object):
                 count += 1         
         return 1.00 * count / len(ngrams)
     
+    def get_ngrams_allquartiles(self, sentence_string, ngram_order):        
+        ngrams = self._get_ngrams(sentence_string, ngram_order)
+        count = 0
+        for ngram in ngrams:
+            freq = self.get_frequency(ngram)
+            if freq > 0:
+                count += 1         
+        return 1.00 * count / len(ngrams)
 
 class NgramFrequencyFeatureGenerator(LanguageFeatureGenerator):
     """
@@ -105,8 +113,9 @@ class NgramFrequencyFeatureGenerator(LanguageFeatureGenerator):
         features = OrderedDict()
         for ngram_order in range(1, self.max_ngram_order+1):
             for quartile in range(1, 5):
-                features["ngrams_n{}_q{}".format(ngram_order, quartile)] = self.ngram_manager.get_ngrams_per_quartile(sentence_string, ngram_order, quartile)
-     
+                ngram_ratio = self.ngram_manager.get_ngrams_per_quartile(sentence_string, ngram_order, quartile)
+                features["ngrams_n{}_q{}".format(ngram_order, quartile)] = ngram_ratio
+                features["ngrams_n{}".format(ngram_order)] = self.ngram_manager.get_ngrams_allquartiles(sentence_string, ngram_order)
         return features
 
 

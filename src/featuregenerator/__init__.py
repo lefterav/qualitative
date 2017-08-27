@@ -4,35 +4,30 @@ generation of features over the parallel objects. Any new featuregenerator
 should implement languagefeaturegenerator.py (if it is language-specific)
 or featuregenerator.py  (it is language-generic).
 """
-from multiprocessing.pool import Pool
-
 '''
 Created on Jul 28, 2016
 
-@author: lefterav
+@author: Eleftherios Avramidis
 '''
+
+from collections import OrderedDict
 from collections import defaultdict
+from copy import deepcopy
+from copy import deepcopy
 import importlib
-import logging as log
+from multiprocessing.pool import Pool
 import os
 import pkgutil
 import re
-from copy import deepcopy
-from sentence.parallelsentence import ParallelSentence
-from sentence.dataset import DataSet
-from dataprocessor.input.xmlreader import XmlReader
-from dataprocessor.output.xmlwriter import XmlWriter
-#from abc import ABCMeta
+from sys import stderr
 from sys import stderr
 
-from copy import deepcopy
-from sentence.parallelsentence import ParallelSentence
+import logging as log
 from sentence.dataset import DataSet
-from dataprocessor.input.xmlreader import XmlReader
-from dataprocessor.output.xmlwriter import XmlWriter
-from collections import OrderedDict
-#from abc import ABCMeta
-from sys import stderr
+from sentence.dataset import DataSet
+from sentence.parallelsentence import ParallelSentence
+from sentence.parallelsentence import ParallelSentence
+
 
 class FeatureGenerator(object):
     """
@@ -322,13 +317,15 @@ class LanguageFeatureGenerator(FeatureGenerator):
     
     
     #TODO: remove this, as it breaks architecture    
-    def add_features_batch_xml(self, filename_in, filename_out):
-        reader = XmlReader(filename_in)
-        parallelsentences = reader.get_parallelsentences()
-        parallelsentences = self.add_features_batch(parallelsentences)
-        reader = None
-        writer = XmlWriter(parallelsentences)
-        writer.write_to_file(filename_out)
+    #===========================================================================
+    # def add_features_batch_xml(self, filename_in, filename_out):
+    #     reader = XmlReader(filename_in)
+    #     parallelsentences = reader.get_parallelsentences()
+    #     parallelsentences = self.add_features_batch(parallelsentences)
+    #     reader = None
+    #     writer = XmlWriter(parallelsentences)
+    #     writer.write_to_file(filename_out)
+    #===========================================================================
         
 
 class Pipeline:
