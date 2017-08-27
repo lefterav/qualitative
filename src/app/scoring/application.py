@@ -9,6 +9,7 @@ from featuregenerator.blackbox.lm.ken import KenLMFeatureGenerator
 from featuregenerator.blackbox.ibm1 import Ibm1FeatureGenerator
 from featuregenerator.blackbox.lm.quartiles import NgramFrequencyFeatureGenerator
 from featuregenerator.preprocessor import Normalizer, Tokenizer, Truecaser
+from featuregenerator import FeatureGeneratorManager
 
 
 class Baseline(object):
@@ -21,14 +22,17 @@ class Baseline(object):
     def __init__(self, 
                  source_language,
                  target_language,
-                 ibm1_model,
-                 ibm1_inverted_model,
-                 source_lm,
-                 target_lm,
-                 ngram_counts_filename,
-                 source_truecaser_model,
-                 target_truecaser_model
-                 ):
+                 config,
+                 gateway):
+    
+                #ibm1_model,
+                #ibm1_inverted_model,
+                #source_lm,
+                #target_lm,
+                #ngram_counts_filename,
+                #source_truecaser_model,
+                #target_truecaser_model
+                #):
         '''
         Initialize a new baseline model
         '''
@@ -53,61 +57,67 @@ class Baseline(object):
         # number of punctuation marks in the target sentence
         #=======================================================================
         
-        #TODO: find the feature names of qualitative that correspond to the quest features above
-        self.featurenames = ['src_l_tokens', 
-                             'tgt-1_tokens', 
-                             'src_l_avgchars',
-                             'src_lmprob',
-                             'tgt-1_lmprob',
-                             'tgt-1_l_avgoccurences',
-                             'tgt-1_ibm1-ratio-02', #average number of translations per source word in the sentence (as given by IBM 1 table thresholded such that prob(t|s) > 0.2)
-                             'tgt-1_ibm1-ratio-001',
-                             'src_ngrams_n1_q1', # average number of translations per source word in the sentence (as given by IBM 1 table thresholded such that prob(t|s) > 0.01) weighted by the inverse frequency of each word in the source corpus
-                             'src_ngrams_n1_q4',
-                             'src_ngrams_n2_q1',
-                             'src_ngrams_n2_q4',
-                             'src_ngrams_n3_q1',
-                             'src_ngrams_n3_q4',
-                             'src_ngrams_n1',
-                             'src_p_lgc',
-                             'tgt-1_p_lgc'                                                          
-                             ]
+        # feature names of qualitative that correspond to the quest features above
+        featureset = ['src_l_tokens',
+                      'tgt-1_tokens',
+                      'src_l_avgchars',
+                      'src_lmprob',
+                      'tgt-1_lmprob',
+                      'tgt-1_l_avgoccurences',
+                      'tgt-1_ibm1-ratio-02',
+                      #average number of translations per source word in the sentence (as given by IBM 1 table thresholded such that prob(t|s) > 0.2) 'tgt-1_ibm1-ratio-001',
+                      'src_ngrams_n1_q1',
+                      # average number of translations per source word in the sentence (as given by IBM 1 table thresholded such that prob(t|s) > 0.01) weighted by the inverse frequency of each word in the source corpus 'src_ngrams_n1_q4',
+                      'src_ngrams_n2_q1',
+                      'src_ngrams_n2_q4',
+                      'src_ngrams_n3_q1',
+                      'src_ngrams_n3_q4',
+                      'src_ngrams_n1',
+                      'src_p_lgc',
+                      'tgt-1_p_lgc']
         
-        #TODO: add preprocessors
+        # initialize a pipeline given the required features
+        fgm = FeatureGeneratorManager()
+        self.pipeline = fgm.get_parallel_features_pipeline(featureset, config, source_language, target_language, gateway)
+        
+        # preprocessors
+        source_truecaser_model = config.get("Truecaser:{}".format(source_language), "model")
         source_preprocessors = [Normalizer(language=source_language), 
                                 Tokenizer(language=source_language),
                                 Truecaser(language=source_language, model=source_truecaser_model)]
-                                
+        
+        target_truecaser_model = config.get("Truecaser:{}".format(target_language), "model")                         
         target_preprocessors = [Normalizer(language=target_language), 
                                 Tokenizer(language=target_language),
                                 Truecaser(language=target_language, model=target_truecaser_model)]                                
-        
-        preprocessors = []
-        preprocessors.extend(source_preprocessors)
-        preprocessors.extend(target_preprocessors)
-        
-        #TODO: replace featuregenerators with autogenerated list of generators given featurenames
-        source_featuregenerators = [LengthFeatureGenerator(),
-                                    KenLMFeatureGenerator(language=source_language, model=source_lm),
-                                    NgramFrequencyFeatureGenerator(language=source_language, 
-                                                                   ngram_counts_filename=ngram_counts_filename, 
-                                                                   max_ngram_order=3),
-                                    PunctuationFeatureGenerator()]
-        
-        target_featuregenerators = [LengthFeatureGenerator(),
-                                    KenLMFeatureGenerator(language=target_language, model=target_lm),
-                                    Ibm1FeatureGenerator(model=ibm1_model, 
-                                                         inverted_model=ibm1_inverted_model, 
-                                                         thresholds=[0.2, 0.01], 
-                                                         source_language=source_language, 
-                                                         target_language=target_language, 
-                                                         ngram_counts_filename=ngram_counts_filename),
-                                    PunctuationFeatureGenerator()
-                                    ]
-        
-        self.featuregenerators = []
-        self.featuregenerators.extend(source_featuregenerators)
-        self.featuregenerators.extend(target_featuregenerators)
+         
+        self.preprocessors = []
+        self.preprocessors.extend(source_preprocessors)
+        self.preprocessors.extend(target_preprocessors)
+        # 
+        # #TODO: replace featuregenerators with autogenerated list of generators given featurenames
+        # source_featuregenerators = [LengthFeatureGenerator(),
+        #                             KenLMFeatureGenerator(language=source_language, model=source_lm),
+        #                             NgramFrequencyFeatureGenerator(language=source_language, 
+        #                                                            ngram_counts_filename=ngram_counts_filename, 
+        #                                                            max_ngram_order=3),
+        #                             PunctuationFeatureGenerator()]
+        # 
+        # target_featuregenerators = [LengthFeatureGenerator(),
+        #                             KenLMFeatureGenerator(language=target_language, model=target_lm),
+        #                             Ibm1FeatureGenerator(model=ibm1_model, 
+        #                                                  inverted_model=ibm1_inverted_model, 
+        #                                                  thresholds=[0.2, 0.01], 
+        #                                                  source_language=source_language, 
+        #                                                  target_language=target_language, 
+        #                                                  ngram_counts_filename=ngram_counts_filename),
+        #                             PunctuationFeatureGenerator()
+        #                             ]
+        # 
+        # self.featuregenerators = []
+        # self.featuregenerators.extend(source_featuregenerators)
+        # self.featuregenerators.extend(target_featuregenerators)
+        #=======================================================================
         
         # initialize the variable for the models
         self.model = None
@@ -143,8 +153,7 @@ class Baseline(object):
         for preprocessor in self.preprocessors:
             parallelsentence = preprocessor.add_features_parallelsentence(parallelsentence)
         
-        for featuregenerator in self.featuregenerators:
-            parallelsentence = featuregenerator.add_features_parallelsentence(parallelsentence)
+        parallelsentence = self.pipeline.annotate_parallelsentence(parallelsentence)
         return parallelsentence
            
     def score(self, parallelsentence):
