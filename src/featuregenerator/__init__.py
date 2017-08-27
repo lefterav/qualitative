@@ -13,19 +13,15 @@ Created on Jul 28, 2016
 from collections import OrderedDict
 from collections import defaultdict
 from copy import deepcopy
-from copy import deepcopy
 import importlib
 from multiprocessing.pool import Pool
 import os
 import pkgutil
 import re
 from sys import stderr
-from sys import stderr
 
 import logging as log
 from sentence.dataset import DataSet
-from sentence.dataset import DataSet
-from sentence.parallelsentence import ParallelSentence
 from sentence.parallelsentence import ParallelSentence
 
 
@@ -599,3 +595,4 @@ class FeatureGeneratorManager(object):
     
         return Pipeline(source_featuregenerators, target_featuregenerators, reference_featuregenerators)
             
+    
