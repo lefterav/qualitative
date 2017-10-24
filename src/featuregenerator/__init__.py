@@ -22,7 +22,7 @@ from sys import stderr
 
 import logging as log
 from sentence.dataset import DataSet
-from sentence.parallelsentence import ParallelSentence
+from sentence.parallelsentence import ParallelSentence, AttributeSet
 
 
 class FeatureGenerator(object):
@@ -517,6 +517,8 @@ class FeatureGeneratorManager(object):
         
         params['gateway'] = gateway
         params['language'] = language
+        log.debug("Feature generator manager will try to initialize {} for {}.".format(generator.__name__, language))
+        log.debug("passing params: {}".format(params))
         initialized_generator = generator(**params)
         log.info("Feature generator manager successfully initialized {} for {}.".format(generator.__name__, language))
         return initialized_generator
@@ -570,8 +572,8 @@ class FeatureGeneratorManager(object):
     def get_parallel_features_pipeline(self, featureset, config, source_language, target_language, gateway):
         """
         Prepares the full pipeline for feature generation on source, targets and references
-        @param featureset: a FeatureSet instance, containing the names of source, target and reference features
-        @type featureset: L{sentence.parallelsentence.FeatureSet}
+        @param featureset: an AttributeSet instance, containing the names of source, target and reference features
+        @type featureset: L{sentence.parallelsentence.AttributeSet}
         @param config: a ConfigParser object containing the parameters for the language resources
         @type config: C{ConfigParser}
         @param source_language: the language code of the source language
@@ -585,7 +587,12 @@ class FeatureGeneratorManager(object):
         """
         #TODO: solve the issue that some language agnostic generators will be 
         #initialized for both source and target -- or maybe its not a big issue cause they oftern are
-        #not expensive              
+        #not expensive          
+        if type(featureset) is list:
+            new_featureset = AttributeSet()
+            new_featureset.set_names_from_pairwise(featureset)
+            
+        featureset = new_featureset
         source_featuregenerators = self.initialize_feature_generators(featureset.source_attribute_names, config,
                                                                       source_language, gateway, source_language=None)
         target_featuregenerators = self.initialize_feature_generators(featureset.target_attribute_names, config,

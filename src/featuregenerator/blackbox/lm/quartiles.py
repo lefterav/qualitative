@@ -22,16 +22,18 @@ class NgramManager(object):
     @type ngram_trie: {C{str}: C{float}, ...}
     '''
     
-    def __init__(self, ngram_counts_filename=None, max_ngram_order=3):
+    def __init__(self, ngram_counts=None, max_ngram_order=3):
         '''
-        @param ngram_counts_filename: the model containing the counts
-        @type ngram_counts_filename: C{str}
+        @param ngram_counts: the model containing the counts
+        @type ngram_counts: C{str}
         @param max_ngram_order: the maximum order of n-grams in the table
         @type max_ngram_order: C{int}
         '''
         self.cutoffs = {}
         ngram_entries = []
-        ngram_counts_file = codecs.open(ngram_counts_filename, 'r', 'utf-8')
+        log.debug("Trying to open {}".format(ngram_counts))
+        
+        ngram_counts_file = codecs.open(ngram_counts, 'r', 'utf-8')
         i = 0
         for line in ngram_counts_file:
             #the first n lines of the file give the cut-off frequencies
@@ -103,9 +105,9 @@ class NgramFrequencyFeatureGenerator(LanguageFeatureGenerator):
     
     feature_patterns = ['ngrams_n.*']
     
-    def __init__(self, language=None, ngram_counts_filename=None, max_ngram_order=3):
+    def __init__(self, language=None, ngram_counts=None, max_ngram_order=3, **kwargs):
         self.max_ngram_order = max_ngram_order
-        self.ngram_manager = NgramManager(ngram_counts_filename, 
+        self.ngram_manager = NgramManager(ngram_counts, 
                                           max_ngram_order=max_ngram_order)
         self.language = language
     

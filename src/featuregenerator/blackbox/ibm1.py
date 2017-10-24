@@ -33,7 +33,7 @@ class Ibm1FeatureGenerator(FeatureGenerator):
     
     def __init__(self, model, inverted_model, thresholds=[0.2, 0.01], 
                  source_language=None, target_language=None,
-                 ngram_counts_filename=None,
+                 ngram_counts=None,
                  **kwargs):
         """
         Initialize an instance of a feature generator able to generate IBM-1 features and multilingual string alignments
@@ -51,9 +51,9 @@ class Ibm1FeatureGenerator(FeatureGenerator):
         logging.info("Done. \nLoading target side IBM1 model...")
         self.targetlexicon = Lexicon(inverted_model)
         # load the ngram counts manager if its filename is provided
-        if ngram_counts_filename is not None:
+        if ngram_counts is not None:
             logging.info("Done. \nLoading source-side corpus frequencies...")
-            self.ngram_manager = NgramManager(ngram_counts_filename, 
+            self.ngram_manager = NgramManager(ngram_counts, 
                                               max_ngram_order=1)
         logging.info("Done.")
 

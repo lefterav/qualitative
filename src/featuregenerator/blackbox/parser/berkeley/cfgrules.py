@@ -12,7 +12,7 @@ from numpy import average
 import re
 import sys
 
-from dataprocessor.sax import saxjcml
+#from dataprocessor.sax import saxjcml
 from featuregenerator.blackbox.ibm1 import Ibm1FeatureGenerator
 from featuregenerator import FeatureGenerator
 from featuregenerator import LanguageFeatureGenerator 
@@ -417,6 +417,6 @@ if __name__ == "__main__":
     input_file = sys.argv[1]
     output_file = input_file + "out.jcml"
     analyzers = [aligner, cfgalignmentprocessor ]
-    saxjcml.run_features_generator(input_file, output_file, analyzers)
+    #saxjcml.run_features_generator(input_file, output_file, analyzers)
 #    saxjcml.run_features_generator(input_file, output_file, analyzers)
     

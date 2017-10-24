@@ -56,7 +56,8 @@ class AttributeSet:
                  parallel_attribute_names=[], 
                  source_attribute_names=[],
                  target_attribute_names=[],
-                 ref_attribute_names=[]):
+                 ref_attribute_names=[],
+                 num_target_sentences=2):
         self.parallel_attribute_names = sorted(list(parallel_attribute_names))
         #self.parallel_attribute_names = self.parallel_attribute_names
         self.source_attribute_names = sorted(list(source_attribute_names))
@@ -64,14 +65,16 @@ class AttributeSet:
         self.target_attribute_names = sorted(list(target_attribute_names))
         #self.target_attribute_names = self.target_attribute_names
         self.ref_attribute_names = sorted(list(ref_attribute_names))
+        self.num_target_sentences = num_target_sentences
 
     def get_names_pairwise(self):
         all_attribute_names = []
         all_attribute_names.extend(self.parallel_attribute_names)
         #attribute names for source and target pairs need to be prefixed 
         all_attribute_names.extend(_prefix("src_{}", self.source_attribute_names))
-        all_attribute_names.extend(_prefix("tgt-1_{}", self.target_attribute_names))
-        all_attribute_names.extend(_prefix("tgt-2_{}", self.target_attribute_names))
+        for i in range(1, self.num_target_sentences):
+            prefix = "tgt-{}_".format(i) + "{}" 
+            all_attribute_names.extend(_prefix(prefix, self.target_attribute_names))
         return all_attribute_names
     
     def set_names_from_pairwise(self, pairwise_names=[]):
@@ -81,12 +84,7 @@ class AttributeSet:
         self.parallel_attribute_names = _noprefix(["src", "tgt", "ref"], pairwise_names)
 
     def __list__(self):
-        all_attribute_names = []
-        all_attribute_names.extend(self.parallel_attribute_names)
-        all_attribute_names.extend(self.source_attribute_names)
-        all_attribute_names.extend(self.target_attribute_names)
-        all_attribute_names.extend(self.ref_attribute_names)
-        return list(set(all_attribute_names))
+        return self.get_names_pairwise()
     
     def __str__(self):
         return str([self.parallel_attribute_names, self.source_attribute_names, self.target_attribute_names])
@@ -144,7 +142,13 @@ class ParallelSentence(object):
     """
     
 
-    def __init__(self, source, translations, reference = None, attributes = {}, rank_name = "rank", **kwargs):
+    def __init__(self,
+                 source,
+                 translations,
+                 reference = None,
+                 attributes = {},
+                 rank_name = "rank",
+                 **kwargs):
         """
         Constructor
         @type source SimpleSentence

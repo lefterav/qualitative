@@ -10,9 +10,13 @@ from featuregenerator.blackbox.ibm1 import Ibm1FeatureGenerator
 from featuregenerator.blackbox.lm.quartiles import NgramFrequencyFeatureGenerator
 from featuregenerator.preprocessor import Normalizer, Tokenizer, Truecaser
 from featuregenerator import FeatureGeneratorManager
+from sentence.parallelsentence import AttributeSet
+from ConfigParser import ConfigParser, RawConfigParser
+import os
+import logging as log
 
 
-class Baseline(object):
+class ScoringBaseline(object):
     '''
     Class that encapsulates the basic characteristics of a baseline scoring model,
     including a the preprocessors, a list of feature names and feature generators, 
@@ -23,7 +27,7 @@ class Baseline(object):
                  source_language,
                  target_language,
                  config,
-                 gateway):
+                 gateway=None):
     
                 #ibm1_model,
                 #ibm1_inverted_model,
@@ -36,6 +40,20 @@ class Baseline(object):
         '''
         Initialize a new baseline model
         '''
+        
+        orig_dir = os.path.curdir
+        if type(config) is str:
+            config_filename = config
+            if not os.path.isabs(config_filename):
+                rootdir = os.path.abspath("../../../")
+                os.chdir(rootdir)
+                config_filename = os.path.join(rootdir, config)
+                log.debug("Resolved configuration filename: {}".format(config_filename))
+            config = RawConfigParser()
+            config.read(config_filename)
+        log.debug("Opened configuration file {}".format(config.sections()))
+        
+        
         #=======================================================================
         # number of tokens in the source sentence
         # number of tokens in the target sentence
@@ -55,30 +73,31 @@ class Baseline(object):
         # percentage of unigrams in the source sentence seen in a corpus (SMT training corpus)
         # number of punctuation marks in the source sentence
         # number of punctuation marks in the target sentence
-        #=======================================================================
+        #=======================================================================        
         
         # feature names of qualitative that correspond to the quest features above
-        featureset = ['src_l_tokens',
-                      'tgt-1_tokens',
-                      'src_l_avgchars',
-                      'src_lmprob',
-                      'tgt-1_lmprob',
-                      'tgt-1_l_avgoccurences',
-                      'tgt-1_ibm1-ratio-02',
-                      #average number of translations per source word in the sentence (as given by IBM 1 table thresholded such that prob(t|s) > 0.2) 'tgt-1_ibm1-ratio-001',
-                      'src_ngrams_n1_q1',
-                      # average number of translations per source word in the sentence (as given by IBM 1 table thresholded such that prob(t|s) > 0.01) weighted by the inverse frequency of each word in the source corpus 'src_ngrams_n1_q4',
-                      'src_ngrams_n2_q1',
-                      'src_ngrams_n2_q4',
-                      'src_ngrams_n3_q1',
-                      'src_ngrams_n3_q4',
-                      'src_ngrams_n1',
-                      'src_p_lgc',
-                      'tgt-1_p_lgc']
+        self.featurenames = ['src_l_tokens',
+                             'tgt-1_l_tokens',
+                             'src_l_avgchars',
+                             'src_lm_prob',
+                             'tgt-1_lm_prob',
+                             'tgt-1_l_avgoccurences',
+                             'tgt-1_ibm1-ratio-02',
+                             #average number of translations per source word in the sentence (as given by IBM 1 table thresholded such that prob(t|s) > 0.2) 'tgt-1_ibm1-ratio-001',
+                             'src_ngrams_n1_q1',
+                             # average number of translations per source word in the sentence (as given by IBM 1 table thresholded such that prob(t|s) > 0.01) weighted by the inverse frequency of each word in the source corpus 'src_ngrams_n1_q4',
+                             'src_ngrams_n2_q1',
+                             'src_ngrams_n2_q4',
+                             'src_ngrams_n3_q1',
+                             'src_ngrams_n3_q4',
+                             'src_ngrams_n1',
+                             'src_p_lgc',
+                             'tgt-1_p_lgc']
+                
         
         # initialize a pipeline given the required features
         fgm = FeatureGeneratorManager()
-        self.pipeline = fgm.get_parallel_features_pipeline(featureset, config, source_language, target_language, gateway)
+        self.pipeline = fgm.get_parallel_features_pipeline(self.featurenames, config, source_language, target_language, gateway)
         
         # preprocessors
         source_truecaser_model = config.get("Truecaser:{}".format(source_language), "model")
@@ -120,7 +139,9 @@ class Baseline(object):
         
         # initialize the variable for the models
         self.model = None
-        self.scaler = None        
+        self.scaler = None
+        os.chdir(orig_dir)
+                    
      
     def load_regressor(self, regressor):
         '''
