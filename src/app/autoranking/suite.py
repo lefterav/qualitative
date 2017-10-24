@@ -371,7 +371,7 @@ class AutorankingSuite(PyExperimentSuite):
 #            Parallelsentence2Jcml(self.reconstructed_soft_testset).write_to_file("testset.reconstructed.org.soft.jcml")
     
     def restore_state(self,params, rep, n):
-        self.class_name = "rank_strings" #TODO: hardcoded
+        self.class_name = "rank" #TODO: hardcoded
         if n > 0 and n <=20 :
             self.trainset = JcmlReader("trainset.jcml").get_dataset()
         

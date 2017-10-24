@@ -45,7 +45,7 @@ class AnalyticPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
     @ivar pps_dict: a dict that stores all the pairwise parallelsentences mapped to a tuple of strings containing the system names for the respective translations 
     @type pps_dict: {(str, str): [L{PairwiseParallelSentence}, ...]} 
     """
-    def __init__(self, pairwise_parallelsentences = [], rank_name = "rank_strings", **kwargs):
+    def __init__(self, pairwise_parallelsentences = [], rank_name = "rank", **kwargs):
         """
         @param pairwise_parallelsentences: a list of pairwise parallel sentences
         @type pairwise_parallelsentences: [L{sentence.pairwiseparallelsentence.PairwiseParallelSentence}, ...]
@@ -215,7 +215,7 @@ class CompactPairwiseParallelSentenceSet(PairwiseParallelSentenceSet):
     @type pps_dict: {(str, str): L{PairwiseParallelSentence}} 
     """
     
-    def __init__(self, pairwise_parallelsentences, rank_name = "rank_strings"):
+    def __init__(self, pairwise_parallelsentences, rank_name = "rank"):
         """
         @param pairwise_parallelsentences: a list of pairwise parallel sentences
         @type pairwise_parallelsentences: [L{PairwiseParallelSentence}, ...]

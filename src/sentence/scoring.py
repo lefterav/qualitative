@@ -818,7 +818,7 @@ def regenerate_tau():
     from dataprocessor.input.jcmlreader import JcmlReader
     d = JcmlReader("testset.reconstructed.hard.jcml").get_dataset()
     scoringset = Scoring(d)
-    print scoringset.get_kendall_tau("rank_hard", "rank_strings")
+    print scoringset.get_kendall_tau("rank_hard", "rank")
             
             
         

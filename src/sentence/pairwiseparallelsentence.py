@@ -27,7 +27,7 @@ class PairwiseParallelSentence(ParallelSentence):
     @type rank_name: str   
     """
 
-    def __init__(self, source=None, translations=[], systems=[], reference=None, attributes={}, rank_name = u"rank_strings", normalize_ranks=True, **kwargs):
+    def __init__(self, source=None, translations=[], systems=[], reference=None, attributes={}, rank_name = u"rank", normalize_ranks=True, **kwargs):
         """
         Constructor
         @param source: the source text of the parallel sentence

@@ -8,7 +8,7 @@ from sentence.sentence import SimpleSentence
 from collections import OrderedDict
 from sentence.parallelsentence import ParallelSentence
 from dataprocessor.sax.saxps2jcml import Parallelsentence2Jcml
-from featuregenerator.glassbox.moses.extractor import MosesGlassboxExtractor
+#from featuregenerator.glassbox.moses.extractor import MosesGlassboxExtractor
 
 if __name__ == '__main__':
 
@@ -86,9 +86,9 @@ if __name__ == '__main__':
         target_features_tab_names = []
 #    print "Feature tab names", target_features_tab_names 
     
-    if opt.moseslog:
-        extractor = MosesGlassboxExtractor()
-        glassbox_features_dicts = extractor.create_dicts_of_sentences_attributes(opt.moseslog)
+    #if opt.moseslog:
+    #    extractor = MosesGlassboxExtractor()
+    #    glassbox_features_dicts = extractor.create_dicts_of_sentences_attributes(opt.moseslog)
 
     parallelsentences = []
     i = 0
@@ -114,8 +114,8 @@ if __name__ == '__main__':
         atts["system"] = opt.system_name
         
         #process glass-box features
-        if opt.moseslog:
-            atts.update(glassbox_features_dicts[i-1])
+        #if opt.moseslog:
+        #    atts.update(glassbox_features_dicts[i-1])
         
         #process tab-separated features file
         if target_features_tabfile:

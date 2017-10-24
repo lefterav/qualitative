@@ -121,6 +121,6 @@ class LengthFeatureGenerator(FeatureGenerator):
         attributes["l_srctokens_ratio"] = (1.00 * source_attributes['l_tokens']) / attributes['l_tokens'] 
         attributes["l_tokens_ratio"] = attributes['l_tokens'] / (1.00 * source_attributes['l_tokens'])
         attributes["l_numbers_diff_norm"] = (source_attributes['l_numbers'] - attributes['l_numbers']) * 1.00 / source_attributes['l_tokens']  
-        attributes["l_aztokens_ratio"] = source_attributes['l_aztokens'] / (1.00 * attributes['l_aztokens'])
+        #attributes["l_aztokens_ratio"] = source_attributes['l_aztokens'] / (1.00 * attributes['l_aztokens'])
         return attributes
        
