@@ -51,7 +51,7 @@ def process_file(filenames, rank_name="rank_hard"):
             print system1, system2, ties_counts, bleudiff
         except KeyError:
             errors+=1
-            pass
+            
     print "errors: ", errors 
     
 if __name__ == '__main__':
