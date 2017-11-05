@@ -255,8 +255,8 @@ class ParallelSentence(object):
         attribute_values = [target.get_attribute(attribute_name, sub) for target in self.tgt]
         return attribute_values
 
-    def get_filtered_target_attribute_values(self, attribute_name, filter_attribute_name, filter_attribute_value):
-        attribute_values = [target.get_attribute(attribute_name) for target in self.tgt if target.get_attribute(filter_attribute_name) != filter_attribute_value]        
+    def get_filtered_target_attribute_values(self, attribute_name, filter_attribute_name, filter_attribute_value, sub=None):
+        attribute_values = [target.get_attribute(attribute_name, sub=sub) for target in self.tgt if target.get_attribute(filter_attribute_name, sub=sub) != filter_attribute_value]        
         return attribute_values
 
     def add_attributes(self, attributes):

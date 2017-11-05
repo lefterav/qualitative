@@ -81,7 +81,7 @@ class SimpleSentence(object):
         try:
             return self.attributes[key]
         except KeyError:
-            if sub:
+            if sub is not None:
                 return sub
             else:
                 raise KeyError("Could not find attribute '{}' , atts={}".format(key, self.attributes))              
