@@ -38,6 +38,8 @@ def process_file(filenames, rank_name="rank_hard"):
             for (system1, rank1), (system2, rank2) in itertools.combinations(system_rank_tuples, 2):
                 if rank1 == rank2 and rank1!=-1 and rank2!=-1:
                     ties_counter[(system1, system2)]+=1
+                elif rank1!=-1 and rank2!=-1:
+                    ties_counter[(system1, system2)]+=0
 
     
     ties_counter_tuples = ties_counter.items()
