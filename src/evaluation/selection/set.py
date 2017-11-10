@@ -46,7 +46,7 @@ def evaluate_selection(parallelsentences,
     results = OrderedDict()
     selected_systems = defaultdict(int) #collect the winnings of each system
     
-    if not gateway:
+    if not gateway and (not metrics or (MeteorGenerator in metrics)):
         gateway = JVM(None)
      
     
@@ -112,20 +112,21 @@ def evaluate_selection(parallelsentences,
             metric_results = metric.analytic_score_sentences(original_system_sentences)
             metric_results = OrderedDict([("{}_{}".format(system_name, metric_name), values) for metric_name, values in metric_results.iteritems()])
             results.update(metric_results)
-        
-    with open(out_filename, 'w') as f:
-        for t, _ in selected_sentences:
-            if isinstance(t, unicode):
-                t = t.encode('utf-8')
-            f.write("{}{}".format(t, os.linesep))
-
-    if ref_filename:
-        with open(ref_filename, 'w') as f:
-            for _,r in selected_sentences:
-                t = r[0]
-            if isinstance(t, unicode):
-                t = t.encode('utf-8')
-            f.write("{}{}".format(t, os.linesep))
+    
+    if out_filename and ref_filename:
+        with open(out_filename, 'w') as f:
+            for t, _ in selected_sentences:
+                if isinstance(t, unicode):
+                    t = t.encode('utf-8')
+                f.write("{}{}".format(t, os.linesep))
+    
+        if ref_filename:
+            with open(ref_filename, 'w') as f:
+                for _,r in selected_sentences:
+                    t = r[0]
+                if isinstance(t, unicode):
+                    t = t.encode('utf-8')
+                f.write("{}{}".format(t, os.linesep))
 
     return results
 
