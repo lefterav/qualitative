@@ -21,7 +21,7 @@ def _get_ranking(parallelsentence, rank_name):
     failed = 0
     for tgt in parallelsentence.get_translations():
         try:
-            ranking.append(int(tgt.get_attribute(rank_name)))
+            ranking.append(float(tgt.get_attribute(rank_name)))
         except KeyError:
             failed += 1
             pass
@@ -46,7 +46,7 @@ def evaluate_selection(parallelsentences,
     results = OrderedDict()
     selected_systems = defaultdict(int) #collect the winnings of each system
     
-    if not gateway:
+    if not gateway and (not metrics or (MeteorGenerator in metrics)):
         gateway = JVM(None)
      
     
@@ -78,7 +78,7 @@ def evaluate_selection(parallelsentences,
             except:
                     reference_string = ". ."
             original_sentences[system_name].append((translation.get_string(), [reference_string]))
-            if int(translation.get_attribute(rank_name)) == int(best_rank):
+            if float(translation.get_attribute(rank_name)) == float(best_rank):
                 selected_systems[system_name] += 1
                 #if there is a tie, collect the first sentence that appears TODO:improve
                 if counter == 0:
@@ -97,8 +97,8 @@ def evaluate_selection(parallelsentences,
         metrics = [LevenshteinGenerator(),
                  BleuGenerator(),
                  RgbfGenerator(),
-                 WERFeatureGenerator(),
-                 Hjerson(lang=language)
+                 #WERFeatureGenerator(),
+                 #Hjerson(lang=language)
                  ]
         if language and gateway:
             metrics.append(MeteorGenerator(language, gateway))
@@ -112,20 +112,21 @@ def evaluate_selection(parallelsentences,
             metric_results = metric.analytic_score_sentences(original_system_sentences)
             metric_results = OrderedDict([("{}_{}".format(system_name, metric_name), values) for metric_name, values in metric_results.iteritems()])
             results.update(metric_results)
-        
-    with open(out_filename, 'w') as f:
-        for t, _ in selected_sentences:
-            if isinstance(t, unicode):
-                t = t.encode('utf-8')
-            f.write("{}{}".format(t, os.linesep))
-
-    if ref_filename:
-        with open(ref_filename, 'w') as f:
-            for _,r in selected_sentences:
-                t = r[0]
-            if isinstance(t, unicode):
-                t = t.encode('utf-8')
-            f.write("{}{}".format(t, os.linesep))
+    
+    if out_filename and ref_filename:
+        with open(out_filename, 'w') as f:
+            for t, _ in selected_sentences:
+                if isinstance(t, unicode):
+                    t = t.encode('utf-8')
+                f.write("{}{}".format(t, os.linesep))
+    
+        if ref_filename:
+            with open(ref_filename, 'w') as f:
+                for _,r in selected_sentences:
+                    t = r[0]
+                if isinstance(t, unicode):
+                    t = t.encode('utf-8')
+                f.write("{}{}".format(t, os.linesep))
 
     return results
 
