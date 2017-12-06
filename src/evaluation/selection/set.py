@@ -113,14 +113,19 @@ def evaluate_selection(parallelsentences,
             metric_results = OrderedDict([("{}_{}".format(system_name, metric_name), values) for metric_name, values in metric_results.iteritems()])
             results.update(metric_results)
         
-    with open(out_filename, 'w') as f:
-        f.write(os.linesep.join([t for t,_ in selected_sentences]))
+        with open(out_filename, 'w') as f:
+            for t, _ in selected_sentences:
+                if isinstance(t, unicode):
+                    t = t.encode('utf-8')
+                f.write("{}{}".format(t, os.linesep))
 
-    if ref_filename:
-        with open(ref_filename, 'w') as f:
-            f.write(os.linesep.join([r[0] for _,r in selected_sentences]))
-
-
+        if ref_filename:
+            with open(ref_filename, 'w') as f:
+                for _,r in selected_sentences:
+                    t = r[0]
+                if isinstance(t, unicode):
+                    t = t.encode('utf-8')
+                f.write("{}{}".format(t, os.linesep))
     return results
 
 

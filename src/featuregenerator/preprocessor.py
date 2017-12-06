@@ -117,7 +117,11 @@ class CommandlinePreprocessor(Preprocessor):
         #string = string.decode('utf-8')
         
         #string = string.encode('utf-8')
-        self.process.stdin.write('{0}{1}\n'.format(string, ' '*10240))
+        try:
+            self.process.stdin.write('{0}{1}\n'.format(string, ' '*10240))
+        except:
+            string = unicode(string).encode("utf-8")
+            self.process.stdin.write('{0}{1}\n'.format(string, ' '*10240))
         self.process.stdin.flush()   
         self.process.stdout.flush()
         

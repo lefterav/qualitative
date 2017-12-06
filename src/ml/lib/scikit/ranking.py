@@ -26,7 +26,7 @@ from matplotlib import pyplot as plt
 #scikit classifiers
 from sklearn.svm import SVC, LinearSVC
 from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import AdaBoostClassifier, RandomForestClassifier
+from sklearn.ensemble import AdaBoostClassifier, RandomForestClassifier, GradientBoostingClassifier, BaggingClassifier
 from sklearn.linear_model.randomized_l1 import RandomizedLasso
 from sklearn.ensemble.forest import ExtraTreesClassifier
 from sklearn.neighbors import KNeighborsClassifier
