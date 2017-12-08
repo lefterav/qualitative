@@ -135,7 +135,7 @@ def _append_arrays(features, labels, newfeatures, newlabels):
     @return: the arrays resulting from the concatenation of the two pairs of arrays
     @rtype: tuple(numpy.array, numpy.array)
     """
-    if features != None and labels != None:
+    if features is not None and labels is not None:
         try:
             features = np.concatenate((features, newfeatures), axis=0)
             labels = np.concatenate((labels, newlabels), axis=0)
