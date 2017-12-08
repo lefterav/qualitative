@@ -52,7 +52,7 @@ class MeteorGenerator(LanguageFeatureGenerator):
         config = self.meteor_view.MeteorConfiguration();
         config.setLanguage(language);
         #initialize object with the given config
-        sys.stderr.write("Ignoring Transducer ")
+        sys.stderr.write("If next line displays error, it is not critical, but METEOR language-specific transducer must be installed.")
         self.scorer = self.meteor_view.MeteorScorer(config)
 
     
