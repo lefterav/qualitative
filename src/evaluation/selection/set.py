@@ -21,7 +21,7 @@ def _get_ranking(parallelsentence, rank_name):
     failed = 0
     for tgt in parallelsentence.get_translations():
         try:
-            ranking.append(int(tgt.get_attribute(rank_name)))
+            ranking.append(float(tgt.get_attribute(rank_name)))
         except KeyError:
             failed += 1
             pass
@@ -78,7 +78,7 @@ def evaluate_selection(parallelsentences,
             except:
                     reference_string = ". ."
             original_sentences[system_name].append((translation.get_string(), [reference_string]))
-            if int(translation.get_attribute(rank_name)) == int(best_rank):
+            if float(translation.get_attribute(rank_name)) == float(best_rank):
                 selected_systems[system_name] += 1
                 #if there is a tie, collect the first sentence that appears TODO:improve
                 if counter == 0:
@@ -97,8 +97,8 @@ def evaluate_selection(parallelsentences,
         metrics = [LevenshteinGenerator(),
                  BleuGenerator(),
                  RgbfGenerator(),
-                 WERFeatureGenerator(),
-                 Hjerson(lang=language)
+                 #WERFeatureGenerator(),
+                 #Hjerson(lang=language)
                  ]
         if language and gateway:
             metrics.append(MeteorGenerator(language, gateway))

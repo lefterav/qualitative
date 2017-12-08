@@ -109,6 +109,7 @@ def _impute(features, imputer=True):
         except ValueError as exc:
             #catch errors with illegal values (e.g. strings)
             log.warning("Exception trying to run scikit imputation: {}".format(exc))
+            impfeatures = features
         #show size for debugging purposes
         #log.debug("Featurevectors {} after imputation: {}".format(impfeatures.shape, features))i
 
