@@ -14,7 +14,8 @@ from numpy import mean, std
 from collections import OrderedDict
 from fnmatch import fnmatch
 from operator import itemgetter
-
+from math import pow
+ 
 """
 Gathers the results from the app folders created with python Experiment Suite
 """
@@ -84,11 +85,11 @@ def retrieve_results(mysuite, path, reps = [0], tags='all'):
     return results
 
                 
+       
+def get_tabfile(results, preferred_params=[], preferred_scores=[], display_header=True, delimiter="\t", decimals=3, limit=None, sort_column=1, sort_reverse=False):
 
-        
-def get_tabfile(results, preferred_params=[], preferred_scores=[], display_header=True, delimiter="\t"):
-
-    
+    quantize = Decimal(str(pow(10, -1*decimals)))
+    logging.warn("Decimals {}, quantize {}".format(decimals, quantize))
     #get a list with the result names
     param_keys = set()
     score_keys = set()
@@ -109,8 +110,8 @@ def get_tabfile(results, preferred_params=[], preferred_scores=[], display_heade
     if not preferred_params:
         preferred_params = param_keys
 
-    if not preferred_scores or preferred_scores == ['all']:
-        preferred_scores = sorted(list(score_keys))
+    if not preferred_scores:
+        preferred_scores = list(score_keys)
     else:    
 
         new_preferred_scores = []
@@ -124,9 +125,10 @@ def get_tabfile(results, preferred_params=[], preferred_scores=[], display_heade
     if display_header:
         print delimiter.join(preferred_params) + delimiter + delimiter.join(preferred_scores)
     
-    results = sorted(results, key=lambda result: result[0])
-    #THREEPLACES = Decimal('0.001')
-    
+    results = sorted(results, key=itemgetter(0))
+
+    tab_rows = [] #will contain both params and values in one row
+
     for params, values in results:
 
         #retain only the preferred params
@@ -139,24 +141,36 @@ def get_tabfile(results, preferred_params=[], preferred_scores=[], display_heade
 
             #extract from array, if possible
             try:
-                val = values[key][0]
+                val = float(values[key][0])
             except IndexError:
-                val = values[key]
-            except KeyError:
-                val = ''
+                try:
+                    val = values[key]
+                except KeyError:
+                    val = ''
 
-            #try:
-            #    val = Decimal(val).quantize(THREEPLACES)
-            #except:
-            #    pass
+            try:
+                val = Decimal(val).quantize(quantize)
+            except Exception as e:
+                pass
+                logging.warn("'{}' while  quantizing {}{}".format(e, key, val))
             onlyvalues.append(str(val))
                     
-        print delimiter.join(params) + delimiter + delimiter.join(onlyvalues)
-            
+        #print delimiter.join(params) + delimiter + delimiter.join(onlyvalues)
+        tab_rows.append(params + onlyvalues)
+
+    tab_rows.sort(key=itemgetter(sort_column), reverse=sort_reverse)
+    row_counter = 0
+    
+    for row in tab_rows:        
+        # nan values should be ignored when sorting
+        if limit is not None and row[sort_column].endswith('NaN'):
+            continue
+        row_counter+=1
+        if limit is not None and row_counter > limit:
+            break
+        print delimiter.join(row)
             
 if __name__ == "__main__":
-    
-    
     
     #dev example 
     #python2.7 check.py --path /home/Eleftherios Avramidis/taraxu_data/selection-mechanism/emnlp/app/4b --reps 0 --config config/autoranking.suite.bernux.cfg --params app classifier att mode ties include_references  > test.csv
@@ -178,9 +192,13 @@ if __name__ == "__main__":
     parser.add_argument('--logging', nargs="?", default=None,
                    help='should logging be performed, if set to True writes the debug level to debug.log, ')
 
-
-
-    args = parser.parse_args(sys.argv[1:])
+    parser.add_argument('--limit', default=None, type=int, help="Limit the result to the n best after sorting")
+    parser.add_argument('--sort_column', type=int, default=1, help="Index of the column to sort against")
+    parser.add_argument('--sort_reverse', type=bool, default=False, help="Set True in order to sort descending")
+    parser.add_argument('--decimals', type=int, default=3, help="Number of decimal digits beyond decimal point")
+    parser.add_argument('--display_header', type=bool, default=True, help="Whether to display the column header")
+    
+    args = parser.parse_args()
     
     if args.logging:
         logging.basicConfig(filename='debug.log',level=getattr(logging, args.logging.upper()))
@@ -193,9 +211,8 @@ if __name__ == "__main__":
     reps = args.reps
     preferred_params = args.params
     preferred_scores = args.metrics
-    
+
     results = retrieve_results(mysuite, path, reps, preferred_scores)
-    get_tabfile(results, preferred_params, preferred_scores)
-                
-        
-        
+    get_tabfile(results, preferred_params, preferred_scores, limit=args.limit, 
+            sort_column=args.sort_column, sort_reverse=args.sort_reverse,
+            display_header=args.display_header, decimals=args.decimals)
