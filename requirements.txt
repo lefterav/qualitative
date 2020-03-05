@@ -1,3 +1,5 @@
+setuptools==20.6.6
+nltk
 configobj==5.0.6
 cycler==0.10.0
 ijson==2.3
@@ -19,3 +21,4 @@ suds-jurko==0.6
 Unidecode==0.4.19
 validictory==1.0.1
 matplotlib==1.5.1
+https://github.com/kpu/kenlm/archive/master.zip
