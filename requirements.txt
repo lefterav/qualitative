@@ -19,5 +19,4 @@ six==1.10.0
 suds-jurko==0.6
 Unidecode==0.4.19
 validictory==1.0.1
-matplotlib==1.5.1
 https://github.com/kpu/kenlm/archive/master.zip
