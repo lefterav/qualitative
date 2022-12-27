@@ -1,4 +1,4 @@
-setuptools==20.6.6
+setuptools==65.5.1
 nltk
 configobj==5.0.6
 cycler==0.10.0
